@@ -2,7 +2,7 @@
 
 The EDA release is distributed via a set of git repositories hosted on the TODO. The entrypoint for an installation is in the [demo][demo-repo] repository.
 
-/// details | Known issues and limitations of the currentnt release
+/// details | Known issues and limitations of the current release
     type: warning
 
 <h4>Limitations</h4>
