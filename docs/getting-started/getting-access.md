@@ -35,8 +35,8 @@ If you're good to here, you're mere minutes away from automation greatness.
 
 [:octicons-arrow-right-24: Install!](install.md)
 
-[demo-repo]:
-[makefile]:
+[demo-repo]: TODO
+[makefile]: TODO
 
 [^1]: Many distributions come with `git` preinstalled, but if not you should install it via your package manager.  
     For instance with `apt`-enabled systems:
