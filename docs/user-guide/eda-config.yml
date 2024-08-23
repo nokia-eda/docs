@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apply-setters-fn-config
+data:
+  CM_ARGS: |
+    - --v=2
+    - --cluster-resource-namespace=$(POD_NAMESPACE)
+    - --leader-election-namespace=kube-system
+    - --acme-http01-solver-image=cert-manager-acmesolver:v1.14.4
+    - --max-concurrent-challenges=60
+  API_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/api-server:2404230116-g920032ed
+  ASC_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/appstore-server:2404230116-g920032ed
+  ASVR_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/artifact-server:2404230116-g920032ed
+  BSVR_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/bootstrap-server:2404230116-g920032ed
+  CE_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/config-engine:2404230116-g920032ed
+  CMCA_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/ext/jetstack/cert-manager-cainjector:v1.14.4
+  CMCT_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/ext/jetstack/cert-manager-controller:v1.14.4
+  CMWH_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/ext/jetstack/cert-manager-webhook:v1.14.4
+  CSI_DRIVER: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/ext/jetstack/cert-manager-csi-driver:v0.8.0
+  CSI_LIVPROBE: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/ext/sig-storage/livenessprobe:v2.12.0
+  CSI_REGISTRAR: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/ext/sig-storage/csi-node-driver-registrar:v2.10.0
+  CX_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/cx:2404230116-g920032ed
+  CXDP_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/cxdp:0.0.0-57397
+  FB_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/fluent-bit:2.1.10-amd64
+  FD_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/fluentd:v1.16.2-debian-1.0
+  FE_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/flow-engine:2404230116-g920032ed
+  GOGS_IMG_TAG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/gogs:0.13.0
+  KC_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/eda-keycloak:2404230116-g920032ed
+  LLM_MODEL: gpt-4-1106-preview
+  LLM_API_KEY: sk-trWkxcg2k6f7zdmNXTk1T3BlbksJjrGoEeABCEZSjiwCdqMA
+  NPP_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/npp:2404230116-g920032ed
+  PG_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/eda-postgres:2404230116-g920032ed
+  SA_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/state-aggregator:2404230116-g920032ed
+  SC_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/state-controller:2404230116-g920032ed
+  SE_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/state-engine:2404230116-g920032ed
+  SIMULATE: true
+  SRL000_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/srlinux:0.0.0-57980
+  TM_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/core/testman:2404230116-g920032ed
+  TRUSTMGR_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/ext/jetstack/trust-manager:v0.9.1
+  TRUSTMGRBUNDLE_IMG: ni-eda-release-local.artifactory-fpark1.int.net.nokia.com/ext/jetstack/cert-manager-package-debian:20210119.0
+  IPV4_ONLY: false

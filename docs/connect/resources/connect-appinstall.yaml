@@ -1,0 +1,10 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstall
+metadata:
+  name: connect
+spec:
+  app: connect
+  catalog: eda-catalog-builtin-apps
+  version:
+    value: v0.1.0+24.4.0-a1
+    type: semver

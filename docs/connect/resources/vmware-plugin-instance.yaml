@@ -1,0 +1,13 @@
+apiVersion: vmware.eda.nokia.com/v1alpha1
+kind: VmwarePluginInstance
+metadata:
+  name: my-vmware-plugin-instance # A unique name for the plugin resource (can be the same as the spec.name, or different)
+spec:
+  externalId: example-external-id # A unique Identifier for the plugin (can be same as the name)
+  heartbeatInterval: 2
+  name: example-vSphere # A unique name for the plugin
+  vcsaHost: example-host # The IP address of the vCenter Server
+  vcsaUsername: example-user # The username for the vCenter Server
+  vcsaPassword: example-password # The password for the vCenter Server
+  vcsaTlsVerify: false # To verify TLS, must be false for the Alpha
+  vcsaCertificate: ""
