@@ -7,7 +7,6 @@ The EDA release is distributed via a set of git repositories hosted on the TODO.
 
 <h4>Limitations</h4>
 
-- TODO: use with the hw.
 - The RAD (UI designer) is not provided. Watch this space!
 - KinD cluster installation were tested and validated for this quickstart guide. You may still easily install EDA in a non-KinD environments, [here is how](../user-guide/install-advanced.md#eda-in-a-non-kind-cluster).
 
