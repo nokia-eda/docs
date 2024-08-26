@@ -1,0 +1,15 @@
+variables:
+  GIT_DEPTH: 0
+
+pages:
+  stage: deploy
+  image:
+    name: registry.srlinux.dev/pub/mkdocs-material-insiders:9.5.19-insiders-4.53.8-hellt
+    entrypoint: [""]
+  script:
+    - mkdocs build --site-dir public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

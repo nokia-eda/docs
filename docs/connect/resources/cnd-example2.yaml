@@ -1,0 +1,14 @@
+apiVersion: connect.eda.nokia.com/v1alpha1
+kind: ConnectNetworkDefinition
+metadata:
+  name: cnd2
+spec:
+  subnets:
+    - name: "trunked-subnet1"
+      networkAttachmentDefinitions:
+        - name: ipvlan-ns1/ipvlan-nad1-untagged
+          trunkVlans:
+            - 10
+        - name: sriov-ns1/sriov-nad1-untagged
+          trunkVlans:
+            - 20

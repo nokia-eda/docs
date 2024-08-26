@@ -1,0 +1,212 @@
+site_name: Event Driven Automation
+nav:
+  - Home: index.md
+  - Getting started:
+      - Getting access: getting-started/getting-access.md
+      - Install: getting-started/install.md
+      - Onboarding nodes: getting-started/onboarding-nodes.md
+      - Verify: getting-started/verification.md
+      - Accessing the UI: getting-started/accessing-the-ui.md
+      - Creating a resource: getting-started/creating-a-resource.md
+  - User guide:
+      - Queries: user-guide/queries.md
+      - Customizing topologies: user-guide/generating-topologies.md
+      - Using the CLIs: user-guide/using-the-clis.md
+      - Installation:
+          - FSS Cluster deployment: user-guide/install-fss.md
+          - user-guide/install-advanced.md
+          - Resetting a cluster: user-guide/reset.md
+      - Allocation Pools: user-guide/allocation-pools.md
+  - Apps:
+      - App Store: apps/app-store.md
+      - Fabric: apps/fabric.md
+      - Virtual Network: apps/virtualnetwork.md
+
+  - Cloud Connect:
+      - Cloud Connect: connect/cloud-connect.md
+      - OpenShift Connect Plugin: connect/openshift-plugin.md
+      - VMware vSphere Plugin: connect/vmware-plugin.md
+      - Troubleshooting: connect/troubleshooting.md
+  - Development:
+      - API: development/api.md
+      - Custom App Catalog: development/custom-catalog.md
+      - Custom App Registry: development/custom-registry.md
+  - Blog:
+      # - blog_dir: blog
+      - blog/index.md
+      - Subscribe: blog/subscribe.md
+      - Tags: blog/tags.md
+
+site_author: Nokia
+site_description: >-
+  EDA is the platform for automating your infrastructure.
+# Repository
+repo_name: docs
+repo_url: https://github.com/nokia-eda/docs
+edit_uri: edit/main/docs/
+site_url: "https://docs.eda.dev"
+copyright: Copyright &copy; 2024 Nokia
+theme:
+  name: material
+  custom_dir: docs/overrides
+
+  # 404 page
+  static_templates:
+    - 404.html
+
+  # Don't include MkDocs' JavaScript
+  include_search_page: false
+  search_index_only: true
+
+  features:
+    - navigation.top
+    - navigation.tabs
+    - navigation.sections
+    - navigation.footer
+    - search.suggest
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.action.edit
+    - toc.follow
+    - content.tooltips
+    - content.footnote.tooltips
+    - navigation.indexes
+
+  language: en
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  font:
+    text: NokiaPureText
+    code: Fira Code
+  icon:
+    logo: nokia/eda
+    repo: fontawesome/brands/github
+    edit: material/file-edit-outline
+  favicon: images/eda.svg
+
+# Plugins
+plugins:
+  - meta
+  - glightbox
+  - macros:
+      j2_block_start_string: "[[[%"
+      j2_block_end_string: "%]]]"
+      j2_variable_start_string: "[[["
+      j2_variable_end_string: "]]]"
+      include_dir: macros
+  - blog:
+      post_url_format: "{slug}"
+      archive: false
+      categories: false
+      post_excerpt_max_authors: 2
+      authors_profiles: true
+  - tags
+  - typeset
+  - search
+  - minify:
+      minify_html: true
+  - rss:
+      match_path: blog/posts/.*
+      abstract_chars_count: 5000
+      date_from_meta:
+        as_creation: date
+      categories:
+        - tags
+      comments_path: "#__comments"
+  - git-revision-date-localized:
+      enable_creation_date: true
+      enabled: !ENV [CI, false]
+  - git-committers:
+      repository: https://github.com/nokia-eda/docs
+      branch: main
+      enabled: !ENV [CI, false]
+  - social:
+      enabled: !ENV [CI, false]
+      cards_layout_options:
+        font_family: Open Sans
+
+# Customization
+extra:
+  social:
+    - icon: fontawesome/brands/discord
+      link: https://eda.dev/discord
+    - icon: fontawesome/brands/github
+      link: https://github.com/nokia-eda/docs
+  annotate:
+    bash:
+      - .s1
+      - .s2
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - markdown.extensions.admonition
+  - markdown.extensions.attr_list
+  - markdown.extensions.md_in_html
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - toc:
+      permalink: "#"
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      line_spans: __span
+      anchor_linenums: true
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: nokia-eda
+      repo: docs
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      check_paths: true
+      url_download: true
+      auto_append:
+        - includes/abbreviations.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.blocks.tab:
+      alternate_style: true
+  - pymdownx.blocks.admonition
+  - pymdownx.blocks.definition
+  - pymdownx.blocks.details
+  - pymdownx.blocks.html
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra_css:
+  - stylesheets/nokia.css
+  - stylesheets/nokia-fonts.css
+  - stylesheets/diagrams.css
+  - stylesheets/animations.css
