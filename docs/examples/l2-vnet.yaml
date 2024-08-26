@@ -1,0 +1,36 @@
+---
+apiVersion: services.eda.nokia.com/v1alpha1
+kind: VirtualNetwork
+metadata:
+  name: vnet1
+spec:
+  bridgeDomains:
+    - name: bd1
+      spec:
+        vniPool: vni-pool
+        eviPool: evi-pool
+        tunnelIndexPool: tunnel-index-pool
+        l2proxyARPND:
+          dynamicLearning:
+            ageTime: 2000
+            enabled: true
+            sendRefresh: 2000
+          ipDuplication:
+            enabled: true
+            holdDownTime: 10
+            monitoringWindow: 10
+            numMoves: 4
+          proxyARP: true
+  vlans:
+    - name: storage
+      spec:
+        bridgeDomain: bd1
+        interfaceSelector: ["eda.nokia.com/edgeLinkType=storage"]
+        vlanPool: vlan-pool
+    - name: compute
+      spec:
+        bridgeDomain: bd1
+        interfaceSelector: ["eda.nokia.com/edgeLinkType=compute"]
+        vlanPool: vlan-pool
+---
+

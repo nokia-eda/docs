@@ -1,0 +1,83 @@
+---
+apiVersion: services.eda.nokia.com/v1alpha1
+kind: VirtualNetwork
+metadata:
+  name: vnet2
+spec:
+  routers:
+    - name: routetable1
+      spec:
+        routerID: 5.4.3.2
+        vniPool: vni-pool
+        eviPool: evi-pool
+        tunnelIndexPool: tunnel-index-pool
+  bridgeDomains:
+    - name: app1
+      spec:
+        vniPool: vni-pool
+        eviPool: evi-pool
+        tunnelIndexPool: tunnel-index-pool
+    - name: app2
+      spec:
+        vniPool: vni-pool
+        eviPool: evi-pool
+        tunnelIndexPool: tunnel-index-pool
+  irbInterfaces:
+    - name: irb1
+      spec:
+        bridgeDomain: app1
+        router: routetable1
+        bfd:
+          desiredMinTransmitInt: 150002
+          detectionMultiplier: 4
+          enabled: true
+          requiredMinReceive: 150000
+        evpnRouteAdvertisementType:
+          arpStatic: true
+          arpDynamic: true
+        hostRoutePopulate:
+          dynamic: true
+          evpn: true
+        ipv4Addresses:
+          - ipPrefix: 13.3.3.1/24
+            primary: true
+          - ipPrefix: 14.4.4.1/24
+        ipv6Addresses:
+          - ipPrefix: fc00:31::1/120
+            primary: true
+          - ipPrefix: fc00:41::1/120
+    - name: irb2
+      spec:
+        bridgeDomain: app2
+        router: routetable1
+        bfd:
+          desiredMinTransmitInt: 150002
+          detectionMultiplier: 4
+          enabled: true
+          requiredMinReceive: 150000
+        evpnRouteAdvertisementType:
+          arpStatic: true
+          arpDynamic: true
+        hostRoutePopulate:
+          dynamic: true
+          static: false
+          evpn: true
+        ipv4Addresses:
+          - ipPrefix: 15.3.3.1/24
+            primary: true
+          - ipPrefix: 16.4.4.1/24
+        ipv6Addresses:
+          - ipPrefix: fc00:51::1/120
+            primary: true
+          - ipPrefix: fc00:61::1/120
+  vlans:
+    - name: vlan1
+      spec:
+        bridgeDomain: app1
+        interfaceSelector: ["eda.nokia.com/edgeLinkType=storage"]
+        vlanPool: vlan-pool
+    - name: vlan2
+      spec:
+        bridgeDomain: app2
+        interfaceSelector: ["eda.nokia.com/edgeLinkType=compute"]
+        vlanPool: vlan-pool
