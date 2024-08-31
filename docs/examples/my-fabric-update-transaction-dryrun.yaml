@@ -1,0 +1,35 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Transaction
+metadata:
+  name: update-fabric-dryrun
+spec:
+  description: "Updading fabric from using eBGP for overlay protocol to iBGP"
+  dryRun: true
+  keepDetailedLog: true
+  items:
+    - replace:
+        apiVersion: fabrics.eda.nokia.com/v1alpha1
+        kind: Fabric
+        metadata:
+          name: my-fabric
+        spec:
+          leafNodeSelector:
+            - eda.nokia.com/role=leaf
+          linkSelector:
+            - eda.nokia.com/role=interSwitch
+          spineNodeSelector:
+            - eda.nokia.com/role=spine
+          systemPoolIPV4: systemipv4-pool
+          islPoolIPV4: ipv4-pool
+          underlayProtocol:
+            asnPool: asn-pool
+            protocol:
+              - ebgp
+          overlayProtocol:
+            protocol: ibgp
+            autonomousSystem: 10001
+            clusterID: 2.2.2.2
+            rrClientNodeSelector:
+              - eda.nokia.com/role in (leaf)
+            rrNodeSelector:
+              - eda.nokia.com/role in (spine)

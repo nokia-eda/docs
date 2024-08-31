@@ -1,0 +1,202 @@
+:root>* {
+  --md-primary-fg-color: #7d33f2;
+  --md-primary-fg-color--light: #ECB7B7;
+  --md-primary-fg-color--dark: #90030C;
+
+  --md-accent-fg-color: #23ABB6;
+
+  --nokia-heading-font-color: #7d33f2;
+
+  /* get started home button */
+  --nokia-get-started-btn-color: #7d33f2;
+  --nokia-get-started-text-color: #ffffff;
+  --nokia-get-started-hover-text-color: #ffffff;
+  --nokia-get-started-hover-btn-color: #23ABB6;
+}
+
+[data-md-color-scheme="slate"][data-md-color-primary="indigo"] {
+  --md-typeset-a-color: #ffffff;
+  --md-accent-fg-color: #23ABB6;
+
+  /* --nokia-heading-font-color: #bec8d2; this is a greyish version for comparison */
+  --nokia-heading-font-color: #ffffff;
+  --nokia-get-started-btn-color: #bec8d2;
+  --nokia-get-started-text-color: #000000;
+  --nokia-get-started-hover-text-color: #ffffff;
+  --nokia-get-started-hover-btn-color: #7d33f2;
+}
+
+body,
+input {
+  font-weight: 300;
+}
+
+/* colors for headings */
+.md-typeset h1,
+h2,
+h3,
+h4 {
+  font-family: NokiaPureHeadlineLight;
+  color: var(--nokia-heading-font-color)
+}
+
+/* setting the code font size a bit smaller. This is commented out now, as it breaks linenumbers in code blocks */
+/* .md-typeset code {
+  font-size: .8em;
+}
+
+
+@media screen and (max-width: 76.1875em) {
+  .md-header__button.md-icon[for=__drawer] {
+    order: -1
+  }
+
+  .md-header__button.md-logo {
+    display: block;
+  }
+}
+
+.md-container.secondary-section {
+  border: 0;
+}
+
+/* need to have decide if it is better or not
+  making the content width bigger
+.md-grid {
+  max-width: 1440px;
+} */
+
+/* Table styling */
+.md-typeset table:not([class]) th {
+  background-color: #124191;
+}
+
+th {
+  color: #FFFFFF !important;
+}
+
+/* Pumping heart */
+.md-typeset .mdx-heart {
+  -webkit-animation: heart 1s infinite;
+  animation: heart 1s infinite;
+  color: #e91e63
+}
+
+/* make announce link color always white */
+.md-banner__inner a {
+  color: #ffffff
+}
+
+/* shadow effect for images and divs for video */
+.img-shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* styles for inter H1 code <hr> */
+.ext-code-divider {
+  margin-top: 3em;
+  text-align: center;
+}
+
+.ext-code-divider a {
+  display: inline-block;
+  transition: transform 250ms cubic-bezier(0.1, 0.7, 0.1, 1), color 125ms;
+}
+
+.ext-code-divider a:focus,
+.ext-code-divider a:hover {
+  transform: scale(1.2);
+}
+
+.ext-code-divider hr {
+  display: inline-block;
+  width: 40px;
+  margin: 16px;
+  vertical-align: middle;
+  background-color: currentColor;
+  border: none;
+}
+
+/* vertical alignment for svg in h1 divider element */
+.ext-code-divider>.vertical-middle {
+  vertical-align: middle;
+}
+
+/* make 2nd prompt line of srlinux render bold with srlinux-pygments */
+:is(.language-srl, .language-srlmin) :is(.n) {
+  font-weight: 900;
+}
+
+/* classes to make iframe elements responsive */
+.iframe-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+.iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* this is for low-height iframe audio containers */
+.iframe-audio2-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+.iframe-audio2-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* embedded output for code blocks
+  use as
+  ```
+  echo test
+  ```
+  <div class="embed-result">
+  ```
+  test
+  ```
+  </div>
+ */
+.md-typeset .embed-result {
+  margin-top: -1.125em;
+}
+
+/* START border for content tabs 
+https://github.com/squidfunk/mkdocs-material/discussions/4157#discussioncomment-8270993
+*/
+.md-typeset .tabbed-set {
+  border: 0.5px solid var(--md-typeset-table-color);
+}
+
+.md-typeset .tabbed-content {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+/* END border for content tabs */
+
+
+/* START scrollable code blocks used in code snippets */
+div.highlight.code-scroll-lg pre>code {
+  max-height: 80vh;
+}
+
+div.highlight.code-scroll-sm pre>code {
+  max-height: 50vh;
+}
+
+/* END scrollable code blocks used in code snippets */

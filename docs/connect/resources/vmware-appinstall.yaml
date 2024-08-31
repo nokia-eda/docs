@@ -1,0 +1,10 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstall
+metadata:
+  name: vmware-plugin
+spec:
+  app: vmware-plugin
+  catalog: eda-catalog-builtin-apps
+  version:
+    value: v1.0.0
+    type: semver

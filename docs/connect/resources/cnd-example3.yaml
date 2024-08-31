@@ -1,0 +1,11 @@
+apiVersion: connect.eda.nokia.com/v1alpha1
+kind: ConnectNetworkDefinition
+metadata:
+  name: cnd3
+spec:
+  subnets:
+    - name: "eda-managed-subnet1"
+      linkedBridgedomain: eda_bridgedomain_1
+      networkAttachmentDefinitions:
+        - name: ipvlan-ns1/ipvlan-nad1
+        - name: sriov-ns1/sriov-nad1
