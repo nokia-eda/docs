@@ -1,0 +1,10 @@
+apiVersion: connect.eda.nokia.com/v1alpha1
+kind: ConnectNetworkDefinition
+metadata:
+  name: cnd1
+spec:
+  subnets:
+    - name: "subnet1"
+      networkAttachmentDefinitions:
+        - name: ipvlan-ns1/ipvlan-nad1
+        - name: ipvlan-ns1/ipvlan-nad2

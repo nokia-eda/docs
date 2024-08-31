@@ -1,0 +1,9 @@
+"MD007": false # allow multiple spaces after list marker to allow for nested lists that use 4 spaces
+"MD026": false # allow trailing punctuation to support icons shortcodes at the end of a sentence
+"MD038": false
+"MD033": false # inline html
+"MD013": false # line-length
+"MD040": false # fenced code blocks should have language selected
+"MD053": false # do not remove mkdocs materials footnotes
+"MD071": false # do not remove unordered list indentation
+"MD034": false # do not add angle brackets around bare links
