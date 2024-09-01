@@ -4,6 +4,7 @@ metadata:
   name: vmware-plugin
 spec:
   app: vmware-plugin
+  vendor: nokia
   catalog: eda-catalog-builtin-apps
   version:
     value: v1.0.0
