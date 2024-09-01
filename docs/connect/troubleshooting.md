@@ -5,7 +5,7 @@
 Connect will introduce and expose four new CRDs in EDA and the EDA Kubernetes environment:
 
 * `ConnectPlugin` - Logical representation of a Plugin, created and managed by a running Plugin.
-* `ConnectPluginActionanble` - An Actionable is an action that a Plugin must take, this can be created by the Connect Core itself or by a User who wants to trigger the action.
+* `ConnectPluginActionable` - An Actionable is an action that a Plugin must take, this can be created by the Connect Core itself or by a User who wants to trigger the action.
 * `ConnectPluginHeartbeat` - A Plugin will send heartbeats at a well-defined interval and by doing so will update this resources linked to its `ConnectPlugin`. When a Plugin does not send heartbeats for a while (three times the expected interval), an alarm will be raised by the Core.
 * `ConnectInterface` - Logical representation of a physical interface of a bare metal compute. The labels on the `ConnectInterface` are used to label the matching EDA `Interface`, so that they can be used as sub-interface label selectors for EDA `BridgeDomains`.
 
