@@ -18,7 +18,7 @@ You can log in to the `eda-toolbox` pod using the following command:
 make open-toolbox
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.text .no-select .no-copy}
                      .:....
                 .:=**+--:.
@@ -68,7 +68,7 @@ For example, to query all interfaces with operational state `up` execute the fol
 edactl query '.node.srl.interface where (oper-state = "up")'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
  Node Name    Name           Admin State    Loopback Mode    Ifindex     Oper State    Oper Down Reason    Last Change               Linecard    Forwarding Complex    Mtu    Vlan Tagging    Tpid         Description
  dut1         ethernet-1/3   enable         none             81918       up                                2024-04-29T15:55:13.059Z  1           0                     9232   false           TPID_0X8100

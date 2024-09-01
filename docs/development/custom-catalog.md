@@ -33,7 +33,7 @@ vendors/
 
 Apps will have multiple versions. To version the Apps in the Catalog, git tags are used. A structured git tag will be seen as an installable App (with a certain version) for the App Store, which can then be installed from the UI.
 
-Any tag in the form of `vendors/<vendor-name>/apps/<app-name>/<version>`  will be registered as an installable App by the App Store.
+Any tag in the form of `vendors/<vendor-name>/apps/<app-name>/<version>` will be registered as an installable App by the App Store.
 
 The version field should conform to [Semantic Versioning 2.0](https://semver.org/), prefixed with a "v". For example: v0.1, v0.1.0-alpha.
 

@@ -11,7 +11,7 @@ A [`Makefile`][makefile] that comes with the [`playground` repository][playgroun
 
 The [`playground` repository][playground-repo] supports both a quick start (or playground) method using KinD, and a method for installing to previously deployed Kubernetes clusters via the same `Makefile`.
 
-If using the KinD approach, it is recommended that your Kubernetes cluster have at least[^3]:
+If using the KinD approach, it is recommended that your Kubernetes cluster has at least[^3]:
 
 :fontawesome-solid-microchip: 10 vCPUs  
 :fontawesome-solid-memory: 16GB of RAM  
@@ -21,7 +21,7 @@ If using the KinD approach, it is recommended that your Kubernetes cluster have 
 
 ## Dependencies
 
-The getting started guilde assumes you run a Linux/amd64 system. Check out [Advanced Installation](../user-guide/install-advanced.md) section for other installation options.  
+The getting started guide assumes you run a Linux/amd64 system. Check out [Advanced Installation](../user-guide/install-advanced.md) section for other installation options.  
 You are welcome to try your own distro[^7], but steps have been validated on Ubuntu 22.04, Debian 11, and Debian 12.
 
 Your host executing the install needs `docker` installed as well as `make`, [`kpt`](https://kpt.dev/installation/kpt-cli), and [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) CLI tools.
@@ -40,7 +40,7 @@ Subsequent steps use these versions of the binaries - you may use your own distr
 
 ## Quick start
 
-If you're just looking to try EDA locally with a simulated topology, a simplified target exists to complete an end-to-end KinD-based deployment of EDA, following best practises and populating an example topology:
+If you're just looking to try EDA locally with a simulated topology, a simplified target exists to complete an end-to-end KinD-based deployment of EDA, following best practices and populating an example topology:
 
 ```shell
 make try-eda #(1)!
@@ -96,7 +96,7 @@ If cluster installation succeeds without errors you should be able to verify tha
 kubectl get nodes
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME                                 STATUS   ROLES           AGE   VERSION
 eda-home-rd-eda-demo-control-plane   Ready    control-plane   21m   v1.25.3
@@ -118,7 +118,7 @@ This should pull two artifacts and put them in the respective directories:
 
 ## Deploy external dependencies
 
-EDA depends on common Kubernetes workloads like fluentd for logging, and certmanager for TLS. You may provide these as part of your own cluster installation, or the EDA install can add them for you. It is highly recommended if EDA is the only workload in the cluster to allow EDA to manage the installation of these dependencies. This can be acheived with:
+EDA depends on common Kubernetes workloads like fluentd for logging, and certmanager for TLS. You may provide these as part of your own cluster installation, or the EDA install can add them for you. It is highly recommended if EDA is the only workload in the cluster to allow EDA to manage the installation of these dependencies. This can be achieved with:
 
 ```{.shell .no-select}
 make install-external-packages
@@ -168,7 +168,7 @@ Check the deployment status with the following command, you want to see all the 
 kubectl get deploy | awk 'NR==1 || /eda/'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME              READY   UP-TO-DATE   AVAILABLE   AGE
 eda-api           1/1     1            1           20m
@@ -193,7 +193,7 @@ You can also check the `EngineConfig` to verify the ConfigEngine has started cor
 kubectl get engineconfig engine-config -o jsonpath='{.status.run-status}{"\n"}'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 Started
 ```
