@@ -63,16 +63,18 @@ As an alternative, you can also create an `AppInstall` resource in the Kubernete
 
 A prerequisite for creating a `vmwarePluginInstance` is a `Secret` with username and password fields.
 === "YAML Resource"
-```yaml
---8<-- "docs/connect/resources/vmware-secret.yaml"
-```
+
+    ```yaml
+    --8<-- "docs/connect/resources/vmware-secret.yaml"
+    ```
 
 === "`kubectl apply` command"
-```bash
-kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/vmware-secret.yaml"
-EOF
-```
+
+    ```bash
+    kubectl apply -f - <<EOF
+    --8<-- "docs/connect/resources/vmware-secret.yaml"
+    EOF
+    ```
 
 As the VMware vSphere Plugins are managed through the operator, you can use the EDA UI to create a new `VmwarePluginInstance` resource under the **System Administration > Connect > VMware Plugins** menu item.
 

@@ -17,7 +17,7 @@ The [`playground` repository][playground-repo] contains a [`Makefile`][makefile]
 git clone https://github.com/nokia-eda/playground && cd playground
 ```
 
-If you're good to here, you're mere minutes away from automation greatness.
+If you got to here, you're mere minutes away from automation greatness.
 
 [:octicons-arrow-right-24: Install!](install.md)
 
