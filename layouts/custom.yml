@@ -1,0 +1,70 @@
+size:
+  width: 1200
+  height: 630
+layers:
+  # Background
+  - background:
+      image: layouts/bg.webp
+      color: "#00000033"
+  # Logo
+  - background:
+      image: docs/images/eda.svg
+    size:
+      width: 500
+      height: 500
+    origin: end center
+    offset:
+      x: -100
+  # Title
+  - size: { width: 730, height: 310 }
+    offset: { x: 62, y: 160 }
+    typography:
+      # show custom title from the page meta if defined,
+      # otherwise use the page title from markdown heading
+      content: >-
+        {%- if page.meta.title -%}
+        {{     page.meta.title }}
+        {%- else -%}
+        {{    page.title }}
+        {%- endif -%}
+      align: start
+      line:
+        amount: 3
+        height: 1.25
+      font:
+        style: Thin
+  # EDA name
+  - size: { width: 300, height: 100 }
+    offset:
+      x: 62
+      y: 20
+    typography:
+      content: EDA
+      font:
+        style: Bold
+
+definitions:
+  - &page_title_with_site_name >-
+    {%- if not page.is_homepage -%}
+      {{ page.meta.get("title", page.title) }} - {{ config.site_name }}
+    {%- else -%}
+      {{ page.meta.get("title", page.title) }}
+    {%- endif -%}
+
+  - &page_description >-
+    {{ page.meta.get("description", config.site_description) or "" }}
+
+tags:
+  og:type: website
+  og:title: *page_title_with_site_name
+  og:description: *page_description
+  og:image: "{{ image.url }}"
+  og:image:type: "{{ image.type }}"
+  og:image:width: "{{ image.width }}"
+  og:image:height: "{{ image.height }}"
+  og:url: "{{ page.canonical_url }}"
+
+  twitter:card: summary_large_image
+  twitter:title: *page_title_with_site_name
+  twitter:description: *page_description
+  twitter:image: "{{ image.url }}"
