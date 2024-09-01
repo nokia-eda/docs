@@ -134,8 +134,10 @@ plugins:
       enabled: !ENV [CI, false]
   - social:
       enabled: !ENV [CI, false]
-      cards_layout_options:
-        font_family: Open Sans
+      # enabled: true
+      # debug: true
+      # debug_color: yellow
+      cards_layout: custom
 
 # Customization
 extra:
