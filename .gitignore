@@ -1,4 +1,5 @@
 .cache
+.vscode
 
 # in case we run install guide from the docs repo
 kpt

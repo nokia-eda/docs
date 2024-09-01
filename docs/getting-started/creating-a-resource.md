@@ -8,7 +8,7 @@ A resource in EDA is a unit of automation and can be represent by virtually anyt
 
 - an interface on a network device
 - a complete fabric configuration[^2]
-- a network serivice like a VPN or a VRF[^3]
+- a network service like a VPN or a VRF[^3]
 - and even non-network related resources like a user account, a DNS record, or a firewall rule.
 ///
 
@@ -559,7 +559,7 @@ When you create a resource, EDA automatically initiates a transaction and publis
 edactl transaction
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.text .no-copy}
  ID  Result  Age     Detail   Username    Description
  1   OK      24m44s  SUMMARY  eda         startup - final load
