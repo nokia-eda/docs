@@ -8,7 +8,7 @@ The primary components that make up the VNET include:
 
 - **BridgeDomain**: Represents a Layer 2 broadcast domain. It is used in conjunction with VLAN and BridgeInterface resources, which attach sub-interfaces to this L2 broadcast domain.
 
-- **VLAN**: Groups sub-interfaces together under a common VLAN ID. VLAN IDs can be automatically assigned from a pool or manually set by the user.  The VLAN uses a label selector to select the interfaces on which to provisiong the sub-interfaces.
+- **VLAN**: Groups sub-interfaces together under a common VLAN ID. VLAN IDs can be automatically assigned from a pool or manually set by the user.  The VLAN uses a label selector to select the interfaces on which to provisioning the sub-interfaces.
 
 - **BridgeInterface**: Allows operators to manually attach a sub-interface to a specific BridgeDomain.
 
@@ -24,12 +24,11 @@ The primary components that make up the VNET include:
 
 - **PE-CE BGP**: The VNET also supports Provider Edge to Customer Edge (PE-CE) BGP.
 - **IP Filters**: IPv4, IPv6 and MAC filters can also be used within the `VirtualNetwork`.
-- **DSCP and Dot1p classifiers**: Attachement of DSCP and Dot1p classifiers are also supported.
+- **DSCP and Dot1p classifiers**: Attachment of DSCP and Dot1p classifiers are also supported.
 
 ## Example VNETs
 
 ### Layer 2 VNET
-
 
 /// tab | `kubectl`
 
@@ -47,7 +46,6 @@ EOF
 ```
 
 ///
-
 
 ### Layer 3 VNET
 
@@ -68,10 +66,10 @@ EOF
 
 ///
 
-
 ## Verify the status of the `VirtualNetwork`
 
 Verify the fabric operational state:
+
 ```shell
 kubectl get virtualnetwork
 
