@@ -37,7 +37,7 @@ First, let's see what we are working with:
 kubectl get nodes
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME         STATUS   ROLES           AGE   VERSION
 rd-eda1-cp   Ready    control-plane   14h   v1.30.1
@@ -97,7 +97,7 @@ This may take a while (watch your pods status), but it should eventually complet
 kubectl get toponodes
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME   PLATFORM       VERSION   OS    ONBOARDED   NPP         NODE     AGE
 dut1   7220 IXR-D3L   0.0.0     srl   true        Connected   Synced   6m28s
@@ -122,7 +122,7 @@ kubectl get service eda-api -o yaml | yq e '.spec.ports[0,1]' - #(1)!
 
 1. Using [`yq`](https://github.com/mikefarah/yq/#install) to extract the service port configuration.
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.yaml .no-select .no-copy}
 name: apiserver
 nodePort: 32609

@@ -559,7 +559,7 @@ When you create a resource, EDA automatically initiates a transaction and publis
 edactl transaction
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.text .no-copy}
  ID  Result  Age     Detail   Username    Description
  1   OK      24m44s  SUMMARY  eda         startup - final load
