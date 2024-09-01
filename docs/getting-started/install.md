@@ -96,7 +96,7 @@ If cluster installation succeeds without errors you should be able to verify tha
 kubectl get nodes
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME                                 STATUS   ROLES           AGE   VERSION
 eda-home-rd-eda-demo-control-plane   Ready    control-plane   21m   v1.25.3
@@ -168,7 +168,7 @@ Check the deployment status with the following command, you want to see all the 
 kubectl get deploy | awk 'NR==1 || /eda/'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME              READY   UP-TO-DATE   AVAILABLE   AGE
 eda-api           1/1     1            1           20m
@@ -193,7 +193,7 @@ You can also check the `EngineConfig` to verify the ConfigEngine has started cor
 kubectl get engineconfig engine-config -o jsonpath='{.status.run-status}{"\n"}'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 Started
 ```

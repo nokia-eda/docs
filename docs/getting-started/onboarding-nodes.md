@@ -50,7 +50,7 @@ make dut1-ssh #(1)!
 
 1. Of course, changing `dut1` to `dut2` or `dut3` will get you to the other nodes.
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.text .no-select .no-copy}
 Using configuration file(s): ['/etc/opt/srlinux/srlinux.rc']
 Welcome to the srlinux CLI.

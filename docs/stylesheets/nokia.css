@@ -163,7 +163,7 @@ th {
   ```
   echo test
   ```
-  <div class="embed-result">
+  <div class="embed-result highlight">
   ```
   test
   ```
@@ -200,3 +200,23 @@ div.highlight.code-scroll-sm pre>code {
 }
 
 /* END scrollable code blocks used in code snippets */
+
+/* START hide code copy and selection icons until on hover */
+/* Hide the nav element by default */
+div.highlight .md-code__nav {
+  display: none;
+}
+
+/* Show the nav element with half opacity when the div is hovered over */
+div.highlight:hover .md-code__nav {
+  display: flex;
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+}
+
+/* Make the nav element fully visible when hovered directly */
+div.highlight:hover .md-code__nav:hover {
+  opacity: 1;
+}
+
+/* END hide code copy and selection icons until on hover */
