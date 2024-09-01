@@ -10,7 +10,7 @@ You should be able to use `kubectl get deploy` to verify that EDA deployments ha
 kubectl get deploy | awk 'NR==1 || /eda/'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME              READY   UP-TO-DATE   AVAILABLE   AGE
 eda-api           1/1     1            1           10h
@@ -40,7 +40,7 @@ You can also check the `EngineConfig` to verify the ConfigEngine has started cor
 kubectl get engineconfig engine-config -o jsonpath='{.status.run-status}{"\n"}'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 Started
 ```
@@ -60,7 +60,7 @@ The easiest way to tell the current state of nodes is via the [UI](accessing-the
 kubectl get toponodes
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME   PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
 dut1   7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   23h
@@ -75,7 +75,7 @@ In this example the `dut1` and `dut3` nodes are not healthy, since the NPP compo
 kubectl get toponodes
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME   PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
 dut1   7220 IXR-D3L   24.7.1    srl   true        normal                        23h
@@ -95,7 +95,7 @@ It may also be useful to verify the Pod being launched to simulate the node is s
 kubectl get pod | awk 'NR==1 || /eda-sim|npp/'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME                               READY   STATUS    RESTARTS        AGE
 eda-npp-dut1                       1/1     Running   0               3d20h
@@ -113,7 +113,7 @@ eda-sim-dut3-1-5dcf8c99c9-m48r2    2/2     Running   0               3d20h
 kubectl get pod | awk 'NR==1 || /eda-sim|npp/'
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME                               READY   STATUS    RESTARTS      AGE
 eda-npp-dut2                       1/1     Running   0             10h
@@ -141,7 +141,7 @@ For items coming in via the UI and API, a failed transaction does not impact fut
 kubectl get transactionresults
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.bash .no-select .no-copy}
 NAME                    RESULT   AGE    DRYRUN   DESCRIPTION
 transaction-000000001   OK       151m            startup - final load
@@ -162,7 +162,7 @@ You can investigate the transaction further with:
 kubectl get transactionresults transaction-000000069 -o yaml
 ```
 
-<div class="embed-result">
+<div class="embed-result highlight">
 ```{.yaml .no-select .no-copy}
 apiVersion: core.eda.nokia.com/v1
 kind: TransactionResult
