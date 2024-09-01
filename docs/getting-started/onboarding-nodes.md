@@ -60,7 +60,7 @@ A:dut1#
 ```
 </div>
 
-The topology you have just deployed comes with some very minimal configuratio, where nodes have the most minimal config to get managed by EDA.
+The topology you have just deployed comes with some very minimal configuration, where nodes have the most minimal config to get managed by EDA.
 
 /// details | node configuration
 
