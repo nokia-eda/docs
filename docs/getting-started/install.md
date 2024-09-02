@@ -41,7 +41,7 @@ Subsequent steps use these versions of the binaries - you may use your own distr
 /// note | Sysctl settings
 Some Linux distributions might be conservative about some settings such as max file descriptors available.
 
-On such systems, you may need to increase the relevant sysctl settings to avoid pod crushes during the installation by creating the following configuration file:
+On such systems, you may need to increase the relevant sysctl settings to avoid pod crashes during the installation by creating the following configuration file:
 
 ```bash
 sudo mkdir -p /etc/sysctl.d && \
