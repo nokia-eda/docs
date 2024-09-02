@@ -38,6 +38,27 @@ This will pull `kind`, `kubectl`, `kpt`, and `yq` into a `tools` folder relative
 Subsequent steps use these versions of the binaries - you may use your own distro packaged binaries for your own interactions. If you don't have `kubectl` in your `$PATH`, then consider copying the `kubectl` binary from the `tools` directory to a location in your `$PATH` to make use of it in the following steps.
 </small>
 
+/// note | Sysctl settings
+Some Linux distributions might be conservative about some settings such as max file descriptors available.
+
+On such systems, you may need to increase the relevant sysctl settings to avoid pod crushes during the installation by creating the following configuration file:
+
+```bash
+sudo mkdir -p /etc/sysctl.d && \
+sudo tee /etc/sysctl.d/90-eda.conf << EOF
+fs.inotify.max_user_watches=1048576
+fs.inotify.max_user_instances=512
+EOF
+```
+
+And reloading the sysctl settings:
+
+```bash
+sudo sysctl --system
+```
+
+///
+
 ## Quick start
 
 If you're just looking to try EDA locally with a simulated topology, a simplified target exists to complete an end-to-end KinD-based deployment of EDA, following best practices and populating an example topology:
