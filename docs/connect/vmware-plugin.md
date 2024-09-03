@@ -38,8 +38,7 @@ The VMware vSphere Plugin consists of two components:
     * Distributed vSwitch (dvS)
     * Distributed Port Groups (dvPG)
     * Host to dvS associations
-    * SR-IOV Configuration
-    * SR-IOV enabled Virtual Machines
+    * Custom Attributes
 
 ## Connect VMware vSphere Plugin App Deployment
 
@@ -114,6 +113,9 @@ A plugin will connect to a VMware vCenter environment and subscribe to VMware ev
 | VLAN-tagged distributed PortGroup events  | `VLAN`             | Each dvPG with a specific VLAN tag will have an EDA `VLAN` resource so it can be attached to the `BridgeDomain`                                             |
 | Host NIC distributed Switch Uplink events | `ConnectInterface` | Each Host NIC that gets added as an Uplink to a dvS, will trigger the creation of a `ConnectInterface` which is mapped by Connect Core to a EDA `Interface` |
 
+!!! Note "Naming limitations"
+    The uplink names must comply with the regex check of `^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]$`. It can only contain alpha-numerical characters and ` `(space), `.`, `_`, and `-`. It must also have a length of 64 characters or less.
+
 ### Operational Modes
 
 The plugin supports the following Operational Modes, these modes can be used simultaneously.
@@ -143,6 +145,7 @@ It is also supported to switch between EDA Managed and VMware Managed at any tim
 
 If an incorrect vCenter hostname or IP is configured in the `VmwarePluginInstance` resource, the plugin will try to connect for 3 minutes and crash/restart if it fails to connect. In case the credentials are incorrect, the plugin will crash/restart immediately.
 
+* Check the raised plugin alarms.
 * Check the connectivity from the EDA cluster to vCenter.
 * Verify the credentials for vCenter.
 * Ensure the heartbeat interval is a positive integer.
@@ -150,14 +153,16 @@ If an incorrect vCenter hostname or IP is configured in the `VmwarePluginInstanc
 
 ### The plugin is not creating any resources in EDA
 
+* Check the raised plugin alarms.
 * Check the connectivity from the EDA cluster to vCenter.
 * Check the logs of the plugin pod.
 * Check the Plugin staleness state field and verify heartbeats are being updated.
 
 ### The plugin is not configuring the correct state
 
+* Check the raised plugin alarms.
 * Verify the Uplinks for the dvPG in vCenter are configured as active or standby. If there are no active or standby Uplinks configured, the plugin will not associate any `ConnectInterface` with the `VLAN`.
-* Uplink names can only contain alpha-numerical characters and `.`, `_`, `-`.
+* Uplink names can only contain alpha-numerical characters and `.`, `_`, `-` and must have a length of 64 characters or less.
 * VLAN Ranges are not supported on dvPGs.
 * Inspect the EDA resources, like `VLAN`, `BridgeDomain` and `ConnectInterface`.
 * Check the logs of the plugin pod.
