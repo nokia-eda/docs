@@ -12,6 +12,9 @@
   --nokia-get-started-text-color: #ffffff;
   --nokia-get-started-hover-text-color: #ffffff;
   --nokia-get-started-hover-btn-color: #23ABB6;
+
+  /* wide annotations */
+  --md-tooltip-width: 600px;
 }
 
 [data-md-color-scheme="slate"][data-md-color-primary="indigo"] {
