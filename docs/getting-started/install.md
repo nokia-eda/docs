@@ -54,7 +54,7 @@ EOF
 And reloading the sysctl settings:
 
 ```bash
-sudo sysctl --system
+sudo sysctl --system && sudo systemctl restart docker
 ```
 
 ///
