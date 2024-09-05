@@ -43,12 +43,8 @@ For the API, a similar workflow can be followed by using the Direct Access Grant
 
 The authentication request requires the following fields:
 
-* `client_id`: Must be set to `eda`
-* `grant_type`: Must be set to `password`
-* `scope`: Must be set to `openid`
 * `username`: The username for the user that needs to authenticate
 * `password`: The password for the user that needs to authenticate
-* `client_secret`: Must be set to `vKC0QRSZhcvHYXYTSLqjchmnKMWtBAZy`
 
 /// admonition | Some of the hardcoded settings might change in the future
     type: note
