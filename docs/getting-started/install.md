@@ -41,7 +41,7 @@ Subsequent steps use these versions of the binaries - you may use your own distr
 /// note | Sysctl settings
 Some Linux distributions might be conservative about some settings such as max file descriptors available.
 
-On such systems, you may need to increase the relevant sysctl settings to avoid pod crushes during the installation by creating the following configuration file:
+On such systems, you may need to increase the relevant sysctl settings to avoid pod crashes during the installation by creating the following configuration file:
 
 ```bash
 sudo mkdir -p /etc/sysctl.d && \
@@ -158,11 +158,11 @@ make install-external-packages
 It is common for EDA to be behind a load balancer, with clients terminating on the load balancer address and having their traffic forwarded from there. As EDA performs redirects it needs to know the name/IP clients will use to reach it. This can be accomplished via the concept if setters in `kpt`, but as with other steps the `Makefile` has a simple target to accomplish this for you:
 
 ```{.shell .no-select}
-make EXT_IPV4_ADDR="<external-v4-ip>" \
-     EXT_IPV6_ADDR="<external-v6-ip>" \
-     EXT_HTTPS_PORT="<external-https-port>" \
-     EXT_DOMAIN_NAME="<external-name>" \
-     eda-configure-core
+export EXT_IPV4_ADDR="<external-v4-ip>" \
+EXT_IPV6_ADDR="<external-v6-ip>" \
+EXT_HTTPS_PORT="<external-https-port>" \
+EXT_DOMAIN_NAME="<external-name>" \
+make eda-configure-core
 ```
 
 You should of course substitute your own values into the command.
