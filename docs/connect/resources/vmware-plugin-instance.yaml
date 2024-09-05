@@ -7,8 +7,6 @@ spec:
   heartbeatInterval: 30
   name: example-vSphere # A unique name for the plugin
   vcsaHost: example-host # The IP address of the vCenter Server
-  vcsaUsername: example-user # The username for the vCenter Server
-  vcsaPassword: example-password # The password for the vCenter Server
   vcsaTlsVerify: true # To verify TLS of the VCSA.
   vcsaCertificate: "" # If the VCSA certificate is self signed, add it here to be able to verify from the plugin
   authSecretRef: my-vmware-creds # Credentials are hosted in a seperate Secret.
