@@ -24,9 +24,9 @@ If using the KinD approach, it is recommended that your Kubernetes cluster has a
 The getting started guide assumes you run a Linux/amd64 system. Check out [Advanced Installation](../user-guide/install-advanced.md) section for other installation options.  
 You are welcome to try your own distro[^7], but steps have been validated on Ubuntu 22.04, Debian 11, and Debian 12.
 
-Your host executing the install needs `docker` installed as well as `make`, [`kpt`](https://kpt.dev/installation/kpt-cli), and [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) CLI tools.
+Your host executing the install needs `docker` or `podman` installed as well as `make`, [`kpt`](https://kpt.dev/installation/kpt-cli), and [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) CLI tools.
 
-Install `make`[^4] if not done previously. And with `make` you can install the remaining dependencies with (note, that `docker` needs to be installed separately):
+Install `make`[^4] if not done previously. And with `make` you can install the remaining dependencies with (note, that `docker`/`podman` needs to be installed separately):
 
 ```shell
 make download-tools
@@ -54,23 +54,31 @@ EOF
 And reloading the sysctl settings:
 
 ```bash
-sudo sysctl --system
+sudo sysctl --system && sudo systemctl restart docker
 ```
 
 ///
 
 ## Quick start
 
-If you're just looking to try EDA locally with a simulated topology, a simplified target exists to complete an end-to-end KinD-based deployment of EDA, following best practices and populating an example topology:
+If you're just looking to try EDA locally with a simulated topology, a simple command exists to complete an end-to-end KinD-based deployment of EDA, following best practices and populating an example topology.
 
 ```shell
-make try-eda #(1)!
+EXT_DOMAIN_NAME=${DNS-name-or-IP} make try-eda #(1)!
 ```
 
-1. If you need your EDA playground to be equipped with the natural language support for EQL, provide the LLM key as an environment variable:
+1. You may want to provide an `EXT_DOMAIN_NAME` environment variable to indicate what domain name or IP address you are going to use when reaching EDA UI/API. This can be a domain name or an IP address of a compute where you execute the quickstart installation.
+
+    If you're trying EDA on a remote machine, then you typically would set the DNS name or IP address of this machine in the `EXT_DOMAIN_NAME` variable.  
+    Another popular option is to use SSH local port forwarding to access the EDA UI, in this case you would need to set the `EXT_DOMAIN_NAME` variable to `localhost` and `EXT_HTTPS_PORT` to the local port you are using for the port forwarding.
+
+    <h4>LLM Key</h4>
+    To enable the Natural Language support for the [EDA Query](../user-guide/queries.md) functionality, provide the LLM key with an additional environment variable:
 
     ```shell
-    LLM_API_KEY=<key> make try-eda
+    EXT_DOMAIN_NAME=${DNS-name-or-IP} \
+    LLM_API_KEY=<key> \
+    make try-eda
     ```
 
 Once this process completes you can proceed to the verify the installation.
