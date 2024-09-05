@@ -1,10 +1,38 @@
 variables:
   GIT_DEPTH: 0
+  MKDOCS_IMAGE: registry.srlinux.dev/pub/mkdocs-material-insiders:9.5.19-insiders-4.53.8-hellt
+
+preview:
+  stage: test
+  image:
+    name: $MKDOCS_IMAGE
+    entrypoint: [""]
+  script:
+    - mkdocs build --site-dir site
+  artifacts:
+    paths:
+      - site
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+upload_preview:
+  stage: test
+  needs:
+    - job: preview
+      artifacts: true
+  image:
+    name: node:lts-alpine
+  before_script:
+    - npm install -g wrangler
+  script:
+    - wrangler pages deploy site --project-name=eda-docs --branch=$CI_COMMIT_REF_NAME
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 pages:
   stage: deploy
   image:
-    name: registry.srlinux.dev/pub/mkdocs-material-insiders:9.5.19-insiders-4.53.8-hellt
+    name: $MKDOCS_IMAGE
     entrypoint: [""]
   script:
     - mkdocs build --site-dir public
