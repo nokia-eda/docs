@@ -1,0 +1,7 @@
+apiVersion: notifiers.eda.nokia.com/v1
+kind: Provider
+metadata:
+  name: slack
+spec:
+  enabled: true
+  uri: slack://xoxb-1122233344442-7670709334839-abcdefnY03YbI4HCDUh0bHa7@C07LTT12345
