@@ -22,6 +22,7 @@ nav:
       - App Store: apps/app-store.md
       - Fabric: apps/fabric.md
       - Virtual Network: apps/virtualnetwork.md
+      - Notifier: apps/notifier.md
 
   - Cloud Connect:
       - Cloud Connect: connect/cloud-connect.md

@@ -1,0 +1,7 @@
+apiVersion: notifiers.eda.nokia.com/v1
+kind: Provider
+metadata:
+  name: discord
+spec:
+  enabled: true
+  uri: discord://${TOKEN}@${WEBHOOKID}
