@@ -3,11 +3,12 @@ nav:
   - Home: index.md
   - Getting started:
       - Getting access: getting-started/getting-access.md
-      - Install: getting-started/install.md
-      - Onboarding nodes: getting-started/onboarding-nodes.md
-      - Verify: getting-started/verification.md
-      - Accessing the UI: getting-started/accessing-the-ui.md
-      - Creating a resource: getting-started/creating-a-resource.md
+      - Try EDA: getting-started/try-eda.md
+      - Units of automation: getting-started/units-of-automation.md
+      - Details:
+          - Installation process: getting-started/installation-process.md
+          - Virtual network: getting-started/virtual-network.md
+          - Verification: getting-started/verification.md
   - User guide:
       - Queries: user-guide/queries.md
       - Customizing topologies: user-guide/generating-topologies.md
@@ -190,6 +191,7 @@ markdown_extensions:
   - pymdownx.snippets:
       check_paths: true
       url_download: true
+      dedent_subsections: true
       auto_append:
         - includes/abbreviations.md
   - pymdownx.superfences:

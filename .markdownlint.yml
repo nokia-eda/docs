@@ -7,3 +7,4 @@
 "MD053": false # do not remove mkdocs materials footnotes
 "MD071": false # do not remove unordered list indentation
 "MD034": false # do not add angle brackets around bare links
+"MD046": false # do not warn about different code block styles
