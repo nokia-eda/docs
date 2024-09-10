@@ -2,7 +2,7 @@
 
 ## Overview
 
-Almost everything in EDA is considered an Application (App), including all the Apps that were installed during the [Getting Started - Install step](../getting-started/install.md#deploying-apps). Apps extend the functionality of EDA by exposing custom resources to the EDA API and MicroPython code that will be executed by EDA whenever such a custom resource is manipulated either by a user or another App.
+Almost everything in EDA is considered an Application (App), including all the Apps that were installed during the [Getting Started - Install step](../getting-started/installation-process.md#apps). Apps extend the functionality of EDA by exposing custom resources to the EDA API and MicroPython code that will be executed by EDA whenever such a custom resource is manipulated either by a user or another App.
 
 The EDA App Store is used to manage the Applications inside EDA. It can be accessed through the UI which provides 3 different views:
 
