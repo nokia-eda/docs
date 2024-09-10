@@ -21,7 +21,7 @@ cd playground
 
 If you got to here, you're mere minutes away from automation greatness.
 
-[:octicons-arrow-right-24: Install!](install.md)
+[:octicons-arrow-right-24: Try EDA!](try-eda.md)
 
 [gh-org]: https://github.com/nokia-eda
 [playground-repo]: https://github.com/nokia-eda/playground

@@ -183,4 +183,4 @@ A transaction can also be executed in a dry-run mode, where all configurations a
 
 The result of a `Transaction` is stored in a `TransactionResult` resource, which would identify all of the resources that were directly or indirectly created, updated or deleted.
 
-For some more details on `Transactions`, check the [Getting Started - Creating a resource](../getting-started/creating-a-resource.md) page and reference the [Updating a resource with a manual transaction](../getting-started/creating-a-resource.md#updating-a-resource-with-a-manual-transaction) section.
+For some more details on `Transactions`, check the [Getting Started - Units of automation](../getting-started/units-of-automation.md) page and reference the [Updating a resource with a manual transaction](../getting-started/units-of-automation.md#updating-a-resource-with-a-manual-transaction) section.
