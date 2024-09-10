@@ -1,0 +1,12 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstall
+metadata:
+  name: notifier.nokia
+  namespace: default
+spec:
+  app: notifier
+  catalog: eda-catalog-builtin-apps
+  vendor: nokia
+  version:
+    type: semver
+    value: v1.0.0

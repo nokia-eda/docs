@@ -1,36 +1,43 @@
 # Verifying an install
 
-We have provided a set of commands to verify the installation of EDA throughout the quickstart guide. This page provides a consolidated view of the verification steps.
+When using the [`make try-eda`](try-eda.md) command you will hopefully have a running EDA instance in under 10 minutes without any manual intervention. We embedded necessary checks in the Makefile to ensure that the steps are executed in the correct order and that the system is in a healthy state.
 
-## Verifying the EDA core
+However, while testing the setup process on several different platforms, we couldn't cover all the possible cases. If you encounter installation issues, this section may help you pinpoint the issue.
 
-You should be able to use `kubectl get deploy` to verify that EDA deployments have started and in the Running mode:
+## EDA core
+
+You should be able to use `kubectl get pods` to verify that EDA core components have started and in the Ready state:
 
 ```{.shell .no-select}
-kubectl get deploy | awk 'NR==1 || /eda/'
+kubectl get pods | awk 'NR==1 || /eda/'
 ```
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
-NAME              READY   UP-TO-DATE   AVAILABLE   AGE
-eda-api           1/1     1            1           10h
-eda-appstore      1/1     1            1           10h
-eda-asvr          1/1     1            1           10h
-eda-bsvr          1/1     1            1           10h
-eda-ce            1/1     1            1           10h
-eda-cx            1/1     1            1           10h
-eda-fe            1/1     1            1           10h
-eda-fluentd       1/1     1            1           10h
-eda-git           1/1     1            1           10h
-eda-git-replica   1/1     1            1           10h
-eda-kc            1/1     1            1           10h
-eda-pg            1/1     1            1           10h
-eda-sa            1/1     1            1           10h
-eda-sc            1/1     1            1           10h
-eda-sim-dut1-1    1/1     1            1           10h
-eda-sim-dut2-1    1/1     1            1           10h
-eda-sim-dut3-1    1/1     1            1           10h
-eda-toolbox       1/1     1            1           10h
+NAME                              READY   STATUS    RESTARTS   AGE
+eda-api-b9ddf7784-pdc8w           1/1     Running   0          35h
+eda-appstore-7b5cd7d767-kjjpg     1/1     Running   0          35h
+eda-asvr-84d77c756b-cqsnt         1/1     Running   0          35h
+eda-bsvr-574c497c57-smx9q         1/1     Running   0          35h
+eda-ce-6c6589847-lm52x            1/1     Running   0          35h
+eda-cx-8bb6cc546-fl9ff            1/1     Running   0          35h
+eda-fe-84454cc45c-c9mvm           1/1     Running   0          35h
+eda-fluentbit-5kvkz               1/1     Running   0          35h
+eda-fluentd-678c7c6bb6-xg9d4      1/1     Running   0          35h
+eda-git-546b7b86f8-79xf7          1/1     Running   0          35h
+eda-git-replica-b998dfd5-26ss7    1/1     Running   0          35h
+eda-keycloak-5886554ff9-2ffdl     1/1     Running   0          35h
+eda-npp-dut1                      1/1     Running   0          14h
+eda-npp-dut2                      1/1     Running   0          14h
+eda-npp-dut3                      1/1     Running   0          14h
+eda-postgres-676fb9994-2vmps      1/1     Running   0          35h
+eda-sa-8d9b8b7b-pd46s             1/1     Running   0          35h
+eda-sc-85b9987c68-27bh8           1/1     Running   0          35h
+eda-se-1                          1/1     Running   0          35h
+eda-sim-dut1-1-5bc5797b99-zndgm   2/2     Running   0          14h
+eda-sim-dut2-1-5f77844fcc-5z7kh   2/2     Running   0          14h
+eda-sim-dut3-1-75786fc95-9xw6f    2/2     Running   0          14h
+eda-toolbox-754bcd8564-fcq96      1/1     Running   0          35h
 ```
 </div>
 
@@ -48,11 +55,11 @@ Started
 
 `Started` is good, anything else is bad!
 
-## Verifying node connectivity
+## Node connectivity
 
-The example topology deployed in the [previous step](onboarding-nodes.md#example-topology) resulted in creation of Nodes, with each Node represented by a simulator NOS. The Nodes in EDA are represented by the `TopoNode` resource, and this resource carries some status to indicate their health.
+The example topology deployed as part of the [quickstart](virtual-network.md) resulted in creation of topology nodes, with each node represented by an SR Linux simulator. The topology nodes in EDA are represented by the `TopoNode` resource, and this resource has a status field to indicate its health.
 
-The easiest way to tell the current state of nodes is via the [UI](accessing-the-ui.md), or via `kubectl`:
+The easiest way to tell the current state of nodes is via the [UI](try-eda.md#web-ui), or via `kubectl`:
 
 /// tab | :octicons-check-circle-24: All nodes are healthy
 
@@ -63,9 +70,9 @@ kubectl get toponodes
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME   PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
-dut1   7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   23h
-dut2   7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   23h
-dut3   7220 IXR-D5    24.7.1    srl   true        normal   Connected   Synced   23h
+dut1   7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   14h
+dut2   7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   14h
+dut3   7220 IXR-D5    24.7.1    srl   true        normal   Connected   Synced   14h
 ```
 </div>
 ///
@@ -127,9 +134,9 @@ eda-sim-dut3-1-58ff56b9f5-dj6jx    2/2     Running   0             10h
 
 Note the `eda-sim-*` Pods, one for each TopoNode in the topology. You should also note there are three NPPs, also one for each `TopoNode`.
 
-## Verifying transactions
+## Transactions
 
-The ConfigEngine works off a sequential transaction log, processing transactions as they come in. "in" here is doing some heavy lifting, as items for processing may come in via:
+The EDA's brain - Config Engine - works off a sequential transaction log, processing transactions as they come in. "in" here is doing some heavy lifting, as items for processing may come in via:
 
 * the UI.
 * the API.
@@ -144,8 +151,8 @@ kubectl get transactionresults
 <div class="embed-result highlight">
 ```{.bash .no-select .no-copy}
 NAME                    RESULT   AGE    DRYRUN   DESCRIPTION
-transaction-000000001   OK       151m            startup - final load
-transaction-000000002   OK       129m            Installing core:{v0.1.0+24.4.0-a1 semver} (from eda-catalog-builtin-apps)
+transaction-000000001   OK       151m            startup - no core manifest
+transaction-000000002   OK       129m            Installing core:{v1.0.0+24.8.1-rc semver} (from eda-catalog-builtin-apps)
 -- snip --
 transaction-000000013   OK       10m
 transaction-000000014   OK       10m
@@ -184,3 +191,39 @@ spec:
 # -- snip --
 ```
 </div>
+
+The transaction details will give you a hint as to what went wrong. In the example above NPP Pod for `dut1` and `dut3` did not start, and so the transaction to push the configs failed.
+
+## UI access
+
+As covered in the [Configure your deployment](installation-process.md#configure-your-deployment) section, the EDA service requires a user to provide the desired DNS name/IP and port for external access. These parameters become the part of the Engine Config resource that, as the name suggests, configures the central part of EDA - the Config Engine.
+
+The values you provided in the pref.mk file or in the CLI can be found in the Engine Config resource:
+
+```{.shell .no-select}
+kubectl get engineconfig engine-config -o jsonpath='{.spec.cluster.external}' \
+| yq -p json #(1)!
+```
+
+1. The `yq` CLI tool is installed in the `./tools` directory of the playground repo.
+
+<div class="embed-result highlight">
+```{.console .no-select .no-copy}
+domainName: vm.home.lab
+httpPort: 9200
+httpsPort: 9443
+ipv4Address: 10.1.0.11
+ipv6Address: fd7a:115c:a1e0::be01:ff2f
+```
+</div>
+
+The configuration above means that the EDA UI client (a browser) should use `https://vm.home.lab:9443` to access the EDA UI. You can change the `engine-config` resource post-install and change the `domainName` and/or port numbers, the changes will be in effect immediately without requiring a redeploy of the EDA.
+
+--8<-- "docs/getting-started/try-eda.md:ext-name-note-1"
+
+/// admonition | Secure-by-design
+    type: subtle-note
+In the secure-by-design paradigm, EDA exposes APIs and UI for its users only over the secure transport. That makes HTTPS the only supported transport for UI access.
+
+EDA UI is exposed in the k8s cluster via the `eda-api` service
+///
