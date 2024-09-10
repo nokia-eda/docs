@@ -27,7 +27,7 @@ kpt fn eval \
 
 ## EDA in a non-KinD cluster
 
-The [quickstart guide](../getting-started/install.md) did a great job of getting you up and running with a local Kubernetes cluster powered KinD. However, you may be willing to step away from the beaten path and install EDA in a non-KinD cluster. Well, EDA welcomes courageous souls like you!
+The [quickstart guide](../getting-started/installation-process.md) did a great job of getting you up and running with a local Kubernetes cluster powered KinD. However, you may be willing to step away from the beaten path and install EDA in a non-KinD cluster. Well, EDA welcomes courageous souls like you!
 
 Alright, truth be told, the installation process is almost identical to the one you followed in the quickstart guide, it is just a matter of having a few things to consider. In this section we will install EDA in a real k8s cluster running on bare VMs.
 
@@ -58,7 +58,7 @@ kubectl label namespace default pod-security.kubernetes.io/enforce=privileged
 
 ///
 
-Using the same `playground` repository from the [Installation section](../getting-started/install.md), we can use the same `make` targets to perform the installation steps (if haven't done before).
+Using the same `playground` repository from the [Installation section](../getting-started/installation-process.md), we can use the same `make` targets to perform the installation steps (if haven't done before).
 
 1. `make download-tools` - to download the necessary tools.
 2. `make download-pkgs` - to download the EDA `kpt` package.
@@ -69,9 +69,9 @@ Now, we can install the EDA core services.
 make eda-install-core
 ```
 
-Pause for a moment and let the installation complete, by checking the [verification steps](../getting-started/verification.md#verifying-the-eda-core).
+Pause for a moment and let the installation complete, by checking the [verification steps](../getting-started/verification.md#eda-core).
 
-Once all EDA deployments are running and appstore is reachable, proceed with the application install, just like in the [quickstart guide](../getting-started/install.md#deploying-apps).
+Once all EDA deployments are running and appstore is reachable, proceed with the application install, just like in the [quickstart guide](../getting-started/installation-process.md#apps).
 
 ```shell
 make eda-install-apps
@@ -83,13 +83,13 @@ With apps loaded, bootstrap the EDA installation by running the following comman
 make eda-bootstrap
 ```
 
-And that's it, EDA has been successfully installed in a non-KinD cluster. Now let's deploy the same sample topology, by following the steps from the ["Onboarding nodes"](../getting-started/onboarding-nodes.md) guide.
+And that's it, EDA has been successfully installed in a non-KinD cluster. Now let's deploy the same sample topology, by following the steps from the ["Onboarding nodes"](../getting-started/virtual-network.md) guide.
 
 ```shell
 make topology-load
 ```
 
-and your cluster now is busy pulling the simulators, starting them up and laying out the interfaces between them. Use the [verification commands](../getting-started/verification.md#verifying-node-connectivity) to make sure the topology is up and running.
+and your cluster now is busy pulling the simulators, starting them up and laying out the interfaces between them. Use the [verification commands](../getting-started/verification.md#node-connectivity) to make sure the topology is up and running.
 
 This may take a while (watch your pods status), but it should eventually complete successfully:
 
@@ -278,7 +278,7 @@ You don't need Load Balancer to enjoy EDA, since you can always expose the UI an
 
 With the container runtime installed and running via one of the tools mentioned above, we are almost there!
 
-Follow the [Getting Started/Install](../getting-started/install.md) guide as usual, but do one extra bit right after the `make kind` step. You will have better experience and startup time if you pull the container images that EDA relies on and upload them to the kind cluster before calling the `make eda-install-core` target.
+Follow the [Getting Started/Install](../getting-started/installation-process.md) guide as usual, but do one extra bit right after the `make kind` step. You will have better experience and startup time if you pull the container images that EDA relies on and upload them to the kind cluster before calling the `make eda-install-core` target.
 
 ```shell
 make pull-images #(1)!
