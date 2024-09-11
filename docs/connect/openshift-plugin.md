@@ -174,7 +174,7 @@ The possible Helm Values are:
 : The interval in seconds at which the plugin should send heartbeats. 10-30 are good values, lower can cause extra unnecessary load on the system.
 
 **`namespace`**
-: A name of a namespace to create or use for the controller
+: A name of a namespace, where EDA Connect service is deployed
 
 **`skiptlsverify`**
 : Can be enabled to disable server TLS certificate verification when connecting to the EDA Kubernetes cluster
