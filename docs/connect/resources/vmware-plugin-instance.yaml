@@ -1,4 +1,4 @@
-apiVersion: vmware.eda.nokia.com/v1alpha1
+apiVersion: vmware.eda.nokia.com/v1
 kind: VmwarePluginInstance
 metadata:
   name: my-vmware-plugin-instance # A unique name for the plugin resource (can be the same as the spec.name, or different)
