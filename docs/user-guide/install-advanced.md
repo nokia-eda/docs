@@ -1,30 +1,5 @@
 # Advanced installation
 
-## Customization
-
-You may customize the install by using [`kpt fn`][kpt-fn-cli]. In particular this lets you point to your own image registry, set your own LLM keys, and enable/disable the `simulate` flag.
-
-Kpt allows you to use setters to customize the resources in the package. To customize EDA installation users can leverage the apply-setters function with the ConfigMap that lists the desired values for the setters:
-
-```{.yaml .code-scroll-sm}
---8<-- "docs/user-guide/eda-config.yml"
-```
-
-Download the `eda-config.yaml`:
-
-```shell
-curl -sLO https://github.com/nokia-eda/blob/main/docs/user-guide/eda-config.yaml
-```
-
-Execute the apply-setters function, to update manifests with configured values:
-
-```shell
-kpt fn eval \
-  --image gcr.io/kpt-fn/apply-setters:v0.1.1 \
-  --truncate-output=false \
-  --fn-config eda-config.yaml
-```
-
 ## EDA in a non-KinD cluster
 
 The [quickstart guide](../getting-started/installation-process.md) did a great job of getting you up and running with a local Kubernetes cluster powered KinD. However, you may be willing to step away from the beaten path and install EDA in a non-KinD cluster. Well, EDA welcomes courageous souls like you!

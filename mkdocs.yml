@@ -16,6 +16,7 @@ nav:
       - Installation:
           - FSS Cluster deployment: user-guide/install-fss.md
           - user-guide/install-advanced.md
+          - user-guide/installation/customize-install.md
           - Resetting a cluster: user-guide/reset.md
       - Allocation Pools: user-guide/allocation-pools.md
       - Access Control: user-guide/access-control.md
