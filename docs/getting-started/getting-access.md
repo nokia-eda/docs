@@ -13,11 +13,13 @@ The EDA release is distributed via a set of git repositories hosted at [github.c
 
 The [`playground` repository][playground-repo] contains a [`Makefile`][makefile] to assist with deployment. You will need `git`[^1] to clone it:
 
+<!-- --8<-- [start:pull-playground] -->
 ```shell
 export GH_RO_TOKEN=<token>
 git clone https://${GH_RO_TOKEN}@github.com/nokia-eda/playground && \
 cd playground
 ```
+<!-- --8<-- [end:pull-playground] -->
 
 If you got to here, you're mere minutes away from automation greatness.
 

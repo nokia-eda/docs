@@ -27,16 +27,16 @@ eda-fluentd-678c7c6bb6-xg9d4      1/1     Running   0          35h
 eda-git-546b7b86f8-79xf7          1/1     Running   0          35h
 eda-git-replica-b998dfd5-26ss7    1/1     Running   0          35h
 eda-keycloak-5886554ff9-2ffdl     1/1     Running   0          35h
-eda-npp-dut1                      1/1     Running   0          14h
-eda-npp-dut2                      1/1     Running   0          14h
-eda-npp-dut3                      1/1     Running   0          14h
+eda-npp-leaf1                     1/1     Running   0          14h
+eda-npp-leaf2                     1/1     Running   0          14h
+eda-npp-spine1                    1/1     Running   0          14h
 eda-postgres-676fb9994-2vmps      1/1     Running   0          35h
 eda-sa-8d9b8b7b-pd46s             1/1     Running   0          35h
 eda-sc-85b9987c68-27bh8           1/1     Running   0          35h
 eda-se-1                          1/1     Running   0          35h
-eda-sim-dut1-1-5bc5797b99-zndgm   2/2     Running   0          14h
-eda-sim-dut2-1-5f77844fcc-5z7kh   2/2     Running   0          14h
-eda-sim-dut3-1-75786fc95-9xw6f    2/2     Running   0          14h
+eda-sim-leaf1-1-5bc5797b99-zndgm  2/2     Running   0          14h
+eda-sim-leaf2-1-5f77844fcc-5z7kh  2/2     Running   0          14h
+eda-sim-spine1-1-75786fc95-9xw6f  2/2     Running   0          14h
 eda-toolbox-754bcd8564-fcq96      1/1     Running   0          35h
 ```
 </div>
@@ -69,25 +69,25 @@ kubectl get toponodes
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
-NAME   PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
-dut1   7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   14h
-dut2   7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   14h
-dut3   7220 IXR-D5    24.7.1    srl   true        normal   Connected   Synced   14h
+NAME     PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
+leaf1    7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   14h
+leaf2    7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   14h
+spine1   7220 IXR-D5    24.7.1    srl   true        normal   Connected   Synced   14h
 ```
 </div>
 ///
 /// tab | :octicons-x-circle-24: Not all nodes are healthy
-In this example the `dut1` and `dut3` nodes are not healthy, since the NPP components are not connected to the nodes and the nodes are not synced:
+In this example the `leaf1` and `spine1` nodes are not healthy, since the NPP components are not connected to the nodes and the nodes are not synced:
 ```{.shell .no-select}
 kubectl get toponodes
 ```
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
-NAME   PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
-dut1   7220 IXR-D3L   24.7.1    srl   true        normal                        23h
-dut2   7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   23h
-dut3   7220 IXR-D5    24.7.1    srl   true        normal   Connected   Synced   23h
+NAME     PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
+leaf1    7220 IXR-D3L   24.7.1    srl   true        normal                        23h
+leaf2    7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   23h
+spine1   7220 IXR-D5    24.7.1    srl   true        normal   Connected   Synced   23h
 ```
 </div>
 ///
@@ -104,13 +104,13 @@ kubectl get pod | awk 'NR==1 || /eda-sim|npp/'
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
-NAME                               READY   STATUS    RESTARTS        AGE
-eda-npp-dut1                       1/1     Running   0               3d20h
-eda-npp-dut2                       1/1     Running   0               3d20h
-eda-npp-dut3                       1/1     Running   0               3d20h
-eda-sim-dut1-1-68f9c944b4-6hzgl    2/2     Running   0               3d20h
-eda-sim-dut2-1-7bbf7d5b8-cn94f     2/2     Running   0               3d20h
-eda-sim-dut3-1-5dcf8c99c9-m48r2    2/2     Running   0               3d20h
+NAME                                READY   STATUS    RESTARTS        AGE
+eda-npp-leaf1                       1/1     Running   0               3d20h
+eda-npp-leaf2                       1/1     Running   0               3d20h
+eda-npp-spine1                      1/1     Running   0               3d20h
+eda-sim-leaf1-1-68f9c944b4-6hzgl    2/2     Running   0               3d20h
+eda-sim-leaf2-1-7bbf7d5b8-cn94f     2/2     Running   0               3d20h
+eda-sim-spine1-1-5dcf8c99c9-m48r2   2/2     Running   0               3d20h
 ```
 </div>
 ///
@@ -122,12 +122,12 @@ kubectl get pod | awk 'NR==1 || /eda-sim|npp/'
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
-NAME                               READY   STATUS    RESTARTS      AGE
-eda-npp-dut2                       1/1     Running   0             10h
-eda-npp-dut3                       0/1     Pending   0             10h
-eda-sim-dut1-1-78dbd5655-pkfgw     2/2     Running   0             10h
-eda-sim-dut2-1-657c5579f-r7l4j     2/2     Running   0             10h
-eda-sim-dut3-1-58ff56b9f5-dj6jx    2/2     Running   0             10h
+NAME                                 READY   STATUS    RESTARTS      AGE
+eda-npp-leaf2                        1/1     Running   0             10h
+eda-npp-spine1                       0/1     Pending   0             10h
+eda-sim-leaf1-1-78dbd5655-pkfgw      2/2     Running   0             10h
+eda-sim-leaf2-1-657c5579f-r7l4j      2/2     Running   0             10h
+eda-sim-spine1-1-58ff56b9f5-dj6jx    2/2     Running   0             10h
 ```
 </div>
 ///
@@ -184,15 +184,15 @@ spec:
   execution-summary: 'input-crs: 2, intents-run: 12, nodes-changed: 0, engine-time=725.396191ms,
     push-to-node=10m0.052663836s'
   general-errors:
-  - 'pod is not running or does not have an IP address ''dut3'': NPP pod ''eda-npp-dut3''
+  - 'pod is not running or does not have an IP address ''spine1'': NPP pod ''eda-npp-spine1''
     did not spin up'
-  - 'pod is not running or does not have an IP address ''dut1'': NPP pod ''eda-npp-dut1''
+  - 'pod is not running or does not have an IP address ''leaf1'': NPP pod ''eda-npp-leaf1''
     did not spin up'
 # -- snip --
 ```
 </div>
 
-The transaction details will give you a hint as to what went wrong. In the example above NPP Pod for `dut1` and `dut3` did not start, and so the transaction to push the configs failed.
+The transaction details will give you a hint as to what went wrong. In the example above NPP Pod for `leaf1` and `spine1` did not start, and so the transaction to push the configs failed.
 
 ## UI access
 
