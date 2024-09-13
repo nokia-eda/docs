@@ -172,30 +172,52 @@ Now you should be able to access the EDA UI by navigating to the Gateway's URL.
 
 Do you want to get full EDA experience on your macOS machine? Well, can't judge you!
 
-Typically, the management and automation platforms of EDA' caliber require a ton of resources to run. But that is not the case with EDA! The microservices architecture and reliance on Kubernetes as a deployment platform make it possible to run EDA on a laptop using open-source tools. And macOS-powered machines is no exception!
+Typically, the management and automation platforms of EDA' caliber require a ton of resources to run. But that is not the case with EDA! The microservices architecture and reliance on Kubernetes as a deployment platform make it possible to run EDA on a laptop using open-source tools. And macOS-powered machines (even with M chips) is not an exception!
 
-/// note
-In this chapter, we will specifically focus on running EDA on macOS with ARM64 architecture, such as Apple MacBook with M chips.
-///
+### Playground repository
 
-First things first, we assume you're running macOS with an ARM64, check this with `uname -a` and make sure it returns `arm64`.
+We will need the playground repository on our machine to run EDA installation steps. Pull it, as explained in the [Getting access](../getting-started/getting-access.md) section.
 
-Then make sure you're running macOS Sonoma (v14) or newer, as the older versions of macOS have issues with Rosetta emulation. This can be checked with `sw_vers -productVersion` and should return `14.0` or newer.
+--8<-- "docs/getting-started/getting-access.md:pull-playground"
 
-Next step is to ensure we have macOS Rosetta virtualization support enabled. This can be done by running the following command:
+When the playground repo is cloned, let's install the CLI tools that we will need to run EDA installation steps.
+
+--8<-- "docs/getting-started/try-eda.md:tools-install"
+
+The installer is smart enough to download the tools for the right OS/architecture.
+
+### macOS prerequisites
+
+Before we begin, let's ensure that you run macOS Sonoma v14.6.1 or newer, as the older versions of macOS might have issues with Rosetta emulation. The version can be checked with `sw_vers -productVersion` command in your terminal.
+
+For Apple products with an M-chip the next step prescribes to check that macOS Rosetta virtualization support enabled. This can be done by running the following command:
 
 ```shell
 softwareupdate --install-rosetta
 ```
 
-Now it is time to install Docker support on your macOS. There are few options available:
+### Docker
 
-1. [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
-2. [Rancher Desktop](https://rancherdesktop.io/)
-3. [OrbStack](https://orbstack.dev/)
+Now it is time to install Docker support on your macOS. There are many options available, the most common ones are:
+
+1. [OrbStack](https://orbstack.dev/) <small>Our pick!</small>
+2. [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
+3. [Rancher Desktop](https://rancherdesktop.io/)
 4. [Colima](https://github.com/abiosoft/colima)
 
-Below you will find some guidance on how to install EDA on macOS using some of the above-mentioned tools. If you already have one installed, you can skip to the next section.
+Below you will find short guides on how to install Docker on your macOS using some of the tools mentioned above. If you already have one installed, you can skip to the next section.
+
+//// tab | OrbStack
+
+[OrbStack][orbstack-home] is a relatively new software that brings Docker support to macOS. The reason we can recommend it is that it has a great UX, has a VM management support, comes with a [lightweight k8s cluster](https://docs.orbstack.dev/kubernetes/) and free for personal use.
+
+It is a native macOS app for both Intel and ARM64-based macs, so the installation is as easy as downloading the `dmg` file and installing at as usual. OrbStack installer will install the Docker CLI on your system, and will provide the Docker VM to run containers and k8s clusters, and enable the kubernetes cluster on the <kbd>Kubernetes</kbd> tab:
+
+When OrbStack is installed, you can check the app settings to ensure that you have the sufficient resources allocated to an internal VM that runs docker daemon:
+
+![resources](https://gitlab.com/rdodin/pics/-/wikis/uploads/ea34fdb13d588225aa3f718d5c1b4467/image.png)
+
+////
 
 /// tab | Colima
 Colima is an open-source, free and lightweight CLI tool that brings container runtimes to macOS.
@@ -251,9 +273,50 @@ You don't need Load Balancer to enjoy EDA, since you can always expose the UI an
 
 ///
 
-With the container runtime installed and running via one of the tools mentioned above, we are almost there!
+### Kubernetes cluster
 
-Follow the [Getting Started/Install](../getting-started/installation-process.md) guide as usual, but do one extra bit right after the `make kind` step. You will have better experience and startup time if you pull the container images that EDA relies on and upload them to the kind cluster before calling the `make eda-install-core` target.
+With the container runtime installed and running via one of the tools mentioned above, we need to ensure we have a k8s cluster running on our macOS. You typically have two options:
+
+1. Use the embedded k8s cluster provided by the tool that adds Docker support on your mac
+2. Setup the kind cluster manually using `kind`/`k3s`/etc.
+
+The first option might be the easiest way to get started, since it offers more tight integration with the macOS environment, for example by exposing services and providing a LoadBalancer implementation out of the box.
+
+/// tab | OrbStack
+If you're running OrbStack, you can spin up an embedded, one-node, lightweight cluster by checking the <kbd>Enable Kubernetes cluster</kbd> box in the settings:
+![k8s-settings](https://gitlab.com/rdodin/pics/-/wikis/uploads/ef79bf6e405dfad44deeca5000adbfe3/image.png)
+
+When OrbStack is done with creating a k8s cluster for you, you will be able to use regular cluster management tools like `kuebctl`/`k9s`/etc to manage your cluster.
+
+```{.shell .no-select}
+kubectl get nodes #(1)!
+```
+
+1. `kubectl` is also installed during the `make download-tools` step.
+
+<div class="embed-result highlight">
+```{.shell .no-select .no-copy}
+NAME       STATUS   ROLES                  AGE   VERSION
+orbstack   Ready    control-plane,master   28m   v1.29.3+orb1
+```
+</div>
+
+Now, your cluster is ready to run its first EDA installation!
+///
+/// tab | KinD
+Should you choose not to use embedded k8s support in the tool of your choice, you can install a KinD cluster manually.
+
+Run the following command from your playground repository to install a KinD cluster:
+
+```shell
+make kind
+```
+
+///
+
+### Pre-pulling images
+
+You will have better experience and startup time if you pull the container images that EDA relies on and upload them to the cluster before installing EDA. Pre-pulling images also helps to quickly re-spin the cluster when you have removed the old cluster and want to start over.
 
 ```shell
 make pull-images #(1)!
@@ -261,15 +324,65 @@ make pull-images #(1)!
 
 1. this can take some time, depending on your connection speed towards the registry
 
-And once the images are pulled, upload them to the kind cluster:
+And once the images are pulled, upload them to the cluster:
+
+/// tab | OrbStack
+If you're using OrbStack, you don't have to explicitly load images to the cluster, as they become available right after you ran `make pull-images`.
+
+You can see the images in the UI as well as in the CLI:
+![images](https://gitlab.com/rdodin/pics/-/wikis/uploads/d8c4d2d0ecbc9fc598dba135d16109c7/image.png)
+///
+/// tab | KinD
 
 ```shell
 make kind-load-images #(1)!
 ```
 
 1. takes about 3 minutes
+///
 
-And then, carry on with the rest of the installation steps as usual. A couple of minutes later you will have EDA running on your macOS machine with the simulated topology, all within your macOS[^2]!
+### Installing EDA
+
+Install time! When running docker/k8s on mac we have some complications with the networking, as the VM that runs the k8s cluster is not the same as the one where we run our make targets.
+
+That's why we would have not only set the
+
+* `EXT_DOMAIN_NAME`: to the domain name or IP of the k8s cluster node (assuming you're running a single node cluster)
+* `EXT_IPV4_ADDR`: set to the IP address of the cluster node. You can get it with:
+
+    ```shell
+    kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}'
+    ```
+
+but also set a pair of no proxy variables set to the cluster cidr of your cluster. You can get the with:
+
+```shell
+kubectl get nodes -o jsonpath='{.items[0].spec.podCIDR}'
+```
+
+And once all the variables are known, you can start the installation:
+
+```shell
+EXT_DOMAIN_NAME=eda-api.k8s.orb.local \
+EXT_IPV4_ADDR=198.19.249.2 \
+NO_PROXY=192.168.194.0/25 \
+no_proxy=192.168.194.0/25 \
+make try-eda NO_KIND=1
+```
+
+/// admonition | Potential turbulence
+    type: warning
+You may experience some hiccups during install, for example
+
+1. Some application is stuck during install
+2. Simulator nodes not starting up
+3. NPP pods not starting up
+
+This is all due to the fact that the majority of the images are running under Rosetta virtualization (they are not available yet in ARM64 arch). The workaround is to restart the `eda-ce` deployment when things get stuck.
+
+///
+
+### Tearing down
 
 If something goes wrong during installation, or if you want to reinstall, or maybe you finished playing with EDA, feel free to teardown the cluster using:
 
@@ -278,6 +391,8 @@ make teardown-cluster
 ```
 
 This will remove the kind cluster, but will not stop the Docker VM. You can stop the VM and start it later on when you want to come back to EDA, your pre-pulled images will still be there, and the installation will be much faster.
+
+[orbstack-home]: https://orbstack.dev/
 
 [^2]: These performance cores finally have a purpose!
 [^3]: For example as explained in [this blog post](https://opencredo.com/blogs/building-the-best-kubernetes-test-cluster-on-macos/).
