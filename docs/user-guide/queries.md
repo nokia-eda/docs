@@ -10,7 +10,7 @@ A "query" consists of:
 
 * A `Table`, being the only mandatory portion, e.g. `.node.srl.interface`.
 * A `Selector` denoted by the `fields` keyword, defining an array of fields to return (along with any functions to run on said fields), e.g. `.node.srl.interface fields [oper-state, admin-state]`.
-* A `Filter` denoted by the `where` keyword, defining an expression contained within parenthesis in which to include or exclude results, e.g. `.node.srl.interface where (admin-state = "disable" and .node.name = "dut1")`.
+* A `Filter` denoted by the `where` keyword, defining an expression contained within parenthesis in which to include or exclude results, e.g. `.node.srl.interface where (admin-state = "disable" and .node.name = "leaf1")`.
 * A `Sort`, denoted by the `order by` by keyword indicating the sorting that should be applied to the data before it is returned, e.g. `.node.srl.platform.control.process order by [memory-usage descending]`.
 * A `Limit`, denoted by the `limit` keyword, limiting the number of results returned, e.g. `.node.srl.interface limit 10`.
 * A `Frequency`, denoted by the `delta` or `sample` keywords, indicating the minimum update period for the query, e.g. `.node.srl.interface delta milliseconds 1000`, or the desire to receive data at a specified interval, irrespective of changes.
@@ -36,7 +36,7 @@ In simple terms each 'node' within the jspath is its own table - `.node` is a ta
 For example, to select all interfaces on a specific node:
 
 ```{.shell .no-select}
-.node.srl.interface where (.node.name = "dut1")
+.node.srl.interface where (.node.name = "leaf1")
 ```
 
 /// note
@@ -73,7 +73,7 @@ For example `.table where ((oper-state = "down" and mtu = 1500) or oper-state = 
 
 A `Filter` may query ancestor keys and values by referencing their full jspath.
 
-For example, to add `Filter` criteria for a parent key `.node.srl.interface.subinterface where (.node.name = "dut1")`.
+For example, to add `Filter` criteria for a parent key `.node.srl.interface.subinterface where (.node.name = "leaf1")`.
 
 You may not currently filter on parent fields other than the key.
 

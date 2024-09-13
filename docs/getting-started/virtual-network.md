@@ -17,26 +17,7 @@ make topology-load #(1)!
 
 As a result you will get you the following topology running in your cluster:
 
-```{.text .no-select}
-                                            
-               ┌────────────┐               
-               │            │               
-               │            │               
-               │    dut3    │               
-               │            │               
-               │ 1 2    3  4│               
-               └─┬─┬────┬─┬─┘               
-                 │ │    │ │                 
-                 │ │    │ │                 
- ┌────────────┐  │ │    │ │  ┌────────────┐ 
- │            │  │ │    │ │  │            │ 
- │           1├──┘ │    │ └──┤2           │ 
- │    dut1    │    │    │    │    dut2    │ 
- │           2├────┘    └────┤1           │ 
- │            │              │            │ 
- └────────────┘              └────────────┘ 
-                                            
-```
+<div class='mxgraph' style='max-width:100%;border:1px solid transparent;margin:0 auto; display:block;' data-mxgraph='{"page":0,"zoom":2,"highlight":"#0000ff","nav":true,"resize":true,"edit":"_blank","url":"https://raw.githubusercontent.com/hellt/tmp/diagrams/playground-topology.drawio"}'></div>
 
 As you would expect, it takes some time to spin up the nodes and establish the connections, you can check the status of the deployed topology in the [Verify](verification.md#node-connectivity) section of the quickstart.
 
@@ -45,10 +26,10 @@ As you would expect, it takes some time to spin up the nodes and establish the c
 Your network engineering roots may ask to check out what is going on on an individual node, which requires you to start a shell in the Pod running the SR Linux simulator. This can be accomplished with these simple commands:
 
 ```{.shell .no-select}
-make dut1-ssh #(1)!
+make leaf1-ssh #(1)!
 ```
 
-1. Of course, changing `dut1` to `dut2` or `dut3` will log you in the other nodes.
+1. Of course, changing `leaf1` to `leaf2` or `spine1` will log you in the other nodes.
 
 <div class="embed-result highlight">
 ```{.text .no-select .no-copy}
@@ -56,7 +37,7 @@ Using configuration file(s): ['/etc/opt/srlinux/srlinux.rc']
 Welcome to the srlinux CLI.
 Type 'help' (and press <ENTER>) if you need any help using this.
 --{ + running }--[  ]--
-A:dut1#
+A:leaf1#
 ```
 </div>
 
@@ -78,4 +59,6 @@ make teardown-topology
 
 This will remove the topology nodes resources, the accompanying simulators and NPP pods associated with them.
 
-[3-node-example-topo-gh-url]: https://github.com/nokia-eda/playground/blob/main/topology/3-nodes-srl-ghcr-topo-config.yaml
+[3-node-example-topo-gh-url]: https://github.com/nokia-eda/playground/blob/main/topology/3-nodes-srl.yaml
+
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
