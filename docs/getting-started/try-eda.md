@@ -135,7 +135,7 @@ This should open the EDA UI. The default username is `admin`, and the password i
 [playground-repo]: https://github.com/nokia-eda/playground
 
 [makefile]: https://github.com/nokia-eda/playground/blob/main/Makefile
-[pref-file]: https://github.com/nokia-eda/playground/blob/main/pref.mk
+[pref-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 
 [^1]: The [`playground` repository][playground-repo] supports both a try EDA (or playground) method using KinD, and a method for installing EDA to previously deployed Kubernetes clusters via the same `Makefile`.  
 The latter is covered in the [Installation process section](installation-process.md).
