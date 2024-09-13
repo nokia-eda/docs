@@ -74,10 +74,10 @@ kubectl get toponodes
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
-NAME   PLATFORM       VERSION   OS    ONBOARDED   NPP         NODE     AGE
-dut1   7220 IXR-D3L   0.0.0     srl   true        Connected   Synced   6m28s
-dut2   7220 IXR-D3L   0.0.0     srl   true        Connected   Synced   6m28s
-dut3   7220 IXR-D5    0.0.0     srl   true        Connected   Synced   6m28s
+NAME     PLATFORM       VERSION    OS    ONBOARDED   NPP         NODE     AGE
+leaf1    7220 IXR-D3L   24.7.1     srl   true        Connected   Synced   6m28s
+leaf2    7220 IXR-D3L   24.7.1     srl   true        Connected   Synced   6m28s
+spine1   7220 IXR-D5    24.7.1     srl   true        Connected   Synced   6m28s
 ```
 </div>
 
