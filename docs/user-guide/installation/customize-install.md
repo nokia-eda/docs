@@ -1,11 +1,11 @@
 # Installation customization
 
-If you haven't skipped the [Installation process](../getting-started/installation-process.md) section, you already know that EDA uses [kpt][kpt-home] package manager to install EDA components. Without getting too much into the details of kpt, you can expect that as other package managers, kpt packages can be customized before the actual manifests will be applied to the cluster.  
+If you haven't skipped the [Installation process](../../getting-started/installation-process.md) section, you already know that EDA uses [kpt][kpt-home] package manager to install EDA components. Without getting too much into the details of kpt, you can expect that as other package managers, kpt packages can be customized before the actual manifests will be applied to the cluster.  
 This allows users to customize EDA installation according to their needs.
 
 /// admonition | What about a Makefile?
     type: subtle-question
-In the [Quickstart](../getting-started/try-eda.md) section we have been using the Makefile to make the installation easier. Some customization has been incorporated into the Makefile, so that you could use it to customize the most important bits and pieces, but by no means this Makefile customization is a replacement for the proper customization of the catalog.
+In the [Quickstart](../../getting-started/try-eda.md) section we have been using the Makefile to make the installation easier. Some customization has been incorporated into the Makefile, so that you could use it to customize the most important bits and pieces, but by no means this Makefile customization is a replacement for the proper customization of the catalog.
 
 This section explains how to customize everything related to EDA installation using [kpt][kpt-home] package manager.
 ///
