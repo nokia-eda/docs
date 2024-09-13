@@ -61,7 +61,7 @@ With a few important exceptions, the steps to deploy EDA in the FSS Kubernetes c
 
 Follow these steps and pay careful attention to the differences specifically highlighted:
 
-1. Make sure you have the playground cloned and up to date, as described in the [Getting Started Guide](../getting-started/getting-access.md#clone-the-playground-repository) chapter.
+1. Make sure you have the playground cloned and up to date, as described in the [Getting Started Guide](../../getting-started/getting-access.md#clone-the-playground-repository) chapter.
 2. Download the latest tools:
 
     ```bash
