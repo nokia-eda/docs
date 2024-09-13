@@ -1,7 +1,7 @@
 controllerEnvConfig:
   connectpluginname: eda-openshift-controller-plugin
   heartbeat: "10"
-  namespace: eda-openshift-plugin
+  namespace: default
   skiptlsverify: False
   tlscertificatedata: EDA K8s certificate data can be extracted from kubeconfig from cluster `certificate-authority-data`
   tlsenabled: True

@@ -14,8 +14,13 @@ nav:
       - Customizing topologies: user-guide/generating-topologies.md
       - Using the CLIs: user-guide/using-the-clis.md
       - Installation:
-          - FSS Cluster deployment: user-guide/install-fss.md
+          - Deployment options:
+              - On-prem cluster: user-guide/installation/on-prem-cluster.md
+              - FSS cluster: user-guide/installation/fss.md
+              - macOS: user-guide/installation/macos.md
+              - KinD: user-guide/installation/kind.md
           - user-guide/install-advanced.md
+          - user-guide/installation/customize-install.md
           - Resetting a cluster: user-guide/reset.md
       - Allocation Pools: user-guide/allocation-pools.md
       - Access Control: user-guide/access-control.md
