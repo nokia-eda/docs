@@ -70,23 +70,23 @@ edactl query '.node.srl.interface where (oper-state = "up")'
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
- Node Name    Name           Admin State    Loopback Mode    Ifindex     Oper State    Oper Down Reason    Last Change               Linecard    Forwarding Complex    Mtu    Vlan Tagging    Tpid         Description
- dut1         ethernet-1/3   enable         none             81918       up                                2024-04-29T15:55:13.059Z  1           0                     9232   false           TPID_0X8100
- dut1         ethernet-1/9   enable         none             278526      up                                2024-04-29T15:55:13.103Z  1           0                     9232   false           TPID_0X8100
- dut1         ethernet-1/10  enable         none             311294      up                                2024-04-29T15:55:13.127Z  1           0                     9232   false           TPID_0X8100
- dut1         mgmt0          enable                          1077952510  up                                2024-04-29T15:54:20.747Z                                    1514
- dut1         system0        enable                          1086341118  up                                2024-04-29T15:55:12.943Z
- dut2         ethernet-1/4   enable         none             114686      up                                2024-04-29T15:55:13.067Z  1           0                     9232   false           TPID_0X8100
- dut2         ethernet-1/9   enable         none             278526      up                                2024-04-29T15:55:13.127Z  1           0                     9232   false           TPID_0X8100
- dut2         ethernet-1/10  enable         none             311294      up                                2024-04-29T15:55:13.159Z  1           0                     9232   false           TPID_0X8100
- dut2         mgmt0          enable                          1077952510  up                                2024-04-29T15:54:18.079Z                                    1514
- dut2         system0        enable                          1086341118  up                                2024-04-29T15:55:12.948Z
- dut3         ethernet-1/10  enable         none             311294      up                                2024-04-29T15:55:13.103Z  1           0                     9232   false           TPID_0X8100
- dut3         ethernet-1/11  enable         none             344062      up                                2024-04-29T15:55:13.159Z  1           0                     9232   false           TPID_0X8100
- dut3         ethernet-1/12  enable         none             376830      up                                2024-04-29T15:55:13.059Z  1           0                     9232   false           TPID_0X8100
- dut3         ethernet-1/13  enable         none             409598      up                                2024-04-29T15:55:13.075Z  1           0                     9232   false           TPID_0X8100
- dut3         mgmt0          enable                          1077952510  up                                2024-04-29T15:54:19.091Z                                    1514
- dut3         system0        enable                          1086341118  up                                2024-04-29T15:54:57.702Z
+ Node Name     Name           Admin State    Loopback Mode    Ifindex     Oper State    Oper Down Reason    Last Change               Linecard    Forwarding Complex    Mtu    Vlan Tagging    Tpid         Description
+ leaf1         ethernet-1/3   enable         none             81918       up                                2024-04-29T15:55:13.059Z  1           0                     9232   false           TPID_0X8100
+ leaf1         ethernet-1/9   enable         none             278526      up                                2024-04-29T15:55:13.103Z  1           0                     9232   false           TPID_0X8100
+ leaf1         ethernet-1/10  enable         none             311294      up                                2024-04-29T15:55:13.127Z  1           0                     9232   false           TPID_0X8100
+ leaf1         mgmt0          enable                          1077952510  up                                2024-04-29T15:54:20.747Z                                    1514
+ leaf1         system0        enable                          1086341118  up                                2024-04-29T15:55:12.943Z
+ leaf2         ethernet-1/4   enable         none             114686      up                                2024-04-29T15:55:13.067Z  1           0                     9232   false           TPID_0X8100
+ leaf2         ethernet-1/9   enable         none             278526      up                                2024-04-29T15:55:13.127Z  1           0                     9232   false           TPID_0X8100
+ leaf2         ethernet-1/10  enable         none             311294      up                                2024-04-29T15:55:13.159Z  1           0                     9232   false           TPID_0X8100
+ leaf2         mgmt0          enable                          1077952510  up                                2024-04-29T15:54:18.079Z                                    1514
+ leaf2         system0        enable                          1086341118  up                                2024-04-29T15:55:12.948Z
+ spine1        ethernet-1/10  enable         none             311294      up                                2024-04-29T15:55:13.103Z  1           0                     9232   false           TPID_0X8100
+ spine1        ethernet-1/11  enable         none             344062      up                                2024-04-29T15:55:13.159Z  1           0                     9232   false           TPID_0X8100
+ spine1        ethernet-1/12  enable         none             376830      up                                2024-04-29T15:55:13.059Z  1           0                     9232   false           TPID_0X8100
+ spine1        ethernet-1/13  enable         none             409598      up                                2024-04-29T15:55:13.075Z  1           0                     9232   false           TPID_0X8100
+ spine1        mgmt0          enable                          1077952510  up                                2024-04-29T15:54:19.091Z                                    1514
+ spine1        system0        enable                          1086341118  up                                2024-04-29T15:54:57.702Z
 ```
 </div>
 

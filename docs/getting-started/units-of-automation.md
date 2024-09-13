@@ -98,21 +98,21 @@ Again, we are not going into the weeds of the Fabric CR definition just yet, you
 
 Don't take our word for it, let's connect to the nodes and check what config they have now. Do you remember that all the nodes in our fabric [had no configuration](virtual-network.md#initial-configuration) at all? Let's see what changed after we applied the fabric resource:
 
-//// details | Checking the running configuration on `dut1`
+//// details | Checking the running configuration on `leaf1`
     type: code-example
-We can connect to the nodes with a single command like `make dut1-ssh` and check the running configuration with `info` command:
+We can connect to the nodes with a single command like `make leaf1-ssh` and check the running configuration with `info` command:
 
 ```{.srl .code-scroll-sm }
---8<-- "docs/getting-started/dut1-config-post-fabric-create.cfg"
+--8<-- "docs/getting-started/leaf1-config-post-fabric-create.cfg"
 ```
 
 The result of the deployed Fabric app is a fully configured BGP EVPN fabric that is configured on all of the nodes in our topology.
 
-We can list the BGP neighbors on `dut1` to see that it has established BGP sessions with `dut2` and `dut3`.
+We can list the BGP neighbors on `leaf1` to see that it has established BGP sessions with `leaf2` and `spine1`.
 
 ```srl
 --{ + running }--[  ]--
-A:dut1# show network-instance default protocols bgp neighbor *
+A:leaf1# show network-instance default protocols bgp neighbor *
 ------------------------------------------------------------------------------------------------------------------------------------------
 BGP neighbor summary for network-instance "default"
 Flags: S static, D dynamic, L discovered by LLDP, B BFD enabled, - disabled, * slow
@@ -183,17 +183,17 @@ status:
   lastChange: "2024-09-09T15:38:35.000Z"
   leafNodes:
 
-  - node: dut2
+  - node: leaf2
     operatingSystem: srl
     operatingSystemVersion: 24.7.1
     underlayAutonomousSystem: 100
-  - node: dut1
+  - node: leaf1
     operatingSystem: srl
     operatingSystemVersion: 24.7.1
     underlayAutonomousSystem: 102
   operationalState: up
   spineNodes:
-  - node: dut3
+  - node: spine1
     operatingSystem: srl
     operatingSystemVersion: 24.7.1
     underlayAutonomousSystem: 101
@@ -291,23 +291,23 @@ intents-run:
   - fabrics.eda.nokia.com/v1alpha1, kind=Fabric, myfabric-1
     output-crs:
     - fabrics.eda.nokia.com/v1alpha1, kind=FabricState, myfabric-1
-    - fabrics.eda.nokia.com/v1alpha1, kind=ISL, isl-dut1-dut3-1
+    - fabrics.eda.nokia.com/v1alpha1, kind=ISL, isl-leaf1-spine1-1
 # clipped
     pool-allocs:
     - template: Index:asn-pool name: global key: myfabric-1-spine value: 101
     script:
     - execution-time: 18.688ms
-  - fabrics.eda.nokia.com/v1alpha1, kind=ISL, isl-dut1-dut3-1
+  - fabrics.eda.nokia.com/v1alpha1, kind=ISL, isl-leaf1-spine1-1
 # clipped
-  - routingpolicies.eda.nokia.com/v1alpha1, kind=PolicyDeployment, policy-ebgp-isl-import-policy-myfabric-1-node-dut3
+  - routingpolicies.eda.nokia.com/v1alpha1, kind=PolicyDeployment, policy-ebgp-isl-import-policy-myfabric-1-node-spine1
       output-crs:
-      - core.eda.nokia.com/v1, kind=NodeConfig, policy-cfg-ebgp-isl-import-policy-myfabric-1-dut3
+      - core.eda.nokia.com/v1, kind=NodeConfig, policy-cfg-ebgp-isl-import-policy-myfabric-1-spine1
       script:
       - execution-time: 26.559ms
 nodes-with-config-changes:
-- name: dut1
-- name: dut2
-- name: dut3
+- name: leaf1
+- name: leaf2
+- name: spine1
 general-errors:
 commit-hash: de8844dad4a14e7df5fbfe106864845311699880
 execution-summary: input-crs: 1, intents-run: 39, nodes-changed: 3, engine-time=116.931525ms, push-to-node=2.104971959s, publish-cr=20.462µs, git-save=546.793633ms
@@ -341,7 +341,7 @@ Here is what happened in this 60 seconds video:
 6. Before applying the change we ran the Dry-Run, which started the process of unwrapping the abstracted high-level Fabric resource into the sub-resources and dependent resources.
 7. The dry-run provided us with the extensive diff view of the **planned changes** to the nodes and all sub-resources touched by our single protocol change.
 8. We've reviewed the diff and decided that it is good to commit the change.
-9. Once we committed the change, we ensured that the change was immediately applied to the nodes by looking at `dut1` show output and seeing how iBGP appeared in the output of peer neighbors.
+9. Once we committed the change, we ensured that the change was immediately applied to the nodes by looking at `leaf1` show output and seeing how iBGP appeared in the output of peer neighbors.
 
 /// admonition | Have a look at the Fabric dashboard
     type: subtle-note
