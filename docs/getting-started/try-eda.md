@@ -141,7 +141,7 @@ This should open the EDA UI. The default username is `admin`, and the password i
 The latter is covered in the [Installation process section](installation-process.md).
 
 [^2]: This as well accounts for the [playground topology](virtual-network.md).
-[^3]: Or even [run it on macOS](../user-guide/install-advanced.md#eda-on-macos).
+[^3]: Or even [run it on macOS](../user-guide/installation/macos.md).
 
 [^4]: Install with `sudo apt install -y make` or its `yum`/`dnf`-based equivalent.
 
