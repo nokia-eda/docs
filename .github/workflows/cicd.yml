@@ -91,7 +91,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `✨ deployed to
+              body: `🏗 Preview site deployed to:
 
               * ${{ steps.wrangler-deploy.outputs.deployment-url }}
               * https://${branchName}.learn-srlinux.pages.dev`
