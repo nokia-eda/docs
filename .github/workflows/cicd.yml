@@ -94,5 +94,5 @@ jobs:
               body: `🏗 Preview site deployed to:
 
               * ${{ steps.wrangler-deploy.outputs.deployment-url }}
-              * https://${branchName}.learn-srlinux.pages.dev`
+              * https://${branchName}.eda-docs.pages.dev`
               })
