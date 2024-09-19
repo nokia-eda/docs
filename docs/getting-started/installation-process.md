@@ -99,9 +99,9 @@ External packages are defined in the [`kpt/eda-external-packages`][ext-packages]
 To provide configuration flexibility for EDA installation, `kpt` packages have a lot of fields marked with the `# kpt-set:` annotation. These fields can be set with the `kpt` CLI to change their default values.  
 Parameters like TLS configuration, proxies, default credentials and more are configurable via `kpt` setters.
 
-For example, it is common for EDA to be behind a load balancer, with clients terminating on the load balancer address and having their traffic forwarded from there. As EDA performs redirects it needs to know the name/IP clients will use to reach it. This can be accomplished via the setters in `kpt`, but for persistency and convenience, the most common settings can be set via the [`pref.mk`][pref-file] file that is part of the playground repository.
+For example, it is common for EDA to be behind a load balancer, with clients terminating on the load balancer address and having their traffic forwarded from there. As EDA performs redirects it needs to know the name/IP clients will use to reach it. This can be accomplished via the setters in `kpt`, but for persistency and convenience, the most common settings can be set via the [`prefs.mk`][prefs-file] file that is part of the playground repository.
 
-```{.shell .no-select title="subset of the options in the pref.mk file"}
+```{.shell .no-select title="subset of the options in the prefs.mk file"}
 # EXT_DOMAIN_NAME = "<Domain name or IP address>"
 # EXT_HTTP_PORT = "<Port for http access>"
 # EXT_HTTPS_PORT = "<Port for https access>"
@@ -113,9 +113,9 @@ For example, it is common for EDA to be behind a load balancer, with clients ter
 
 If your cluster requires an HTTP proxy to access the resources outside of it, you will need to set the `HTTPS_PROXY`, `HTTP_PROXY`, `NO_PROXY`, and their lowercase counterparts.
 
-The logic inside the `eda-configure-core` target will set these values automatically to the values in your environment. But if you're installing on a machine that has different proxy settings, you will need to set them manually in the [`pref.mk`][pref-file] file before running the `eda-configure-core` target.
+The logic inside the `eda-configure-core` target will set these values automatically to the values in your environment. But if you're installing on a machine that has different proxy settings, you will need to set them manually in the [`prefs.mk`][prefs-file] file before running the `eda-configure-core` target.
 
-Once the desired values are set in the `pref.mk` file, the `eda-configure-core` target can be run to set the values in the `eda-kpt` package:
+Once the desired values are set in the `prefs.mk` file, the `eda-configure-core` target can be run to set the values in the `eda-kpt` package:
 
 ```{.shell .no-select}
 make eda-configure-core
@@ -236,7 +236,7 @@ You now have a ready-to-use EDA installation, with core services and some apps i
 [catalog-repo]: https://github.com/nokia-eda/catalog
 [kind-install]: https://kind.sigs.k8s.io/docs/user/quick-start/#installation
 [makefile]: https://github.com/nokia-eda/playground/blob/main/Makefile
-[pref-file]: https://github.com/nokia-eda/playground/blob/main/pref.mk
+[prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 [ext-packages]: https://github.com/nokia-eda/kpt/tree/main/eda-external-packages
 [eda-core-package]: https://github.com/nokia-eda/kpt/tree/main/eda-kpt-base
 [catalog-gh-url]: https://github.com/nokia-eda/catalog
