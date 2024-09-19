@@ -74,11 +74,11 @@ make try-eda #(1)!
 
     /// admonition | preferences file
         type: subtle-note
-    Instead of providing the configuration values such as `EXT_DOMAIN_NAME` and `EXT_HTTPS_PORT` on the command line, you can also provide them in a [`pref.mk`][pref-file] file that comes with the playground repository.
+    Instead of providing the configuration values such as `EXT_DOMAIN_NAME` and `EXT_HTTPS_PORT` on the command line, you can also provide them in a [`prefs.mk`][prefs-file] file that comes with the playground repository.
     ///
 
     <h4>LLM Key</h4>
-    To enable the Natural Language support for the [EDA Query](../user-guide/queries.md) functionality, provide the LLM key (OpenAI) with an additional environment variable or set it in the `pref.mk` file:
+    To enable the Natural Language support for the [EDA Query](../user-guide/queries.md) functionality, provide the LLM key (OpenAI) with an additional environment variable or set it in the `prefs.mk` file:
 
     ```shell
     export EXT_DOMAIN_NAME=${DNS-name-or-IP} \
@@ -135,7 +135,7 @@ This should open the EDA UI. The default username is `admin`, and the password i
 [playground-repo]: https://github.com/nokia-eda/playground
 
 [makefile]: https://github.com/nokia-eda/playground/blob/main/Makefile
-[pref-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
+[prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 
 [^1]: The [`playground` repository][playground-repo] supports both a try EDA (or playground) method using KinD, and a method for installing EDA to previously deployed Kubernetes clusters via the same `Makefile`.  
 The latter is covered in the [Installation process section](installation-process.md).
