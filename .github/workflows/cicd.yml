@@ -79,7 +79,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy site --project-name=eda-docs
+          command: pages deploy site --project-name=eda-docs --branch=${{ env.BRANCH_NAME }}
 
       - name: Add deploy comment to PR
         uses: actions/github-script@v7
@@ -92,7 +92,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `✨ deployed to
-              
+
               * ${{ steps.wrangler-deploy.outputs.deployment-url }}
               * https://${branchName}.learn-srlinux.pages.dev`
               })
