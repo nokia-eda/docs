@@ -198,7 +198,7 @@ The transaction details will give you a hint as to what went wrong. In the examp
 
 As covered in the [Configure your deployment](installation-process.md#configure-your-deployment) section, the EDA service requires a user to provide the desired DNS name/IP and port for external access. These parameters become the part of the Engine Config resource that, as the name suggests, configures the central part of EDA - the Config Engine.
 
-The values you provided in the pref.mk file or in the CLI can be found in the Engine Config resource:
+The values you provided in the prefs.mk file or in the CLI can be found in the Engine Config resource:
 
 ```{.shell .no-select}
 kubectl get engineconfig engine-config -o jsonpath='{.spec.cluster.external}' \
