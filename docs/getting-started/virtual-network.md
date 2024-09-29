@@ -17,7 +17,7 @@ make topology-load #(1)!
 
 As a result you will get you the following topology running in your cluster:
 
-<div class='mxgraph' style='max-width:100%;border:1px solid transparent;margin:0 auto; display:block;' data-mxgraph='{"page":0,"zoom":2,"highlight":"#0000ff","nav":true,"resize":true,"edit":"_blank","url":"https://raw.githubusercontent.com/hellt/tmp/diagrams/playground-topology.drawio"}'></div>
+-{{ diagram(url='hellt/tmp/diagrams/playground-topology.drawio', title='', page=0) }}-
 
 As you would expect, it takes some time to spin up the nodes and establish the connections, you can check the status of the deployed topology in the [Verify](verification.md#node-connectivity) section of the quickstart.
 

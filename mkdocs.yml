@@ -11,7 +11,7 @@ nav:
           - Verification: getting-started/verification.md
   - User guide:
       - Queries: user-guide/queries.md
-      - Customizing topologies: user-guide/generating-topologies.md
+      - Topologies: user-guide/topologies.md
       - Using the CLIs: user-guide/using-the-clis.md
       - Installation:
           - Deployment options:
@@ -109,11 +109,14 @@ plugins:
   - meta
   - glightbox
   - macros:
-      j2_block_start_string: "[[[%"
-      j2_block_end_string: "%]]]"
-      j2_variable_start_string: "[[["
-      j2_variable_end_string: "]]]"
+      j2_block_start_string: "-{{%"
+      j2_block_end_string: "%}}-"
+      j2_variable_start_string: "-{{"
+      j2_variable_end_string: "}}-"
+      # include_yaml:
+      #   - macros/vars.yml
       include_dir: macros
+      module_name: macros/main
   - blog:
       post_url_format: "{slug}"
       archive: false
