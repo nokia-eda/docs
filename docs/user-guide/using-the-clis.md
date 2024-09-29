@@ -11,13 +11,13 @@ While `edactl` demands precise command inputs, `e9s` excels in offering visual f
 ## Accessing the CLIs
 
 Both `edactl` and `e9s` are made available as part of the `eda-toolbox` pod.
-
+<!-- --8<-- [start:open-toolbox] -->
 You can log in to the `eda-toolbox` pod using the following command:
 
 ```{.shell .no-select}
 make open-toolbox
 ```
-
+<!-- --8<-- [end:open-toolbox] -->
 <div class="embed-result highlight">
 ```{.text .no-select .no-copy}
                      .:....
