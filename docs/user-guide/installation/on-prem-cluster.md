@@ -1,15 +1,15 @@
 # EDA on an on-premises k8s cluster
 
-/// admonition | Work in progress
-    type: danger
-This document has not been updated and contains outdated information.
+The [quickstart guide](../../getting-started/installation-process.md) did a great job of getting you up and running with a local Kubernetes cluster powered by KinD. However, you may be willing to step away from the beaten path and install EDA in a non-KinD cluster. Well, EDA welcomes courageous souls like you!
+
+/// admonition | Note
+    type: subtle-note
+In this section we are not going into the details of how to install EDA in a production setting, since there are many environment-specific considerations to take into account. Instead, we will focus on bringing up the playground environment on a real k8s cluster.
 ///
 
-The [quickstart guide](../../getting-started/installation-process.md) did a great job of getting you up and running with a local Kubernetes cluster powered KinD. However, you may be willing to step away from the beaten path and install EDA in a non-KinD cluster. Well, EDA welcomes courageous souls like you!
+Alright, truth be told, the installation process is almost identical to the one you followed in the [quickstart guide](../../getting-started/try-eda.md). This is one of the perks of running on top of Kubernetes that EDA enjoys - no matter what cluster it is (GKE, Openstack, k3s, minikube, etc), the installation process for the greater part would be the same.
 
-Alright, truth be told, the installation process is almost identical to the one you followed in the quickstart guide, it is just a matter of having a few things to consider. In this section we will install EDA in a real k8s cluster running on bare VMs.
-
-First, let's see what we are working with:
+Take a seat, we are going to install EDA on a "real" k8s cluster running on bare VMs. But first, let's see what we are working with:
 
 ```{.shell .no-select}
 kubectl get nodes
@@ -18,72 +18,92 @@ kubectl get nodes
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME         STATUS   ROLES           AGE   VERSION
-rd-eda1-cp   Ready    control-plane   14h   v1.30.1
-rd-eda1-w1   Ready    <none>          14h   v1.30.1
-rd-eda1-w2   Ready    <none>          14h   v1.30.1
-rd-eda1-w3   Ready    <none>          14h   v1.30.1
+rd-eda1-cp   Ready    control-plane   31d   v1.30.1
+rd-eda1-w1   Ready    <none>          31d   v1.30.1
+rd-eda1-w2   Ready    <none>          31d   v1.30.1
+rd-eda1-w3   Ready    <none>          31d   v1.30.1
+rd-eda1-w4   Ready    <none>          31d   v1.30.1
+rd-eda1-w5   Ready    <none>          31d   v1.30.1
+rd-eda1-w6   Ready    <none>          31d   v1.30.1
 ```
 </div>
 
-:scream: A real 3-node k8s cluster running vanilla Kubernetes 1.30.1 release! Each node has 6vCPU and 24GB of RAM amounting to a total of 18vCPU and 72GB of RAM. This is a decent little cluster for running EDA.
+:scream: A 6-node k8s cluster running vanilla Kubernetes 1.30.1 release! Each node has 4vCPU and 16GB of RAM amounting to a total of 24vCPU and 96GB of RAM. This is a decent-sized cluster for running EDA [playground][pg-repo].
 
-/// note
-If you run a cluster with a Pod Security Policy in place, make sure to allow a privileged policy for the `default` namespace. The `cert-manager-csi-driver` daemonset requires this to run.
+## Storage classes
+
+Alright, first thing to ensure (besides of having the right context set in your `kubectl` of course) is that your cluster has some storage provider that gives you the default storage class. EDA Git deployments will have some PV claims and something needs to satisfy them, right?
+
+There are plenty of [cloud-native storage solutions](https://landscape.cncf.io/guide#runtime--cloud-native-storage) to choose from, pick one that suites your needs in case your cluster doesn't have one.
+
+To ensure you have one:
+
+```{.shell .no-select}
+kubectl get storageclass
+```
+
+<div class="embed-result highlight">
+```{.shell .no-select .no-copy}
+NAME                 PROVISIONER          RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+longhorn (default)   driver.longhorn.io   Delete          Immediate           true                   32d
+```
+</div>
+
+## Security context
+
+If you run a cluster with a Pod Security Policy in place (like in case of Talos clusters), make sure to allow a privileged policy for the `default` namespace. The `cert-manager-csi-driver` daemonset requires this to run.
 
 ```{.bash .no-select}
 kubectl label namespace default pod-security.kubernetes.io/enforce=privileged
 ```
 
-///
+## Playground repository
 
-Using the same `playground` repository from the [Installation section](../../getting-started/installation-process.md), we can use the same `make` targets to perform the installation steps (if haven't done before).
+We will drive the installation process using the instrumentation provided by the Makefile stored in the [playground repository][pg-repo]. If you haven't done so yet, clone the repository and change into it:
 
-1. `make download-tools` - to download the necessary tools.
-2. `make download-pkgs` - to download the EDA `kpt` package.
+--8<-- "docs/getting-started/getting-access.md:pull-playground"
 
-Now, we can install the EDA core services.
+If you already have the repository cloned, make sure to pull in the latest changes and remove the `eda-kpt` and `catalog` directories before proceeding.
 
-```shell
-make eda-install-core
+## Parametrizing the installation
+
+To no-one's surprise, the EDA installation process on an existing cluster would require us at least to skip the creation of the KinD cluster that `make try-eda` target would call otherwise. Let's do that by using the [prefs.mk](../../getting-started/installation-process.md#configure-your-deployment) file that the playground repository provides and set the following variables:
+
+```makefile
+# KinD cluster options
+# -----------------------------------------------------------------------------|
+# Do not deploy the kind cluster
+# Uncomment this variable to perform playground installation
+# on an already available k8s cluster
+NO_KIND := yes
+
+# How do clients reach your cluster?
+#  EXT_DOMAIN_NAME can also be set to an ipv4/6 address if no domain record
+#  is present. In that case EXT_IPV4_ADDR = $(EXT_DOMAIN_NAME) or its ipv6
+#  counterpart.
+# -----------------------------------------------------------------------------|
+EXT_DOMAIN_NAME = "eda.mydomain.com" #(1)!
+EXT_HTTPS_PORT = "443"
 ```
 
-Pause for a moment and let the installation complete, by checking the [verification steps](../../getting-started/verification.md#eda-core).
+1. Set the DNS name or IP address of the cluster' ingress/gateway endpoint.
 
-Once all EDA deployments are running and appstore is reachable, proceed with the application install, just like in the [quickstart guide](../../getting-started/installation-process.md#apps).
+The key variables to set would be `NO_KIND := yes` to skip the creation of the KinD cluster and `EXT_DOMAIN_NAME` and `EXT_HTTPS_PORT` to set the ingress/gateway endpoint and port.
 
-```shell
-make eda-install-apps
-```
+## Running the installation
 
-With apps loaded, bootstrap the EDA installation by running the following command, exactly like in the quickstart guide:
-
-```shell
-make eda-bootstrap
-```
-
-And that's it, EDA has been successfully installed in a non-KinD cluster. Now let's deploy the same sample topology, by following the steps from the ["Onboarding nodes"](../../getting-started/virtual-network.md) guide.
-
-```shell
-make topology-load
-```
-
-and your cluster now is busy pulling the simulators, starting them up and laying out the interfaces between them. Use the [verification commands](../../getting-started/verification.md#node-connectivity) to make sure the topology is up and running.
-
-This may take a while (watch your pods status), but it should eventually complete successfully:
+With the `prefs.mk` file populated, we can simply run:
 
 ```{.shell .no-select}
-kubectl get toponodes
+make try-eda
 ```
 
-<div class="embed-result highlight">
-```{.shell .no-select .no-copy}
-NAME     PLATFORM       VERSION    OS    ONBOARDED   NPP         NODE     AGE
-leaf1    7220 IXR-D3L   24.7.1     srl   true        Connected   Synced   6m28s
-leaf2    7220 IXR-D3L   24.7.1     srl   true        Connected   Synced   6m28s
-spine1   7220 IXR-D5    24.7.1     srl   true        Connected   Synced   6m28s
-```
-</div>
+Right, the same target that would otherwise install EDA on a local development KinD cluster can be used to install EDA on an existing cluster, like the one we have in this guide. After the installation process completes, you can use the [verification commands](../../getting-started/verification.md) to make sure everything is up and running.
 
 ![final-pods](https://gitlab.com/rdodin/pics/-/wikis/uploads/55b10f7ea1b74501ee2434641e17edc4/piceda1.webp){.img-shadow}
 
 Now you have a fully functional EDA installation running in a real Kubernetes cluster. Congratulations :partying_face:
+
+With a real cluster, you would likely want to have a GatewayAPI or Ingress configured so that you can access the EDA UI and API. We've prepared a [separate guide](../exposing-ui.md) to help you with that.
+
+[pg-repo]: https://github.com/nokia-eda/playground
