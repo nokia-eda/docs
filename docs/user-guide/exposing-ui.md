@@ -1,6 +1,4 @@
-# Advanced installation
-
-## Exposing the EDA UI
+# Exposing the EDA UI
 
 In a regular cluster you might have the [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) or [Gateway API](https://kubernetes.io/docs/concepts/services-networking/gateway/) controller installed to route the external traffic to the services running inside the cluster. The examples below provide copy-pastable snippets that would create resources to explose the EDA UI.
 
@@ -27,7 +25,7 @@ targetPort: 9443
 ```
 </div>
 
-### Nginx Ingress
+## Nginx Ingress
 
 If you're using Nginx Ingress controller, you can use the following example resources to configure NGINX Ingress to expose the EDA UI service:
 
@@ -35,7 +33,7 @@ If you're using Nginx Ingress controller, you can use the following example reso
 * Passing through TLS with termination on the eda-api side - [api-ingress-ssl-passthrough.yaml](https://github.com/nokia-eda/kpt/blob/main/eda-external-packages/eda-api-ingress-https-passthrough/api-ingress-ssl-passthrough.yaml)  
     Note, that NGINX controller has to be configured with the [passthrough option enabled](https://kubernetes.github.io/ingress-nginx/user-guide/tls/#ssl-passthrough).
 
-### Gateway API
+## Gateway API
 
 If you're riding the [Gateway API](https://gateway-api.sigs.k8s.io/) wave, you can create a [`Gateway`](https://gateway-api.sigs.k8s.io/api-types/gateway/) resource to define your cluster gateway. As with the Ingress, the choice is yours if you want to terminate the TLS on the Gateway or not.
 
