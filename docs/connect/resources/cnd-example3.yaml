@@ -5,7 +5,7 @@ metadata:
 spec:
   subnets:
     - name: "eda-managed-subnet1"
-      linkedBridgedomain: eda_bridgedomain_1
+      linkedBridgeDomain: eda_bridgedomain_1
       networkAttachmentDefinitions:
         - name: ipvlan-ns1/ipvlan-nad1
         - name: sriov-ns1/sriov-nad1
