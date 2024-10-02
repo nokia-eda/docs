@@ -1,4 +1,4 @@
-# EDA on an on-premises k8s cluster
+# EDA on an on-prem k8s cluster
 
 The [quickstart guide](../../getting-started/installation-process.md) did a great job of getting you up and running with a local Kubernetes cluster powered by KinD. However, you may be willing to step away from the beaten path and install EDA in a non-KinD cluster. Well, EDA welcomes courageous souls like you!
 

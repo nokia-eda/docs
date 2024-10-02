@@ -14,6 +14,7 @@ nav:
       - Topologies: user-guide/topologies.md
       - Using the CLIs: user-guide/using-the-clis.md
       - Installation:
+          - user-guide/installation/index.md
           - Deployment options:
               - On-prem cluster: user-guide/installation/on-prem-cluster.md
               - FSS cluster: user-guide/installation/fss.md
