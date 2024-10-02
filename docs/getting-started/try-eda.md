@@ -20,7 +20,7 @@ You don't have a cluster yet! We will get you a suitable k8s cluster in no time 
 
 ## Dependencies
 
-The getting started guide assumes you run a Linux/amd64 system. Check out [Advanced Installation](../user-guide/install-advanced.md) section for other installation options.  
+The getting started guide assumes you run a Linux/amd64 system. Check out the [User Guide](../user-guide/installation/index.md) section for other installation options.  
 You are welcome to try your own distro[^3], but steps have been validated on Ubuntu 22.04, Debian 11 and 12.
 
 Your host executing the install needs `make`[^4] and [`docker`](https://docs.docker.com/engine/install/)[^5] installed. With `make` you can install the remaining dependencies:

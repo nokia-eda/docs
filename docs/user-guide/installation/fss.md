@@ -53,6 +53,12 @@ Using the FSS Deployer, it is possible to deploy only a Kubernetes cluster with 
 
 ## Deploying EDA inside the FSS Kubernetes Cluster
 
+/// details | Requirements to run the procedure
+    type: note
+
+The system used to run this procedure should be a different Linux system than the Deployer VM or the Kubernetes nodes. This platform requires Docker running and make to be available, just as if you were running the install using Kind or on another external Kubernetes environment.
+///
+
 With a few important exceptions, the steps to deploy EDA in the FSS Kubernetes cluster are very similar to the regular installation process as documented before.
 
 /// admonition | Before starting, make sure all pods in the FSS Kubernetes cluster are in a running state.
