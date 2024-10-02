@@ -130,20 +130,33 @@ kubectl get secrets/k8s-controller-plugin --template={{.data.token}} | base64 --
 
 There are two ways to get the Helm charts to deploy the EDA Connect OpenShift plugin:
 
-1. Clone the github repository:
+1. Using the EDA Playground, which you used to install EDA, you can clone the github repository:
 
     ```bash
-    git clone --depth 1 --branch v1.0.0 https://github.com/nokia-eda/connect-k8s-helm-charts
+    make download-connect-k8s-helm-charts
     ```
 
 2. Downloading the release tarball and unpacking it:
 
     ```bash
-    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/v1.0.0.tar.gz
+    export GH_RO_TOKEN=<token>
+    curl -sLO https://${GH_RO_TOKEN}@github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/v1.0.0.tar.gz
     tar zxf v1.0.0.tar.gz 
     ```
 
+    /// admonition | This option requires you to use the `GH_RO_TOKEN` that you used to clone the playground repository
+        type: note
+    ///
+
 ### Deploying the Plugin in OpenShift
+
+#### Create a Namespace for the OpenShift Plugin
+
+The OpenShift Plugin uses its own namespace to separate it from other resources in the OpenShift cluster. You can create the correct namespace using the following command:
+
+```bash
+kubectl create namespace eda-connect-k8s-controller
+```
 
 #### Configuring a Pull Secret for the Controller Image
 
@@ -152,8 +165,20 @@ If the EDA Connect OpenShift Plugin Controller image is hosted in a registry tha
 The following command does so for the officially hosted image with a secure read-only token to the registry.
 
 ```bash
-kubectl create secret docker-registry eda-k8s-image-secret --docker-server=ghcr.io/nokia-eda/eda-connect-k8s-controller --docker-username=nokia-eda-bot --docker-password=<TOKEN> -n eda-connect-k8s-controller
+export PULL_TOKEN=<PULL_TOKEN>
+kubectl create secret docker-registry eda-k8s-image-secret --docker-server=ghcr.io/nokia-eda/eda-connect-k8s-controller --docker-username=nokia-eda-bot --docker-password=${PULL_TOKEN} -n eda-connect-k8s-controller
 ```
+
+/// details | Getting the pull token
+    type: note
+The easiest way to get the token/password for the pull secret, is to look at your EDA deployment and look for the `appstore-eda-apps-registry-image-pull` secret. By grabbing the content of that secret and using `base64` to decode the `dockerconfigjson`, you can find the password in the resulting json.
+
+Example to do so in one line (make sure to have the KUBECONFIG for the EDA cluster loaded, not the OpenShift config):
+
+```bash
+kubectl get secret appstore-eda-apps-registry-image-pull -o json | jq -r '.data.".dockerconfigjson"' | base64 -d | jq -r '.auths."ghcr.io".password'
+```
+///
 
 #### Setting up the local Helm values
 
