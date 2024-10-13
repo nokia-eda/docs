@@ -20,7 +20,7 @@ nav:
               - FSS cluster: user-guide/installation/fss.md
               - macOS: user-guide/installation/macos.md
               - KinD: user-guide/installation/kind.md
-          - user-guide/exposing-ui.md
+          - user-guide/exposing-ui-api.md
           - user-guide/installation/customize-install.md
           - Resetting a cluster: user-guide/reset.md
       - Allocation Pools: user-guide/allocation-pools.md
