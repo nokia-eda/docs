@@ -104,6 +104,6 @@ Right, the same target that would otherwise install EDA on a local development K
 
 Now you have a fully functional EDA installation running in a real Kubernetes cluster. Congratulations :partying_face:
 
-With a real cluster, you would likely want to have a GatewayAPI or Ingress configured so that you can access the EDA UI and API. We've prepared a [separate guide](../exposing-ui.md) to help you with that.
+With a real cluster, you would likely want to have a GatewayAPI or Ingress configured so that you can access the EDA UI and API. We've prepared a [separate guide](../exposing-ui-api.md) to help you with that.
 
 [pg-repo]: https://github.com/nokia-eda/playground
