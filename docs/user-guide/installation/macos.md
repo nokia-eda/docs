@@ -195,9 +195,10 @@ And once all the variables are known, you can start the installation:
 ```shell
 EXT_DOMAIN_NAME=eda-api.k8s.orb.local \
 EXT_IPV4_ADDR=198.19.249.2 \
+EXT_HTTPS_PORT=443 \
 NO_PROXY=192.168.194.0/25 \
 no_proxy=192.168.194.0/25 \
-make try-eda NO_KIND=1
+make try-eda NO_KIND=yes
 ```
 
 /// admonition | Potential turbulence
@@ -212,15 +213,36 @@ This is all due to the fact that the majority of the images are running under Ro
 
 ///
 
+## Connecting to the UI/API
+
+Depending on the tool you're using to run k8s, your method of connecting to the UI will vary.
+
+/// tab | OrbStack
+In OrbStack, you can access the UI by opening https://eda-api.k8s.orb.local/ in your browser.
+
+![ui](https://gitlab.com/rdodin/pics/-/wikis/uploads/1180ab27c1aa9017c1db3339ccae5f74/image.png)
+///
+
 ## Tearing down
 
-If something goes wrong during installation, or if you want to reinstall, or maybe you finished playing with EDA, feel free to teardown the cluster using:
+If something goes wrong during installation, or if you want to reinstall, or maybe you finished playing with EDA, feel free to destroy the cluster following the documentation for the tool you're using to run k8s.
 
-```shell
-make teardown-cluster
+/// tab | In OrbStack
+To remove the k8s cluster provided by Orbstack run the following command in the terminal:
+
+```
+orb delete k8s
 ```
 
-This will remove the kind cluster, but will not stop the Docker VM. You can stop the VM and start it later on when you want to come back to EDA, your pre-pulled images will still be there, and the installation will be much faster.
+This will remove the VM that backs up the k8s cluster. To bring back the empty k8s cluster run
+
+```
+orb start k8s
+```
+
+and now you can restart the EDA installation.
+
+///
 
 [orbstack-home]: https://orbstack.dev/
 
