@@ -66,10 +66,12 @@ export EXT_DOMAIN_NAME=${DNS-name-or-IP} \
 make try-eda #(1)!
 ```
 
-1. You may want to provide an `EXT_DOMAIN_NAME` environment variable to indicate what domain name or IP address you are going to use when reaching EDA UI/API. This can be a domain name or an IP address of a compute where you execute the quickstart installation.
+1. You need to provide an `EXT_DOMAIN_NAME` environment variable to indicate what domain name or IP address you are going to use when reaching EDA UI/API. This can be a domain name or an IP address of a compute where you execute the quickstart installation.
     <!-- --8<-- [start:ext-name-note-1] -->
     If you're trying EDA on a remote machine, then you typically would set the DNS name or IP address of this machine in the `EXT_DOMAIN_NAME` variable.  
     Another popular option is to use SSH local port forwarding to access the EDA UI, in this case you would need to set the `EXT_DOMAIN_NAME` variable to `localhost` and `EXT_HTTPS_PORT` to the local port you are using for the port forwarding.
+
+    If left unset, the hostname of the machine where you executed the `make` command will be used.
     <!-- --8<-- [end:ext-name-note-1] -->
 
     /// admonition | preferences file
