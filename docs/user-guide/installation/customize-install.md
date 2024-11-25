@@ -1,13 +1,13 @@
 # Installation customization
 
-If you haven't skipped the [Installation process](../../getting-started/installation-process.md) section, you already know that EDA uses [kpt][kpt-home] package manager to install EDA components. Without getting too much into the details of kpt, you can expect that as other package managers, kpt packages can be customized before the actual manifests will be applied to the cluster.  
+If you followed the [Installation process](../../getting-started/installation-process.md) section, you already know that EDA uses [kpt][kpt-home] k8s package manager to install its components. Without getting too much into the details of kpt, you can expect that as any other package manager, kpt packages can be customized before the actual manifests will be applied to the cluster.  
 This allows users to customize EDA installation according to their needs.
 
 /// admonition | What about a Makefile?
     type: subtle-question
-In the [Quickstart](../../getting-started/try-eda.md) section we have been using the Makefile to make the installation easier. Some customization has been incorporated into the Makefile, so that you could use it to customize the most important bits and pieces, but by no means this Makefile customization is a replacement for the proper customization of the catalog.
+In the [Quickstart](../../getting-started/try-eda.md) section we have been using the Makefile to install the EDA Playground - a ready-to-use environment for trying EDA out. The Makefile allows user to [customize the Playground](#playground) installation, but is not suitable for production installation of EDA.
 
-This section explains how to customize everything related to EDA installation using [kpt][kpt-home] package manager.
+This section explains how to customize the EDA installation using [kpt][kpt-home] package manager.
 ///
 
 In kpt, the customization is done by setting the values of the parameters marked with the `kpt-set` annotation. Consider the [Catalog manifest](https://github.com/nokia-eda/kpt/blob/main/eda-kpt-base/appstore-gh/catalog.yaml) from the `eda-kpt-base` package:
@@ -41,9 +41,46 @@ The `#kpt-set: ${APP_CATALOG}` annotation is used to set indicate that this valu
     kpt live apply
     ```
 
-Below you will find all the parameters that can be customized per package that we have in the [`nokia-eda/kpt`][kpt-repo] repository.
+In the [KPT Setters Reference](#kpt-setters-reference) section you will find all the setters parameters that can be customized per package that we have in the [`nokia-eda/kpt`][kpt-repo] repository.
 
-## Core package
+## Playground
+
+An EDA installation that is deployed with a set of pre-configured components and a small virtual network is called a _playground_. The [Getting Started guide](../../getting-started/try-eda.md) introduces EDA to the users by deploying the EDA Playground on a [KinD](https://kind.sigs.k8s.io/)-based kubernetes cluster.
+
+Users can deploy the playground using a single `make` command that will come up with some sane defaults for all platform settings. While this is sufficient for the most common use cases, we also provide a way to customize the playground installation via:
+
+* make variables in the preferences file or inline
+* kpt setters file
+
+### Preferences file
+
+The preferences file is a file that contains high-level variables that are taken into account by the [Makefile][make-gh] used to orchestrate the playground deployment.
+
+[make-gh]: https://github.com/nokia-eda/playground/blob/main/Makefile
+
+The EDA Playground repository contains the [`prefs.mk`][prefs-file] preference file that lists these high-level variables along with a short description of their purpose.
+
+```Makefile
+# TODO: uncomment when the repo is open
+# --8<-- "https://raw.githubusercontent.com/nokia-eda/playground/refs/heads/main/prefs.mk"
+```
+
+Users can set the variables in this file to the intended values and then run the `make` command to deploy the playground with the desired settings. To use a custom location of the preferences file instead of the default `./prefs.mk` set the `PLAYGROUND_PREFS_FILE` environment variable to the desired path[^2].
+
+[prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
+
+### KPT Setters file
+
+When the preferences file contains a set of high-level variables, the KPT setters file may contain values for every KPT setter used in [nokia-kpt][nokia-kpt-repo] KPT repository. The complete list of setters, their example values and types are provided in the KPT Setters Reference section as well as in the [kpt-setters.yaml][kpt-setters-yaml] file.
+
+[kpt-setters-yaml]: https://github.com/nokia-eda/playground/blob/main/configs/kpt-setters.yaml
+[nokia-kpt-repo]: https://github.com/nokia-eda/kpt
+
+To use your own KPT setters file, create a copy of the [`kpt-setters.yaml`][kpt-setters-yaml] file with the required parameters set and set the `KPT_SETTERS_FILE` variable in the [preferences file](#preferences-file) to the path of your setters file.
+
+## KPT Setters Reference
+
+### Core package
 
 <small>Package location: [eda-kpt-base][eda-kpt-base-gh-url]</small>
 
@@ -93,7 +130,7 @@ Below you will find all the parameters that can be customized per package that w
 | `TM_IMG`                   | `ghcr.io/nokia-eda/core/testman:24.8.1-rc`                        | `str`   |             |
 | `no_proxy`                 | `,10.244.0.0/16,10.96.0.0/16,.local,.svc,eda-git,eda-git-replica` | `str`   |             |
 
-## External packages
+### External packages
 
 <small>Package location: [eda-external-packges][eda-external-packges-gh-url]</small>
 
@@ -117,7 +154,7 @@ Below you will find all the parameters that can be customized per package that w
 | `TRUSTMGRBUNDLE_IMG` | `ghcr.io/nokia-eda/ext/jetstack/cert-manager-package-debian:20210119.0` | `str` |  |
 | `TRUSTMGR_IMG` | `ghcr.io/nokia-eda/ext/jetstack/trust-manager:v0.9.1` | `str` |  |
 
-## Playground
+### Playground packages
 
 <small>Package location: [eda-playground][eda-playground-gh-url]</small>
 
@@ -134,3 +171,4 @@ Below you will find all the parameters that can be customized per package that w
 [eda-playground-gh-url]: https://github.com/nokia-eda/kpt/tree/main/eda-kpt-playground
 
 [^1]: Read more about kpt functions in the [kpt book](https://kpt.dev/book/04-using-functions/01-declarative-function-execution)
+[^2]: The Playground git repo has the `./private` directory ignored, so the users can create a copy of the preference file in the `./private` directory.
