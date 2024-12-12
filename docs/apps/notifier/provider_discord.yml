@@ -2,6 +2,7 @@ apiVersion: notifiers.eda.nokia.com/v1
 kind: Provider
 metadata:
   name: discord
+  namespace: eda-system
 spec:
   enabled: true
   uri: discord://${TOKEN}@${WEBHOOKID}
