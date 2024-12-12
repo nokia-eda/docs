@@ -6,9 +6,9 @@ Typically, the management and automation platforms of EDA' caliber require a ton
 
 ## Playground repository
 
-We will need the playground repository on our machine to run EDA installation steps. Pull it, as explained in the [Getting access](../../getting-started/getting-access.md) section.
+We will need the playground repository on our machine to run EDA installation steps. Pull it, as explained in the [Try EDA](../../getting-started/try-eda.md) section.
 
---8<-- "docs/getting-started/getting-access.md:pull-playground"
+--8<-- "docs/getting-started/try-eda.md:pull-playground"
 
 When the playground repo is cloned, let's install the CLI tools that we will need to run EDA installation steps.
 

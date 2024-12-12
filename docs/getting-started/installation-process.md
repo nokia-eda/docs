@@ -4,7 +4,9 @@ The unattended install procedure powered by the [`make try-eda`](try-eda.md) ste
 
 /// admonition | Note
     type: subtle-note
-This chapter explains the generic installation steps based on the Makefile operations and is not a reference for a production installation.
+
+1. If you want just to install EDA the easy way, you can skip this chapter and use the [Try EDA](try-eda.md) procedure.
+2. This chapter explains the generic installation steps based on the Makefile operations and is not a reference for a production installation.
 ///
 
 A generic EDA installation procedure is as simple as:
@@ -18,7 +20,7 @@ The `make try-eda` command sets up the whole thing for you; Let's unwrap it step
 
 ## Tools
 
-Who likes to install a bunch of tools that are needed for the installation process manually? Not us! That's why the first step of the installation process is to install the tools our installation process relies on.
+Who likes to manually install a bunch of tools that are needed for the installation process manually? Not us! That's why we automated the tools procurement our installation process relies on:
 
 --8<-- "docs/getting-started/try-eda.md:tools-install"
 
@@ -35,7 +37,7 @@ make download-pkgs
 This pulls two git repositories to the respective directories:
 
 1. the EDA [kpt][kpt-repo] package in `eda-kpt` directory
-2. the EDA built-in [catalog][catalog-repo] in `catalog` directory.
+2. the EDA built-in [app catalog][catalog-repo] in `catalog` directory.
 
 ## KinD cluster
 
@@ -87,10 +89,8 @@ eda-demo-control-plane   Ready    control-plane   88s   v1.25.3
 Because the playground setup assumes a virgin k8s cluster, we will also install some common applications like `fluentd` for logging, `certmanager` for TLS and a `git` server. You may provide these components as part of your own cluster installation, or the EDA install can add them for you. It is highly recommended if EDA is the only workload in the cluster to allow EDA to manage the installation of these dependencies.
 
 ```{.shell .no-select}
-make install-external-packages #(1)!
+make install-external-packages
 ```
-
-1. Installation takes approximately 3-5 minutes.
 
 External packages are defined in the [`kpt/eda-external-packages`][ext-packages] directory.
 
@@ -98,6 +98,8 @@ External packages are defined in the [`kpt/eda-external-packages`][ext-packages]
 
 To provide configuration flexibility for EDA installation, `kpt` packages have a lot of fields marked with the `# kpt-set:` annotation. These fields can be set with the `kpt` CLI to change their default values.  
 Parameters like TLS configuration, proxies, default credentials and more are configurable via `kpt` setters.
+
+> [Installation Customization](../user-guide/installation/customize-install.md) section provides a deep dive on all customization options.
 
 For example, it is common for EDA to be behind a load balancer, with clients terminating on the load balancer address and having their traffic forwarded from there. As EDA performs redirects it needs to know the name/IP clients will use to reach it. This can be accomplished via the setters in `kpt`, but for persistency and convenience, the most common settings can be set via the [`prefs.mk`][prefs-file] file that is part of the playground repository.
 
@@ -108,6 +110,8 @@ For example, it is common for EDA to be behind a load balancer, with clients ter
 # EXT_IPV4_ADDR = "<LB IP or external route>"
 # EXT_IPV6_ADDR = "<Same thing but in ipv6>"
 ```
+
+> Check out [Trying EDA Like a Pro](../blog/posts/2024/try-eda-pro.md) post for tips and tricks on how to configure EDA.
 
 ### HTTP Proxies
 
