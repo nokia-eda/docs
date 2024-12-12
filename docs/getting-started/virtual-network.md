@@ -1,7 +1,12 @@
 # Virtual network
 
 To make sure that you can get the full EDA experience without upfronting any hardware investment, EDA is packaged with a Digital Sandbox solution called **CX**.  
-CX is in charge of creating and managing virtual topologies running in the cluster.  
+CX is in charge of creating and managing virtual topologies running in the cluster.
+
+/// admonition | Note
+    type: subtle-note
+If you completed the [Try EDA](try-eda.md) procedure the virtual network is already created for you. This section provides details on how the virtual network is created, what it consists of, and how connect to the virtual nodes.
+///
 
 ## Example topology
 
@@ -13,7 +18,9 @@ As part of this command a separate make target is called to load the topology re
 make topology-load #(1)!
 ```
 
-1. `topology-load` targets loads the example topology provided in the json file as a ConfigMap into the cluster. The CX controller watches for ConfigMap changes and creates the corresponding topology resources.
+1. No need to run this target if you already completed the [Try EDA](try-eda.md) step, it has happened already.
+
+    `topology-load` targets loads the example topology provided in the json file as a ConfigMap into the cluster. The CX controller watches for ConfigMap changes and creates the corresponding topology resources.
 
 As a result you will get you the following topology running in your cluster:
 

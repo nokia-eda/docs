@@ -2,14 +2,23 @@
 
 We made sure that trying EDA is as easy as running a single command. Literally.
 
-The [`Makefile`][makefile][^1] that comes with the [`playground` repository][playground-repo] you have cloned in the [previous step](getting-access.md#clone-the-playground-repository) has everything that is needed to enact the various installation steps. The use of this `Makefile` is not mandatory, but highly recommended as it substantially simplifies the quickstart installation process!
+Let's start with cloning the [EDA playground repository][playground-repo] that contains everything you need to install and provision a demo EDA instance with the virtual network on the side to have the full experience. You will need `git`[^1] to clone it:
+
+<!-- --8<-- [start:pull-playground] -->
+```shell
+git clone https://github.com/nokia-eda/playground && \
+cd playground
+```
+<!-- --8<-- [end:pull-playground] -->
+
+The [`Makefile`][makefile][^2] that comes with the [`playground` repository][playground-repo] has everything that is needed to enact the various installation steps. The use of this `Makefile` is not mandatory, but highly recommended as it substantially simplifies the quickstart installation process!
 
 EDA is cloud-native platform deployed on top of Kubernetes (k8s); and not just because Kubernetes is a common orchestration system, but because it leverages the Kubernetes-provided declarative API, the tooling and the ecosystem built around it.  
-It is required that your Kubernetes cluster satisfies the following requirements[^2]:
+It is required that your Kubernetes cluster satisfies the following requirements[^3]:
 
 :fontawesome-solid-microchip: 10 vCPUs  
 :fontawesome-solid-memory: 16GB of RAM  
-:fontawesome-solid-floppy-disk: 100GB of storage
+:fontawesome-solid-floppy-disk: 30GB of storage
 
 /// admonition | I don't have a cluster! Am I out?
     type: subtle-question
@@ -21,9 +30,9 @@ You don't have a cluster yet! We will get you a suitable k8s cluster in no time 
 ## Dependencies
 
 The getting started guide assumes you run a Linux/amd64 system. Check out the [User Guide](../user-guide/installation/index.md) section for other installation options.  
-You are welcome to try your own distro[^3], but steps have been validated on Ubuntu 22.04, Debian 11 and 12.
+You are welcome to try your own distro[^4], but steps have been validated on Ubuntu 22.04, Debian 11 and 12.
 
-Your host executing the install needs `make`[^4] and [`docker`](https://docs.docker.com/engine/install/)[^5] installed. With `make` you can install the remaining dependencies:
+Your host executing the install needs `make`[^5] and [`docker`](https://docs.docker.com/engine/install/)[^6] installed. With `make` you can install the remaining dependencies:
 <!-- --8<-- [start:tools-install] -->
 ```shell
 make download-tools #(1)!
@@ -88,7 +97,7 @@ make try-eda #(1)!
     make try-eda
     ```
 
-The installation will take approximately 10 minutes to complete. Once the it is done, you can optionally verify the installation.
+The installation will take approximately 5 minutes to complete. Once the it is done, you can optionally verify the installation.
 
 [:octicons-arrow-right-24: Verify](verification.md)
 
@@ -106,12 +115,14 @@ EDA UI is exposed in a cluster via a Service of type `LoadBalancer`, but since y
 Nothing a `kubectl port-forward` can't solve! In the very end of the installation log you should see a message inviting you to run the following command:
 
 ```shell
-make start-ui-port-forward
+make start-ui-port-forward #(1)!
 ```
+
+1. The port-forwarding target will run the forwarding service in the foreground, effectively blocking the terminal. If you want to enable UI access in a more permanent way, consider running the `make enable-ui-port-forward-service` target which is explained [here](../blog/posts/2024/try-eda-pro.md#more-permanent-ui-access) in details.
 
 This target will forward the https port of the `eda-api` service and display the URL to use in your browser.
 
-Point your browser to `https://<eda-domain-name>:<ext-https-port>` where `eda-domain-name` is the `EXT_DOMAIN_NAME` value set during the install step and `ext-https-port` is the https[^6] port value set in the `EXT_HTTPS_PORT`.  
+Point your browser to `https://<eda-domain-name>:<ext-https-port>` where `eda-domain-name` is the `EXT_DOMAIN_NAME` value set during the install step and `ext-https-port` is the https[^7] port value set in the `EXT_HTTPS_PORT`.  
 This should open the EDA UI. The default username is `admin`, and the password is `admin`.
 
 <div class="grid cards" markdown>
@@ -139,15 +150,22 @@ This should open the EDA UI. The default username is `admin`, and the password i
 [makefile]: https://github.com/nokia-eda/playground/blob/main/Makefile
 [prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 
-[^1]: The [`playground` repository][playground-repo] supports both a try EDA (or playground) method using KinD, and a method for installing EDA to previously deployed Kubernetes clusters via the same `Makefile`.  
+[^1]: Many distributions come with `git` preinstalled, but if not you should install it via your package manager.  
+    For instance with `apt`-enabled systems:
+
+    ```shell
+    sudo apt install -y git
+    ```
+
+[^2]: The [`playground` repository][playground-repo] supports both a try EDA (or playground) method using KinD, and a method for installing EDA to previously deployed Kubernetes clusters via the same `Makefile`.  
 The latter is covered in the [Installation process section](installation-process.md).
 
-[^2]: This as well accounts for the [playground topology](virtual-network.md).
-[^3]: Or even [run it on macOS](../user-guide/installation/macos.md).
+[^3]: This as well accounts for the [playground network topology](virtual-network.md).
+[^4]: Or even [run it on macOS](../user-guide/installation/macos.md) or in an [existing Kubernetes cluster](../user-guide/installation/on-prem-cluster.md).
 
-[^4]: Install with `sudo apt install -y make` or its `yum`/`dnf`-based equivalent.
+[^5]: Install with `sudo apt install -y make` or its `yum`/`dnf`-based equivalent.
 
-[^5]: https://docs.docker.com/engine/install/  
+[^6]: https://docs.docker.com/engine/install/  
 You can try running the quickstart with `podman` instead of docker, although bear in mind that `podman`-based installation was not validated.
 
-[^6]: EDA UI/API is served only over HTTPS.
+[^7]: EDA UI/API is served only over HTTPS.
