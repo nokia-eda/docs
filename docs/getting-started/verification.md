@@ -6,45 +6,47 @@ However, while testing the setup process on several different platforms, we coul
 
 ## EDA core
 
-You should be able to use `kubectl get pods` to verify that EDA core components have started and in the Ready state:
+You should be able to use `kubectl -n eda-system get pods` to verify that EDA core components have started and in the Ready state:
 
 ```{.shell .no-select}
-kubectl get pods | awk 'NR==1 || /eda/'
+kubectl -n eda-system get pods | awk 'NR==1 || /eda/'
 ```
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
-NAME                              READY   STATUS    RESTARTS   AGE
-eda-api-b9ddf7784-pdc8w           1/1     Running   0          35h
-eda-appstore-7b5cd7d767-kjjpg     1/1     Running   0          35h
-eda-asvr-84d77c756b-cqsnt         1/1     Running   0          35h
-eda-bsvr-574c497c57-smx9q         1/1     Running   0          35h
-eda-ce-6c6589847-lm52x            1/1     Running   0          35h
-eda-cx-8bb6cc546-fl9ff            1/1     Running   0          35h
-eda-fe-84454cc45c-c9mvm           1/1     Running   0          35h
-eda-fluentbit-5kvkz               1/1     Running   0          35h
-eda-fluentd-678c7c6bb6-xg9d4      1/1     Running   0          35h
-eda-git-546b7b86f8-79xf7          1/1     Running   0          35h
-eda-git-replica-b998dfd5-26ss7    1/1     Running   0          35h
-eda-keycloak-5886554ff9-2ffdl     1/1     Running   0          35h
-eda-npp-leaf1                     1/1     Running   0          14h
-eda-npp-leaf2                     1/1     Running   0          14h
-eda-npp-spine1                    1/1     Running   0          14h
-eda-postgres-676fb9994-2vmps      1/1     Running   0          35h
-eda-sa-8d9b8b7b-pd46s             1/1     Running   0          35h
-eda-sc-85b9987c68-27bh8           1/1     Running   0          35h
-eda-se-1                          1/1     Running   0          35h
-eda-sim-leaf1-1-5bc5797b99-zndgm  2/2     Running   0          14h
-eda-sim-leaf2-1-5f77844fcc-5z7kh  2/2     Running   0          14h
-eda-sim-spine1-1-75786fc95-9xw6f  2/2     Running   0          14h
-eda-toolbox-754bcd8564-fcq96      1/1     Running   0          35h
+NAME                                  READY   STATUS    RESTARTS   AGE
+cx-eda--leaf1-sim-864b97d58d-g9zq2    2/2     Running   0          12h
+cx-eda--leaf2-sim-6698fc668f-4blcm    2/2     Running   0          12h
+cx-eda--spine1-sim-677f5499cf-fn2pg   2/2     Running   0          12h
+eda-api-9985cb78-gphnk                1/1     Running   0          12h
+eda-appstore-8d679c5b-fqmt6           1/1     Running   0          12h
+eda-asvr-dc9877c8d-5j62k              1/1     Running   0          12h
+eda-bsvr-6bf77b64c-9l2zx              1/1     Running   0          12h
+eda-ce-84c6486cb7-f8jzc               1/1     Running   0          12h
+eda-cx-5dc6cf9d96-dcrrf               1/1     Running   0          12h
+eda-fe-54d8db877f-xk7l8               1/1     Running   0          12h
+eda-fluentbit-hkwvd                   1/1     Running   0          12h
+eda-fluentd-54cf4bd5d7-j98zg          1/1     Running   0          12h
+eda-git-754df68df5-8kgx4              1/1     Running   0          12h
+eda-git-replica-784dbdbfc8-5zdzz      1/1     Running   0          12h
+eda-keycloak-5d569565b7-2gmc7         1/1     Running   0          12h
+eda-metrics-server-799d54cb7-688nz    1/1     Running   0          12h
+eda-npp-eda-leaf1                     1/1     Running   0          12h
+eda-npp-eda-leaf2                     1/1     Running   0          12h
+eda-npp-eda-spine1                    1/1     Running   0          12h
+eda-postgres-cd89bfc57-q56cc          1/1     Running   0          12h
+eda-sa-576c98865f-66vq9               1/1     Running   0          12h
+eda-sc-84546648c5-djr49               1/1     Running   0          12h
+eda-se-1                              1/1     Running   0          12h
+eda-toolbox-84c95bd8c6-lqxh7          1/1     Running   0          12h
 ```
 </div>
 
 You can also check the `EngineConfig` to verify the ConfigEngine has started correctly, checking the `.status.run-status` field:
 
 ```{.shell .no-select}
-kubectl get engineconfig engine-config -o jsonpath='{.status.run-status}{"\n"}'
+kubectl -n eda-system get engineconfig engine-config \
+-o jsonpath='{.status.run-status}{"\n"}'
 ```
 
 <div class="embed-result highlight">
@@ -64,15 +66,17 @@ The easiest way to tell the current state of nodes is via the [UI](try-eda.md#we
 /// tab | :octicons-check-circle-24: All nodes are healthy
 
 ```{.shell .no-select}
-kubectl get toponodes
+kubectl -n eda get toponodes #(1)!
 ```
+
+1. `TopoNode` resources are scoped in the `eda` namespace, hence the `-n eda` flag.
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME     PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
-leaf1    7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   14h
-leaf2    7220 IXR-D3L   24.7.1    srl   true        normal   Connected   Synced   14h
-spine1   7220 IXR-D5    24.7.1    srl   true        normal   Connected   Synced   14h
+leaf1    7220 IXR-D3L   24.10.1   srl   true        normal   Connected   Synced   12h
+leaf2    7220 IXR-D3L   24.10.1   srl   true        normal   Connected   Synced   12h
+spine1   7220 IXR-D5    24.10.1   srl   true        normal   Connected   Synced   12h
 ```
 </div>
 ///
@@ -92,47 +96,46 @@ spine1   7220 IXR-D5    24.7.1    srl   true        normal   Connected   Synced 
 </div>
 ///
 
-In particular the `NPP` and `NODE` columns define the state of the ConfigEngine to NPP connection, and the NPP to node connection. A node must be `Synced` or it will reject transactions.
+In particular, the `NPP` and `NODE` columns define the state of the ConfigEngine to NPP connection, and the NPP to node connection. A node must be `Synced` or it will reject transactions.
 
-It may also be useful to verify the Pod being launched to simulate the node is starting - this can take a while if it is your clusters first time starting a simulator of a given version. As well as the respective NPP Pod for the node:
+It is useful to verify the underlying Pod resources for the network simulator nodes have been created - this can take a while if it is your first time starting a simulator of a given version. You should see all your sims and the associated NPP (Node Push Pull) pods running:
 
 /// tab | :octicons-check-circle-24: All pods running
 
 ```{.shell .no-select}
-kubectl get pod | awk 'NR==1 || /eda-sim|npp/'
+kubectl -n eda-system get pod | awk 'NR==1 || /cx-eda|npp/'
 ```
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
-NAME                                READY   STATUS    RESTARTS        AGE
-eda-npp-leaf1                       1/1     Running   0               3d20h
-eda-npp-leaf2                       1/1     Running   0               3d20h
-eda-npp-spine1                      1/1     Running   0               3d20h
-eda-sim-leaf1-1-68f9c944b4-6hzgl    2/2     Running   0               3d20h
-eda-sim-leaf2-1-7bbf7d5b8-cn94f     2/2     Running   0               3d20h
-eda-sim-spine1-1-5dcf8c99c9-m48r2   2/2     Running   0               3d20h
+NAME                                  READY   STATUS    RESTARTS   AGE
+cx-eda--leaf1-sim-864b97d58d-g9zq2    2/2     Running   0          14h
+cx-eda--leaf2-sim-6698fc668f-4blcm    2/2     Running   0          14h
+cx-eda--spine1-sim-677f5499cf-fn2pg   2/2     Running   0          14h
+eda-npp-eda-leaf1                     1/1     Running   0          14h
+eda-npp-eda-leaf2                     1/1     Running   0          14h
+eda-npp-eda-spine1                    1/1     Running   0          14h
 ```
 </div>
 ///
 /// tab | :octicons-x-circle-24: Not all pods running
 
 ```{.shell .no-select}
-kubectl get pod | awk 'NR==1 || /eda-sim|npp/'
+kubectl -n eda-system get pod | awk 'NR==1 || /cx-eda|npp/'
 ```
 
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME                                 READY   STATUS    RESTARTS      AGE
-eda-npp-leaf2                        1/1     Running   0             10h
-eda-npp-spine1                       0/1     Pending   0             10h
-eda-sim-leaf1-1-78dbd5655-pkfgw      2/2     Running   0             10h
-eda-sim-leaf2-1-657c5579f-r7l4j      2/2     Running   0             10h
-eda-sim-spine1-1-58ff56b9f5-dj6jx    2/2     Running   0             10h
+cx-eda--leaf1-sim-864b97d58d-g9zq2    2/2     Running   0          14h
+cx-eda--leaf2-sim-6698fc668f-4blcm    2/2     Running   0          14h
+cx-eda--spine1-sim-677f5499cf-fn2pg   2/2     Running   0          14h
+eda-npp-eda-leaf1                     1/1     Running   0          14h
 ```
 </div>
 ///
 
-Note the `eda-sim-*` Pods, one for each TopoNode in the topology. You should also note there are three NPPs, also one for each `TopoNode`.
+Note the `cx-eda-*` Pods (one for each `TopoNode` in the topology), these pods are SR Linux container images. You should also note there are three NPP Pods (also one for each `TopoNode`) each designated to a corresponding `TopoNode`.
 
 ## Transactions
 
@@ -145,7 +148,7 @@ The EDA's brain - Config Engine - works off a sequential transaction log, proces
 For items coming in via the UI and API, a failed transaction does not impact future transactions. For Kubernetes this behavior is inverse - the ConfigEngine will always try to ingest the full set of changes available for processing, and so an object that can never transact can cause other items to fail. You can verify transactions in the system with:
 
 ```{.shell .no-select}
-kubectl get transactionresults
+kubectl -n eda-system get transactionresults
 ```
 
 <div class="embed-result highlight">
@@ -166,7 +169,7 @@ If you see any transactions with a result of `Failed`, these should be investiga
 You can investigate the transaction further with:
 
 ```{.shell .no-select}
-kubectl get transactionresults transaction-000000069 -o yaml
+kubectl -n eda-system get transactionresults transaction-000000069 -o yaml
 ```
 
 <div class="embed-result highlight">
@@ -201,8 +204,8 @@ As covered in the [Configure your deployment](installation-process.md#configure-
 The values you provided in the prefs.mk file or in the CLI can be found in the Engine Config resource:
 
 ```{.shell .no-select}
-kubectl get engineconfig engine-config -o jsonpath='{.spec.cluster.external}' \
-| yq -p json #(1)!
+kubectl -n eda-system get engineconfig engine-config \
+-o jsonpath='{.spec.cluster.external}' | yq -p json #(1)!
 ```
 
 1. The `yq` CLI tool is installed in the `./tools` directory of the playground repo.
