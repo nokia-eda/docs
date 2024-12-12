@@ -1,0 +1,14 @@
+apiVersion: prom.eda.nokia.com/v1alpha1
+kind: Export
+metadata:
+  name: static-labels-metric
+  namespace: eda-system
+spec:
+  exports:
+    - path: .namespace.node.srl.interface.statistics
+      labels:
+        static:
+          - name: env
+            value: prod
+          - name: region
+            value: us-west-1

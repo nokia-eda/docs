@@ -1,0 +1,9 @@
+apiVersion: prom.eda.nokia.com/v1alpha1
+kind: Export
+metadata:
+  name: prefixed-metrics
+  namespace: eda-system
+spec:
+  exports:
+    - path: .namespace.node.srl.interface.statistics
+      prefix: eda
