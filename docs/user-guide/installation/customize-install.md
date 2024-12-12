@@ -78,6 +78,26 @@ When the preferences file contains a set of high-level variables, the KPT setter
 
 To use your own KPT setters file, create a copy of the [`kpt-setters.yaml`][kpt-setters-yaml] file with the required parameters set and set the `KPT_SETTERS_FILE` variable in the [preferences file](#preferences-file) to the path of your setters file.
 
+## Keycloak admin password
+
+The Keycloak administrator password can be updated during install with KPT setters, or post-install with the following procedure:
+
+1. Navigate in web browser to `{EDA_URL}/core/httpproxy/v1/keycloak`
+2. Login with the current Keycloak administrator username and password.
+3. Select "Manage Account" on the top right dropdown for the user.
+4. Select "Account Security > Signing In" from the left menu.
+5. Click "Update" next to "My Password".
+6. Configure a new password and save it.
+7. Generate the Base 64 hash of the new password.
+8. Using a system with access to the Kubernetes API of the EDA deployment, update the keycloak-admin-secret and restart Keycloak:
+
+```shell
+kubectl -n eda-system patch secret keycloak-admin-secret \
+-p '{"data": { "password": "<NEW BASE64 HASH>" }}'
+
+kubectl -n eda-system rollout restart deployment/eda-keycloak
+```
+
 ## KPT Setters Reference
 
 ### Core package
