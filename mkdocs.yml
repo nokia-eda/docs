@@ -8,6 +8,7 @@ nav:
           - Installation process: getting-started/installation-process.md
           - Virtual network: getting-started/virtual-network.md
           - Verification: getting-started/verification.md
+          - Resetting the Playground: getting-started/reset.md
   - User guide:
       - Queries: user-guide/queries.md
       - Topologies: user-guide/topologies.md
@@ -23,7 +24,6 @@ nav:
               - KinD: user-guide/installation/kind.md
           - user-guide/exposing-ui-api.md
           - user-guide/installation/customize-install.md
-          - Resetting a cluster: user-guide/reset.md
   - Apps:
       - App Store: apps/app-store.md
       - Fabric: apps/fabric.md
