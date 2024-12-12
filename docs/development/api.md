@@ -43,37 +43,51 @@ For the API, a similar workflow can be followed by using the Direct Access Grant
 
 The authentication request requires the following fields:
 
+* `client_id`: Must be set to `eda`
+* `grant_type`: Must be set to `password`
+* `scope`: Must be set to `openid`
 * `username`: The username for the user that needs to authenticate
 * `password`: The password for the user that needs to authenticate
+* `client_secret`: The Keycloak client secret for client ID `eda`[^1]
 
 /// admonition | Some of the hardcoded settings might change in the future
     type: note
 ///
 
-An example of using `curl` to authenticate and get an access token for the EDA API. Make sure to use your own EDA host and port instead of `###EDA-HOST:PORT###`.
+An example of using `curl` to authenticate and get an access token for the EDA API. Make sure to use your own EDA URL and Keycloak client secret.
 
 ```bash
-curl -s https://###EDA-HOST:PORT###/auth/login \
-  -d '{ "username": "admin", "password": "admin" }' \
-  -X POST
+curl -s https://eda.example.com:9443/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode 'client_id=eda' \
+  --data-urlencode 'grant_type=password' \
+  --data-urlencode 'scope=openid' \
+  --data-urlencode 'username=admin' \
+  --data-urlencode 'password=admin' \
+  --data-urlencode 'client_secret=9eGhwdAaox8bQ5DnfuUHuQTbOxhJxUwg'
 ```
 
 /// details | Example output parsed using `jq`
     type: note
 
 ```bash
-curl -s https://eda.domain.tld/auth/login \
-  -d '{ "username": "admin", "password": "admin" }' \
-  -X POST | jq -S
-{
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuNnV4VXVyODdyaHNYUEt6dHNlT1Qxc1lERVI5MVVlMXBzWnhhaEdQX19rIn0.eyJleHAiOjE3MjU1NTE3MDgsImlhdCI6MTcyNTU1MTQwOCwianRpIjoiM2Q0ODk2MzQtNWM4Zi00MGY4LWJhNjgtNmNiMGFmNWIyOWZkIiwiaXNzIjoiaHR0cHM6Ly8xMzUuMjI3LjE0LjE5MC9jb3JlL2h0dHBwcm94eS92MS9rZXljbG9hay9yZWFsbXMvZWRhIiwic3ViIjoiZjJhNzUwMzUtNTZhNS00YmEwLWJlOWItNTNlMTM1MTI1OWJlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYXV0aCIsInNpZCI6Ijg2OGJiOGVlLWZmNmQtNDk4Mi04OGQyLWE0YWE3OGM3MTNjNSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly8xMzUuMjI3LjE0LjE5MCIsIioiLCJodHRwOi8vKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZWRhcm9sZV9zeXN0ZW0tYWRtaW5pc3RyYXRvciIsImFkbWluIl19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiRURBIGFkbWluIHVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImdpdmVuX25hbWUiOiJFREEiLCJmYW1pbHlfbmFtZSI6ImFkbWluIHVzZXIifQ.O0z4Q7-ZiN0SWIiT9_h1B47_v_WDp4Q4YAc9Y2k5s3Z7MCiT0wkJqSYHlL2cPLbGntIQ3SR_I0vDIBd7uRzh2wTdGltUdJTic_ZaHIhiwBRHqJEuiLu9deCVkjLGbLT12bzohbiWxFkBYCN-2aPn-l8gEbCzU549non2HUseYbwAX2jNY3nKayZvXF2Af1uL3W0uoN0VpVxFFz_CQa6aYLXuO6D0a9lL0i3wn6t19hiG1ABthqzx4w3IsC4vy2ujs1vNqKtxHQ2U0TTznnN0bCPrBIb3Z9-hMed6-FYyaYwc5Zm1O0vVFdQocQPaLPvM2Wzb_9Q2nxJY0SJ5OTB_BA",
+curl -s https://eda.example.com:9443/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode 'client_id=eda' \
+  --data-urlencode 'grant_type=password' \
+  --data-urlencode 'scope=openid' \
+  --data-urlencode 'username=admin' \
+  --data-urlencode 'password=admin' \
+  --data-urlencode 'client_secret=9eGhwdAaox8bQ5DnfuUHuQTbOxhJxUwg' | jq -S
+  {
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJBTHBheFhxanhaYmY5Vy1Pb3JpVnoxSUNTUV9SLUNrc05jZzVGRGFadUI0In0.eyJleHAiOjE3MzM5OTMyNDcsImlhdCI6MTczMzk5Mjk0NywianRpIjoiZjExZTdmM2UtMzFkNi00NTQ0LWE3MDUtMjA2Mzg0ZTYyYmNiIiwiaXNzIjoiaHR0cHM6Ly9wbG0tc2Itazgubm92YWxvY2FsOjk0NDMvY29yZS9odHRwcHJveHkvdjEva2V5Y2xvYWsvcmVhbG1zL2VkYSIsInN1YiI6ImYyYTc1MDM1LTU2YTUtNGJhMC1iZTliLTUzZTEzNTEyNTliZSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImVkYSIsInNpZCI6ImYyZTU1YjQ2LWRiN2YtNGIwMi05ZTIwLTc2YTc2YWE0MDYwMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImVkYXJvbGVfc3lzdGVtLWFkbWluaXN0cmF0b3IiLCJhZG1pbiJdfSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkVEQSBhZG1pbiB1c2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiRURBIiwiZmFtaWx5X25hbWUiOiJhZG1pbiB1c2VyIn0.ZH2vO1sbxm4tke2bE1fUdUbkCtHYo3bFUZpr0J46GL0lGpyIf0LkxOnosatjpLCQl7-CpExhZCv11SmUM6W6c4DoX6d90PKeC-t-GoSKshAxGIh7njtFt1_dYAf1NgF4EGOQMPINj-_n4igjU22Ef7aU8c05m-QkbIPykYFJ0BefqG_H8A1QzNvntADrEfrpHAudGFxB1Ei5FpBxIRfqX40B7_9brzWMlrRRXeWA9i-JVe-6JXQxTTqRKAF9sWGllTA-vbcl-MZ1WsGcC8yS-KQ9nyTrqkwT4Sh06Z7s8IpqBNPEcVJ8p_X65bblGoRKrXMSD0zEXM2zTsJRGd6JVA",
   "expires_in": 300,
-  "id_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuNnV4VXVyODdyaHNYUEt6dHNlT1Qxc1lERVI5MVVlMXBzWnhhaEdQX19rIn0.eyJleHAiOjE3MjU1NTE3MDgsImlhdCI6MTcyNTU1MTQwOCwianRpIjoiN2EwMzBmMWYtNzIxYy00YzQzLWIxZWMtODIxZWI4OGYwMmU0IiwiaXNzIjoiaHR0cHM6Ly8xMzUuMjI3LjE0LjE5MC9jb3JlL2h0dHBwcm94eS92MS9rZXljbG9hay9yZWFsbXMvZWRhIiwiYXVkIjoiYXV0aCIsInN1YiI6ImYyYTc1MDM1LTU2YTUtNGJhMC1iZTliLTUzZTEzNTEyNTliZSIsInR5cCI6IklEIiwiYXpwIjoiYXV0aCIsInNpZCI6Ijg2OGJiOGVlLWZmNmQtNDk4Mi04OGQyLWE0YWE3OGM3MTNjNSIsImF0X2hhc2giOiJfRzloSUhDSmp3aHloRC1sVlVVUEV3IiwiYWNyIjoiMSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkVEQSBhZG1pbiB1c2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiRURBIiwiZmFtaWx5X25hbWUiOiJhZG1pbiB1c2VyIn0.G5e6cw0bQj7z_GSLZuxaVoAI4RAZ6VK856RnfurSInZTbi4DyBsIxEb3-YAJzQp9I0Dm8aHDVU98CpVsJBMr6o6PG0NcmfuyBr8wn86mIVBh9adJ4eaKrV-uRs1OX1Fmd0SBhDnujrdmaLAoGKddzRb-B4PEXDB4gBEiOIU35FgCmdyLXhtVBtXVMm4Eilmww8ezfYZG2nXBS_W_WELhuR0G1xoehCq12T_cRkbfBD-uFLzAbBUdkrl1A-KZSKsrHQU9xMmwxsIEenNWuou8K4VoizD8hdbAN6HlbxQZeaQ9soEP1r2pSJhFa6VJ9xFDpXKiESzNz2jRqJ7_D33WRg",
+  "id_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJBTHBheFhxanhaYmY5Vy1Pb3JpVnoxSUNTUV9SLUNrc05jZzVGRGFadUI0In0.eyJleHAiOjE3MzM5OTMyNDcsImlhdCI6MTczMzk5Mjk0NywianRpIjoiODM0MGVlMWQtOThkNC00ZmQ5LThhOTQtNTIwNTQ5YWJlMjE3IiwiaXNzIjoiaHR0cHM6Ly9wbG0tc2Itazgubm92YWxvY2FsOjk0NDMvY29yZS9odHRwcHJveHkvdjEva2V5Y2xvYWsvcmVhbG1zL2VkYSIsImF1ZCI6ImVkYSIsInN1YiI6ImYyYTc1MDM1LTU2YTUtNGJhMC1iZTliLTUzZTEzNTEyNTliZSIsInR5cCI6IklEIiwiYXpwIjoiZWRhIiwic2lkIjoiZjJlNTViNDYtZGI3Zi00YjAyLTllMjAtNzZhNzZhYTQwNjAxIiwiYXRfaGFzaCI6IlNJRUREbWdpb2xneXpPT2lqQ3ZHRWciLCJhY3IiOiIxIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiRURBIGFkbWluIHVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImdpdmVuX25hbWUiOiJFREEiLCJmYW1pbHlfbmFtZSI6ImFkbWluIHVzZXIifQ.a9946wNL4_UCfi9LmysRz6wiZG3Zgt84Vz6pa5HfxRcQj5tvFsoBVNCSWd07OzxAS_QuPsMESl9WM4WalUW4Ib6XyNEPENvJsQE8mRWSm-x1R0d1lqrGSaiOJzKX5XUNgZ1u7PRbG-jtlcY-Iaq3Ei7sfOWVmXz8mKOyGteRCa9MSrbD4oFe52DTPNV4EwHIbkI8hUuO9dvgu3MdX6OdLSU9FApDAQjrMo7dqF9_E5SfGvnIPWcAiPD2QyuTP6ZF2SBDEX0OIqn7LNiyyeg4t6RylCakgi31zi_cTY3SfeMhmc9_X4SOj0XbmqZYM7o_mCFxbXTjeSVLcJv4zvuMHg",
   "not-before-policy": 0,
   "refresh_expires_in": 1800,
-  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxNmFkMGE4My01MDk2LTQ3ZTUtOTJhZC0zY2RiMjlhN2I4M2UifQ.eyJleHAiOjE3MjU1NTMyMDgsImlhdCI6MTcyNTU1MTQwOCwianRpIjoiOTY5ZmU1MDgtNDdjZi00N2UzLWE3MzAtYWVlMDQwYmI1ZTFkIiwiaXNzIjoiaHR0cHM6Ly8xMzUuMjI3LjE0LjE5MC9jb3JlL2h0dHBwcm94eS92MS9rZXljbG9hay9yZWFsbXMvZWRhIiwiYXVkIjoiaHR0cHM6Ly8xMzUuMjI3LjE0LjE5MC9jb3JlL2h0dHBwcm94eS92MS9rZXljbG9hay9yZWFsbXMvZWRhIiwic3ViIjoiZjJhNzUwMzUtNTZhNS00YmEwLWJlOWItNTNlMTM1MTI1OWJlIiwidHlwIjoiUmVmcmVzaCIsImF6cCI6ImF1dGgiLCJzaWQiOiI4NjhiYjhlZS1mZjZkLTQ5ODItODhkMi1hNGFhNzhjNzEzYzUiLCJzY29wZSI6Im9wZW5pZCByb2xlcyB3ZWItb3JpZ2lucyBhY3IgYmFzaWMgcHJvZmlsZSBlbWFpbCJ9.Qaioh5oYqsi8ghXm3NpElBXGwIgXGShmMeBZNgbxFX9qpEWxMgNzINxoRU6fMnZovIDq26_MYalT4RqgF_MFQA",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1NDRjYThkOC0yN2JkLTRlYTAtOGY2Ny1jOTkzYjExMDAwZDYifQ.eyJleHAiOjE3MzM5OTQ3NDcsImlhdCI6MTczMzk5Mjk0NywianRpIjoiZmE2OGQwYWEtNTcyOS00ZjhiLWE5OWUtNDQyNmY3ZWEwNzg5IiwiaXNzIjoiaHR0cHM6Ly9wbG0tc2Itazgubm92YWxvY2FsOjk0NDMvY29yZS9odHRwcHJveHkvdjEva2V5Y2xvYWsvcmVhbG1zL2VkYSIsImF1ZCI6Imh0dHBzOi8vcGxtLXNiLWs4Lm5vdmFsb2NhbDo5NDQzL2NvcmUvaHR0cHByb3h5L3YxL2tleWNsb2FrL3JlYWxtcy9lZGEiLCJzdWIiOiJmMmE3NTAzNS01NmE1LTRiYTAtYmU5Yi01M2UxMzUxMjU5YmUiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiZWRhIiwic2lkIjoiZjJlNTViNDYtZGI3Zi00YjAyLTllMjAtNzZhNzZhYTQwNjAxIiwic2NvcGUiOiJvcGVuaWQgcm9sZXMgd2ViLW9yaWdpbnMgYWNyIGJhc2ljIHByb2ZpbGUgZW1haWwifQ.SQeRoXLXA61l8AozNH2iaOYR0lJVMYWTtbAEYKY4lREYYesAAMNRVk5wcLR1oKJrFzCFRnhMmIEZysQ7D_DDcw",
   "scope": "openid profile email",
-  "session_state": "868bb8ee-ff6d-4982-88d2-a4aa78c713c5",
+  "session_state": "f2e55b46-db7f-4b02-9e20-76a76aa40601",
   "token_type": "Bearer"
 }
 ```
@@ -184,3 +198,14 @@ A transaction can also be executed in a dry-run mode, where all configurations a
 The result of a `Transaction` is stored in a `TransactionResult` resource, which would identify all of the resources that were directly or indirectly created, updated or deleted.
 
 For some more details on `Transactions`, check the [Getting Started - Units of automation - Transactions](../getting-started/units-of-automation.md#transactions) page.
+
+[^1]: Use the Keycloak administrator console to retreive the client secret. The secret can also be regenerated.
+
+    1. Navigate in web browser to `{EDA_URL}/core/httpproxy/v1/keycloak`
+    2. Login with the Keycloak administrator username and password.
+    3. There is a dropdown in the upper left which will say "Keycloak". Select "Event Driven Automation eda" in that dropdown.
+    4. Select "Clients" in the menu on the left.
+    5. Select "eda" in the client table in the main web page area.
+    6. Select "Credentials" in the Tab bar containing, "Settings/Keys/Credentials/Roles/..."
+    7. The current "Client Secret" can be copied/viewed.
+    8. The user can click on the "Regenerate" button to generate a new random value for the secret, which can then be copied/viewed.
