@@ -13,7 +13,7 @@
 
 ## Installation
 
-Notifier app can be installed using [EDA App Store](app-store.md) or by applying the AppInstall manifest with `kubectl`:
+Notifier app can be installed using [EDA App Store](app-store.md) or by running the app-installer workflow with `kubectl`:
 
 /// tab | YAML
 
@@ -31,19 +31,6 @@ EOF
 ```
 
 ///
-
-A successful installation will be indicated in the App Store UI and can be verified with `kubectl`:
-
-```{.shell .no-select}
-kubectl get appinstall notifier.nokia
-```
-
-<div class="embed-result highlight">
-```{.console .no-select .no-copy}
-NAME             CATALOG                    VENDOR   APP        VERSION   STATUS
-notifier.nokia   eda-catalog-builtin-apps   nokia    notifier   v1.0.0    Installed
-```
-</div>
 
 ## Configuration
 
@@ -178,10 +165,6 @@ EOF
 ```
 
 ///
-
-## Uninstall
-
-To uninstall the Notifier app, you can use the App Store UI or remove the AppInstall CR along with the related Notifier and Provider resrouces.
 
 [^1]: The full list of supported destinations/providers is available [here](https://containrrr.dev/shoutrrr/v0.8).
 [^2]: Refer to the [Discord docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for more information on how to create a Discord webhook.
