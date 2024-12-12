@@ -4,7 +4,9 @@ The [quickstart guide](../../getting-started/installation-process.md) did a grea
 
 /// admonition | Note
     type: subtle-note
-In this section we are not going into the details of how to install EDA in a production setting, since there are many environment-specific considerations to take into account. Instead, we will focus on bringing up the playground environment on a real k8s cluster.
+
+1. In this section we are not going into the details of how to install EDA in a production setting, since there are many environment-specific considerations to take into account. Instead, we will focus on bringing up the **playground** environment on a non-KinD k8s cluster.
+2. The installation procedure assumes that `cert-manager` does not exist in the cluster as it will be installed by the playground installer.
 ///
 
 Alright, truth be told, the installation process is almost identical to the one you followed in the [quickstart guide](../../getting-started/try-eda.md). This is one of the perks of running on top of Kubernetes that EDA enjoys - no matter what cluster it is (GKE, Openstack, k3s, minikube, etc), the installation process for the greater part would be the same.
@@ -45,23 +47,28 @@ kubectl get storageclass
 <div class="embed-result highlight">
 ```{.shell .no-select .no-copy}
 NAME                 PROVISIONER          RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
-longhorn (default)   driver.longhorn.io   Delete          Immediate           true                   32d
+longhorn (default)   driver.longhorn.io   Delete          Immediate           true                   36d
+longhorn-static      driver.longhorn.io   Delete          Immediate           true                   36d
 ```
 </div>
 
 ## Security context
 
-If you run a cluster with a Pod Security Policy in place (like in case of Talos clusters), make sure to allow a privileged policy for the `default` namespace. The `cert-manager-csi-driver` daemonset requires this to run.
+If you run a cluster with a Pod Security Policy in place (like in case of a Talos cluster with defaults), make sure to allow a privileged policy for the `eda-system` namespace. The `cert-manager-csi-driver` daemonset requires this to run.
 
 ```{.bash .no-select}
-kubectl label namespace default pod-security.kubernetes.io/enforce=privileged
+kubectl create namespace eda-system
+
+kubectl label namespace eda-system \
+pod-security.kubernetes.io/enforce=privileged \
+eda.nokia.com/core-ns=eda-system
 ```
 
 ## Playground repository
 
 We will drive the installation process using the instrumentation provided by the Makefile stored in the [playground repository][pg-repo]. If you haven't done so yet, clone the repository and change into it:
 
---8<-- "docs/getting-started/getting-access.md:pull-playground"
+--8<-- "docs/getting-started/try-eda.md:pull-playground"
 
 If you already have the repository cloned, make sure to pull in the latest changes and remove the `eda-kpt` and `catalog` directories before proceeding.
 
