@@ -19,7 +19,6 @@ nav:
           - user-guide/installation/index.md
           - Deployment options:
               - On-prem cluster: user-guide/installation/on-prem-cluster.md
-              - FSS cluster: user-guide/installation/fss.md
               - macOS: user-guide/installation/macos.md
               - KinD: user-guide/installation/kind.md
           - user-guide/exposing-ui-api.md
