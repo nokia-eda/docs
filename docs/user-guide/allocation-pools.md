@@ -41,6 +41,7 @@ apiVersion: core.eda.nokia.com/v1
 kind: IndexAllocationPool
 metadata:
   name: example
+  namespace: eda
 spec:
   segments:
   - start: 0
@@ -88,6 +89,7 @@ apiVersion: core.eda.nokia.com/v1
 kind: IndexAllocationPool
 metadata:
   name: example
+  namespace: eda
 spec:
   segments:
   - start: 200
@@ -125,6 +127,7 @@ apiVersion: core.eda.nokia.com/v1
 kind: IndexAllocationPool
 metadata:
   name: example
+  namespace: eda
 spec:
   segments:
   - start: 200
@@ -146,6 +149,7 @@ Note that index 100 was not impacted by the change, nor was index 200.
 While this example covers an IndexAllocationPool, the principles are the same across all pool types — the only difference is how you define the segment ranges.
 
 ## Segment (Pre-)Allocations & Reservations
+
 Do you want to use allocation pools, but there are scenarios where you need to take the wheel and decide which IP address goes where?
 'Allocations' and 'Reservations' options are available in all allocation pool segments to give the manual control you need.
 
@@ -153,8 +157,9 @@ Do you want to use allocation pools, but there are scenarios where you need to t
 
 * **Reservations** block a range within the segment, preventing it from being allocated by EDA.
 
-/// note
-Side Note: The allocation mechanism is also how a default gateway can be provided via a pool and retrieved via an EDA app.
+/// admonition | Note
+    type: subtle-note
+The allocation mechanism is also how a default gateway can be provided via a pool and retrieved via an EDA app.
 ///
 
 ## Allocation Scope
