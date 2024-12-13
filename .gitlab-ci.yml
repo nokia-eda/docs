@@ -2,7 +2,21 @@ variables:
   GIT_DEPTH: 0
   MKDOCS_IMAGE: registry.srlinux.dev/pub/mkdocs-material-insiders:9.5.19-insiders-4.53.8-hellt
 
-preview:
+htmltest:
+  stage: test
+  needs:
+    - job: build
+      artifacts: true
+  image:
+    name: public.ecr.aws/docker/library/debian:bookworm-slim
+  script:
+    - apt update && apt install -y --no-install-recommends curl file ca-certificates
+    - curl https://htmltest.wjdp.uk | bash
+    - ./bin/htmltest -c docs/htmltest.yml
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+build:
   stage: test
   image:
     name: $MKDOCS_IMAGE
@@ -18,7 +32,7 @@ preview:
 upload_preview:
   stage: test
   needs:
-    - job: preview
+    - job: build
       artifacts: true
   image:
     name: node:lts-alpine
