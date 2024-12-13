@@ -2,7 +2,7 @@ apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TLSRoute
 metadata:
   name: eda-ui
-  namespace: default
+  namespace: eda-system
 spec:
   parentRefs:
     - name: eda-gw-https

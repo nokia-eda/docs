@@ -8,7 +8,8 @@ Still, in this chapter we will talk about how to configure Ingress or Gateway re
 EDA UI and API are exposed inside a cluster via the `eda-api` service of type "LoadBalancer" and its `apiserver` (port 80) and `apiserverhttps` (port 443) ports:
 
 ```bash
-kubectl get service eda-api -o yaml | yq e '.spec.ports[0,1]' - #(1)!
+kubectl -n eda-system get service eda-api -o yaml | \
+yq e '.spec.ports[0,1]' - #(1)!
 ```
 
 1. Using [`yq`](https://github.com/mikefarah/yq/#install) to extract the service port configuration.
@@ -70,7 +71,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/session-cookie-name: route
   name: ingress
-  namespace: default #(3)!
+  namespace: eda-system #(3)!
 spec:
   ingressClassName: nginx
   rules: #(4)!
@@ -92,7 +93,7 @@ spec:
 
 1. EDA UI/API is only served over HTTPS inside the cluster, therefore the external traffic should be routed to TLS secured `apiserverhttps` port. For this reason we need to set HTTPS as a backend protocol.
 2. For cert-manager to issue the certificate, we need to configure the `cert-manager.io/issuer` annotation with the name of the `Issuer` resource that has to be present in the same namespace as the Ingress resource.
-3. If eda-api service is deployed in the `default` namespace, we need to create the Ingress resource in the same namespace.
+3. If eda-api service is deployed in the `eda-system` namespace, we need to create the Ingress resource in the same namespace.
 4. The Ingress's `rules` section defines the access rules and the routing of the incoming requests. Here we say that the requests destined to the `eda.rocks` domain should be routed to the `eda-api` service and its 443 port.
 5. The `tls` section defines the TLS configuration for the Ingress. Here we say that the Ingress should use the `eda-rocks-cert` secret to terminate the TLS and the SAN field in the cert should contain `eda.rocks` domain.
 
