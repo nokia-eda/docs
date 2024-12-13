@@ -2,17 +2,19 @@ site_name: Event Driven Automation
 nav:
   - Home: index.md
   - Getting started:
-      - Getting access: getting-started/getting-access.md
       - Try EDA: getting-started/try-eda.md
       - Units of automation: getting-started/units-of-automation.md
       - Details:
           - Installation process: getting-started/installation-process.md
           - Virtual network: getting-started/virtual-network.md
           - Verification: getting-started/verification.md
+          - Resetting the Playground: getting-started/reset.md
   - User guide:
       - Queries: user-guide/queries.md
       - Topologies: user-guide/topologies.md
       - Using the CLIs: user-guide/using-the-clis.md
+      - Allocation Pools: user-guide/allocation-pools.md
+      - Access Control: user-guide/access-control.md
       - Installation:
           - user-guide/installation/index.md
           - Deployment options:
@@ -22,14 +24,12 @@ nav:
               - KinD: user-guide/installation/kind.md
           - user-guide/exposing-ui-api.md
           - user-guide/installation/customize-install.md
-          - Resetting a cluster: user-guide/reset.md
-      - Allocation Pools: user-guide/allocation-pools.md
-      - Access Control: user-guide/access-control.md
   - Apps:
       - App Store: apps/app-store.md
       - Fabric: apps/fabric.md
       - Virtual Network: apps/virtualnetwork.md
       - Notifier: apps/notifier.md
+      - Prometheus Exporter: apps/prometheus-exporter.md
 
   - Cloud Connect:
       - Cloud Connect: connect/cloud-connect.md

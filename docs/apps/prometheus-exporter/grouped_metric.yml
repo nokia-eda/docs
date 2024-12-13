@@ -1,0 +1,9 @@
+apiVersion: prom.eda.nokia.com/v1alpha1
+kind: Export
+metadata:
+  name: metrics-with-multiple-customizations
+  namespace: eda-system
+spec:
+  group: group1
+  exports:
+    - path: .namespace.node.srl.interface.statistics

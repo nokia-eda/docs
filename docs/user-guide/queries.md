@@ -8,12 +8,12 @@ The easiest way to interact with queries is via the UI - simply click `Queries` 
 
 A "query" consists of:
 
-* A `Table`, being the only mandatory portion, e.g. `.node.srl.interface`.
-* A `Selector` denoted by the `fields` keyword, defining an array of fields to return (along with any functions to run on said fields), e.g. `.node.srl.interface fields [oper-state, admin-state]`.
-* A `Filter` denoted by the `where` keyword, defining an expression contained within parenthesis in which to include or exclude results, e.g. `.node.srl.interface where (admin-state = "disable" and .node.name = "leaf1")`.
-* A `Sort`, denoted by the `order by` by keyword indicating the sorting that should be applied to the data before it is returned, e.g. `.node.srl.platform.control.process order by [memory-usage descending]`.
-* A `Limit`, denoted by the `limit` keyword, limiting the number of results returned, e.g. `.node.srl.interface limit 10`.
-* A `Frequency`, denoted by the `delta` or `sample` keywords, indicating the minimum update period for the query, e.g. `.node.srl.interface delta milliseconds 1000`, or the desire to receive data at a specified interval, irrespective of changes.
+* A `Table`, being the only mandatory portion, e.g. `.namespace.node.srl.interface`.
+* A `Selector` denoted by the `fields` keyword, defining an array of fields to return (along with any functions to run on said fields), e.g. `.namespace.node.srl.interface fields [oper-state, admin-state]`.
+* A `Filter` denoted by the `where` keyword, defining an expression contained within parenthesis in which to include or exclude results, e.g. `.namespace.node.srl.interface where (admin-state = "disable" and .node.name = "leaf1")`.
+* A `Sort`, denoted by the `order by` by keyword indicating the sorting that should be applied to the data before it is returned, e.g. `.namespace.node.srl.platform.control.process order by [memory-usage descending]`.
+* A `Limit`, denoted by the `limit` keyword, limiting the number of results returned, e.g. `.namespace.node.srl.interface limit 10`.
+* A `Frequency`, denoted by the `delta` or `sample` keywords, indicating the minimum update period for the query, e.g. `.namespace.node.srl.interface delta milliseconds 1000`, or the desire to receive data at a specified interval, irrespective of changes.
 
 ## Natural language
 
@@ -31,21 +31,21 @@ You may need an API key configured in the `.spec.llm` context of your `EngineCon
 
 A `Table` is specified in jspath notation, with a boundary at all lists and containers within a endpoints schema, or within containers/lists provided by StateEngine scripts or external gRPC publishers via StateController.
 
-In simple terms each 'node' within the jspath is its own table - `.node` is a table, `.node.srl` is a table, and `.node.srl.interface` is a table. Tables cannot currently be qualified with keys - instead a `where` should be used.
+In simple terms each 'node' within the jspath is its own table - `.namespace.node` is a table, `.namespace.node.srl` is a table, and `.namespace.node.srl.interface` is a table. Tables cannot currently be qualified with keys - instead a `where` should be used.
 
 For example, to select all interfaces on a specific node:
 
 ```{.shell .no-select}
-.node.srl.interface where (.node.name = "leaf1")
+.namespace.node.srl.interface where (.node.name = "leaf1")
 ```
 
 /// note
-Note that `.node.srl` is only relevant for SR Linux devices. SR OS devices publish to `.node.sros`, and StateEngine apps that normalize data should publish to `.node.normal`.
+Note that `.namespace.node.srl` is only relevant for SR Linux devices. SR OS devices publish to `.namespace.node.sros`, and StateEngine apps that normalize data should publish to `.namespace.node.normal`.
 ///
 
 ## Selector
 
-A `Selector` is denoted by the `fields` keyword, where the value is an array of fields to return, along with any functions to run. For example `.node.srl.interface FIELDS [admin-state, description] ORDER BY [oper-state ascending natural]`.
+A `Selector` is denoted by the `fields` keyword, where the value is an array of fields to return, along with any functions to run. For example `.namespace.node.srl.interface FIELDS [admin-state, description] ORDER BY [oper-state ascending natural]`.
 
 No fields other than those defined are returned, if no fields are selected then all fields from the table are returned.
 
@@ -73,7 +73,7 @@ For example `.table where ((oper-state = "down" and mtu = 1500) or oper-state = 
 
 A `Filter` may query ancestor keys and values by referencing their full jspath.
 
-For example, to add `Filter` criteria for a parent key `.node.srl.interface.subinterface where (.node.name = "leaf1")`.
+For example, to add `Filter` criteria for a parent key `.namespace.node.srl.interface.subinterface where (.node.name = "leaf1")`.
 
 You may not currently filter on parent fields other than the key.
 
@@ -83,7 +83,7 @@ A `Sort` is similar to a `Filter`, but rather than describing how to select data
 
 A query may include a single `ORDER BY` keyword, where the value is an array of (fields, sorting algorithms, and directions) which are evaluated in the order they are presented.
 
-For example `.node.srl.interface ORDER by [oper-state ascending natural]`.
+For example `.namespace.node.srl.interface ORDER by [oper-state ascending natural]`.
 
 The second value may be either `ascending` or `descending`.
 The third value is optional and indicates the algorithm to use. Only `natural` is currently supported.
@@ -101,7 +101,7 @@ The maximum value for `limit` is `1000`, and the minimum value is `1`.
 A `Frequency` allows an end user to control the rate at which data is returned, and is denoted by the `delta` keyword.
 
 The `delta` keyword must be passed two values - one denoting the units used, and another the actual value.
-For example `.node.srl.interface.traffic-rate where (in-bps != 0) delta milliseconds 1000`. Meaning do not update the client more than once every 1 second.
+For example `.namespace.node.srl.interface.traffic-rate where (in-bps != 0) delta milliseconds 1000`. Meaning do not update the client more than once every 1 second.
 
 The value is the minimum period at which results will be updated for the query, or put another way it controls the maximum rate at which the client will be updated.
 
