@@ -1,6 +1,6 @@
 variables:
   GIT_DEPTH: 0
-  MKDOCS_IMAGE: registry.srlinux.dev/pub/mkdocs-material-insiders:9.5.19-insiders-4.53.8-hellt
+  MKDOCS_IMAGE: cr.srlinux.dev/pub/mkdocs-material-insiders:9.5.19-insiders-4.53.8-hellt
 
 htmltest:
   stage: test
@@ -8,7 +8,7 @@ htmltest:
     - job: build
       artifacts: true
   image:
-    name: public.ecr.aws/docker/library/debian:bookworm-slim
+    name: cr.srlinux.dev/pub/debian:bookworm-slim
   script:
     - apt update && apt install -y --no-install-recommends curl file ca-certificates
     - curl https://htmltest.wjdp.uk | bash
