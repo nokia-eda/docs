@@ -328,25 +328,29 @@ We have learned how to craft topologies using two different ways:
 
 Both methods in the end provided the same result: a topology file that defines the TopoNode and TopoLink of the topology. In order to drive the creation of these resources we need to perform the following steps:
 
-1. Create a `ConfigMap` named `topo-config` in the cluster containing a JSON object describing the topology.
-2. Call the `api-server-topo` tool available in the `eda-toolbox` pod that will read the topology file from the `topo-config` ConfigMap and generate the required resources.
+1. Create a namespaced `ConfigMap` resource with a name `topo-config` in the cluster containing a JSON object describing the topology.
+2. Call the `api-server-topo -n <namespace>` tool available in the `eda-toolbox` pod that will read the topology file from the namespaced `topo-config` ConfigMap and generate the required resources.
 
 If you created your topology file in the YAML format as we did in the [topology file](#topology-file) section, you can use the available make target that will create the ConfigMap and call the `api-server-topo` tool to apply the topology in single step.
 
 ```{.shell .no-select}
-make TOPO=/path/to/topo.yml topology-load
+make TOPO=/path/to/topo.yml topology-load #(1)!
 ```
+
+1. Using the makefile from the playground repository
 
 If you used the topology generator, then you have a ConfigMap already created, all you need to do is to apply it to the cluster:
 
 ```{.shell .no-select}
-kubectl apply -f generated_topo_pod_1.yaml
+kubectl -n eda apply -f generated_topo_pod_1.yaml #(1)!
 ```
+
+1. We create the ConfigMap with the topology file in the `eda` namespace. The `eda` namespace is a "user" namespace where user's resources are created.
 
 and run the `api-server-topo` tool:
 
 ```{.shell .no-select}
-api-server-topo
+api-server-topo -n eda
 ```
 
 /// admonition | Danger
