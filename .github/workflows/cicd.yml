@@ -47,7 +47,7 @@ jobs:
   publish-docs:
     runs-on: ubuntu-22.04
     # do not run on insiders main
-    if: ${{ !(github.repository == 'srl-labs/insiders-docs' && github.ref_name == 'main') }}
+    if: ${{ !(github.repository == 'nokia-eda/insiders-docs' && github.ref_name == 'main') }}
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     permissions:
