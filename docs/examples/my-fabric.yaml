@@ -17,6 +17,7 @@ spec:
   underlayProtocol:
     protocol:
       - EBGP
-    asnPool: asn-pool
+    bgp:
+      asnPool: asn-pool
   overlayProtocol:
     protocol: EBGP
