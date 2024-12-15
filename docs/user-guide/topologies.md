@@ -149,7 +149,6 @@ You can use the fields of the `TopoLink` resource in the topology file, like sho
 name: leaf1-spine1-1 #(1)!
 labels: #(2)!
   eda.nokia.com/role: interSwitch
-  eda.nokia.com/security-profile: managed
 spec:
   links:
     - local: #(3)!
