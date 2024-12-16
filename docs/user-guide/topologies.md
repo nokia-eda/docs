@@ -106,7 +106,7 @@ The list of `TopoNode` elements will be used to create the `TopoNode` resources.
 name: leaf1 #(1)!
 labels: #(2)!
   eda.nokia.com/role: leaf
-  eda.nokia.com/security-profile: managed
+  eda.nokia.com/security-profile: managed #(7)!
 spec:
   operatingSystem: srl #(3)!
   version: -{{ srl_version }}- #(4)!
@@ -123,6 +123,7 @@ spec:
     NPP/BootstrapServer validate they see this platform when connecting.
 6. Node profile.  
     A reference to a `NodeProfile` resource that defines the profile of the node.
+7. A label that is used by the `NodeSecurityProfile` resource to determine the security profile of the node.
 ///
 /// tab | TopoLink
 The list of `TopoLink` elements will be used to create the `TopoLink` resources.
@@ -188,6 +189,9 @@ The example below should help clarify the layered structure and the definition o
 {
   "leaf": { //(1)!
     "NodeCount": 2, //(2)!
+    "NodeLabels": {
+      "eda.nokia.com/security-profile": "managed" //(18)!
+    },
     "Platform": "7220 IXR-D3L", //(3)!
     "LayerRole": "leaf", //(4)!
     "NextLayerRole": "spine", //(5)!
@@ -212,6 +216,9 @@ The example below should help clarify the layered structure and the definition o
   },
   "spine": {
     "NodeCount": 1,
+    "NodeLabels": {
+      "eda.nokia.com/security-profile": "managed"
+    },
     "Platform": "7220 IXR-H2",
     "LayerRole": "spine",
     "NextLayerRole": "superspine",
@@ -244,6 +251,7 @@ The example below should help clarify the layered structure and the definition o
 15. Labels on odd TopoNode generated within the layer.
 16. Labels on even TopoNode generated within the layer.
 17. Labels on the first TopoNode generated within the layer.
+18. Security profile label that is used by the `NodeSecurityProfile` CR as a selector. The managed profile means the certificates for the nodes are managed by EDA.
 
 This input defines a three node topology with one spine and two leaves. The nodes are automatically tagged with the respected labels and edge links are created for the leaf nodes.
 
@@ -271,6 +279,9 @@ cat <<EOF > topo.json
 {
   "leaf": {
     "NodeCount": 2,
+    "NodeLabels": {
+      "eda.nokia.com/security-profile": "managed"
+    },
     "Platform": "7220 IXR-D3L",
     "LayerRole": "leaf",
     "NextLayerRole": "spine",
@@ -295,6 +306,9 @@ cat <<EOF > topo.json
   },
   "spine": {
     "NodeCount": 1,
+    "NodeLabels": {
+      "eda.nokia.com/security-profile": "managed"
+    },
     "Platform": "7220 IXR-H2",
     "LayerRole": "spine",
     "NextLayerRole": "superspine",
