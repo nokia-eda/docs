@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # EDA on macOS
 
 Do you want to get full EDA experience on your macOS machine? Well, can't judge you!
@@ -144,33 +148,6 @@ make kind
 
 ///
 
-## Pre-pulling images
-
-You will have better experience and startup time if you pull the container images that EDA relies on and upload them to the cluster before installing EDA. Pre-pulling images also helps to quickly re-spin the cluster when you have removed the old cluster and want to start over.
-
-```shell
-make pull-images #(1)!
-```
-
-1. this can take some time, depending on your connection speed towards the registry
-
-And once the images are pulled, upload them to the cluster:
-
-/// tab | OrbStack
-If you're using OrbStack, you don't have to explicitly load images to the cluster, as they become available right after you ran `make pull-images`.
-
-You can see the images in the UI as well as in the CLI:
-![images](https://gitlab.com/rdodin/pics/-/wikis/uploads/d8c4d2d0ecbc9fc598dba135d16109c7/image.png)
-///
-/// tab | KinD
-
-```shell
-make kind-load-images #(1)!
-```
-
-1. takes about 3 minutes
-///
-
 ## Installing EDA
 
 Install time! When running docker/k8s on mac we have some complications with the networking, as the VM that runs the k8s cluster is not the same as the one where we run our make targets.
@@ -219,6 +196,10 @@ Depending on the tool you're using to run k8s, your method of connecting to the 
 
 /// tab | OrbStack
 In OrbStack, you can access the UI by opening https://eda-api.k8s.orb.local/ in your browser.
+
+//// warning | macOS 15+
+If your browser can not resolve the `eda-api.k8s.orb.local` domain, you may need to add enable Local Network access policy for the browser of your choice. Check the Apple's [documentation](https://support.apple.com/guide/mac-help/control-access-to-your-local-network-on-mac-mchla4f49138/mac) and this [screenshot](https://gitlab.com/rdodin/pics/-/wikis/uploads/b91bbb7b7e6da5963736d24f43f64ce6/image.png) showing where the settings are located.
+////
 
 ![ui](https://gitlab.com/rdodin/pics/-/wikis/uploads/1180ab27c1aa9017c1db3339ccae5f74/image.png)
 ///
