@@ -4,7 +4,7 @@ srl_version: 24.10.1
 
 # Topologies
 
-Topologies in EDA cover a lot of ground. Not only they define the design of a physical or simulated network but also drive the visualization of various overlays in EDA UI.
+Topologies in EDA cover a lot of ground. Not only do they define the design of a physical or simulated network, they also drive the visualization of various overlays in the EDA UI.
 
 Let's start with a familiar role of a topology - the network topology.
 
@@ -12,7 +12,7 @@ Let's start with a familiar role of a topology - the network topology.
 
 A network topology in a broader sense describes the network design. Be it a Clos, a Fat Tree or a Ring design, the topology is what inherently defines the network.
 
-Like every topology is defined by its nodes and links, the EDA topology consists of the nodes (`TopoNode`) and links (`TopoLink`) objects. The EDA topology nodes are represented by the devices in your network, and the topology links define the relationships between them.
+Like every topology is defined by its nodes and links, the EDA topology consists of node (`TopoNode`) and link (`TopoLink`) objects. The EDA topology nodes are represented by the devices in your network, and the topology links define the relationships between them.
 
 If you come here after finishing the [Getting Started][gs-guide] guide, you may remember the 3-node topology that we worked on:
 
@@ -34,8 +34,8 @@ The obvious way is to create these Custom Resources manually, but this is going 
 
 To assist with this process, EDA provides a couple of methods to generate the required `TopoNode` and `TopoLink` resources based on an abstracted input:
 
-* using topology file
-* or using topology generator
+* using a topology file
+* or using the topology generator
 
 ### Topology file
 
@@ -353,10 +353,17 @@ We have learned how to craft topologies using two different ways:
 * by [composing the topology file](#topology-file) and specifying each TopoNode and TopoLink in a YAML file
 * by using the [topology generator](#topology-generation) to generate the topology file by parsing the layered input file
 
-Both methods in the end provided the same result: a topology file that defines the TopoNode and TopoLink of the topology. In order to drive the creation of these resources we need to perform the following steps:
+Both methods provided the same result in the end: a topology file that defines the TopoNode and TopoLink of the topology. In order to drive the creation of these resources we need to perform the following steps:
 
 1. Create a namespaced `ConfigMap` resource with a name `topo-config` in the cluster containing a JSON object describing the topology.
 2. Call the `api-server-topo -n <namespace>` tool available in the `eda-toolbox` pod that will read the topology file from the namespaced `topo-config` ConfigMap and generate the required resources.
+
+/// admonition | Danger
+    type: danger
+Running the `api-server-topo` tool will remove all `TopoNode`, `TopoLink` and `Interfaces` resources that are not part of the new topology.
+///
+
+The `api-server-topo` tool will read the topology file from the `topo-config` ConfigMap and generate the following resources in EDA:
 
 If you created your topology file in the YAML format as we did in the [topology file](#topology-file) section, you can use the available make target that will create the ConfigMap and call the `api-server-topo` tool to apply the topology in single step.
 
@@ -380,17 +387,12 @@ and run the `api-server-topo` tool:
 api-server-topo -n eda
 ```
 
-/// admonition | Danger
-    type: danger
-Running the `api-server-topo` tool will remove all `TopoNode`, `TopoLink` and `Interfaces` resources that are not part of the topology.
-///
-
-The `api-server-topo` tool will read the topology file from the `topo-config` ConfigMap and generate the following resources in EDA:
-
 * `TopoNode` resources matching the topology.
 * `TopoLink` resources matching the topology.
 * `Interface` resources for every interface in the topology.
 * Loopback `Interface` resource for every `TopoNode`.
+
+You can now admire your new Topology in the EDA UI.
 
 [gs-guide]: ../getting-started/try-eda.md
 [gs-guide-vnet]: ../getting-started/virtual-network.md
