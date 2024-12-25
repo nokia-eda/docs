@@ -65,9 +65,6 @@ export PLAYGROUND_PREFS_FILE="private/kind-prefs.mk"
 
 Alright, you noticed that the make preferences file contain only a handful of variables. But what if you want to customize the installation further?
 
-For example, you might want to use EDA with a virtual topology built with Containerlab.  
-To do that, you have to disable the EDA's "digital twin" feature by setting the `simulate = false` in the Engine Config resource. But this option is not exposed in the preferences file. What to do?
-
 EDA uses the [kpt](https://kpt.dev/) to deploy and manage the configuration of its components. When browsing the [nokia-eda/kpt][kpt-repo] repository you may notice the `kpt-set` comments in various kubernetes manifests:
 
 ```yaml title="snippet from <code>eda-kpt-base/engine-config/engineconfig.yaml</code>"
@@ -92,7 +89,7 @@ These `kpt-set` comments are markers for the kpt tool that these values can set 
 We maintain [the reference](../../../user-guide/installation/customize-install.md#kpt-setters-reference) of all available setters in our docs.
 ///
 
-The setters file allow you to specify the values for the setters that will be used when you install EDA Playground. For example, to disable the EDA network simulation, you would create a yaml file like this:
+The setters file allow you to specify the values for the setters that will be used when you install EDA Playground. For example, to set the PV claim volume size for the Git server deployment, you would create a yaml file like this:
 
 ```yaml title="<code>my-setters.yml</code>"
 apiVersion: v1
@@ -100,13 +97,12 @@ kind: ConfigMap #(1)!
 metadata:
   name: my-setters
 data:
-  SIMULATE: false 
-  LLM_API_KEY: my-openai-key-data #(2)!
+  GOGS_REPLICA_PV_CLAIM_SIZE: 10Gi #(2)!
   # your other setters here
 ```
 
 1. As you can see, the setters file is a ConfigMap resource, but it is not applied to your cluster, it is only used by the kpt tool to read the values from it.
-2. The setter's key must match the name of the setter variable in the manifest file. That is why the key is `LLM_API_KEY` and not `apiKey`.
+2. The setter's key must match the name of the setter variable in the manifest file.
 
 Now that you have your setters file with the necessary values, you should set the path to it in the preferences file:
 
