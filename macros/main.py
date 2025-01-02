@@ -24,7 +24,7 @@ def define_env(env):
 <figure>
     <div class='mxgraph'
             style='max-width:100%;border:1px solid transparent;margin:0 auto; display:block; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); border-radius: 0.25rem;'
-            data-mxgraph='{{"page":{page},"zoom":{zoom},"highlight":"#0000ff","nav":true,"resize":true,"edit":"_blank","url":"{url}"}}'>
+            data-mxgraph='{{"url":"{url}","page":{page},"zoom":{zoom},"highlight":"#0000ff","nav":true,"resize":true,"edit":"_blank","dark-mode":false}}'>
     </div>
     {f"<figcaption>{title}</figcaption>" if title else ""}
 </figure>
