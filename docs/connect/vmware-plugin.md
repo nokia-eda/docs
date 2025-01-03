@@ -40,61 +40,96 @@ The VMware vSphere Plugin consists of two components:
     * Host to dvS associations
     * Custom Attributes
 
-## Connect VMware vSphere Plugin App Deployment
+### Supported Features
+
+The following are some of the supported VMware vSphere features:
+
+* CMS-managed integration mode
+* EDA-managed integration mode
+* Optimally configure subinterfaces to minimize configuration and security footprint of network services
+* LAG/LACP interfaces
+* SRIOV interfaces
+* Audits
+
+## Deployment
+
+To deploy the VMware vSphere plugin, complete the following tasks:
+
+* Deploy the plugin app.
+* Deploy the plugin.
+
+### Connect VMware vSphere Plugin App Deployment
 
 The VMware vSphere Plugin App is an Application in the EDA App eco-system. It can be easily installed using the App Store UI.
 
-As an alternative, you can also create an `AppInstall` resource in the Kubernetes cluster of EDA with the following content:
+#### Installation using Kubernetes API
 
-=== "YAML Resource"
-    ```yaml
-    --8<-- "docs/connect/resources/vmware-appinstall.yaml"
-    ```
+If you prefer installing the Connect Core using the Kubernetes API, you can do so by creating the following Workflow resource:
 
-=== "`kubectl apply` command"
-    ```bash
-    kubectl apply -f - <<EOF
-    --8<-- "docs/connect/resources/vmware-appinstall.yaml"
-    EOF
-    ```
+/// tab | YAML Resource
 
-## Connect VMware vSphere Plugin Deployment
+```yaml
+--8<-- "docs/connect/resources/vmware-appinstall.yaml"
+```
 
-A prerequisite for creating a `vmwarePluginInstance` is a `Secret` with username and password fields.
-=== "YAML Resource"
+///
+/// tab | `kubectl apply` command
 
-    ```yaml
-    --8<-- "docs/connect/resources/vmware-secret.yaml"
-    ```
+```bash
+kubectl apply -f - <<EOF
+--8<-- "docs/connect/resources/vmware-appinstall.yaml"
+EOF
+```
 
-=== "`kubectl apply` command"
+///
 
-    ```bash
-    kubectl apply -f - <<EOF
-    --8<-- "docs/connect/resources/vmware-secret.yaml"
-    EOF
-    ```
+### Connect VMware vSphere Plugin Deployment
+
+A prerequisite for creating a `vmwarePluginInstance` resource is a `Secret with username and password fields that contain the account information for an account that can connect to the VMware vCenter environment and has read-only access to the cluster so that it can monitor the necessary resources.
+
+/// tab | YAML Resource
+
+```yaml
+--8<-- "docs/connect/resources/vmware-secret.yaml"
+```
+
+///
+/// tab | `kubectl apply` command
+
+```bash
+kubectl apply -f - <<EOF
+--8<-- "docs/connect/resources/vmware-secret.yaml"
+EOF
+```
+
+///
 
 As the VMware vSphere Plugins are managed through the operator, you can use the EDA UI to create a new `VmwarePluginInstance` resource under the **System Administration > Connect > VMware Plugins** menu item.
 
 As an alternative, you can also create the same `VmwarePluginInstance` using the following custom resource example. Make sure to replace the specified values with their relevant content.
 
-=== "YAML Resource"
-    ```yaml
-    --8<-- "docs/connect/resources/vmware-plugin-instance.yaml"
-    ```
+/// tab | YAML Resource
 
-=== "`kubectl apply` command"
-    ```bash
-    kubectl apply -f - <<EOF
-    --8<-- "docs/connect/resources/vmware-plugin-instance.yaml"
-    EOF
-    ```
+```yaml
+--8<-- "docs/connect/resources/vmware-plugin-instance.yaml"
+```
 
-!!! Note "Naming limitations"
-    The plugin name and external ID must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'` and can only contain alpha-numerical characters and `.`, `_` and `-`. It must start with an alpha-numerical character.
+///
+/// tab | `kubectl apply` command
+
+```bash
+kubectl apply -f - <<EOF
+--8<-- "docs/connect/resources/vmware-plugin-instance.yaml"
+EOF
+```
+
+///
+
+The plugin name and external ID must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'` and can only contain alpha-numerical characters and `.`, `_` and `-`. It must start with an alpha-numerical character.
 
 ## Functionality
+
+This section describes VMware vSphere plugin operations including startup, event monitoring, and the plugin's operational modes.
 
 ### Startup
 
