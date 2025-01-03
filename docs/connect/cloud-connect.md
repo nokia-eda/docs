@@ -10,7 +10,7 @@ This dual awareness enables Connect to configure the fabric dynamically based on
 
 ## Components
 
-The Connect solution is build around a central service, called the Cloud Connect Core, and plugins for each supported cloud environment.
+The Connect solution is built around a central service, called the Cloud Connect Core, and plugins for each supported cloud environment.
 
 The Connect Core is responsible for managing the plugins and the relation between Connect Interfaces (compute interfaces) and EDA Interfaces (Fabric Interfaces or Edge-Links). It keeps track of the LLDP information of EDA Interfaces and correlates that back to the Connect Interfaces created by Plugins to identify the different physical interfaces of the computes of a cloud environment.
 
