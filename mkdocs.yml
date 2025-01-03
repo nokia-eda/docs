@@ -35,6 +35,7 @@ nav:
       - OpenShift Connect Plugin: connect/openshift-plugin.md
       - VMware vSphere Plugin: connect/vmware-plugin.md
       - Troubleshooting: connect/troubleshooting.md
+      - Audit: connect/audit.md
   - Development:
       - API: development/api.md
       - Custom App Catalog: development/custom-catalog.md
