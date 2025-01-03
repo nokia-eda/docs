@@ -1,11 +1,15 @@
-apiVersion: appstore.eda.nokia.com/v1
-kind: AppInstall
+apiVersion: core.eda.nokia.com/v1
+kind: Workflow
 metadata:
-  name: connect
+  name: connect-nokia
+  namespace: eda-system
 spec:
-  app: connect
-  vendor: nokia
-  catalog: eda-catalog-builtin-apps
-  version:
-    value: v1.0.0
-    type: semver
+  input:
+    app: connect
+    catalog: eda-catalog-builtin-apps
+    operation: install
+    vendor: nokia
+    version:
+      type: semver
+      value: v2.0.0
+  type: app-installer

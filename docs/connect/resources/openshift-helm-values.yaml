@@ -1,11 +1,12 @@
 controllerEnvConfig:
   connectpluginname: eda-openshift-controller-plugin
   heartbeat: "10"
-  namespace: default
+  namespace: <eda-fabric-namespace> # The namespace in EDA containing the fabric and resources, this will different from the eda-system namespace.
   skiptlsverify: False
-  tlscertificatedata: EDA K8s certificate data can be extracted from kubeconfig from cluster `certificate-authority-data`
+  loglevel: info
+  tlscertificatedata: <EDA K8s certificate data can be extracted from kubeconfig from cluster `certificate-authority-data`>
   tlsenabled: True
 controllerEnvSecret:
-  connectHost: https://<EDA-k8s-cluster-ip or hostname>:<port> (Caution - Do not use EDA API values, use EDA k8s API values)
+  connectHost: https://<EDA-k8s-cluster-ip or hostname>:<port> # (Caution - Do not use EDA API values, use EDA k8s API values)
   connectPassword: <Secret long-lived token of the service account created before>
   connectUsername: <Name of the service account based on which secret token was created>

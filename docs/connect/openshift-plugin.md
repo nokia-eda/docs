@@ -21,28 +21,25 @@ It provides the following advantages and capabilities:
 Before using the Connect OpenShift Plugin, make sure the following prerequisites are met:
 
 * Ensure Openshift cluster is up and running.
-* Ensure [NMState-Operator](https://docs.openshift.com/container-platform/4.14/networking/k8s_nmstate/k8s-nmstate-about-the-k8s-nmstate-operator.html) and Multus are installed on openshift cluster.
+* Ensure [NMState-Operator](https://docs.openshift.com/container-platform/4.16/networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.html) and Multus are installed on openshift cluster.
 * Ensure all the nodes which are connected to SRL leaf nodes have LLDP enabled on each node.
 * Ensure EDA cluster is up and running.
 * Ensure EDA Cloud Connect App is installed.
-* Ensure you have access to the controller container image named `ghcr.io/nokia-eda/eda-connect-k8s-controller:v1.0.0`.
+* Ensure you have access to the controller container image named `ghcr.io/nokia-eda/eda-connect-k8s-controller:v2.0.0`.
+* NMState Operator is configured to listen for LLDP TLVs. Create the following resource in your OpenShift cluster and make sure to include all interfaces in the list that are connected to leaf switches managed by EDA:
 
-/// details | Known Limitations
-    type: warning
-The OpenShift Plugin currently requires LLDP to be enabled on the OpenShift hypervisors. This limitation will be lifted in a future release of EDA.
-///
-
-/// details | Using a Daemonset to enable LLDP
-    type: note
-When using RHCOS as the OS for the OpenShift nodes, it is not possible to install services inside the node to enable LLDP. Instead it is advised to deploy an LLDP Daemonset.
-
-The following set of manifests can be used to deploy such an LLDP Daemonset:
-
-```yaml
---8<-- "docs/connect/resources/openshift-lldp-daemonset.yaml"
-```
-
-///
+    ```yaml
+    apiVersion: nmstate.io/v1
+    kind: NodeNetworkConfigurationPolicy
+    metadata:
+    name: enable-receive-lldp
+    spec:
+    desiredState:
+        interfaces:
+        - name: <interface-name>
+        lldp:
+            enabled: true
+    ```
 
 ## Architecture
 
@@ -52,7 +49,9 @@ The OpenShift Plugin consists of a controller which will monitor the following r
 * `NetworkAttachmentDefinitions` and their master interfaces.
 * `ConnectNetworkDefinitions` for the configuration of Layer 2 and Layer 3 services configuration.
 
-The OpenShift Plugin will support three ways of associating `NetworkAttachmentDefinitions` to EDA `BridgeDomains`:
+### Operational Modes
+
+The OpenShift Plugin supports three ways of associating `NetworkAttachmentDefinitions` to EDA `BridgeDomains`, called Operational modes:
 
 *Transparent association*
 : This association does not require any information from EDA in OpenShift. For every unique master interface defined in `NADs` in the OpenShift Cluster, the plugin will create a unique `BridgeDomain`. This association only supports OpenShift Managed Mode.
@@ -62,6 +61,27 @@ The OpenShift Plugin will support three ways of associating `NetworkAttachmentDe
 
 *`ConnectNetworkDefinition` association*
 : The `ConnectNetworkDefinition` is a Custom Resource Definition that gets added to the OpenShift Cluster and is used to describe the relationship between the different services and `NetworkAttachmentDefinitions`, and how the services relate to each other. This association supports both OpenShift Managed and EDA Managed Modes.
+
+### Supported Features
+
+The following are some of the supported OpenShift features:
+
+* CMS-managed integration mode
+* EDA-managed integration mode
+* Network Attachment Definition Transparent operational mode (CMS-managed only)
+* Connect Network Definition operational mode (CMS-managed and EDA Managed)
+* Network Attachment Definition Annotation operational mode (EDA-managed only)
+* Optimally configure subinterfaces to minimize configuration and security footprint of network services
+* LAG/LACP interfaces
+* VLAN Trunking
+* Audits
+
+The following are supported CNIs:
+
+* MACVLAN
+* IPVLAN
+* SRIOV
+* Dynamic SRIOV
 
 ## EDA Connect OpenShift Plugin Deployment
 
@@ -75,6 +95,7 @@ To create a service account in the EDA Kubernetes cluster, the following resourc
 
 //// details | Service Account and Cluster Role Binding manifest
     type: note
+This service account must be created in the `eda-system` namespace.
 
 /// tab | YAML Resource
 
@@ -139,14 +160,9 @@ There are two ways to get the Helm charts to deploy the EDA Connect OpenShift pl
 2. Downloading the release tarball and unpacking it:
 
     ```bash
-    export GH_RO_TOKEN=<token>
-    curl -sLO https://${GH_RO_TOKEN}@github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/v1.0.0.tar.gz
-    tar zxf v1.0.0.tar.gz 
+    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/v2.0.0.tar.gz
+    tar zxf v2.0.0.tar.gz 
     ```
-
-    /// admonition | This option requires you to use the `GH_RO_TOKEN` that you used to clone the playground repository
-        type: note
-    ///
 
 ### Deploying the Plugin in OpenShift
 
@@ -166,19 +182,12 @@ The following command does so for the officially hosted image with a secure read
 
 ```bash
 export PULL_TOKEN=<PULL_TOKEN>
-kubectl create secret docker-registry eda-k8s-image-secret --docker-server=ghcr.io/nokia-eda/eda-connect-k8s-controller --docker-username=nokia-eda-bot --docker-password=${PULL_TOKEN} -n eda-connect-k8s-controller
+kubectl create secret docker-registry eda-k8s-image-secret \
+  --docker-server=ghcr.io/nokia-eda/eda-connect-k8s-controller \
+  --docker-username=nokia-eda-bot \
+  --docker-password=${PULL_TOKEN} \
+  -n eda-connect-k8s-controller
 ```
-
-/// details | Getting the pull token
-    type: note
-The easiest way to get the token/password for the pull secret, is to look at your EDA deployment and look for the `appstore-eda-apps-registry-image-pull` secret. By grabbing the content of that secret and using `base64` to decode the `dockerconfigjson`, you can find the password in the resulting json.
-
-Example to do so in one line (make sure to have the KUBECONFIG for the EDA cluster loaded, not the OpenShift config):
-
-```bash
-kubectl get secret appstore-eda-apps-registry-image-pull -o json | jq -r '.data.".dockerconfigjson"' | base64 -d | jq -r '.auths."ghcr.io".password'
-```
-///
 
 #### Setting up the local Helm values
 
@@ -199,7 +208,7 @@ The possible Helm Values are:
 : The interval in seconds at which the plugin should send heartbeats. 10-30 are good values, lower can cause extra unnecessary load on the system.
 
 **`namespace`**
-: A name of a namespace, where EDA Connect service is deployed
+: A name of a namespace. This will be a namespace in EDA containing the fabric and resources, this will different from the eda-system namespace.
 
 **`skiptlsverify`**
 : Can be enabled to disable server TLS certificate verification when connecting to the EDA Kubernetes cluster
@@ -248,15 +257,35 @@ NAME                                   PROVIDED NAME           PLUGIN TYPE   AGE
 470e9af1-b85b-439b-b81a-ab71a7166bb0   k8s-controller-plugin   KUBERNETES    2h
 ```
 
-## Functionality
+## Using Operational Modes
 
-### Using the `ConnectNetworkDefinition`
+The OpenShift Connect plugin operates in the following operational modes:
 
-The `ConnectNetworkDefinition` (`CND`) identifies how `NADs` are associated to different `BridgeDomains`. Multiple `NADs` can be associated to the same `BridgeDomain`. A few examples are shown below.
+* Transparent operational mode
+* Connect Network Definition operational mode
+* NAD annotation operational mode
+
+### Using the Transparent Operational Mode
+
+To use the Transparent operational mode, create network attachment definitions (NADs) in OpenShift without any EDA Connect annotations or any reference to the NAD in a Connect Network Definition (CND).
+
+By doing so, the plugin creates a new EDA `BridgeDomain` for each NAD with a unique master (+VLAN) interface. If a NAD is created for which a NAD with the same master interface and VLAN already exists, it is associated with the existing `BridgeDomain`.
+
+When you remove the NAD, the EDA bridge domain is also removed.
+
+### Using the Connect Network Definition Operational Mode
+
+Connect Network Definition (CND) is a custom resource definition (CRD) that is added to the OpenShift cluster on deployment of the plugin.
+
+A CND contains a design of all the network services and configuration an application may need. It can be used to define EDA Routers and EDA BridgeDomain resources. For each BridgeDomain, it is possible to associate one or more NADs with it. By doing so, the plugin knows how to connect applications into different network services.
+
+You can use the CMS-managed integration mode, the EDA-managed integration mode, or a combination of both.
+
+Multiple CNDs can exist, for instance one per application.
 
 #### Example 1: Multiple `NADs` in One `BridgeDomain`
 
-Following is the sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be residing in a single subnet, when they belong to different master interface. This is an example of OpenShift Managed Mode.
+The following is a sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be residing in a single subnet, when they belong to different master interface. This is an example of OpenShift Managed Mode.
 
 /// tab | YAML Resource
 
@@ -277,7 +306,7 @@ EOF
 
 #### Example 2: Multiple `NADs` in One `BridgeDomain` with VLAN Trunking
 
-Following is the sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be residing in a single subnet, and have them use trunk VLAN's:
+The following is a sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be residing in a single subnet, and have them use trunk VLAN's:
 
 /// tab | YAML Resource
 
@@ -296,9 +325,9 @@ EOF
 
 ///
 
-#### Example 3: Using EDA Managed
+#### Example 3: Using EDA-Managed
 
-Following is the sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be part of a single bridgedomain that was pre-created in EDA:
+The following is a sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be part of a single `BridgeDomain` that was pre-created in EDA:
 
 /// tab | YAML Resource
 
@@ -316,6 +345,22 @@ EOF
 ```
 
 ///
+
+### Using the NAD Annotation Operational Mode
+
+The NAD Annotation operational mode only works for the EDA-managed integration mode because it relies on an annotation on the NAD that identifies the pre-existing EDA BridgeDomain resource to which the NAD needs to be associated with.
+
+To use this operational mode, when creating or updating a NAD, add the following annotation to it:
+
+```yaml
+connect.eda.nokia.com/bridgedomain: <eda-bridge-domain-name> 
+```
+
+In case of VLAN trunking, a more complex annotation can be used, for example:
+
+```yaml
+connect.eda.nokia.com/bridgedomain: <eda-bridge-domain-name>:<vlan-id>, <eda-bridge-domain-name-2>:<vlan-id> 
+```
 
 ## Troubleshooting
 
