@@ -1,4 +1,5 @@
 :root>* {
+  --md-text-font: "NokiaPureText";
   --md-primary-fg-color: #7d33f2;
   --md-primary-fg-color--light: #ECB7B7;
   --md-primary-fg-color--dark: #90030C;
