@@ -1,5 +1,6 @@
 ---
 srl_version: 24.10.1
+eda_crd_version: 24.12.1
 ---
 
 # Topologies
@@ -12,7 +13,10 @@ Let's start with a familiar role of a topology - the network topology.
 
 A network topology in a broader sense describes the network design. Be it a Clos, a Fat Tree or a Ring design, the topology is what inherently defines the network.
 
-Like every topology is defined by its nodes and links, the EDA topology consists of node (`TopoNode`) and link (`TopoLink`) objects. The EDA topology nodes are represented by the devices in your network, and the topology links define the relationships between them.
+Like every topology is defined by its nodes and links, the EDA topology consists of node ([`TopoNode`][topoNode-crd]) and link ([`TopoLink`][topoLink-crd]) objects. The EDA topology nodes are represented by the devices in your network, and the topology links define the relationships between them.
+
+[topoNode-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v-{{ eda_crd_version }}-
+[topoLink-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{ eda_crd_version }}-
 
 If you come here after finishing the [Getting Started][gs-guide] guide, you may remember the 3-node topology that we worked on:
 
@@ -353,7 +357,7 @@ We have learned how to craft topologies using two different ways:
 * by [composing the topology file](#topology-file) and specifying each TopoNode and TopoLink in a YAML file
 * by using the [topology generator](#topology-generation) to generate the topology file by parsing the layered input file
 
-Both methods provided the same result in the end: a topology file that defines the TopoNode and TopoLink of the topology. In order to drive the creation of these resources we need to perform the following steps:
+Both methods provided the same result in the end: a topology file that contains the TopoNode and TopoLink resources that describe the network topology. In order to drive the creation of these resources we need to perform the following steps:
 
 1. Create a namespaced `ConfigMap` resource with a name `topo-config` in the cluster containing a JSON object describing the topology.
 2. Call the `api-server-topo -n <namespace>` tool available in the `eda-toolbox` pod that will read the topology file from the namespaced `topo-config` ConfigMap and generate the required resources.
@@ -386,6 +390,8 @@ and run the `api-server-topo` tool:
 ```{.shell .no-select}
 api-server-topo -n eda
 ```
+
+The `api-server-topo` tool will generate the following resources in EDA:
 
 * `TopoNode` resources matching the topology.
 * `TopoLink` resources matching the topology.

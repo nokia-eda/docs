@@ -15,6 +15,7 @@ nav:
       - Using the CLIs: user-guide/using-the-clis.md
       - Allocation Pools: user-guide/allocation-pools.md
       - Access Control: user-guide/access-control.md
+      - user-guide/containerlab-integration.md
       - Installation:
           - user-guide/installation/index.md
           - Deployment options:
@@ -97,8 +98,7 @@ theme:
         icon: material/toggle-switch
         name: Switch to light mode
   font:
-    text: NokiaPureText
-    code: Fira Code
+    code: Nova
   icon:
     logo: nokia/eda
     repo: fontawesome/brands/github
