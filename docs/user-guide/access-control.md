@@ -91,7 +91,7 @@ kind: ClusterRole
 metadata:
   name: basic
   labels: null
-  namespace: default
+  namespace: eda-system
 spec:
   description: 'Basic permissions for EDA UI'
   resourceRules:
@@ -126,7 +126,7 @@ kind: ClusterRole
 metadata:
   name: deny-nodeconfig
   labels: null
-  namespace: default
+  namespace: eda-system
 spec:
   description: 'Deny access to transaction diffs and node config APIs'
   resourceRules: []
@@ -157,8 +157,8 @@ apiVersion: core.eda.nokia.com/v1
 kind: ClusterRole
 metadata:
   name: topology-definitions
-  labels: {}
-  annotations: {}
+  labels: null
+  namespace: eda-system
 spec:
   description: Access descriptions of physical topology and its overlays
   urlRules:
@@ -208,7 +208,7 @@ apiVersion: core.eda.nokia.com/v1
 kind: ClusterRole
 metadata:
   name: readonly
-  namespace: default
+  namespace: eda-system
   labels: null
 spec:
   description: Read only for everything
@@ -236,7 +236,7 @@ apiVersion: core.eda.nokia.com/v1
 kind: ClusterRole
 metadata:
   name: fabric
-  namespace: default
+  namespace: eda-system
   labels: null
 spec:
   description: Read and Write for Fabrics and read-only for related resources
@@ -270,7 +270,7 @@ kind: ClusterRole
 metadata:
   name: queryandalarms
   labels: null
-  namespace: default
+  namespace: eda-system
 spec:
   description: 'Permission to run queries and update alarms (ack/delete/suppress/etc)'
   resourceRules: []
