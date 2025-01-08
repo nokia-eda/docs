@@ -272,7 +272,7 @@ The last piece in the TopoNode resource that we must set is a [NodeProfile][node
 --8<-- "docs/user-guide/clab-integration/topoNodes.yaml:11:11"
 ```
 
-The NodeProfile, suprise-surprise, defines the profile of the node that a particular TopoNode resource is going to use.
+The NodeProfile, surprise-surprise, defines the profile of the node that a particular TopoNode resource is going to use.
 
 ```yaml linenums="1"
 --8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:2"
