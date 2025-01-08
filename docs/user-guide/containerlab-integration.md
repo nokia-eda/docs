@@ -8,7 +8,18 @@ eda_crd_version: 24.12.1
 
 To facilitate end-to-end testing and validation of configuration changes, EDA comes equipped with its own multi vendor network emulation engine abbreviated as **CX**. CX is a highly scalable network emulation platform that powers EDA's Digital Twin capabilities.
 
-Acknowledging that EDA CX is a new network emulation platform that is still in the process of maturing, we wanted to offer a way to integrate EDA with multitude of network topologies built with [Containerlab](https://containerlab.dev/).
+Acknowledging that EDA CX is a new network emulation platform that is still in the process of maturing, we wanted to offer a way to integrate EDA with multitude of existing network topologies built with [Containerlab](https://containerlab.dev/).
+
+/// details | TLDR
+    type: subtle-note
+To integrate SR Linux nodes spawned by Containerlab with EDA in the manual mode you need to:
+
+1. <small>optional</small> Change the default NodeUser resource to use the `NokiaSrl1!` password
+2. Create a [NodeProfile](#node-profile) resource with the OS/version/yang fields set to the corresponding values
+3. Create a [TopoNode](#toponode) resource for each SR Linux node
+4. Create an [Interface](#interface) resource per each endpoint of SR Linux nodes.
+5. Create a [TopoLink](#topolink) resource for each link referencing the created Interface resources
+///
 
 In this section we will cover how to integrate EDA with a lab built with Containerlab in a manual and automated way. To keep things practical, we will take a real lab built with Containerlab - [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) and integrate it with EDA.
 
@@ -348,6 +359,73 @@ The `admin` [NodeUser][nodeUser-crd] resource has been created as part of the ED
 
 The NodeUser resource references the NodeGroup resource that contains the AAA parameters this user should inherit.
 
+### TopoLink
+
+If we were to apply the TopoNode resource right now, we would end up getting the following topology diagram in EDA UI:
+
+![topoNode-only](https://gitlab.com/rdodin/pics/-/wikis/uploads/1beaf38e89e64dd19716aee05cd94e45/topo.webp)
+
+There is obviously a piece missing - the topology doesn't have any links! And the reason is simple - we haven't defined any topology link resources.
+
+The [TopoLink][topoLink-crd] resource is responsible for defining the topology links. As the CRD description says:
+
+> TopoLink represents a logical link between two TopoNodes. It may include more than one physical link, being used to represent a LAG or multihomed link.
+
+[topoLink-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{eda_crd_version}}-
+
+Looking at our lab diagram we can identify three topology links (highlighted in cyan):
+
+-{{ diagram(url='nokia-eda/docs/diagrams/clab-integration.drawio', title='TopoLink objects', page=1) }}-
+
+In EDA, we call links between the switches **inter switch** links, links between the switches and the clients **edge** links, and loopback links are called just **loopback**. So our three topology links will be:
+
+1. The link between `srl1` and `client1` - `edge` link
+2. The link between `srl1` and `srl2` switches - `interSwitch` link
+3. The link between `srl2` and `client2` - `edge` link
+
+The TopoLink resource [definition][topoLink-crd] has a straightforward specification:
+
+```yaml
+spec:
+  links:
+    - local: # required
+        interface:
+        interfaceResource: # required
+        node: # required
+      remote: # same as local
+      speed:
+      type: # required
+```
+
+A TopoLink, like any other link-like object is identified by a local endpoint and an optional remote endpoint. The local/remote endpoints are "connecting" to the TopoNode objects via `node` field.
+
+But this is not everything a TopoLink needs. It also requires us to provide a link to the Interface resource via the [`interfaceResource`][interfaceResource-crd] field, as this is the bind point for the link in a particular node.
+
+[interfaceResource-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{eda_crd_version}}-#spec-links-local-interfaceResource
+
+#### Interface
+
+The Interface resource creates a physical interface on the node. In our topology we have two physical interfaces per each managed SR Linux node:
+
+-{{ diagram(url='nokia-eda/docs/diagrams/clab-integration.drawio', title='Interface objects', page=2) }}-
+
+/// admonition | Interface CRD
+    type: subtle-note
+The Interface resource is part of an `interface.eda.nokia.com` application and its CRD is currently not published for us to link you to the doc.crds.dev.
+///
+
+For a TopoLink resource to be valid, the Interface resources must be created first and then referenced in the TopoLink specification.
+
+Here is how you would define the `ethernet-1/1` interface on SR Linux node `srl1` that connects it to the `client1` node:
+
+```yaml
+--8<-- "docs/user-guide/clab-integration/interface.yaml:5:20"
+```
+
+As indicated in the spec, the Interface resource has a `members` field that can contain one (for a single interface) or multiple (for a LAG) interfaces objects. An implementation detail worth calling out is that the physical interface name should be normalized, i.e. SR Linux's `ethernet-1/1` becomes `ethernet-1-1`.
+
+As we do not have LAG interfaces in our lab topology, all our interfaces will have identical configuration.
+
 ### Applying the resources
 
 Let's summarize what we have learned so far:
@@ -360,6 +438,7 @@ Let's summarize what we have learned so far:
 6. Onboarding user and the user used for the ongoing management might be different. The permanent user is declaratively defined by the NodeUser resource.
 7. The gRPC server used for the management of the node is tied to the NodeProfile resource and is identified by the `port` field. This server should reference a dynamic `EDA` TLS profile that EDA sets up during the onboarding workflow.
 8. When the node is onboarded, the NPP pod is connected to the node and **replaces** the existing configuration with the configuration calculated by EDA based on the intents defined in the system.
+9. To create TopoLink resources, we need to create Interface resources first and then reference them in the TopoLink resource.
 
 Before we rush to apply the resources, let's capture the state of the current config present on our SR Linux nodes and verify that the configuration will be wiped out and replaced once EDA starts to manage the nodes.
 
@@ -473,6 +552,50 @@ EOF
 
 ///
 
+#### Interface
+
+A topology without links is not a topology. Time to add the links between the nodes. And a prerequisite to creating the TopoLink resources is to create the Interface resources.
+
+/// tab | Interface resources
+
+```{.yaml .code-scroll-lg}
+--8<-- "docs/user-guide/clab-integration/interface.yaml:1"
+```
+
+///
+/// tab | `kubectl` apply
+
+```{.bash .no-select .code-scroll-sm}
+cat << 'EOF' | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/interface.yaml:1"
+EOF
+```
+
+///
+
+The moment we created the Interface resources, EDA will configure the associated physical interfaces on the SR Linux nodes. We will see it in the Verification section. Yet, the topology UI will not show the interfaces until we create the TopoLink resources.
+
+#### TopoLink
+
+Now, that we have the Interfaces created we can create the last resource type - TopoLink.
+
+/// tab | Interface resources
+
+```{.yaml .code-scroll-lg}
+--8<-- "docs/user-guide/clab-integration/topoLink.yaml:2"
+```
+
+///
+/// tab | `kubectl` apply
+
+```{.bash .no-select .code-scroll-sm}
+cat << 'EOF' | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/topoLink.yaml:2"
+EOF
+```
+
+///
+
 ### Verifying integration
 
 Applying the TopoNode resources triggers a lot of activity in EDA. Starting with Bootstrap server to setup the dynamic TLS profile named `EDA` as part of the bootstrap workflow, finishing with NPP pods connecting to the SR Linux nodes and replacing the existing configuration with the configuration calculated by EDA based on the intents defined in the system.
@@ -509,17 +632,17 @@ docker exec -t clab-vlan-srl1 sr_cli \
 
 <div class="embed-result">
 ```{.no-copy .no-select}
-+---------------------+----------+----------+----------+----------+----------+
-|        Port         |  Admin   |   Oper   |  Speed   |   Type   | Descript |
-|                     |  State   |  State   |          |          |   ion    |
-+=====================+==========+==========+==========+==========+==========+
-| ethernet-1/1        | disable  | down     | 25G      |          |          |
-| ethernet-1/10       | disable  | down     | 25G      |          |          |
-+---------------------+----------+----------+----------+----------+----------+
++---------------------+---------+---------+---------+---------+---------+
+|        Port         |  Admin  |  Oper   |  Speed  |  Type   | Descrip |
+|                     |  State  |  State  |         |         |  tion   |
++=====================+=========+=========+=========+=========+=========+
+| ethernet-1/1        | enable  | up      | 25G     |         |         |
+| ethernet-1/10       | enable  | up      | 25G     |         |         |
++---------------------+---------+---------+---------+---------+---------+
 ```
 </div>
 
-Note, that the interfaces are all down, because they are not configured anymore; they were wiped out when the node become managed by EDA and since there is no intent defined in EDA that creates interfaces on these nodes - we do not see any.
+Note, that the interfaces are all up, because they have been configured when we created [Interface](#interface) resources.
 ///
 /// tab | network instance
 
@@ -535,7 +658,8 @@ docker exec -t clab-vlan-srl1 sr_cli \
 ```
 </div>
 
-Same goes with the previously existing `bridge-1` network instance of type `mac-vrf`. It is completely gone.
+But contrary to the Interfaces, the `bridge-1` mac-vrf network instance is completely gone, because we have not created any resources that would trigger a network instance creation.
+
 ///
 /// tab | EDA dynamic TLS profile
 Besides things that were removed, EDA added a new dynamic TLS profile named `EDA`. The Bootstrap server created it and the `eda-mgmt` gRPC server has been referring to it as part of the default configuration of SR Linux.
