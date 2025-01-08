@@ -120,7 +120,7 @@ The first option might be the easiest way to get started, since it offers more t
 If you're running OrbStack, you can spin up an embedded, one-node, lightweight cluster by checking the <kbd>Enable Kubernetes cluster</kbd> box in the settings:
 ![k8s-settings](https://gitlab.com/rdodin/pics/-/wikis/uploads/ef79bf6e405dfad44deeca5000adbfe3/image.png)
 
-When OrbStack is done with creating a k8s cluster for you, you will be able to use regular cluster management tools like `kuebctl`/`k9s`/etc to manage your cluster.
+When OrbStack is done with creating a k8s cluster for you, you will be able to use regular cluster management tools like `kubectl`/`k9s`/etc to manage your cluster.
 
 ```{.shell .no-select}
 kubectl get nodes #(1)!
@@ -175,7 +175,7 @@ EXT_IPV4_ADDR=198.19.249.2 \
 EXT_HTTPS_PORT=443 \
 NO_PROXY=192.168.194.0/25 \
 no_proxy=192.168.194.0/25 \
-make try-eda NO_KIND=yes
+make try-eda NO_KIND=yes NO_LB=yes
 ```
 
 /// admonition | Potential turbulence
@@ -209,7 +209,7 @@ If your browser can not resolve the `eda-api.k8s.orb.local` domain, you may need
 If something goes wrong during installation, or if you want to reinstall, or maybe you finished playing with EDA, feel free to destroy the cluster following the documentation for the tool you're using to run k8s.
 
 /// tab | In OrbStack
-To remove the k8s cluster provided by Orbstack run the following command in the terminal:
+To remove the k8s cluster provided by OrbStack run the following command in the terminal:
 
 ```
 orb delete k8s
