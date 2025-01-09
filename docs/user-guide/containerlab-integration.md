@@ -148,7 +148,7 @@ INFO[0000] Parsing & checking topology file: vlan.clab.yml
 
 Let's issue a ping from the `eda-bsvr` pod to the `clab-vlan-srl1` node:
 
-```bash title="copy-pastable command"
+```bash title="copy-paste command"
 kubectl -n eda-system exec -i \
 $(kubectl -n eda-system get pods -l eda.nokia.com/app=bootstrapserver \
 -o=jsonpath='{.items[*].metadata.name}') \
@@ -217,8 +217,8 @@ sudo docker exec clab-vlan-srl1 sr_cli info system grpc-server 'eda*'
 ```
 
 1. EDA expects the discovery gRPC server to listen on port 50052.
-2. The `EDA` TLS profile is a hardcoded name of the TLS profile that the EDA bootstrap server will install during the onboarding process. Since this profile does not exist until the onboarding process is completed, the annotation above says that the profile with this name can not be retrieved. This annotation will be removed once the onboarding process is completed and the TLS profile is created.
-3. Since Containerlab already sets up the `mgmt` gRPC server on port 57400 for the SR Linux nodes, the `eda-mgmt` gRPC server is configured to listen on a custom port 57410.
+2. The `EDA` TLS profile is a hardcoded name of the TLS profile that the EDA bootstrap server will install during the onboarding process. Since this profile does not exist until the onboarding process is completed, the annotation says that the profile with this name can not be retrieved. This annotation will be removed once the onboarding process is completed and the TLS profile is created by the bootstrap server.
+3. Since Containerlab already sets up the `mgmt` gRPC server on port 57400 for the SR Linux nodes, the additional `eda-mgmt` gRPC server is configured to listen on a custom port 57410 that references the `EDA` TLS profile.
 
 </div>
 
@@ -238,11 +238,11 @@ TopoNode's [Custom Resource Definition (CRD) documentation][topoNode-crd] descri
 --8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2"
 ```
 
-If right now you are lost, don't worry. We will go through the fields one by one and explain what they mean.
+If you feel lost, don't worry, we will explain what these fields mean in a moment.
 
 #### Metadata
 
-First, we specify the `apiVersion` and `kind` of the resource we are describing in YAML format. The TopoNode resource belongs to the `core.eda.nokia.com` API group of the `v1` version and the resource kind is - `TopoNode`.
+Following the Kubernetes Resource Model (KRM), we specify the `apiVersion` and `kind` of the resource we are describing in YAML format. The TopoNode resource belongs to the `core.eda.nokia.com` API group of the `v1` version and the resource kind is - `TopoNode`.
 
 Next comes the **metadata** section. There, we specify the desired resource **name**. The name of the TopoNode resource does not have to match anything specific, but to keep things consistent with the Containerlab topology, we will use the corresponding container name of the SR Linux node.
 
@@ -273,6 +273,10 @@ Since our SR Linux nodes were deployed with Containerlab, EDA can't possibly kno
 
 We chose to use the IPv4 address assigned by Containerlab, but IPv6 addresses are also supported. EDA will use this IP address to reach the node and start the onboarding process once the TopoNode resource is created in cluster.
 
+> Providing the production address information disables the whole DHCP/ZTP workflow at the bootstrap server side, as the node is considered to be bootstrapped by an external system (like Containerlab).
+>
+> Bootstrap server in this case will just ensure that the node is reachable and setup a valid TLS certificate.
+
 #### Node profile
 
 The last piece in the TopoNode resource that we must set is a [NodeProfile][nodeProfile-crd].
@@ -299,25 +303,22 @@ The first thing you see in the NodeProfile spec is the OS and version informatio
 --8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:9:12"
 ```
 
-This information will be used by the EDA's Bootstrap server - `eda-bsvr` - to identify if the discovered node needs to undergo the imaging process. If the detected version matches the one specified in the NodeProfile, the node will be considered as already imaged and the imaging process will be skipped.  
-Clearly, the imaging process is only applicable to hardware nodes, so our SR Linux containers need to run the desired version already and this version should be specified in the NodeProfile.
-
 ##### Image
 
-In case it has been discovered that the node runs a different version than the one specified in the NodeProfile, the node will undergo the imaging process. This process is carried out by the Bootstrap server providing a ZTP script that should contain the target image URL.  
-The URL is provided with the `.spec.images[].image` field.
+When a hardware node running SR Linux uses the ZTP process, the Bootstrap server provides a ZTP script that contains the initial bootstrap configuration and the target image URL.  
+The URL that the Bootstrap server uses is provided with the `.spec.images[].image` field of the NodeProfile resource.
 
 ```yaml
 --8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:13:15"
 ```
 
-You might ask why we need that for a Containerlab-spawned virtual node that does not need to be imaged? Good question. Since this field is marked as _required_ we have to provide a value but for the virtual nodes we can provide a dummy URL.  
+You might ask why we need that for a Containerlab-spawned virtual node that does not need to be imaged? Good question. Since this field is marked as _required_ in the CRD we have to provide some value but for the virtual nodes we can provide a dummy URL.  
 This is exactly what we did in our NodeProfile resource, you will find that the provided URL leads to a simple text file and not the real image.
 
 ##### gRPC port
 
 With the `port` field we specify the gRPC port number for the server that EDA will use to manage the node.  
-If you remember, in the [SR Linux configuration section](#sr-linux-configuration) on this page we mentioned that Containerlab adds `eda-mgmt` gRPC server listening on port 57410. This port number we set in the NodeProfile resource and EDA will use it to connect to the node once the onboarding process is done.
+If you remember, in the [SR Linux configuration section](#sr-linux-configuration) we mentioned that Containerlab adds `eda-mgmt` gRPC server listening on port 57410. This port is set in the NodeProfile resource and EDA will use it to connect to the node once the onboarding process is done.
 
 ##### YANG schema
 
@@ -430,14 +431,14 @@ As we do not have LAG interfaces in our lab topology, all our interfaces will ha
 
 Let's summarize what we have learned so far:
 
-1. The TopoNode resource defines the node in the topology that EDA manages.
-2. Creation of the TopoNode resource triggers onboarding of the node.
+1. The TopoNode resource defines the node in the EDA topology.
+2. Creation of the TopoNode resource triggers onboarding process for the node.
 3. TopoNode resource references the NodeProfile resource that defines the lower level node parameters used in bootstrapping/onboarding and the management workflows.
 4. Onboarding happens over the well-known gRPC port 50052, this gRPC server is configured by Containerlab[^1] automatically for the SR Linux nodes.
-5. Onboarding/Bootstrapping procedure sets up the `EDA` TLS profile using gNSI for SR Linux nodes. Once the certificate is installed, the node is marked as `onBoarded`.
-6. Onboarding user and the user used for the ongoing management might be different. The permanent user is declaratively defined by the NodeUser resource.
-7. The gRPC server used for the management of the node is tied to the NodeProfile resource and is identified by the `port` field. This server should reference a dynamic `EDA` TLS profile that EDA sets up during the onboarding workflow.
-8. When the node is onboarded, the NPP pod is connected to the node and **replaces** the existing configuration with the configuration calculated by EDA based on the intents defined in the system.
+5. Onboarding/Bootstrapping procedure sets up the `EDA` TLS profile using gNSI for SR Linux nodes. Once the certificate is installed, the node is marked as `onBoarded=true`.
+6. Onboarding user and the user used for the EDA management might be different. The "permanent" user is declaratively defined by the NodeUser resource.
+7. The gRPC server used for the management of the node is tied to the NodeProfile resource and is identified by the `port` field. This server should reference a dynamic `EDA` TLS profile that EDA's bootstrap server sets up during the onboarding workflow.
+8. When the node is onboarded, the NPP pod is spawned and connects to the node; it **replaces** the existing node configuration with the configuration calculated by EDA based on the defined intents.
 9. To create TopoLink resources, we need to create Interface resources first and then reference them in the TopoLink resource.
 
 Before we rush to apply the resources, let's capture the state of the current config present on our SR Linux nodes and verify that the configuration will be wiped out and replaced once EDA starts to manage the nodes.
