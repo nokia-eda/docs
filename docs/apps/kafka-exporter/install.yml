@@ -1,0 +1,16 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Workflow
+metadata:
+  name: kafka-exporter-install
+  namespace: eda-system
+spec:
+  type: app-installer
+  input:
+    app: kafka-exporter
+    catalog: eda-catalog-builtin-apps
+    operation: install
+    vendor: nokia
+    version:
+      type: semver
+      value: v2.0.0
+
