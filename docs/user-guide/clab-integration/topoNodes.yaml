@@ -13,7 +13,7 @@ spec:
   platform: 7220 IXR-D2L
   version: 24.10.1
   productionAddress:
-    ipv4: 172.20.20.2
+    ipv4: # IP address of the clab-vlan-srl1 node
 ---
 apiVersion: core.eda.nokia.com/v1
 kind: TopoNode
@@ -28,4 +28,4 @@ spec:
   platform: 7220 IXR-D2L
   version: 24.10.1
   productionAddress:
-    ipv4: 172.20.20.3
+    ipv4: # IP address of the clab-vlan-srl2 node
