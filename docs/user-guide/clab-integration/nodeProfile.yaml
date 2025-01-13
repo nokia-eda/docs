@@ -11,8 +11,8 @@ spec:
   versionPath: .system.information.version
   versionMatch: v24\.10\.1.*
   images:
-    - image: https://raw.githubusercontent.com/eda-labs/clab-connector/refs/heads/main/assets/srlinux.bin
-      imageMd5: https://raw.githubusercontent.com/eda-labs/clab-connector/refs/heads/main/assets/srlinux.bin.md5
+    - image: fake.bin
+      imageMd5: fake.bin.md5
   port: 57410
   yang: https://eda-asvr.eda-system.svc/eda-system/schemaprofiles/srlinux-ghcr-24.10.1/srlinux-24.10.1.zip
   onboardingUsername: admin

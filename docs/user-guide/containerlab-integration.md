@@ -14,11 +14,44 @@ Acknowledging that EDA CX is a new network emulation platform that is still in t
     type: subtle-note
 To integrate SR Linux nodes spawned by Containerlab with EDA in the manual mode you need to:
 
-1. <small>optional</small> Change the default NodeUser resource to use the `NokiaSrl1!` password
-2. Create a [NodeProfile](#node-profile) resource with the OS/version/yang fields set to the corresponding values
-3. Create a [TopoNode](#toponode) resource for each SR Linux node
-4. Create an [Interface](#interface) resource per each endpoint of SR Linux nodes.
-5. Create a [TopoLink](#topolink) resource for each link referencing the created Interface resources
+1. Apply an EDA license to be able to integrate with SR Linux nodes spawned outside of EDA CX
+2. <small>optional</small> Change the default NodeUser resource to use the `NokiaSrl1!` password
+3. Create a [NodeProfile](#node-profile) resource with the OS/version/yang fields set to the corresponding values
+4. Create a [TopoNode](#toponode) resource for each SR Linux node
+5. Create an [Interface](#interface) resource per each endpoint of SR Linux nodes.
+6. Create a [TopoLink](#topolink) resource for each link referencing the created Interface resources
+
+//// details | Copy/Paste snippets
+    type: code-example
+If you want to quickly onboard SR Linux nodes after spawning the [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) containerlab topology, you can copy paste the following snippet entirely in your terminal.
+
+```{.shell .code-scroll-lg}
+cat << EOF | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/nodeUser.yaml:2"
+$(ssh-add -L | awk '{print "    - \""$0"\""}')
+EOF
+
+cat << 'EOF' | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:2"
+EOF
+
+cat << EOF | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2:15"
+    ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl1)
+--8<-- "docs/user-guide/clab-integration/topoNodes.yaml:17:30"
+    ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl2)
+EOF
+
+cat << 'EOF' | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/interface.yaml:1"
+EOF
+
+cat << 'EOF' | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/topoLink.yaml:2"
+EOF
+```
+
+////
 ///
 
 In this section we will cover how to integrate EDA with a lab built with Containerlab in a manual and automated way. To keep things practical, we will take a real lab built with Containerlab - [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) and integrate it with EDA.
@@ -313,7 +346,7 @@ The URL that the Bootstrap server uses is provided with the `.spec.images[].imag
 ```
 
 You might ask why we need that for a Containerlab-spawned virtual node that does not need to be imaged? Good question. Since this field is marked as _required_ in the CRD we have to provide some value but for the virtual nodes we can provide a dummy URL.  
-This is exactly what we did in our NodeProfile resource, you will find that the provided URL leads to a simple text file and not the real image.
+This is exactly what we did in our NodeProfile resource.
 
 ##### gRPC port
 
@@ -501,9 +534,12 @@ With the initial state captured, let's start applying the resources in the botto
 ///
 /// tab | `kubectl` apply
 
+In this command we retrieve the public keys from the SSH agent and add add them to the NodeUser resource.
+
 ```{.bash .no-select}
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << EOF | kubectl -n eda apply -f -
 --8<-- "docs/user-guide/clab-integration/nodeUser.yaml:2"
+$(ssh-add -L | awk '{print "    - \""$0"\""}')
 EOF
 ```
 
@@ -536,7 +572,7 @@ So far the resources that we have modified or created did not trigger any activi
 
 /// tab | TopoNode resources
 
-When applying the TopoNode resources, pay attention to the `productionAddress` field. IPs assigned by Containerlab might differ from the ones used in the example. The rest, though, should be identical.
+When applying the TopoNode resources, the difference between the resources (besides the resource name) is in the `productionAddress` field. The `kubectl` apply tab shows how to programmatically fetch the current assigned IP address from the docker state and populate the resources accordingly so that you can copy and paste the command on the host that runs the containerlab topology.
 
 ```yaml
 --8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2"
@@ -546,8 +582,11 @@ When applying the TopoNode resources, pay attention to the `productionAddress` f
 /// tab | `kubectl` apply
 
 ```{.bash .no-select}
-cat << 'EOF' | kubectl -n eda apply -f -
---8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2"
+cat << EOF | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2:15"
+    ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl1)
+--8<-- "docs/user-guide/clab-integration/topoNodes.yaml:17:30"
+    ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl2)
 EOF
 ```
 
