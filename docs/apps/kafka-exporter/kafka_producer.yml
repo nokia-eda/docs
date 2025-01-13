@@ -1,0 +1,20 @@
+apiVersion: kafka.eda.nokia.com/v1alpha1
+kind: Producer
+metadata:
+  name: kafka-producer
+  namespace: eda-system
+spec:
+  brokers: "broker1:9092,broker2:9092"
+  required-acks: wait-for-local
+  max-retry: 3
+  timeout: "10s"
+  compression-codec: gzip
+  exports:
+    - topic: "interface-state"
+      path: ".namespace.node.srl.interface"
+      fields:
+        - admin-state
+        - oper-state
+      where: 'admin-state = "enable"'
+      period: "60s"
+      mode: periodic-on-change

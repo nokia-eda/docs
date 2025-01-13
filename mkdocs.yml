@@ -30,6 +30,7 @@ nav:
       - Virtual Network: apps/virtualnetwork.md
       - Notifier: apps/notifier.md
       - Prometheus Exporter: apps/prometheus-exporter.md
+      - Kafka Exporter: apps/kafka-exporter.md
 
   - Cloud Connect:
       - Cloud Connect: connect/cloud-connect.md
