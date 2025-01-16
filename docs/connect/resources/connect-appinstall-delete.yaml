@@ -1,0 +1,15 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Workflow
+metadata:
+  name: connect-nokia
+  namespace: eda-system
+spec:
+  input:
+    app: connect
+    catalog: eda-catalog-builtin-apps
+    operation: delete
+    vendor: nokia
+    version:
+      type: semver
+      value: v2.0.0
+  type: app-installer
