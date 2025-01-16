@@ -17,7 +17,7 @@ The EDA App Store is used to manage the Applications inside EDA. It can be acces
 
 ## Resources
 
-The App Store relies on three different resources in the EDA environment:
+The App Store relies on two different resources in the EDA environment:
 
 *`Catalog`*
 : A catalog is a git repository that contains the manifests of Apps. A manifest contains all the details of an App and will be discussed further in the Development section. Using the manifests of all the `Catalogs` registered in EDA, the App Store can build a list of all available Apps.
@@ -25,14 +25,11 @@ The App Store relies on three different resources in the EDA environment:
 *`Registry`*
 : While a manifest of an App contains all the details of an App, the actual code and resources of an App are stored in an OCI compliant image. This image needs to be stored in a container registry. This registry must be known to the EDA deployment so the App Store can pull the image and use the data in the image to deploy the App. This information is given to EDA in the form of a `Registry` custom resource.
 
-*`AppInstall`*
-: An `AppInstall` is a custom resource that informs the App Store it must install an App in the EDA environment.
-
 ## Installing an App
 
-To install an App, you can use the App Store UI, select the App from the list and click the "Install" button. In the background, this will create a `AppInstall` custom resources in the EDA environment. The App Store backend takes this resource and takes the appropriate actions to read the information of the App from its manifest, and make sure the appropriate data is available to EDA, which can include the code of the App, custom resource definitions and more.
+To install an App, you can use the App Store UI, select the App from the list and click the "Install" button. In the background, this will create a `Workflow` custom resource in the EDA environment. The App Store backend takes this resource and takes the appropriate actions to read the information of the App from its manifest, and make sure the appropriate data is available to EDA, which can include the code of the App, custom resource definitions and more.
 
-You can also install an App using `kubectl` and giving it the correct `AppInstall` custom resource. Here's an example to install the Cloud Connect App:
+You can also install an App using `kubectl` and giving it the correct `Workflow` custom resource. Here's an example to install the Cloud Connect App:
 
 === "YAML Resource"
     ```yaml
@@ -46,17 +43,34 @@ You can also install an App using `kubectl` and giving it the correct `AppInstal
     EOF
     ```
 
+The status of the Workflow shows the progress of the installation. This `Workflow` resource initiates an app installer job. Once installed, a `Manifest` resource will be created and the Workflow is done (and the object may be deleted). To see the installed apps using `kubectl`, you can check their manifests:
+
+```bash
+kubectl get manifests
+```
+
 ## Uninstalling an App
 
 To uninstall an App, you can use the UI. Open the App page and it will say the currently installed version and to the right, under the general information block, there is a link to "Uninstall package". This will remove the App.
 
-Alternatively, you can use `kubectl` commands to delete the resource. Here's an example to delete the previously created Cloud Connect `AppInstall`.
+Alternatively, you can use `kubectl` commands to delete an app. Creating a new Workflow with a `delete` operation, will start uninstalling an application.
+Here's an example to delete the previously created Cloud Connect App.
 
 /// details | Known Limitations
     type: warning
 There is no validation yet when uninstalling apps, so make sure all your config is removed before uninstalling.
 ///
 
-```bash
-kubectl delete appinstall connect
-```
+=== "YAML Resource"
+    ```yaml
+    --8<-- "docs/connect/resources/connect-appinstall-delete.yaml"
+    ```
+
+=== "`kubectl apply` command"
+    ```bash
+    kubectl apply -f - <<EOF
+    --8<-- "docs/connect/resources/connect-appinstall-delete.yaml"
+    EOF
+    ```
+
+Note the difference between installing and uninstalling by the `operation` field. Changing an already existing Workflow by updating its operation field from `install` to `delete` will not trigger a new (un)install job. A new Workflow needs to be created instead.
