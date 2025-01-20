@@ -10,51 +10,7 @@ To facilitate end-to-end testing and validation of configuration changes, EDA co
 
 Acknowledging that EDA CX is a new network emulation platform that is still in the process of maturing, we wanted to offer a way to integrate EDA with multitude of existing network topologies built with [Containerlab](https://containerlab.dev/).
 
-/// details | TLDR
-    type: subtle-note
-To integrate SR Linux nodes spawned by Containerlab with EDA in the manual mode you need to:
-
-1. Apply an EDA license to be able to integrate with SR Linux nodes spawned outside of EDA CX
-2. <small>optional</small> Change the default NodeUser resource to use the `NokiaSrl1!` password
-3. Create a [NodeProfile](#node-profile) resource with the OS/version/yang fields set to the corresponding values
-4. Create a [TopoNode](#toponode) resource for each SR Linux node
-5. Create an [Interface](#interface) resource per each endpoint of SR Linux nodes.
-6. Create a [TopoLink](#topolink) resource for each link referencing the created Interface resources
-
-//// details | Copy/Paste snippets
-    type: code-example
-If you want to quickly onboard SR Linux nodes after spawning the [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) containerlab topology, you can copy paste the following snippet entirely in your terminal.
-
-```{.shell .code-scroll-lg}
-cat << EOF | kubectl -n eda apply -f -
---8<-- "docs/user-guide/clab-integration/nodeUser.yaml:2"
-$(ssh-add -L | awk '{print "    - \""$0"\""}')
-EOF
-
-cat << 'EOF' | kubectl -n eda apply -f -
---8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:2"
-EOF
-
-cat << EOF | kubectl -n eda apply -f -
---8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2:15"
-    ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl1)
---8<-- "docs/user-guide/clab-integration/topoNodes.yaml:17:30"
-    ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl2)
-EOF
-
-cat << 'EOF' | kubectl -n eda apply -f -
---8<-- "docs/user-guide/clab-integration/interface.yaml:1"
-EOF
-
-cat << 'EOF' | kubectl -n eda apply -f -
---8<-- "docs/user-guide/clab-integration/topoLink.yaml:2"
-EOF
-```
-
-////
-///
-
-In this section we will cover how to integrate EDA with a lab built with Containerlab in a manual and automated way. To keep things practical, we will take a real lab built with Containerlab - [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) and integrate it with EDA.
+In this section we cover how to integrate EDA with a lab built with Containerlab in a fully [automated](#automated-integration) way first, and then explain how to do this [manually](#manual-integration) with a deep dive on things involved in the onboarding process. To keep things practical, we will take a real lab built with Containerlab - [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) and integrate it with EDA.
 
 -{{ diagram(url='srl-labs/srlinux-vlan-handling-lab/diagrams/vlan.drawio', title='VLAN handling lab', page=0) }}-
 
@@ -70,13 +26,13 @@ sudo containerlab deploy -t srl-labs/srlinux-vlan-handling-lab #(1)!
     type: subtle-note
 For a successful integration you need to ensure the following minimal version requirements:
 
-* Containerlab >= 0.61.0
-* SR Linux >= 24.10.1
-* EDA >= 24.12.1
+* Containerlab 0.62.2
+* SR Linux 24.10.1
+* EDA 24.12.1
 
 This article was validated using the following versions:
 
-* Containerlab: 0.61.0
+* Containerlab: 0.62.2
 * SR Linux: 24.10.1
 * EDA: 24.12.1
 
@@ -141,74 +97,130 @@ kubectl apply -f eda-license.yaml
 
 For EDA to manage nodes spawned outside of the Kubernetes cluster it is deployed in, it must be able to reach them. In this tutorial we are installing EDA in the KinD cluster that comes as a default with the EDA Playground installation; so our EDA installation will be running alongside the Containerlab topology on the same host machine.
 
-Yet, even though KinD and Containerlab are running on the same host, these two environments are isolated from each other as prescribed by the Docker networking model and enforced by iptables. In order to allow KinD cluster to communicate with Containerlab nodes, we need to explicitly allow this by adding a permitting rule to the `DOCKER-USER` iptables chain.
+Yet, even though KinD and Containerlab are running on the same host, these two environments are isolated from each other as prescribed by the Docker networking model and enforced by iptables. In order to allow KinD cluster to communicate with Containerlab nodes Containerlab 0.62.2 release installs allowing iptables rules to the `DOCKER-USER` chain for v4 and v6 families.
 
-Luckily for us, it is a one-time operation and you can just paste the following command to the terminal:
-
-```bash
-sudo iptables -I DOCKER-USER 2 \
--o $(sudo docker network inspect kind -f '{{.Id}}' | cut -c 1-12 | \
-awk '{print "br-"$1}') \
--m comment --comment "allow communications to kind bridge (EDA)" -j ACCEPT
-```
-
-To confirm that the communication is indeed allowed, we can take a management IP of one of our Containerlab nodes and ping it from the `eda-bsvr` pod that is one of the pods requiring connectivity with the Containerlab nodes. First, lets check what IP addresses were assigned to the nodes in our containerlab:
-
-```{.bash .no-select title="executed in the srlinux-vlan-handling lab repo directory"}
-sudo clab inspect
-```
-
-<div class="embed-result">
-```{.text .no-copy .no-select}
-INFO[0000] Parsing & checking topology file: vlan.clab.yml
-╭───────────────────┬───────────────────────────────┬─────────┬───────────────────╮
-│        Name       │           Kind/Image          │  State  │   IPv4/6 Address  │
-├───────────────────┼───────────────────────────────┼─────────┼───────────────────┤
-│ clab-vlan-client1 │ linux                         │ running │ 172.20.20.4       │
-│                   │ ghcr.io/srl-labs/alpine       │         │ 3fff:172:20:20::4 │
-├───────────────────┼───────────────────────────────┼─────────┼───────────────────┤
-│ clab-vlan-client2 │ linux                         │ running │ 172.20.20.5       │
-│                   │ ghcr.io/srl-labs/alpine       │         │ 3fff:172:20:20::5 │
-├───────────────────┼───────────────────────────────┼─────────┼───────────────────┤
-│ clab-vlan-srl1    │ nokia_srlinux                 │ running │ 172.20.20.2       │
-│                   │ ghcr.io/nokia/srlinux:24.10.1 │         │ 3fff:172:20:20::2 │
-├───────────────────┼───────────────────────────────┼─────────┼───────────────────┤
-│ clab-vlan-srl2    │ nokia_srlinux                 │ running │ 172.20.20.3       │
-│                   │ ghcr.io/nokia/srlinux:24.10.1 │         │ 3fff:172:20:20::3 │
-╰───────────────────┴───────────────────────────────┴─────────┴───────────────────╯
-```
-</div>
+To confirm that the communication is indeed allowed, we can take a management IP of one of our Containerlab nodes and ping it from the `eda-bsvr` pod that is one of the pods requiring connectivity with the Containerlab nodes.
 
 Let's issue a ping from the `eda-bsvr` pod to the `clab-vlan-srl1` node:
 
-```bash title="copy-paste command"
+```bash title="copy-paste command to srl1"
 kubectl -n eda-system exec -i \
 $(kubectl -n eda-system get pods -l eda.nokia.com/app=bootstrapserver \
 -o=jsonpath='{.items[*].metadata.name}') \
--- ping -c 2 172.20.20.3
+-- ping -c 2 $(sudo docker inspect -f '{{.NetworkSettings.Networks.clab.IPAddress}}' clab-vlan-srl1)
 ```
 
-If you managed to copy-paste things right, you should see packets happily flying between EDA and Containerlab nodes.
+If you managed to copy-paste things right, you should see packets happily flying between EDA and Containerlab nodes. OK, now, with the containerlab topology running, EDA installed and connectivity requirements satisfied, we can proceed with the actual integration.
 
+## Automated integration
+
+In pursue of a one-click integration experience, we have created the [`clab-connector`][clab-connector-repo] CLI tool that automates the integration process.
+
+[clab-connector-repo]: https://github.com/eda-labs/clab-connector
+
+### Installation
+
+The `clab-connector` tool is easily installable using `uv` package manager, therefore start with [installing `uv`](https://docs.astral.sh/uv/getting-started/installation/) and then `clab-connector`:
+
+/// tab | Install clab-connector (requires uv)
+
+```bash
+uv tool install git+https://github.com/eda-labs/clab-connector.git
 ```
-PING 172.20.20.3 (172.20.20.3) 56(84) bytes of data.
-64 bytes from 172.20.20.3: icmp_seq=1 ttl=62 time=4.54 ms
-64 bytes from 172.20.20.3: icmp_seq=2 ttl=62 time=3.48 ms
 
---- 172.20.20.3 ping statistics ---
-2 packets transmitted, 2 received, 0% packet loss, time 1001ms
-rtt min/avg/max/mdev = 3.481/4.012/4.543/0.531 ms
+///
+/// tab | Install uv
+If you wanted to save a click, here is a quick one-liner installer from uv website:
+
+```bash title="for Linux and macOS"
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-OK, now, with the containerlab topology running, EDA installed and connectivity requirements satisfied, we can proceed with the actual integration.
+///
+
+### Usage
+
+Clab-connector leverages Kubernetes API, EDA API and Containerlab topology export data to automate the integration process. Consequently, the host machine where the `clab-connector` tool is installed must have access to the kube config file, EDA API endpoint and Containerlab's `topology-data.json`[^1] file.
+
+#### Integrate
+
+If you haven't changed any of the default credentials in your EDA installation, you can integrate EDA with Containerlab as simply as:
+
+```bash
+clab-connector integrate \
+--eda-url https://your.eda.host \
+-t ~/path/to/your-lab/clab-yourlab/topology-data.json #(1)!
+```
+
+1. The `topology-data.json` file is located in the Containerlab [Lab Directory](https://containerlab.dev/manual/conf-artifacts/#identifying-a-lab-directory), which is created next to the lab's topology file.
+
+If you happen to change the default user credentials, you can provide them with `--eda-user` and `--eda-password` flags. Run `clab-connector integrate --help` to see all the available flags.
+
+The connector tool will create a new EDA namespace matching the Containerlab lab name and will create the required resources in it. This allows you to managed as many distinct labs as you want, without having clashing resources between them.
+
+#### Remove
+
+To remove the EDA integration, run:
+
+```bash
+clab-connector remove \
+--eda-url https://your.eda.host \
+-t ~/path/to/your-lab/clab-yourlab/topology-data.json
+```
+
+This will remove the previously created namespace and all the resources inside it.
 
 ## Manual integration
 
-Even though automated integration sounds more appealing, it is the manual integration we wanted to cover first as it explains the moving parts and the underlying concepts. By completing this section you will get a decent understanding of the onboarding process and will breeze through the automated integration later on.
+/// details | TLDR
+    type: subtle-note
+To integrate SR Linux nodes spawned by Containerlab with EDA in the manual mode you need to:
+
+1. Apply an EDA license to be able to integrate with SR Linux nodes spawned outside of EDA CX
+2. <small>optional</small> Change the default NodeUser resource to use the `NokiaSrl1!` password
+3. Create a [NodeProfile](#node-profile) resource with the OS/version/yang fields set to the corresponding values
+4. Create a [TopoNode](#toponode) resource for each SR Linux node
+5. Create an [Interface](#interface) resource per each endpoint of SR Linux nodes.
+6. Create a [TopoLink](#topolink) resource for each link referencing the created Interface resources
+
+//// details | Copy/Paste snippets
+    type: code-example
+If you want to quickly onboard SR Linux nodes after spawning the [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) containerlab topology, you can copy paste the following snippet entirely in your terminal.
+
+```{.shell .code-scroll-lg}
+cat << EOF | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/nodeUser.yaml:2"
+$(ssh-add -L | awk '{print "    - \""$0"\""}')
+EOF
+
+cat << 'EOF' | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:2"
+EOF
+
+cat << EOF | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2:15"
+    ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl1)
+--8<-- "docs/user-guide/clab-integration/topoNodes.yaml:17:30"
+    ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl2)
+EOF
+
+cat << 'EOF' | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/interface.yaml:1"
+EOF
+
+cat << 'EOF' | kubectl -n eda apply -f -
+--8<-- "docs/user-guide/clab-integration/topoLink.yaml:2"
+EOF
+```
+
+////
+///
+
+Even though automated integration makes the integration so easy, it is the manual integration that explains the moving parts and the underlying concepts. By completing this section you will get a decent understanding of the onboarding process and will breeze through the automated integration later on.
 
 ### SR Linux configuration
 
-Our goal is to have EDA to discover and onboard the SR Linux nodes running as part of the Containerlab topology. When Containerlab[^1] spins up the SR Linux nodes it will add two EDA-specific gRPC servers to the default config; these servers will allow EDA to discover and later manage the nodes.
+Our goal is to have EDA to discover and onboard the SR Linux nodes running as part of the Containerlab topology. When Containerlab[^2] spins up the SR Linux nodes it will add two EDA-specific gRPC servers to the default config; these servers will allow EDA to discover and later manage the nodes.
 
 ```{.bash .no-select}
 sudo docker exec clab-vlan-srl1 sr_cli info system grpc-server 'eda*'
@@ -383,7 +395,7 @@ But the onboarding user might not be the same as the one used for the ongoing ma
 --8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:20:20"
 ```
 
-The `admin` [NodeUser][nodeUser-crd] resource has been created as part of the EDA Playground installation, but it uses a non-default SR Linux password, that we would like to change. To do that, we will craft a resource manifest that uses the default `NokiaSrl1!` password, as well as add a public key[^2] to enable typing-free SSH access.
+The `admin` [NodeUser][nodeUser-crd] resource has been created as part of the EDA Playground installation, but it uses a non-default SR Linux password, that we would like to change. To do that, we will craft a resource manifest that uses the default `NokiaSrl1!` password, as well as add a public key[^3] to enable typing-free SSH access.
 
 [nodeUser-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/NodeUser/v1@v-{{eda_crd_version}}-
 
@@ -467,7 +479,7 @@ Let's summarize what we have learned so far:
 1. The TopoNode resource defines the node in the EDA topology.
 2. Creation of the TopoNode resource triggers onboarding process for the node.
 3. TopoNode resource references the NodeProfile resource that defines the lower level node parameters used in bootstrapping/onboarding and the management workflows.
-4. Onboarding happens over the well-known gRPC port 50052, this gRPC server is configured by Containerlab[^1] automatically for the SR Linux nodes.
+4. Onboarding happens over the well-known gRPC port 50052, this gRPC server is configured by Containerlab[^2] automatically for the SR Linux nodes.
 5. Onboarding/Bootstrapping procedure sets up the `EDA` TLS profile using gNSI for SR Linux nodes. Once the certificate is installed, the node is marked as `onBoarded=true`.
 6. Onboarding user and the user used for the EDA management might be different. The "permanent" user is declaratively defined by the NodeUser resource.
 7. The gRPC server used for the management of the node is tied to the NodeProfile resource and is identified by the `port` field. This server should reference a dynamic `EDA` TLS profile that EDA's bootstrap server sets up during the onboarding workflow.
@@ -744,13 +756,8 @@ QJNoWhdMyz++Nl83AzQOzRXKB7VbWxO7
 
 ///
 
-This completes the manual integration of EDA with a topology created by Containerlab. You were the witness of the process that is, well, manual, but the good news is that we have are working on a fully automated integration.
+This completes the manual integration of EDA with a topology created by Containerlab. You were the witness of the process that is, well, manual, but the good news is that we you can use the [clab-connector](#automated-integration) to automate the process.
 
-## Automated integration
-
-<small>We are polishing the repo [eda-labs/clab-connector][clab-connector-repo] repo to align with EDA 24.12.1 release. Once it is ready, this section will spark!</small>
-
-[clab-connector-repo]: https://github.com/eda-labs/clab-connector
-
-[^1]: versions >= 0.61.0
-[^2]: set your own public key, this one is for demonstration purposes only
+[^1]: `topology-data.json` file is generated by Containerlab when the lab is deployed. It can be found in the Containerlab's [Lab Directory](https://containerlab.dev/manual/conf-artifacts/#identifying-a-lab-directory).
+[^2]: versions >= 0.61.0
+[^3]: set your own public key, this one is for demonstration purposes only
