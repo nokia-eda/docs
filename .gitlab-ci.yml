@@ -1,6 +1,6 @@
 variables:
   GIT_DEPTH: 0
-  MKDOCS_IMAGE: cr.srlinux.dev/pub/mkdocs-material-insiders:9.5.19-insiders-4.53.8-hellt
+  MKDOCS_IMAGE: cr.srlinux.dev/pub/mkdocs-material-insiders:9.5.45-insiders-4.53.14-hellt
 
 htmltest:
   stage: test

@@ -8,7 +8,7 @@ set -o errexit
 set -o pipefail
 set -e
 
-MKDOCS_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:9.5.35-insiders-4.53.13-hellt
+MKDOCS_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:9.5.45-insiders-4.53.14-hellt
 
 function serve-docs {
   # serve development documentation portal
