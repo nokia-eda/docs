@@ -141,10 +141,11 @@ EOF
 ///
 ////
 
-After creating the Service Account Token, you can retrieve the actual token itself using the following command. This token is what will need to be provided to the plugin during deployment.
+After creating the Service Account Token, you can retrieve the actual token itself using the following command from `eda-system` namespace as defined in the above created service account. 
+This token is what will need to be provided to the plugin during deployment.
 
 ```bash
-kubectl get secrets/k8s-controller-plugin --template={{.data.token}} | base64 --decode
+kubectl get secrets/k8s-controller-plugin -n eda-system --template={{.data.token}} | base64 --decode
 ```
 
 ### Fetching the EDA Connect OpenShift plugin Helm charts
@@ -188,6 +189,16 @@ kubectl create secret docker-registry eda-k8s-image-secret \
   --docker-password=${PULL_TOKEN} \
   -n eda-connect-k8s-controller
 ```
+/// details | Getting the pull token
+    type: note
+The easiest way to get the token/password for the pull secret, is to look at your EDA deployment and look for the `appstore-eda-apps-registry-image-pull` secret. By grabbing the content of that secret and using `base64` to decode the `dockerconfigjson`, you can find the password in the resulting json.
+
+Example to do so in one line (make sure to have the KUBECONFIG for the EDA cluster loaded, not the OpenShift config):
+
+```bash
+kubectl get secret appstore-eda-apps-registry-image-pull -n eda-system -o json | jq -r '.data.".dockerconfigjson"' | base64 -d | jq -r '.auths."ghcr.io".password'
+```
+///
 
 #### Setting up the local Helm values
 
@@ -249,10 +260,11 @@ NAME                                            READY   STATUS  RESTARTS AGE
 connect-k8s-controller-manager-c8d4875bc-bpzrx  2/2     Running 0        66m
 ```
 
-On the EDA Kubernetes environment you can verify the plugin has been registered.
+On the EDA Kubernetes environment you can verify the plugin has been registered on EDA in the namespace referred in `openshift-helm-values.yaml`. 
+The following command assumes that namespace value set to be `eda`
 
 ```bash
-$ kubectl get connectplugins
+$ kubectl get connectplugins -n eda
 NAME                                   PROVIDED NAME           PLUGIN TYPE   AGE
 470e9af1-b85b-439b-b81a-ab71a7166bb0   k8s-controller-plugin   KUBERNETES    2h
 ```
