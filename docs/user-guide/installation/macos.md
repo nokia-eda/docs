@@ -8,6 +8,11 @@ Do you want to get full EDA experience on your macOS machine? Well, can't judge 
 
 Typically, the management and automation platforms of EDA' caliber require a ton of resources to run. But that is not the case with EDA! The microservices architecture and reliance on Kubernetes as a deployment platform make it possible to run EDA on a laptop using open-source tools. And macOS-powered machines (even with M chips[^1]) is not an exception!
 
+/// details | Watch the video
+    type: subtle-note
+-{{youtube(url='https://www.youtube.com/embed/QV8PwaSsNo8')}}-
+///
+
 ## Playground repository
 
 We will need the playground repository on our machine to run EDA installation steps. Pull it, as explained in the [Try EDA](../../getting-started/try-eda.md) section.
