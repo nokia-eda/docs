@@ -150,28 +150,29 @@ make kind
 
 ## Installing EDA
 
-Install time! When running docker/k8s on mac we have some complications with the networking, as the VM that runs the k8s cluster is not the same as the one where we run our make targets.
+When running docker/k8s on a mac we have some layered networking to deal with, as the VM that runs the k8s cluster is not the same as the one where we run our make targets.
 
-That's why we would have not only set the
+First, we need to make record of the following variables:
 
 * `EXT_DOMAIN_NAME`: to the domain name or IP of the k8s cluster node (assuming you're running a single node cluster)
-* `EXT_IPV4_ADDR`: set to the IP address of the cluster node. You can get it with:
+* `EXT_IPV4_ADDR` and/or `EXT_IPV6_ADDR`: set to the IP address of the cluster node. You can get these addresses in the output of:
 
     ```shell
-    kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}'
+    kubectl get nodes -o jsonpath='{.items[0].status.addresses}'
     ```
 
-but also set a pair of no proxy variables set to the cluster cidr of your cluster. You can get the with:
+And also set a pair of no proxy variables set to the cluster cidr of your cluster. You can get it with:
 
 ```shell
 kubectl get nodes -o jsonpath='{.items[0].spec.podCIDR}'
 ```
 
-And once all the variables are known, you can start the installation:
+And once all the variables are known, you can start the installation. If you are running OrbStack, you can use the following command verbatim to install EDA:
 
 ```shell
 EXT_DOMAIN_NAME=eda-api.k8s.orb.local \
 EXT_IPV4_ADDR=198.19.249.2 \
+EXT_IPV6_ADDR=fd07:b51a:cc66::2 \
 EXT_HTTPS_PORT=443 \
 NO_PROXY=192.168.194.0/25 \
 no_proxy=192.168.194.0/25 \
