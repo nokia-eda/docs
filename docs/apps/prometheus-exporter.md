@@ -1,13 +1,13 @@
 # Prometheus Exporter
 
-| <nbsp> {: .hide-th } |                                                                                                        |
-| -------------------- | ------------------------------------------------------------------------------------------------------ |
+| <nbsp> {: .hide-th } |                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------- |
 | **Description**      | Prometheus Exporter exposes EDA and network metrics to be scraped by a Prometheus server. |
-| **Author**           | Nokia                                                                                                  |
-| **Supported OS**     | SR Linux, SR OS                                                                                        |
-| **Catalog**          | [nokia-eda/catalog][catalog]                                                                           |
-| **Language**         | Go                                                                                                     |
-| **Source Code**      | <small>coming soon</small>                                                                             |
+| **Author**           | Nokia                                                                                     |
+| **Supported OS**     | SR Linux, SR OS                                                                           |
+| **Catalog**          | [nokia-eda/catalog][catalog]                                                              |
+| **Language**         | Go                                                                                        |
+| **Source Code**      | <small>coming soon</small>                                                                |
 
 [catalog]: https://github.com/nokia-eda/catalog
 
@@ -34,7 +34,7 @@ EOF
 
 ## Configuration
 
-After installing the app you can configure the metrics you wish to be exported by defining an EDB jsPath and, optionally, a `fields` list and a `where` EQL statement.
+After installing the app you can configure the metrics you wish to be exported by defining an EDB path (also referred to as `jsPath`) and, optionally, a `fields` list and a `where` EQL statement. You can check what is returned by the path using the EDA Query UI or [`edactl`](../user-guide/using-the-clis.md#edactl).
 
 At every scrape request the app will retrieve the configured paths and fields and automatically generate the metric name, its labels and its value based on the path, fields and values received back from EDA.
 
@@ -44,191 +44,131 @@ If your use case requires additional customizations, the app supports:
 - Adding static or dynamic labels to metrics.
 - Mapping non-numeric values to Prometheus-compatible numeric values.
 
-Scrape requests from Prometheus must be directed to the URL `https://EDA_INSTANCE_ADDRESS/core/httpproxy/v1/prometheus-exporter/metrics`.
+Scrape requests from Prometheus must be directed to the URL `https://EDA_API_ADDRESS/core/httpproxy/v1/prometheus-exporter/metrics`.
 
 ### Export Custom Resource
 
-The app is configured using a CR called `Export` that groups a list of `exports` together.
+The app is configured using an `Export` Custom Resource (CR) from the `prom.eda.nokia.com` API group that groups a list of `exports` together.
 
 Each `export` definition includes:
 
-- **Path**: (Required) The EDB path to export, e.g., `.namespace.node.srl.interface.statistics`.
-- **Fields**: (Optional) A list of fields to expose as part of the metric. If not defined all fields under the configured `path` are exposed.
-- **Where**: (Optional) A filter clause for querying, e.g., `oper-state = down` or `.interface.name != "mgmt0"`.
-- **Prefix**: (Optional) A prefix to prepend to all metrics exposed by this definition.
-- **Metric Name**: (Optional) Customization of metric names using regex and replacements.
-- **Labels**: (Optional) Static or dynamic labels to add to metrics.
-- **Mappings**: (Optional) Rules to map non-numeric values to numeric equivalents.
+- **Path**^<small>Required</small>^: The EDB path to export, e.g., `.namespace.node.srl.interface.statistics`.
+- **Fields**: A list of fields to expose as part of the metric. If not defined all fields under the configured `path` are exposed.
+- **Where**: A filter clause for querying, e.g., `oper-state = down` or `.interface.name != "mgmt0"`.
+- **Prefix**: A prefix to prepend to all metrics exposed by this definition.
+- **Metric Name**: Customization of metric names using regex and replacements.
+- **Labels**: Static or dynamic labels to add to metrics.
+- **Mappings**: Rules to map non-numeric values to numeric equivalents.
+
+Here is an example of a Prometheus exporter custom resource:
+
+```yaml
+--8<-- "docs/apps/prometheus-exporter/replacement_metric.yml"
+```
 
 ### Metric customization
 
-The resulting Prometheus metrics are autogenerated based on the returned paths, fields and values.
+The resulting Prometheus metrics are autogenerated based on the returned paths, fields and values. A metric is composed of the following parts:
+
+- Name
+- Labels
+- Value
 
 #### Name
 
-##### Generation
+Metric names are derived from the provided jsPath and fields. For example:
 
-Metric names are derived from the provided `jsPath` and fields. For example:
+- **jsPath**: `.namespace.node.srl.interface.statistics`
+- **Field**: `out-octets`
 
-- `jsPath`: `.namespace.node.srl.interface.statistics`
-- Field: `out-octets`
+The resulting metric name will be generated by following this process:
 
-The resulting metric name follows this process:
+1. Strip the leading `.` (period) from the jsPath.
 
-1) Strip the leading `.` (period) from the `jsPath`.
+2. Remove all keys from the jsPath.
 
-2) Remove all keys from the `jsPath`.
+3. Replace all `.` (period) with an `_` (underscore) in the jsPath
 
-3) Replace all `.` (period) with an `_` (underscore) in the jsPath
+4. Replace every `-` (hyphen) with `_` (underscore) in the jsPath and field name
 
-4) Replace every `-` (hyphen) with `_` (underscore) in the jsPath and field name
+5. Join the resulting jsPath and field name with and `_` (underscore)
 
-5) Join the resulting jsPath and field name with and `_` (underscore)
-
-**Example**:
+/// admonition | Example
+    type: code-example
 Given the path `.namespace.node.srl.interface.statistics` and field `out-octets`, the resulting metric name is:
 `namespace_node_srl_interface_statistics_out_octets`.
+///
 
 ##### Customization
 
-Metric names can be customized to suit user needs.
+Metric names can be customized to suit user needs in a simple or advanced way.
 
 ###### Simple
 
 Use the `prefix` field in the CR to add a prefix to all metric names.
 
-/// tab | YAML
-
 ```yaml
 --8<-- "docs/apps/prometheus-exporter/prefixed_metric.yml"
 ```
 
-///
-/// tab | `kubectl`
-
-```bash
-cat << 'EOF' | kubectl apply -f -
---8<-- "docs/apps/prometheus-exporter/prefixed_metric.yml"
-EOF
-```
-
-///
-
-The above configuration produces metrics starting with `eda_`. For example, the metric `namespace_node_srl_interface_statistics_out_octets` becomes:
+The above configuration produces metrics starting with `eda_` prefix. For example, the metric `namespace_node_srl_interface_statistics_out_octets` becomes:
 `eda_namespace_node_srl_interface_statistics_out_octets`.
 
 ###### Advanced
 
- Use the `metricName` field to apply regex-based transformations. It has two components:
+Use the `metricName` field to apply regex-based transformations which has two components:
 
-    - **Regex**: Defines the pattern to match in the metric name.
-    - **Replacement**: Defines how the matched pattern should be replaced.
+- **Regex**: Defines the pattern to match in the metric name.
+- **Replacement**: Defines how the matched pattern should be replaced.
 
 For example, if the metric name `namespace_node_srl_interface_statistics_out_octets` is too long, you can shorten it to `interface_out_octets`:
 
-/// tab | YAML
-
 ```yaml
 --8<-- "docs/apps/prometheus-exporter/replacement_metric.yml"
 ```
-
-///
-/// tab | `kubectl`
-
-```bash
-cat << 'EOF' | kubectl apply -f -
---8<-- "docs/apps/prometheus-exporter/replacement_metric.yml"
-EOF
-```
-
-///
 
 #### Labels
 
-##### Generation
+Labels add context and categorization to metrics. They are generated automatically from the jsPath keys and their values. For each key in the jsPath, a label name is a created using the path element name and the key name joined using an `_`.
 
-Labels add context and categorization to metrics. They are generated automatically from the `jsPath` keys and their values. For each key in the `jsPath`, a label is created using the key name as the label name and the associated value as the label value.
-
-**Example**:
-Given the `jsPath`: `.namespace{.name=="eda"}.node.srl{.name=="dut1"}.interface{.name=="ethernet-1/1"}.statistics`
+/// admonition | Example
+    type: code-example
+Given the jsPath: `.namespace{.name=="eda"}.node.srl{.name=="dut1"}.interface{.name=="ethernet-1/1"}.statistics`
 
 The resulting labels would be:
-`interface_name="ethernet-1/1", namespace_name="eda", node_name="dut1"`
+`namespace_name="eda", node_name="dut1", interface_name="ethernet-1/1"`
+///
 
 In addition to `jsPath`-based labels, two types of additional labels can be defined:
 
-###### Static Labels
+##### Static Labels
 
-Predefined name-value pairs that are the same for all metrics in an export.
-
-  Example:
-
-/// tab | YAML
+Predefined name-value pairs that are the same for all metrics in an export. The CR in the example below will result in metrics with 2 additional labels `env=prod` and `region=us-west-1` added:
 
 ```yaml
 --8<-- "docs/apps/prometheus-exporter/static_labels_metric.yml"
 ```
 
-///
-/// tab | `kubectl`
+##### Dynamic Labels
 
-```bash
-cat << 'EOF' | kubectl apply -f -
---8<-- "docs/apps/prometheus-exporter/static_labels_metric.yml"
-EOF
-```
-
-///
-
-Generates metrics with 2 additional labels `env=prod` and `region=us-west-1`.
-
-###### Dynamic Labels
-
-Labels generated based on data from a specific `Path` and `Field`, with optional regex transformations.
-
-  Example:
-
-/// tab | YAML
+Labels generated based on data from a specific `path` (EDB path/jsPath) and `field`, with optional regex transformations. Example:
 
 ```yaml
 --8<-- "docs/apps/prometheus-exporter/dynamic_labels_metric.yml"
 ```
 
-///
-/// tab | `kubectl`
+The above example generates metrics based on the given path and adds 2 labels:
 
-```bash
-cat << 'EOF' | kubectl apply -f -
---8<-- "docs/apps/prometheus-exporter/dynamic_labels_metric.yml"
-EOF
-```
-
-///
-
-The above example generates metrics based on the given path and adds 2 labels the interface description for which the metric is exposed as well as the node's chassis type
+1. the interface description for which the metric is exposed
+2. node's chassis type
 
 #### Values
 
-Metric values are derived directly from the data at the specified `Path` and `Field`. If the raw value is not a numeric type that Prometheus can ingest, mappings are required to convert the value.
-
-**Example**:
-
-/// tab | YAML
+Metric values are derived directly from the data at the specified `path` and `field`. If the raw value is not a numeric type that Prometheus can ingest, mappings are required to convert the value.
 
 ```yaml
 --8<-- "docs/apps/prometheus-exporter/values_mapping_metric.yml"
 ```
-
-///
-/// tab | `kubectl`
-
-```bash
-cat << 'EOF' | kubectl apply -f -
---8<-- "docs/apps/prometheus-exporter/values_mapping_metric.yml"
-EOF
-```
-
-///
 
 The above Export maps non-numeric values from the fields into numeric values that can be ingested by Prometheus. The mapping rules are:
 
@@ -239,18 +179,16 @@ The above Export maps non-numeric values from the fields into numeric values tha
 
 ### Metrics grouping
 
-#### Default Metrics Scraping Endpoint
-
 Metrics grouping in the Prometheus exporter allows for efficient organization and selective scraping of metrics by Prometheus. Here's how it works:
 
 By default, Prometheus scrapes all exported metrics from the endpoint:
-`https://EDA_INSTANCE_ADDRESS/core/httpproxy/v1/prometheus-exporter/metrics`  
+`https://EDA_API_ADDRESS/core/httpproxy/v1/prometheus-exporter/metrics`  
 This endpoint aggregates metrics from all `Export` CRs defined in the system.
 
 #### Group-Specific Metrics Scraping
 
 To provide more control over which metrics are scraped, you can assign CRs to specific groups. When a `group` is specified in the CR, Prometheus can scrape only the metrics belonging to that group using a targeted endpoint:
-`https://EDA_INSTANCE_ADDRESS/core/httpproxy/v1/prometheus-exporter/metrics/{group}`
+`https://EDA_API_ADDRESS/core/httpproxy/v1/prometheus-exporter/metrics/{group}`
 
 Where `{group}` is the name of the group specified in the CR.
 
@@ -275,11 +213,15 @@ EOF
 
 #### Use Cases for Grouping
 
-1. Selective Scraping:
+1. Selective Scraping:  
 If you want Prometheus to scrape only specific metrics (e.g., metrics related to networking or storage), you can group the relevant CRs and use the group-specific endpoint.
 
-2. Performance Optimization:
+2. Performance Optimization:  
 By grouping metrics, you can reduce the load on the Prometheus server and the exporter by scraping only the necessary data.
 
-3. Access Control:
-Different teams or systems can be assigned specific groups, ensuring each team only accesses its relevant metrics.
+3. Access Control:  
+Different teams or systems can be assigned specific groups, ensuring each team accesses its relevant metrics.
+
+## Usage Examples
+
+Check out [EDA Telemetry demo lab](https://github.com/eda-labs/eda-telemetry-lab) for Prometheus exporter usage examples.
