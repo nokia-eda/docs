@@ -81,7 +81,7 @@ Specify the destination and security settings for the export
 
 Set how often or when data is exported and what kind of acknowledgment is required.
 
-- **Message Delivery Mode**: 
+- **Message Delivery Mode**:
 
     - `.spec.sync-producer`: Use synchronous messaging (`true`) or asynchronous messaging (`false`).
     - `.spec.flush-frequency`: Defines how long messages can sit in the producer's buffer before being batch sent to the broker.
@@ -111,7 +111,7 @@ Set how often or when data is exported and what kind of acknowledgment is requir
     - `periodic`: Export data at regular intervals.
     - `periodic-on-change`: Combine both periodic and change-based exports.
 
-**Example**:
+## Usage Examples
 
 /// tab | YAML
 
@@ -129,3 +129,5 @@ EOF
 ```
 
 ///
+
+Also check out [EDA Telemetry demo lab](https://github.com/eda-labs/eda-telemetry-lab) for Kafka exporter usage examples.
