@@ -50,7 +50,8 @@ h4 {
 }
 
 /* on firefox strong was getting font weight 400, which was not bold */
-strong {
+strong,
+b {
   font-weight: bold;
 }
 
