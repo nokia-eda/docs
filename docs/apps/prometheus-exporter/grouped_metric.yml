@@ -1,7 +1,7 @@
 apiVersion: prom.eda.nokia.com/v1alpha1
 kind: Export
 metadata:
-  name: metrics-with-multiple-customizations
+  name: metrics-grouping
   namespace: eda-system
 spec:
   group: group1

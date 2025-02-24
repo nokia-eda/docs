@@ -20,6 +20,7 @@
     url('https://www.nokia.com/themes/custom/onenokia_base_theme/fonts/nokia/nokiapureheadline_ultralight.svg#svgFontName') format('svg');
 }
 
+/* This is a regular font for the text body */
 @font-face {
   font-family: 'NokiaPureText';
   src: url('https://cdn.jsdelivr.net/gh/hellt/fonts@v0.1.0/nokia/NokiaPureText_Lt.eot');
@@ -33,5 +34,22 @@
     url('https://cdn.jsdelivr.net/gh/hellt/fonts@v0.1.0/nokia/NokiaPureText_Lt.svg#svgFontName') format('svg');
   /* Legacy iOS */
   font-weight: normal;
+  font-style: normal;
+}
+
+/* This is a bold font */
+@font-face {
+  font-family: 'NokiaPureText';
+  src: url('https://cdn.jsdelivr.net/gh/hellt/fonts@v0.1.0/nokia/NokiaPureText_Bd.eot');
+  /* IE9 Compat Modes */
+  src: url('https://cdn.jsdelivr.net/gh/hellt/fonts@v0.1.0/nokia/NokiaPureText_Bd.woff2') format('woff2'),
+    /* Super Modern Browsers */
+    url('https://cdn.jsdelivr.net/gh/hellt/fonts@v0.1.0/nokia/NokiaPureText_Bd.woff') format('woff'),
+    /* Pretty Modern Browsers */
+    url('https://cdn.jsdelivr.net/gh/hellt/fonts@v0.1.0/nokia/NokiaPureText_Bd.ttf') format('truetype'),
+    /* Safari, Android, iOS */
+    url('https://cdn.jsdelivr.net/gh/hellt/fonts@v0.1.0/nokia/NokiaPureText_Bd.svg#svgFontName') format('svg');
+  /* Legacy iOS */
+  font-weight: bold;
   font-style: normal;
 }
