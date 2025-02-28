@@ -19,6 +19,7 @@ nav:
       - Installation:
           - user-guide/installation/index.md
           - Deployment options:
+              - Air-Gapped cluster: user-guide/installation/air-gapped-cluster.md
               - On-prem cluster: user-guide/installation/on-prem-cluster.md
               - macOS: user-guide/installation/macos.md
               - KinD: user-guide/installation/kind.md
