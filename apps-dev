@@ -631,13 +631,13 @@
         <mxCell id="hRkWbQXaBpESphFUJAYw-133" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=none;dashed=1;arcSize=16;fillColor=light-dark(#98A2AE,#EDF3F5);" vertex="1" parent="icTAoum9OCe9khzAVpC0-1">
           <mxGeometry x="961" y="418" width="157" height="48" as="geometry" />
         </mxCell>
-        <mxCell id="hRkWbQXaBpESphFUJAYw-134" value="&lt;span style=&quot;color: light-dark(rgb(152, 162, 174), rgb(237, 243, 245));&quot;&gt;app:&lt;/span&gt; interfaces" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#4D5766,#F9F9F9);fontSize=14;" vertex="1" parent="icTAoum9OCe9khzAVpC0-1">
+        <mxCell id="hRkWbQXaBpESphFUJAYw-134" value="&lt;span style=&quot;color: light-dark(rgb(152, 162, 174), rgb(237, 243, 245));&quot;&gt;app:&lt;/span&gt; interfaces" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#4D5766,#F9F9F9);fontSize=12;" vertex="1" parent="icTAoum9OCe9khzAVpC0-1">
           <mxGeometry x="961" y="393" width="99.68" height="30" as="geometry" />
         </mxCell>
         <mxCell id="hRkWbQXaBpESphFUJAYw-135" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=none;dashed=1;arcSize=16;fillColor=light-dark(#98A2AE,#EDF3F5);" vertex="1" parent="icTAoum9OCe9khzAVpC0-1">
           <mxGeometry x="961" y="494" width="157" height="28" as="geometry" />
         </mxCell>
-        <mxCell id="hRkWbQXaBpESphFUJAYw-136" value="&lt;span style=&quot;color: light-dark(rgb(152, 162, 174), rgb(237, 243, 245));&quot;&gt;app: &lt;/span&gt;fabric" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#4D5766,#F9F9F9);fontSize=14;" vertex="1" parent="icTAoum9OCe9khzAVpC0-1">
+        <mxCell id="hRkWbQXaBpESphFUJAYw-136" value="&lt;span style=&quot;color: light-dark(rgb(152, 162, 174), rgb(237, 243, 245));&quot;&gt;app: &lt;/span&gt;fabric" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#4D5766,#F9F9F9);fontSize=12;" vertex="1" parent="icTAoum9OCe9khzAVpC0-1">
           <mxGeometry x="961" y="469" width="99.68" height="30" as="geometry" />
         </mxCell>
         <mxCell id="hRkWbQXaBpESphFUJAYw-137" value="interface" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=none;dashed=1;arcSize=16;fillColor=light-dark(#005AFF,#F9F9F9);fontColor=light-dark(#EDF3F5,#EDF3F5);" vertex="1" parent="icTAoum9OCe9khzAVpC0-1">
