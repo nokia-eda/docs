@@ -18,7 +18,7 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
     Regardless of whether you run EDA Playground locally on a laptop, or in a VM locally or in the cloud, the underlying k8s cluster should have the following resources available to it[^2]:
 
     :fontawesome-solid-microchip: 10 vCPUs  
-    :fontawesome-solid-memory: 20GB of RAM  
+    :fontawesome-solid-memory: 16GB of RAM  
     :fontawesome-solid-floppy-disk: 30GB of storage
 
     For a VM-based installation, this means that the VM should be provisioned with (at the minium) this amount of resources.
