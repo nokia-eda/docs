@@ -227,3 +227,4 @@ extra_css:
   - stylesheets/nokia-fonts.css
   - stylesheets/diagrams.css
   - stylesheets/animations.css
+  - stylesheets/steps.css

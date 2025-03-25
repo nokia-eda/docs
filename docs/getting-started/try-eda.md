@@ -1,133 +1,174 @@
 # Try EDA
 
-We made sure that trying EDA is as easy as running a single command. Literally.
+We believe that EDA embodies what a network automation of the modern age should look like - declarative and programmable abstractions for both configuration and state, streaming-based engine, equipped with network-wide queries, extensible and multivendor-capable.  
+And we don't want you to blindly take our word for it, instead we made EDA easily accessible[^1] so that both network engineers and cloud practitioners could be the judge.  
+With no license and no registration required, you are mere couple commands away from having the full EDA experience wherever you are - with your laptop, in the cloud or logged in the VM.
 
-Let's start with cloning the [EDA playground repository][playground-repo] that contains everything you need to install and provision a demo EDA instance with the virtual network on the side to have the full experience. You will need `git`[^1] to clone it:
+To deliver the "Try EDA" experience, we have created an [EDA playground][playground-repo] - a repository that contains everything you need to install and provision a demo EDA instance with the virtual network on the side. Let us guide you through the installation process.
 
-<!-- --8<-- [start:pull-playground] -->
-```shell
-git clone https://github.com/nokia-eda/playground && \
-cd playground
-```
-<!-- --8<-- [end:pull-playground] -->
+/// html | div.steps
 
-The [`Makefile`][makefile][^2] that comes with the [`playground` repository][playground-repo] has everything that is needed to enact the various installation steps. The use of this `Makefile` is not mandatory, but highly recommended as it substantially simplifies the quickstart installation process!
+1. **Choose where to run EDA**
 
-EDA is cloud-native platform deployed on top of Kubernetes (k8s); and not just because Kubernetes is a common orchestration system, but because it leverages the Kubernetes-provided declarative API, the tooling and the ecosystem built around it.  
-It is required that your Kubernetes cluster satisfies the following requirements[^3]:
+    Since EDA uses Kubernetes as its application platform, you can deploy the EDA Playground anywhere a k8s cluster runs.  
+    The most popular way to install the demo EDA instance is on a Linux server/VM, but you can also [run it on macOS](../user-guide/installation/macos.md), in an [existing Kubernetes cluster](../user-guide/installation/on-prem-cluster.md), or on Windows using WSL.
 
-:fontawesome-solid-microchip: 10 vCPUs  
-:fontawesome-solid-memory: 16GB of RAM  
-:fontawesome-solid-floppy-disk: 30GB of storage
+2. **Ensure minimal system requirements are met**
 
-/// admonition | I don't have a cluster! Am I out?
-    type: subtle-question
-You don't have a cluster yet! We will get you a suitable k8s cluster in no time during this quickstart.
-///
+    Regardless of whether you run EDA Playground locally on a laptop, or in a VM locally or in the cloud, the underlying k8s cluster should have the following resources available to it[^2]:
 
-<small>If you are installing on a production cluster, please see official documentation for infrastructure requirements, as these depend on scale.</small>
+    :fontawesome-solid-microchip: 10 vCPUs  
+    :fontawesome-solid-memory: 20GB of RAM  
+    :fontawesome-solid-floppy-disk: 30GB of storage
 
-## Dependencies
+    For a VM-based installation, this means that the VM should be provisioned with (at the minium) this amount of resources.
 
-The getting started guide assumes you run a Linux/amd64 system. Check out the [User Guide](../user-guide/installation/index.md) section for other installation options.  
-You are welcome to try your own distro[^4], but steps have been validated on Ubuntu 22.04, Debian 11 and 12.
+3. **Prepare the VM/Server**
 
-Your host executing the install needs `make`[^5] and [`docker`](https://docs.docker.com/engine/install/)[^6] installed. With `make` you can install the remaining dependencies:
-<!-- --8<-- [start:tools-install] -->
-```shell
-make download-tools #(1)!
-```
+    If you are deploying the EDA Playground on a VM/Server, you should take care of the following:
 
-1. This will download `kind`, [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/), [`kpt`](https://kpt.dev/installation/kpt-cli), and `yq` into a `tools` folder relative to the current working directory.
+    1. Install `make` that orchestrates the installation of the EDA Playground.
 
-    Subsequent steps use these versions of the binaries - you may use your own binaries for your own interactions. If you don't have `kubectl` in your `$PATH`, then consider copying the `kubectl` binary from the `tools` directory to a location in your `$PATH` to make use of it in the following steps.
+        /// tab | apt
 
-<!-- --8<-- [end:tools-install] -->
+        ```shell
+        sudo apt install -y make
+        ```
 
-/// admonition | Sysctl settings
-    type: subtle-note
-Some Linux distributions might be conservative about some settings such as max file descriptors available.
+        ///
+        /// tab | yum
 
-We recommend increasing the relevant sysctl values to avoid pod crashes during the installation by creating the following configuration file:
+        ```shell
+        sudo yum install -y make
+        ```
 
-```bash
-sudo mkdir -p /etc/sysctl.d && \
-sudo tee /etc/sysctl.d/90-eda.conf << EOF
-fs.inotify.max_user_watches=1048576
-fs.inotify.max_user_instances=512
-EOF
-```
+        ///
 
-And reloading the sysctl settings:
+    2. Install `docker` using our automated installer:
 
-```bash
-sudo sysctl --system && sudo systemctl restart docker
-```
+        ```shell
+        make install-docker
+        ```
 
-///
+        Or install it manually, by following the [official Docker installation guide](https://docs.docker.com/engine/install/) for your OS. If you installed docker via the package manager of your distribution, remove it and install as per the Docker installation guide.
 
-## Quick start
+    3. Ensure the relevant sysctl values are properly sized by creating the following configuration file:
 
-The quickest way to experience EDA is by using a simple command to complete an end-to-end KinD-based deployment of EDA with a [virtual 3-node networking topology](virtual-network.md).
+        ```bash
+        sudo mkdir -p /etc/sysctl.d && \
+        sudo tee /etc/sysctl.d/90-eda.conf << EOF
+        fs.inotify.max_user_watches=1048576
+        fs.inotify.max_user_instances=512
+        EOF
+        ```
 
-```shell
-export EXT_DOMAIN_NAME=${DNS-name-or-IP} \
-make try-eda #(1)!
-```
+        And reloading the sysctl settings:
 
-1. You need to provide an `EXT_DOMAIN_NAME` environment variable to indicate what domain name or IP address you are going to use when reaching EDA UI/API. This can be a domain name or an IP address of a compute where you execute the quickstart installation.
-    <!-- --8<-- [start:ext-name-note-1] -->
-    If you're trying EDA on a remote machine, then you typically would set the DNS name or IP address of this machine in the `EXT_DOMAIN_NAME` variable.  
-    Another popular option is to use SSH local port forwarding to access the EDA UI, in this case you would need to set the `EXT_DOMAIN_NAME` variable to `localhost` and `EXT_HTTPS_PORT` to the local port you are using for the port forwarding.
+        ```bash
+        sudo sysctl --system && sudo systemctl restart docker
+        ```
 
-    If left unset, the hostname of the machine where you executed the `make` command will be used.
-    <!-- --8<-- [end:ext-name-note-1] -->
+4. **Clone the EDA Playground repository**
 
-    /// admonition | preferences file
-        type: subtle-note
-    Instead of providing the configuration values such as `EXT_DOMAIN_NAME` and `EXT_HTTPS_PORT` on the command line, you can also provide them in a [`prefs.mk`][prefs-file] file that comes with the playground repository.
-    ///
+    Proceed with cloning the [EDA playground repository][playground-repo] that contains everything you need to install and provision a demo EDA instance.
 
-    <h4>LLM Key</h4>
-    To enable the Natural Language support for the [EDA Query](../user-guide/queries.md) functionality, provide the LLM key (OpenAI) with an additional environment variable or set it in the `prefs.mk` file:
+    <small>If you are using a Linux VM or a server to deploy the Playground, you should clone the repository on that VM/server.</small>
+
+    You will need `git`[^3] to clone it:
+
+    <!-- --8<-- [start:pull-playground] -->
+    ```shell
+    git clone https://github.com/nokia-eda/playground && \
+    cd playground
+    ```
+    <!-- --8<-- [end:pull-playground] -->
+
+5. **Install the EDA Playground**
+
+    To start the EDA Playground installation you need to provide a single variable - the domain name or IP address of the machine where you are installing the EDA Playground cluster.
+
+    * In case of a VM, it is the IP address or a domain name of the VM.
+    * If you are using ssh tunnel to access the VM, then provide `localhost` as the `EXT_DOMAIN_NAME` and ensure that local port is set to 9443[^4].
+
+    With the IP/domain-name noted, run the install script defined in the [`Makefile`][makefile]:
 
     ```shell
-    export EXT_DOMAIN_NAME=${DNS-name-or-IP} \
-    LLM_API_KEY=<key> \
+    export EXT_DOMAIN_NAME=<Insert-DNS-name-or-IP-of-the-VM/server>
+    make try-eda #(1)!
+    ```
+
+    1. You need to provide an `EXT_DOMAIN_NAME` environment variable to indicate what domain name or IP address you are going to use when reaching EDA UI/API. This can be a domain name or an IP address of a compute where you execute the quickstart installation.
+        If left unset, the hostname of the machine where you executed the `make` command will be used.
+
+        /// admonition | preferences file
+            type: subtle-note
+        Instead of providing the configuration values such as `EXT_DOMAIN_NAME` and `EXT_HTTPS_PORT` on the command line, you can also provide them in a [`prefs.mk`][prefs-file] file that comes with the playground repository.
+        ///
+
+    <h4>LLM Key for the Natural Language Query</h4>
+    To enable the Natural Language support for the [EDA Query](../user-guide/queries.md) functionality, provide the LLM key (OpenAI) with an additional environment variable or set it in the [`prefs.mk`][prefs-file] file:
+
+    ```shell
+    export EXT_DOMAIN_NAME=<Insert-DNS-name-or-IP-of-the-VM/server>
+    export LLM_API_KEY=<OpenAI-API-key>
     make try-eda
     ```
 
-The installation will take approximately 5 minutes to complete. Once the it is done, you can optionally verify the installation.
+    The installation will take approximately 10 minutes to complete. Once the it is done, you can optionally [verify](verification.md) the installation.
 
-[:octicons-arrow-right-24: Verify](verification.md)
+    /// details | EDA License
+        type: info
+    As you may have noticed, the EDA Playground installation does not require a license. We wanted to ensure that automation with EDA is accessible to everyone, anytime.  
+    The EDA system can perfectly run without a license with the following caveats:
 
-## Web UI
+    * Only virtual, CX-nodes can be onboarded. These are SR Linux nodes that will be deployed for you by the time `make try-eda` step finishes. No hardware, nor containerlab nodes can be used in an unlicensed EDA mode.
+    * No [integration](../connect/cloud-connect.md) with the cloud systems such as Openstack, VMware, etc.
+    ///
 
-EDA comes with a Web user interface that allows you to interact with the framework.
+6. **Access the UI**
 
-/// admonition | Note
-    type: subtle-note
-EDA is an API-first framework, and the UI is just a client that interacts with its API. The usage of the UI is optional, and you can interact with EDA using the [CLI tools](../user-guide/using-the-clis.md) such as `edactl`, `e9s` and/or by directly leveraging K8s API.
+    EDA is an API-first framework, with its UI being a client of the very same API. While EDA UI offers an easy graphical way to manage the platform and automate your infrastructure, the usage of it is optional; you can interact with EDA API [directly](../development/api.md), or by leveraging the [CLI tools](../user-guide/using-the-clis.md) such as `edactl`. And you can even use the K8s API to manage EDA, for example, via `kubectl`.
+
+    EDA UI can be exposed externally using a simple make target:
+
+    /// tab | Expose UI
+
+    ```shell
+    make start-ui-port-forward #(1)!
+    ```
+
+    1. The port-forwarding target will run the forwarding service in the foreground, effectively blocking the terminal. If you want to enable UI access in a more permanent way, consider running the `make enable-ui-port-forward-service` target which is explained [here](../blog/posts/2024/try-eda-pro.md#more-permanent-ui-access) in details.
+
+    This target will forward the https port of the `eda-api` service and display the URL to use in your browser. The default username is `admin`, and the password is `admin`.
+
+    Note, that the port forwarding only lasts as long as the terminal session is active and will be closed when you disconnect from the server. To permanently expose the UI, you can setup a systemd service using this command:
+
+    ```shell
+    make enable-ui-port-forward-service
+    ```
+
+    Now, even if you close the terminal, the UI will still be accessible.
+    ///
+    /// tab | Example output
+    Running the `make start-ui-port-forward` target will output something similar to the following:
+
+    ```shell
+    [*]─[demo-vm]─[~/eda/playground]
+    └──> make start-ui-port-forward
+    --> Exposing the UI to the host across the kind container boundary
+    --> The UI can be accessed using https://10.10.1.1:9443
+    ```
+
+    The UI can be accessed now by typing `https://10.10.1.1:9443` in your browser.
+    ///
+
 ///
 
-EDA UI is exposed in a cluster via a Service of type `LoadBalancer`, but since you a local `kind`-powered k8s cluster deployed you may not be able to reach it if you don't run `kind` on the same machine where your browser is!
-
-Nothing a `kubectl port-forward` can't solve! In the very end of the installation log you should see a message inviting you to run the following command:
-
-```shell
-make start-ui-port-forward #(1)!
-```
-
-1. The port-forwarding target will run the forwarding service in the foreground, effectively blocking the terminal. If you want to enable UI access in a more permanent way, consider running the `make enable-ui-port-forward-service` target which is explained [here](../blog/posts/2024/try-eda-pro.md#more-permanent-ui-access) in details.
-
-This target will forward the https port of the `eda-api` service and display the URL to use in your browser.
-
-Point your browser to `https://<eda-domain-name>:<ext-https-port>` where `eda-domain-name` is the `EXT_DOMAIN_NAME` value set during the install step and `ext-https-port` is the https[^7] port value set in the `EXT_HTTPS_PORT`.  
-This should open the EDA UI. The default username is `admin`, and the password is `admin`.
+Now that you completed the installation, you can either read more on the installation details, or continue with creating your first unit of automation with EDA.
 
 <div class="grid cards" markdown>
 
-- ::material-hammer-screwdriver:{ .middle } __Creating a resource__
+* :material-hammer-screwdriver:{ .middle } **Creating a resource**
 
     ---
 
@@ -135,7 +176,7 @@ This should open the EDA UI. The default username is `admin`, and the password i
 
     [:octicons-arrow-right-24: Creating your first unit of automation](units-of-automation.md)
 
-- :octicons-question-16:{ .middle } __How does install work?__
+* :octicons-question-16:{ .middle } **How does install work?**
 
     ---
 
@@ -150,22 +191,17 @@ This should open the EDA UI. The default username is `admin`, and the password i
 [makefile]: https://github.com/nokia-eda/playground/blob/main/Makefile
 [prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 
-[^1]: Many distributions come with `git` preinstalled, but if not you should install it via your package manager.  
+[^1]: As no other framework of comparable scale.
+[^2]: This as well accounts for the [playground network topology](virtual-network.md).
+[^3]: Many distributions come with `git` preinstalled, but if not you should install it via your package manager.  
     For instance with `apt`-enabled systems:
 
     ```shell
     sudo apt install -y git
     ```
 
-[^2]: The [`playground` repository][playground-repo] supports both a try EDA (or playground) method using KinD, and a method for installing EDA to previously deployed Kubernetes clusters via the same `Makefile`.  
-The latter is covered in the [Installation process section](installation-process.md).
+[^4]: This is the default value of EDA API HTTPS port, if you have changed it, please ensure that the local port matches the non-default value. If the default was unchanged, then to access the UI over `https://localhost:9443` you need to run the following command:
 
-[^3]: This as well accounts for the [playground network topology](virtual-network.md).
-[^4]: Or even [run it on macOS](../user-guide/installation/macos.md) or in an [existing Kubernetes cluster](../user-guide/installation/on-prem-cluster.md).
-
-[^5]: Install with `sudo apt install -y make` or its `yum`/`dnf`-based equivalent.
-
-[^6]: https://docs.docker.com/engine/install/  
-You can try running the quickstart with `podman` instead of docker, although bear in mind that `podman`-based installation was not validated.
-
-[^7]: EDA UI/API is served only over HTTPS.
+    ```shell
+    ssh -L 9443:localhost:9443 -N -f demo-vm
+    ```
