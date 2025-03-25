@@ -21,7 +21,7 @@ We will need the playground repository on our machine to run EDA installation st
 
 When the playground repo is cloned, let's install the CLI tools that we will need to run EDA installation steps.
 
---8<-- "docs/getting-started/try-eda.md:tools-install"
+--8<-- "docs/getting-started/installation-process.md:tools-install"
 
 The installer is smart enough to download the tools for the right OS/architecture.
 

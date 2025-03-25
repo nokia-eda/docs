@@ -61,7 +61,7 @@ Started
 
 The example topology deployed as part of the [quickstart](virtual-network.md) resulted in creation of topology nodes, with each node represented by an SR Linux simulator. The topology nodes in EDA are represented by the `TopoNode` resource, and this resource has a status field to indicate its health.
 
-The easiest way to tell the current state of nodes is via the [UI](try-eda.md#web-ui), or via `kubectl`:
+The easiest way to tell the current state of nodes is via the UI, or via `kubectl`:
 
 /// tab | :octicons-check-circle-24: All nodes are healthy
 
@@ -221,8 +221,6 @@ ipv6Address: fd7a:115c:a1e0::be01:ff2f
 </div>
 
 The configuration above means that the EDA UI client (a browser) should use `https://vm.home.lab:9443` to access the EDA UI. You can change the `engine-config` resource post-install and change the `domainName` and/or port numbers, the changes will be in effect immediately without requiring a redeploy of the EDA.
-
---8<-- "docs/getting-started/try-eda.md:ext-name-note-1"
 
 /// admonition | Secure-by-design
     type: subtle-note

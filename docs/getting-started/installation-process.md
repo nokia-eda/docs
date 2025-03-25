@@ -22,7 +22,15 @@ The `make try-eda` command sets up the whole thing for you; Let's unwrap it step
 
 Who likes to manually install a bunch of tools that are needed for the installation process manually? Not us! That's why we automated the tools procurement our installation process relies on:
 
---8<-- "docs/getting-started/try-eda.md:tools-install"
+<!-- --8<-- [start:tools-install] -->
+```shell
+make download-tools #(1)!
+```
+
+1. This will download `kind`, [`kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/), [`kpt`](https://kpt.dev/installation/kpt-cli), and `yq` into a `tools` folder relative to the current working directory.
+
+    Subsequent steps use these versions of the binaries - you may use your own binaries for your own interactions. If you don't have `kubectl` in your `$PATH`, then consider copying the `kubectl` binary from the `tools` directory to a location in your `$PATH` to make use of it in the following steps.
+<!-- --8<-- [end:tools-install] -->
 
 You will have to install the container runtime (e.g. `docker`) manually.
 
