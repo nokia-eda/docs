@@ -50,7 +50,7 @@ Below you will find short guides on how to install Docker on your macOS using so
 
 [OrbStack][orbstack-home] is a relatively new software that brings Docker support to macOS. The reason we can recommend it is that it has a great UX, has a VM management support, comes with a [lightweight k8s cluster](https://docs.orbstack.dev/kubernetes/) and free for personal use.
 
-It is a native macOS app for both Intel and ARM64-based macs, so the installation is as easy as downloading the `dmg` file and installing at as usual. OrbStack installer will install the Docker CLI on your system, and will provide the Docker VM to run containers and k8s clusters, and enable the kubernetes cluster on the <kbd>Kubernetes</kbd> tab:
+It is a native macOS app for both Intel and ARM64-based macs, so the installation is as easy as downloading the `dmg` file and installing it as usual. OrbStack installer will install the Docker CLI on your system, and will provide the Docker VM to run containers and k8s clusters, and enable the kubernetes cluster on the <kbd>Kubernetes</kbd> tab:
 
 When OrbStack is installed, you can check the app settings to ensure that you have the sufficient resources allocated to an internal VM that runs docker daemon:
 
