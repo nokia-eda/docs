@@ -139,7 +139,7 @@ Note the `cx-eda-*` Pods (one for each `TopoNode` in the topology), these pods a
 
 ## Transactions
 
-The EDA's brain - Config Engine - works off a sequential transaction log, processing transactions as they come in. "in" here is doing some heavy lifting, as items for processing may come in via:
+EDA's brain - Config Engine - works off a sequential transaction log, processing transactions as they come in. "in" here is doing some heavy lifting, as items for processing may come in via:
 
 * the UI.
 * the API.
