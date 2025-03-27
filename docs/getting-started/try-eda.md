@@ -52,7 +52,32 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
         Or install it manually, by following the [official Docker installation guide](https://docs.docker.com/engine/install/) for your OS. If you installed docker via the package manager of your distribution, remove it and install as per the Docker installation guide.
 
-    3. Ensure the relevant sysctl values are properly sized by creating the following configuration file:
+        /// details | Ensure sudo-less docker access
+            type: info
+        After completing the docker installation, check if you can run docker commands without `sudo` by running:
+
+        ```shell
+        docker ps
+        ```
+
+        If you get a `permission denied` error, then you need to add your user to the `docker` group:
+
+        1. Create the docker group.
+
+                ```bash
+                sudo groupadd docker
+                ```
+
+        2. Add your user to the docker group.
+
+                ```bash
+                sudo usermod -aG docker $USER
+                ```
+
+        3. Log out and log back in so that your group membership is re-evaluated.
+        ///
+
+    3. Ensure the relevant sysctl values are properly sized by pasting and running the following:
 
         ```bash
         sudo mkdir -p /etc/sysctl.d && \
