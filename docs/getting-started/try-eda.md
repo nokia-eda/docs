@@ -23,7 +23,22 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
     For a VM-based installation, this means that the VM should be provisioned with (at the minium) this amount of resources.
 
-3. **Prepare the VM/Server**
+3. **Clone the EDA Playground repository**
+
+    Proceed with cloning the [EDA playground repository][playground-repo] that contains everything you need to install and provision a demo EDA instance.
+
+    <small>If you are using a Linux VM or a server to deploy the Playground, you should clone the repository on that VM/server.</small>
+
+    You will need `git`[^3] to clone it:
+
+    <!-- --8<-- [start:pull-playground] -->
+    ```shell
+    git clone https://github.com/nokia-eda/playground && \
+    cd playground
+    ```
+    <!-- --8<-- [end:pull-playground] -->
+
+4. **Prepare the VM/Server**
 
     If you are deploying the EDA Playground on a VM/Server, you should take care of the following:
 
@@ -92,21 +107,6 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
         ```bash
         sudo sysctl --system && sudo systemctl restart docker
         ```
-
-4. **Clone the EDA Playground repository**
-
-    Proceed with cloning the [EDA playground repository][playground-repo] that contains everything you need to install and provision a demo EDA instance.
-
-    <small>If you are using a Linux VM or a server to deploy the Playground, you should clone the repository on that VM/server.</small>
-
-    You will need `git`[^3] to clone it:
-
-    <!-- --8<-- [start:pull-playground] -->
-    ```shell
-    git clone https://github.com/nokia-eda/playground && \
-    cd playground
-    ```
-    <!-- --8<-- [end:pull-playground] -->
 
 5. **Install the EDA Playground**
 

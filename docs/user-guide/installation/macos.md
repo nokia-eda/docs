@@ -13,13 +13,15 @@ Typically, the management and automation platforms of EDA' caliber require a ton
 -{{youtube(url='https://www.youtube.com/embed/QV8PwaSsNo8')}}-
 ///
 
+This guide will talk you through installing the EDA Playground which consists of a [simulated network topology](../../getting-started/virtual-network.md) and full EDA platform installation. No EDA licenses are required to run the Playground.
+
 ## Playground repository
 
 We will need the playground repository on our machine to run EDA installation steps. Pull it, as explained in the [Try EDA](../../getting-started/try-eda.md) section.
 
 --8<-- "docs/getting-started/try-eda.md:pull-playground"
 
-When the playground repo is cloned, let's install the CLI tools that we will need to run EDA installation steps.
+When the playground repo is cloned (you will need to install `git` to clone it), let's install the CLI tools that we will need to run EDA installation steps.
 
 --8<-- "docs/getting-started/installation-process.md:tools-install"
 
@@ -52,9 +54,13 @@ Below you will find short guides on how to install Docker on your macOS using so
 
 It is a native macOS app for both Intel and ARM64-based macs, so the installation is as easy as downloading the `dmg` file and installing it as usual. OrbStack installer will install the Docker CLI on your system, and will provide the Docker VM to run containers and k8s clusters, and enable the kubernetes cluster on the <kbd>Kubernetes</kbd> tab:
 
+If you are installing Orbstack for the first time, you will see a dialog that asks you what do you plan to use OrbStack for, select "Kubernetes".
+
 When OrbStack is installed, you can check the app settings to ensure that you have the sufficient resources allocated to an internal VM that runs docker daemon:
 
 ![resources](https://gitlab.com/rdodin/pics/-/wikis/uploads/ea34fdb13d588225aa3f718d5c1b4467/image.png)
+
+Check the minimum requirements on the [Try EDA](../../getting-started/try-eda.md) page, but it is best to have more CPU and Memory available to the OrbStack VM. On the screenshot above 24GB and all CPUs are allocated to the OrbStack VM, and this has no negative/noticable impact on the overall system performance.
 
 ////
 
@@ -122,7 +128,7 @@ With the container runtime installed and running via one of the tools mentioned 
 The first option might be the easiest way to get started, since it offers more tight integration with the macOS environment, for example by exposing services and providing a LoadBalancer implementation out of the box.
 
 /// tab | OrbStack
-If you're running OrbStack, you can spin up an embedded, one-node, lightweight cluster by checking the <kbd>Enable Kubernetes cluster</kbd> box in the settings:
+If you're running OrbStack, you can spin up an embedded, one-node, lightweight cluster by checking the <kbd>Enable Kubernetes cluster</kbd> box in the settings (if unchecked):
 ![k8s-settings](https://gitlab.com/rdodin/pics/-/wikis/uploads/ef79bf6e405dfad44deeca5000adbfe3/image.png)
 
 When OrbStack is done with creating a k8s cluster for you, you will be able to use regular cluster management tools like `kubectl`/`k9s`/etc to manage your cluster.
@@ -155,7 +161,7 @@ make kind
 
 ## Installing EDA
 
-When running docker/k8s on a mac we have some layered networking to deal with, as the VM that runs the k8s cluster is not the same as the one where we run our make targets.
+When running docker/k8s on a mac we have some layered networking to deal with, as the k8s cluster runs in a VM.
 
 First, we need to make record of the following variables:
 
@@ -204,10 +210,12 @@ Depending on the tool you're using to run k8s, your method of connecting to the 
 In OrbStack, you can access the UI by opening https://eda-api.k8s.orb.local/ in your browser.
 
 //// warning | macOS 15+
-If your browser can not resolve the `eda-api.k8s.orb.local` domain, you may need to add enable Local Network access policy for the browser of your choice. Check the Apple's [documentation](https://support.apple.com/guide/mac-help/control-access-to-your-local-network-on-mac-mchla4f49138/mac) and this [screenshot](https://gitlab.com/rdodin/pics/-/wikis/uploads/b91bbb7b7e6da5963736d24f43f64ce6/image.png) showing where the settings are located.
+If your browser can not resolve the `eda-api.k8s.orb.local` domain, you need to add enable Local Network access policy for the browser of your choice since `.local` domain is resolved via mDNS. Check the Apple's [documentation](https://support.apple.com/guide/mac-help/control-access-to-your-local-network-on-mac-mchla4f49138/mac) and this [screenshot](https://gitlab.com/rdodin/pics/-/wikis/uploads/b91bbb7b7e6da5963736d24f43f64ce6/image.png) showing where the settings are located.
 ////
 
 ![ui](https://gitlab.com/rdodin/pics/-/wikis/uploads/1180ab27c1aa9017c1db3339ccae5f74/image.png)
+
+> The default credentials are `admin:admin`.
 ///
 
 ## Tearing down
