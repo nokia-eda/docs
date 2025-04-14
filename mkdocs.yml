@@ -22,6 +22,7 @@ nav:
               - Air-Gapped cluster: user-guide/installation/air-gapped-cluster.md
               - On-prem cluster: user-guide/installation/on-prem-cluster.md
               - macOS: user-guide/installation/macos.md
+              - Windows (WSL): user-guide/installation/wsl.md
               - KinD: user-guide/installation/kind.md
           - user-guide/exposing-ui-api.md
           - user-guide/installation/customize-install.md

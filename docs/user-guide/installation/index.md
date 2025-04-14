@@ -12,10 +12,14 @@ There are several Deployment Options that can be used to run and deploy EDA:
 
 [Playground using KinD](../../getting-started/try-eda.md)
 
-:   Deploy EDA on a Kubernetes environment running on your personal Macbook, whether it is ARM or Intel-based.
+:   Deploy EDA in a Kubernetes environment running on Linux server.
 
 [Playground on macOS](./macos.md)
 
 :   Deploy EDA Playground in a Kubernetes environment running on your personal Macbook, whether it is ARM or Intel-based.
+
+[Playground on WSL](./wsl.md)
+
+:   Deploy EDA Playground in a Kubernetes environment running on your personal Windows machine, be it a laptop or a desktop.
 
 You can also customize your EDA installation following the [Installation customization](customize-install.md) guide. This will provide you with the details on how to manipulate the kpt packages to fit your specific needs and design.
