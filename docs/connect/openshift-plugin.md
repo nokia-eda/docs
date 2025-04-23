@@ -291,6 +291,13 @@ Connect Network Definition (CND) is a custom resource definition (CRD) that is a
 
 A CND contains a design of all the network services and configuration an application may need. It can be used to define EDA Routers and EDA BridgeDomain resources. For each BridgeDomain, it is possible to associate one or more NADs with it. By doing so, the plugin knows how to connect applications into different network services.
 
+In some deployment use cases `preProvisionHostGroupSelector` can be used to pre-provision connect interface for a NAD interface on a set of selected hosts, regardless of whether they are consumed by any pod.
+
+/// details | Limitations of `preProvisionHostGroupSelector`
+    type: warning
+Please note that this attribute is only applicable to `IPVLAN` and `MACVLAN` type of `NetworkAttachmentDefinitions`
+///
+
 You can use the CMS-managed integration mode, the EDA-managed integration mode, or a combination of both.
 
 Multiple CNDs can exist, for instance one per application.
@@ -353,6 +360,38 @@ The following is a sample configuration of the CND usage to be able to have mult
 ```bash
 kubectl apply -f - <<EOF
 --8<-- "docs/connect/resources/cnd-example3.yaml"
+EOF
+```
+
+///
+
+#### Example 4: Using preProvisionHostGroupSelector to pre-provision connect interface with the label selector
+
+To be able to consume this attribute in CND, ensure that the openshift/k8s nodes are labelled correctly and the same value is used in the CND.
+
+Example of the labelling a node is as following:
+
+```shell
+
+kubectl label nodes node-1 connect.eda.nokia.com/hostGroup=net-group-1
+kubectl label nodes node-2 connect.eda.nokia.com/hostGroup=net-group-2
+```
+
+The following is a sample configuration of the CND usage to be able to pre-configure connect interface
+
+
+/// tab | YAML Resource
+
+```yaml
+--8<-- "docs/connect/resources/cnd-example4.yaml"
+```
+
+///
+/// tab | `kubectl apply` command
+
+```bash
+kubectl apply -f - <<EOF
+--8<-- "docs/connect/resources/cnd-example4.yaml"
 EOF
 ```
 
