@@ -26,6 +26,8 @@ nav:
               - KinD: user-guide/installation/kind.md
           - user-guide/exposing-ui-api.md
           - user-guide/installation/customize-install.md
+      - Upgrading:
+          - user-guide/upgrades/index.md
   - Apps:
       - App Store: apps/app-store.md
       - Fabric: apps/fabric.md

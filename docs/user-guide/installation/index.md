@@ -2,6 +2,11 @@
 
 There are several Deployment Options that can be used to run and deploy EDA:
 
+/// details | Upgrading an existing cluster?
+    type: info
+Jump straight to [Upgrading a cluster](../upgrades/index.md).
+///
+
 [Air-Gapped cluster](./air-gapped-cluster.md)
 
 :   Set up an asset VM with the necessary content for an Air-Gapped installation, using the officially supported Talos deployment model.
