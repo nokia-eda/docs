@@ -25,7 +25,7 @@ Before using the Connect OpenShift Plugin, make sure the following prerequisites
 * Ensure all the nodes which are connected to SRL leaf nodes have LLDP enabled on each node.
 * Ensure EDA cluster is up and running.
 * Ensure EDA Cloud Connect App is installed.
-* Ensure you have access to the controller container image named `ghcr.io/nokia-eda/eda-connect-k8s-controller:v2.0.0`.
+* Ensure you have access to the controller container image named `ghcr.io/nokia-eda/eda-connect-k8s-controller:v3.0.0`.
 * NMState Operator is configured to listen for LLDP TLVs. Create the following resource in your OpenShift cluster and make sure to include all interfaces in the list that are connected to leaf switches managed by EDA:
 
     ```yaml
@@ -161,8 +161,8 @@ There are two ways to get the Helm charts to deploy the EDA Connect OpenShift pl
 2. Downloading the release tarball and unpacking it:
 
     ```bash
-    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/v2.0.0.tar.gz
-    tar zxf v2.0.0.tar.gz 
+    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/v3.0.0.tar.gz
+    tar zxf v3.0.0.tar.gz 
     ```
 
 ### Deploying the Plugin in OpenShift
