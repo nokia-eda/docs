@@ -8,7 +8,7 @@ The EDA ML2 plugin creates a `ConnectPlugin` within the Connect Service using th
 
 ## Preparation
 
-#### Create a Service Account
+### Create a Service Account
 
 The EDA Connect OpenStack Plugin uses a `ServiceAccount` in the EDA Kubernetes cluster to create the necessary resources in the EDA cluster for the integration to properly work.
 
@@ -36,7 +36,7 @@ EOF
 ///
 ////
 
-#### Create a Service Account Token
+### Create a Service Account Token
 
 From the above Service Account, we need to create a Service Account Token which can be used by the plugin to connect to the EDA Kubernetes cluster. This can be done with the below manifest, which should be applied on the EDA Kubernetes cluster.
 
@@ -62,12 +62,13 @@ EOF
 ///
 ////
 
-After creating the Service Account Token, you can retrieve the bearer token and ca_cert information using the following commands from the `eda-system` namespace. 
+After creating the Service Account Token, you can retrieve the bearer token and ca_cert information using the following commands from the `eda-system` namespace.
 This token is what will need to be provided to the plugin during deployment.
 
 ```bash
 kubectl get secrets/openstack-plugin -n eda-system --template={{.data.token}} | base64 --decode
 ```
+
 ```bash
 kubectl get secrets/openstack-plugin -n eda-system --template={{.data.ca_cert}} | base64 --decode
 ```
@@ -136,5 +137,3 @@ If there is a need to update the certificate info for connecting to the EDA Kube
 referred to in the `ca_cert_path`.
 
 **Step 2** - Restart Neutron
-
-
