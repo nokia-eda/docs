@@ -244,92 +244,9 @@ Possible use cases for this are fabric-based L3 or BGP peering.
 
 When the nic-mapping agent extension is enabled, it will persist the _physnet_ <-> _compute,interface_ relation in the Neutron database so it can wire Neutron ports properly in the Fabric.
 
-The known interface mappings can be consulted using the CLI command `openstack eda interface mapping list`0
+The known interface mappings can be consulted using the CLI command `openstack eda interface mapping list`.
 
-[//]: # (#### Manual Edge Topology population)
-
-[//]: # ()
-[//]: # (When it is not desired that the nic-mapping L2 Agent runs on the compute nodes, you can provision the interface mappings manually.)
-
-[//]: # ()
-[//]: # (//// details | CBIS )
-
-[//]: # (    type: note)
-
-[//]: # (Disabling the nic-mapping agent is not supported with CBIS.)
-
-[//]: # (////)
-
-[//]: # ()
-[//]: # (This can be done using the following command:)
-
-[//]: # ()
-[//]: # (`openstack eda interface mapping create`)
-
-[//]: # ()
-[//]: # (//// details | Support for manual Edge Topology population )
-
-[//]: # (    type: note)
-
-[//]: # (The following configuration should be present in the ml2 plugin section:)
-
-[//]: # ([DEFAULT])
-
-[//]: # (nic_mapping_provisioning = True)
-
-[//]: # (////)
-
-[//]: # ()
-[//]: # (//// details | L2 agent extension together with manual provisioning)
-
-[//]: # (    type: warning)
-
-[//]: # (Nokia does not recommend combining the Layer 2 agent extension with manual provisioning, because when the agent starts or re-starts, it clears entries that were provisioned manually.)
-
-[//]: # (////)
 
 #### Automated LLDP Provisioning
 
 When deploying using the CBIS integration, LLDP introspection is automatically enabled for all computes.
-
-[//]: # (#### Manual LLDP Provisioning)
-
-[//]: # ()
-[//]: # (The Edge Topology information is introspected using LLDP. To do this LLDP needs to be enabled on the OpenStack computes.)
-
-[//]: # ()
-[//]: # (For LLDP topology discovery from the fabric to function correctly, all computes must have LLDP enabled on their data interfaces. Only when LLDP is enabled on all computes can workloads be automatically scheduled on the fabric.)
-
-[//]: # (To do this manually, follow these steps:)
-
-[//]: # ()
-[//]: # (* On a Linux-based compute, enable LLDP:)
-
-[//]: # ()
-[//]: # (        )
-[//]: # (        NIC_DIR="/sys/class/net")
-
-[//]: # (        for itf in $&#40;ls $NIC_DIR | grep -E 'eno|enp|ens'&#41; )
-
-[//]: # (        do)
-
-[//]: # (            if [ -d "${NIC_DIR}/${itf}/device" -a ! -L "${NIC_DIR}/${itf}/device/physfn" ])
-
-[//]: # (            then)
-
-[//]: # (                lldptool set-lldp -i $itf adminStatus=Tx)
-
-[//]: # (                lldptool -T -i $itf -V sysName enableTx=yes)
-
-[//]: # (                lldptool -T -i $itf -V portID subtype=PORT_ID_INTERFACE_NAME)
-
-[//]: # (            fi)
-
-[//]: # (        done)
-
-[//]: # ()
-[//]: # (* For NICs that support hardware based LLDP &#40;in-nic LLDP&#41;, make sure to disable this capability as it may send out conflicting LLDP information compared to what Linux or VMware would send out.)
-
-[//]: # (* The hostname returned by hostnamectl should correspond to hostname in output of openstack host list.)
-
-[//]: # (     If these are not the same, use the command hostnamectl set-hostname to align them.)
