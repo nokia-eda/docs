@@ -38,10 +38,13 @@ nav:
 
   - Cloud Connect:
       - Cloud Connect: connect/cloud-connect.md
-      - OpenShift Connect Plugin: connect/openshift-plugin.md
-      - VMware vSphere Plugin: connect/vmware-plugin.md
       - Troubleshooting: connect/troubleshooting.md
       - Audit: connect/audit.md
+      - OpenShift Connect Plugin: connect/openshift-plugin.md
+      - VMware vSphere Plugin: connect/vmware-plugin.md
+      - OpenStack Connect Plugin:
+          - OpenStack plugin: connect/openstack-plugin.md
+          - CBIS Installation: connect/openstack-cbis.md
   - Development:
       - API: development/api.md
       - Custom App Catalog: development/custom-catalog.md
@@ -144,13 +147,13 @@ plugins:
       comments_path: "#__comments"
   - git-revision-date-localized:
       enable_creation_date: true
-      enabled: !ENV [CI, false]
+      enabled: !ENV [ CI, false ]
   - git-committers:
       repository: https://github.com/nokia-eda/docs
       branch: main
-      enabled: !ENV [CI, false]
+      enabled: !ENV [ CI, false ]
   - social:
-      enabled: !ENV [CI, false]
+      enabled: !ENV [ CI, false ]
       # enabled: true
       # debug: true
       # debug_color: yellow
