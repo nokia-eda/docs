@@ -13,8 +13,8 @@ It provides the following advantages and capabilities:
 
 ### Supported Versions
 
-* Red Hat OpenShift 4.14
 * Red Hat OpenShift 4.16
+* Red Hat OpenShift 4.18
 
 ## Prerequisites
 

@@ -14,14 +14,15 @@ The Connect solution is built around a central service, called the Cloud Connect
 
 The Connect Core is responsible for managing the plugins and the relation between Connect Interfaces (compute interfaces) and EDA Interfaces (Fabric Interfaces or Edge-Links). It keeps track of the LLDP information of EDA Interfaces and correlates that back to the Connect Interfaces created by Plugins to identify the different physical interfaces of the computes of a cloud environment.
 
-Connect Plugins are responsible for tracking the state of compute nodes, their physical interfaces, the virtual networks created in the cloud environment and their correlation to the physical network interfaces. As applications create networks and virtual machines or containers, the plugins will inform Connect Core of the changes needed to the fabric. Plugins will also create or manage EDA Bridge Domains to make sure the correct sub-interfaces are created for the application connectivity.
+Connect Plugins are responsible for tracking the state of compute nodes, their physical interfaces, the virtual networks created in the cloud environment and their correlation to the physical network interfaces. As applications create networks and virtual machines or containers, the plugins will inform Connect Core of the changes needed to the fabric. Plugins will also create or manage EDA BridgeDomains to make sure the correct sub-interfaces are created for the application connectivity.
 
 ## Plugins Overview
 
-Connect plugins are specifically made to inspect one type of cloud environment. While these plugins can be developed specifically targeting a custom cloud environment, Connect comes with two Nokia supported plugins:
+Connect plugins are specifically made to inspect one type of cloud environment. While these plugins can be developed specifically targeting a custom cloud environment, Connect comes with three Nokia supported plugins:
 
 * Connect OpenShift plugin
 * Connect VMware plugin
+* Connect OpenStack ML2 plugin (CBIS only)
 
 ## Feature Overview
 
@@ -83,6 +84,8 @@ Plugins are a core component of the Event Driven Automation (EDA) Connect enviro
 
 * [OpenShift Connect plugin](./openshift-plugin.md)
 * [VMware vSphere plugin](./vmware-plugin.md)
+* [OpenStack ML2 plugin](./openstack-plugin.md)
+
 
 Plugins are automatically registered within the Connect service when they are deployed. Each is stored in the database with the following main properties:
 
@@ -108,7 +111,7 @@ Connect interfaces are managed by the plugins and represent the network interfac
 
 Connect Core uses the information from the Connect interface to determine the matching EDA interface. This is the interface on a leaf managed by EDA to which the interface on the compute is connected to, or potentially multiple interfaces in case of a LAG or Bond.
 
-The plugin will label these Connect interfaces to indicate that Connect Core needs to make sure the matching leaf interfaces have a subinterface created in the corresponding overlay service (bridge domain).
+The plugin will label these Connect interfaces to indicate that Connect Core needs to make sure the matching leaf interfaces have a subinterface created in the corresponding overlay service (BridgeDomain).
 
 This way, only those subinterfaces that are truly necessary are configured in the fabric. This limits configuration bloat and possible security risks.
 
@@ -125,7 +128,10 @@ This also means that a compute cluster can only belong to a single namespace, an
 The Connect UI can be found as part of the System Administrator section of the EDA UI, and allows for inspection of the different resources owned and managed by Connect. This Connect UI follows the same design as the regular EDA UI, where the left menu for Connect opens and displays the different resources available.
 
 /// details | Do not create new resources manually, as this could interfere with the behavior of the plugins.
-    type: note
+    type: warning
+
+If you have made changes manually, an audit will revert them. 
+Changes should be made through the Cloud orchestration platform.
 ///
 
 ## Connect Integration Modes
@@ -144,12 +150,12 @@ Each of these modes can be used by the plugins. For the plugins provided by Noki
 
 ### CMS-Managed Integration Mode
 
-In the Cloud Management mode, Connect creates an EDA bridge domain for each subnet that is created in the Cloud Management system. In this mode, the changes in the Cloud Management system are transparently reflected into EDA. The administrator of the Cloud Management system does not require any knowledge about how to use EDA.
+In the Cloud Management mode, Connect creates an EDA BridgeDomain for each subnet that is created in the Cloud Management system. In this mode, the changes in the Cloud Management system are transparently reflected into EDA. The administrator of the Cloud Management system does not require any knowledge about how to use EDA.
 
 ### EDA-Managed Integration Mode
 
 For more advanced use cases, a more complex EVPN Service (or set of services) may be needed. This can include features of these services that are supported by EDA, but not natively by the CMS. Examples are configuring complex routing or QoS policies, or using BGP PE/CE for route advertisement from the application into the network service.
 
-In such cases, Nokia recommends using the EDA-managed integration mode, which instructs Connect to associate the subnets in the CMS with existing bridge domains in EDA, instead of creating new resources in EDA based on the cloud management networking.
+In such cases, Nokia recommends using the EDA-managed integration mode, which instructs Connect to associate the subnets in the CMS with existing BridgeDomains in EDA, instead of creating new resources in EDA based on the cloud management networking.
 
 In this mode, an administrator (or orchestration engine) with knowledge of EDA first creates the necessary resources in EDA directly. You can create more complex configurations than the cloud management system itself would be able to do. When creating the networking constructs in the Cloud Management system, you provide a set of unique identifiers referring to those pre-created networking constructs. This way, the Connect plugin and Connect service know not to create their own resources, but to use the pre-created items.
