@@ -29,7 +29,7 @@ nav:
       - Upgrading:
           - user-guide/upgrades/index.md
   - Apps:
-      - App Store: apps/app-store.md
+      - Store: apps/app-store.md
       - Fabric: apps/fabric.md
       - Virtual Network: apps/virtualnetwork.md
       - Notifier: apps/notifier.md
