@@ -22,11 +22,6 @@ EOF
 ```
 ///
 
-/// details | Known Bugs
-    type: warning
-The VMWare plugin currently creates a new `Audit` object whenever an `Audit` is triggered through the UI or kubernetes API. The result of the `Audit` therefore can only be found in this new `Audit` object. The user-created `Audit` object can be safely ignored.
-///
-
 ## Audit Result
 
 An `Audit` runs out of band inside the `Plugin` (ie VMWare or OpenShift Plugin). This process can be followed using the _.status.state_ field, which will progress from _Scheduled_ to _InProgress_ to _Finished_.
