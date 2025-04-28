@@ -1,0 +1,9 @@
+apiVersion: banners.eda.local/v1alpha1
+kind: Banner
+metadata:
+  name: demo-banner
+  namespace: eda
+spec:
+  nodes:
+    - leaf11
+  loginBanner: Hello EDA!

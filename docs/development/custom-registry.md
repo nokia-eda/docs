@@ -10,7 +10,7 @@ The `manifest.spec.image` field will point to the specific App image with a spec
 
 ### Creating a Credentials Secret
 
-Before you can add a Registry to the App Store, you must create a Kubernetes secret that contains the credentials to connect to the Registry git repository over HTTPS. This can be done using the following resource where you replace the data with the correct `base64` encoded values.
+If the registry hosting your App OCI image requires authentication, you must create a Kubernetes secret that contains the credentials to connect to the Registry git repository over HTTPS. This can be done using the following resource where you replace the data with the correct `base64` encoded values.
 
 /// tab | YAML Resource
 
