@@ -46,6 +46,23 @@ nav:
           - OpenStack plugin: connect/openstack-plugin.md
           - CBIS Installation: connect/openstack-cbis.md
   - Development:
+      - Applications:
+          - There's an app for that: development/apps/index.md
+          - Environment setup: development/apps/setup-env.md
+          - Quick start: development/apps/quick-start.md
+          - Project Layout: development/apps/project-layout.md
+          - Components: development/apps/components.md
+          - Build and Publish: development/apps/build-publish.md
+          - Scripts:
+              - development/apps/scripts/index.md
+              - Config: development/apps/scripts/config.md
+              - State: development/apps/scripts/state.md
+              - Debugging: development/apps/scripts/debugging.md
+              - Banner Script Walkthrough: development/apps/scripts/banner-script.md
+          - EDABuilder: development/apps/edabuilder.md
+          - Terminology: development/apps/terminology.md
+          # - Workflows: development/apps/workflows.md
+          # - Handling versions: development/apps/versions.md
       - API: development/api.md
       - Custom App Catalog: development/custom-catalog.md
       - Custom App Registry: development/custom-registry.md

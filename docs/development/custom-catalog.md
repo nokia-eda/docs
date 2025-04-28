@@ -41,7 +41,7 @@ The version field should conform to [Semantic Versioning 2.0](https://semver.org
 
 ### Creating a Credentials Secret
 
-Before you can add a Catalog to the App Store, you must create a Kubernetes secret that contains the credentials to connect to the Catalog git repository over HTTPS. This can be done using the following resource where you replace the data with the correct `base64` encoded values.
+If the Catalog-hosting Git repository requires authentication, you must create a Kubernetes secret that contains the credentials to connect to the Catalog git repository over HTTPS. This can be done using the following resource where you replace the data with the correct `base64` encoded values.
 
 /// tab | YAML Resource
 
