@@ -161,8 +161,8 @@ There are two ways to get the Helm charts to deploy the EDA Connect OpenShift pl
 2. Downloading the release tarball and unpacking it:
 
     ```bash
-    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/v3.0.0.tar.gz
-    tar zxf v3.0.0.tar.gz 
+    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/3.0.0.tar.gz
+    tar zxf 3.0.0.tar.gz 
     ```
 
 ### Deploying the Plugin in OpenShift
