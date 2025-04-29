@@ -55,7 +55,7 @@ Several key concepts will be used throughout the documentation, here's an overvi
 : The Assets VM is a Virtual Machine deployed on a KVM or VMware environment. It is a single VM K8s cluster that will run:
 
     * A container registry to host all the container images used by EDA.
-    * A git server to host the App Store Catalog.
+    * A git server to host the EDA Store Catalog.
     * A web server to host certain artifacts used by EDA.
 
 *Bundles*

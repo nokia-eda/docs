@@ -1,16 +1,18 @@
-# Add a Custom App Store Registry
+# Add a Custom EDA Store Registry
 
 ## Overview
 
-An App Store Registry is a container registry that contains OCI compliant images of an App. It is where you will upload your full App content and code as a single OCI image.
+An EDA Store Registry is a container registry that contains OCI compliant images of an App. It is where you will upload your full App content and code as a single OCI image.
 
 The `manifest.spec.image` field will point to the specific App image with a specific tag for each version.
 
-## Adding a Registry to the App Store
+## Adding a Registry to the EDA Store
 
 ### Creating a Credentials Secret
 
 If the registry hosting your App OCI image requires authentication, you must create a Kubernetes secret that contains the credentials to connect to the Registry git repository over HTTPS. This can be done using the following resource where you replace the data with the correct `base64` encoded values.
+
+--8<-- "docs/development/custom-catalog.md:secrte-label-caution"
 
 /// tab | YAML Resource
 
@@ -54,7 +56,7 @@ EOF
 
 ///
 
-## Mirroring a Registry to the App Store
+## Mirroring a Registry to the EDA Store
 
 If it is not possible to use a registry that is referenced in the manifests of a certain catalog, you can mirror that registry to a local registry and then update the Registry resource in the EDA Kubernetes cluster and update the `mirrorUrl` to point to the mirror hostname.
 

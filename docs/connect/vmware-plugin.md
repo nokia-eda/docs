@@ -60,7 +60,7 @@ To deploy the VMware vSphere plugin, complete the following tasks:
 
 ### Connect VMware vSphere Plugin App Deployment
 
-The VMware vSphere Plugin App is an Application in the EDA App eco-system. It can be easily installed using the App Store UI.
+The VMware vSphere Plugin App is an Application in the EDA App eco-system. It can be easily installed using the EDA Store UI.
 
 #### Installation using Kubernetes API
 

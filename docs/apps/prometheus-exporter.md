@@ -13,7 +13,7 @@
 
 ## Installation
 
-The Prometheus exporter app can be installed using [EDA App Store](app-store.md) or by running the `app-install` workflow with `kubectl`:
+The Prometheus exporter app can be installed using [EDA Store](app-store.md) or by running the `app-install` workflow with `kubectl`:
 
 /// tab | YAML
 

@@ -37,7 +37,7 @@ Connect supports the following features:
 
 ## Installation of Cloud Connect Core
 
-Cloud Connect is an Application in the EDA App eco-system. It can be easily installed using the App Store UI.
+Cloud Connect is an Application in the EDA App eco-system. It can be easily installed using the EDA Store UI.
 
 ### Installation using Kubernetes API
 
@@ -86,7 +86,6 @@ Plugins are a core component of the Event Driven Automation (EDA) Connect enviro
 * [VMware vSphere plugin](./vmware-plugin.md)
 * [OpenStack ML2 plugin](./openstack-plugin.md)
 
-
 Plugins are automatically registered within the Connect service when they are deployed. Each is stored in the database with the following main properties:
 
 *Name*
@@ -130,7 +129,7 @@ The Connect UI can be found as part of the System Administrator section of the E
 /// details | Do not create new resources manually, as this could interfere with the behavior of the plugins.
     type: warning
 
-If you have made changes manually, an audit will revert them. 
+If you have made changes manually, an audit will revert them.
 Changes should be made through the Cloud orchestration platform.
 ///
 
