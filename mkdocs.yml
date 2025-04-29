@@ -9,6 +9,31 @@ nav:
           - Virtual network: getting-started/virtual-network.md
           - Verification: getting-started/verification.md
           - Resetting the Playground: getting-started/reset.md
+  - Software Installation:
+      - software-install/index.md
+      - EDA installation overview: software-install/eda-installation-overview.md
+      - Preparing for installation: software-install/preparing-for-installation.md
+      - Air-gapped setup:
+          - software-install/air-gapped/index.md
+          - Preparing the Assets VM: software-install/air-gapped/preparing-the-assets-vm.md
+          - Downloading the Assets: software-install/air-gapped/downloading-the-assets.md
+          - Preparing the environment: software-install/air-gapped/preparing-the-air-gapped-environment.md
+          - Deploying the Assets VM: software-install/air-gapped/deploying-the-assets-vm.md
+      - Deploying EDA:
+          - software-install/deploying-eda/index.md
+          - Setting up the EDA nodes: software-install/deploying-eda/setting-up-the-eda-virtual-machine-nodes.md
+          - Bootstrap the Talos cluster: software-install/deploying-eda/bootstrap-the-talos-kubernetes-cluster.md
+          - Installing the EDA application: software-install/deploying-eda/installing-the-eda-application.md
+      - Software Upgrade:
+          - software-install/upgrades/index.md
+      - Non-production installations:
+          - software-install/non-production/index.md
+          - On-prem cluster: software-install/non-production/on-prem-cluster.md
+          - macOS: software-install/non-production/macos.md
+          - Windows (WSL): software-install/non-production/wsl.md
+          - KinD: software-install/non-production/kind.md
+          - software-install/exposing-ui-api.md
+          - software-install/customize-install.md
   - User guide:
       - Queries: user-guide/queries.md
       - Topologies: user-guide/topologies.md
@@ -16,18 +41,6 @@ nav:
       - Allocation Pools: user-guide/allocation-pools.md
       - Access Control: user-guide/access-control.md
       - user-guide/containerlab-integration.md
-      - Installation:
-          - user-guide/installation/index.md
-          - Deployment options:
-              - Air-Gapped cluster: user-guide/installation/air-gapped-cluster.md
-              - On-prem cluster: user-guide/installation/on-prem-cluster.md
-              - macOS: user-guide/installation/macos.md
-              - Windows (WSL): user-guide/installation/wsl.md
-              - KinD: user-guide/installation/kind.md
-          - user-guide/exposing-ui-api.md
-          - user-guide/installation/customize-install.md
-      - Upgrading:
-          - user-guide/upgrades/index.md
   - Apps:
       - Store: apps/app-store.md
       - Fabric: apps/fabric.md
@@ -79,7 +92,7 @@ site_description: >-
 repo_name: docs
 repo_url: https://github.com/nokia-eda/docs
 edit_uri: edit/main/docs/
-site_url: "https://docs.eda.dev"
+site_url: "https://docs.eda.dev/"
 copyright: Copyright &copy; 2024 Nokia
 theme:
   name: material
@@ -164,13 +177,13 @@ plugins:
       comments_path: "#__comments"
   - git-revision-date-localized:
       enable_creation_date: true
-      enabled: !ENV [ CI, false ]
+      enabled: !ENV [CI, false]
   - git-committers:
       repository: https://github.com/nokia-eda/docs
       branch: main
-      enabled: !ENV [ CI, false ]
+      enabled: !ENV [CI, false]
   - social:
-      enabled: !ENV [ CI, false ]
+      enabled: !ENV [CI, false]
       # enabled: true
       # debug: true
       # debug_color: yellow
@@ -187,6 +200,8 @@ extra:
     bash:
       - .s1
       - .s2
+  version:
+    provider: mike
 
 # Extensions
 markdown_extensions:
@@ -229,6 +244,7 @@ markdown_extensions:
       auto_append:
         - includes/abbreviations.md
   - pymdownx.superfences:
+      disable_indented_code_blocks: true
       custom_fences:
         - name: mermaid
           class: mermaid
@@ -240,7 +256,12 @@ markdown_extensions:
   - pymdownx.blocks.admonition
   - pymdownx.blocks.definition
   - pymdownx.blocks.details
-  - pymdownx.blocks.html
+  - pymdownx.blocks.html:
+      custom:
+        - tag: td
+          mode: block
+        - tag: th
+          mode: block
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde

@@ -47,7 +47,7 @@ Our end game is to install EDA and integrate it with the Containerlab topology s
 The reason we started this section with a mention of EDA CX is because as of EDA v24.12.1 the platform is installed by default with the CX engine enabled. What this means is that EDA will spin up virtual simulator nodes using the CX engine for every topology node.  
 To let EDA manage external nodes (either real hardware or virtual nodes spawned outside of EDA) we need to provide a specific installation option.
 
-Clone the [EDA Playground repository](https://github.com/nokia-eda/playground) if you haven't already and uncomment the following line in the [preferences (`prefs.mk`) file](installation/customize-install.md#preferences-file) :
+Clone the [EDA Playground repository](https://github.com/nokia-eda/playground) if you haven't already and uncomment the following line in the [preferences (`prefs.mk`) file](../software-install/customize-install.md#preferences-file) :
 
 ```Makefile
 SIMULATE = false

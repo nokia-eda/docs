@@ -1,11 +1,11 @@
 # Installation customization
 
-If you followed the [Installation process](../../getting-started/installation-process.md) section, you already know that EDA uses [kpt][kpt-home] k8s package manager to install its components. Without getting too much into the details of kpt, you can expect that as any other package manager, kpt packages can be customized before the actual manifests will be applied to the cluster.  
+If you followed the [Installation process](../getting-started/installation-process.md) section, you already know that EDA uses [kpt][kpt-home] k8s package manager to install its components. Without getting too much into the details of kpt, you can expect that as any other package manager, kpt packages can be customized before the actual manifests will be applied to the cluster.  
 This allows users to customize EDA installation according to their needs.
 
 /// admonition | What about a Makefile?
     type: subtle-question
-In the [Quickstart](../../getting-started/try-eda.md) section we have been using the Makefile to install the EDA Playground - a ready-to-use environment for trying EDA out. The Makefile allows user to [customize the Playground](#playground) installation, but is not suitable for production installation of EDA.
+In the [Quickstart](../getting-started/try-eda.md) section we have been using the Makefile to install the EDA Playground - a ready-to-use environment for trying EDA out. The Makefile allows user to [customize the Playground](#playground) installation, but is not suitable for production installation of EDA.
 
 This section explains how to customize the EDA installation using [kpt][kpt-home] package manager.
 ///
@@ -45,7 +45,7 @@ In the [KPT Setters Reference](#kpt-setters-reference) section you will find all
 
 ## Playground
 
-An EDA installation that is deployed with a set of pre-configured components and a small virtual network is called a _playground_. The [Getting Started guide](../../getting-started/try-eda.md) introduces EDA to the users by deploying the EDA Playground on a [KinD](https://kind.sigs.k8s.io/)-based kubernetes cluster.
+An EDA installation that is deployed with a set of pre-configured components and a small virtual network is called a _playground_. The [Getting Started guide](../getting-started/try-eda.md) introduces EDA to the users by deploying the EDA Playground on a [KinD](https://kind.sigs.k8s.io/)-based kubernetes cluster.
 
 Users can deploy the playground using a single `make` command that will come up with some sane defaults for all platform settings. While this is sufficient for the most common use cases, we also provide a way to customize the playground installation via:
 
