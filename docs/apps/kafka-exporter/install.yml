@@ -12,4 +12,4 @@ spec:
     vendor: nokia
     version:
       type: semver
-      value: v2.0.1
+      value: v3.0.0
