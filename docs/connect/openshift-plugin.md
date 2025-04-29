@@ -25,7 +25,7 @@ Before using the Connect OpenShift Plugin, make sure the following prerequisites
 * Ensure all the nodes which are connected to SRL leaf nodes have LLDP enabled on each node.
 * Ensure EDA cluster is up and running.
 * Ensure EDA Cloud Connect App is installed.
-* Ensure you have access to the controller container image named `ghcr.io/nokia-eda/eda-connect-k8s-controller:v3.0.0`.
+* Ensure you have access to the controller container image named `ghcr.io/nokia-eda/eda-connect-k8s-controller:3.0.0`.
 * NMState Operator is configured to listen for LLDP TLVs. Create the following resource in your OpenShift cluster and make sure to include all interfaces in the list that are connected to leaf switches managed by EDA:
 
     ```yaml
