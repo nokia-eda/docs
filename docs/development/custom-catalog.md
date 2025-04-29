@@ -1,8 +1,8 @@
-# Add a Custom App Store Catalog
+# Add a Custom EDA Store Catalog
 
 ## Overview
 
-An App Catalog is a structured git repository that contains all the necessary information app store needs to install an app. The `Manifest`  is the most important one. But the app can also contain other app metadata information for the UI, like a README, or a license (see the manifest `appInfo`  specification field). The catalog of built-in apps that is delivered along with EDA can be found here.
+An App Catalog is a structured git repository that contains all the necessary information EDA Store needs to install an app. The `Manifest`  is the most important one. But the app can also contain other app metadata information for the UI, like a README, or a license (see the manifest `appInfo`  specification field). The catalog of built-in apps that is delivered along with EDA can be found here.
 
 ## Catalog Structure
 
@@ -31,17 +31,23 @@ vendors/
 
 ### App Versioning
 
-Apps will have multiple versions. To version the Apps in the Catalog, git tags are used. A structured git tag will be seen as an installable App (with a certain version) for the App Store, which can then be installed from the UI.
+Apps will have multiple versions. To version the Apps in the Catalog, git tags are used. A structured git tag will be seen as an installable App (with a certain version) for the EDA Store, which can then be installed from the UI.
 
-Any tag in the form of `vendors/<vendor-name>/apps/<app-name>/<version>` will be registered as an installable App by the App Store.
+Any tag in the form of `vendors/<vendor-name>/apps/<app-name>/<version>` will be registered as an installable App by the EDA Store.
 
 The version field should conform to [Semantic Versioning 2.0](https://semver.org/), prefixed with a "v". For example: v0.1, v0.1.0-alpha.
 
-## Adding a Catalog to the App Store
+## Adding a Catalog to the EDA Store
 
 ### Creating a Credentials Secret
 
 If the Catalog-hosting Git repository requires authentication, you must create a Kubernetes secret that contains the credentials to connect to the Catalog git repository over HTTPS. This can be done using the following resource where you replace the data with the correct `base64` encoded values.
+
+<!-- --8<-- [start:secrte-label-caution] -->
+/// caution | mandatory label
+The secrets used by the app catalog or app registry must have the `eda.nokia.com/backup: "true"` label for the EDA Store to pick them up.
+///
+<!-- --8<-- [end:secrte-label-caution] -->
 
 /// tab | YAML Resource
 

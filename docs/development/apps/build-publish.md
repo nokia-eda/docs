@@ -114,7 +114,7 @@ To republish an app, i.e. override an existing version, add `--force` flag to th
 
 ## Configuring EDA Store with your publishing authority
 
-Just uploading the OCI image and the manifest to a catalog won't make your application available in the EDA Store. You need to make the store aware of any new OCI registries and/or catalogs. The procedure for adding a registry to the EDA store can be found [here](../custom-registry.md#adding-a-registry-to-the-app-store), the procedure for catalogs can be found [here](../custom-catalog.md#adding-a-catalog-to-the-app-store).
+Just uploading the OCI image and the manifest to a catalog won't make your application available in the EDA Store. You need to make the store aware of any new OCI registries and/or catalogs. The procedure for adding a registry to the EDA store can be found [here](../custom-registry.md#adding-a-registry-to-the-eda-store), the procedure for catalogs can be found [here](../custom-catalog.md#adding-a-catalog-to-the-eda-store).
 
 In our example we are using ghcr.io. If you've deployed EDA through the [Playground](https://github.com/nokia-eda/playground), this registry is already registered with the EDA store, so nothing needs to be done.  
 

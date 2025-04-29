@@ -139,7 +139,7 @@ The end result of this command is that the manifests contained in the `eda-kpt` 
 
 An EDA deployment is composed of two parts:
 
-1. **Core**: this is a set of applications that bring the core functionality of EDA. It includes applications like the Config Engine, App Store, State Controller, and others.
+1. **Core**: this is a set of applications that bring the core functionality of EDA. It includes applications like the Config Engine, EDA Store, State Controller, and others.
 2. **Applications**: these are applications that extend EDA's core functionality. They are pluggable by nature and decoupled from the Core. Users can install and uninstall Nokia-provided applications as needed, as well as develop their own or consume third-party applications.
 
 ### Core
