@@ -381,7 +381,6 @@ kubectl label nodes node-2 connect.eda.nokia.com/hostGroup=net-group-2
 
 The following is a sample configuration of the CND usage to be able to pre-configure connect interface
 
-
 /// tab | YAML Resource
 
 ```yaml
@@ -406,13 +405,13 @@ The NAD Annotation operational mode only works for the EDA-managed integration m
 To use this operational mode, when creating or updating a NAD, add the following annotation to it:
 
 ```yaml
-connect.eda.nokia.com/bridgedomain: <eda-bridge-domain-name> 
+connect.eda.nokia.com/bridgedomain: <eda-bridge-domain-name> 
 ```
 
 In case of VLAN trunking, a more complex annotation can be used, for example:
 
 ```yaml
-connect.eda.nokia.com/bridgedomain: <eda-bridge-domain-name>:<vlan-id>, <eda-bridge-domain-name-2>:<vlan-id> 
+connect.eda.nokia.com/bridgedomain: <eda-bridge-domain-name>:<vlan-id>, <eda-bridge-domain-name-2>:<vlan-id> 
 ```
 
 ## Troubleshooting

@@ -5,7 +5,7 @@ tags:
 authors:
   - rdodin
 links:
-  - Customize Install: user-guide/installation/customize-install.md
+  - Customize Install: software-install/customize-install.md
   - getting-started/try-eda.md
 ---
 
@@ -29,7 +29,7 @@ make try-eda
 
 Yes, this is all you need to get the ball rolling, but providing the variable values inline is not always convenient. Often you want to store the values in a configuration file.
 
-EDA's Playground config is powered by the make [preferences file](../../../user-guide/installation/customize-install.md) and we ship the instance of it - [`prefs.mk`][prefs-file] - within the [playground repo][pg-repo] itself.
+EDA's Playground config is powered by the make [preferences file](../../../software-install/customize-install.md) and we ship the instance of it - [`prefs.mk`][prefs-file] - within the [playground repo][pg-repo] itself.
 
 [prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 [pg-repo]: https://github.com/nokia-eda/playground
@@ -82,11 +82,11 @@ spec:
 
 [kpt-repo]: https://github.com/nokia-eda/kpt
 
-These `kpt-set` comments are markers for the kpt tool that these values can set by Kpt using the `${VARIABLE_NAME}` syntax. How would you set the values of these variables you ask? Using the [Kpt setters file](../../../user-guide/installation/customize-install.md#kpt-setters-file).
+These `kpt-set` comments are markers for the kpt tool that these values can set by Kpt using the `${VARIABLE_NAME}` syntax. How would you set the values of these variables you ask? Using the [Kpt setters file](../../../software-install/customize-install.md#kpt-setters-file).
 
 /// admonition | Kpt Setters Reference
     type: subtle-note
-We maintain [the reference](../../../user-guide/installation/customize-install.md#kpt-setters-reference) of all available setters in our docs.
+We maintain [the reference](../../../software-install/customize-install.md#kpt-setters-reference) of all available setters in our docs.
 ///
 
 The setters file allow you to specify the values for the setters that will be used when you install EDA Playground. For example, to set the PV claim volume size for the Git server deployment, you would create a yaml file like this:

@@ -107,7 +107,7 @@ External packages are defined in the [`kpt/eda-external-packages`][ext-packages]
 To provide configuration flexibility for EDA installation, `kpt` packages have a lot of fields marked with the `# kpt-set:` annotation. These fields can be set with the `kpt` CLI to change their default values.  
 Parameters like TLS configuration, proxies, default credentials and more are configurable via `kpt` setters.
 
-> [Installation Customization](../user-guide/installation/customize-install.md) section provides a deep dive on all customization options.
+> [Installation Customization](../software-install/customize-install.md) section provides a deep dive on all customization options.
 
 For example, it is common for EDA to be behind a load balancer, with clients terminating on the load balancer address and having their traffic forwarded from there. As EDA performs redirects it needs to know the name/IP clients will use to reach it. This can be accomplished via the setters in `kpt`, but for persistency and convenience, the most common settings can be set via the [`prefs.mk`][prefs-file] file that is part of the playground repository.
 

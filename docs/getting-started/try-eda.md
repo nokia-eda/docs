@@ -11,7 +11,7 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 1. **Choose where to run EDA**
 
     Since EDA uses Kubernetes as its application platform, you can deploy the EDA Playground anywhere a k8s cluster runs.  
-    The most popular way to install the demo EDA instance is on a Linux server/VM, but you can also [run it on macOS](../user-guide/installation/macos.md), in an [existing Kubernetes cluster](../user-guide/installation/on-prem-cluster.md), or on Windows using WSL.
+    The most popular way to install the demo EDA instance is on a Linux server/VM, but you can also [run it on macOS](../software-install/non-production/macos.md), in an [existing Kubernetes cluster](../software-install/non-production/on-prem-cluster.md), or on Windows using WSL.
 
 2. **Ensure minimal system requirements are met**
 
@@ -44,71 +44,72 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
     If you are deploying the EDA Playground on a VM/Server, you should take care of the following:
 
-    1. Install `make` that orchestrates the installation of the EDA Playground.
+    Install `make` that orchestrates the installation of the EDA Playground.
 
-        /// tab | apt
+    /// tab | apt
 
-        ```shell
-        sudo apt install -y make
-        ```
+    ```shell
+    sudo apt install -y make
+    ```
 
-        ///
-        /// tab | yum
+    ///
 
-        ```shell
-        sudo yum install -y make
-        ```
+    /// tab | yum
 
-        ///
+    ```shell
+    sudo yum install -y make
+    ```
 
-    2. Install `docker` using our automated installer:
+    ///
 
-        ```shell
-        make install-docker
-        ```
+    Install `docker` using our automated installer:
 
-        Or install it manually, by following the [official Docker installation guide](https://docs.docker.com/engine/install/) for your OS. If you installed docker via the package manager of your distribution, remove it and install as per the Docker installation guide.
+    ```shell
+    make install-docker
+    ```
 
-        /// details | Ensure sudo-less docker access
-            type: info
-        After completing the docker installation, check if you can run docker commands without `sudo` by running:
+    Or install it manually, by following the [official Docker installation guide](https://docs.docker.com/engine/install/) for your OS. If you installed docker via the package manager of your distribution, remove it and install as per the Docker installation guide.
 
-        ```shell
-        docker ps
-        ```
+    /// details | Ensure sudo-less docker access
+        type: info
+    After completing the docker installation, check if you can run docker commands without `sudo` by running:
 
-        If you get a `permission denied` error, then you need to add your user to the `docker` group:
+    ```shell
+    docker ps
+    ```
 
-        1. Create the docker group.
+    If you get a `permission denied` error, then you need to add your user to the `docker` group:
 
-                ```bash
-                sudo groupadd docker
-                ```
+    1. Create the docker group.
 
-        2. Add your user to the docker group.
+            ```bash
+            sudo groupadd docker
+            ```
 
-                ```bash
-                sudo usermod -aG docker $USER
-                ```
+    2. Add your user to the docker group.
 
-        3. Log out and log back in so that your group membership is re-evaluated.
-        ///
+            ```bash
+            sudo usermod -aG docker $USER
+            ```
 
-    3. Ensure the relevant sysctl values are properly sized by pasting and running the following:
+    3. Log out and log back in so that your group membership is re-evaluated.
+    ///
 
-        ```bash
-        sudo mkdir -p /etc/sysctl.d && \
-        sudo tee /etc/sysctl.d/90-eda.conf << EOF
-        fs.inotify.max_user_watches=1048576
-        fs.inotify.max_user_instances=512
-        EOF
-        ```
+    Ensure the relevant sysctl values are properly sized by pasting and running the following:
 
-        And reloading the sysctl settings:
+    ```bash
+    sudo mkdir -p /etc/sysctl.d && \
+    sudo tee /etc/sysctl.d/90-eda.conf << EOF
+    fs.inotify.max_user_watches=1048576
+    fs.inotify.max_user_instances=512
+    EOF
+    ```
 
-        ```bash
-        sudo sysctl --system && sudo systemctl restart docker
-        ```
+    And reloading the sysctl settings:
+
+    ```bash
+    sudo sysctl --system && sudo systemctl restart docker
+    ```
 
 5. **Install the EDA Playground**
 
@@ -176,6 +177,7 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
     Now, even if you close the terminal, the UI will still be accessible.
     ///
+
     /// tab | Example output
     Running the `make start-ui-port-forward` target will output something similar to the following:
 
@@ -190,7 +192,6 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
     ///
 
 ///
-
 Now that you completed the installation, you can either read more on the installation details, or continue with creating your first unit of automation with EDA.
 
 <div class="grid cards" markdown>
@@ -212,6 +213,11 @@ Now that you completed the installation, you can either read more on the install
     [:octicons-arrow-right-24: Learn more about installation process](installation-process.md)
 
 </div>
+
+/// details | Production installation
+    type: subtle-note
+For a production installation instructions, please refer to the [Software Installation](../software-install/index.md) document.
+///
 
 [playground-repo]: https://github.com/nokia-eda/playground
 
