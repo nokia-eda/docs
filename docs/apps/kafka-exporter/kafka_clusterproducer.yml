@@ -1,8 +1,8 @@
 apiVersion: kafka.eda.nokia.com/v1alpha1
-kind: Producer
+kind: ClusterProducer
 metadata:
-  name: kafka-producer
-  namespace: eda
+  name: kafka-cluster-producer
+  namespace: eda-system
 spec:
   brokers: "broker1:9092,broker2:9092"
   required-acks: wait-for-local
@@ -11,7 +11,7 @@ spec:
   compression-codec: gzip
   exports:
     - topic: "interface-state"
-      path: ".node.srl.interface"
+      path: ".namespace.node.srl.interface"
       fields:
         - admin-state
         - oper-state
