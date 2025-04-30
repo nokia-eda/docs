@@ -48,7 +48,7 @@ Define the data to be exported.
 
     Specifies the paths in the state DB to export, e.g., `.namespace.node.srl.interface`.
     
-    For a `Producer` CR the `.namespace` prefix must be omitted.
+    For a `Producer` CR the `.namespace` prefix **can** be omitted.
 
 - **Fields**: `.spec.exports[].fields`
 
