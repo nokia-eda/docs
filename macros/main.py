@@ -8,6 +8,22 @@ def define_env(env):
     Macroses used in SR Linux documentation
     """
 
+    # take eda version from mkdocs.yml .extra.eda_version variable
+    # and derive other versions flavors from it
+    eda_version = env.variables.eda_version
+    eda_v_version = f"v{eda_version}"
+    eda_major_version = f"{eda_version.split('.')[0]}"
+    eda_minor_version = f"{eda_version.split('.')[1]}"
+    eda_major_v_version = f"v{eda_major_version}"
+    eda_major_minor_version = f"{eda_major_version}.{eda_minor_version}"
+    eda_major_minor_v_version = f"v{eda_major_minor_version}"
+
+    env.variables["eda_v_version"] = eda_v_version
+    env.variables["eda_major_minor_version"] = eda_major_minor_version
+    env.variables["eda_major_minor_v_version"] = eda_major_minor_v_version
+    env.variables["eda_major_version"] = eda_major_version
+    env.variables["eda_major_v_version"] = eda_major_v_version
+
     @env.macro
     def diagram(url, page, title, zoom=2):
         """
