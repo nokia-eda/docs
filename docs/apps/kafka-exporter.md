@@ -34,8 +34,11 @@ EOF
 
 ## Configuration
 
-After installation, you can configure the Kafka Exporter using a `Producer` Custom Resource (CR).
+After installation, you can configure the Kafka Exporter using a `Producer` or a `ClusterProducer` Custom Resources (CR).
+
 The CR specifies the data to be exported, the Kafka broker settings and the messages delivery behavior.
+
+The `Producer` CR is namespace specific and is used to export data only from its own namespace. While the `ClusterProducer` CR is created in the EDA base namespace (`eda-system`) and allows to export data from any user namespace.
 
 ### What to export
 
@@ -43,7 +46,9 @@ Define the data to be exported.
 
 - **Export Paths**: `.spec.exports[].path`
 
-    Specifies the paths in the state DB to export, e.g., `.namespace.node.srl.interface`
+    Specifies the paths in the state DB to export, e.g., `.namespace.node.srl.interface`.
+    
+    For a `Producer` CR the `.namespace` prefix **can** be omitted.
 
 - **Fields**: `.spec.exports[].fields`
 
@@ -113,6 +118,8 @@ Set how often or when data is exported and what kind of acknowledgment is requir
 
 ## Usage Examples
 
+### Producer
+
 /// tab | YAML
 
 ```yaml
@@ -125,6 +132,25 @@ Set how often or when data is exported and what kind of acknowledgment is requir
 ```bash
 cat << 'EOF' | kubectl apply -f -
 --8<-- "docs/apps/kafka-exporter/kafka_producer.yml"
+EOF
+```
+
+///
+
+### ClusterProducer
+
+/// tab | YAML
+
+```yaml
+--8<-- "docs/apps/kafka-exporter/kafka_clusterproducer.yml"
+```
+
+///
+/// tab | `kubectl`
+
+```bash
+cat << 'EOF' | kubectl apply -f -
+--8<-- "docs/apps/kafka-exporter/kafka_clusterproducer.yml"
 EOF
 ```
 
