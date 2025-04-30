@@ -207,7 +207,9 @@ This is all due to the fact that the majority of the images are running under Ro
 Depending on the tool you're using to run k8s, your method of connecting to the UI will vary.
 
 /// tab | OrbStack
-In OrbStack, you can access the UI by opening https://eda-api.k8s.orb.local/ in your browser.
+In OrbStack, the k8s services are already exposed to your by the software, making it possible to access the UI by opening https://eda-api.k8s.orb.local/ in your browser.
+
+This integration, though, will make our generic installer bark about the port being already in use when we try to setup the port-forward for the UI access at the very end of the `make try-eda` command. Please ignore this error, as OrbStack already took care of the UI access for you.
 
 //// warning | macOS 15+
 If your browser can not resolve the `eda-api.k8s.orb.local` domain, you need to add enable Local Network access policy for the browser of your choice since `.local` domain is resolved via mDNS. Check the Apple's [documentation](https://support.apple.com/guide/mac-help/control-access-to-your-local-network-on-mac-mchla4f49138/mac) and this [screenshot](https://gitlab.com/rdodin/pics/-/wikis/uploads/b91bbb7b7e6da5963736d24f43f64ce6/image.png) showing where the settings are located.
@@ -215,7 +217,7 @@ If your browser can not resolve the `eda-api.k8s.orb.local` domain, you need to 
 
 ![ui](https://gitlab.com/rdodin/pics/-/wikis/uploads/1180ab27c1aa9017c1db3339ccae5f74/image.png)
 
-> The default credentials are `admin:admin`.
+The default EDA credentials are `admin:admin`.
 ///
 
 ## Tearing down

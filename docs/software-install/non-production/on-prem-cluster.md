@@ -76,7 +76,7 @@ If you already have the repository cloned, make sure to pull in the latest chang
 
 ## Parametrizing the installation
 
-To no-one's surprise, the EDA installation process on an existing cluster would require us at least to skip the creation of the KinD cluster that `make try-eda` target would call otherwise. Let's do that by using the [prefs.mk](../../getting-started/installation-process.md#configure-your-deployment) file that the playground repository provides and set the following variables:
+To no-one's surprise, the EDA installation process on an existing cluster would require us at least to skip the creation of the KinD cluster that `make try-eda` target would call otherwise. Let's do that by using the [prefs.mk](../../software-install/customize-install.md) file that the playground repository provides and set the following variables:
 
 ```makefile
 # KinD cluster options

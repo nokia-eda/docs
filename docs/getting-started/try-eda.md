@@ -62,7 +62,7 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
     ///
 
-    Install `docker` using our automated installer:
+    Install `docker` using our automated installer, if you don't have it already installed:
 
     ```shell
     make install-docker
@@ -98,17 +98,7 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
     Ensure the relevant sysctl values are properly sized by pasting and running the following:
 
     ```bash
-    sudo mkdir -p /etc/sysctl.d && \
-    sudo tee /etc/sysctl.d/90-eda.conf << EOF
-    fs.inotify.max_user_watches=1048576
-    fs.inotify.max_user_instances=512
-    EOF
-    ```
-
-    And reloading the sysctl settings:
-
-    ```bash
-    sudo sysctl --system && sudo systemctl restart docker
+    make configure-sysctl-params
     ```
 
 5. **Install the EDA Playground**
@@ -155,41 +145,18 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
 6. **Access the UI**
 
-    EDA is an API-first framework, with its UI being a client of the very same API. While EDA UI offers an easy graphical way to manage the platform and automate your infrastructure, the usage of it is optional; you can interact with EDA API [directly](../development/api.md), or by leveraging the [CLI tools](../user-guide/using-the-clis.md) such as `edactl`. And you can even use the K8s API to manage EDA, for example, via `kubectl`.
+    EDA is an API-first framework, with its UI being a client of the very same API. At the end of the `make try-eda` output you will find the URL to access the UI.
 
-    EDA UI can be exposed externally using a simple make target:
-
-    /// tab | Expose UI
-
-    ```shell
-    make start-ui-port-forward #(1)!
-    ```
-
-    1. The port-forwarding target will run the forwarding service in the foreground, effectively blocking the terminal. If you want to enable UI access in a more permanent way, consider running the `make enable-ui-port-forward-service` target which is explained [here](../blog/posts/2024/try-eda-pro.md#more-permanent-ui-access) in details.
-
-    This target will forward the https port of the `eda-api` service and display the URL to use in your browser. The default username is `admin`, and the password is `admin`.
-
-    Note, that the port forwarding only lasts as long as the terminal session is active and will be closed when you disconnect from the server. To permanently expose the UI, you can setup a systemd service using this command:
-
-    ```shell
-    make enable-ui-port-forward-service
-    ```
-
-    Now, even if you close the terminal, the UI will still be accessible.
-    ///
-
-    /// tab | Example output
-    Running the `make start-ui-port-forward` target will output something similar to the following:
-
-    ```shell
-    [*]─[demo-vm]─[~/eda/playground]
-    └──> make start-ui-port-forward
+    ```shell hl_lines="2"
     --> Exposing the UI to the host across the kind container boundary
-    --> The UI can be accessed using https://10.10.1.1:9443
+    --> The UI can be accessed using https://10.10.1.1:9443 #(1)!
+    --> Started background port forward with process id: 897027
+    --> INFO: EDA is launched
     ```
 
-    The UI can be accessed now by typing `https://10.10.1.1:9443` in your browser.
-    ///
+    1. The `10.10.1.1` IP in this output matches what you provided in the `EXT_DOMAIN_NAME` environment variable.
+
+    > While EDA UI offers an easy graphical way to manage the platform and automate your infrastructure, the usage of it is optional; you can interact with EDA API [directly](../development/api.md), or by leveraging the [CLI tools](../user-guide/using-the-clis.md). And you can even use the K8s API to manage EDA, for example, via `kubectl`.
 
 ///
 Now that you completed the installation, you can either read more on the installation details, or continue with creating your first unit of automation with EDA.
