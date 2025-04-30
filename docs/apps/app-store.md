@@ -92,6 +92,12 @@ The EDA Store makes sure that all the app requirements stay valid at all times t
 When trying to install an app through the UI, the EDA Store will check if other apps needs to be installed or updated alongside it.
 You will then be prompted to approve that the EDA store needs to install or upgrade these additional applications.
 
+/// details | Requirements show the full graph in a flat list
+    type: warning
+The requirements tab in the UI currently shows the full dependency graph in a flat list. So the list does not only include the apps that are required to install app `A`, but also the apps that require `A` themselves.
+
+///
+
 /// details | Requirement modes using CLI
 
 Through the CLI, there is currently only one requirement mode that is the default on what the EDA store is allowed to do:
