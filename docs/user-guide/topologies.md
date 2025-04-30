@@ -1,8 +1,3 @@
----
-srl_version: 24.10.1
-eda_crd_version: 24.12.1
----
-
 # Topologies
 
 Topologies in EDA cover a lot of ground. Not only do they define the design of a physical or simulated network, they also drive the visualization of various overlays in the EDA UI.
@@ -15,8 +10,8 @@ A network topology in a broader sense describes the network design. Be it a Clos
 
 Like every topology is defined by its nodes and links, the EDA topology consists of node ([`TopoNode`][topoNode-crd]) and link ([`TopoLink`][topoLink-crd]) objects. The EDA topology nodes are represented by the devices in your network, and the topology links define the relationships between them.
 
-[topoNode-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v-{{ eda_crd_version }}-
-[topoLink-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{ eda_crd_version }}-
+[topoNode-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v-{{ eda_version }}-
+[topoLink-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{ eda_version }}-
 
 If you come here after finishing the [Getting Started][gs-guide] guide, you may remember the 3-node topology that we worked on:
 

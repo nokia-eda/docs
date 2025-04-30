@@ -1,6 +1,3 @@
----
-eda_core_version: 24.12.3
----
 # Banner Script Walkthrough
 
 To better understand how script apps work, we invite you to walk through the demo Banner application that is bundled with EDABuilder CLI and was part of the [quickstart guide](../quick-start.md).
@@ -357,7 +354,7 @@ def process_cr(cr):
 
 Here, the nodes we iterate on are the [`TopoNode`][topoNode-crd] objects from the core.nokia.com API group. Based on the `operatingSystem` value in the TopoNode spec, the code selects either SR Linux or SR OS handler.
 
-[topoNode-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v-{{ eda_core_version }}-
+[topoNode-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v-{{ eda_version }}-
 
 The handler-selection function is quite simple:
 

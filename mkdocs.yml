@@ -191,6 +191,8 @@ plugins:
 
 # Customization
 extra:
+  eda_version: "25.4.1" # current EDA version (provided without the v prefix)
+  srl_version: "24.10.4" # latest SRL version for the current EDA version
   social:
     - icon: fontawesome/brands/discord
       link: https://eda.dev/discord

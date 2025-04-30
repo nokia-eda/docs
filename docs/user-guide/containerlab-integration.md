@@ -1,7 +1,3 @@
----
-eda_crd_version: 24.12.1
----
-
 # Containerlab Integration
 
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
@@ -275,7 +271,7 @@ It is time to let EDA know about the Containerlab topology and onboard the two S
 
 It all starts with the [TopoNode][topoNode-crd] resource. The TopoNode resource is part of the EDA core and describes an abstracted node in the topology. In order to let EDA know about a node it needs to manage, we need to create a TopoNode resource per each SR Linux node in our Containerlab topology.
 
-[topoNode-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v-{{ eda_crd_version }}-
+[topoNode-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v-{{ eda_version }}-
 
 TopoNode's [Custom Resource Definition (CRD) documentation][topoNode-crd] describes the fields a resource of this type might have, but we need only a subset of them. Here are our two TopoNode resources named according to the container names of our SR Linux nodes in the topology:
 
@@ -326,7 +322,7 @@ We chose to use the IPv4 address assigned by Containerlab, but IPv6 addresses ar
 
 The last piece in the TopoNode resource that we must set is a [NodeProfile][nodeProfile-crd].
 
-[nodeProfile-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/NodeProfile/v1@v-{{ eda_crd_version }}-
+[nodeProfile-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/NodeProfile/v1@v-{{ eda_version }}-
 
 ```yaml
 --8<-- "docs/user-guide/clab-integration/topoNodes.yaml:11:11"
@@ -397,7 +393,7 @@ But the onboarding user might not be the same as the one used for the ongoing ma
 
 The `admin` [NodeUser][nodeUser-crd] resource has been created as part of the EDA Playground installation, but it uses a non-default SR Linux password, that we would like to change. To do that, we will craft a resource manifest that uses the default `NokiaSrl1!` password, as well as add a public key[^3] to enable typing-free SSH access.
 
-[nodeUser-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/NodeUser/v1@v-{{eda_crd_version}}-
+[nodeUser-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/NodeUser/v1@v-{{eda_version}}-
 
 ```yaml linenums="1"
 --8<-- "docs/user-guide/clab-integration/nodeUser.yaml:2"
@@ -417,7 +413,7 @@ The [TopoLink][topoLink-crd] resource is responsible for defining the topology l
 
 > TopoLink represents a logical link between two TopoNodes. It may include more than one physical link, being used to represent a LAG or multihomed link.
 
-[topoLink-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{eda_crd_version}}-
+[topoLink-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{eda_version}}-
 
 Looking at our lab diagram we can identify three topology links (highlighted in cyan):
 
@@ -447,7 +443,7 @@ A TopoLink, like any other link-like object is identified by a local endpoint an
 
 But this is not everything a TopoLink needs. It also requires us to provide a link to the Interface resource via the [`interfaceResource`][interfaceResource-crd] field, as this is the bind point for the link in a particular node.
 
-[interfaceResource-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{eda_crd_version}}-#spec-links-local-interfaceResource
+[interfaceResource-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{eda_version}}-#spec-links-local-interfaceResource
 
 #### Interface
 
