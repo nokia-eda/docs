@@ -71,7 +71,7 @@ EOF
 Verify the fabric operational state:
 
 ```shell
-kubectl get virtualnetwork
+kubectl -n eda get virtualnetwork
 
 NAME    OPERATIONALSTATE   LASTCHANGE
 vnet1   down               2024-04-30T21:26:36.000Z
