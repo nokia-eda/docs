@@ -7,9 +7,11 @@ set -o errexit
 set -o pipefail
 set -e
 
+PORT=${2:-8000}
+
 MKDOCS_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:9.6.12-insiders-4.53.16-hellt
 
-MIKE_CMD="docker run -it --rm -p 8000:8000 \
+MIKE_CMD="docker run -it --rm -p ${PORT}:8000 \
 -v $(pwd):/docs \
 -v ${HOME}/.gitconfig:/root/.gitconfig \
 -v ${HOME}/.ssh:/root/.ssh \
@@ -19,12 +21,12 @@ MIKE_CMD="docker run -it --rm -p 8000:8000 \
 
 function serve-docs {
   # serve development documentation portal
-  docker run -it --rm -p 8000:8000 -v $(pwd):/docs ${MKDOCS_IMAGE} serve --dirtyreload -a 0.0.0.0:8000
+  docker run -it --rm -p ${PORT}:8000 -v $(pwd):/docs ${MKDOCS_IMAGE} serve --dirtyreload -a 0.0.0.0:8000
 }
 
 function serve-docs-full {
   # serve development documentation portal
-  docker run -it --rm -p 8000:8000 -v $(pwd):/docs ${MKDOCS_IMAGE} serve -a 0.0.0.0:8000
+  docker run -it --rm -p ${PORT}:8000 -v $(pwd):/docs ${MKDOCS_IMAGE} serve -a 0.0.0.0:8000
 }
 
 function build-docs {
