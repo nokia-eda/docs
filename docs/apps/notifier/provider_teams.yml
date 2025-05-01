@@ -1,8 +1,8 @@
 apiVersion: notifiers.eda.nokia.com/v1
 kind: ClusterProvider
 metadata:
-  name: slack
+  name: teams
   namespace: eda-system
 spec:
   enabled: true
-  uri: slack://hooks.slack.com/services/ABC/DEF/GHI
+  uri: teams://<company>.webhook.office.com/webhookb2/XXXXX

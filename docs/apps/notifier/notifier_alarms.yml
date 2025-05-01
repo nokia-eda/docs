@@ -1,5 +1,5 @@
 apiVersion: notifiers.eda.nokia.com/v1
-kind: Notifier
+kind: ClusterNotifier
 metadata:
   name: alarms-to-discord
   namespace: eda-system

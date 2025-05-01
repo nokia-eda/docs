@@ -1,8 +1,8 @@
 apiVersion: notifiers.eda.nokia.com/v1
 kind: ClusterProvider
 metadata:
-  name: slack
+  name: email
   namespace: eda-system
 spec:
   enabled: true
-  uri: slack://hooks.slack.com/services/ABC/DEF/GHI
+  uri: smtp://$user:$password@smtp.example.com?from=eda@nokia.com&to=noc@customer.com&startTLS=yes
