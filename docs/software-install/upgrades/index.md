@@ -38,9 +38,9 @@ Copy this backup outside of your `eda-toolbox` pod - as this pod is destroyed an
 
 ```{.shell .no-select}
 toolboxpod=$(kubectl -n eda-system get pods \
--l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}"))
+-l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}")
 
-kubectl cp $toolboxpod:/eda/eda-backup-engine-config-2025-04-22_13-51-50.tar.gz \
+kubectl cp eda-system/$toolboxpod:/eda/eda-backup-engine-config-2025-04-22_13-51-50.tar.gz \
     /tmp/eda-backup.tar.gz
 ```
 
