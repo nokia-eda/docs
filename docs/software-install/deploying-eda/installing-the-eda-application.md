@@ -293,7 +293,7 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
 5. Change the eda-git Kubernetes service to a ClusterIP service instead of a LoadBalancer type.
 
     ```bash
-    kubectl -n default patch service eda-git -p '{"spec": {"type": "ClusterIP"}}'
+    kubectl -n eda-system patch service eda-git -p '{"spec": {"type": "ClusterIP"}}'
     ```
 
 6. Generate the EDA core configuration.
