@@ -93,9 +93,9 @@ repo_name: docs
 repo_url: https://github.com/nokia-eda/docs
 edit_uri: edit/main/docs/
 site_url: "https://docs.eda.dev/"
-# copyright string is set in the hooks.py automatically
+# copyright date is set in the hooks/hooks.py automatically to the current year
 # https://github.com/squidfunk/mkdocs-material/discussions/4969#discussioncomment-7290363
-# copyright:
+copyright: Copyright © 2023-{current_year} Nokia
 theme:
   name: material
   custom_dir: docs/overrides
@@ -278,4 +278,4 @@ extra_css:
   - stylesheets/steps.css
 
 hooks:
-  - hooks.py
+  - hooks/hooks.py
