@@ -54,6 +54,7 @@ Change into the playground directory and run:
 
 ```{.shell .no-select}
 git pull --rebase --autostash -v
+make download-tools download-pkgs update-pkgs
 ```
 
 If you don't have the original playground directory, pull the repository again:
@@ -62,7 +63,9 @@ If you don't have the original playground directory, pull the repository again:
 git clone https://github.com/nokia-eda/playground && \
 cd playground
 make download-tools download-pkgs update-pkgs
-```
+````
+
+
 
 ### Customizing kpt packages
 
