@@ -156,7 +156,7 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
     1. The `10.10.1.1` IP in this output matches what you provided in the `EXT_DOMAIN_NAME` environment variable.
 
-    > While EDA UI offers an easy graphical way to manage the platform and automate your infrastructure, the usage of it is optional; you can interact with EDA API [directly](../development/api.md), or by leveraging the [CLI tools](../user-guide/using-the-clis.md). And you can even use the K8s API to manage EDA, for example, via `kubectl`.
+    > While EDA UI offers an easy graphical way to manage the platform and automate your infrastructure, the usage of it is optional; you can interact with EDA API [directly](../development/api/index.md), or by leveraging the [CLI tools](../user-guide/using-the-clis.md). And you can even use the K8s API to manage EDA, for example, via `kubectl`.
 
 ///
 Now that you completed the installation, you can either read more on the installation details, or continue with creating your first unit of automation with EDA.
