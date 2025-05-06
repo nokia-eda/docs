@@ -13,8 +13,10 @@ The upgrade procedure consists of:
 1. Upgrade your applications.
 1. Unpause your clusters interaction with your infrastructure.
 
-/// details | Nuances for geo redundant clusters
+/// admonition | Nuances for Air-gapped and Geo-redundant clusters
     type: info
+The upgrade procedure does not change based on whether you have the Internet or Air-gapped cluster. But keep in mind that with the Air-gapped installation the target release bundles should be [uploaded to the Assets VM](../air-gapped/deploying-the-assets-vm.md#uploading-the-assets-to-the-assets-vm) first before proceeding with an upgrade.
+
 In geo redundant clusters, cluster members cannot run different versions. Therefore, before the software upgrade, you must first break cluster redundancy and then restore redundancy after the upgrade. To break the redundancy, remove the `.spec.cluster.redundant` section from the `EngineConfig` resource as described later in this document.
 ///
 
