@@ -22,6 +22,7 @@ def define_env(env):
     env.variables["eda_major_minor_version"] = eda_major_minor_version
     env.variables["eda_major_minor_v_version"] = eda_major_minor_v_version
     env.variables["eda_major_version"] = eda_major_version
+    env.variables["eda_minor_version"] = eda_minor_version
     env.variables["eda_major_v_version"] = eda_major_v_version
 
     @env.macro

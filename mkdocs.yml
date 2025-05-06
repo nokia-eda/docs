@@ -76,7 +76,8 @@ nav:
           - Terminology: development/apps/terminology.md
           # - Workflows: development/apps/workflows.md
           # - Handling versions: development/apps/versions.md
-      - API: development/api.md
+      - API:
+          - development/api/index.md
       - Custom App Catalog: development/custom-catalog.md
       - Custom App Registry: development/custom-registry.md
   - Blog:
