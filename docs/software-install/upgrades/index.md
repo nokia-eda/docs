@@ -48,7 +48,10 @@ The backup file will be copied to the `/tmp/eda-backup.tar.gz` file on your syst
 
 ## Upgrading EDA kpt packages
 
-If you have the [playground directory](../preparing-for-installation.md#download-the-eda-installation-playground) present in a system that you used to install EDA originally from, you may upgrade your kpt packages in place. This is the recommended approach, as it will keep your customizations intact.
+The workflow to upgrade the EDA kpt packages slightly differs depending on whether you have the original [playground directory](../preparing-for-installation.md#download-the-eda-installation-playground) present in a system that you used to install EDA originally from or not.
+
+/// tab | If original playground repository present
+If you have the original playground directory, you should upgrade your kpt packages in place. This is the recommended approach, as it will keep your customizations intact.
 
 Change into the playground directory and run:
 
@@ -56,11 +59,21 @@ Change into the playground directory and run:
 git pull --rebase --autostash -v
 ```
 
+///
+
+/// tab | If playground repository missing
 If you don't have the original playground directory, pull the repository again:
 
 ```shell
 git clone https://github.com/nokia-eda/playground && \
 cd playground
+```
+
+///
+
+Then update the packages by executing the following command from the playground repository:
+
+```shell
 make download-tools download-pkgs update-pkgs
 ```
 
