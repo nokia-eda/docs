@@ -126,6 +126,12 @@ The API Documentation UI can be used to explore the API specification as well as
 
 You can then use these files within your own tools that can work with the standard OpenAPI specifications.
 
+The API documentation web view does not only provide a reference to the available APIs and endpoints, but also allows you to run the requests for all available endpoints. For example, the video below shows how to run a `GET` request to list configured users in the EDA platform by using the Core API.
+
+-{{video(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/22bb9244757bb1c38a7a4a7d8347b9b4/try-eda-api.mp4")}}-
+
+The request runner in the API documentation web view takes care of the authentication flow on your behalf. You can start running API requests right away.
+
 ### EDA OpenAPI Repository
 
 If you don't have EDA installed, but still want to browse the OpenAPI specification for the EDA core and its default apps, you can use the community-supported [eda-labs/openapi](https://github.com/eda-labs/openapi) repository.
