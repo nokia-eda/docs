@@ -132,7 +132,7 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
     make try-eda
     ```
 
-    The installation will take approximately 10 minutes to complete. Once the it is done, you can optionally [verify](verification.md) the installation.
+    The installation will take approximately 10 minutes to complete. Once it is done, you can optionally [verify](verification.md) the installation.
 
     /// details | EDA License
         type: info
