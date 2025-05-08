@@ -45,6 +45,7 @@ nav:
       - Store: apps/app-store.md
       - Fabric: apps/fabric.md
       - Virtual Network: apps/virtualnetwork.md
+      - Interfaces: apps/interfaces.md
       - Notifier: apps/notifier.md
       - Prometheus Exporter: apps/prometheus-exporter.md
       - Kafka Exporter: apps/kafka-exporter.md
