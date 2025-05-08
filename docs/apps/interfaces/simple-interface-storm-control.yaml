@@ -1,0 +1,22 @@
+apiVersion: interfaces.eda.nokia.com/v1alpha1
+kind: Interface
+metadata:
+  name: example-interface
+  namespace: eda
+  labels:
+    eda.nokia.com/role: edge
+spec:
+  type: interface
+  description: "Customer facing interface with storm control enabled"
+  enabled: true
+  mtu: 9000
+  ethernet:
+    stormControl:
+      enabled: true
+      units: kbps
+      broadcastRate: 1000000
+      multicastRate: 1000000
+      unknownUnicastRate: 1000000
+  members:
+    - node: leaf-1
+      interface: ethernet-1-1
