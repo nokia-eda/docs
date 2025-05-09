@@ -6,7 +6,7 @@ metadata:
 spec:
   parentRefs:
     - name: eda-gw-https
-      namespace: default
+      namespace: eda-system
   rules:
     - backendRefs:
         - kind: Service
