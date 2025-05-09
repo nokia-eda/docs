@@ -1,0 +1,21 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: StaticRoute
+metadata:
+  name: example-custom-static
+  namespace: eda
+spec:
+  router: "customer-router"
+  prefixes:
+    - "192.168.1.0/24"
+    - "192.168.2.0/24"
+  preference: 10
+  nodes:
+    - "node1"
+    - "node2"
+  nexthopGroup:
+    nexthops:
+      - ipPrefix: "10.1.0.1"
+        bfd:
+          enabled: true
+      - ipPrefix: "10.1.0.2"
+    resolve: true

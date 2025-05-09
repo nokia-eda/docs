@@ -1,6 +1,6 @@
 # Interfaces
 
--{{% import 'icons.html' as macros %}}-
+-{{% import 'icons.html' as icons %}}-
 
 | <nbsp> {: .hide-th } |                                                                                                        |
 | -------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -15,7 +15,7 @@ The Interfaces application provides two resources - Interface and Breakout.
 
 ## Interface
 
--{{macros.topology_icon(text="TOPOLOGY")}}- → -{{macros.circle_icon(letter="I", text="Interface")}}-
+-{{icons.topology()}}- → -{{icons.circle(letter="I", text="Interface")}}-
 
 The Interface resource declaratively defines abstracted network interfaces for the range of supported network operating systems and supports three primary interface types:
 
@@ -198,7 +198,7 @@ customer-facing    true      up                 100G    2m            10m
 
 ## Breakout
 
--{{macros.topology_icon(text="TOPOLOGY")}}- → -{{macros.circle_icon(letter="B", text="Breakout")}}-
+-{{icons.topology()}}- → -{{icons.circle(letter="B", text="Breakout")}}-
 
 The Breakout resource allows for the configuration of interface breakouts on specified Nodes. This resource specifies the Nodes, parent Interfaces, the number of breakout channels, and the speed of each channel.
 

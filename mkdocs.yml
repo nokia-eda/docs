@@ -44,6 +44,7 @@ nav:
   - Apps:
       - Store: apps/app-store.md
       - Fabric: apps/fabric.md
+      - Protocols: apps/protocols.md
       - Virtual Network: apps/virtualnetwork.md
       - Interfaces: apps/interfaces.md
       - Notifier: apps/notifier.md

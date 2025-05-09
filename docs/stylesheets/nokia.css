@@ -434,6 +434,14 @@ div.highlight:hover .md-code__nav:hover {
   margin-left: 0.2rem;
 }
 
+.circle_icon__text {
+  /* font-weight: 700; */
+  font-family: NokiaPureText;
+  font-size: 0.70rem;
+  letter-spacing: 0.005rem;
+  margin-left: 0.2rem;
+}
+
 .ui__icon {
   --md-icon-size: 1.125em;
   display: inline-flex;
