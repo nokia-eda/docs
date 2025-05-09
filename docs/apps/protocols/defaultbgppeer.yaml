@@ -1,0 +1,13 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: DefaultBGPPeer
+metadata:
+  name: example-default-peer
+  namespace: eda
+spec:
+  description: "Default VRF BGP peer"
+  group: "example-default-group"
+  interface: "system"
+  interfaceKind: "SYSTEMINTERFACE"
+  peerAS:
+    autonomousSystem: 65100
+  peerIP: "192.168.1.1"

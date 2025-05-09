@@ -1,0 +1,14 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: DefaultRouteReflectorClient
+metadata:
+  name: example-default-rr-client
+  namespace: eda
+spec:
+  defaultBgpClientGroup: "client-group"
+  interface: "system"
+  interfaceKind: "SYSTEMINTERFACE"
+  routeReflectorSelector:
+    - "role=spine"
+  routeReflectorIPs:
+    - "192.168.0.1"
+    - "192.168.0.2"

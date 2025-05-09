@@ -1,0 +1,18 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: DefaultStaticRoute
+metadata:
+  name: example-default-static
+  namespace: eda
+spec:
+  defaultRouter: "default-router"
+  prefixes:
+    - "192.168.0.0/24"
+    - "172.16.0.0/24"
+  preference: 5
+  nexthopGroup:
+    nexthops:
+      - ipPrefix: "10.0.0.1"
+      - ipPrefix: "10.0.0.2"
+    resolve: true
+    bfd:
+      enabled: true
