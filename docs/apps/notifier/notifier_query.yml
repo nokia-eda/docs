@@ -1,0 +1,22 @@
+apiVersion: notifiers.eda.nokia.com/v1
+kind: ClusterNotifier
+metadata:
+  name: interface-down-notifier
+  namespace: eda-system
+spec:
+  enabled: true
+  sources:
+    query:
+      table: .namespace.node.srl.interface
+      fields:
+        - admin-state
+        - oper-state
+        - .namespace.node.name
+      where: admin-state = "enable" and oper-state = "down"
+      title: Interface Down Alert
+      template: |
+        Namespace: {{ index . "namespace.name" }}.
+        Interface {{ index . "name"}} is DOWN on node {{ index . "namespace.node.name"}}.
+        (State admin/oper: {{ index . "oper-state" }}/{{ index . "admin-state"}})    
+  providers:
+    - discord
