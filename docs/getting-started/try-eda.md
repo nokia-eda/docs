@@ -103,34 +103,36 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
 5. **Install the EDA Playground**
 
-    To start the EDA Playground installation you need to provide a single variable - the domain name or IP address of the machine where you are installing the EDA Playground cluster.
+    To configure the EDA Playground installation you need to provide a single variable - the domain name or IP address of the machine where you install EDA.
 
     * In case of a VM, it is the IP address or a domain name of the VM.
-    * If you are using ssh tunnel to access the VM, then provide `localhost` as the `EXT_DOMAIN_NAME` and ensure that local port is set to 9443[^4].
+    * If you are using ssh tunnel to access the VM, then provide `localhost` as the `EXT_DOMAIN_NAME` value[^4].
 
-    With the IP/domain-name noted, run the install script defined in the [`Makefile`][makefile]:
+    With the IP/domain-name noted, set the `EXT_DOMAIN_NAME` environment variable in your shell:
 
     ```shell
     export EXT_DOMAIN_NAME=<Insert-DNS-name-or-IP-of-the-VM/server>
+    ```
+
+    <h4>LLM Key for the Natural Language Query</h4>
+    If you want to enable the Natural Language support for the [EDA Query](../user-guide/queries.md) functionality, provide the LLM key (OpenAI) with an additional environment variable[^5]:
+
+    ```shell
+    export LLM_API_KEY=<your-OpenAI-API-key>
+    ```
+
+    Now, run the EDA [installer][makefile]:
+
+    ```bash
     make try-eda #(1)!
     ```
 
-    1. You need to provide an `EXT_DOMAIN_NAME` environment variable to indicate what domain name or IP address you are going to use when reaching EDA UI/API. This can be a domain name or an IP address of a compute where you execute the quickstart installation.
-        If left unset, the hostname of the machine where you executed the `make` command will be used.
+    1. If `EXT_DOMAIN_NAME` environment variable left unset, the hostname of the machine where you executed the `make` command will be used.
 
         /// admonition | preferences file
             type: subtle-note
         Instead of providing the configuration values such as `EXT_DOMAIN_NAME` and `EXT_HTTPS_PORT` on the command line, you can also provide them in a [`prefs.mk`][prefs-file] file that comes with the playground repository.
         ///
-
-    <h4>LLM Key for the Natural Language Query</h4>
-    To enable the Natural Language support for the [EDA Query](../user-guide/queries.md) functionality, provide the LLM key (OpenAI) with an additional environment variable or set it in the [`prefs.mk`][prefs-file] file:
-
-    ```shell
-    export EXT_DOMAIN_NAME=<Insert-DNS-name-or-IP-of-the-VM/server>
-    export LLM_API_KEY=<OpenAI-API-key>
-    make try-eda
-    ```
 
     The installation will take approximately 10 minutes to complete. Once it is done, you can optionally [verify](verification.md) the installation.
 
@@ -154,9 +156,13 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
     --> INFO: EDA is launched
     ```
 
-    1. The `10.10.1.1` IP in this output matches what you provided in the `EXT_DOMAIN_NAME` environment variable.
+    1. Instead of `10.10.1.1` IP you will see the value you provided in the `EXT_DOMAIN_NAME` environment variable.
+  
+    Open your web browser and navigate to provided URL to access the EDA UI. As you would expect, credentials are required in order to log in.
+    The default credentials are as follow:
 
-    > While EDA UI offers an easy graphical way to manage the platform and automate your infrastructure, the usage of it is optional; you can interact with EDA API [directly](../development/api/index.md), or by leveraging the [CLI tools](../user-guide/using-the-clis.md). And you can even use the K8s API to manage EDA, for example, via `kubectl`.
+    * Username: `admin`  
+    * Password: `admin`
 
 ///
 Now that you completed the installation, you can either read more on the installation details, or continue with creating your first unit of automation with EDA.
@@ -200,8 +206,10 @@ For a production installation instructions, please refer to the [Software Instal
     sudo apt install -y git
     ```
 
-[^4]: This is the default value of EDA API HTTPS port, if you have changed it, please ensure that the local port matches the non-default value. If the default was unchanged, then to access the UI over `https://localhost:9443` you need to run the following command:
+[^4]: In case of a local port forwarding you will access EDA UI via `https://localhost:9443` when establishing the tunnel with:
 
     ```shell
     ssh -L 9443:localhost:9443 -N -f demo-vm
     ```
+
+[^5]: You can provide the LLM key after the installation as well.
