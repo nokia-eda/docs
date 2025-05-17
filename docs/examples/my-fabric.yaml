@@ -2,6 +2,7 @@ apiVersion: fabrics.eda.nokia.com/v1alpha1
 kind: Fabric
 metadata:
   name: myfabric-1
+  namespace: eda
 spec:
   leafs:
     leafNodeSelector:

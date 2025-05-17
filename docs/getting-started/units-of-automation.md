@@ -52,7 +52,7 @@ Have a look at the Fabric CR input below as it highlights the power of abstracti
 /// tab | `kubectl`
 
 ```bash
-cat << 'EOF' | tee my-fabric.yaml | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 --8<-- "docs/examples/my-fabric.yaml"
 EOF
 ```

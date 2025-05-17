@@ -37,7 +37,7 @@ edactl intent config debug banners
 This starts a debug monitor for the configuration intent of the `banners` app. The associated intent script is going to run when we create the Banner resource that triggers the script to run in the config engine pod. Let's create one in the right panel:
 
 ```shell
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 apiVersion: banners.eda.local/v1alpha1
 kind: Banner
 metadata:
@@ -109,7 +109,7 @@ Since our input CR provided a node name in the `nodes` field of the spec, the sc
 Let's fix our typo in the node name by passing a corrected Banner resource that references the `leaf-1` node that we have in our topology:
 
 ```shell
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 apiVersion: banners.eda.local/v1alpha1
 kind: Banner
 metadata:
