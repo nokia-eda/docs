@@ -48,11 +48,11 @@ Without further ado, let's get started by going into a directory where we want t
     edabuilder create app banners && cd banners #(1)!
     ```
 
-    1. /// warning
+    1. //// warning
     If your application name is more than one word, the name must be in a kebab-case format.
 
     In this example, the app name is simply `banners`, but if you wanted to name it "my banners", then you should've named it `my-banners`.
-    ///
+    ////
 
     This step should generate the `banners` directory and change the current working directory to it. Inside the `banners` directory you will find the scaffolded layout of the application with no particular logic implemented yet.
 
@@ -61,10 +61,10 @@ Without further ado, let's get started by going into a directory where we want t
     At this stage, you would start writing the API types, code for your configuration and state intents, crafting alarms and creating the workflows and dashboards.  
     But for the sake of this quickstart, we want to have something quick and easy, and let you build real things later once you've got the hang of it. For that, we have baked in the example Banner resource inside the `edabuilder` CLI tool to demonstrate the dev workflow using a real example.
 
-    /// admonition | custom resource ~ intent
+    //// admonition | custom resource ~ intent
         type: subtle-note
     We are often use the terms "intent" and "custom resource" interchangeably. Both mean the same thing: a declarative definition of the desired configuration or state object with an associated Python script that implements it[^2].
-    ///
+    ////
 
     With the `edabuilder create resource Banner` command, we will create the Banner resource, and when augmented with the `-d | --scaffold-demo` flag, it will also generate the scaffolding for the configuration and state scripts for the Banner resource.
 
@@ -72,9 +72,9 @@ Without further ado, let's get started by going into a directory where we want t
     edabuilder create resource Banner -d #(1)!
     ```
 
-    1. /// warning
+    1. //// warning
        The resource name must be in a CamelCase format.
-      ///
+      ////
 
     As a result of this command, you will find
 
@@ -93,44 +93,45 @@ Without further ado, let's get started by going into a directory where we want t
 
     The `deploy` command will package app components in an OCI container image, push it to the container registry deployed for you in the EDA cluster and install the app.
 
-    /// admonition | `deploy` command requirements
+    //// admonition | `deploy` command requirements
         type: subtle-note
     1. The `kubectl` should be using the context that points to the EDA cluster for the operation to succeed.
     2. Your cluster should have a LoadBalancer implementation such that service of type `LoadBalancer` can be created with a reachable address.[^4]
-    ///
+    ////
 
 6. **Try the app**
 
     After deploying the development version of the app directly to the EDA cluster, you can try it out by creating an instance of the `Banner` resource via any of the EDA interfaces. Here are two of them:
 
-    /// tab | EDA UI
+    //// tab | EDA UI
     In the EDA UI you should see a new group menu named **Banner** appear in the list of the resources:
 
     ![pic](https://github.com/user-attachments/assets/12db0509-7fd4-4d70-b124-e65f41d7de31)
 
     Selecting the **Banner** menu will take you to the list of instances of the `Banner` resource, where you can create a new instance of the resource and commit this transaction.
-    ///
-    /// tab | Kubernetes API/kubectl
+    ////
+
+    //// tab | Kubernetes API/kubectl
     To leverage the Kubernetes API one can create a custom resource in the YAML format like shown below:
-    //// tab | resource
+
+    Resource:
 
     ```yaml
     --8<-- "docs/development/apps/snippets/banner.yml"
     ```
 
-    ////
-    //// tab | apply
+    Apply:
 
     ```shell
-    cat << 'EOF' | kubectl -n eda apply -f -
+    cat << 'EOF' | kubectl apply -f -
     --8<-- "docs/development/apps/snippets/banner.yml"
     EOF
     ```
 
     ////
-    ///
 
     Regardless of the interface you choose, the result of your actions should be a new instance of the `Banner` resource in the EDA cluster and the appropriate login banner configured on the targets matching your selection.
+
 ///
 
 ## What just happened?
