@@ -2,6 +2,7 @@ apiVersion: core.eda.nokia.com/v1
 kind: Transaction
 metadata:
   name: update-fabric-prod
+  namespace: eda
 spec:
   description: "Updading fabric from using eBGP for overlay protocol to iBGP"
   dryRun: false

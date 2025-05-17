@@ -184,27 +184,27 @@ To integrate SR Linux nodes spawned by Containerlab with EDA in the manual mode 
 If you want to quickly onboard SR Linux nodes after spawning the [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) containerlab topology, you can copy paste the following snippet entirely in your terminal.
 
 ```{.shell .code-scroll-lg}
-cat << EOF | kubectl -n eda apply -f -
+cat << EOF | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/nodeUser.yaml:2"
 $(ssh-add -L | awk '{print "    - \""$0"\""}')
 EOF
 
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:2"
 EOF
 
-cat << EOF | kubectl -n eda apply -f -
+cat << EOF | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2:15"
     ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl1)
 --8<-- "docs/user-guide/clab-integration/topoNodes.yaml:17:30"
     ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl2)
 EOF
 
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/interface.yaml:1"
 EOF
 
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/topoLink.yaml:2"
 EOF
 ```
@@ -545,7 +545,7 @@ With the initial state captured, let's start applying the resources in the botto
 In this command we retrieve the public keys from the SSH agent and add add them to the NodeUser resource.
 
 ```{.bash .no-select}
-cat << EOF | kubectl -n eda apply -f -
+cat << EOF | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/nodeUser.yaml:2"
 $(ssh-add -L | awk '{print "    - \""$0"\""}')
 EOF
@@ -567,7 +567,7 @@ With `admin` NodeUser modified to feature the `NokiaSrl1!` password, let's creat
 /// tab | `kubectl` apply
 
 ```{.bash .no-select}
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/nodeProfile.yaml:2"
 EOF
 ```
@@ -590,7 +590,7 @@ When applying the TopoNode resources, the difference between the resources (besi
 /// tab | `kubectl` apply
 
 ```{.bash .no-select}
-cat << EOF | kubectl -n eda apply -f -
+cat << EOF | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/topoNodes.yaml:2:15"
     ipv4: $(sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' clab-vlan-srl1)
 --8<-- "docs/user-guide/clab-integration/topoNodes.yaml:17:30"
@@ -614,7 +614,7 @@ A topology without links is not a topology. Time to add the links between the no
 /// tab | `kubectl` apply
 
 ```{.bash .no-select .code-scroll-sm}
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/interface.yaml:1"
 EOF
 ```
@@ -637,7 +637,7 @@ Now, that we have the Interfaces created we can create the last resource type - 
 /// tab | `kubectl` apply
 
 ```{.bash .no-select .code-scroll-sm}
-cat << 'EOF' | kubectl -n eda apply -f -
+cat << 'EOF' | kubectl apply -f -
 --8<-- "docs/user-guide/clab-integration/topoLink.yaml:2"
 EOF
 ```
