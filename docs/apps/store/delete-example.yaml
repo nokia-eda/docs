@@ -4,8 +4,8 @@ metadata:
   name: delete-connect-nokia
   namespace: eda-system
 spec:
+  type: app-installer
   input:
-    type: app-installer
     operation: delete
     autoProcessRequirements:
       - strict
