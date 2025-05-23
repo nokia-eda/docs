@@ -398,6 +398,27 @@ EOF
 
 ///
 
+#### Example 5: Multiple `NADs` in One `BridgeDomain` associated to a `Router`
+
+The following is a sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be residing in a single subnet, associated with a router:
+
+/// tab | YAML Resource
+
+```yaml
+--8<-- "docs/connect/resources/cnd-example5.yaml"
+```
+
+///
+/// tab | `kubectl apply` command
+
+```bash
+kubectl apply -f - <<EOF
+--8<-- "docs/connect/resources/cnd-example5.yaml"
+EOF
+```
+
+///
+
 ### Using the NAD Annotation Operational Mode
 
 The NAD Annotation operational mode only works for the EDA-managed integration mode because it relies on an annotation on the NAD that identifies the pre-existing EDA BridgeDomain resource to which the NAD needs to be associated with.
