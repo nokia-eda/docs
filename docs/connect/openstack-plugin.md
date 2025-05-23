@@ -250,3 +250,8 @@ The known interface mappings can be consulted using the CLI command `openstack e
 #### Automated LLDP Provisioning
 
 When deploying using the CBIS integration, LLDP introspection is automatically enabled for all computes.
+
+### Audit
+
+On Highly Available (HA) Openstack deployments, if multiple audit requests are created concurrently, they might be processed concurrently by different Neutron instances. This can lead to a situation when multiple processing instances compete to correct the same discrepancy, yielding unpredictable results.
+It is recommended to ensure no Audit exist in Connect in `InProgress` state prior to creating a new Audit request.
