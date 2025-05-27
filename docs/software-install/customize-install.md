@@ -58,11 +58,7 @@ The preferences file is a file that contains high-level variables that are taken
 
 [make-gh]: https://github.com/nokia-eda/playground/blob/main/Makefile
 
-The EDA Playground repository contains the [`prefs.mk`][prefs-file] preference file that lists these high-level variables along with a short description of their purpose.
-
-```{.Makefile .code-scroll-lg title="prefs.mk file"}
---8<-- "https://raw.githubusercontent.com/nokia-eda/playground/refs/heads/main/prefs.mk"
-```
+The EDA Playground repository contains the [`prefs.mk`][prefs-file] preference file that lists these high-level variables along with a short description of their purpose. You can find documentation for these variables in the [Customizing the installation file section](../software-install/deploying-eda/installing-the-eda-application.md#customizing-the-installation-file).
 
 Users can set the variables in this file to the intended values and then run the `make` command to deploy the playground with the desired settings. To use a custom location of the preferences file instead of the default `./prefs.mk` set the `PLAYGROUND_PREFS_FILE` environment variable to the desired path[^2].
 

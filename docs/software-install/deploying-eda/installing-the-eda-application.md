@@ -19,6 +19,68 @@ Description
 ////
 
 //// html | tr
+///// html | td[colspan="2"]
+<h5>Namespace settings for EDA components</h5>
+/////
+////
+
+//// html | tr
+///// html | td[style='white-space: nowrap;']
+`EDA_CORE_NAMESPACE`
+/////
+///// html | td
+Sets the kubernetes namespace where the EDA core components are installed.
+
+Default: `eda-system`
+/////
+////
+
+//// html | tr
+///// html | td
+`EDA_USER_NAMESPACE`
+/////
+///// html | td
+Sets the kubernetes and EDA namespace where the user components are installed.
+
+Default: `eda`
+/////
+////
+
+//// html | tr
+///// html | td[colspan="2"]
+<h5>Version selection for EDA packages</h5>
+/////
+////
+
+//// html | tr
+///// html | td
+`EDA_CORE_VERSION`
+/////
+///// html | td
+Version of the EDA core components to install.
+
+Defaults to the latest stable version.
+/////
+////
+
+//// html | tr
+///// html | td
+`EDA_APPS_VERSION`
+/////
+///// html | td
+Version of the EDA applications to install.
+
+Defaults to the latest stable version.
+/////
+////
+
+//// html | tr
+///// html | td[colspan="2"]
+<h5>KinD cluster options</h5>
+/////
+////
+
+//// html | tr
 ///// html | td
 `NO_KIND`
 /////
@@ -29,9 +91,16 @@ Must be set to 1 for production installation.
 ////
 
 //// html | tr
+///// html | td[colspan="2"]
+<h5>Cluster reachability settings</h5>
+/////
+////
+
+//// html | tr
 ///// html | td
 `METALLB_VIP`
 /////
+
 ///// html | td
 Specifies the VIP address of your EDA deployment. Make sure to use a CIDR format, preferably as a /32 (or /128 for an IPv6 VIP).
 
@@ -95,8 +164,15 @@ If you use two networks, this VIP address must be the one used on the fabric man
 ////
 
 //// html | tr
+///// html | td[colspan="2"]
+<h5>Proxy settings</h5>
+/////
+////
+
+//// html | tr
 ///// html | td
-`HTTPS_PROXY` and `https_proxy`
+`HTTPS_PROXY`  
+and `https_proxy`
 /////
 ///// html | td
 Optional: The proxy address for the HTTPS proxy.
@@ -105,7 +181,8 @@ Optional: The proxy address for the HTTPS proxy.
 
 //// html | tr
 ///// html | td
-`HTTP_PROXY` and `http_proxy`
+`HTTP_PROXY`  
+and `http_proxy`
 /////
 ///// html | td
 Optional: The proxy address for the HTTP proxy.
@@ -114,7 +191,8 @@ Optional: The proxy address for the HTTP proxy.
 
 //// html | tr
 ///// html | td
-`NO_PROXY` and `no_proxy`
+`NO_PROXY`  
+and `no_proxy`
 /////
 ///// html | td
 Optional: The list of IP addresses, IP ranges and hostnames that should not be proxied.
@@ -122,41 +200,8 @@ Optional: The list of IP addresses, IP ranges and hostnames that should not be p
 ////
 
 //// html | tr
-///// html | td
-`LLM_API_KEY`
-/////
-///// html | td
-Optional: The OpenAI API key for the EDA Natural Language Query functionality.
-/////
-////
-
-//// html | tr
-///// html | td
-`SINGLESTACK_SVCS`
-/////
-///// html | td
-Optional: Indicates that internal services should be single stack instead of dual stack, if Kubernetes is dual stack.  
-Boolean.
-/////
-////
-
-//// html | tr
-///// html | td
-`SIMULATE`
-/////
-///// html | td
-Specifies if the EDA deployment is to manage simulated workloads (Digital Sandbox) or real hardware.
-
-Values:
-
-- `true` - EDA installation will manage only simulated nodes (Digital Sandbox)
-- `false` - EDA installation will manage only real hardware nodes.
-
-By default, this parameter is set to `true` if the parameter is not provided in the file.
-
-////// caution
-The simulation mode can't be changed post-install.
-//////
+///// html | td[colspan="2"]
+<h5>Asset host settings</h5>
 /////
 ////
 
@@ -206,11 +251,17 @@ The username for the artifact server running on the Asset VM. Needs to be set to
 ////
 
 //// html | tr
-///// html | td
+///// html | td[style='white-space: nowrap;']
 `ASSET_HOST_ARTIFACTS_PASSWORD`
 /////
 ///// html | td
 The password for the artifact server running on the Asset VM. Needs to be set to `eda`, in the future this will be changeable.
+/////
+////
+
+//// html | tr
+///// html | td[colspan="2"]
+<h5>KPT settings</h5>
 /////
 ////
 
@@ -220,6 +271,73 @@ The password for the artifact server running on the Asset VM. Needs to be set to
 /////
 ///// html | td
 Advanced configuration file for kpt.
+/////
+////
+
+//// html | tr
+///// html | td
+`KPT_LIVE_INIT_FORCE`
+/////
+///// html | td
+Set to `1` to ignore if a kpt package was already initialized against a cluster. Results in an overwrite of the existing inventory (resource group).
+
+Default: `0`
+/////
+////
+
+//// html | tr
+///// html | td
+`KPT_INVENTORY_ADOPT`
+/////
+///// html | td
+Set to `1` to adopt already applied and unmanaged resources that the kpt package is trying to clear, it will update/reconcile any differences.
+
+Default: `0`
+/////
+////
+
+//// html | tr
+///// html | td[colspan="2"]
+<h5>Other settings</h5>
+/////
+////
+
+//// html | tr
+///// html | td
+`LLM_API_KEY`
+/////
+///// html | td
+Optional: The OpenAI API key for the EDA Natural Language Query functionality.
+/////
+////
+
+//// html | tr
+///// html | td
+`SINGLESTACK_SVCS`
+/////
+///// html | td
+Optional: Indicates that internal services should be single stack instead of dual stack, if Kubernetes is dual stack.  
+Boolean.
+/////
+////
+
+//// html | tr
+///// html | td
+`SIMULATE`
+/////
+///// html | td
+Specifies if the EDA deployment is to manage simulated workloads (Digital Sandbox) or real hardware.
+
+Values:
+
+- `true` - EDA installation will manage only simulated nodes (Digital Sandbox)
+- `false` - EDA installation will manage only real hardware nodes.
+
+By default, this parameter is set to `true` if the parameter is not provided in the file.
+
+////// caution
+The simulation mode can't be changed post-install.
+//////
 /////
 ////
 
