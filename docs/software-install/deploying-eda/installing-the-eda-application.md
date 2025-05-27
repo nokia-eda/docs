@@ -86,7 +86,18 @@ Defaults to the latest stable version.
 /////
 ///// html | td
 When set to any non-zero value will skip the KinD cluster deployment used for lab/demo installations.  
-Must be set to 1 for production installation.
+Must be set to `yes` for production installation.
+/////
+////
+
+//// html | tr
+///// html | td
+`NO_HOST_PORT_MAPPINGS`
+/////
+///// html | td
+When set to `yes` will not create the extra port mappings in the KinD cluster and will not create the nodePort service to expose the EDA UI/API.
+
+Default: variable is not set. Results in port mappings and nodePort service being created.
 /////
 ////
 
