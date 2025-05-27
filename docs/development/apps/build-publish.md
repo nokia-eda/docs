@@ -164,12 +164,46 @@ This does the following:
 4. `edabuilder generate` to keep all of your Python models, CRDs, etc. up-to-date
 5. rewrite the manifest AppImage URI (in memory) to point to the development registry, then `edabuilder build-push`
 6. `edabuilder publish` to the development catalog
-7. apply an app install Workflow to (re)install the app (anew) and wait for the installation result
+7. apply an app install Workflow to (re)install the app and wait for the installation result
 
-When you run `edabuilder deploy` for the first time, steps 1 through 3 could take a while if the registry image needs to be pulled.
+When you run `edabuilder deploy` for the first time, step 3 could take a while if the registry image needs to be pulled.
+
+### Bring your own catalog/registry
+
+The `edabuilder deploy` command is customisable through a configuration file, located at `~/.config/edabuilder/deploy.yaml`[^6], consisting of 3 keys:
+
+```yaml
+registryHost: <your-registry-uri>
+registryHostPort: <your-registry-uri-service-port>
+catalog: <your-catalog-uri>
+```
+
+It allows you to provide a custom OCI registry and/or application catalog (Git repository) by specifying the URI of the corresponding component.
+
+By setting the `registryHost` and `registryHostPort` entries, you can provide a custom OCI registry that edabuilder will use when pushing your app images. This is useful when your cluster does not have a working LoadBalancer implementation and hence the in-cluster registry is not accessible from outside the cluster.
+
+With the `catalog` entry, you can provide a URI to the git repository that will be used as the application catalog.
+
+/// note | Custom registry and/or catalog resources and secrets
+
+Prior to using `edabuilder deploy` with custom registry and/or catalog resources, ensure that you have provided the following:
+
+1. Secret resources for the catalog and registry if they require it
+2. Catalog and Registry resources referencing the custom URIs and secrets (if applicable)
+3. Perform a login step with `edabuilder login git` and `edabuilder login registry` to authenticate with the custom catalog and registry if required
+
+///
+
+To revert back to default behaviour for any of these custom settings, simply leave the entry empty.
+
+/// details | Planned config improvements
+    type: warning
+Currently, the configuration file is catered to the `deploy` subcommand only and it is quite barebones. A future improvement is planned to move this file to `~/.config/edabuilder/config.yaml` (configurable through `EDABUILDER_CONFIG`) so it can serve as a generic configuration file for other features/subcommands in `edabuilder`. It is therefore not advised to build any automation based on this file as of today.
+///
 
 [^1]: When creating your app development project through `edabuilder init`, you have the option of specifying your production registry. If you do so, the PROJECT file will store the registry and it will automatically be included in the image URI of any newly created apps' manifests.
 [^2]: For more information on the `--app` flag, and build context in general, refer to [terminology](terminology.md#application-build-context).
 [^3]: For more information on manifests, refer to [terminology](terminology.md#manifest)
 [^4]: For more information on catalogs, refer to [terminology](terminology.md#catalog)
 [^5]: A basic [CNCF Distribution Registry](https://distribution.github.io/distribution/) image is used here.
+[^6]: You can provide a custom location for this file by setting the `EDABUILDER_DEPLOY_CONFIG` environment variable.
