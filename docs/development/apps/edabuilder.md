@@ -12,6 +12,8 @@
 * `build-push`: package an app and host it in a registry[^1].
 * `publish`: publish your app to a catalog[^1].
 * `generate`: based on your API resources, defined in the Go files under `api/`, generate equivalent python models to be used as an SDK in your intents, CRDs, OpenAPI specs, and keep your manifest up-to-date.
+* `generate appsettings`: Scaffold a new `settings` directory, which you can further customise to provide documentation for your app's settings.
+* `generate appsettings-openapi`: Generate an OpenAPI spec based on the settings struct in your `settings` directory.
 * `deploy`: build, publish and install your application in your EDA cluster, allowing you to test it immediately and iteratively, during development[^1].
 
 /// admonition | Working directories
@@ -55,4 +57,89 @@ Through `edabuilder create version` you can create a new API version, e.g. when 
 
 Many of the other subcommands use `generate` under the hood, so it's likely you won't have to run it explicitly very often.
 
-[^1]: For more information packaging, publishing and iteratively deploying apps, refer to [Build and Publish](build-publish.md)
+## Adding App Settings
+
+There are two `edabuilder` commands which allow you to provide install-time settings for your application. For instance, if your app includes a resource, (e.g. a k8s deployment) for which you want the user to be able to specify configurable parameters like CPU limit, etc.
+
+The first command, `edabuilder generate appsettings`, will evaluate all CRs that are linked in your app's Manifest and look for settings annotations. A setting is annotated with `# app-set: ${<setting name>}`. To continue the example of a CPU limit set for a Deployment resource, the Deployment CR linked in the Manifest would look something like:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-controller
+spec:
+  # omitted for brevity
+  containers:
+    - image: ghcr.io/your-container-image-uri
+      resources:
+        limits:
+          cpu: "4" # app-set: ${controllerCpuLimit}
+```
+
+Where the setting JSON name is `controllerCpuLimit` and its default value is `"4"`.  
+After gathering all the settings you have annotated in your app CRs, `edabuilder` will collect these in a single Go struct that becomes the source of truth for your settings' OpenAPI specification. This struct, `AppSettingsSpec`, is located at `<app-root>/settings/appsettings_types.go`. For the CPU limit example above, this is the resulting struct:
+
+```go
+// AppSettingsSpec defines the desired state of AppSettings.
+type AppSettingsSpec struct {
+    // Document the 'ControllerCpuLimit' setting here, so it shows up nicely in your generated OpenAPI spec.
+    // +kubebuilder:default="4"
+    // +eda:ui:title="ControllerCpuLimit"
+    ControllerCpuLimit string `json:"controllerCpuLimit,omitempty"`
+}
+```
+
+You should manually review and edit this struct to make sure the documentation comments and field types are correct before continuing. Given that a single structure defines the app settings means that the settings' names should be unique across all CRs of your app.
+
+/// note | Iterating on settings
+
+The `generate appsettings` command is strictly meant for the initial scaffolding of the application' settings structure. Rerunning this command (which requires the `-f` flag) is a destructive operation, in the sense that it will revert all manual changes you may have done in `AppSettingsSpec`.
+
+If you have already scaffolded the settings and made updates to the `AppSettingsSpec` struct and would like to add a new setting, then simply add a field to the struct for your new setting and **do not** rerun the `generate appsettings` command.
+
+///
+
+Once you're done documenting your app settings, you can finalise your app settings for the EDA Store with the second command, `edabuilder generate appsettings-openapi`. It will generate an OpenAPI spec under `<app-root>/appsettings-openapi/`. Your Manifest will be updated automatically to include this file.
+
+Your app is now ready to be installed by the EDA Store with install-time settings.
+
+/// warning | Installing with a non-default value of a setting
+
+App settings support is limited to [Workflow-based installs](../../apps/app-store.md#installing-an-app) in this release, i.e. it is not possible to provide the settings via EDA UI.
+
+To provide a custom value for a setting, add the `<setting-name>: <custom-value>` key-value pair to the list entry of the appropriate app in the Workflow's `spec.input.apps[*].appSettings` map.
+
+Here is an example Workflow to install some app with a custom value for the `controllerCpuLimit` setting:
+
+///  details | Install Workflow
+     type: subtle-note
+
+```yaml
+apiVersion: core.eda.nokia.com/v1
+kind: Workflow
+metadata:
+  name: app-install-workflow-with-settings
+  namespace: eda-system
+spec:
+  type: app-installer
+  input:
+    autoProcessRequirements:
+      - strict
+    operation: install
+    apps:
+    - app: <your-app-with-cpu-limit-setting>
+      catalog: <your catalog>
+      vendor: <your-vendor>
+      version:
+        type: semver
+        value: v0.0.0
+      appSettings:
+        controllerCpuLimit: "8"
+```
+
+///
+
+///
+
+[^1]: For more information on packaging, publishing and iteratively deploying apps, refer to [Build and Publish](build-publish.md)
