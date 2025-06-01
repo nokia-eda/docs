@@ -1,0 +1,9 @@
+apiVersion: netbox.eda.nokia.com/v1alpha1
+kind: Instance
+metadata:
+  name: netbox1
+  namespace: eda
+spec:
+  # Name of a secret containing the base64-encoded API token under key `apiToken`
+  apiToken: netbox-api-token
+  url: http://${NETBOX_ADDR}:${NETBOX_PORT}
