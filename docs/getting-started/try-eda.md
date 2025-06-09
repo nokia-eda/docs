@@ -11,7 +11,9 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 1. **Choose where to run EDA**
 
     Since EDA uses Kubernetes as its application platform, you can deploy the EDA Playground anywhere a k8s cluster runs.  
-    The most popular way to install the demo EDA instance is on a Linux server/VM, but you can also [run it on macOS](../software-install/non-production/macos.md), in an [existing Kubernetes cluster](../software-install/non-production/on-prem-cluster.md), or on Windows using WSL.
+    The most popular way to install the demo EDA instance is on a Linux server/VM, but you can also [run it on macOS](../software-install/non-production/macos.md), in an [existing Kubernetes cluster](../software-install/non-production/on-prem-cluster.md), or on [Windows using WSL](../software-install/non-production/wsl.md).
+
+    <small>If you get stuck with the installation, please reach out to us on [Discord](https://eda.dev/discord), we are happy to help!</small>
 
 2. **Ensure minimal system requirements are met**
 
@@ -20,7 +22,7 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
     <!-- --8<-- [start:resources-reqs] -->
     :fontawesome-solid-microchip: 10 vCPUs  
     :fontawesome-solid-memory: 16GB of RAM  
-    :fontawesome-solid-floppy-disk: 30GB of storage
+    :fontawesome-solid-floppy-disk: 30GB of SSD storage
     <!-- --8<-- [end:resources-reqs] -->
 
     For a VM-based installation, this means that the VM should be provisioned with (at the minium) this amount of resources.
