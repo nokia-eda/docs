@@ -76,3 +76,18 @@ def define_env(env):
 """
 
         return video_tmpl
+
+
+    @env.macro
+    def image(url, padding=0, border_radius=0.0):
+        """
+        Image macro with dot background
+        """
+
+        image_tmpl = f"""
+<div class="polka" style="padding: {padding}px; border-radius: {border_radius}rem; position: relative; display: inline-block;">
+    <img src="{url}" style="display: block; max-width: 100%; height: auto; position: relative;" alt="">
+</div>
+"""
+
+        return image_tmpl
