@@ -228,7 +228,7 @@ The operational state can have different values that would help an operator to d
 
 And, of course, the same information can be layed out nicely in the UI using resources dashboards (you guessed it, they are also customizable by the application developer).
 
-![f2](https://gitlab.com/rdodin/pics/-/wikis/uploads/9059831c586c27cd6a1f7914c7ce66e8/image.png)
+-{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/9059831c586c27cd6a1f7914c7ce66e8/image.png")}}-
 
 With a glance at the Fabric's dashboard an operator can determine the state of the whole fabric, without having to inspect a dozen of dashboards in a separate system.
 
@@ -347,7 +347,8 @@ Once the change is committed, BGP will take some time to converge. During this p
 
 Transactions made by a user in the UI[^5] are also visible in the Transactions UI[^4]:
 
-![tr-ui](https://gitlab.com/rdodin/pics/-/wikis/uploads/aeb1dfb9ae61f6e43de48ed276175384/image.png)
+-{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/aeb1dfb9ae61f6e43de48ed276175384/image.png", padding=20)}}-
+
 
 Congratulations, your fabric is now using iBGP as its overlay protocol :partying_face:  
 From a tiny change in the Fabric' declarative abstraction through the transformation to sub-resources and eventually to the node-level configurations, that are reliably transacted and pushed to the constituent nodes. How cool is that?
