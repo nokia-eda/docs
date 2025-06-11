@@ -4,7 +4,7 @@
 | -------------------- | -------------------------------------------------------------------------------------- |
 | **Description**      | The EDA NetBox app integrates with NetBox to automate IP allocations using custom CRs. |
 | **Supported OS**     | SR Linux, SR OS                                                                        |
-| **Catalog**          | [nokia-eda/catalog][catalog] / [manifest][manifest]                                                          |
+| **Catalog**          | [nokia-eda/catalog][catalog] / [manifest][manifest]                                    |
 | **Source Code**      | <small>coming soon</small>                                                             |
 
 [catalog]: https://github.com/nokia-eda/catalog
@@ -15,64 +15,108 @@
 The NetBox app enables users to integrate/synchronize various resources between NetBox and EDA by providing the following resource types:
 
 * **Instance**: Defines the target NetBox instance to interact with.
-* **Allocation**: Specifies the type of EDA allocation to create based on Netbox `Prefixes`.
+* **Allocation**: Specifies the type of EDA allocation to create based on NetBox `Prefixes`.
 
 > **Note**: Both CRs **must** be created in the same namespace (excluding `eda-system`).
 
-## NetBox Configuration
+---
+
+## Prerequisites
+
+### NetBox Version Compatibility
+
+This release supports **NetBox v4.2.5**. Version 4.2.6 introduced a change that prevents overlapping IP addresses, which the EDA app currently relies on when the same IP exists in more than one topology/fabric.
+
+### NetBox Configuration
 
 To enable NetBox to send updates to the EDA app:
 
-### Create a Webhook in NetBox
+1. **Create a Webhook in NetBox**
 
-* **Name**: Any meaningful identifier
-* **URL**:
-  `https://${EDA_ADDR}:${EDA_PORT}/core/httpproxy/v1/netbox/webhook/${INSTANCE_NAMESPACE}/${INSTANCE_NAME}`
-* **Method**: `POST`
-* **Secret**: Choose a signature secret string. This will be configured in the `Instance` CR later on.
+   * **Name**: Any meaningful identifier
+   * **URL**: `https://${EDA_ADDR}:${EDA_PORT}/core/httpproxy/v1/netbox/webhook/${INSTANCE_NAMESPACE}/${INSTANCE_NAME}`
+   * **Method**: `POST`
+   * **Secret**: A signature secret string (store it later in a Kubernetes Secret)
+   * Leave all other settings as default.
 
-Leave all other settings as default.
+2. **Create an Event Rule**
 
-### Create an Event Rule
+   * **Name**: Choose a relevant name
+   * **Objects**: Include **IPAM IPAddresses** and **IPAM Prefixes**
+   * **Enabled**: Yes
+   * **Event Types**:
 
-* **Name**: Choose a relevant name
-* **Objects**: Include **IPAM IPAddresses** and **IPAM Prefixes**
-* **Enabled**: Yes
-* **Event Types**:
+     * Object Created
+     * Object Updated
+     * Object Deleted
+   * **Action**:
 
-    * Object Created
-    * Object Updated
-    * Object Deleted
+     * **Type**: Webhook
+     * **Webhook**: Select the one created above
 
-* **Action**:
+3. **Generate an API Token**
 
-    * **Type**: Webhook
-    * **Webhook**: Select the one created above
+   Create a NetBox API token for the user that the app will use. The token **must** have permission to `create`, `update`, and `delete` **IPAddresses** and **Prefixes** (and optionally Tags/CustomFields if you use them).
 
-### Generate a NetBox API Token
+4. **Configure Global VRF Setting**
 
-The token should have at a minimum the permissions to `create`, `update`, and `delete` the following resources:
+   ```bash
+   ENFORCE_GLOBAL_UNIQUE=false
+   ```
 
-* `IPAM.IPAddresses`
-* `IPAM.Prefixes`
-* `Customizations.Tags`
-* `Customizations.CustomFields`
+   As per the [NetBox documentation](https://netboxlabs.com/docs/netbox/en/stable/models/ipam/vrf/), this is required when working with overlapping prefixes across VRFs.
 
-### Configure Global VRF Setting
+### Create Kubernetes Secrets
 
-Set the following environment variable in NetBox to allow duplicate prefixes across VRFs:
+After you have the webhook secret string **and** the API token, create the following Secrets in the same namespace where the EDA NetBox app will run (example: `eda`). Replace the base64‑encoded values with your own data:
 
-```bash
-ENFORCE_GLOBAL_UNIQUE=false
+Secret for the webhook:
+
+/// tab | YAML
+
+```yaml
+--8<-- "docs/apps/netbox/webhook-signature-secret.yaml"
 ```
 
-As per [NetBox documentation](https://netboxlabs.com/docs/netbox/en/stable/models/ipam/vrf/), this is required if you're working with overlapping prefixes.
+///
+/// tab | `kubectl`
+
+```bash
+cat << 'EOF' | kubectl apply -f -
+--8<-- "docs/apps/netbox/webhook-signature-secret.yaml"
+EOF
+```
+
+///
+
+Secret for the api-token:
+
+
+/// tab | YAML
+
+```yaml
+--8<-- "docs/apps/netbox/api-token-secret.yaml"
+```
+
+///
+/// tab | `kubectl`
+
+```bash
+cat << 'EOF' | kubectl apply -f -
+--8<-- "docs/apps/netbox/api-token-secret.yaml"
+EOF
+```
+
+///
+
+
+---
 
 ## EDA Configuration
 
 ### Installation
 
-Netbox app can be installed using [EDA Store](app-store.md) or by running the app-installer workflow with `kubectl`:
+Install the NetBox app from the [EDA Store](app-store.md) or with `kubectl`:
 
 /// tab | YAML
 
@@ -91,7 +135,7 @@ EOF
 
 ///
 
-### Instance Custom Resource
+### Instance Custom Resource
 
 Defines connection details to the NetBox instance:
 
@@ -112,13 +156,13 @@ EOF
 
 ///
 
+> The `apiToken` field references the **netbox-api-token** Secret created above.
+
 After creation, check the status of the Instance CR to verify successful connection.
 
----
+### Allocation Custom Resource
 
-### Allocation Custom Resource
-
-Defines what allocation to create, based on NetBox tags:
+Specifies which allocations to create based on NetBox tags:
 
 /// tab | YAML
 
@@ -137,8 +181,8 @@ EOF
 
 ///
 
-| `type`         | Resource Created                               |
-| -------------- | ---------------------------------------------- |
-| `ip-address`   | `ipallocationpools.core.eda.nokia.com`         |
-| `ip-in-subnet` | `ipinsubnetallocationpools.core.eda.nokia.com` |
-| `subnet`       | `subnetallocationpools.core.eda.nokia.com`     |
+| Type           | Resource Created                               | Typical Use                     |
+| -------------- | ---------------------------------------------- | ------------------------------- |
+| `ip-address`   | `ipallocationpools.core.eda.nokia.com`         | IP Addresses → **system IPs**   |
+| `ip-in-subnet` | `ipinsubnetallocationpools.core.eda.nokia.com` | IP Addresses + Masks → **mgmt** |
+| `subnet`       | `subnetallocationpools.core.eda.nokia.com`     | Subnets → **ISL links**         |
