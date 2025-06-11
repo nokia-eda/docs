@@ -1,4 +1,4 @@
-site_name: Event Driven Automation
+site_name: Nokia Event Driven Automation
 nav:
   - Home: index.md
   - Getting started:
@@ -91,7 +91,7 @@ nav:
 
 site_author: Nokia
 site_description: >-
-  EDA is the platform for automating your infrastructure.
+  Nokia EDA is the platform for automating your infrastructure.
 # Repository
 repo_name: docs
 repo_url: https://github.com/nokia-eda/docs
@@ -145,7 +145,7 @@ theme:
     code: Nova
   icon:
     logo: nokia/eda
-    repo: fontawesome/brands/github
+    repo: nokia/N-white
     edit: material/file-edit-outline
   favicon: images/eda.svg
 
@@ -200,6 +200,8 @@ extra:
   eda_version: "25.4.1" # current EDA version (provided without the v prefix)
   srl_version: "24.10.4" # latest SRL version for the current EDA version
   social:
+    - icon: nokia/N-white
+      link: https://www.nokia.com/data-center-networks/data-center-fabric/event-driven-automation/
     - icon: fontawesome/brands/discord
       link: https://eda.dev/discord
     - icon: fontawesome/brands/github
