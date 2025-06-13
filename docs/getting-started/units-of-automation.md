@@ -156,7 +156,7 @@ Users can access the status of a resource using `edactl`, `kubectl`, or UI.
 
 /// admonition | `edactl`
     type: subtle-info
-Not all resources are published into K8s and therefore it is recommended to use `edactl` to view the status of resources. EDActl is a CLI tool that runs in the [toolbox pod](../user-guide/using-the-clis.md#accessing-the-clis) in a cluster and provides a way to interact with the EDA API.
+Not all resources are published into K8s and therefore it is recommended to use `edactl` to view the status of resources. `edactl` is a CLI tool that runs in the [toolbox pod](../user-guide/using-the-clis.md#edactl) in a cluster and provides a way to interact with the EDA API.
 ///
 
 To leverage `edactl`, paste the following command into your terminal to install a shell alias that would execute `edactl` in the toolbox pod each time you call it.
@@ -348,7 +348,6 @@ Once the change is committed, BGP will take some time to converge. During this p
 Transactions made by a user in the UI[^5] are also visible in the Transactions UI[^4]:
 
 -{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/aeb1dfb9ae61f6e43de48ed276175384/image.png", padding=20)}}-
-
 
 Congratulations, your fabric is now using iBGP as its overlay protocol :partying_face:  
 From a tiny change in the Fabric' declarative abstraction through the transformation to sub-resources and eventually to the node-level configurations, that are reliably transacted and pushed to the constituent nodes. How cool is that?
