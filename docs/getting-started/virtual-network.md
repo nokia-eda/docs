@@ -5,7 +5,7 @@ CX is in charge of creating and managing virtual topologies running in the clust
 
 /// admonition | Note
     type: subtle-note
-If you completed the [Try EDA](try-eda.md) procedure the virtual network is already created for you. This section provides details on how the virtual network is created, what it consists of, and how connect to the virtual nodes.
+If you completed the [Try EDA](try-eda.md) procedure the virtual network is already created for you. This section provides details on how the virtual network is created, what it consists of, and how to connect to the virtual nodes.
 ///
 
 ## Example topology
