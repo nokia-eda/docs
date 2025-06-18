@@ -282,6 +282,10 @@ extra_css:
   - stylesheets/diagrams.css
   - stylesheets/animations.css
   - stylesheets/steps.css
+  - stylesheets/expandable-blocks.css
 
 hooks:
   - hooks/hooks.py
+
+extra_javascript:
+  - javascripts/expandable-blocks.js
