@@ -288,4 +288,7 @@ hooks:
   - hooks/hooks.py
 
 extra_javascript:
+  # https://github.com/srl-labs/learn-srlinux/pull/133
+  - javascripts/sh-annotation.js
   - javascripts/expandable-blocks.js
+
