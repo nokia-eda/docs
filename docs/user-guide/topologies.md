@@ -331,18 +331,6 @@ edatopogen -y -f topo.json
 
 By default this will generate the ConfigMap file in a file named `generated_topo_pod_1.yaml` where `pod_1` is the pod ID used in the input file.
 
-/// admonition | Remove the namespace
-    type: subtle-note
-Currently, the generated config map contains the `default` namespace in the resource metadata which is a remnant of the previous release. Until this is fixed in the `edatopogen` we shall remove the namespace from the generated file so that we can set the namespace ourselves when applying this resource later.
-
-```bash
-yq eval -i 'del(.metadata.namespace)' generated_topo_pod_1.yaml #(1)!
-```
-
-1. `yq` tool is included in the toolbox pod.
-
-///
-
 If you take a look at the generated file you will see that it has the familiar topology file structure, just packed into the ConfigMap resource. This knowledge will be useful in the next chapter when we will deploy the generated topology.
 
 ### Topology deployment
