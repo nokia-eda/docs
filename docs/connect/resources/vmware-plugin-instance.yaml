@@ -2,8 +2,9 @@ apiVersion: vmware.eda.nokia.com/v1
 kind: VmwarePluginInstance
 metadata:
   name: my-vmware-plugin-instance # A unique name for the plugin resource (can be the same as the spec.name, or different)
-  namespace: eda-namespace # The namespace in the EDA deployment holding the fabric associated with this plugin
+  namespace: eda-system # The system namespace.
 spec:
+  pluginNamespace: eda # The namespace in the EDA deployment holding the fabric associated with this plugin
   externalId: example-external-id # A unique Identifier for the plugin (can be same as the name)
   heartbeatInterval: 30
   name: example-vSphere # A unique name for the plugin
