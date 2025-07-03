@@ -151,10 +151,8 @@ To deliver the "Try EDA" experience, we have created an [EDA playground][playgro
 
     EDA is an API-first framework, with its UI being a client of the very same API. At the end of the `make try-eda` output you will find the URL to access the UI.
 
-    ```shell hl_lines="2"
-    --> Exposing the UI to the host across the kind container boundary
+    ```shell
     --> The UI can be accessed using https://10.10.1.1:9443 #(1)!
-    --> Started background port forward with process id: 897027
     --> INFO: EDA is launched
     ```
 
