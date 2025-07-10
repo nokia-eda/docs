@@ -8,46 +8,12 @@ on:
       - "v*"
   pull_request:
 
-env:
-  MKDOCS_MATERIAL_VER: 9.6.1-insiders-4.53.15-hellt
-
 jobs:
-  docs-test:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - run: docker run -v $(pwd):/docs --entrypoint mkdocs ghcr.io/nokia-eda/mkdocs-material-insiders:$MKDOCS_MATERIAL_VER build --clean --strict
-
-      - name: Cache htmltest external links
-        id: cache-htmltest
-        uses: actions/cache@v4
-        with:
-          path: tmp/.htmltest
-          # key will contain hash of all md files to check if files have changed
-          # when files are changed, a new key name is formed, and thus a new cache will be saved
-          key: htmltest-${{ hashFiles('docs/**/*.md') }}
-          # the restore key will fetch any previously saved cache even if there is no match on key
-          # this allows to use cache from prev runs and update it
-          restore-keys: |
-            htmltest-
-
-      - name: htmltest
-        uses: wjdp/htmltest-action@master
-        with:
-          config: docs/htmltest.yml
-
-  publish-docs:
-    runs-on: ubuntu-22.04
-    # do not run on insiders main
-    if: ${{ !(github.repository == 'nokia-eda/insiders-docs' && github.ref_name == 'main') }}
+  publish-preview-docs:
+    runs-on: ubuntu-24.04
+    # do not run on main, only on PRs and other branches
+    # publishing to the preview site is not needed on main
+    if: ${{ !(github.ref_name == 'main') }}
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     permissions:
@@ -57,23 +23,20 @@ jobs:
       deployments: write
       repository-projects: read
       packages: read
-    # needs: docs-test
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # needed for commit authors plugin
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build docs
-        run: |
-          docker run --env CI=true --env MKDOCS_GIT_COMMITTERS_APIKEY=${{ secrets.GITHUB_TOKEN }} -v $(pwd):/docs --user $(id -u):$(id -g) --entrypoint mkdocs ghcr.io/nokia-eda/mkdocs-material-insiders:$MKDOCS_MATERIAL_VER build
+        run: bash run.sh build-docs
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
