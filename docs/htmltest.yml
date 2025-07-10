@@ -3,22 +3,6 @@
 DirectoryPath: ./site
 IgnoreURLs:
   - fonts.gstatic.com
-  - www.nokia.com/networks/solutions/data-center-switching-fabric/
-  - https://www.linkedin.com/in/ # any linkedin user http check will return 999 code.
-  - documentation.nokia.com
-  - bit.ly/iondoc
-  # ghcr packages return 404 for non authz gh users
-  - https://github.com/orgs/nokia/packages/container/package/srlinux
-  - https://github.com/orgs/nokia/packages/container/srlinux/versions
-  - on.srlinux.dev
-  - localhost
-  - https://github.com/nokia-eda/docs/edit/
-  - twitter.com
-  - https://linkedin.com/in
-  - https://www.nokia.com/networks/products/service-router-linux-NOS
-  - https://www.nanog.org # responds with 403
-  - ".local"
-  - https://support.discord.com/
 
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreAltMissing: true

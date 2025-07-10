@@ -34,7 +34,7 @@ function build-docs {
 }
 
 function test-docs {
-	docker run --rm -v $(pwd):/docs --entrypoint mkdocs ${MKDOCS_IMAGE} build --clean --strict
+	build-docs
 	docker run --rm -v $(pwd):/test wjdp/htmltest --conf ./site/htmltest.yml
 	sudo rm -rf ./site
 }
@@ -44,7 +44,7 @@ function test-docs {
 # -----------------------------------------------------------------------------
 
 function list-versions {
-  ${MIKE_CMD} list -r internal -b versioned-docs-test
+  ${MIKE_CMD} list -r insiders -b versioned-docs-test
 }
 
 function build-versions {
@@ -52,7 +52,7 @@ function build-versions {
 }
 
 function set-default-version {
-  ${MIKE_CMD} set-default -r internal -b versioned-docs-test --push latest
+  ${MIKE_CMD} set-default -r insiders -b versioned-docs-test --push latest
 }
 
 function deploy-version {
@@ -60,8 +60,21 @@ function deploy-version {
 }
 
 function mike-serve {
-  ${MIKE_CMD} serve -a 0.0.0.0:8000 -r internal -b versioned-docs-test
+  ${MIKE_CMD} serve -a 0.0.0.0:8000 -r insiders -b versioned-docs-test
 }
+
+function mike-shell {
+  MIKE_CMD="docker run -it --rm -p ${PORT}:8000 \
+  -v $(pwd):/docs \
+  -v ${HOME}/.gitconfig:/root/.gitconfig \
+  -v ${HOME}/.ssh:/root/.ssh \
+  -v $(echo $SSH_AUTH_SOCK):/tmp/ssh_agent_socket \
+  -e SSH_AUTH_SOCK=/tmp/ssh_agent_socket \
+  --entrypoint ash ${MKDOCS_IMAGE}"
+  
+  ${MIKE_CMD}
+}
+
 
 # -----------------------------------------------------------------------------
 # Bash runner functions.

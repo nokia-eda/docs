@@ -185,9 +185,9 @@ plugins:
       enable_creation_date: true
       enabled: !ENV [CI, false]
   - git-committers:
-      repository: https://github.com/nokia-eda/docs
+      repository: nokia-eda/docs
       branch: main
-      enabled: !ENV [CI, false]
+      enabled: !ENV [GIT_COMMITTERS, false]
   - social:
       enabled: !ENV [CI, false]
       # enabled: true
@@ -291,4 +291,3 @@ extra_javascript:
   # https://github.com/srl-labs/learn-srlinux/pull/133
   - javascripts/sh-annotation.js
   - javascripts/expandable-blocks.js
-
