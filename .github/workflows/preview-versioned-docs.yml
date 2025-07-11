@@ -9,7 +9,7 @@ on:
 
 jobs:
   preview-docs:
-    if: ${{ !(github.repository == 'nokia-eda/docs) }}
+    if: ${{ !(github.repository == 'nokia-eda/docs') }}
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout __versioned-docs__ branch
