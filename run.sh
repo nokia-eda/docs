@@ -131,7 +131,7 @@ function mike-shell {
   -v $(echo $SSH_AUTH_SOCK):/tmp/ssh_agent_socket \
   -e SSH_AUTH_SOCK=/tmp/ssh_agent_socket \
   --entrypoint ash ${MKDOCS_IMAGE}"
-  
+
   ${MIKE_CMD}
 }
 

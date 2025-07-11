@@ -1,0 +1,25 @@
+name: Sync versioned docs to public repo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync-docs-to-public:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout versioned-docs branch
+        uses: actions/checkout@v4
+        with:
+          ref: __versioned-docs__
+          fetch-depth: 0 # Fetch all history
+
+      - name: Push to public nokia-eda/docs repo
+        env:
+          PUBLIC_REPO: nokia-eda/docs
+          TARGET_BRANCH: __versioned-docs__
+          GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_PUSH_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add public https://x-access-token:${GITHUB_TOKEN}@github.com/${PUBLIC_REPO}.git
+          git push public HEAD:${TARGET_BRANCH}
