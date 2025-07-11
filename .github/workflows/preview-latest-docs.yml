@@ -38,7 +38,7 @@ jobs:
       - name: User preview branch name if push to main
         if: github.ref == 'refs/heads/main'
         env:
-          PREVIEW_BRANCH: ${{ secrets.EDA_PREVIEW_BRANCH }}
+          PREVIEW_BRANCH: ${{ secrets.DOCS_PREVIEW_URL }}
         run: |
           if [ "$BRANCH_NAME" = "main" ]; then
             echo "BRANCH_NAME=${PREVIEW_BRANCH}" >> $GITHUB_ENV
