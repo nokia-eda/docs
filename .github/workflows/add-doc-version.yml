@@ -4,8 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Doc version to add to the branch. Add 'latest' to set as latest version."
+        description: "Doc version to add to the branch"
+        default: "25.4"
         required: true
+        type: string
+      alias:
+        description: "Set version alias if required (e.g. latest)"
+        required: false
         type: string
 
 jobs:
@@ -31,4 +36,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          bash run.sh deploy-version ${{ github.event.inputs.version }}
+          if [ -n "${{ github.event.inputs.alias }}" ]; then
+            bash run.sh deploy-version "${{ github.event.inputs.version }}" "${{ github.event.inputs.alias }}"
+          else
+            bash run.sh deploy-version "${{ github.event.inputs.version }}"
+          fi
+
+      - name: Set default docs version
+        run: |
+          bash run.sh set-default-version --push "${{ github.event.inputs.version }}"

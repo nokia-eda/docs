@@ -76,15 +76,8 @@ function test-docs {
 # Version management.
 # -----------------------------------------------------------------------------
 
-# set PUBLIC_DOCS to any value to deploy versioned docs to public remote
-if [ -z "${PUBLIC_DOCS}" ]; then
-  MIKE_REMOTE_NAME="${INSIDERS_REMOTE_NAME}"
-else
-  MIKE_REMOTE_NAME="${PUBLIC_REMOTE_NAME}"
-fi
-
 function list-versions {
-  ${MIKE_CMD} list -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME}
+  ${MIKE_CMD} list -b ${MIKE_BRANCH_NAME}
 }
 
 # build-version builds a current version and names it according to passed argument(s).
@@ -93,12 +86,12 @@ function list-versions {
 # build-version --update-aliases 25.4 latest
 # this operation does not push the changes to the remote and only modifies the local repository.
 function build-version {
-  ${MIKE_CMD} deploy -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} "$@"
+  ${MIKE_CMD} deploy -b ${MIKE_BRANCH_NAME} "$@"
 }
 
 # set the default version in the __versioned-docs__ branch to the specified version.
 function set-default-version {
-  ${MIKE_CMD} set-default -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} $1
+  ${MIKE_CMD} set-default -b ${MIKE_BRANCH_NAME} "$@"
 }
 
 function deploy-version {
@@ -107,19 +100,19 @@ function deploy-version {
 
 # serve the versioned docs from the __versioned-docs__ branch from a remote repository.
 function serve-versioned-docs {
-  ${MIKE_CMD} serve -a 0.0.0.0:8000 -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME}
+  ${MIKE_CMD} serve -a 0.0.0.0:8000 -b ${MIKE_BRANCH_NAME}
 }
 
 # delete a version or an alias from the versioned docs.
 function mike-delete {
-  ${MIKE_CMD} delete -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} $@
+  ${MIKE_CMD} delete -b ${MIKE_BRANCH_NAME} $@
 }
 
 # add an alias to a version.
 # example usage:
 # mike-alias 25.4 latest
 function mike-alias {
-  ${MIKE_CMD} alias -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} $@
+  ${MIKE_CMD} alias -b ${MIKE_BRANCH_NAME} $@
 }
 
 function mike-shell {
