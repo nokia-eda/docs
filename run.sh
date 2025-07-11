@@ -30,16 +30,15 @@ MKDOCS_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:9.6.12-insiders-4.53.16-
 
 MIKE_CMD_COMMON_DOCKER_RUN_ARGS="--rm -i -p ${PORT}:8000 \
   -v $(pwd):/docs \
-  -v ${HOME}/.gitconfig:/root/.gitconfig \
   -v ${HOME}/.ssh:/root/.ssh \
   --user $(id -u):$(id -g) \
+  --env GIT_COMMITTER_NAME=nokia-eda-bot --env GIT_COMMITTER_EMAIL=nokia-eda-bot@eda.nokia.com \
   --entrypoint mike"
 
 if [ "${CI}" = "true" ]; then
   MIKE_CMD="docker run ${MIKE_CMD_COMMON_DOCKER_RUN_ARGS} \
   --env GIT_COMMITTERS=true \
   --env MKDOCS_GIT_COMMITTERS_APIKEY=${GITHUB_TOKEN} \
-  --env GIT_COMMITTER_NAME=nokia-eda-bot --env GIT_COMMITTER_EMAIL=nokia-eda-bot@eda.nokia.com \
   ${MKDOCS_IMAGE}"
 
   MIKE_BRANCH_NAME="__versioned-docs__"
