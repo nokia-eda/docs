@@ -7,7 +7,24 @@ set -o errexit
 set -o pipefail
 set -e
 
-PORT=${2:-8000}
+# set the host's port via PORT environment variable
+# if PORT is not set, default to 8000
+if [ -z "${PORT}" ]; then
+  PORT=8000
+fi
+
+# git remote names
+if [ -z "${INSIDERS_REMOTE_NAME}" ]; then
+  INSIDERS_REMOTE_NAME="insiders"
+fi
+
+if [ -z "${PUBLIC_REMOTE_NAME}" ]; then
+  PUBLIC_REMOTE_NAME="public"
+fi
+
+# set the branch name for versioned docs
+MIKE_BRANCH_NAME="__versioned-docs__"
+
 
 MKDOCS_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:9.6.12-insiders-4.53.16-hellt
 
@@ -43,24 +60,50 @@ function test-docs {
 # Version management.
 # -----------------------------------------------------------------------------
 
+# set PUBLIC_DOCS to any value to deploy versioned docs to public remote
+if [ -z "${PUBLIC_DOCS}" ]; then
+  MIKE_REMOTE_NAME="${INSIDERS_REMOTE_NAME}"
+else
+  MIKE_REMOTE_NAME="${PUBLIC_REMOTE_NAME}"
+fi
+
 function list-versions {
-  ${MIKE_CMD} list -r insiders -b versioned-docs-test
+  ${MIKE_CMD} list -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME}
 }
 
-function build-versions {
-  ${MIKE_CMD} deploy $1
+# build-version builds a current version and names it according to passed argument(s).
+# example usage:
+# build-version 25.4 latest
+# build-version --update-aliases 25.4 latest
+# this operation does not push the changes to the remote and only modifies the local repository.
+function build-version {
+  ${MIKE_CMD} deploy -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} "$@"
 }
 
+# set the default version in the __versioned-docs__ branch to the specified version.
 function set-default-version {
-  ${MIKE_CMD} set-default -r insiders -b versioned-docs-test --push latest
+  ${MIKE_CMD} set-default -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} $1
 }
 
 function deploy-version {
-  ${MIKE_CMD} deploy -r internal -b versioned-docs-test --push $@
+  ${MIKE_CMD} deploy -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} --push "$@"
 }
 
+# serve the versioned docs from the __versioned-docs__ branch from a remote repository.
 function mike-serve {
-  ${MIKE_CMD} serve -a 0.0.0.0:8000 -r insiders -b versioned-docs-test
+  ${MIKE_CMD} serve -a 0.0.0.0:8000 -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME}
+}
+
+# delete a version or an alias from the versioned docs.
+function mike-delete {
+  ${MIKE_CMD} delete -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} $@
+}
+
+# add an alias to a version.
+# example usage:
+# mike-alias 25.4 latest
+function mike-alias {
+  ${MIKE_CMD} alias -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} $@
 }
 
 function mike-shell {
