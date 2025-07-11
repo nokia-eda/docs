@@ -10,12 +10,22 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      contents: write # Grants write access so that the workflow can push to the versioned docs branch
+      packages: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history for git committers plugin
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy docs version
         env:

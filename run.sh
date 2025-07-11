@@ -28,31 +28,48 @@ MIKE_BRANCH_NAME="__versioned-docs__"
 
 MKDOCS_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:9.6.12-insiders-4.53.16-hellt
 
-MIKE_CMD="docker run -it --rm -p ${PORT}:8000 \
--v $(pwd):/docs \
--v ${HOME}/.gitconfig:/root/.gitconfig \
--v ${HOME}/.ssh:/root/.ssh \
--v $(echo $SSH_AUTH_SOCK):/tmp/ssh_agent_socket \
--e SSH_AUTH_SOCK=/tmp/ssh_agent_socket \
---entrypoint mike ${MKDOCS_IMAGE}"
+MIKE_CMD_COMMON_DOCKER_RUN_ARGS="--rm -i -p ${PORT}:8000 \
+  -v $(pwd):/docs \
+  -v ${HOME}/.gitconfig:/root/.gitconfig \
+  -v ${HOME}/.ssh:/root/.ssh \
+  --user $(id -u):$(id -g) \
+  --entrypoint mike"
+
+if [ "${CI}" = "true" ]; then
+  MIKE_CMD="docker run ${MIKE_CMD_COMMON_DOCKER_RUN_ARGS} \
+  --env GIT_COMMITTERS=true \
+  --env MKDOCS_GIT_COMMITTERS_APIKEY=${GITHUB_TOKEN} \
+  --env GIT_COMMITTER_NAME=nokia-eda-bot --env GIT_COMMITTER_EMAIL=nokia-eda-bot@eda.nokia.com \
+  ${MKDOCS_IMAGE}"
+
+  MIKE_BRANCH_NAME="__versioned-docs__"
+else
+  MIKE_CMD="docker run -t ${MIKE_CMD_COMMON_DOCKER_RUN_ARGS} \
+  -v $(echo $SSH_AUTH_SOCK):/tmp/ssh_agent_socket \
+  -e SSH_AUTH_SOCK=/tmp/ssh_agent_socket \
+  --user $(id -u):$(id -g) \
+  ${MKDOCS_IMAGE}"
+
+  MIKE_BRANCH_NAME="local__versioned-docs__"
+fi
 
 function serve-docs {
   # serve development documentation portal
-  docker run -it --rm -p ${PORT}:8000 -v $(pwd):/docs ${MKDOCS_IMAGE} serve --dirtyreload -a 0.0.0.0:8000
+  docker run -it --rm -p ${PORT}:8000 -v "$(pwd)":/docs ${MKDOCS_IMAGE} serve --dirtyreload -a 0.0.0.0:8000
 }
 
 function serve-docs-full {
   # serve development documentation portal
-  docker run -it --rm -p ${PORT}:8000 -v $(pwd):/docs ${MKDOCS_IMAGE} serve -a 0.0.0.0:8000
+  docker run -it --rm -p ${PORT}:8000 -v "$(pwd)":/docs ${MKDOCS_IMAGE} serve -a 0.0.0.0:8000
 }
 
 function build-docs {
-  docker run --rm -v $(pwd):/docs --entrypoint mkdocs ${MKDOCS_IMAGE} build --clean --strict
+  docker run --rm -v "$(pwd)":/docs --entrypoint mkdocs ${MKDOCS_IMAGE} build --clean --strict
 }
 
 function test-docs {
 	build-docs
-	docker run --rm -v $(pwd):/test wjdp/htmltest --conf ./site/htmltest.yml
+	docker run --rm -v "$(pwd)":/test wjdp/htmltest --conf ./site/htmltest.yml
 	sudo rm -rf ./site
 }
 
@@ -86,11 +103,11 @@ function set-default-version {
 }
 
 function deploy-version {
-  ${MIKE_CMD} deploy -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME} --push "$@"
+  ${MIKE_CMD} deploy -b ${MIKE_BRANCH_NAME} --update-aliases --push "$@"
 }
 
 # serve the versioned docs from the __versioned-docs__ branch from a remote repository.
-function mike-serve {
+function serve-versioned-docs {
   ${MIKE_CMD} serve -a 0.0.0.0:8000 -r ${MIKE_REMOTE_NAME} -b ${MIKE_BRANCH_NAME}
 }
 

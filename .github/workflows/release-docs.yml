@@ -1,0 +1,25 @@
+---
+name: Release Docs
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - __versioned-docs__
+
+jobs:
+  release-docs:
+    if: ${{ (github.repository == 'nokia-eda/docs) }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout __versioned-docs__ branch
+        uses: actions/checkout@v4
+        with:
+          ref: __versioned-docs__
+          path: versioned-docs
+
+      - name: Publish preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy versioned-docs --project-name=eda-docs --branch=main

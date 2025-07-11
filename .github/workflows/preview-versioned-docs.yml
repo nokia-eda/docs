@@ -1,10 +1,14 @@
 ---
-name: Publish Preview Versioned Docs
+name: Preview Versioned Docs
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - __versioned-docs__
 
 jobs:
-  publish-versioned-docs:
+  preview-docs:
+    if: ${{ !(github.repository == 'nokia-eda/docs) }}
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout __versioned-docs__ branch
