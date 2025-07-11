@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write # Grants write access so that the workflow can push to the versioned docs branch
       packages: read
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,14 +32,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy docs version
+      - name: Build docs version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -n "${{ github.event.inputs.alias }}" ]; then
-            bash run.sh deploy-version "${{ github.event.inputs.version }}" "${{ github.event.inputs.alias }}"
+            bash run.sh build-version "${{ github.event.inputs.version }}" "${{ github.event.inputs.alias }}"
           else
-            bash run.sh deploy-version "${{ github.event.inputs.version }}"
+            bash run.sh build-version "${{ github.event.inputs.version }}"
           fi
 
       - name: Set default docs version
