@@ -19,7 +19,7 @@ jobs:
           TARGET_BRANCH: __versioned-docs__
           GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_PUSH_TOKEN }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "hellt"
+          git config --global user.email "hellt@users.noreply.github.com"
           git remote add public https://x-access-token:${GITHUB_TOKEN}@github.com/${PUBLIC_REPO}.git
           git push public HEAD:${TARGET_BRANCH}
