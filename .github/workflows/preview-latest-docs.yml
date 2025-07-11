@@ -1,19 +1,16 @@
 ---
-name: CICD
+name: Preview latest docs
 on:
   push:
     branches:
       - main
-    tags:
-      - "v*"
   pull_request:
 
 jobs:
-  publish-preview-docs:
+  preview-latest-docs:
     runs-on: ubuntu-24.04
-    # do not run on main, only on PRs and other branches
-    # publishing to the preview site is not needed on main
-    if: ${{ !(github.ref_name == 'main') }}
+    # do not run on nokia-eda/docs repo
+    if: ${{ !(github.repository == 'nokia-eda/docs') }}
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     permissions:
@@ -37,6 +34,15 @@ jobs:
 
       - name: Build docs
         run: bash run.sh build-docs
+
+      - name: User preview branch name if push to main
+        if: github.ref == 'refs/heads/main'
+        env:
+          PREVIEW_BRANCH: ${{ secrets.EDA_PREVIEW_BRANCH }}
+        run: |
+          if [ "$BRANCH_NAME" = "main" ]; then
+            echo "BRANCH_NAME=${PREVIEW_BRANCH}" >> $GITHUB_ENV
+          fi
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3

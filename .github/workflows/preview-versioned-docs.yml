@@ -22,4 +22,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy versioned-docs --project-name=eda-docs --branch=${{ secrets.DOCS_PREVIEW_URL }}
+          command: pages deploy versioned-docs --project-name=eda-docs --branch=${{ secrets.DOCS_VERSIONED_PREVIEW_URL }}
