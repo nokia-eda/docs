@@ -83,19 +83,14 @@ function list-versions {
 # build-version builds a current version and names it according to passed argument(s).
 # example usage:
 # build-version 25.4 latest
-# build-version --update-aliases 25.4 latest
 # this operation does not push the changes to the remote and only modifies the local repository.
 function build-version {
-  ${MIKE_CMD} deploy -b ${MIKE_BRANCH_NAME} "$@"
+  ${MIKE_CMD} deploy -b ${MIKE_BRANCH_NAME} --update-aliases "$@"
 }
 
 # set the default version in the __versioned-docs__ branch to the specified version.
 function set-default-version {
   ${MIKE_CMD} set-default -b ${MIKE_BRANCH_NAME} "$@"
-}
-
-function deploy-version {
-  ${MIKE_CMD} deploy -b ${MIKE_BRANCH_NAME} --update-aliases --push "$@"
 }
 
 # serve the versioned docs from the __versioned-docs__ branch from a remote repository.
