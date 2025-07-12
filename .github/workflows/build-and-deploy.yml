@@ -62,5 +62,6 @@ jobs:
   deploy-docs:
     needs: build
     uses: ./.github/workflows/deploy-docs.yml
+    secrets: inherit
     with:
       target-branch: ${{ needs.build.outputs.target-branch }}
