@@ -1,0 +1,18 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: DefaultRouteReflector
+metadata:
+  name: example-default-rr
+  namespace: eda
+spec:
+  description: "Default VRF Route Reflector"
+  clusterID: "1.1.1.1"
+  defaultBGPRRGroup: "rr-group"
+  interface: "system"
+  interfaceKind: "SYSTEMINTERFACE"
+  clientSelector:
+    - "role=leaf"
+  clientIPs:
+    - "192.168.1.1"
+    - "192.168.1.2"
+  ipv4Unicast:
+    enabled: true

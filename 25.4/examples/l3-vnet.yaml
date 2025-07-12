@@ -1,0 +1,122 @@
+---
+apiVersion: services.eda.nokia.com/v1alpha1
+kind: VirtualNetwork
+metadata:
+  name: vnet2
+  namespace: eda
+spec:
+  bridgeDomains:
+    - name: app1
+      spec:
+        eviPool: evi-pool
+        macAging: 300
+        tunnelIndexPool: tunnel-index-pool
+        type: EVPNVXLAN
+        vniPool: vni-pool
+    - name: app2
+      spec:
+        eviPool: evi-pool
+        macAging: 300
+        tunnelIndexPool: tunnel-index-pool
+        type: EVPNVXLAN
+        vniPool: vni-pool
+  irbInterfaces:
+    - name: irb1
+      spec:
+        arpTimeout: 14400
+        bfd:
+          desiredMinTransmitInt: 150002
+          detectionMultiplier: 4
+          enabled: true
+          minEchoReceiveInterval: 1000000
+          requiredMinReceive: 150000
+        bridgeDomain: app1
+        evpnRouteAdvertisementType:
+          arpDynamic: true
+          arpStatic: true
+          ndDynamic: false
+          ndStatic: false
+        hostRoutePopulate:
+          dynamic: true
+          evpn: true
+          static: false
+        ipAddresses:
+          - ipv4Address:
+              ipPrefix: 13.3.3.1/24
+              primary: true
+            ipv6Address:
+              ipPrefix: fc00:31::1/120
+              primary: true
+          - ipv4Address:
+              ipPrefix: 14.4.4.1/24
+              primary: false
+            ipv6Address:
+              ipPrefix: fc00:41::1/120
+              primary: false
+        ipMTU: 1500
+        l3ProxyARPND:
+          proxyARP: false
+          proxyND: false
+        learnUnsolicited: NONE
+        router: routetable1
+    - name: irb2
+      spec:
+        arpTimeout: 14400
+        bfd:
+          desiredMinTransmitInt: 150002
+          detectionMultiplier: 4
+          enabled: true
+          minEchoReceiveInterval: 1000000
+          requiredMinReceive: 150000
+        bridgeDomain: app2
+        evpnRouteAdvertisementType:
+          arpDynamic: true
+          arpStatic: true
+          ndDynamic: false
+          ndStatic: false
+        hostRoutePopulate:
+          dynamic: true
+          evpn: true
+          static: false
+        ipAddresses:
+          - ipv4Address:
+              ipPrefix: 15.3.3.1/24
+              primary: true
+            ipv6Address:
+              ipPrefix: fc00:51::1/120
+              primary: true
+          - ipv4Address:
+              ipPrefix: 16.4.4.1/24
+              primary: false
+            ipv6Address:
+              ipPrefix: fc00:61::1/120
+              primary: false
+        ipMTU: 1500
+        l3ProxyARPND:
+          proxyARP: false
+          proxyND: false
+        learnUnsolicited: NONE
+        router: routetable1
+  routers:
+    - name: routetable1
+      spec:
+        eviPool: evi-pool
+        routerID: 5.4.3.2
+        tunnelIndexPool: tunnel-index-pool
+        type: EVPNVXLAN
+        vniPool: vni-pool
+  vlans:
+    - name: vlan1
+      spec:
+        bridgeDomain: app1
+        interfaceSelector:
+          - eda.nokia.com/edgeLinkType=storage
+        vlanID: pool
+        vlanPool: vlan-pool
+    - name: vlan2
+      spec:
+        bridgeDomain: app2
+        interfaceSelector:
+          - eda.nokia.com/edgeLinkType=compute
+        vlanID: pool
+        vlanPool: vlan-pool

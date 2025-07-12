@@ -1,0 +1,14 @@
+apiVersion: vmware.eda.nokia.com/v1
+kind: VmwarePluginInstance
+metadata:
+  name: my-vmware-plugin-instance # A unique name for the plugin resource (can be the same as the spec.name, or different)
+  namespace: eda-system # The system namespace.
+spec:
+  pluginNamespace: eda # The namespace in the EDA deployment holding the fabric associated with this plugin
+  externalId: example-external-id # A unique Identifier for the plugin (can be same as the name)
+  heartbeatInterval: 30
+  name: example-vSphere # A unique name for the plugin
+  vcsaHost: example-host # The IP address of the vCenter Server
+  vcsaTlsVerify: true # To verify TLS of the VCSA
+  vcsaCertificate: "" # If the VCSA certificate is self signed, add it here to be able to verify from the plugin
+  authSecretRef: my-vmware-creds # Credentials are hosted in a separate Secret

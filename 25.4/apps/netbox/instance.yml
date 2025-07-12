@@ -1,0 +1,13 @@
+apiVersion: netbox.eda.nokia.com/v1alpha1
+kind: Instance
+metadata:
+  name: netbox1
+  namespace: eda
+spec:
+  url: http://${NETBOX_ADDR}:${NETBOX_PORT}
+  # Name of a secret containing the base64-encoded API token
+  # under the `apiToken` key
+  apiToken: netbox-api-token
+  # Name of a secret containing the base64-encoded signature key
+  # under the `signatureKey` key
+  signatureKey: netbox-webhook-signature

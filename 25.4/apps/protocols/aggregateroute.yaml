@@ -1,0 +1,17 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: AggregateRoute
+metadata:
+  name: example-custom-aggregate
+  namespace: eda
+spec:
+  router: "customer-router"
+  prefixes:
+    - "192.168.1.0/24"
+    - "192.168.2.0/24"
+  aggregatorIP: "10.0.0.2"
+  aggregatorASN: 65002
+  nodes:
+    - "node1"
+    - "node2"
+  summaryOnly: true
+  generateICMP: false

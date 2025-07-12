@@ -1,0 +1,14 @@
+apiVersion: notifiers.eda.nokia.com/v1
+kind: ClusterNotifier
+metadata:
+  name: alarms-to-discord
+  namespace: eda-system
+spec:
+  description: "Notifier for all alarms to Discord"
+  enabled: true
+  sources:
+    alarms:
+      include:
+        - "*"
+  providers:
+    - discord
