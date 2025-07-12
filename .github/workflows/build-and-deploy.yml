@@ -48,6 +48,8 @@ jobs:
 
       - name: Set default docs version
         if: ${{ github.event.inputs.alias != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bash run.sh set-default-version --push "${{ github.event.inputs.version }}"
 
