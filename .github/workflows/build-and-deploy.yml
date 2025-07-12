@@ -22,6 +22,10 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
+    permissions:
+      contents: write
+      repository-projects: read
+      packages: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
