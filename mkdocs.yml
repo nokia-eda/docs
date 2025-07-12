@@ -95,7 +95,7 @@ site_description: >-
 # Repository
 repo_name: docs
 repo_url: https://github.com/nokia-eda/docs
-edit_uri: edit/main/docs/
+edit_uri: edit/{versioned_branch}/docs/
 site_url: "https://docs.eda.dev/"
 # copyright date is set in the hooks/hooks.py automatically to the current year
 # https://github.com/squidfunk/mkdocs-material/discussions/4969#discussioncomment-7290363
