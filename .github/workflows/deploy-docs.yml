@@ -1,14 +1,21 @@
 ---
-name: Release Docs
+name: Deploy Docs
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - __versioned-docs__
+    inputs:
+      target-branch:
+        description: "Target cloudflare branch for deployment"
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      target-branch:
+        description: "Target cloudflare branch for deployment"
+        required: true
+        type: string
 
 jobs:
   release-docs:
-    if: ${{ (github.repository == 'nokia-eda/docs) }}
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout __versioned-docs__ branch
@@ -22,4 +29,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy versioned-docs --project-name=eda-docs --branch=main
+          command: pages deploy versioned-docs --project-name=eda-docs --branch=${{ inputs.target-branch }}

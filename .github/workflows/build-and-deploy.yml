@@ -1,24 +1,25 @@
-name: Add documentation version
+name: Build and Deploy Versioned Docs
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Doc version to add to the branch"
+        description: "Documentation version"
         default: "25.4"
         required: true
         type: string
       alias:
-        description: "Set version alias if required (e.g. latest)"
+        description: "Version alias (e.g. latest)"
         required: false
-        type: string
+        options:
+          - "latest"
+        type: choice
 
 jobs:
-  deploy:
-    permissions:
-      contents: write # Grants write access so that the workflow can push to the versioned docs branch
-      packages: read
+  build:
     runs-on: ubuntu-24.04
+    outputs:
+      target-branch: ${{ steps.set-target-branch.outputs.target-branch }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,5 +44,21 @@ jobs:
           fi
 
       - name: Set default docs version
+        if: ${{ github.event.inputs.alias != '' }}
         run: |
           bash run.sh set-default-version --push "${{ github.event.inputs.version }}"
+
+      - name: Set target branch
+        id: set-target-branch
+        run: |
+          if [ "${{ github.repository }}" = "nokia-eda/docs" ]; then
+            echo "target-branch=${{ secrets.DOCS_VERSIONED_PREVIEW_URL }}" >> $GITHUB_OUTPUT
+          else
+            echo "target-branch=main" >> $GITHUB_OUTPUT
+          fi
+
+  deploy-docs:
+    needs: build
+    uses: ./.github/workflows/deploy-docs.yml
+    with:
+      target-branch: ${{ needs.build.outputs.target-branch }}
