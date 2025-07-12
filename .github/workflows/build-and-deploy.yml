@@ -55,7 +55,7 @@ jobs:
         id: set-target-branch
         run: |
           if [ "${{ github.repository }}" != "nokia-eda/docs" ]; then
-            echo "target-branch=${{ secrets.DOCS_VERSIONED_PREVIEW_URL }}" >> $GITHUB_OUTPUT
+            echo "target-branch=preview" >> $GITHUB_OUTPUT
           else
             echo "target-branch=main" >> $GITHUB_OUTPUT
           fi
