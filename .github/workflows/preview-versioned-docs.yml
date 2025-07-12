@@ -3,9 +3,6 @@ name: Preview Versioned Docs
 on:
   workflow_dispatch:
   workflow_call:
-  push:
-    branches:
-      - __versioned-docs__
 
 jobs:
   preview-docs:
