@@ -9,9 +9,11 @@ on:
         required: true
         type: string
       alias:
-        description: "Version alias (e.g. latest)"
+        description: "Version alias (e.g. latest or not)"
         required: false
+        default: ""
         options:
+          - ""
           - "latest"
         type: choice
 
