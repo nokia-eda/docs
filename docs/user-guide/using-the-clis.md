@@ -132,4 +132,12 @@ sudo cp $(realpath ~/nokia-eda/playground/tools/helm) /usr/local/bin/helm
     ```{.shell .no-select}
     make open-toolbox
     ```
+
+    Or using this command when running outside the playground repository:
+
+    ```bash
+    kubectl -n eda-system exec -it $(kubectl -n eda-system get pods \
+    -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
+    -- env "TERM=xterm-256color" bash -l
+    ```
 <!-- --8<-- [end:open-toolbox] -->
