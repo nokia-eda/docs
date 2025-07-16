@@ -8,7 +8,7 @@ The [quickstart guide](../../getting-started/installation-process.md) did a grea
 1. In this section we are not going into the details of how to install EDA in a production setting, since there are many environment-specific considerations to take into account. Instead, we will focus on bringing up the **playground** environment on a non-KinD k8s cluster.
 2. The default installation procedure assumes that `cert-manager` does not exist in the cluster and will be installed by the playground installer.
 
-    If you already have the cert-manager installed in your cluster (cert-manager and cert-manager-csi-driver) you can skip the installation of cert-manager by setting the `NO_CERT_MANAGER_INSTALL := yes` in your [preferences file](../customize-install.md#preferences-file).
+    If you already have the cert-manager installed in your cluster (cert-manager and cert-manager-csi-driver) you can skip the installation of cert-manager by setting the `NO_CERT_MANAGER_INSTALL := yes` in your [preferences file](../deploying-eda/installing-the-eda-application.md#customizing-the-installation).
 ///
 
 Alright, truth be told, the installation process is almost identical to the one you followed in the [quickstart guide](../../getting-started/try-eda.md). This is one of the perks of running on top of Kubernetes that EDA enjoys - no matter what cluster it is (GKE, Openstack, k3s, minikube, etc), the installation process for the greater part would be the same.
@@ -76,7 +76,7 @@ If you already have the repository cloned, make sure to pull in the latest chang
 
 ## Parametrizing the installation
 
-To no-one's surprise, the EDA installation process on an existing cluster would require us at least to skip the creation of the KinD cluster that `make try-eda` target would call otherwise. Let's do that by using the [prefs.mk](../../software-install/customize-install.md) file that the playground repository provides and set the following variables:
+To no-one's surprise, the EDA installation process on an existing cluster would require us at least to skip the creation of the KinD cluster that `make try-eda` target would call otherwise. Let's do that by using the [prefs.mk](../../software-install/deploying-eda/installing-the-eda-application.md#customizing-the-installation) file that the playground repository provides and set the following variables:
 
 ```makefile
 # KinD cluster options

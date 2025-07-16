@@ -2,13 +2,23 @@
 
 After setting up EDA nodes and bootstrapping the Talos Kubernetes cluster, you can now install Nokia EDA applications using the playground repository [cloned during the preparation phase](../preparing-for-installation.md#download-the-eda-installation-playground).
 
-## Customizing the installation file
+## Customizing the installation
 
-Change into the playground directory and update the parameters in the [`prefs.mk`][prefs-file] file found at the directory's root to control the way EDA is installed.
+The [Kpt][kpt-home] Kubernetes package manager is used to configure and install EDA components. As any other package manager, kpt packages can be customized to allow users to customize EDA installation according to their needs.
+
+[kpt-home]: https://kpt.dev
+
+### Preferences file
+
+The most common customization options are provided in the [`prefs.mk`][prefs-file] preferences file you find at the playground directory's root.
 
 [prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 
-Customizable parameters in the `prefs.mk` file:
+This file contains customization parameters that you can set to adjust the essential installation parameters, such as the EDA version to install, the installation components to include, the Kubernetes namespace where EDA components are installed, proxy settings, the reachability settings for the EDA cluster, and so on.  
+You will find the list of all the available parameters in the section below.
+
+/// details | Customizable parameters in the `prefs.mk` file:
+    type: subtle-note
 
 /// html | table
 //// html | th[style='text-align: center;']
@@ -20,7 +30,7 @@ Description
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h5>Namespace settings for EDA components</h5>
+<h4>Namespace settings for EDA components</h4>
 /////
 ////
 
@@ -48,7 +58,7 @@ Default: `eda`
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h5>Version selection for EDA packages</h5>
+<h4>Version selection for EDA packages</h4>
 /////
 ////
 
@@ -76,7 +86,7 @@ Defaults to the latest stable version.
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h5>KinD cluster options</h5>
+<h4>KinD cluster options</h4>
 /////
 ////
 
@@ -87,6 +97,39 @@ Defaults to the latest stable version.
 ///// html | td
 When set to any non-zero value will skip the KinD cluster deployment used for lab/demo installations.  
 Must be set to `yes` for production installation.
+/////
+////
+
+//// html | tr
+///// html | td
+`KIND_CONFIG_FILE`
+/////
+///// html | td
+Path to the KinD configuration file.
+
+Default: `configs/kind.yaml` - the path to the KinD configuration file in the playground directory.
+/////
+////
+
+//// html | tr
+///// html | td
+`KIND_CLUSTER_NAME`
+/////
+///// html | td
+Name of the KinD cluster.
+
+Default: `eda-demo`.
+/////
+////
+
+//// html | tr
+///// html | td
+`KIND_API_SERVER_ADDRESS`
+/////
+///// html | td
+IP address to use for the KinD API server. If you want to reach your cluster from outside of the host machine, you must set this to the IP address of the host machine.
+
+Default: `127.0.0.1`.
 /////
 ////
 
@@ -103,7 +146,7 @@ Default: variable is not set. Results in port mappings and nodePort service bein
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h5>Cluster reachability settings</h5>
+<h4>Cluster reachability settings</h4>
 /////
 ////
 
@@ -111,7 +154,6 @@ Default: variable is not set. Results in port mappings and nodePort service bein
 ///// html | td
 `METALLB_VIP`
 /////
-
 ///// html | td
 Specifies the VIP address of your EDA deployment. Make sure to use a CIDR format, preferably as a /32 (or /128 for an IPv6 VIP).
 
@@ -176,7 +218,7 @@ If you use two networks, this VIP address must be the one used on the fabric man
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h5>Proxy settings</h5>
+<h4>Proxy settings</h4>
 /////
 ////
 
@@ -212,7 +254,7 @@ Optional: The list of IP addresses, IP ranges and hostnames that should not be p
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h5>Asset host settings</h5>
+<h4>Asset host settings</h4>
 /////
 ////
 
@@ -272,7 +314,7 @@ The password for the artifact server running on the Asset VM. Needs to be set to
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h5>KPT settings</h5>
+<h4>KPT settings</h4>
 /////
 ////
 
@@ -309,7 +351,46 @@ Default: `0`
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h5>Other settings</h5>
+<h4>External packages settings</h4>
+/////
+////
+
+//// html | tr
+///// html | td
+`NO_CERT_MANAGER_INSTALL`
+/////
+///// html | td
+Set to `yes` to skip the installation of the Cert Manager package. This is useful if you want to use an existing Cert Manager running in the `cert-manager` namespace.
+
+Default: unset - the Cert Manager package is installed.
+/////
+////
+
+//// html | tr
+///// html | td
+`NO_CSI_DRIVER_INSTALL`
+/////
+///// html | td
+Set to `yes` to skip the installation of the Cert Manager's CSI driver. This is useful if you want to use an existing Cert Manager CSI driver running in the `cert-manager` namespace.
+
+Default: unset - the Cert Manager CSI driver package is installed.
+/////
+////
+
+//// html | tr
+///// html | td
+`NO_EDA_ISSUER_API_INSTALL`
+/////
+///// html | td
+Set to `yes` to skip the installation of the certificate issuers for EDA.
+
+Default: unset - the EDA certificate issuers are installed.
+/////
+////
+
+//// html | tr
+///// html | td[colspan="2"]
+<h4>Other settings</h4>
 /////
 ////
 
@@ -354,9 +435,9 @@ The simulation mode can't be changed post-install.
 
 ///
 
-## The `prefs.mk` file
+///
 
-You can find examples of the `prefs.mk` file contents for Internet based and Air-gapped installations:
+You can find examples of the `prefs.mk` file contents for Internet based and Air-gapped installations for your reference:
 
 /// tab | Internet based installation
 
@@ -378,6 +459,379 @@ ASSET_HOST_ARTIFACTS_PASSWORD="eda"
 ```
 
 ///
+
+### Kpt setters
+
+For the most part, the `prefs.mk` file is just a hand-picked selection of the most common customization options that the installation procedure passes over to the Kpt package manager.
+
+In Kpt, the customization of packages is done by setting the values of the parameters marked with the `kpt-set` annotation. Consider the [Catalog manifest](https://github.com/nokia-eda/kpt/blob/main/eda-kpt-base/appstore-gh/catalog.yaml) from the `eda-kpt-base` package:
+
+```yaml hl_lines="8"
+apiVersion: appstore.eda.nokia.com/v1
+kind: Catalog
+metadata:
+  name: eda-catalog-builtin-apps
+  namespace: eda-system # kpt-set: ${EDA_CORE_NAMESPACE}
+spec:
+  title: EDA built in apps catalog
+  remoteURL: https://github.com/nokia-eda/catalog.git # kpt-set: ${APP_CATALOG}
+  authSecretRef: gh-catalog
+```
+
+The `# kpt-set: ${APP_CATALOG}` annotation indicates that the `.spec.remoteURL` value of the manifest can be overwritten using the `APP_CATALOG` Kpt setter.
+
+When you use the `prefs.mk` file and set the values for the variables exposed there you essentially provide the Kpt setters values, that will be used to customize the Kpt packages during the installation. However, the `prefs.mk` file exposes only a limited set of variables, while there are many more Kpt setters available in the EDA Kpt packages.
+
+EDA uses three Kpt packages published in the [`nokia-eda/kpt`][kpt-repo] repository:
+
+[kpt-repo]: https://github.com/nokia-eda/kpt
+
+- `eda-external-packages` - the package that contains the external packages used by EDA, such as Fluentd and Cert Manager.
+- `eda-kpt-base` - the core package that contains the EDA components, such as the Config Engine, the necessary secrets and configmaps.
+- `eda-kpt-playground` - the package that contains the EDA resources that bootstrap your EDA cluster with the node profiles, allocation pools and node users.
+
+Each package has its own set of Kpt setters that you can choose to use to overwrite the default values in the manifests. You will find the complete list of setters and the default values in the block below.
+
+/// details | Kpt setters reference
+    type: subtle-note
+
+> Run `make list-kpt-setters-external-packages`, `make list-kpt-setters-core` or `make list-kpt-setters-playground` to see the list of setters for the respective package in your terminal and their current values.
+
+//// tab | eda-external-packages
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/cert-manager/cert-manager.yaml** ||
+| `CORE_IMG_CREDENTIALS` | core |
+| `CMCA_IMG` | "ghcr.io/nokia-eda/ext/jetstack/cert-manager-cainjector:v1.16.2" |
+| `CMCT_IMG` | "ghcr.io/nokia-eda/ext/jetstack/cert-manager-controller:v1.16.2" |
+| `CM_ARGS` | Non scalar value, see the file for details. |
+| `CMWH_IMG` | "ghcr.io/nokia-eda/ext/jetstack/cert-manager-webhook:v1.16.2" |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/csi-driver/cert-manager-csi-driver.in.yaml** ||
+| `EDA_CORE_NAMESPACE` | eda-system |
+| `CSI_REGISTRAR_IMG` | "ghcr.io/nokia-eda/ext/sig-storage/csi-node-driver-registrar:v2.12.0" |
+| `CSI_LIVPROBE_IMG` | "ghcr.io/nokia-eda/ext/sig-storage/livenessprobe:v2.12.0" |
+| `CSI_DRIVER_IMG` | "ghcr.io/nokia-eda/ext/jetstack/cert-manager-csi-driver:v0.10.1" |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/eda-api-ingress-https-passthrough/api-ingress-ssl-passthrough.yaml** ||
+| `EXT_DOMAIN_NAME` | "" |
+| `INT_HTTPS_PORT` | 443 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/eda-api-ingress-https/eda-api-ingress-cert.yaml** ||
+| `EXT_IPV4_ADDR` | "" |
+| `EXT_IPV6_ADDR` | "" |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/fluentd/fluentd-bit-ds.yaml** ||
+| `FB_IMG` | ghcr.io/nokia-eda/core/fluent-bit:3.0.7-amd64 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/fluentd/fluentd.yaml** ||
+| `FD_IMG` | ghcr.io/nokia-eda/core/fluentd:v1.17.0-debian-1.0 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/git-no-pvc/gogs-admin-user.yaml** ||
+| `EDA_GOGS_NAMESPACE` | eda-system |
+| `GOGS_ADMIN_USER` | ZWRhCg== |
+| `GOGS_ADMIN_PASS` | ZWRhCg== |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/git-no-pvc/gogs-deployment-no-pvc.yaml** ||
+| `GOGS_IMG_TAG` | ghcr.io/nokia-eda/core/gogs:0.13.0 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/git-no-pvc/gogs-replica-service.yaml** ||
+| `GIT_SVC_TYPE` | ClusterIP |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/git/gogs-pv-claim.yaml** ||
+| `GOGS_PV_CLAIM_SIZE` | 24Gi |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/git/gogs-replica-pv-claim.yaml** ||
+| `GOGS_REPLICA_PV_CLAIM_SIZE` | 24Gi |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-external-packages/trust-manager/trust-manager.yaml** ||
+| `EDA_TRUSTMGR_NAMESPACE` | eda-system |
+| `TRUSTMGRBUNDLE_IMG` | "ghcr.io/nokia-eda/ext/jetstack/cert-manager-package-debian:20210119.0" |
+| `TRUSTMGR_IMG` | "ghcr.io/nokia-eda/ext/jetstack/trust-manager:v0.15.0" |
+| `TRUSTMGR_ARGS` | Non scalar value, see the file for details. |
+| `EDA_TRUSTMGR_ISSUER_DNSNAMES` | Non scalar value, see the file for details. |
+////
+//// tab | eda-kpt-base
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/appstore-gh/catalog-secret.yaml** ||
+| `GH_CATALOG_TOKEN` | SomeCatalogToken |
+| `GH_CATALOG_USER` | bm9raWEtZWRhLWJvdA== |
+| `EDA_CORE_NAMESPACE` | eda-system |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/appstore-gh/catalog.yaml** ||
+| `APP_CATALOG` | https://github.com/nokia-eda/catalog.git |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/appstore-gh/registry-secret.yaml** ||
+| `GH_REGISTRY_TOKEN` | SomeRegistryToken |
+| `GH_REGISTRY_USER` | bm9raWEtZWRhLWJvdA== |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/appstore-gh/registry.yaml** ||
+| `APP_REGISTRY` | ghcr.io |
+| `APP_REGISTRY_SKIPTLSVERIFY` | false |
+| `APP_REGISTRY_MIRROR` | "" |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/core/apps/bootstrap.yaml** ||
+| `INT_DHCPV6_PORT` | 547 |
+| `INT_DHCPV4_PORT` | 67 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/core/apps/ce-deployment.yaml** ||
+| `CORE_IMG_CREDENTIALS` | core |
+| `CE_IMG` | ghcr.io/nokia-eda/core/config-engine:25.4.3 |
+| `CE_LIMIT_CPU` | "2" |
+| `CE_LIMIT_MEM` | "2Gi" |
+| `CE_REQ_CPU` | "1" |
+| `CE_REQ_MEM` | "1Gi" |
+| `HTTP_PROXY` | "" |
+| `HTTPS_PROXY` | "" |
+| `NO_PROXY` | "" |
+| `http_proxy` | "" |
+| `https_proxy` | "" |
+| `no_proxy` | "" |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/core/apps/cxdp-image-config-map.yaml** ||
+| `CXDP_IMG` | ghcr.io/nokia-eda/core/cxdp:25.4.3 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/eda-toolbox/eda-toolbox-deployment.yaml** ||
+| `EDA_TOOLBOX_IMG` | ghcr.io/nokia-eda/core/eda-toolbox:25.4.3 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/engine-config/engineconfig.yaml** ||
+| `CLUSTER_MEMBER_NAME` | engine-config |
+| `GIT_SERVERS` | Non scalar value, see the file for details. |
+| `EXT_DOMAIN_NAME` | "" |
+| `EXT_HTTP_PORT` | 0 |
+| `EXT_HTTPS_PORT` | 0 |
+| `EXT_IPV4_ADDR` | "" |
+| `EXT_IPV6_ADDR` | "" |
+| `INT_HTTP_PORT` | 80 |
+| `INT_HTTPS_PORT` | 443 |
+| `GIT_REPO_CHECKPOINT` | /eda/customresources.git |
+| `GIT_REPO_APPS` | /eda/apps.git |
+| `GIT_REPO_USER_SETTINGS` | /eda/usersettings.git |
+| `GIT_REPO_SECURITY` | /eda/credentials.git |
+| `GIT_REPO_IDENTITY` | /eda/identity.git |
+| `ASVR_IMG` | ghcr.io/nokia-eda/core/artifact-server:25.4.3 |
+| `ASVR_LIMIT_CPU` | "" |
+| `ASVR_LIMIT_MEM` | "" |
+| `ASVR_REQ_CPU` | "" |
+| `ASVR_REQ_MEM` | "" |
+| `BSVR_IMG` | ghcr.io/nokia-eda/core/bootstrap-server:25.4.3 |
+| `BSVR_LIMIT_CPU` | "" |
+| `BSVR_LIMIT_MEM` | "" |
+| `BSVR_REQ_CPU` | "" |
+| `BSVR_REQ_MEM` | "" |
+| `ECC_IMG` | ghcr.io/nokia-eda/core/cert-checker:25.4.3 |
+| `ECC_LIMIT_CPU` | "" |
+| `ECC_LIMIT_MEM` | "" |
+| `ECC_REQ_CPU` | "" |
+| `ECC_REQ_MEM` | "" |
+| `CX_IMG` | ghcr.io/nokia-eda/core/cx:25.4.3 |
+| `CX_LIMIT_CPU` | "" |
+| `CX_LIMIT_MEM` | "" |
+| `CX_REQ_CPU` | "" |
+| `CX_REQ_MEM` | "" |
+| `CXCLUSTER_ISAGENT` | false |
+| `CXCLUSTER_ADDR` | eda-cx-standalone |
+| `CXCLUSTER_PORT` | 52200 |
+| `EMS_IMG` | ghcr.io/nokia-eda/core/metrics-server:25.4.3 |
+| `EMS_LIMIT_CPU` | "" |
+| `EMS_LIMIT_MEM` | "" |
+| `EMS_REQ_CPU` | "" |
+| `EMS_REQ_MEM` | "" |
+| `NPP_IMG` | ghcr.io/nokia-eda/core/npp:25.4.3 |
+| `NPP_LIMIT_CPU` | "" |
+| `NPP_LIMIT_MEM` | "" |
+| `NPP_REQ_CPU` | "" |
+| `NPP_REQ_MEM` | "" |
+| `SE_IMG` | ghcr.io/nokia-eda/core/state-engine:25.4.3 |
+| `SE_REPLICAS` | 1 |
+| `SE_LIMIT_CPU` | "" |
+| `SE_LIMIT_MEM` | "" |
+| `SE_REQ_CPU` | "" |
+| `SE_REQ_MEM` | "" |
+| `SA_IMG` | ghcr.io/nokia-eda/core/state-aggregator:25.4.3 |
+| `SA_REPLICAS` | 1 |
+| `SA_LIMIT_CPU` | "" |
+| `SA_LIMIT_MEM` | "" |
+| `SA_REQ_CPU` | "" |
+| `SA_REQ_MEM` | "" |
+| `SC_IMG` | ghcr.io/nokia-eda/core/state-controller:25.4.3 |
+| `SC_LIMIT_CPU` | "" |
+| `SC_LIMIT_MEM` | "" |
+| `SC_REQ_CPU` | "" |
+| `SC_REQ_MEM` | "" |
+| `FE_IMG` | ghcr.io/nokia-eda/core/flow-engine:25.4.3 |
+| `FE_LIMIT_CPU` | "" |
+| `FE_LIMIT_MEM` | "" |
+| `FE_REQ_CPU` | "" |
+| `FE_REQ_MEM` | "" |
+| `API_IMG` | ghcr.io/nokia-eda/core/api-server:25.4.3 |
+| `API_REPLICAS` | 1 |
+| `API_SVC_ENABLE_LB_NODE_PORTS` | false |
+| `API_LIMIT_CPU` | "" |
+| `API_LIMIT_MEM` | "" |
+| `API_REQ_CPU` | "" |
+| `API_REQ_MEM` | "" |
+| `ASC_IMG` | ghcr.io/nokia-eda/core/appstore-server:25.4.3 |
+| `ASC_LIMIT_CPU` | "" |
+| `ASC_LIMIT_MEM` | "" |
+| `ASC_REQ_CPU` | "" |
+| `ASC_REQ_MEM` | "" |
+| `ASF_IMG` | ghcr.io/nokia-eda/core/appstore-flow:25.4.3 |
+| `TM_IMG` | ghcr.io/nokia-eda/core/testman:25.4.3 |
+| `TM_LIMIT_CPU` | "" |
+| `TM_LIMIT_MEM` | "" |
+| `TM_REQ_CPU` | "" |
+| `TM_REQ_MEM` | "" |
+| `KC_IMG` | ghcr.io/nokia-eda/core/eda-keycloak:25.4.3 |
+| `KC_LIMIT_CPU` | "" |
+| `KC_LIMIT_MEM` | "" |
+| `KC_REQ_CPU` | "" |
+| `KC_REQ_MEM` | "" |
+| `PG_IMG` | ghcr.io/nokia-eda/core/eda-postgres:25.4.3 |
+| `PG_LIMIT_CPU` | "" |
+| `PG_LIMIT_MEM` | "" |
+| `PG_REQ_CPU` | "" |
+| `PG_REQ_MEM` | "" |
+| `LLM_API_KEY` | "" |
+| `LLM_MODEL` | gpt-4o |
+| `SIMULATE` | true |
+| `SINGLESTACK_SVCS` | false |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/namespaces/eda.yaml** ||
+| `EDA_USER_NAMESPACE` | eda |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/secrets/identity-realm-auth.yaml** ||
+| `SECRET_EDA_ADMIN_USERNAME` | YWRtaW4= |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/secrets/keycloak-admin-secret.yml** ||
+| `SECRET_KC_ADMIN_USERNAME` | YWRtaW4= |
+| `SECRET_KC_ADMIN_PASSWORD` | YWRtaW4= |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-base/secrets/postgres-db-secret.yml** ||
+| `SECRET_PG_DB_USERNAME` | cG9zdGdyZXM= |
+| `SECRET_PG_DB_PASSWORD` | cGFzc3dvcmQ= |
+////
+
+//// tab | eda-kpt-playground
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/allocations/asn-pool.yaml** ||
+| `EDA_USER_NAMESPACE` | eda |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/cx/cx-cxdp-init.yaml** ||
+| `EDA_CORE_NAMESPACE` | eda-system |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/srlinux-ghcr-24.10.1/engine_v1_nodeprofile_srlinux_24.10.1.yaml** ||
+| `SRL_24_10_1_GHCR` | ghcr.io/nokia/srlinux:24.10.1-492 |
+| `CORE_IMG_CREDENTIALS` | core |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/srlinux-ghcr-24.10.1/llm-embeddings-db-srlinux-24.10.1.yaml** ||
+| `LLM_DB_REMOTE_URL` | https://github.com/nokia-eda/llm-embeddings/releases/download/nokia-srl-v24.10.1/llm-embeddings-srl-24-10-1.tar.gz |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/srlinux-ghcr-24.10.1/yang-srlinux-24.10.1.yaml** ||
+| `YANG_REMOTE_URL` | https://github.com/nokia/srlinux-yang-models/releases/download/v24.10.1/srlinux-24.10.1-492.zip |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/srlinux-ghcr-24.10.2/engine_v1_nodeprofile_srlinux_24.10.2.yaml** ||
+| `SRL_24_10_2_GHCR` | ghcr.io/nokia/srlinux:24.10.2-357 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/srlinux-ghcr-24.10.3/engine_v1_nodeprofile_srlinux_24.10.3.yaml** ||
+| `SRL_24_10_3_GHCR` | ghcr.io/nokia/srlinux:24.10.3-201 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/srlinux-ghcr-24.10.4/engine_v1_nodeprofile_srlinux_24.10.4.yaml** ||
+| `SRL_24_10_4_GHCR` | ghcr.io/nokia/srlinux:24.10.4-244 |
+
+| Name | Current Value |
+|------|---------------|
+| **eda-kpt-playground/srlinux-ghcr-25.3.2/engine_v1_nodeprofile_srlinux_25.3.2.yaml** ||
+| `SRL_25_3_2_GHCR` | ghcr.io/nokia/srlinux:25.3.2-312 |
+////
+///
+
+If you need to customize the installation besides the parameters provided in the `prefs.mk` file, you should create the YAML file with the Kpt setters key/value pairs that follows the Kpt setters format like this:
+
+```yaml title="<code>my-setters.yml</code>"
+apiVersion: v1
+kind: ConfigMap #(1)!
+metadata:
+  name: my-setters
+data:
+  GOGS_REPLICA_PV_CLAIM_SIZE: 10Gi #(2)!
+  # add more setters if required
+```
+
+1. The setters file resembles a K8s ConfigMap resource, but it is not applied to your cluster, it is only used by the kpt tool to read the values from it.
+2. The setter's key must match the name of the setter variable in the manifest file.
+
+Now that you have your setters file with the necessary values, you should set the path to it in the preferences file:
+
+```makefile
+KPT_SETTERS_FILE := my-setters.yml
+```
+
+And that's it! The kpt will read the values from the setters file and apply them to the manifests when you run the installation commands.
 
 ## Installing Nokia EDA
 

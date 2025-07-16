@@ -174,4 +174,4 @@ Check the following to ensure your cluster is healthy:
 * No transaction failures exist.
 * All cluster members are synchronized.
 
-[^1]: see [Installation customization](../../software-install/customize-install.md) for more details
+[^1]: see [Installation customization](../../software-install/deploying-eda/installing-the-eda-application.md#customizing-the-installation) for more details

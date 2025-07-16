@@ -18,4 +18,4 @@ There are several non-production deployment options that can be used to run and 
 
 :   Deploy EDA Playground in a Kubernetes environment running on your personal Windows machine, be it a laptop or a desktop.
 
-You can also customize your EDA installation following the [Installation customization](../customize-install.md) guide. This will provide you with the details on how to manipulate the kpt packages to fit your specific needs and design.
+You can also customize your EDA installation following the [Installation customization](../deploying-eda/installing-the-eda-application.md#customizing-the-installation) guide. This will provide you with the details on how to manipulate the kpt packages to fit your specific needs and design.
