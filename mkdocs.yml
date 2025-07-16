@@ -197,8 +197,8 @@ plugins:
 
 # Customization
 extra:
-  eda_version: "25.4.1" # current EDA version (provided without the v prefix)
-  srl_version: "24.10.4" # latest SRL version for the current EDA version
+  eda_version: "25.8.1" # current EDA version (provided without the v prefix)
+  srl_version: "25.7.1" # latest SRL version for the current EDA version
   social:
     - icon: nokia/N-white
       link: https://www.nokia.com/data-center-networks/data-center-fabric/event-driven-automation/
