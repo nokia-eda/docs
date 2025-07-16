@@ -33,7 +33,6 @@ nav:
           - Windows (WSL): software-install/non-production/wsl.md
           - KinD: software-install/non-production/kind.md
           - software-install/exposing-ui-api.md
-          - software-install/customize-install.md
   - User guide:
       - Queries: user-guide/queries.md
       - Topologies: user-guide/topologies.md
