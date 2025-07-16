@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:140.0) Gecko/20100101 Firefox/140.0" version="28.0.4" pages="2">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:140.0) Gecko/20100101 Firefox/140.0" version="28.0.5" pages="2">
   <diagram name="[0] high level setup" id="tJziRCqHFudNewLzHaw2">
-    <mxGraphModel dx="1072" dy="1315" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#4d5766" math="0" shadow="0">
+    <mxGraphModel dx="613" dy="751" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#4d5766" math="0" shadow="0">
       <root>
         <mxCell id="qbExKh2GQzYHgT6TWYTY-0" />
         <mxCell id="qbExKh2GQzYHgT6TWYTY-1" parent="qbExKh2GQzYHgT6TWYTY-0" />
@@ -13,7 +13,7 @@
         <mxCell id="P-K8g6husN1xDYQWRV40-4" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;dashed=1;strokeColor=#98A2AE;arcSize=3;connectable=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;" parent="qbExKh2GQzYHgT6TWYTY-1" vertex="1">
           <mxGeometry x="535" y="685" width="362" height="252" as="geometry" />
         </mxCell>
-        <mxCell id="P-K8g6husN1xDYQWRV40-5" value="&lt;b&gt;Try EDA &lt;/b&gt;environment" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=4.22;indent=29.33;topLeftStyle=rounded;topRightStyle=rounded;strokeColor=#98a2ae;fillColor=#BEC8D2;labelPosition=center;align=center;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#FFFFFF;fontSize=16;" parent="qbExKh2GQzYHgT6TWYTY-1" vertex="1">
+        <mxCell id="P-K8g6husN1xDYQWRV40-5" value="&lt;b&gt;Try EDA &lt;/b&gt;environment" style="verticalLabelPosition=middle;verticalAlign=middle;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=4.22;indent=29.33;topLeftStyle=rounded;topRightStyle=rounded;strokeColor=#98a2ae;fillColor=#BEC8D2;labelPosition=center;align=center;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#1B1D23,#000000);fontSize=16;" parent="qbExKh2GQzYHgT6TWYTY-1" vertex="1">
           <mxGeometry x="463" y="577" width="488" height="26" as="geometry" />
         </mxCell>
         <mxCell id="P-K8g6husN1xDYQWRV40-6" value="" style="group;aspect=fixed;strokeColor=none;" parent="qbExKh2GQzYHgT6TWYTY-1" vertex="1" connectable="0">
