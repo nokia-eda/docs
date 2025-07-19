@@ -1,6 +1,6 @@
 # Topologies
 
-Topologies in EDA cover a lot of ground. Not only do they define the design of a physical or simulated network, they also drive the visualization of various overlays in the EDA UI.
+Topologies in EDA cover a lot of ground. Not only do they define the design of a physical or a virtual network used as a [Digital Twin](../digital-twin/index.md), they also drive the visualization of various overlays in the EDA UI.
 
 Let's start with a familiar role of a topology - the network topology.
 
