@@ -397,8 +397,8 @@ div.highlight:hover .md-code__nav:hover {
   scrollbar-width: unset;
 }
 
-/* Wrap new scrollbar properties in @supports rule for browsers without `::-webkit-scrollbar-*` support */
-/* This way chrome won't override `::-webkit-scrollbar-*` selectors */
+/* Wrap new scrollbar properties in @supports rule for browsers without `::-webkit-scrollbar` support */
+/* This way chrome won't override `::-webkit-scrollbar` selectors */
 /* https://developer.chrome.com/docs/css-ui/scrollbar-styling */
 @supports not selector(::-webkit-scrollbar) {
 
@@ -465,4 +465,24 @@ div.highlight:hover .md-code__nav:hover {
     radial-gradient(var(--md-steps-border-color) 10%, transparent 10%);
   background-position: 0px 0px;
   background-size: 10px 10px;
+}
+
+/* quote styling */
+[dir="ltr"] .md-typeset blockquote {
+  position: relative;
+  padding-left: 1rem;
+  border: none;
+  border-left: none;
+
+}
+
+[dir="ltr"] .md-typeset blockquote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  bottom: 0.1rem;
+  width: 0.15em;
+  border-radius: 0.25rem;
+  background: linear-gradient(to bottom, var(--md-default-fg-color--lighter), var(--md-primary-fg-color));
 }
