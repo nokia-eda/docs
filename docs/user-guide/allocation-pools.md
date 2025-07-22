@@ -24,6 +24,9 @@ EDA offers four types of allocation pools:
 3. **IP Addresses + Masks**
     * Specify an IPv4 or IPv6 subnet including mask in CIDR format (e.g. `192.0.2.0/24`)
     * Return an address from the subnet on allocation, with mask information (e.g. `192.0.2.1/24`)
+    * By default, EDA will not allocate the first and last address in the subnet.
+      * To enable allocatation of the first address, set 'Allocate Network Address' to True.
+      * To enable allocation of the last address, set 'Allocate Broadcast Address' to True.
 4. **Subnets**
     * Specify an IPv4 or IPv6 subnet including mask in CIDR format (e.g. `192.0.2.0/24`), and a subnet length (e.g. `31`)
     * Return a subnet of the specified length from the provided subnet on allocation, with mask information (e.g. `192.0.2.8/31`)
