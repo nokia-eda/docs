@@ -46,7 +46,9 @@ We will define the API of our declarative apps exactly like in Kubernetes - by c
 
 Install Go SDK by following [the upstream installation instructions](https://go.dev/doc/install).
 
-The minimum Go version required is `1.22`.
+/// note
+The minimum required Go version is `1.24.0`.
+///
 ///
 
 /// tab | `python`
