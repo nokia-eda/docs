@@ -142,4 +142,74 @@ spec:
 
 ///
 
+## Configuring deploy targets
+
+The `edabuilder deploy` command is customisable through a configuration file located at `~/.config/edabuilder/config.yaml`[^2]. It allows a user to provide the so called _deploy targets_ - the custom OCI registry and application catalog pairs that a user can select from when deploying an app. The configuration file is structured as follows:
+
+```yaml
+# a map of named deploy targets
+deploy-targets:
+  internal-target: # first deploy target
+    # Is authentication required to read from both registry and catalog?
+    # When set to false or omitted, indicates that the registry/catalog are public
+    read-authentication: false
+    registry:
+      # URL of your registry, i.e. [<scheme>]<fqdn>[:port]
+      url: corporateregistry.internal
+      # Whether to skip TLS verification for the registry [default: false]
+      skip-tls-verify: true
+    catalog:
+      # URL of your catalog repo, i.e. [<scheme>]<fqdn>[:port]/<repository>.git
+      url: https://gitlab.mycorp.internal/dev/eda-apps.git
+      skip-tls-verify: true
+ 
+  external-target: # second deploy target
+    registry:
+       url: ghcr.io
+    catalog:
+      url: https://github.com/someorg/eda-apps.git
+
+# the name of the currently active deploy target
+# in-cluster is a special value that indicates the in-cluster deploy target
+current-deploy-target: in-cluster
+```
+
+The deployment targets are defined in the `config.yaml` file in the edabuilder config directory using the following top level keys:
+
+* `deploy-targets` - a YAML object that is a map of deploy target configurations.
+* `current-deploy-target` - a string value that matches one of the configured deploy-target names. Defaults to in-cluster which is a reserved name for a deploy target being the EDA cluster itself, with the dev registry and dev catalog deployed in it.
+
+### `in-cluster` deploy target
+
+The default deploy target is the `in-cluster` target, which is a reserved name for the OCI registry and Catalog deployed by `edabuilder` in the EDA cluster itself. The `edabuilder deploy` command will use this target by default if no other target is specified.
+
+### Current deploy target
+
+After you have added the desired deploy targets to the `config.yaml` file, you can set the current deploy target by running either by specifying its name in the configuration file, or using the CLI command:
+
+```bash
+edabuilder deploy use-target <target-name>
+```
+
+To reset the current deploy target to the default `in-cluster` target, you can run:
+
+```bash
+edabuilder deploy reset-target
+```
+
+### Read authentication
+
+Both the catalog and registry may require authentication for cloning or fetching. Private Git repositories and private registries always require authentication. This means that, for the app store to pull the corresponding artifacts, a secret containing the necessary authentication or token data must be provided.
+
+However, when using public registries and catalogs, users do not need to provide authentication data for read operations.
+
+To provide this flexibility, the `read-authentication` boolean setting is available at the deploy-target level.
+
+* When set to `false` (or when not present), both the catalog and registry are considered public, and reads can be performed without authentication.
+* When set to `true`, authentication is required to read from the registry and catalog. In this case, during the `deploy` command, a prompt will appear asking if you want `edabuilder` to configure the associated secrets using authentication data previously provided via the `edabuilder login registry` or `edabuilder login catalog` commands (stored in `~/.config/edabuilder/auth.json`[^3]).
+
+If you choose "Yes," the matching authentication data is provisioned as a Kubernetes secret and referenced in the corresponding catalog or registry. If you select "No," no secrets are configured, and a prompt will inform you that these secrets should be created manually.
+
 [^1]: For more information on packaging, publishing and iteratively deploying apps, refer to [Build and Publish](build-publish.md)
+[^2]: You can provide a custom location for this file by setting the `EDABUILDER_CONFIG` environment variable.
+[^3]: You can provide a custom location for this file by setting the `EDABUILDER_AUTH_CONFIG` environment variable.
