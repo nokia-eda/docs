@@ -856,13 +856,27 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     make download-pkgs
     ```
 
-3. Set up the [MetalLB](https://metallb.io/) environment for VIP management.
+3. Set the desired EDA version
+
+    To install a specific version of EDA instead of the latest version, set the `EDA_CORE_VERSION` and `EDA_APPS_VERSION` variables in the [preferences file](#preferences-file). For example, to choose the 24.12.4 version of EDA, add the following line to the `prefs.mk` file:
+
+    ```bash
+    EDA_CORE_VERSION=24.12.4
+    EDA_APPS_VERSION=24.12.4
+    ```
+
+    /// admonition | Note
+        type: subtle-note
+    In the current release, both variables must be set to the same version.
+    ///
+
+4. Set up the [MetalLB](https://metallb.io/) environment for VIP management.
 
     ```bash
     make metallb
     ```
 
-4. Install the necessary external packages.
+5. Install the necessary external packages.
 
     ```bash
     make install-external-packages
@@ -873,19 +887,19 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     If this command exits with an error, wait 30 seconds and try again. Sometimes Kubernetes is a bit slower in reconciling the change than the command waits for.
     ///
 
-5. Change the eda-git Kubernetes service to a ClusterIP service instead of a LoadBalancer type.
+6. Change the eda-git Kubernetes service to a ClusterIP service instead of a LoadBalancer type.
 
     ```bash
     kubectl -n eda-system patch service eda-git -p '{"spec": {"type": "ClusterIP"}}'
     ```
 
-6. Generate the EDA core configuration.
+7. Generate the EDA core configuration.
 
     ```bash
     make eda-configure-core
     ```
 
-7. Install EDA core components.
+8. Install EDA core components.
 
     ```bash
     make eda-install-core
@@ -896,13 +910,13 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     If the command hangs for a long time (>5 minutes) on "reconcile pending" for a workflow definition, cancel the command and try again; KPT is designed to handle these cases. This can happen occasionally depending on the Kubernetes cluster.
     ///
 
-8. Verify that the EDA Config Engine is up and running.
+9. Verify that the EDA Config Engine is up and running.
 
     ```bash
     make eda-is-core-ready
     ```
 
-9. Install all the standard EDA apps.
+10. Install all the standard EDA apps.
 
     This step can take approximate 5 to 15 minutes, depending on your connectivity.
 
@@ -910,7 +924,7 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     make eda-install-apps
     ```
 
-10. Bootstrap EDA.
+11. Bootstrap EDA.
 
     Bootstrapping will create base resources into the EDA cluster, such as IP pools.
 
@@ -918,7 +932,7 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     make eda-bootstrap
     ```
 
-11. Configure two-networks deployment.
+12. Configure two-networks deployment.
 
     If your deployment uses two networks, create a second VIP pool for the OAM VIP address.
 
@@ -932,7 +946,7 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     make eda-create-api-lb-svc API_LB_POOL_NAME=pool-nb
     ```
 
-12. Optional: Deploy an example topology.
+13. Optional: Deploy an example topology.
 
     If you configured EDA to manage the simulated network (Digital Sandbox), you can load an example topology that will be instantiated as virtual simulators in the same EDA cluster by running:
 
