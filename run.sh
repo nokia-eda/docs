@@ -101,7 +101,7 @@ function build-version {
 
 # set the default version in the __versioned-docs__ branch to the specified version.
 function set-default-version {
-  ${MIKE_CMD} set-default -b ${MIKE_BRANCH_NAME} "$@"
+  ${MIKE_CMD} set-default -b ${MIKE_BRANCH_NAME} --allow-empty "$@"
 }
 
 # serve the versioned docs from the __versioned-docs__ branch from a remote repository.
