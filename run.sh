@@ -86,6 +86,17 @@ function list-versions {
 # this operation does not push the changes to the remote and only modifies the local repository.
 function build-version {
   ${MIKE_CMD} deploy -b ${MIKE_BRANCH_NAME} --update-aliases "$@"
+
+  # copy the 404 page to the root of the site
+  # see https://github.com/jimporter/mike/issues/248
+  CUR_BRANCH=$(git branch --show-current)
+  git config --global user.email "nokia-eda-bot@eda.nokia.com"
+  git config --global user.name "nokia-eda-bot"
+  git checkout ${MIKE_BRANCH_NAME}
+  cp $1/404.html 404.html
+  git add 404.html
+  git diff --cached --quiet || git commit -m "Copy 404 page to root for version $1"
+  git checkout ${CUR_BRANCH}
 }
 
 # set the default version in the __versioned-docs__ branch to the specified version.
