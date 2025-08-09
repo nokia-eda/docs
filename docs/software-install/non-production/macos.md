@@ -163,14 +163,11 @@ make kind
 
 When running docker/k8s on a mac we have some layered networking to deal with, as the k8s cluster runs in a VM.
 
-First, we need to make record of the following variables:
+First, we need to set the `EXT_IPV4_ADDR` and/or `EXT_IPV6_ADDR` variables to the IP address of the cluster node. You can find these addresses by running the following command:
 
-* `EXT_DOMAIN_NAME`: to the domain name or IP of the k8s cluster node (assuming you're running a single node cluster)
-* `EXT_IPV4_ADDR` and/or `EXT_IPV6_ADDR`: set to the IP address of the cluster node. You can get these addresses in the output of:
-
-    ```shell
-    kubectl get nodes -o jsonpath='{.items[0].status.addresses}'
-    ```
+```shell
+kubectl get nodes -o jsonpath='{.items[0].status.addresses}'
+```
 
 And also set a pair of no proxy variables set to the cluster cidr of your cluster. You can get it with:
 
@@ -181,7 +178,6 @@ kubectl get nodes -o jsonpath='{.items[0].spec.podCIDR}'
 And once all the variables are known, you can start the installation. If you are running OrbStack, you can use the following command verbatim to install EDA:
 
 ```shell
-EXT_DOMAIN_NAME=eda-api.k8s.orb.local \
 EXT_IPV4_ADDR=198.19.249.2 \
 EXT_IPV6_ADDR=fd07:b51a:cc66::2 \
 EXT_HTTPS_PORT=443 \

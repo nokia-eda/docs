@@ -39,17 +39,8 @@ You should be able to see "Containerlab" as a program in your start menu, and by
 
 ## EDA installation
 
-Once you are in the shell of a chosen WSL distributive, proceed with the EDA installation steps as laid out on the [Try EDA page](../../getting-started/try-eda.md). The only important difference is the value of the `EXT_DOMAIN_NAME` variable that the setup script will use to configure the access to the EDA instance.
-
-With WSL you may install the EDA playground using the `localhost` value as your `EXT_DOMAIN_NAME`, for example the Step 5 from the [Try EDA page](../../getting-started/try-eda.md) would look like this:
-
-```shell
-export EXT_DOMAIN_NAME=localhost
-make try-eda
-```
+Once you are in the shell of a chosen WSL distributive, proceed with the EDA installation steps as laid out on the [Try EDA page](../../getting-started/try-eda.md).
 
 ## UI/API access
 
 Once the installation of the EDA Playground is complete, you can start the UI/API port forward as outlined in Step 6 from the [Try EDA page](../../getting-started/try-eda.md).
-
-If you used the `localhost` as your `EXT_DOMAIN_NAME` value, you can access the UI/API using the `https://localhost:9443` URL.

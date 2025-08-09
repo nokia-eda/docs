@@ -49,13 +49,11 @@ Clone the [EDA Playground repository](https://github.com/nokia-eda/playground) i
 SIMULATE = false
 ```
 
-Set other installation parameters in the `prefs.mk` file as explained in the [Try EDA section](../getting-started/try-eda.md) and deploy EDA:
+And start deploying EDA:
 
 ```bash
-make try-eda #(1)!
+make try-eda
 ```
-
-1. The necessary installation parameters like `EXT_DOMAIN_NAME` in this case are provided in the preferences file. See [Try Eda Like a Pro](../blog/posts/2024/try-eda-pro.md) post to learn some neat installation tricks.
 
 With the disabled simulation mode, EDA will be installed without the `eda-cx` deployment present and no topology loaded.
 
