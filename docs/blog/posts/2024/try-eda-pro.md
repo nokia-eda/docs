@@ -23,7 +23,6 @@ But as you build up your EDA experience, you may find yourself eager to step off
 Most likely you started your EDA journey by following our [quickstart](../../../getting-started/try-eda.md) guide and deployed your playground environment like this:
 
 ```shell
-export EXT_DOMAIN_NAME=${DNS-name-or-IP} \
 make try-eda
 ```
 
@@ -166,11 +165,3 @@ Instead, you can set the environment variable under the same key `LLM_API_KEY` i
 When we deploy a Kind cluster for EDA Playground, the k8s API server address is kept at its default value of `127.0.0.1`. The localhost nature of the address results in the k8s API server being inaccessible from outside the machine you run the cluster on.
 
 We noticed that many users would like to spin up playground on a remote servers and access the k8s API server via a network. To support this use case, we added the `KIND_API_SERVER_ADDRESS` variable to the preferences file which allows you to set the non localhost IP address for the k8s API server. This effectively allows you to access the k8s API server from outside the machine you run the cluster on.
-
-## More Permanent UI Access
-
-And the last tip for today concerns the UI. Originally, you access the UI by forwarding the port of the `eda-api` service to your local machine using the `make start-ui-port-forward` command. This works great, but a slight inconvenience is that you need to keep your session open to keep the port forwarding alive.
-
-In pursue of a more permanent port forwarding solution, we added the `enable-ui-port-forward-service` make target that will create a `eda-ui.service` systemd service that uses the same port forwarding logic, but will run in the background. Run this target once, and then you can access the UI anytime you want.
-
-When your redeploy the cluster without changing the `EXT_HTTPS_PORT` you may just restart the service to get it up and running again.
