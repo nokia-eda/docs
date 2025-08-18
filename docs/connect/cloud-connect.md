@@ -14,7 +14,7 @@ the topology based on the LLDP information arriving in the fabric switches, it c
 
 ## Components
 
-`The Connect solution is built around a central service, called the Cloud Connect Core, and plugins for each supported cloud environment.
+The Connect solution is built around a central service, called the Cloud Connect Core, and plugins for each supported cloud environment.
 
 The Connect Core is responsible for managing the plugins and the relation between Connect Interfaces (compute interfaces) and EDA Interfaces (Fabric
 Interfaces or Edge-Links). It keeps track of the LLDP information of EDA Interfaces and correlates that back to the Connect Interfaces created by
@@ -24,7 +24,7 @@ Connect Plugins are responsible for tracking the state of compute nodes, their p
 environment and their correlation to the physical network interfaces. As applications create networks and virtual machines or containers, the plugins
 will inform Connect Core of the changes needed to the fabric. Plugins will also create or manage EDA BridgeDomains to make sure the correct
 sub-interfaces are created for the application connectivity.
-`
+
 
 ## Plugins Overview
 
@@ -49,11 +49,21 @@ Connect supports the following features:
 
 ## Installation of Cloud Connect Core
 
-Cloud Connect is an Application in the EDA App eco-system. It can be easily installed using the EDA Store UI.
+Cloud Connect is an Application in the EDA App ecosystem. It can be easily installed using the EDA Store UI.
 
 ### Installation using Kubernetes API
 
 If you prefer installing the Connect Core using the Kubernetes API, you can do so by creating the following Workflow resource:
+
+/// details | Connect Core dependencies
+
+When installing through the UI dependencies are automatically resolved, this is not the case through the API. Make sure all dependencies of the Connect Core app are installed before executing the below kubectl command.
+
+When the dependencies are not satisfied, an error like the following will be added to the status of the AppInstaller object: 
+
+```app requirements validation failed: connect.nokia requires interfaces.nokia, but interfaces.nokia is not present```
+
+///
 
 /// tab | YAML Resource
 
@@ -72,9 +82,30 @@ EOF
 
 ///
 
+### Plugin Configuration Options
+
+When installing Cloud Connect via the EDA UI, users are prompted to configure the application using the following options. These settings control resource limits and behavior of the Connect controllers:
+
+| Configuration Option | Description | Default Value |
+|----------------------|-------------|----------------|
+| **Interface Controller GraceTimer** (`interfaceControllerGraceTimer`) | The grace period (in seconds) used by the Interface Controller before acting on missing LLDP data. | `10` |
+| **Interface Controller Pod CPU Limit** (`interfaceControllerCpuLimit`) | CPU limit for the connect-interface-controller pod. | `1` |
+| **Interface Controller Pod Memory Limit** (`interfaceControllerMemoryLimit`) | Memory limit for the connect-interface-controller pod. | `2Gi` |
+| **Plugin Controller Pod CPU Limit** (`pluginControllerCpuLimit`) | CPU limit for the connect-plugin-controller pod. | `500m` |
+| **Plugin Controller Pod Memory Limit** (`pluginControllerMemoryLimit`) | Memory limit for the connect-plugin-controller pod. | `128Mi` |
+
+These options can be adjusted during installation to meet specific performance or resource requirements.
+
+/// details | Settings are an advanced use case
+    type: warning
+
+These settings are intended for advanced users. Misconfiguration can lead to system instability or failure. Proceed with caution and ensure changes are validated in a test environment before applying them to production.
+///
+
+
 ## Resources
 
-Connect is based on a pluggable architecture. The Cloud Connect core installation is a collection of controllers responsible for bridging the
+Connect uses a pluggable architecture. The Cloud Connect core installation is a collection of controllers responsible for bridging the
 hypervisor world with the fabric world. It is the plugin that is responsible for introspecting the cloud environment.
 
 The following Custom Resources are involved:
@@ -139,10 +170,7 @@ This way, only those subinterfaces that are truly necessary are configured in th
 
 ## Namespace support
 
-The EDA Connect service supports multiple namespaces. Multiple namespaces are supported on the level of the plugin.
-
-A plugin is a namespaced object, meaning that it must be created as part of a specific namespace. That plugin will only have access to the fabrics,
-services and interfaces of that namespace and cannot use objects from other namespaces.
+The EDA Connect service supports multiple namespaces. Each plugin is namespaced and can only access resources within its namespace.
 
 This also means that a compute cluster can only belong to a single namespace, and cannot span multiple namespaces. This is to be expected as compute
 clusters belong to a single fabric, and a fabric is part of a single namespace.
@@ -154,7 +182,7 @@ managed by Connect. This Connect UI follows the same design as the regular EDA U
 resources available.
 
 /// details | Do not create new resources manually, as this could interfere with the behavior of the plugins.
-type: warning
+    type: warning
 
 If you have made changes manually, an audit will revert them.
 Changes should be made through the Cloud orchestration platform.
@@ -167,7 +195,7 @@ Integration modes define how plugins create resources in EDA for use by the appl
 Connect supports two integration modes:
 
 *CMS-managed mode*
-: Networking concepts of the CMS are used to create new services in EDA.
+: Networking concepts of the CMS (Cloud Management System) are used to create new services in EDA.
 
 *EDA-managed mode*
 : Network services are created in EDA and the networking concepts in the CMS are linked or associated with these pre-existing services.
@@ -197,7 +225,7 @@ Connect service know not to create their own resources, but to use the pre-creat
 
 ## LLDP
 
-To bridge EDA with the cloud environment, Cloud Connect uses LLDP extensively. The LLDP information is collectecd at the fabric level and streamed to
+To bridge EDA with the cloud environment, Cloud Connect uses LLDP extensively. The LLDP information is collected at the fabric level and streamed to
 EDA.
 There is also support for reversing that LLDP relationship, by having the computes collect the LLDP information.
 
@@ -209,3 +237,10 @@ When LLDP is collected at the fabric level, it is advised to disable in-hardware
 that the host operating system is sending out.[^1]
 
 [^1]: Instructions on how to disable in-hardware LLDP for Mellanox cards can be found here: https://forums.developer.nvidia.com/t/need-help-disabling-hardware-lldp-c5x-ex/294083
+
+### LLDP gracetimer
+
+
+To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a gracetimer is applied when LLDP information is collected at the fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The gracetimer is not applicable when LLDP data is collected at hypervisor level.
+The gracetimer can be configured when installing Connect using the _interfaceControllerGraceTimer_ setting, the default is 10 seconds.
+
