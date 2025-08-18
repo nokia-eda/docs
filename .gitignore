@@ -1,6 +1,7 @@
 .cache
 .vscode
 .idea
+.DS_Store
 
 # in case we run install guide from the docs repo
 kpt
