@@ -1,16 +1,12 @@
-apiVersion: core.eda.nokia.com/v1
-kind: Workflow
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
 metadata:
   name: notifier-install
   namespace: eda-system
 spec:
-  type: app-installer
-  input:
-    operation: install
-    apps:
-      - app: notifier
-        catalog: eda-catalog-builtin-apps
-        vendor: nokia
-        version:
-          type: semver
-          value: v3.0.0
+  operation: install
+  apps:
+    - appId: notifier.eda.nokia.com
+      catalog: eda-catalog-builtin-apps
+      version:
+        value: v4.0.0

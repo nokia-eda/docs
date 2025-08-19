@@ -116,23 +116,17 @@ Here is an example Workflow to install some app with a custom value for the `con
      type: subtle-note
 
 ```yaml
-apiVersion: core.eda.nokia.com/v1
-kind: Workflow
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
 metadata:
   name: app-install-workflow-with-settings
   namespace: eda-system
 spec:
-  type: app-installer
-  input:
-    autoProcessRequirements:
-      - strict
-    operation: install
-    apps:
-    - app: <your-app-with-cpu-limit-setting>
+  operation: install
+  apps:
+    - appId: <your-app-with-cpu-limit-setting>
       catalog: <your catalog>
-      vendor: <your-vendor>
       version:
-        type: semver
         value: v0.0.0
       appSettings:
         controllerCpuLimit: "8"
