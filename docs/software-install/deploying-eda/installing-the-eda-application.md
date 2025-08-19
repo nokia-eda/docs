@@ -850,25 +850,22 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     make download-tools
     ```
 
-2. Download the latest packages, including the eda-kpt package.
+2. Set the desired EDA version. <small>(optional)</small>
+
+    To install a specific version of EDA instead of the latest version, set the `EDA_CORE_VERSION` and `EDA_APPS_VERSION` variables in the [preferences file](#preferences-file). For example, to choose the -{{eda_version}}- version of EDA, add the following lines to the `prefs.mk` file:
+
+    ```text
+    EDA_CORE_VERSION=-{{eda_version}}-
+    EDA_APPS_VERSION=-{{eda_version}}-
+    ```
+
+    In the current release, both variables must be set to the same version.
+
+3. Download EDA packages.
 
     ```bash
     make download-pkgs
     ```
-
-3. Set the desired EDA version
-
-    To install a specific version of EDA instead of the latest version, set the `EDA_CORE_VERSION` and `EDA_APPS_VERSION` variables in the [preferences file](#preferences-file). For example, to choose the 24.12.4 version of EDA, add the following line to the `prefs.mk` file:
-
-    ```bash
-    EDA_CORE_VERSION=24.12.4
-    EDA_APPS_VERSION=24.12.4
-    ```
-
-    /// admonition | Note
-        type: subtle-note
-    In the current release, both variables must be set to the same version.
-    ///
 
 4. Set up the [MetalLB](https://metallb.io/) environment for VIP management.
 

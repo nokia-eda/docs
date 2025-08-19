@@ -73,10 +73,17 @@ cd playground
 
 ///
 
+If you are not upgrading to the latest version, specify the version of EDA you are upgrading to with adding the following lines to the `prefs.mk` file. For example, to choose the -{{eda_version}}- version:
+
+```text
+EDA_CORE_VERSION=-{{eda_version}}-
+EDA_APPS_VERSION=-{{eda_version}}-
+```
+
 Then update the packages by executing the following command from the playground repository:
 
 ```shell
-make download-tools download-pkgs update-pkgs
+make download-tools download-pkgs
 ```
 
 ### Customizing kpt packages
