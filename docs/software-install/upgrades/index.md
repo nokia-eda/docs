@@ -88,7 +88,7 @@ make download-tools download-pkgs
 
 ### Customizing kpt packages
 
-If you have any customizations to your EDA installation, you should reapply them[^1] by setting the variables in the prefs.mk file as was done during the [installation phase](../deploying-eda/installing-the-eda-application.md#customizing-the-installation-file). Reconfigure the EDA core components using the following command:
+If you have any customizations to your EDA installation, you should reapply them[^1] by setting the variables in the prefs.mk file as was done during the [installation phase](../deploying-eda/installing-the-eda-application.md#customizing-the-installation). Reconfigure the EDA core components using the following command:
 
 ```{.shell .no-select}
 make eda-configure-core

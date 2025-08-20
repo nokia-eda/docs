@@ -203,7 +203,7 @@ This is all due to the fact that the majority of the images are running under Ro
 Depending on the tool you're using to run k8s, your method of connecting to the UI will vary.
 
 /// tab | OrbStack
-In OrbStack, the k8s services are already exposed to your by the software, making it possible to access the UI by opening https://eda-api.k8s.orb.local/ in your browser.
+In OrbStack, the k8s services are already exposed to your by the software, making it possible to access the UI by opening <https://eda-api.k8s.orb.local/> in your browser.
 
 This integration, though, will make our generic installer bark about the port being already in use when we try to setup the port-forward for the UI access at the very end of the `make try-eda` command. Please ignore this error, as OrbStack already took care of the UI access for you.
 
