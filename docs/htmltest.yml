@@ -3,7 +3,8 @@
 DirectoryPath: ./site
 IgnoreURLs:
   - fonts.gstatic.com
-
+  - https://github.com/nokia-eda/docs/edit
+  - https://eda-api.k8s.orb.local/
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreAltMissing: true
 IgnoreSSLVerify: true

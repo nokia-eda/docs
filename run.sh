@@ -68,7 +68,15 @@ function build-docs {
 
 function test-docs {
 	build-docs
-	docker run --rm -v "$(pwd)":/test wjdp/htmltest --conf ./site/htmltest.yml
+  # docker build produces root:root ownership. Claim it back for seds sake
+  sudo chown -R $USER:$USER ./site
+  # replace empty href patterns that are result of version picker script not being templated
+  # properly since we are not building with `mike` here. We replace these links with #
+  # as they are not important for link testing
+  find ./site -type f -name "*.html" -exec sed -i 's|href=\.\./[\.\/ ]*>|href="#">|g' {} +
+
+  docker run --rm -u $(id -u):$(id -g) -v "$(pwd)":/test wjdp/htmltest --conf ./site/htmltest.yml
+
 	sudo rm -rf ./site
 }
 
