@@ -64,11 +64,11 @@ To deploy the VMware vSphere plugin, complete the following tasks:
 
 ### Connect VMware vSphere Plugin App Deployment
 
-The VMware vSphere Plugin App is an Application in the EDA App eco-system. It can be easily installed using the EDA Store UI.
+The VMware vSphere Plugin App is an Application in the EDA App ecosystem. It can be easily installed using the EDA Store UI.
 
 #### Installation using Kubernetes API
 
-If you prefer installing the Connect Core using the Kubernetes API, you can do so by creating the following Workflow resource:
+If you prefer installing the Plugin using the Kubernetes API, you can do so by creating the following Workflow resource:
 
 /// tab | YAML Resource
 
@@ -109,6 +109,16 @@ EOF
 
 ///
 
+/// details | Base64 encoding
+
+Use the following command to base64 encode your username and password:
+
+```bash
+echo -n myUsernameOrPassword | base64
+```
+
+///
+
 As the VMware vSphere Plugins are managed through the operator, you can use the EDA UI to create a new `VmwarePluginInstance` resource under the *
 *System Administration > Connect > VMware Plugins** menu item.
 
@@ -132,7 +142,7 @@ EOF
 
 ///
 
-The plugin name and external ID must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'` and can only contain alpha-numerical
+The plugin name and external ID must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'` and can only contain alphanumerical
 characters and `.`, `_` and `-`. It must start with an alpha-numerical character.
 
 ## Functionality
@@ -158,9 +168,10 @@ receives:
 | VLAN-tagged distributed PortGroup events  | `VLAN`             | Each dvPG with a specific VLAN tag will have an EDA `VLAN` resource so it can be attached to the `BridgeDomain`                                             |
 | Host NIC distributed Switch Uplink events | `ConnectInterface` | Each Host NIC that gets added as an Uplink to a dvS, will trigger the creation of a `ConnectInterface` which is mapped by Connect Core to a EDA `Interface` |
 
-!!! Note "Naming limitations"
+/// warning | Naming limitations
 The uplink names must comply with the regex check of `^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]$`. It can only contain alpha-numerical characters and
-` `(space), `.`, `_`, and `-`. It must also have a length of 64 characters or less.
+` `(space), `.`, `_`, and `-`. It must also have a length of 30 characters or fewer.
+///
 
 ### LLDP
 
@@ -185,10 +196,20 @@ existing one. This allows for more advanced configuration of the application net
 To use the EDA Managed Mode follow these steps:
 
 1. Create a `BridgeDomain` in EDA with the desired settings
-2. When creating a distributed PortGroup in vCenter, configure a Custom Attribute called `ConnectBridgeDomain` and set its value to the key of the EDA
+2. When creating a distributed Port Group in vCenter, configure a Custom Attribute called `ConnectBridgeDomain` and set its value to the key of the EDA
    `BridgeDomain`.
 
-!!! Note "Both the key of the Custom Attribute and the value are case sensitive"
+/// note
+Both the key of the Custom Attribute and the value are case-sensitive
+///
+
+/// details | Global vs Distributed Port Group type of Custom Attribute
+    type: warning
+
+Make sure to create a Custom Attribute of type *Distributed Port Group* on the Port Group.
+![Distributed Port Group Custom Attributes](resources/vmware-custom-attribute.png)
+
+///
 
 You can configure multiple dvPGs with the same `BridgeDomain`.
 
@@ -205,7 +226,6 @@ crash/restart if it fails to connect. In case the credentials are incorrect, the
 * Check the raised plugin alarms.
 * Check the connectivity from the EDA cluster to vCenter.
 * Verify the credentials for vCenter.
-* Ensure the heartbeat interval is a positive integer.
 * Check the logs of the plugin pod.
 
 ### The plugin is not creating any resources in EDA
@@ -220,7 +240,7 @@ crash/restart if it fails to connect. In case the credentials are incorrect, the
 * Check the raised plugin alarms.
 * Verify the Uplinks for the dvPG in vCenter are configured as active or standby. If there are no active or standby Uplinks configured, the plugin
   will not associate any `ConnectInterface` with the `VLAN`.
-* Uplink names can only contain alpha-numerical characters and `.`, `_`, `-` and must have a length of 64 characters or less.
+* Uplink names can only contain alpha-numerical characters and `.`, `_`, `-` and must have a length of 30 characters or less.
 * VLAN Ranges are not supported on dvPGs.
 * Inspect the EDA resources, like `VLAN`, `BridgeDomain` and `ConnectInterface`.
 * Check the logs of the plugin pod.

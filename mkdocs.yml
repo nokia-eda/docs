@@ -58,10 +58,12 @@ nav:
       - Troubleshooting: connect/troubleshooting.md
       - Audit: connect/audit.md
       - OpenShift Connect Plugin: connect/openshift-plugin.md
-      - VMware vSphere Plugin: connect/vmware-plugin.md
       - OpenStack Connect Plugin:
           - OpenStack plugin: connect/openstack-plugin.md
           - CBIS Installation: connect/openstack-cbis.md
+      - VMware Plugin:
+          - VMware vSphere Plugin: connect/vmware-plugin.md
+          - VMware NSX Plugin: connect/vmware-nsx.md
   - Development:
       - Applications:
           - There's an app for that: development/apps/index.md

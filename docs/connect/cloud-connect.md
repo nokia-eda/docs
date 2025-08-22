@@ -132,6 +132,7 @@ sections:
 
 * [OpenShift Connect plugin](./openshift-plugin.md)
 * [VMware vSphere plugin](./vmware-plugin.md)
+* [VMware NSX plugin](./vmware-nsx.md)
 * [OpenStack ML2 plugin](./openstack-plugin.md)
 
 Plugins are automatically registered within the Connect service when they are deployed. Each is stored in the database with the following main
@@ -240,7 +241,6 @@ that the host operating system is sending out.[^1]
 
 ### LLDP gracetimer
 
-
-To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a gracetimer is applied when LLDP information is collected at the fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The gracetimer is not applicable when LLDP data is collected at hypervisor level.
+[To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a gracetimer is applied when LLDP information is collected at the fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The gracetimer is not applicable when LLDP data is collected at hypervisor level.
 The gracetimer can be configured when installing Connect using the _interfaceControllerGraceTimer_ setting, the default is 10 seconds.
-
+](https://github.com/nokia-eda/insiders-docs/actions)
