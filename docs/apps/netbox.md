@@ -37,8 +37,6 @@ More objects will be supported in the future.
 
 ## NetBox Configuration
 
-To enable NetBox to send updates to the EDA app
-
 ### Create a Webhook
 
 The Webhook in NetBox is triggered by the NetBox's Event Rule and allows NetBox to send updates to the EDA app.
