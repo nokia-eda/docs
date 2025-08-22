@@ -1,13 +1,13 @@
 apiVersion: appstore.eda.nokia.com/v1
 kind: AppInstaller
 metadata:
-  name: vmware-plugin
+  name: nsx-plugin
   namespace: eda-system
 spec:
   operation: install
   apps:
-    - appId: vmware.eda.nokia.com
+    - appId: nsx.eda.nokia.com
       catalog: eda-catalog-builtin-apps
       version:
         type: semver
-        value: v4.0.0
+        value: v1alpha1
