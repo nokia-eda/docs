@@ -37,11 +37,15 @@ All the API requests are handled as synchronous API requests. To make asynchrono
 
 ## Authentication
 
-For authentication and authorization, EDA uses Keycloak as its backend. Keycloak is a proven and secure solution for Identity and Access management. EDA uses Keycloak through the OpenID Connect protocol where within the UI, the user is redirected to Keycloak for authentication and then send back with the necessary tokens for the API to authenticate and verify the user as a legitimate user. This is referred to as the Standard Flow (Authorization Code Flow in the OAuth2 specifications).
+For authentication and authorization, EDA uses Keycloak as its backend. Keycloak is a proven and secure solution for Identity and Access management. EDA uses Keycloak through the OpenID Connect protocol where the authentication flow to obtain the OAuth 2.0 token is different for browser-based and non-browser-based clients:
 
-For the API, a similar workflow can be followed by using the Direct Access Grant flow (Resource Owner Password Credentials Grant in the OAuth2 specifications). In this case the API client directly authenticates with Keycloak, and uses the token received for further API calls to the EDA API. The API client is also responsible for refreshing or renewing their token.
+1. For browser-based clients, the user is redirected to Keycloak for authentication and then send back with the necessary tokens for the API to authenticate and verify the user as a legitimate user. This is referred to as the Standard Flow (Authorization Code Grant in the OAuth2 specifications [RFC 6749 4.1][oauth-rfc-ac]).
+2. For non-browser API clients, such as CLI applications, scripts, etc., the Direct Access Grant flow (Resource Owner Password Credentials Grant in the OAuth2 specifications [RFC 6749 4.5][oauth-rfc-ropc]) is used to obtain the authentication token. In this case the API client directly authenticates with Keycloak using client_secret and provides the Authorization Server with Resource Owner credentials (EDA username credentials). The Authorization Server (Keycloak) provides the client with the token that is used for further API calls to the EDA API. The API client is also responsible for refreshing or renewing their token.
 
-The authentication request requires the following fields:
+[oauth-rfc-ac]: https://datatracker.ietf.org/doc/html/rfc6749#autoid-35
+[oauth-rfc-ropc]: https://datatracker.ietf.org/doc/html/rfc6749#autoid-45
+
+The non-browser API clients authenticate against the Kecloak authorization server by providing the following parameters in the request:
 
 * `client_id`: Must be set to `eda`
 * `grant_type`: Must be set to `password`
@@ -56,7 +60,9 @@ The authentication request requires the following fields:
 
 ### Getting the `client_secret`
 
-Every EDA deployment gets a unique client secret token generated during installtion for API clients. To retrieve it, follow these steps:
+Every EDA deployment gets a unique client secret token generated during installtion. An EDA system administrator is responsible for retrieving the client secret and providing it to the application/scripts/clients that intent to interact with the EDA API server. The secret can be retrieved using Keycloak UI and Keycloak API. Below you will find different methods to obtain the client secret:
+
+/// tab | UI
 
 * Navigate to `https://{EDA_URL}/core/httpproxy/v1/keycloak` in your browser.
 * Log in with the Keycloak administrator username and password (default is `admin:admin` and can be changed[^1]).
@@ -69,27 +75,56 @@ Every EDA deployment gets a unique client secret token generated during installt
 The above steps are shown in the video:
 
 -{{video(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/447021105282122881be811df34d2de3/client-secret.mp4")}}-
+///
+/// tab | Shell script
+During the development cycle a user might want to fetch the client secret in the automated way, without resorting to the UI. The shell script below fetches the client secret using the variables defined at the top of the file:
+
+> Note, the script requires `curl` and `jq` to be installed in your environment.
+
+//// details | Shell Script
+    type: code-example
+
+```bash
+--8<-- "docs/development/api/client-secret.sh"
+```
+
+////
+If you have this script saved as a file, you can call it like this:
+
+```bash
+EDA_API_URL=https://eda.netdevops.me:9443 /tmp/clientsecret.sh
+k9NeZZK4LT6hHypzgy3djteFITEkUUaR
+```
+
+With overriding the top level parameters using the env variables.
+///
+/// tab | Ansible module
+In case you're using [Ansible collections for Nokia EDA](https://ansible.eda.dev), you can fetch the client secret using the [Utils collection](https://ansible.eda.dev/core/utils) and the `get_client_secret` module.
+///
 
 ### Getting the Access Token
 
+With the client secret obtained from the previous step, an API client can now request an access token from Keycloak. Below you will find different ways of getting the token:
+
+/// tab | curl
 An example of using `curl` to authenticate and get an access token for the EDA API. Make sure to use your own EDA URL and Keycloak client secret.
 
 ```bash
-curl -s https://${EDA_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
+curl -s https://${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   --data-urlencode 'client_id=eda' \
   --data-urlencode 'grant_type=password' \
   --data-urlencode 'scope=openid' \
-  --data-urlencode 'username=${USERNAME}' \
-  --data-urlencode 'password=${PASSWORD}' \
+  --data-urlencode 'username=${EDA_USERNAME}' \
+  --data-urlencode 'password=${EDA_PASSWORD}' \
   --data-urlencode 'client_secret=${EDA_CLIENT_SECRET}'
 ```
 
-/// details | Example output parsed using `jq`
+//// details | Example output parsed using `jq`
     type: note
 
 ```bash
-curl -s https://${EDA_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
+curl -s https://${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   --data-urlencode 'client_id=eda' \
   --data-urlencode 'grant_type=password' \
@@ -110,6 +145,10 @@ curl -s https://${EDA_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid
 }
 ```
 
+////
+///
+/// tab | Ansible
+In case you're using [Ansible collections for Nokia EDA](https://ansible.eda.dev), you can fetch the client secret using the [Utils collection](https://ansible.eda.dev/core/utils) and the `get_token` module.
 ///
 
 ## OpenAPI Specifications
