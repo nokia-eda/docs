@@ -33,7 +33,6 @@ cloud environment, Connect comes with three Nokia supported plugins:
 
 * Connect OpenShift plugin
 * Connect VMware plugin
-* Connect OpenStack ML2 plugin (CBIS only)
 
 ## Feature Overview
 
@@ -133,7 +132,6 @@ sections:
 * [OpenShift Connect plugin](./openshift-plugin.md)
 * [VMware vSphere plugin](./vmware-plugin.md)
 * [VMware NSX plugin](./vmware-nsx.md)
-* [OpenStack ML2 plugin](./openstack-plugin.md)
 
 Plugins are automatically registered within the Connect service when they are deployed. Each is stored in the database with the following main
 properties:
@@ -231,7 +229,6 @@ EDA.
 There is also support for reversing that LLDP relationship, by having the computes collect the LLDP information.
 
 - OpenShift Plugin: LLDP collected at hypervisor level
-- OpenStack Plugin: LLDP collected at fabric level
 - VMware plugin: LLDP collected at fabric level
 
 When LLDP is collected at the fabric level, it is advised to disable in-hardware LLDP to prevent those LLDP messages from interfering with the ones
