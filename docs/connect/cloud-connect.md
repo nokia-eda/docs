@@ -25,7 +25,6 @@ environment and their correlation to the physical network interfaces. As applica
 will inform Connect Core of the changes needed to the fabric. Plugins will also create or manage EDA BridgeDomains to make sure the correct
 sub-interfaces are created for the application connectivity.
 
-
 ## Plugins Overview
 
 Connect plugins are specifically made to inspect one type of cloud environment. While these plugins can be developed specifically targeting a custom
@@ -58,7 +57,7 @@ If you prefer installing the Connect Core using the Kubernetes API, you can do s
 
 When installing through the UI dependencies are automatically resolved, this is not the case through the API. Make sure all dependencies of the Connect Core app are installed before executing the below kubectl command.
 
-When the dependencies are not satisfied, an error like the following will be added to the status of the AppInstaller object: 
+When the dependencies are not satisfied, an error like the following will be added to the status of the AppInstaller object:
 
 ```app requirements validation failed: connect.nokia requires interfaces.nokia, but interfaces.nokia is not present```
 
@@ -100,7 +99,6 @@ These options can be adjusted during installation to meet specific performance o
 
 These settings are intended for advanced users. Misconfiguration can lead to system instability or failure. Proceed with caution and ensure changes are validated in a test environment before applying them to production.
 ///
-
 
 ## Resources
 
@@ -228,8 +226,8 @@ To bridge EDA with the cloud environment, Cloud Connect uses LLDP extensively. T
 EDA.
 There is also support for reversing that LLDP relationship, by having the computes collect the LLDP information.
 
-- OpenShift Plugin: LLDP collected at hypervisor level
-- VMware plugin: LLDP collected at fabric level
+* OpenShift Plugin: LLDP collected at hypervisor level
+* VMware plugin: LLDP collected at fabric level
 
 When LLDP is collected at the fabric level, it is advised to disable in-hardware LLDP to prevent those LLDP messages from interfering with the ones
 that the host operating system is sending out.[^1]
@@ -238,6 +236,5 @@ that the host operating system is sending out.[^1]
 
 ### LLDP gracetimer
 
-[To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a gracetimer is applied when LLDP information is collected at the fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The gracetimer is not applicable when LLDP data is collected at hypervisor level.
-The gracetimer can be configured when installing Connect using the _interfaceControllerGraceTimer_ setting, the default is 10 seconds.
-](https://github.com/nokia-eda/insiders-docs/actions)
+To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a gracetimer is applied when LLDP information is collected at the fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The gracetimer is not applicable when LLDP data is collected at hypervisor level.
+The gracetimer can be configured when installing Connect using the `interfaceControllerGraceTimer` setting, the default is 10 seconds.

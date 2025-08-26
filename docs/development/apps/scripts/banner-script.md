@@ -354,7 +354,7 @@ def process_cr(cr):
 
 Here, the nodes we iterate on are the [`TopoNode`][topoNode-crd] objects from the `core.eda.nokia.com` API group. Based on the `operatingSystem` value in the TopoNode spec, the code selects either SR Linux or SR OS handler.
 
-[topoNode-crd]: https://crd.eda.dev/toponodes.core.eda.nokia.com_v1
+[topoNode-crd]: https://crd.eda.dev/toponodes.core.eda.nokia.com/v1
 
 The handler-selection function is quite simple:
 
