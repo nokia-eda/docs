@@ -7,7 +7,7 @@ The VMware NSX Plugin is currently only available as alpha version for Technical
 The following features are **not** included in the Technical Preview:
 
 * Connect Audit
-* Eda Managed
+* EDA Managed
 * Alarms
 * Lag support
 * NSX certificate support: As a workaround set nsxTlsVerify to false in the NsxPluginInstance
@@ -43,7 +43,7 @@ The VMware NSX Plugin consists of two components:
 to manage the VMware NSX Plugins.
 
 *VMware NSX Plugin*
-: The Plugin itself which is responsible for connecting and monitoring the VMware NSX environment for changes.
+: The Plugin itself, which is responsible for connecting and monitoring the VMware NSX environment for changes.
 
 ### Supported Features
 
@@ -183,7 +183,7 @@ The plugin will connect to a VMware NSX environment and poll for changes. The pl
 
 ### vCenter Plugin dependency
 
-While NSX is used for defining overlay networking, vCenter is still used to configure the compute hosts and VMs. The NSX Plugin on it's part has a dependency on one or more VMware vCenter Plugins for the creation of the ConnectInterface objects in EDA.
+While NSX is used for defining overlay networking, vCenter is still used to configure the compute hosts and VMs. The NSX Plugin has a dependency on one or more VMware vCenter Plugins for the creation of the ConnectInterface objects in EDA.
 
 ### Operational Modes
 

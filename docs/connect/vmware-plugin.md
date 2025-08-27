@@ -36,7 +36,7 @@ The VMware vSphere Plugin consists of two components:
 to manage the VMware vSphere Plugins.
 
 *VMware vSphere Plugin*
-: The Plugin itself which is responsible for connecting and monitoring the VMware vCenter environment for changes. The Plugin will listen to the
+: The Plugin itself, which is responsible for connecting and monitoring the VMware vCenter environment for changes. The Plugin will listen to the
 events of the following objects:
 
     * Distributed vSwitch (dvS)
