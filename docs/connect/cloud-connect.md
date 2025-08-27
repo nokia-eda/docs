@@ -55,7 +55,8 @@ If you prefer installing the Connect Core using the Kubernetes API, you can do s
 
 /// details | Connect Core dependencies
 
-When installing through the UI dependencies are automatically resolved, this is not the case through the API. Make sure all dependencies of the Connect Core app are installed before executing the below kubectl command.
+When installing through the UI dependencies are automatically resolved, this is not the case through the API. Make sure all dependencies of the
+Connect Core app are installed before executing the below kubectl command.
 
 When the dependencies are not satisfied, an error like the following will be added to the status of the AppInstaller object:
 
@@ -82,22 +83,24 @@ EOF
 
 ### Plugin Configuration Options
 
-When installing Cloud Connect via the EDA UI, users are prompted to configure the application using the following options. These settings control resource limits and behavior of the Connect controllers:
+When installing Cloud Connect via the EDA UI, users are prompted to configure the application using the following options. These settings control
+resource limits and behavior of the Connect controllers:
 
-| Configuration Option | Description | Default Value |
-|----------------------|-------------|----------------|
-| **Interface Controller GraceTimer** (`interfaceControllerGraceTimer`) | The grace period (in seconds) used by the Interface Controller before acting on missing LLDP data. | `10` |
-| **Interface Controller Pod CPU Limit** (`interfaceControllerCpuLimit`) | CPU limit for the connect-interface-controller pod. | `1` |
-| **Interface Controller Pod Memory Limit** (`interfaceControllerMemoryLimit`) | Memory limit for the connect-interface-controller pod. | `2Gi` |
-| **Plugin Controller Pod CPU Limit** (`pluginControllerCpuLimit`) | CPU limit for the connect-plugin-controller pod. | `500m` |
-| **Plugin Controller Pod Memory Limit** (`pluginControllerMemoryLimit`) | Memory limit for the connect-plugin-controller pod. | `128Mi` |
+| Configuration Option                                                         | Description                                                                                        | Default Value |
+|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|---------------|
+| **Interface Controller GraceTimer** (`interfaceControllerGraceTimer`)        | The grace period (in seconds) used by the Interface Controller before acting on missing LLDP data. | `10`          |
+| **Interface Controller Pod CPU Limit** (`interfaceControllerCpuLimit`)       | CPU limit for the connect-interface-controller pod.                                                | `1`           |
+| **Interface Controller Pod Memory Limit** (`interfaceControllerMemoryLimit`) | Memory limit for the connect-interface-controller pod.                                             | `2Gi`         |
+| **Plugin Controller Pod CPU Limit** (`pluginControllerCpuLimit`)             | CPU limit for the connect-plugin-controller pod.                                                   | `500m`        |
+| **Plugin Controller Pod Memory Limit** (`pluginControllerMemoryLimit`)       | Memory limit for the connect-plugin-controller pod.                                                | `128Mi`       |
 
 These options can be adjusted during installation to meet specific performance or resource requirements.
 
 /// details | Settings are an advanced use case
-    type: warning
+type: warning
 
-These settings are intended for advanced users. Misconfiguration can lead to system instability or failure. Proceed with caution and ensure changes are validated in a test environment before applying them to production.
+These settings are intended for advanced users. Misconfiguration can lead to system instability or failure. Proceed with caution and ensure changes
+are validated in a test environment before applying them to production.
 ///
 
 ## Resources
@@ -179,7 +182,7 @@ managed by Connect. This Connect UI follows the same design as the regular EDA U
 resources available.
 
 /// details | Do not create new resources manually, as this could interfere with the behavior of the plugins.
-    type: warning
+type: warning
 
 If you have made changes manually, an audit will revert them.
 Changes should be made through the Cloud orchestration platform.
@@ -230,11 +233,28 @@ There is also support for reversing that LLDP relationship, by having the comput
 * VMware plugin: LLDP collected at fabric level
 
 When LLDP is collected at the fabric level, it is advised to disable in-hardware LLDP to prevent those LLDP messages from interfering with the ones
-that the host operating system is sending out.[^1]
+that the host operating system is sending out.[^1][^2]
 
-[^1]: Instructions on how to disable in-hardware LLDP for Mellanox cards can be found here: https://forums.developer.nvidia.com/t/need-help-disabling-hardware-lldp-c5x-ex/294083
+[^1]: Instructions on how to disable in-hardware LLDP for Mellanox cards can be found
+here: https://forums.developer.nvidia.com/t/need-help-disabling-hardware-lldp-c5x-ex/294083
+[^2]: Instructions on how to disable in-hardware LLDP in VMware ESXI
+environments: https://knowledge.broadcom.com/external/article/344761/enabling-and-disabling-native-drivers-in.html
 
 ### LLDP gracetimer
 
-To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a gracetimer is applied when LLDP information is collected at the fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The gracetimer is not applicable when LLDP data is collected at hypervisor level.
+To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a gracetimer is applied when LLDP information is collected at the
+fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The gracetimer is not
+applicable when LLDP data is collected at hypervisor level.
 The gracetimer can be configured when installing Connect using the `interfaceControllerGraceTimer` setting, the default is 10 seconds.
+
+# Support Matrix
+
+In the table below you can find the qualified matrix for the **Cloud Connect** service.
+
+## 25.8
+
+| Component          | Release       | Supported Versions (Cloud Type) | EDA Core Version            |
+|--------------------|---------------|---------------------------------|-----------------------------|
+| **OpenShift**      | 4.0.x         | OpenShift 4.16, 4.18            | v3.0.0 (EDA release 25.8.x) |
+| **VMware vCenter** | v4.0.x        | VMware vCenter 7.X, 8.X         | v3.0.0 (EDA release 25.8.x) |
+| **VMware NSX**     | v0.0.x (Beta) | VMware NSX 4.2.X                | v3.0.0 (EDA release 25.8.x) |
