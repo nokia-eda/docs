@@ -833,6 +833,55 @@ KPT_SETTERS_FILE := my-setters.yml
 
 And that's it! The kpt will read the values from the setters file and apply them to the manifests when you run the installation commands.
 
+### Credentials and secrets
+
+Nokia EDA platform uses a set of credentials to authenticate and authorize access to various components. These credentials are set to their respective default values and can be modified pre and post installation. The tables below lists the components, the associated credentials and the matching [Kpt setters](#kpt-setters) that an admin can use to customize them at the installation time.
+
+#### Git
+
+| Component | Default value | Kpt Setter | Notes
+|-----------|------------|------------| -- |
+| Internal Git server (Gogs) admin username  | `eda` | `GOGS_ADMIN_USER` | Sets the username for the internal Git server. Not applicable if an external Git server is used. <small>Base64 encoded</small> |
+| Internal Git server (Gogs) admin password  | `eda` | `GOGS_ADMIN_PASS` | Same note as for the admin username. <small>Base64 encoded</small> |
+| Config Engine Git username  | `eda` | `CE_GIT_USERNAME` | Should match the Git server admin username. <small>Base64 encoded</small> |
+| Config Engine Git password  | `eda` | `CE_GIT_PASSWORD` | Should match the Git server admin password. <small>Base64 encoded</small> |
+
+In case the value of `GOGS_ADMIN_USER`/`CE_GIT_USERNAME` was changed, make sure to set the setters for the repository paths as per the table below. The path values are provided as raw text values.
+
+| Component | Default value | Kpt Setter | Notes
+|-----------|------------|------------| -- |
+| Custom resources repo  | `/eda/customresources.git` | `GIT_REPO_CHECKPOINT` |  |
+| Apps repo  | `/eda/apps.git` | `GIT_REPO_APPS` |  |
+| User settings repo  | `/eda/usersettings.git` | `GIT_REPO_USER_SETTINGS` |  |
+| Credentials repo  | `/eda/credentials.git` | `GIT_REPO_SECURITY` |  |
+| Identity repo  | `/eda/identity.git` | `GIT_REPO_IDENTITY` |  |
+
+#### EDA user
+
+EDA users are managed by the Keycloak identity provider and by default a single admin user is created during the installation process. Using the setters outlined in the table below it is possible to change the default admin user credentials.
+
+| Component | Default value | Kpt Setter | Notes
+|-----------|------------|------------| -- |
+| EDA admin username  | `admin` | `SECRET_EDA_ADMIN_USERNAME` | <small>Base64 encoded</small> |
+| EDA admin password  | `admin` | `SECRET_EDA_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
+
+#### Keycloak
+
+The Keycloak identity provider is managed by its own admin user and its credentials can be customized using the following setters:
+
+| Component | Default value | Kpt Setter | Notes
+|-----------|------------|------------| -- |
+| Keycloak admin username  | `admin` | `SECRET_KC_ADMIN_USERNAME` | <small>Base64 encoded</small> |
+| Keycloak admin password  | `admin` | `SECRET_KC_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
+
+#### Postgres DB
+
+Lastly, there is a postgres database used by the Keycloak. The database password can also be customized:
+
+| Component | Default value | Kpt Setter | Notes
+|-----------|------------|------------| -- |
+| Postgres DB password  | `password` | `SECRET_PG_DB_PASSWORD` | <small>Base64 encoded</small> |
+
 ## Installing Nokia EDA
 
 When the necessary parameters are set, follow these steps to install EDA.
