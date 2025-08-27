@@ -50,6 +50,7 @@ nav:
       - Interfaces: apps/interfaces.md
       - Notifier: apps/notifier.md
       - Prometheus Exporter: apps/prometheus-exporter.md
+      - Remote Write: apps/remote-write.md
       - Kafka Exporter: apps/kafka-exporter.md
       - NetBox: apps/netbox.md
 

@@ -23,6 +23,14 @@
 -{{%- endmacro %}}-
 
 
+-{{% macro default_category_icon(text="") %}}-
+<span class="ui__icon"><svg style="fill: var(--md-code-fg-color);" viewBox="0 0 24 24" height="24px" width="24px">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M5 3.75c-.69 0-1.25.56-1.25 1.25v8c0 .69.56 1.25 1.25 1.25h14c.69 0 1.25-.56 1.25-1.25V5c0-.69-.56-1.25-1.25-1.25H5zM2.25 5A2.75 2.75 0 0 1 5 2.25h14A2.75 2.75 0 0 1 21.75 5v8A2.75 2.75 0 0 1 19 15.75H5A2.75 2.75 0 0 1 2.25 13V5zm1 13a.75.75 0 0 1 .75-.75h16a.75.75 0 0 1 0 1.5H4a.75.75 0 0 1-.75-.75zm2 3a.75.75 0 0 1 .75-.75h12a.75.75 0 0 1 0 1.5H6a.75.75 0 0 1-.75-.75z">
+                </path>
+        </svg>
+</span><span class="icon__text">-{{text}}-</span>
+-{{%- endmacro %}}-
 
 
 -{{% macro circle(letter, text) -%}}-
