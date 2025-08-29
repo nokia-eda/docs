@@ -2,9 +2,9 @@
 
 ## Overview
 
-The EDA Cloud Connect Plugins are listening to or directly interacting with the cloud platforms they manage. Sometimes this connection can be broken temporarily or be out of sync. To automatically fix these _out of sync_ events `Audit` can be ran on the Plugin.
+The EDA Cloud Connect plugins are listening to or directly interacting with the cloud platforms they manage. Sometimes this connection can be broken temporarily or be out of sync. To automatically fix these _out of sync_ events, you can run an audit on the plugin.
 
-An Audit can be launched through the UI, by navigating to _System Administration_->_Connect_->_Audit_.
+An audit can be launched through the UI by navigating to _System Administration_->_Connect_->_Audit_.
 ![Create Audit](resources/audit-create.png)
 
 As an alternative, you can also create an `Audit` resource in the Kubernetes cluster of EDA with the following content:
@@ -24,8 +24,8 @@ EOF
 
 ## Audit Result
 
-An `Audit` runs out of band inside the `Plugin` (ie VMWare or OpenShift Plugin). This process can be followed using the _.status.state_ field, which will progress from _Scheduled_ to _InProgress_ to _Finished_.
-Once the `Audit` is finished, the _spec.finished_ field will be true.
+An audit runs out-of-band inside the plugin (that is, VMWare or OpenShift plugin). You can follow this process using the _.status.state_ field, which will progress from _Scheduled_ to _InProgress_ to _Finished_.
+Once the audit is finished, the _spec.finished_ field will be true.
 
 An example output is given below:
 ```yaml
@@ -58,10 +58,10 @@ status:
   totalNumberOfSuccessfulDiscrepancies: 3
 ```
 
-An `Audit` Status consists of one or more results, each one referencing a different part of the `Audit`. In case of _PLUGIN_ `Audit` the only stage is the `Plugin` auditing against EDA, so typically there will be only one Result.
-The Result has an _AuditType_ to indicate the stage of the `Audit`, as well as an _outcome_. The _outcome_ is _Success_ if the `Audit` was able to correct any found discrepancies.
+The status of an audit consists of one or more results, each one referencing a different part of the audit. In case of a _PLUGIN_ audit, the only stage is the plugin auditing against EDA, so typically there will be only one result.
+The result has an _AuditType_ field to indicate the stage of the audit, as well as an _outcome_ field. The _outcome_ is _Success_ if the audit was able to correct any discrepancies found.
 
-If there are any discrepancies found, they are listed in the _foundDiscrepancies_ list, detailing what resources where involved and what the taken action is. _Dangling_ resources are resources left in EDA that are not available in the `Plugin` environment, while _missing_ resources are the opposite. Finally _Misconfigured_ resources are available in both environments, but have one or more misconfigured fields.
+If there are any discrepancies found, they are listed in the _foundDiscrepancies_ list, detailing what resources where involved and what the taken action is. _Dangling_ resources are resources left in EDA that are not available in the plugin environment, while _missing_ resources are the opposite. _Misconfigured_ resources are available in both environments, but have one or more misconfigured fields.
 
 Finally, a count is provided of the _totalNumberOfDiscrepancies_ as well as successfully and failed fixes.
 

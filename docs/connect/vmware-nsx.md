@@ -2,12 +2,12 @@
 
 //// warning | Technical Preview
 
-The VMware NSX Plugin is currently only available as alpha version for Technical Preview purposes. It can be used for Demo, POC or lab purposes.
+The VMware NSX Plugin is currently only available as alpha version for technical preview purposes. It can be used for demo, POC or lab purposes.
 
-The following features are **not** included in the Technical Preview:
+The following features are **not** included in the technical preview:
 
 * Connect Audit
-* EDA Managed
+* EDA-managed
 * Alarms
 * Lag support
 * NSX certificate support: As a workaround set nsxTlsVerify to false in the NsxPluginInstance
@@ -28,7 +28,7 @@ NSX provides advanced networking capabilities such as:
 This plugin focuses on automating fabric configuration for overlay and VLAN segments:
 
 * Automatic provisioning of the fabric based on the configured NSX VLAN segments.
-* Automatic provisioning of the fabric based on NSX Transport Node and Host Switch Profile. The Plugin will facilitate the communication between the hypervisors on these Overlay Segments. EDA will not be involved in the actual Overlay traffic in this case.
+* Automatic provisioning of the fabric based on NSX Transport Node and Host Switch Profile. The plugin will facilitate the communication between the hypervisors on these overlay segments. EDA will not be involved in the actual overlay traffic in this case.
 
 ### Supported Versions
 
@@ -36,39 +36,39 @@ This plugin focuses on automating fabric configuration for overlay and VLAN segm
 
 ## Architecture
 
-The VMware NSX Plugin consists of two components:
+The VMware NSX plugin consists of two components:
 
 *VMware NSX Plugin App*
-: This app runs in EDA and manages the lifecycle of the VMware NSX Plugins. It does so in the standard app model where a custom resource is used
-to manage the VMware NSX Plugins.
+: This app runs in EDA and manages the lifecycle of the VMware NSX plugins. It does so in the standard app model where a custom resource is used
+to manage the VMware NSX plugins.
 
 *VMware NSX Plugin*
-: The Plugin itself, which is responsible for connecting and monitoring the VMware NSX environment for changes.
+: The plugin itself, which is responsible for connecting and monitoring the VMware NSX environment for changes.
 
 ### Supported Features
 
-The following are some of the supported VMware NSX Plugin features:
+The following are some of the supported VMware NSX plugin features:
 
 * CMS-managed integration mode
-* EDA-managed integration mode (Not in 25.8)
-* VLAN segment Fabric management
-* Overlay segment Fabric management
+* EDA-managed integration mode (not in 25.8)
+* VLAN segment fabric management
+* Overlay segment fabric management
 
 #### Overlay Segments
 
 Overlay segments in NSX are L2 networks encapsulated in L3 using VXLAN or Geneve. The encapsulated traffic is VLAN-tagged and transported via uplinks defined in NSX configurations.
 
-The NSX Plugin will create a `BridgeDomain` and a `VLAN` based on the *Transport VLAN* defined on the *Transport Node* in NSX.
+The NSX plugin will create a `BridgeDomain` and a `VLAN` resource based on the *Transport VLAN* defined on the *Transport Node* in NSX.
 
 #### VLAN Segments
 
-In NSX it is also still possible to create VLAN segments, the NSX plugin will create the appropriate `BridgeDomain` and `VLAN` in EDA.
+In NSX, it is also still possible to create VLAN segments; the NSX plugin will create the appropriate `BridgeDomain` and `VLAN` resources in EDA.
 
 ## Deployment
 
 /// details | Similarity with VMware vSphere Plugin
 
-Those familiar with the VMware vSphere Plugin will recognize the steps defined here.
+Those familiar with the VMware vSphere plugin will recognize the steps defined here.
 
 ///
 To deploy the VMware NSX plugin, complete the following tasks:
@@ -78,11 +78,11 @@ To deploy the VMware NSX plugin, complete the following tasks:
 
 ### Connect VMware NSX Plugin App Deployment
 
-The VMware NSX Plugin App is an Application in the EDA App ecosystem. It can be easily installed using the EDA Store UI.
+The VMware NSX plugin app is an application in the EDA app ecosystem. It can be easily installed using the EDA Store UI.
 
 #### Installation using Kubernetes API
 
-If you prefer installing the Plugin using the Kubernetes API, you can do so by creating the following Workflow resource:
+If you prefer installing the plugin using the Kubernetes API, you can do so by creating the following Workflow resource:
 
 /// tab | YAML Resource
 
@@ -103,7 +103,7 @@ EOF
 
 ### Connect VMware NSX Plugin Deployment
 
-A prerequisite for creating a `NsxPluginInstance` resource is a `Secret with username and password fields that contain the account information for
+A prerequisite for creating a `NsxPluginInstance` resource is a `Secret` resource with username and password fields that contain the account information for
 an account that can connect to the VMware NSX environment and has read-only access to the cluster so that it can monitor the necessary resources.
 
 /// tab | YAML Resource
@@ -133,13 +133,13 @@ echo -n myUsernameOrPassword | base64
 
 ///
 
-As the VMware NSX Plugins are managed through the operator, you can use the EDA UI to create a new `NsxPluginInstance` resource under the *
+As the VMware NSX plugins are managed through the operator, you can use the EDA UI to create a new `NsxPluginInstance` resource under the *
 *System Administration > Connect > NSX Plugins** menu item.
 
 As an alternative, you can also create the same `NsxPluginInstance` using the following custom resource example. Make sure to replace the specified
 values with their relevant content.
 
-A VMware NSX instance can manage multiple VMware vCenter servers, this is reflected by referencing the vCenters and the corresponding Connect VMware Vcenter Plugins in the NsxPluginInstance.
+A VMware NSX instance can manage multiple VMware vCenter servers, this is reflected by referencing the vCenters and the corresponding Connect VMware Vcenter plugins in the `NsxPluginInstance`.
 
 /// details | vCenterFQDN
     type: warning
@@ -181,13 +181,13 @@ When the plugin is started, the following actions are taken by the plugin:
 
 The plugin will connect to a VMware NSX environment and poll for changes. The plugin will configure Connect and EDA based on the configuration in NSX.
 
-### vCenter Plugin dependency
+### vCenter Plugin Dependency
 
-While NSX is used for defining overlay networking, vCenter is still used to configure the compute hosts and VMs. The NSX Plugin has a dependency on one or more VMware vCenter Plugins for the creation of the ConnectInterface objects in EDA.
+While NSX is used for defining overlay networking, vCenter is still used to configure the compute hosts and VMs. The NSX plugin has a dependency on one or more VMware vCenter plugins for the creation of the ConnectInterface objects in EDA.
 
 ### Operational Modes
 
-The technical preview of the NSX plugin only supports NSX Managed Mode.
+The technical preview of the NSX plugin only supports NSX-managed mode.
 
 *NSX Managed Mode*
 : Also referred to as *Connect Managed*. When using this mode, the plugin will create a unique `BridgeDomain` for each VLAN segment and to facilitate overlay segment communication between the hypervisors.
@@ -196,15 +196,15 @@ The technical preview of the NSX plugin only supports NSX Managed Mode.
 
 /// details | Technical preview
     type: warning
-The Technical Preview in 25.8 will not support Alarms. Please consult the logs of the NSX Plugin pod for troubleshooting.
+The technical preview in 25.8 will not support alarms. Please consult the logs of the NSX plugin pod for troubleshooting.
 ///
 
 ### The plugin is not running
 
 If an incorrect NSX hostname or IP is configured in the `NsxPluginInstance` resource, the plugin will try to connect for 3 minutes and
-log an error if it fails to connect. To retry the Plugin can be restarted. In case the credentials are incorrect, the plugin will crash/restart immediately.
+log an error if it fails to connect. To retry, the plugin can be restarted. In case the credentials are incorrect, the plugin will crash and restart immediately.
 
-[//]: # (TODO&#40;Tom&#41; Re-add these once the Plugin supports alarms)
+[//]: # (TODO&#40;Tom&#41; Re-add these once the plugin supports alarms)
 [//]: # (* Check the raised plugin alarms.)
 * Check the connectivity from the EDA cluster to NSX.
 * Verify the credentials for NSX.
@@ -215,5 +215,5 @@ log an error if it fails to connect. To retry the Plugin can be restarted. In ca
 [//]: # (* Check the raised plugin alarms.)
 * Check the connectivity from the EDA cluster to NSX.
 * Check the logs of the plugin pod.
-* Check the Plugin staleness state field and verify heartbeats are being updated.
-* Check the NSXPluginInstance has valid values
+* Check the plugin staleness state field and verify that heartbeats are being updated.
+* Check the `NSXPluginInstance` resource and verify that it has valid values.
