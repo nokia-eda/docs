@@ -98,13 +98,15 @@ tr:has(th.hide-th) {
   display: none;
 }
 
-.md-typeset table:not([class]) th {
+/* Color the table header */
+/* .md-typeset table:not([class]) th {
   background-color: #9e9e9e;
-}
+} 
 
 th {
   color: #FFFFFF !important;
 }
+*/
 
 /* Pumping heart */
 .md-typeset .mdx-heart {
