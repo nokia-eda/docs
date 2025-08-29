@@ -8,31 +8,39 @@ The EDA Config Engine can also be operated via the Kubernetes API. Kubernetes RB
 Role-based access control (RBAC) restricts access to resources based on the user's role in your organization.
 EDA uses [KeyCloak](https://www.keycloak.org/) to authenticate users and group membership, and the EDA API server handles request authorization based on the role(s) assigned to user group(s).
 
-## Local Users
+## Users & User Groups
 
-EDA Users are stored in KeyCloak. The EDA API (and GUI) provides a front-end to manage local users. In the GUI, you'll find Users in the `System Administration` panel under `RBAC` > `User Management` > `Users`.
+EDA users and user groups are stored in KeyCloak. The EDA API (and GUI) exposes the most common KeyClock administrative actions including User and User Group management. In the EDA UI, you'll find Users and User Groups in the `System Administration` panel under `User Management` > `User Management`.
 
 User passwords set by an administrator can be flagged as temporary; this will prompt the user to change the password on first login. Administrators can also perform password resets, which sends the user an email with a password reset link.
 
 /// Note
-In 24.12, email server configuration is not exposed in the EDA API/GUI. This must be configured directly in KeyCloak.
+Email server configuration is not exposed in the EDA API/GUI. This must be configured directly in KeyCloak.
 ///
 
-## Role Permissions
+### Federations
+
+Federations configure users and user group synchronization with remote directories such as OpenLDAP or Active Directory. In the GUI, federation providers can be configured in the `System Administration` panel under `User Management` > `User Management`.
+
+### Password Policy
+
+A password policy allows a system administrator to define requirements around local user password complexity & brute force protection. Note that these requirements do not apply to users sourced from a remote directory. In the GUI, you'll find Users and User Groups in the `System Administration` panel under `User Management` > `Password Policy`.
+
+## Roles
 
 EDA `Cluster Roles` and `Roles` define the which permissions users have for the EDA API/GUI[^1].
 
 `Roles` define permissions within a specific namespace, whereas `Cluster Roles` apply to all namespaces.
 
-Non-namespaced API endpoints can only be enforced by `Cluster Roles`. This includes cluster-wide resources (e.g. httpproxies), EDA administrative APIs, transaction results, etc. Basicly, any API that doesn't specify a namespace in the path or payload is enforced by `Cluster Roles`.
+Non-namespaced API endpoints can only be enforced by `Cluster Roles`. This includes cluster-wide resources (e.g. httpproxies), EDA administrative APIs, transaction results, etc. Basically, any API that doesn't specify a namespace in the path or payload is enforced by `Cluster Roles`.
 
 The EDA UI allows you to switch between 'All Namespaces' and specific namespace views. In the 'All Namespaces' view, requests use cluster-wide APIs which require ClusterRole permission. Users with permission only for specific namespaces will not see their resources in the 'All Namespaces' view.
 
 ### Access Rule Types
 
-Each `ClusterRoles` & `Roles` provide the following rule types:
+Both `ClusterRoles` & `Roles` provide the following rule types:
 
-* **Resource Rules** controls EDA resource permissions using Group-Version-Kind (GVK) semantics.
+* **Resource Rules** controls EDA resource and workflow permissions using Group-Version-Kind (GVK) semantics.
 Each Resource Rule can include one or more API Groups in group/version format (e.g. "core.eda.nokia.com/v1") and one or more Resources (i.e. Kind). Either can be an exact match or wildcard (`*`).
 
 * **Table Rules** provides a fine-tuning of permissions for queries to EDB.
@@ -54,100 +62,32 @@ If no rule is matched, the request is implicitly denied.
 If resource/table/URL access is not required for a role, the best practice is to not include a matching rule for that resource/table/URL. This ensures that users with multiple roles receives all required permissions.
 ///
 
-## User Groups & Role Bindings
+## Assigning Roles to Users
 
-User Groups in EDA associate users to roles. A User can be part of multiple User Groups, and each User Group may have multiple Roles.
-
-EDA User Groups are stored in KeyCloak. The EDA API (and GUI) provides a front-end to manage User Groups. You'll find User Groups in the `System Administration` panel under `RBAC` > `Users & Groups` > `User Groups`.
-
-## Remote Directories
-
-Remote directories such as OpenLDAP or Active Directory can be used to sync users and groups with KeyCloak.
-
-/// admonition | Directory Configuration
-    type: subtle-note
-In 24.12, directory configuration is only available via the EDA API (i.e. not available in the GUI)
-///
-
-## Password Policy
-
-A password policy allows a system administrator to define requirements around local user password complexity & brute force protection. Note that these requirements do not apply to users sourced from a remote directory.
+Roles are associated to Users via User Groups. A User can be part of multiple User Groups, and each User Group may have multiple Roles.
 
 ## Tips and Tricks
 
-### UI Required Rules
+### Transaction Result Access
 
-In 24.12, to work with resources in the EDA GUI, users require these rules in a ClusterRole:
+Access to Transaction results is based on the user's access to the input resources of that transaction.  
+If the user has read permission for **all** the input resources of a transaction, they can list all changed resources (both input and derived) and view the resource diffs.  
+If the user has read permission for **none** or **some** of the input resources, they can not list any derived resources or view their diffs.  
+Access to Node Configuration diffs must be opted-in using a urlRule. This is because the Node Configuration diff API returns the full node config, and not limited to the scope of the transaction.
 
-* URL Rule read on path `/openapi/**` - This allows the GUI to display resource schemas
-* Resource Rule read group `core.eda.nokia.com/v1` resource `namespaces` - This allows the GUI to populate the namespace selector
+To revert a transaction, the user must has readWrite permission for all input resources of the transaction.  
+To restore the EDA cluster to a specific transaction, the user must have readWrite permission to the restore API from a ClusterRole URL Rule. Restore is a powerful action which should be limited to trusted administrators.
 
-/// details | ClusterRole - Basic UI permissions
-    type: code-example
+### Workflow Access
 
-``` yaml
-apiVersion: core.eda.nokia.com/v1
-kind: ClusterRole
-metadata:
-  name: basic
-  labels: null
-  namespace: eda-system
-spec:
-  description: 'Basic permissions for EDA UI'
-  resourceRules:
-    - apiGroups:
-        - core.eda.nokia.com/v1
-      permissions: read
-      resources:
-        - namespaces
-  urlRules:
-    - path: /openapi/**
-      permissions: readWrite
-  tableRules: []
+Just like EDA Resources, EDA Workflows follow the Kubernetes Group-Version-Kind (GVK) resource model. resourceRules grant read and readWrite permission to workflows.
 
-```
-
-///
-
-### Derived Resource and Node Config Access
-
-Users can submit a transaction only if they have readWrite permission for all input CRs in the transaction.
-However, EDA apps triggered by the transaction may derive resources for which the user does not have direct permission.
-
-All resources updated/created/deleted during a transaction are visible in the transaction result diff, this may include full node configs. 
-The following ClusterRole can be used to block user access to this information:
-
-/// details | ClusterRole - Deny access to transaction diffs and node config
-    type: code-example
-
-``` yaml
-apiVersion: core.eda.nokia.com/v1
-kind: ClusterRole
-metadata:
-  name: deny-nodeconfig
-  labels: null
-  namespace: eda-system
-spec:
-  description: 'Deny access to transaction diffs and node config APIs'
-  resourceRules: []
-  tableRules:
-    - path: .**
-      permissions: read
-  urlRules:
-    - path: /core/alltransaction/v1/diffs/**
-      permissions: none
-    - path: /core/transaction/v1/diffs/**
-      permissions: none
-    - path: /core/nodeconfig/**
-      permissions: none
-```
-
-///
+Additionally, users inherit access to subflows based on their access to the top-level parent flow.  
+For example, a `DeployImage` workflow creates `Ping` subflows during it's pre and post check stages. If user A has read permission to the 'DeployImage' workflow definition they will be able to read the subflow results even if they do not have access to the `Ping` workflow definition.
 
 ### Topology Access in Specific Namespaces
 
-In 24.12, topology and overlay descriptions are cluster-wide but the topology state is namespaced.
-Viewing Topologies in the UI for specific namespaces requires a combination of ClusterRoles and Roles.
+Topology diagrams and their overlays are defined cluster-wide in EDA, but the state data which populates the topology diagrams is namespaced. Therefore, to view topologies in the UI for specific namespaces a combination of ClusterRoles and Roles is required.
 
 /// details | ClusterRole - Physical topology
     type: code-example
