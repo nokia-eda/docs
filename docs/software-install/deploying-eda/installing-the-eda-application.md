@@ -858,11 +858,10 @@ In case the value of `GOGS_ADMIN_USER`/`CE_GIT_USERNAME` was changed, make sure 
 
 #### EDA user
 
-EDA users are managed by the Keycloak identity provider and by default a single admin user is created during the installation process. Using the setters outlined in the table below it is possible to change the default admin user credentials.
+EDA users are managed by the Keycloak identity provider and by default an admin user is created during the installation process. Using the following setter it is possible to change the default admin user password[^1].
 
 | Component | Default value | Kpt Setter | Notes
 |-----------|------------|------------| -- |
-| EDA admin username  | `admin` | `SECRET_EDA_ADMIN_USERNAME` | <small>Base64 encoded</small> |
 | EDA admin password  | `admin` | `SECRET_EDA_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
 
 #### Keycloak
@@ -1010,3 +1009,5 @@ You can now access the new EDA deployment using the following methods:
 - if an FQDN is configured for the `EXT_DOMAIN_NAME` field, use `https://FQDN`
 
 Both examples assume that `EXT_HTTPS_PORT` was set to `443` in the preferences file.
+
+[^1]: Note, that it is not possible to change the default admin username.
