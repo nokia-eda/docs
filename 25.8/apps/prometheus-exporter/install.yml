@@ -1,0 +1,12 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
+metadata:
+  name: prom-exporter-install
+  namespace: eda-system
+spec:
+  operation: install
+  apps:
+    - appId: prom.eda.nokia.com
+      catalog: eda-catalog-builtin-apps
+      version:
+        value: v4.0.0

@@ -1,0 +1,24 @@
+apiVersion: interfaces.eda.nokia.com/v1alpha1
+kind: Interface
+metadata:
+  name: leaf1-simple-lag
+  namespace: eda
+  labels:
+    eda.nokia.com/role: edge
+spec:
+  type: lag
+  description: "Customer facing lag"
+  enabled: true
+  mtu: 9000
+  lag:
+    type: lacp
+    minLinks: 2
+    lacp:
+      mode: active
+      interval: fast
+      systemPriority: 32768
+  members:
+    - node: leaf1
+      interface: ethernet-1-14
+    - node: leaf1
+      interface: ethernet-1-15

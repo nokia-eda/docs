@@ -1,0 +1,13 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: BGPPeer
+metadata:
+  name: example-custom-peer
+  namespace: eda
+spec:
+  description: "Custom VRF BGP peer"
+  group: "example-custom-group"
+  interface: "customer-1"
+  interfaceKind: "ROUTEDINTERFACE"
+  peerAS:
+    autonomousSystem: 65200
+  peerIP: "192.168.2.1"

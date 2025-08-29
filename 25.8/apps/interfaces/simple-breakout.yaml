@@ -1,0 +1,12 @@
+apiVersion: interfaces.eda.nokia.com/v1alpha1
+kind: Breakout
+metadata:
+  name: breakout-example
+  namespace: default
+spec:
+  node:
+    - node-1 # Name of the TopoNode
+  interface:
+    - ethernet-1-1 # Name of the parent interface on node-1
+  channels: 4
+  speed: 100G

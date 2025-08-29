@@ -1,0 +1,8 @@
+apiVersion: connect.eda.nokia.com/v1
+kind: ConnectAudit
+metadata:
+  name: test-audit
+  namespace: eda
+spec:
+  connectPluginName: <name of the plugin>
+  scope: PLUGIN

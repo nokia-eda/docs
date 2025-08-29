@@ -1,0 +1,11 @@
+apiVersion: netbox.eda.nokia.com/v1alpha1
+kind: Allocation
+metadata:
+  name: nb-systemip-v4
+  namespace: eda
+spec:
+  enabled: true
+  instance: netbox
+  tags:
+    - eda-systemip-v4
+  type: ip-address

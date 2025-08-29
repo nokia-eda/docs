@@ -1,0 +1,14 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: DefaultAggregateRoute
+metadata:
+  name: example-default-aggregate
+  namespace: eda
+spec:
+  defaultRouter: "default-router"
+  prefixes:
+    - "192.168.0.0/16"
+    - "172.16.0.0/12"
+  aggregatorIP: "10.0.0.1"
+  aggregatorASN: 65001
+  summaryOnly: true
+  generateICMP: false
