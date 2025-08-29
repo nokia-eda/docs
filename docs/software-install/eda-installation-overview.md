@@ -40,12 +40,18 @@ Several key concepts are used throughout the documentation; following is an over
 
 ## Deployment models
 
-Nokia EDA is deployed as an application on one, three, or more nodes (validated for up to six nodes). The nodes (VMs) run a Kubernetes cluster with the following composition:
+Nokia EDA is deployed as an application on a compatible Kubernetes cluster comprised of one, three, or more nodes (validated for up to six nodes). The nodes (VMs) run a Kubernetes cluster with the following composition:
 
 * One or three Kubernetes master nodes that also function as worker nodes: one, in case a single-VM deployment is used; otherwise three Kubernetes master nodes.
 * Any remaining nodes (in a four or more node deployment) function as worker nodes.
 * One, two or more nodes must also be designated as storage nodes. For redundancy, two is the minimum in a three or more node deployment. These nodes still function as worker (and potentially master) nodes as well. Rook-Ceph is used to create a storage cluster across the nodes indicated as storage nodes.
 * (Optional) An Assets VM which will hold all the resources and files needed in case of an air-gapped environment.
+
+### OpenShift
+
+Nokia EDA can also be deployed on an existing OpenShift v4.16+ cluster[^1] with the Security Context Constraint (SCC) resource applied prior to installing EDA packages. The SCC manifest is provided in [nokia-eda/edaadm/openshift/eda-scc.yaml](https://github.com/nokia-eda/edaadm/blob/main/openshift/eda-scc.yaml) file.
+
+Adding the SCC resource is the only additional requirement that needs to be satisfied, the rest of the installation procedure remains the same.
 
 ## Networking for EDA nodes
 
@@ -76,7 +82,7 @@ This section describes the platform requirements, node requirements, and virtual
 
 ### Installation platform requirements
 
-To execute the installation process, you need access to a Linux environment[^1] with the following components installed:
+To execute the installation process, you need access to a Linux environment[^2] with the following components installed:
 
 /// html | table
 //// html | th[style='text-align: center;']
@@ -355,4 +361,5 @@ In case the installation will be Air-gapped, this section provides steps on how 
 
 ///
 
-[^1]: This system might also be referred to as the "tools-system" further in this documentation.
+[^1]: Alpha support in the current release.
+[^2]: This system might also be referred to as the "tools-system" further in this documentation.
