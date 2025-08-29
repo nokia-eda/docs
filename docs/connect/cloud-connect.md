@@ -16,11 +16,11 @@ the topology based on the LLDP information arriving in the fabric switches, it c
 
 The Connect solution is built around a central service, called the Cloud Connect Core, and plugins for each supported cloud environment.
 
-The Connect Core is responsible for managing the plugins and the relation between Connect Interfaces (compute interfaces) and EDA Interfaces (Fabric
-Interfaces or Edge-Links). It keeps track of the LLDP information of EDA Interfaces and correlates that back to the Connect Interfaces created by
-Plugins to identify the different physical interfaces of the computes of a cloud environment.
+The Connect Core is responsible for managing the plugins and the relationship between Connect interfaces (compute interfaces) and EDA interfaces (fabric
+interfaces or edge-links). It keeps track of the LLDP information of EDA interfaces and correlates that back to the Connect interfaces created by
+plugins to identify the different physical interfaces of the computes of a cloud environment.
 
-Connect Plugins are responsible for tracking the state of compute nodes, their physical interfaces, the virtual networks created in the cloud
+Connect plugins are responsible for tracking the state of compute nodes, their physical interfaces, the virtual networks created in the cloud
 environment and their correlation to the physical network interfaces. As applications create networks and virtual machines or containers, the plugins
 will inform Connect Core of the changes needed to the fabric. Plugins will also create or manage EDA BridgeDomains to make sure the correct
 sub-interfaces are created for the application connectivity.
@@ -37,7 +37,7 @@ cloud environment, Connect comes with three Nokia supported plugins:
 
 Connect supports the following features:
 
-* Creating Layer 2 EVPN Overlay Services on EDA.
+* Creating Layer 2 EVPN overlay services on EDA.
 * Automatically discovering the cloud compute resources and connectivity to the fabric using LLDP.
 * Automatically resolving inconsistent states between Connect and the fabric by performing an audit between Connect and EDA.
 * Using pre-existing LAGs in the fabric.
@@ -47,7 +47,7 @@ Connect supports the following features:
 
 ## Installation of Cloud Connect Core
 
-Cloud Connect is an Application in the EDA App ecosystem. It can be easily installed using the EDA Store UI.
+Cloud Connect is an application in the EDA app ecosystem. It can be easily installed using the EDA Store UI.
 
 ### Installation using Kubernetes API
 
@@ -55,7 +55,7 @@ If you prefer installing the Connect Core using the Kubernetes API, you can do s
 
 /// details | Connect Core dependencies
 
-When installing through the UI dependencies are automatically resolved, this is not the case through the API. Make sure all dependencies of the
+When installing through the UI, dependencies are automatically resolved; this is not the case through the API. Make sure all dependencies of the
 Connect Core app are installed before executing the below kubectl command.
 
 When the dependencies are not satisfied, an error like the following will be added to the status of the AppInstaller object:
@@ -115,7 +115,7 @@ The following Custom Resources are involved:
 
 *ConnectPluginActionable*
 : An actionable is an action to be taken by the `ConnectPlugin`. It is used by the Core to tell the plugin to do something (for example: initiate an
-Audit).
+audit).
 
 *ConnectPluginHeartbeat*
 : The `ConnectPlugin` will continuously send heartbeats to the Cloud Connect service to report its status and alarms.
@@ -147,7 +147,7 @@ properties:
 : The interval, in seconds, between heartbeats that the plugin intends to use.
 
 *Supported Actions*
-: The different actions a plugin can support. These are actions the Core can request the plugin to do. For example, to trigger an Audit.
+: The different actions a plugin can support. These are actions the Core can request the plugin to do. For example, to trigger an audit.
 
 ### Heartbeats
 
@@ -161,18 +161,18 @@ Connect interfaces are managed by the plugins and represent the network interfac
 network interface on a compute node, it will create a Connect interface in EDA for Connect Core to monitor.
 
 Connect Core uses the information from the Connect interface to determine the matching EDA interface. This is the interface on a leaf managed by EDA
-to which the interface on the compute is connected to, or potentially multiple interfaces in case of a LAG or Bond.
+to which the interface on the compute is connected, or potentially multiple interfaces, in case of a LAG or bond.
 
 The plugin will label these Connect interfaces to indicate that Connect Core needs to make sure the matching leaf interfaces have a subinterface
 created in the corresponding overlay service (BridgeDomain).
 
 This way, only those subinterfaces that are truly necessary are configured in the fabric. This limits configuration bloat and possible security risks.
 
-## Namespace support
+## Namespace Support
 
 The EDA Connect service supports multiple namespaces. Each plugin is namespaced and can only access resources within its namespace.
 
-This also means that a compute cluster can only belong to a single namespace, and cannot span multiple namespaces. This is to be expected as compute
+This also means that a compute cluster can only belong to a single namespace, and cannot span multiple namespaces. This is to be expected, as compute
 clusters belong to a single fabric, and a fabric is part of a single namespace.
 
 ## Connect UI
@@ -205,13 +205,13 @@ between them as needed. For instance, you can use one integration mode for one a
 
 ### CMS-Managed Integration Mode
 
-In the Cloud Management mode, Connect creates an EDA BridgeDomain for each subnet that is created in the Cloud Management system. In this mode, the
+In the Cloud Management mode, Connect creates an EDA BridgeDomain resource for each subnet that is created in the Cloud Management system. In this mode, the
 changes in the Cloud Management system are transparently reflected into EDA. The administrator of the Cloud Management system does not require any
 knowledge about how to use EDA.
 
 ### EDA-Managed Integration Mode
 
-For more advanced use cases, a more complex EVPN Service (or set of services) may be needed. This can include features of these services that are
+For more advanced use cases, a more complex EVPN service (or set of services) may be needed. This can include features of these services that are
 supported by EDA, but not natively by the CMS. Examples are configuring complex routing or QoS policies, or using BGP PE/CE for route advertisement
 from the application into the network service.
 
@@ -242,10 +242,10 @@ environments: https://knowledge.broadcom.com/external/article/344761/enabling-an
 
 ### LLDP gracetimer
 
-To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a gracetimer is applied when LLDP information is collected at the
-fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The gracetimer is not
-applicable when LLDP data is collected at hypervisor level.
-The gracetimer can be configured when installing Connect using the `interfaceControllerGraceTimer` setting, the default is 10 seconds.
+To prevent unnecessary fabric reconfiguration due to temporary LLDP data loss, a grace period is applied when LLDP information is collected at the
+fabric level. During this grace period, Connect Core will not reconfigure the fabric, allowing time for LLDP data to recover. The grace period is not
+applicable when LLDP data is collected at the hypervisor level.
+The gracetimer can be configured when installing Connect using the `interfaceControllerGraceTimer` setting; the default is 10 seconds.
 
 # Support Matrix
 

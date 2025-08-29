@@ -2,17 +2,17 @@
 
 ## Overview
 
-The VMware vSphere Plugin leverages the VMware vSphere distributed vSwitch architecture to support managing the fabric directly from VMware vCenter
+The VMware vSphere plugin leverages the VMware vSphere distributed vSwitch architecture to support managing the fabric directly from VMware vCenter
 and make the fabric respond to the networking needs of the environment.
 
 It provides the following advantages and capabilities:
 
 * Direct integration into the network management workflow of VMware vCenter.
-* The use of the common distributed vSwitches and Port Groups for both regular Virtual Machine NICs as well as SR-IOV use cases.
-* VMware plugin supports the following VLAN types for Port Groups.
+* The use of the common distributed vSwitches and port groups for both regular virtual machine NICs as well as SR-IOV use cases.
+* VMware plugin supports the following VLAN types for port groups.
     * None: Vlan 0
     * VLAN: <vlan-id> (1-4094)
-* Automatic provisioning of the fabric based on where the Virtual Machines need the connectivity.
+* Automatic provisioning of the fabric based on where the virtual machines need the connectivity.
 * Support advanced workflows through the Fabric Service System Managed solution, including for VNF use cases with features like QoS, ACLs, and BGP
   PE-CE.
 * Interconnectivity between different cloud environments, allowing for flexible network configurations.
@@ -24,25 +24,25 @@ It provides the following advantages and capabilities:
 
 ## Prerequisites
 
-Before installing or deploying the VMware vSphere Plugin components, make sure that the Cloud Connect Core application is properly installed in the
+Before installing or deploying the VMware vSphere plugin components, make sure that the Cloud Connect Core application is properly installed in the
 cluster.
 
 ## Architecture
 
-The VMware vSphere Plugin consists of two components:
+The VMware vSphere plugin consists of two components:
 
 *VMware vSphere Plugin App*
-: This app runs in EDA and manages the lifecycle of the VMware vSphere Plugins. It does so in the standard app model where a custom resource is used
-to manage the VMware vSphere Plugins.
+: This app runs in EDA and manages the lifecycle of the VMware vSphere plugins. It does so in the standard app model where a custom resource is used
+to manage the VMware vSphere plugins.
 
 *VMware vSphere Plugin*
-: The Plugin itself, which is responsible for connecting and monitoring the VMware vCenter environment for changes. The Plugin will listen to the
+: The plugin itself, which is responsible for connecting and monitoring the VMware vCenter environment for changes. The plugin will listen to the
 events of the following objects:
 
     * Distributed vSwitch (dvS)
     * Distributed Port Groups (dvPG)
     * Host to dvS associations
-    * Custom Attributes
+    * Custom attributes
 
 ### Supported Features
 
@@ -64,11 +64,11 @@ To deploy the VMware vSphere plugin, complete the following tasks:
 
 ### Connect VMware vSphere Plugin App Deployment
 
-The VMware vSphere Plugin App is an Application in the EDA App ecosystem. It can be easily installed using the EDA Store UI.
+The VMware vSphere plugin app is an application in the EDA app ecosystem. It can be easily installed using the EDA Store UI.
 
 #### Installation using Kubernetes API
 
-If you prefer installing the Plugin using the Kubernetes API, you can do so by creating the following Workflow resource:
+If you prefer installing the plugin using the Kubernetes API, you can do so by creating the following Workflow resource:
 
 /// tab | YAML Resource
 
@@ -89,8 +89,7 @@ EOF
 
 ### Connect VMware vSphere Plugin Deployment
 
-A prerequisite for creating a `vmwarePluginInstance` resource is a `Secret with username and password fields that contain the account information for
-an account that can connect to the VMware vCenter environment and has read-only access to the cluster so that it can monitor the necessary resources.
+A prerequisite for creating a `vmwarePluginInstance` resource is a `Secret` resource with username and password fields that contain the account information for an account that can connect to the VMware vCenter environment and has read-only access to the cluster so that it can monitor the necessary resources.
 
 /// tab | YAML Resource
 
@@ -119,7 +118,7 @@ echo -n myUsernameOrPassword | base64
 
 ///
 
-As the VMware vSphere Plugins are managed through the operator, you can use the EDA UI to create a new `VmwarePluginInstance` resource under the *
+As the VMware vSphere plugins are managed through the operator, you can use the EDA UI to create a new `VmwarePluginInstance` resource under the *
 *System Administration > Connect > VMware Plugins** menu item.
 
 As an alternative, you can also create the same `VmwarePluginInstance` using the following custom resource example. Make sure to replace the specified
@@ -164,9 +163,9 @@ receives:
 
 | **Event Trigger**                         | Custom Resource    | Purpose                                                                                                                                                     |
 |-------------------------------------------|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| VLAN-tagged distributed PortGroup events  | `BridgeDomain`     | In VMware Managed mode, each dvPG will result in its own unique `BridgeDomain`                                                                              |
-| VLAN-tagged distributed PortGroup events  | `VLAN`             | Each dvPG with a specific VLAN tag will have an EDA `VLAN` resource so it can be attached to the `BridgeDomain`                                             |
-| Host NIC distributed Switch Uplink events | `ConnectInterface` | Each Host NIC that gets added as an Uplink to a dvS, will trigger the creation of a `ConnectInterface` which is mapped by Connect Core to a EDA `Interface` |
+| VLAN-tagged distributed PortGroup events  | `BridgeDomain`     | In VMware-managed mode, each dvPG will result in its own unique `BridgeDomain`.                                                                              |
+| VLAN-tagged distributed PortGroup events  | `VLAN`             | Each dvPG with a specific VLAN tag will have an EDA `VLAN` resource so it can be attached to the `BridgeDomain`.                                            |
+| Host NIC distributed Switch Uplink events | `ConnectInterface` | Each host NIC that gets added as an uplink to a dvS will trigger the creation of a `ConnectInterface`, which is mapped by Connect Core to an EDA `Interface`. |
 
 /// warning | Naming limitations
 The uplink names must comply with the regex check of `^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]$`. It can only contain alpha-numerical characters and
@@ -180,20 +179,20 @@ the Discovery protocol settings of the distributed vSwitch.
 
 ### Operational Modes
 
-The plugin supports the following Operational Modes, these modes can be used simultaneously.
+The plugin supports the following operational modes; these modes can be used simultaneously:
 
-*VMware Managed Mode*
-: Also referred to as *Connect Managed*. When using this mode, the plugin will create a unique `BridgeDomain` for each VLAN tagged dvPG in the VMware
+*VMware-Managed Mode*
+: Also referred to as *Connect Managed*. When using this mode, the plugin will create a unique `BridgeDomain` resource for each VLAN tagged dvPG in the VMware
 vCenter environment.
 
-*EDA Managed Mode*
-: In EDA Managed Mode, a dvPG is given a special custom attribute that refers to an existing EDA `BridgeDomain`. When the plugin detects this custom
-attribute, and it refers to an existing `BridgeDomain` in EDA, it will not create a new `BridgeDomain` but instead will associate the dvPG with the
+*EDA-Managed Mode*
+: In EDA-managed mode, a dvPG is given a special custom attribute that refers to an existing EDA `BridgeDomain` resource. When the plugin detects this custom
+attribute, and it refers to an existing `BridgeDomain` resource in EDA, it will not create a new `BridgeDomain` but instead will associate the dvPG with the
 existing one. This allows for more advanced configuration of the application networks.
 
-#### Using EDA Managed Mode
+#### Using EDA-Managed Mode
 
-To use the EDA Managed Mode follow these steps:
+To use the EDA-managed mode follow these steps:
 
 1. Create a `BridgeDomain` in EDA with the desired settings
 2. When creating a distributed Port Group in vCenter, configure a Custom Attribute called `ConnectBridgeDomain` and set its value to the key of the EDA
@@ -213,7 +212,7 @@ Make sure to create a Custom Attribute of type *Distributed Port Group* on the P
 
 You can configure multiple dvPGs with the same `BridgeDomain`.
 
-It is also supported to switch between EDA Managed and VMware Managed at any time. You can switch back to VMware Managed by setting the
+You can switch between EDA-managed and VMware-managed mode at any time. You can switch back to VMware-managed mode by setting the
 `ConnectBridgeDomain` Custom Attribute to `none`, or by deleting the Custom Attribute entirely.
 
 ## Troubleshooting
@@ -221,7 +220,7 @@ It is also supported to switch between EDA Managed and VMware Managed at any tim
 ### The plugin is not running
 
 If an incorrect vCenter hostname or IP is configured in the `VmwarePluginInstance` resource, the plugin will try to connect for 3 minutes and
-crash/restart if it fails to connect. In case the credentials are incorrect, the plugin will crash/restart immediately.
+crash and restart if it fails to connect. In case the credentials are incorrect, the plugin will crash and restart immediately.
 
 * Check the raised plugin alarms.
 * Check the connectivity from the EDA cluster to vCenter.
@@ -241,6 +240,6 @@ crash/restart if it fails to connect. In case the credentials are incorrect, the
 * Verify the Uplinks for the dvPG in vCenter are configured as active or standby. If there are no active or standby Uplinks configured, the plugin
   will not associate any `ConnectInterface` with the `VLAN`.
 * Uplink names can only contain alpha-numerical characters and `.`, `_`, `-` and must have a length of 30 characters or less.
-* VLAN Ranges are not supported on dvPGs.
+* VLAN ranges are not supported on dvPGs.
 * Inspect the EDA resources, like `VLAN`, `BridgeDomain` and `ConnectInterface`.
 * Check the logs of the plugin pod.
