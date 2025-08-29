@@ -77,16 +77,20 @@ def define_env(env):
 
         return video_tmpl
 
-
     @env.macro
-    def image(url, padding=0, border_radius=0.0):
+    def image(url, padding=0, border_radius=0.0, shadow=False):
         """
         Image macro with dot background
         """
+        # if shadow is True, apply the .img-shadow class to the image
+        if shadow:
+            img_class = "img-shadow"
+        else:
+            img_class = ""
 
         image_tmpl = f"""
 <div class="polka" style="padding: {padding}px; border-radius: {border_radius}rem; position: relative; display: inline-block;">
-    <img src="{url}" style="display: block; max-width: 100%; height: auto; position: relative;" alt="">
+    <img src="{url}" class="{img_class}" style="display: block; max-width: 100%; height: auto; position: relative;" alt="">
 </div>
 """
 
