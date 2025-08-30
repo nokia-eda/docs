@@ -6,6 +6,13 @@ With no license and no registration required, you are mere couple commands away 
 
 To deliver the "Try EDA" experience, we have created an [EDA playground][playground-repo] - a repository that contains everything you need to install and provision a demo EDA instance with the virtual network on the side. Let us guide you through the installation process.
 
+/// details | Quickstart video walkthrough
+    type: example
+If you prefer a video walkthrough that starts from the very beginning, we have you covered! Check out the [**Event-Driven Automation playlist**](https://www.youtube.com/watch?v=5Qk8opmjixk&list=PLgKNvl454BxdqOqs3xzCXFxmRna71C90T) where Andy Lapteff walks you through the entire process step-by-step starting with installing a hypervisor all the way to the running EDA instance.
+
+-{{youtube(url='https://www.youtube.com/embed/egPEqhbtlPs')}}-
+///
+
 /// html | div.steps
 
 1. **Choose where to run EDA**
