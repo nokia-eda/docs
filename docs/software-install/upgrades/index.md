@@ -117,7 +117,7 @@ Place your `TopoNode` resources into `emulate` mode by setting the resource's `.
 To stop EDA, enter the following command:
 
 ```{.shell .no-select}
-edactl platform stop
+edactl cluster stop
 ```
 
 This command returns no output, but will result in all Pods packaged as part of `eda-kpt-base` being stopped and removed from the cluster. You can verify this with (replace with your base namespace if you modified it):
