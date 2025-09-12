@@ -239,5 +239,5 @@ curl -s http://${EDA_HOST}/openapi/v3/apps/connect.eda.nokia.com/v1alpha1 \
   -H 'Content-Type: application/json'
 ```
 
-[^1]: https://documentation.nokia.com/eda/-{{eda_major_version}}---{{eda_minor_version}}-/books/user/changekeycloak-user-pw.html
+[^1]: https://documentation.nokia.com/eda/-{{eda_major_version}}---{{eda_minor_version}}-/books/user/change-internal-passwords.html#keycloak-and-the-eda-ui
 [^2]: [Try EDA](../../getting-started/try-eda.md) installation is a perfect fit for experimenting with the API.
