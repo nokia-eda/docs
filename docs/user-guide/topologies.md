@@ -8,10 +8,10 @@ Let's start with a familiar role of a topology - the network topology.
 
 A network topology in a broader sense describes the network design. Be it a Clos, a Fat Tree or a Ring design, the topology is what inherently defines the network.
 
-Like every topology is defined by its nodes and links, the EDA topology consists of node (`TopoNode`) and link (`TopoLink`) objects. The EDA topology nodes are represented by the devices in your network, and the topology links define the relationships between them.
+Like every topology is defined by its nodes and links, the EDA topology consists of node ([`TopoNode`][topoNode-crd]) and link ([`TopoLink`][topoLink-crd]) objects. The EDA topology nodes are represented by the devices in your network, and the topology links define the connectivity between them.
 
-<!-- [topoNode-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v-{{ eda_version }}-
-[topoLink-crd]: https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v-{{ eda_version }}- -->
+[topoNode-crd]: https://crd.eda.dev/toponodes.core.eda.nokia.com/v1
+[topoLink-crd]: https://crd.eda.dev/topolinks.core.eda.nokia.com/v1
 
 If you come here after finishing the [Getting Started][gs-guide] guide, you may remember the 3-node topology that we worked on:
 
@@ -25,22 +25,25 @@ Almost no difference with a physical topology, right?
 
 /// admonition | Note
     type: subtle-note
-Bear in mind, that the `TopoNode` and `TopoLink` objects that make up the topology are not specific to your digital twin network, for a physical topology the same objects are used to represent the devices and their links.
+The `TopoNode` and `TopoLink` objects in EDA make up the topology that can be backed by the Digital Twin or a real physical network.
 ///
 
-So if the `TopoNode` and `TopoLink` objects make up a topology, how do we create them?  
-The obvious way is to create these Custom Resources by hand, but this is going to be a tedious and likely error-prone process when carried out manually.
+If the `TopoNode` and `TopoLink` objects make up a topology, how do we create them?  
+A straightforward way is to create these resources by hand, but this is going to be a tedious and likely an error-prone process.
 
-To assist with this process, EDA provides a couple of methods to generate the required topology resources based on an abstracted input:
+To assist with the topology creation, EDA provides a couple of methods to generate the required topology resources based on an abstracted input:
 
-* using a topology file
-* or using the topology generator
+1. Using a topology file
+2. Using a topology generator
 
 ### Topology file
 
-Instead of creating the topology resources individually, EDA provides a way to describe the topology nodes and links in a topology file. Based on the contents of this file EDA will create the `TopoNode`, `TopoLink`, `Interface` and `Breakout` resources. This approach enables the users to define topologies in a declarative way.
+Instead of creating the topology resources individually, EDA provides a way to describe the topology nodes and links in a topology file. Based on the contents of this file EDA will create the [`TopoNode`][topoNode-crd], [`TopoLink`][topoLink-crd], [`Interface`][interface-crd] and [`TopoBreakout`][topoBreakout-crd] resources. This approach enables the users to define topologies in a declarative way.
 
-Let's have a look at the topology file structure and a snippet matching the structure.
+[interface-crd]: https://crd.eda.dev/interfaces.interfaces.eda.nokia.com/v1alpha1
+[topoBreakout-crd]: https://crd.eda.dev/topobreakouts.core.eda.nokia.com/v1
+
+Let's have a look at the topology file structure and a snippet matching it.
 
 /// tab | schema
 
@@ -108,7 +111,7 @@ data:
 ///
 
 As you can see, the topology file is provided as a ConfigMap Kubernetes resource with a predefined name - `eda-topology`. The `eda.yaml` data key is a YAML document that describes the topology and consists of the three lists: `nodes`, `links` and `breakouts`.  
-Elements of these lists are modelled after the `TopoNode`, `TopoLink`, and `TopoBreakout` resources, respectively. Let's describe the fields you would typically use in these resources.
+Elements of these lists are modelled after the [`TopoNode`][topoNode-crd], [`TopoLink`][topoLink-crd], and [`TopoBreakout`][topoBreakout-crd] resources, respectively. Let's describe the fields you would typically use in these resources.
 
 /// tab | TopoNode
 The list of `TopoNode` elements will be used to create the `TopoNode` resources.
@@ -257,129 +260,197 @@ speed: 25G
 
 ///
 
-#### Simplifying topology file
+#### Simplifying the topology file
 
-Because the topology definition is a YAML-formatted document embedded in a ConfigMap, it is easier to work with the topology content in a separate file and then embed it into the ConfigMap. You will see us using this method to define topologies where a standalone YAML file contain just the `items` list with nodes, links and breakout elements, without the ConfigMap wrapping:
+Because the topology definition is a YAML-formatted document embedded in a standard ConfigMap resource, we can deal with the topology contents in a separate file and then embed it into the ConfigMap structure. You will see us using this method of defining topologies where a YAML file contains just the `items` list with the nodes, links and breakout elements, without the ConfigMap wrapping:
 
 -{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='Topology YAML', page=1) }}-
 
-> When you have a Topology YAML outside of the ConfigMap wrapping, you can benefit from the YAML syntax highlighting and less indentation to deal with.  
-> This is exactly how the [3-node topology][3-node-topo-file] file is defined that we used the [Getting Started guide][gs-guide].
+> A topology YAML without the ConfigMap wrapping allows users to enjoy the YAML syntax highlighting and deal with less indentation.  
+> This is exactly how the [3-node topology][3-node-topo-file] file is defined that we used in the [Getting Started guide][gs-guide].
+
+The topology file structure may seem verbose with its nodes and links often having the same labels, OS type, version, etc. To reduce the repetition and ensure that the parameters are consistent across the topology resource, you may use YAML anchors and references. This way you can define a set of common parameters once and then reference them in each node or link definition.  
+The snippet below shows how YAML anchors and references can be used to set the node and links parameters once and then reference them in the node and link definitions.
+
+/// details | Using YAML anchors and references
+    type: code-example
+
+```yaml
+# Common node labels
+common_node_labels: &common_node_labels
+  eda.nokia.com/security-profile: managed
+
+leaf_labels: &leaf_labels
+  <<: *common_node_labels
+  eda.nokia.com/role: leaf
+
+spine_labels: &spine_labels
+  <<: *common_node_labels
+  eda.nokia.com/role: spine
+
+# Common srl node specs
+srl_spec: &srl_spec
+  operatingSystem: srl
+  version: 25.3.2
+  nodeProfile: srlinux-ghcr-25.3.2
+
+srl_leaf_spec: &srl_leaf_spec
+  <<: *srl_spec
+  platform: 7220 IXR-D3L
+
+srl_spine_spec: &srl_spine_spec
+  <<: *srl_spec
+  platform: 7220 IXR-D5
+
+# Link labels
+interswitch_labels: &interswitch_labels
+  eda.nokia.com/role: interSwitch
+
+edge_labels: &edge_labels
+  eda.nokia.com/role: edge
+
+####### TOPOLOGY #######
+items:
+  - spec:
+      nodes:
+        - name: leaf1
+          labels:
+            <<: *leaf_labels
+          spec:
+            <<: *srl_leaf_spec
+        - name: leaf2
+          labels:
+            <<: *leaf_labels
+          spec:
+            <<: *srl_leaf_spec
+        - name: spine1
+          labels:
+            <<: *spine_labels
+          spec:
+            <<: *srl_spine_spec
+
+      links:
+        - name: leaf1-spine1-1
+          labels:
+            <<: *interswitch_labels
+          spec:
+            links:
+              - type: interSwitch
+                local:
+                  node: leaf1
+                  interface: ethernet-1-1
+                remote:
+                  node: spine1
+                  interface: ethernet-1-1
+        - name: leaf1-spine1-2
+          labels:
+            <<: *interswitch_labels
+          spec:
+            links:
+              - type: interSwitch
+                local:
+                  node: leaf1
+                  interface: ethernet-1-2
+                remote:
+                  node: spine1
+                  interface: ethernet-1-2
+```
+
+///
 
 ### Deploying Topology
 
 To deploy a topology a user should take the following steps:
 
-1. Create the ConfigMap resource with a predefined `eda-topology` name in a target namespace.
-2. Run the `api-server-topo` tool available in the Toolbox pod[^1] to apply the defined topology and make EDA create the `TopoNode`, `TopoLink` and `Interface` resources based on the topology file contents.
+1. Create the ConfigMap resource named `eda-topology` in a k8s namespace matching the EDA namespace where you want to have the topology created.
+2. Run the `api-server-topo` CLI command available in the Toolbox pod[^1] to apply the defined topology and make EDA create the `TopoNode`, `TopoLink`, `Interface` and `Breakout` resources based on the topology file contents.
 
 /// admonition | Danger
     type: danger
-Running the `api-server-topo` tool will remove the `TopoNode`, `TopoLink`, `Interface` and `Breakout` resources that are not part of the new topology.
+Running the `api-server-topo` command will remove the `TopoNode`, `TopoLink`, `Interface` and `Breakout` resources that are not part of the new topology. This will effectively replace any existing node and link objects with the ones defined in the topology file being loaded.
 ///
 
-If the topology file is in the simplified format as demonstrated in the [section above](#simplifying-topology-file), you should create a ConfigMap resource with its contents. We have created a few automation scripts to help with this translation, so you don't have to create the ConfigMap manually.
+To create the `eda-topology` ConfigMap resource with the topology file contents users can use the make target from the playground repository or a simple shell script that can work without cloning the playground repo.
 
-For example, in the [Try EDA][gs-guide] setup the [3-node topology](https://github.com/nokia-eda/playground/blob/main/topology/3-nodes-srl.yaml) is created with [`topology-load` make target][make-load-topo] that takes in the topology defined in the YAML file, adds it to the `eda-topology` ConfigMap in the `eda` namespace, and calls the `api-server-topo` tool to apply the topology:
+/// tab | deploy with a make target
+
+In the [Try EDA][gs-guide] setup the [3-node topology](https://github.com/nokia-eda/playground/blob/main/topology/3-nodes-srl.yaml) is created with calling the [`topology-load` make target][make-load-topo] that takes in the topology defined in the YAML file, adds it to the `eda-topology` ConfigMap in the `eda` namespace, and calls the `api-server-topo` CLI tool to apply the topology:
 
 [make-load-topo]: https://github.com/nokia-eda/playground/blob/c8c6110cf118c88b8b8e7932b30fcda16fb94067/Makefile#L1117
 
 ```{.shell .no-select}
-make TOPO=topology/3-nodes-srl.yaml topology-load #(1)!
+make TOPO=topology/3-nodes-srl.yaml topology-load
 ```
 
-1. Using the makefile from the playground repository
+///
+//// tab | deploy with a shell script
+Some times the playground repository is not available on the same machine where the topology file is. In this case, users can add the script below to their environment and use it to load the topology file.  
+It performs the same operations as the make target from the playground repository:
 
-If you are working outside of the playground repository where the make targets reside, you can make use of the following shell script that achieves the same result:
+1. Wrap the topology file in the ConfigMap structure.
+2. Create the `eda-topology` ConfigMap resource.
+3. Run the `api-server-topo` CLI tool to apply the topology.
 
 /// details | Loading topology YAML with shell script
     type: subtle-note
 
-```bash
-#!/bin/bash
-
-# pass the topo yaml file from the root of the repo
-# e.g. bash srl-ceos/load-topo.sh srl-ceos/6-node-srl-ceos.yaml
-TOPO_YAML=${1}
-
-# namespace to load deploy topology into
-# default is eda
-TOPO_NS=${2:-eda}
-
-if [ ! -f "${TOPO_YAML}" ]; then
-  echo "Topology file ${TOPO_YAML} does not exist"
-  exit 1
-fi
-
-echo "Loading topology from ${TOPO_YAML}"
-
-cat <<EOF | kubectl apply -n ${TOPO_NS} -f -
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: eda-topology
-data:
-  eda.yaml: |
-$(sed 's/^/    /' "${TOPO_YAML}")
-EOF
-
-kubectl -n eda-system exec -it \
-  $(kubectl get -n eda-system pods \
-  -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
-  -- api-server-topo -n ${TOPO_NS}
+```bash title="load-topo.sh"
+--8<-- "docs/user-guide/topo.sh"
 ```
 
 ///
 
-In case your topology definition is already in the ConfigMap format, you can apply it directly using `kubectl`:
+With the script added to your current directory or `$PATH` you can run it to load a topology file:
 
 ```bash
-kubectl -n eda apply -f my-topology-cfgmap.yaml
+bash topo.sh load my-topology.yaml
 ```
 
-The `api-server-topo` tool (available in the Toolbox[^1]) will read the topology file from the `eda-topology` ConfigMap in a specified namespace and generate the following resources in EDA:
+////
 
-* `TopoNode` for each node in the topology ConfigMap.
-* `TopoLink` for each link in the topology ConfigMap.
-* `Interface` for each interswitch and edge link in the topology ConfigMap.
-* `Breakout` for each breakout defined in the topology ConfigMap.
+Both methods of deploying a topology rely on the `api-server-topo` tool available in the Toolbox[^1] pod. It reads the topology file from the `eda-topology` ConfigMap in a specified namespace and generates the following resources in EDA:
 
-One or more transactions from the Kubernetes API will appear and once they succeed you will see the resources in your cluster.
+* `TopoNode` for each node in the topology.
+* `TopoLink` for each link in the topology.
+* `Interface` for each interSwitch and edge link in the topology.
+* `Breakout` for each breakout defined in the topology.
+
+One or more transactions will appear and once they succeed you will see the resources in your cluster and the topology diagram in the EDA UI.
 
 ### Removing Topology
 
-By deploying an empty topology file you can remove the existing topology from EDA. For instance, you can use the following script to remove the topology:
+By deploying an empty topology file you can remove the existing topology from EDA.
 
-```bash hl_lines="14"
-#!/bin/bash
+/// tab | remove with a make target
+A handy make target is available in the playground repository to remove the existing topology:
 
-# namespace to load deploy topology into
-# default is eda
-TOPO_NS=${1:-eda}
-
-cat <<EOF | kubectl apply -n ${TOPO_NS} -f -
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: eda-topology
-data:
-  eda.yaml: |
-    {}
-EOF
-
-kubectl -n eda-system exec -it \
-  $(kubectl get -n eda-system pods \
-  -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
-  -- api-server-topo -n ${TOPO_NS}
 ```
+make teardown-topology
+```
+
+The topology will be removed from the namespace set with the `EDA_USER_NAMESPACE` variable, or from the `eda` namespace if the variable is not set.
+///
+/// tab | remove with a script
+
+The same script that is used to load the topology can be used to remove it. To remove a topology:
+
+```bash
+bash topo.sh remove
+```
+
+Path to the topology is not required as the empty topology is assumed for the `remove` operation.
+
+///
 
 Deploying an empty topology will remove all `TopoNode`, `TopoLink`, `Interface`, and `Breakout` resources in the specified namespace.
 
 ### Topology generation
 
-Using a topology file instead of creating the `TopoNode` and `TopoLink` resources manually is a step forward, but wouldn't it be nice to have a tool that could generate the topology file based on a more abstracted definition? This is exactly what the topology generator is for.
+Topology file provides a flexible way of defining `TopoNode` and `TopoLink` resources in a single document, but its flexibility in managing individual nodes and links leads to verbosity when defining larger topologies. For cookie-cutter topologies like Clos, a simpler abstraction can be used to define the topology in a more compact way and scalable way.
 
-EDA Topology Generator allows users to define an abstracted input for a topology that can further simplify working with topologies. The topology generator expects user to provide a JSON file that consists of "layers". Each layer represents a set of nodes of the same type and role, and maps nicely to the tiers or stages of a Clos topology.  
+EDA Topology Generator allows users to define such an abstracted input in format of a JSON file that consists of layers. Each layer represents a set of nodes of the same role, and maps nicely to the tiers/stages of a Clos topology.  
+The layers are then connected to each other based on the `NextLayerRole` field defined in each layer. This way, the uplinks of one layer connect to the downlinks of the next layer.
+
 The example below should help clarify the layered structure and the definition of each field inside a layer.
 
 ```{.json .no-select .code-scroll-lg}
@@ -394,13 +465,13 @@ The example below should help clarify the layered structure and the definition o
     "NextLayerRole": "spine", //(5)!
     "Uplinks": 2, //(6)!
     "Downlinks": 2, //(7)!
+    "GenerateEdge": true, //(10)!
+    "EdgeEncapType": "dot1q", //(14)!
     "SlotCount": 1, //(8)!
     "PodId": "1", //(9)!
-    "GenerateEdge": true, //(10)!
     "NodeProfile": "srlinux-ghcr--{{ srl_version }}-", //(11)!
     "Version": "-{{ srl_version }}-", //(12)!
     "OperatingSystem": "srl", //(13)!
-    "EdgeEncapType": "dot1q", //(14)!
     "RedundancyLabelsOdd": { //(15)!
       "eda.nokia.com/redundancy-group": "a"
     },
@@ -433,14 +504,15 @@ The example below should help clarify the layered structure and the definition o
 1. A layer name. It is an arbitrary name of a layer, but it must be unique across the entire topology.
 2. The number of nodes in the layer.
 3. The platform of the node.
-4. The layer role. An arbitrary string value, but often named after a topology stage, like `leaf`, `spine`, etc.
+4. The layer role. An arbitrary string value, but often named after a topology stage, like `leaf`, `spine`, etc. The layer role is used in the `NextLayerRole` field to tie layers together.
 5. The role of the next layer that this layer connects to.  
     In this example the `leaf` role has the `spine` role as the next layer, and hence the uplinks of the `leaf` layer will connect to the `spine` layer.
 6. The number of uplinks each node in this layer has.
 7. The number of downlinks each node in this layer has.
 8. Used with chassis platforms, and will result in uplinks/downlinks being evenly distributed over line cards.
-9. Pod ID is translated to a TopoNode label that is leveraged by the Fabric app when dealing with multi-pod topologies.
-10. Indicating whether to generate Interface resources for links not used for either uplinks or downlinks.
+9. Pod ID groups layers into pods. Layers of the same pod make up a fabric and the pod ID becomes a TopoNode label that is leveraged by the Fabric app when dealing with multi-pod topologies.  
+    Each pod is therefore a separate fabric and the topology generator input would be composed of multiple layer combinations with different pod IDs.
+10. Indicating whether to generate Interface resources for the downlinks of the layer. This is typically the leaf layer that has no layer beneath it, and hence its downlinks are edge links.
 11. The profile of the node.
 12. The software version of the node.
 13. The operating system of the node.
