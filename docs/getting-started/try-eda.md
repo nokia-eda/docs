@@ -27,7 +27,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
     Regardless of whether you run EDA Playground locally on a laptop, or in a VM locally or in the cloud, the underlying k8s cluster should have the following resources available to it[^2]:
 
     <!-- --8<-- [start:resources-reqs] -->
-    :fontawesome-solid-microchip: 10 vCPUs  
+    :fontawesome-solid-microchip: 8 vCPUs  
     :fontawesome-solid-memory: 16GB of RAM  
     :fontawesome-solid-floppy-disk: 30GB of SSD storage
     <!-- --8<-- [end:resources-reqs] -->
@@ -186,7 +186,7 @@ For a production installation instructions, please refer to the [Software Instal
 [prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 
 [^1]: As no other framework of comparable scale.
-[^2]: This as well accounts for the [playground network topology](virtual-network.md).
+[^2]: This as well accounts for the [playground network topology](virtual-network.md). Running a bigger topology or changing the node types may require more resources.
 [^3]: Many distributions come with `git` preinstalled, but if not you should install it via your package manager.  
     For instance with `apt`-enabled systems:
 
