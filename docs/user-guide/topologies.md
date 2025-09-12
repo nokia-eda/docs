@@ -528,13 +528,13 @@ EDA topology generator is implemented in the `edatopogen` binary that you can fi
 /// tab | `toolbox` alias
 
 ```bash
-alias toolbox='kubectl -n eda-system exec -it \
+alias edatoolbox='kubectl -n eda-system exec -it \
   $(kubectl get -n eda-system pods \
   -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
-  -- env "TERM=xterm-256color" bash'
+  -- env "TERM=xterm-256color" bash -l'
 ```
 
-And then run `toolbox` to get a shell in the toolbox pod.
+And then run `edatoolbox` to get a shell in the toolbox pod.
 
 ///
 /// tab | make target from the playground repository
