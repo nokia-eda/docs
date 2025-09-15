@@ -78,7 +78,9 @@ def define_env(env):
         return video_tmpl
 
     @env.macro
-    def image(url, padding=0, border_radius=0.0, shadow=False):
+    def image(
+        url="", light_url="", dark_url="", padding=0, border_radius=0.0, shadow=False
+    ):
         """
         Image macro with dot background
         """
@@ -88,9 +90,19 @@ def define_env(env):
         else:
             img_class = ""
 
+        # if only one url is provided the image is used for both light and dark modes
+        img_src = f'<img src="{url}" class="{img_class}" alt="">'
+
+        # if light and dark url are provided
+        if light_url and dark_url:
+            img_src = f"""
+    <img src="{light_url}#only-light" class="{img_class}" alt="">
+    <img src="{dark_url}#only-dark" class="{img_class}" alt="">
+    """
+
         image_tmpl = f"""
 <div class="polka" style="padding: {padding}px; border-radius: {border_radius}rem; position: relative; display: inline-block;">
-    <img src="{url}" class="{img_class}" style="display: block; max-width: 100%; height: auto; position: relative;" alt="">
+    {img_src}
 </div>
 """
 
