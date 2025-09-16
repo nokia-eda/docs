@@ -57,7 +57,7 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           script: |
-            const branchName = process.env.BRANCH_NAME.replace(/\./g, '-');
+            const branchName = process.env.BRANCH_NAME.replace(/[._]/g, '-');
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

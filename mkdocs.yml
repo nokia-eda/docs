@@ -34,6 +34,7 @@ nav:
           - KinD: software-install/non-production/kind.md
           - software-install/exposing-ui-api.md
   - User guide:
+      - Transactions: user-guide/transactions.md
       - Queries: user-guide/queries.md
       - Topologies: user-guide/topologies.md
       - Using the CLIs: user-guide/using-the-clis.md
