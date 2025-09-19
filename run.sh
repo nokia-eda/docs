@@ -42,8 +42,6 @@ else
   MKDOCS_IMAGE=squidfunk/mkdocs-material:9.6.12
 fi
 
-MKDOCS_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:9.6.12-insiders-4.53.16-hellt
-
 MIKE_CMD_COMMON_DOCKER_RUN_ARGS="--rm -i -p ${PORT}:8000 \
   -v $(pwd):/docs \
   -v ${HOME}/.ssh:/root/.ssh \
