@@ -13,6 +13,8 @@ if [ -z "${PORT}" ]; then
   PORT=8000
 fi
 
+DOCS_ENV=${DOCS_ENV:-internet}
+
 # git remote names
 if [ -z "${INSIDERS_REMOTE_NAME}" ]; then
   INSIDERS_REMOTE_NAME="insiders"
@@ -25,6 +27,20 @@ fi
 # set the branch name for versioned docs
 MIKE_BRANCH_NAME="__versioned-docs__"
 
+MKDOCS_VERSION=${MKDOCS_VERSION:-9.6.12-insiders-4.53.16-hellt}
+
+MKDOCS_INET_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:${MKDOCS_VERSION}
+MKDOCS_NOKIA_IMAGE=registry.srlinux.dev/pub/mkdocs-material-insiders:${MKDOCS_VERSION}
+
+if [ "${DOCS_ENV}" = "internet" ]; then
+  MKDOCS_IMAGE=${MKDOCS_INET_IMAGE}
+elif [ "${DOCS_ENV}" = "nokia" ]; then
+  echo "Using Nokia internal mkdocs image"
+  MKDOCS_IMAGE=${MKDOCS_NOKIA_IMAGE}
+else
+  echo "Using public mkdocs image"
+  MKDOCS_IMAGE=squidfunk/mkdocs-material:9.6.12
+fi
 
 MKDOCS_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:9.6.12-insiders-4.53.16-hellt
 
