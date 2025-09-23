@@ -232,13 +232,13 @@ Navigating to the **Topology → Interfaces** in the left sidebar and creating a
 * namespace: eda
 * enabled: true
 * description: "set via UI"
-* LLDP: enabled
-* encap type: 'null'
+* lldp: true
+* encapType: 'null'
 * members:
     * interface: ethernet-1-14
     * node: leaf1
 
-Would be represented like this:
+Would be represented like this in the UI:
 
 -{{image(url='https://gitlab.com/rdodin/pics/-/wikis/uploads/625371d2534fed2d50ee0b3266845181/CleanShot_2025-08-20_at_19.55.36.webp', padding=10)}}-
 
@@ -246,7 +246,7 @@ Now look what would be the equivalent Terraform configuration in the next tab.
 
 ///
 /// tab | Terraform
-With terraform, the resources contain the same fields and take in the same values as in the UI. Some may say "obviously", because at the end they use the same EDA API to create manage the resources.
+With terraform, the resources contain the same fields[^4] and take in the same values as in the UI. Some may say "obviously", because at the end they use the same EDA API to create and manage the resources.
 
 Here is the definition of the same interface in the Hashicorp Configuration Language that Terraform uses:
 
@@ -271,10 +271,12 @@ resource "interfaces-v1alpha1_interface" "leaf1-ethernet-1-14" {
 }
 ```
 
-/// note
-Fields that have the same name in a resource spec must be uniquely identifiable, which result in the same-named fields being disambiguated using `_1`, `_2` suffix. For example, if the `bgp` field is present in the fabric provider at different levels of the hierarchy, it will be referenced as `bgp_1`, `bgp_2`, etc. The provider reference will show the accurate names as expected to be provided by the user.
 ///
 
+/// warning
+Terraform style guide prescribes that the resource fields should be defined in `snake_case`, which is why you see `encap_type` instead of `encapType` as in the UI.
+
+Always consult the provider documentation for the exact field names.
 ///
 
 As shown in the Terraform tab above, the resources for the EDA applications are almost indistinguishable from the YAML representation you see in the EDA UI. One thing to note is that the Terraform resource omits the `apiVersion` and `kind` fields, because they are set by the provider already.
@@ -308,7 +310,7 @@ data "interfaces-v1alpha1_interface" "leaf1_ethernet_1_1" {
 
 Terraform supports importing existing resources into your Terraform state. This is useful for managing resources that were created before you started to use Terraform or were created outside of Terraform. This is known as a brownfield deployment scenario.
 
-The [import documentation](https://developer.hashicorp.com/terraform/language/import) covers various ways to import resources, including the [generate configuration](https://developer.hashicorp.com/terraform/language/import/generating-configuration) method that we show below to import a couple of existing interfaces into the `interfaces.tf` file[^4]:
+The [import documentation](https://developer.hashicorp.com/terraform/language/import) covers various ways to import resources, including the [generate configuration](https://developer.hashicorp.com/terraform/language/import/generating-configuration) method that we show below to import a couple of existing interfaces into the `interfaces.tf` file[^5]:
 
 ```hcl
 import {
@@ -337,9 +339,9 @@ After the successful import, you can remove the `import` blocks.
 1. Workflows cannot be triggered via Terraform.
 2. Transaction-based operations are not supported yet. These operations, where resources are jointly committed via the Transaction API, are instead managed via REST API calls to the respective application endpoints, not through the Transaction API.
 3. Direct calls to application endpoints in the current release do not store node/resource diffs. Node diffs are only stored when using the Transaction API.
-4. Fields that have the same name in a resource spec must be uniquely identifiable, which result in the same-named fields being disambiguated using `_1`, `_2` suffix. For example, if the `bgp` field is present in the fabric provider at different levels of the hierarchy, it will be referenced as `bgp_1`, `bgp_2`, etc. The provider reference will show the accurate names as expected to be provided by the user.
 
 [^1]: Such as interfaces, fabrics, virtual networks and so on.
 [^2]: Often the providers configuration goes into the `providers.tf` file as per the [style guide](https://developer.hashicorp.com/terraform/language/style#file-names).
 [^3]: Full list of options you can find in the providers documentation hosted on Terraform registry.
-[^4]: The file must not exist before the `terraform plan` command is run.
+[^4]: But represented with `snake_case` instead of `camelCase`.
+[^5]: The file must not exist before the `terraform plan` command is run.
