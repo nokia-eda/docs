@@ -1,17 +1,13 @@
 # Upgrading EDA
 
-Assuming you have a working EDA cluster, your upgrade process looks similar to an install + restore. An in place upgrade is not currently supported.
-
-The upgrade procedure consists of:
+Assuming you have a working EDA cluster the upgrade procedure will consist of the following steps:
 
 1. Backup your existing cluster.
-1. Pull the latest version of the `kpt` package.
-1. Make any necessary edits to the `kpt` package.
-1. Pause your clusters interaction with your infrastructure.
-1. Stop EDA (on both the active and standby members if running geo redundant).
-1. Install the new `kpt` package (on both active and standby members if running geo redundant).
-1. Upgrade your applications.
-1. Unpause your clusters interaction with your infrastructure.
+2. Update the [playground][playground] repository.
+3. Uninstall the existing version of EDA.
+4. Install the new EDA `kpt` package (on both active and standby members if running geo redundant).
+5. Restore your backup.
+6. Upgrade your applications.
 
 /// admonition | Nuances for Air-gapped and Geo-redundant clusters
     type: info
@@ -34,7 +30,7 @@ Platform backup done at eda-backup-engine-config-2025-04-22_13-51-50.tar.gz
 ```
 </div>
 
-This will create a backup in a gzipped tarball format, which contains all the necessary information to restore your cluster.
+This will create a backup in a gzipped tarball format in the toolbox pod. The backup archive contains all the necessary information to restore your cluster.
 
 Copy this backup outside of your `eda-toolbox` pod - as this pod is destroyed and recreated during the upgrade. Replace the file name with the one from the `edactl platform backup` command output and run:
 
@@ -48,79 +44,150 @@ kubectl cp eda-system/$toolboxpod:/eda/eda-backup-engine-config-2025-04-22_13-51
 
 The backup file will be copied to the `/tmp/eda-backup.tar.gz` file on your system.
 
-## Upgrading EDA kpt packages
+## Updating playground repository
 
-The workflow to upgrade the EDA kpt packages slightly differs depending on whether you have the original [playground directory](../preparing-for-installation.md#download-the-eda-installation-playground) present in a system that you used to install EDA originally from or not.
+The workflow to upgrade EDA slightly differs depending on whether you have the original [playground repository][playground] present in a system that you used to install EDA originally from or not.
 
-/// tab | If original playground repository present
-If you have the original playground directory, you should upgrade your kpt packages in place. This is the recommended approach, as it will keep your customizations intact.
+[playground]: ../preparing-for-installation.md#download-the-eda-installation-playground
 
-Change into the playground directory and run:
+/// tab | Playground repository present
 
-```{.shell .no-select}
+If you have an existing [playground repository][playground] ensure it is up to date by running:
+
+```bash
 git pull --rebase --autostash -v
 ```
 
+This will update the playground repository while keeping any customizations you may have done to the `prefs.mk` file.
+
 ///
 
-/// tab | If playground repository missing
-If you don't have the original playground directory, pull the repository again:
+/// tab | Playground repository missing
+If the original playground repository is missing, you should clone the repository again:
 
-```shell
+```bash
 git clone https://github.com/nokia-eda/playground && \
-cd playground
+cd playground && \
+make download-tools
 ```
+
+Identify what EDA version you are running using [edactl](../../user-guide/using-the-clis.md#edactl):
+
+```bash
+edactl cluster
+```
+
+<div class="embed-result">
+```{.shell .no-select .no-copy}
+Name           Address  ActivityState  BuildVersion                  CoreVersion  AvgLatency(ms)  Reachable  Synchronized
+ engine-config  self     Active         v25.4.1-2504252348-g720b7d2e  v2.0.0-0                     true       true
+```
+</div>
+
+In this example, we have EDA version `25.4.1`.
+
+Set the `EDA_CORE_VERSION` and `EDA_APPS_VERSION` variables in the `prefs.mk` file to the **existing** version you noted above if it is not already set. For example:
+
+```text title="snippet from prefs.mk"
+EDA_CORE_VERSION=25.4.1
+EDA_APPS_VERSION=25.4.1
+```
+
+Apply any other customizations required to the `prefs.mk` file as explained on the [installation page](../deploying-eda/installing-the-eda-application.md#customizing-the-installation).
+
+With the existing version set and customizations added to the `prefs.mk` file, download the EDA packages for the currently running EDA system:
+
+```bash
+make download-pkgs
+```
+
+<div class="embed-result">
+```{.shell .no-select .no-copy}
+❯ make download-pkgs
+--> INFO: Updating /home/rd/nokia-eda/playground/eda-kpt
+--> INFO: Updating /home/rd/nokia-eda/playground/catalog
+--> INFO: /home/rd/nokia-eda/playground/eda-kpt - selected version: 25.4.1
+--> INFO: /home/rd/nokia-eda/playground/eda-kpt - is at 25.4.1
+--> INFO: /home/rd/nokia-eda/playground/catalog - selected version: 25.4.1
+--> INFO: /home/rd/nokia-eda/playground/catalog - is at 25.4.1
+```
+</div>
 
 ///
 
-If you are not upgrading to the latest version, specify the version of EDA you are upgrading to with adding the following lines to the `prefs.mk` file. For example, to choose the -{{eda_version}}- version:
+Ensure the package inventory is in sync with your existing cluster:
 
-```text
-EDA_CORE_VERSION=-{{eda_version}}-
-EDA_APPS_VERSION=-{{eda_version}}-
+```bash
+make cluster-restore-inventory
 ```
 
-Then update the packages by executing the following command from the playground repository:
+## Uninstalling EDA core components
 
-```shell
-make download-tools download-pkgs
-```
+The existing EDA core components must be uninstalled, before installing the new version.
 
-### Customizing kpt packages
+### Breaking geo redundancy <small>(optional)</small>
 
-If you have any customizations to your EDA installation, you should reapply them[^1] by setting the variables in the prefs.mk file as was done during the [installation phase](../deploying-eda/installing-the-eda-application.md#customizing-the-installation). Reconfigure the EDA core components using the following command:
-
-```{.shell .no-select}
-make eda-configure-core
-```
-
-At a minimum, ensure `EXT_DOMAIN_NAME` and `EXT_HTTPS_PORT` are set correctly in your `prefs.mk` file.
-
-## Breaking geo redundancy (optional)
-
-On your active cluster member, update your `EngineConfig` to remove the `.spec.cluster.redundant` section. This will break the geo redundancy and allow you to upgrade the active member without affecting the standby member.
+If you have a geo-redundant installation, on your active cluster member, update your `EngineConfig` to remove the `.spec.cluster.redundant` section. This will break the geo redundancy and allow you to upgrade the active member without affecting the standby member.
 
 /// admonition | Changes on standby members
     type: subtle-note
 Do not update the EngineConfig resource on standby members. Although stopped, if the standby members were to start, they must continue to look for the active member (and fail to do so) throughout the upgrade.
 ///
 
-## Pausing NPP interactions
+### Pausing NPP interactions
 
 Place your `TopoNode` resources into `emulate` mode by setting the resource's `.spec.npp.mode` from `normal` to `emulate`.
 
 * In this mode, EDA does not interact with targets, effectively pausing the cluster's interaction with your infrastructure.
 * You can still interact with EDA and the `TopoNode` resources; changes are pushed upon switching back to `normal` mode.
 
-## Stopping EDA
-
-To stop EDA, enter the following command:
+You can do this with running the following script in on your machine where you have `kubectl` configured to access your cluster:
 
 ```{.shell .no-select}
-edactl platform stop
+make set-npp-mode-emulate
 ```
 
-This command returns no output, but will result in all Pods packaged as part of `eda-kpt-base` being stopped and removed from the cluster. You can verify this with (replace with your base namespace if you modified it):
+After patching script is run, verify that the `TopoNode` resources are in `emulate` mode:
+
+```{.shell .no-select}
+kubectl get toponode -A \
+-o custom-columns='NAMESPACE:.metadata.namespace,NAME:.metadata.name,MODE:.spec.npp.mode'
+```
+
+<div class="embed-result">
+```{.shell .no-select .no-copy}
+NAMESPACE       NAME     MODE
+eda-telemetry   leaf1    emulate
+eda-telemetry   leaf2    emulate
+eda-telemetry   leaf3    emulate
+eda-telemetry   leaf4    emulate
+eda-telemetry   spine1   emulate
+eda-telemetry   spine2   emulate
+eda             leaf1    emulate
+eda             leaf2    emulate
+eda             spine1   emulate
+```
+</div>
+
+### Stopping EDA platform
+
+To stop EDA components, enter the following command:
+
+```{.shell .no-select}
+make eda-stop-core
+```
+
+This command returns no output, but will result in all Pods packaged as part of `eda-kpt-base` being stopped and removed from the cluster.
+
+### Uninstalling EDA core
+
+Proceed with EDA core components uninstallation:
+
+```bash
+make eda-uninstall-core
+```
+
+Now you should see no core components in your cluster. Check with the following command[^2]:
 
 ```{.shell .no-select}
 kubectl get pods -n eda-system
@@ -144,9 +211,36 @@ trust-manager-69955c46b8-bghj6        1/1     Running   0          95m
 For geo redundant clusters, execute the `edactl platform stop` command on both active and standby members, via their respective `eda-toolbox` Pods.
 ///
 
+## Updating EDA kpt packages
+
+Set the desired EDA version in the `prefs.mk` file to match the target version you want to upgrade to. For example, to choose the -{{eda_version}}- version:
+
+```text
+EDA_CORE_VERSION=-{{eda_version}}-
+EDA_APPS_VERSION=-{{eda_version}}-
+```
+
+Download the tools and packages by executing the following command:
+
+```shell
+make download-tools download-pkgs
+```
+
+### Customizing kpt packages
+
+If you started with a freshly cloned repository, you want to add customizations to your EDA installation by setting the variables in the `prefs.mk` file; this process is explained in details at the [installation phase](../deploying-eda/installing-the-eda-application.md#customizing-the-installation).
+
+> At a minimum, ensure `EXT_DOMAIN_NAME` and `EXT_HTTPS_PORT` are set correctly in your `prefs.mk` file.
+
+Configure the packages downloaded for the target EDA version with the customizations you added to the `prefs.mk` file:
+
+```{.shell .no-select}
+make eda-configure-core
+```
+
 ## Installing the new version of EDA
 
-Enter the following command:
+Install the new version of EDA core components by running:
 
 ```{.shell .no-select}
 make install-external-packages eda-install-core eda-is-core-ready
@@ -154,7 +248,17 @@ make install-external-packages eda-install-core eda-is-core-ready
 
 ## Restoring your backup
 
-You should execute this in the new `eda-toolbox` pod (typically in the `eda-system` Namespace). This will restore your cluster to its previous state.
+Copy the backup file you extracted at the beginning of this procedure back into the new `eda-toolbox` pod:
+
+```{.shell .no-select}
+toolboxpod=$(kubectl -n eda-system get pods \
+-l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}")
+
+kubectl -n eda-system cp /tmp/eda-backup.tar.gz \
+  $toolboxpod:/tmp/eda-backup.tar.gz
+```
+
+Restore your cluster to its previous state by running:
 
 ```{.shell .no-select}
 edactl platform restore /tmp/eda-backup.tar.gz
@@ -168,10 +272,6 @@ A default install of EDA will install current-version applications, but your res
 make eda-install-apps
 ```
 
-## Allowing NPP interactions
-
-Re-enable interactions with your targets by placing your `TopoNode` resources back into `normal` mode by changing resource's `.spec.npp.mode` value from `emulate` to `normal`.
-
 ## Verifying cluster health
 
 Check the following to ensure your cluster is healthy:
@@ -181,4 +281,5 @@ Check the following to ensure your cluster is healthy:
 * No transaction failures exist.
 * All cluster members are synchronized.
 
-[^1]: see [Installation customization](../../software-install/deploying-eda/installing-the-eda-application.md#customizing-the-installation) for more details
+[^1]: see [Installation customization](../../software-install/deploying-eda/installing-the-eda-application.md#customizing-the-installation) for more details.
+[^2]: replace with your base namespace if you modified it.
