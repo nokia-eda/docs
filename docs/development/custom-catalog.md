@@ -43,11 +43,11 @@ The version field should conform to [Semantic Versioning 2.0](https://semver.org
 
 If the Catalog-hosting Git repository requires authentication, you must create a Kubernetes secret that contains the credentials to connect to the Catalog git repository over HTTPS. This can be done using the following resource where you replace the data with the correct `base64` encoded values.
 
-<!-- --8<-- [start:secrte-label-caution] -->
+<!-- --8<-- [start:secret-label-caution] -->
 /// caution | mandatory label
 The secrets used by the app catalog or app registry must have the `eda.nokia.com/backup: "true"` label for the EDA Store to pick them up.
 ///
-<!-- --8<-- [end:secrte-label-caution] -->
+<!-- --8<-- [end:secret-label-caution] -->
 
 /// tab | YAML Resource
 
