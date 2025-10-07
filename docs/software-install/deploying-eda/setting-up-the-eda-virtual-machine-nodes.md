@@ -6,7 +6,7 @@ This section describes how to the prepare the configurations file, generate the 
 
 The `edaadm` tool helps with the creation of the necessary machine configuration files for the Talos VMs that are part of your deployment.
 
-## EDAAM configuration file fields
+## EDAADM configuration file fields
 
 The EDAADM configuration file is a YAML file that describes your Talos Kubernetes environment. You can use it to configure the different nodes and the general Kubernetes cluster environment.
 
@@ -146,7 +146,11 @@ The Kubernetes-specific configuration. The following parameters define the Kuber
 `stack`
 ////////
 //////// html | td
-Indicates the network stack to support. Values: `ipv4`, `ipv6`, or `dual`
+Indicates the network stack to support. Values: `ipv4` or `ipv6`.
+
+Set to `ipv6` for IPv6-only deployments. For dual-stack or IPv4-only deployments, set to `ipv4`.
+
+IPv6 and dual-stack are supported from EDA 25.8.2 onwards.
 ////////
 ///////
 
@@ -157,7 +161,7 @@ Indicates the network stack to support. Values: `ipv4`, `ipv6`, or `dual`
 //////// html | td
 The first control plane node in the cluster to be used for bootstrapping the Kubernetes cluster.
 
-Specify the a the name of a machine.
+Specify the name of a machine.
 ////////
 ///////
 
@@ -203,7 +207,7 @@ A list of worker nodes. Specify a machine name.
 `vip`
 ////////
 //////// html | td
-The VIP addresses used for Kubernetes and the interfaces to which they should be attached in the control plane nodes. Depending on the IP stack in use, some values are required:
+The [Virtual IP (VIP) address](https://www.talos.dev/v1.9/talos-guides/network/vip/) used for Kubernetes API access and the interfaces to which they should be attached in the control plane nodes. Choose the value depending on the IP stack in use:
 
 * `interface`: the interface to which the VIP is attached on the nodes.
 
@@ -215,6 +219,76 @@ The VIP addresses used for Kubernetes and the interfaces to which they should be
 
 * `ipv6`: the IPv6 VIP address
 
+> Since VIP functionality relies on etcd for elections, the shared IP will not come alive until after you have bootstrapped Kubernetes.
+
+////////
+///////
+
+/////// html | tr
+//////// html | td
+`nodeIP`
+////////
+//////// html | td
+Network settings for the nodes:
+
+* `validSubnets`: the list of IPv4 and/or IPv6 subnets used by the k8s nodes.
+    Can be used to force the node convergence in a multi-nic environment to a single or a set of subnets.  
+    Also sets the subnet over which etcd should converge, perform heartbeats and leader election.  
+    This property in the adm configuration sets the following talos [machine config properties](https://www.talos.dev/v1.9/introduction/prodnotes/#multihoming-and-etcd):  
+      - `cluster.k8s.etcd.advertisedSubnets`
+      - `machine.kubelet.nodeIP.validSubnets`
+
+    Must be within the configured addresses on one of the interfaces in the `machine.interface[*]` otherwise the node won't be able to join the cluster.
+
+    Example:  
+        ```
+        - 192.168.123.101/24
+        - 2001:0db8:0ca2:0006:0000:0000:0000:1001/64
+        ```
+
+////////
+///////
+
+/////// html | tr
+//////// html | td
+`network`
+////////
+//////// html | td
+Kubernetes pods and services network settings.
+
+* `podSubnets`: Talos by default only configures an IPv4 pod subnet.
+    If you want to change the default IPv4 pod subnet or add an IPv6 pod subnet, provide the subnet(s) here as a list.
+    This property sets the `cluster.network.podsSubnets` Talos machine config property.
+
+    Example:  
+        ```
+        - 10.244.0.0/16
+        - fd31:e17c:f07f:8b6d::/64
+        ```
+
+* `serviceSubnets`: Talos by default only configures an IPv4 service subnet.
+    If you want to change the default IPv4 service subnet or add an IPv6 service subnet, provide the subnet(s) here as a list.
+    This property sets the `cluster.network.serviceSubnets` Talos machine config property.
+
+    Example:  
+        ```
+        - 10.96.0.0/12
+        - fd31:e17c:f07f:2dc0:4e2b:2ebc:cbc0:0/108
+        ```
+
+* `node-cidr-mask-size-ipv4`: Defines the subnet mask size for IPv4 network as defined by the `podSubnets` that each node will use.  
+    Default: `24`
+
+    Sets the `cluster.controllerManager.extrArgs.node-cidr-mask-size-ipv4` Talos machine config property.
+
+    Example value: `28`
+
+* `node-cidr-mask-size-ipv6`: Defines the subnet mask size for IPv6 network as defined by the `podSubnets` that each node will use.  
+    Default: `64`
+
+    Sets the `cluster.controllerManager.extrArgs.node-cidr-mask-size-ipv6` Talos machine config property.
+
+    Example value: `80`
 ////////
 ///////
 
