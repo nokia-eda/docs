@@ -9,9 +9,8 @@ nav:
           - Virtual network: getting-started/virtual-network.md
           - Verification: getting-started/verification.md
           - Resetting the Playground: getting-started/reset.md
-  - Software Installation:
+  - Installation:
       - software-install/index.md
-      - EDA installation overview: software-install/eda-installation-overview.md
       - Preparing for installation: software-install/preparing-for-installation.md
       - Air-gapped setup:
           - software-install/air-gapped/index.md
@@ -200,6 +199,9 @@ plugins:
       # debug: true
       # debug_color: yellow
       cards_layout: custom
+  - redirects:
+      redirect_maps:
+        software-install/eda-installation-overview.md: software-install/index.md
 
 # Customization
 extra:
