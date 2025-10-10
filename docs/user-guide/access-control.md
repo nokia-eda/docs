@@ -97,10 +97,16 @@ apiVersion: core.eda.nokia.com/v1
 kind: ClusterRole
 metadata:
   name: topology-definitions
-  labels: null
   namespace: eda-system
 spec:
   description: Access descriptions of physical topology and its overlays
+  resourceRules:
+    - apiGroups:
+        - topologies.eda.nokia.com/v1alpha1
+      permissions: read
+      resources:
+        - topologygroupings
+  tableRules: []
   urlRules:
     - path: /core/topology/v1
       permissions: read
@@ -108,10 +114,8 @@ spec:
       permissions: read
     - path: /core/topology/v1/topologies.eda.nokia.com_v1alpha1_physical/overlay
       permissions: read
-    - path: /core/topology/v1/topologies.eda.nokia.com_v1alpha1_physical/overlay/**
+    - path: /core/topology/v1/topologies.eda.nokia.com_v1alpha1_physical/groupings
       permissions: read
-  resourceRules: []
-  tableRules: []
 ```
 
 ///
@@ -125,8 +129,6 @@ kind: Role
 metadata:
   name: ns-topo
   namespace: eda
-  labels: {}
-  annotations: {}
 spec:
   description: Access physical topology state in namespace 'eda'
   urlRules:

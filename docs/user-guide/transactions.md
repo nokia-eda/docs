@@ -112,8 +112,8 @@ Any transaction can be executed as a dry run. This performs all config generatio
 
 EDA exposes 'Revert' and 'Restore' actions for each committed transaction:
 
-* Revert reverses the changes of a specific commit. Reverts will fail if reversed changes conflict with commits that occurred after it.
-* Restore sets all EDA resources, apps, and allocations to exactly as they were at the specified commit. Restores can not have conflicts.
+* Revert sets all the input resources from a specific transaction back to the previous commit. Note: If changes were made to the resource in a more recent transaction, those changes will also be reverted.
+* Restore sets all EDA resources, apps, and allocations to exactly as they were at the specified commit.
 
 Both actions are executed as a new transaction and committed with a new commit hash, i.e., the commit history always moves forward even if the transaction is a roll-back of changes.
 
