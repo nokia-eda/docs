@@ -28,7 +28,7 @@ A password policy allows a system administrator to define requirements around lo
 
 ## Roles
 
-EDA `Cluster Roles` and `Roles` define the which permissions users have for the EDA API/GUI[^1].
+EDA `Cluster Roles` and `Roles` define which permissions the users have for the EDA API/GUI[^1].
 
 `Roles` define permissions within a specific namespace, whereas `Cluster Roles` apply to all namespaces.
 
@@ -75,7 +75,7 @@ If the user has read permission for **all** the input resources of a transaction
 If the user has read permission for **none** or **some** of the input resources, they can not list any derived resources or view their diffs.  
 Access to Node Configuration diffs must be opted-in using a urlRule. This is because the Node Configuration diff API returns the full node config, and not limited to the scope of the transaction.
 
-To revert a transaction, the user must has readWrite permission for all input resources of the transaction.  
+To revert a transaction, the user must have readWrite permission for all input resources of the transaction.  
 To restore the EDA cluster to a specific transaction, the user must have readWrite permission to the restore API from a ClusterRole URL Rule. Restore is a powerful action which should be limited to trusted administrators.
 
 ### Workflow Access
