@@ -45,7 +45,7 @@ Without further ado, let's get started by going into a directory where we want t
     Let's call our application - `banners` - since we will scaffold an app that provisions a login banner on the network devices.
 
     ```shell
-    edabuilder create app banners && cd banners #(1)!
+    edabuilder create app banners #(1)!
     ```
 
     1. //// warning
@@ -54,22 +54,24 @@ Without further ado, let's get started by going into a directory where we want t
     In this example, the app name is simply `banners`, but if you wanted to name it "my banners", then you should've named it `my-banners`.
     ////
 
-    This step should generate the `banners` directory and change the current working directory to it. Inside the `banners` directory you will find the scaffolded layout of the application with no particular logic implemented yet.
+    This step should generate the `banners` directory where you will find the scaffolded layout of the application with no particular logic implemented yet.
 
 4. **Create a resource**
 
-    At this stage, you would start writing the API types, code for your configuration and state intents, crafting alarms and creating the workflows and dashboards.  
-    But for the sake of this quickstart, we want to have something quick and easy, and let you build real things later once you've got the hang of it. For that, we have baked in the example Banner resource inside the `edabuilder` CLI tool to demonstrate the dev workflow using a real example.
+    At this stage, you would start defining the API of your app, typing code for your configuration and state intents, crafting alarms and creating the workflows and dashboards.  
+    But for the sake of this quickstart, we need something quick and easy; you will get to building real apps later once you've got the hang of it.
 
-    //// admonition | custom resource ~ intent
+    We have baked in the example `Banner` resource inside the `edabuilder` CLI tool to demonstrate the app building workflow using a real example, without typing any code.
+
+    //// admonition | custom resources, resources, and intents
         type: subtle-note
-    We are often use the terms "intent" and "custom resource" interchangeably. Both mean the same thing: a declarative definition of the desired configuration or state object with an associated Python script that implements it[^2].
+    We often use the terms "intent" and "custom resource" or "resource" interchangeably. They all mean the same thing: a declarative definition of the EDA resource which can be, for example, a configuration or state object or a workflow[^2].
     ////
 
-    With the `edabuilder create resource Banner` command, we will create the Banner resource, and when augmented with the `-d | --scaffold-demo` flag, it will also generate the scaffolding for the configuration and state scripts for the Banner resource.
+    With the `edabuilder create --app banners resource Banner` command, we will create the Banner resource in the `banners` app directory, and when used with the `-d | --scaffold-demo` flag, we tell edabuilder to output the demo scaffolding for the configuration and state scripts for the Banner resource.
 
     ```shell
-    edabuilder create resource Banner -d #(1)!
+    edabuilder create --app banners resource Banner -d #(1)!
     ```
 
     1. //// warning
@@ -79,7 +81,7 @@ Without further ado, let's get started by going into a directory where we want t
     As a result of this command, you will find
 
     - the API specification for the Banner and BannerState custom resources created in the `banners/api/v1alpha1` directory[^3]
-    - built out configuration and state resources (aka intents) with the corresponding scripts in the `intents/banner` and `intents/bannerstate` directories. Without the `-d` flag the resource will be created without scripts, which you can add later.
+    - scaffolded configuration and state resources (aka intents) with the corresponding scripts in the `intents/banner` and `intents/bannerstate` directories. Without the demo `-d` flag the resources are created without the scripts, as the developers add them manually.
 
     We leave the app logic implementation details for a later deep dive. All we need to know for now, that an application that is capable of configuring banner message on the supported Network OSes has been scaffolded and we can deploy it onto the EDA cluster to see it in action.
 
@@ -88,15 +90,14 @@ Without further ado, let's get started by going into a directory where we want t
     During the app development you would want to quickly test the changes you made to the app by deploying it to EDA cluster. Edabuilder comes with a one-shot command to do just that:
 
     ```shell
-    edabuilder deploy
+    edabuilder deploy --app banners
     ```
 
     The `deploy` command will package app components in an OCI container image, push it to the container registry deployed for you in the EDA cluster and install the app.
 
     //// admonition | `deploy` command requirements
         type: subtle-note
-    1. The `kubectl` should be using the context that points to the EDA cluster for the operation to succeed.
-    2. Your cluster should have a LoadBalancer implementation such that service of type `LoadBalancer` can be created with a reachable address.[^4]
+    The `kubectl` should be using the context that points to the EDA cluster for the operation to succeed.
     ////
 
 6. **Try the app**
@@ -156,5 +157,4 @@ After that, you are ready to learn how the demo Banner app works. How it selects
 
 [^1]: A vendor is the publishing authority of your app. It can be an arbitrary string, but typically it matches your company name, personal name or a community name.
 [^2]: The actual runtime used in EDA to run those scripts is MicroPython, but we will dive into these details in a later sections.
-[^3]: In the `banner_types.go` and `bannerstate_types.go` files correspondingly. The path is provided from the root of the project's repository.
-[^4]: If you cluster does not have a LoadBalancer service support, you can build and publish your app to an external registry and catalog. See [Build and Publish](build-publish.md) for more details.
+[^3]: In the `banner_api_types.go` and `bannerstate_api_types.go` files accordingly. The path is provided from the root of the project's repository.

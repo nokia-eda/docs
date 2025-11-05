@@ -1,39 +1,63 @@
 # Application Components
 
-As was covered in the [Project Layout](project-layout.md) section, each app has its own directory in the EDA project. Taking the [quickstart app](quick-start.md) as a starting point, your project directory will contain the `banners` directory that hosts everything an application might feature.
+As was covered in the [Project Layout](project-layout.md) section, each app has its own directory in the EDA project. Taking the [quickstart app](quick-start.md) as a starting point, your project directory will contain the `banners` directory that has the following structure.
 
 ```title="contents of the banners app directory"
 .
 ├── api
 ├── crds
+├── docs
+├── examples
 ├── intents
 ├── openapiv3
-├── rbac
-├── workflows
 ├── test
 ├── ui
+├── workflows
 ├── go.mod
 ├── go.sum
-├── LICENSE
-├── manifest.yaml
-└── README.md
+└── manifest.yaml
 ```
 
-The components that can be found in an application bundle are:
+## Application API
 
-* **Application API**:
-    * To define application APIs, edabuilder uses the same pattern as kubebuilder, i.e. the API is defined by the Go files in the `api/` directory.
-    * Based on the source API types defined in `.go` files, `edabuilder generate` manages the following components:
-      * Python models equivalent to your API structs defined in Go
-      * Custom Resource Definitions (CRDs)
-      * OpenAPI schema files, which describe extensions to the schema of both Kubernetes and EDA  
+To define application APIs, edabuilder uses the same pattern as kubebuilder, i.e. the API is defined by the Go files in the **`api`** directory.
 
-      Many subcommands start off by running `edabuilder generate` to make sure your app state is always up-to-date.
-* **Intents** aka Scripts, which are executable code that can be run in the context of a resource. These are typically used to implement the logic of the application for non-Kubernetes-controller apps.
-* **Views**, which are UI dashboards. This is typically used to bundle dashboards alongside the resources within the application.
-<!-- * Schemas, which extend the schema of EDB. EDB is the database that EDA uses to store its state, and are separate from RDs (which are a subset of the schema of EDB). This is typically used if an application provides a state script that needs to write back to the database. Even if your application does this, schemas are optional and simply help presentation of data in the UI. -->
-* **Workflows**, which are run to completion logic that can be triggered by resources. This is typically used to implement the logic of the application for one-shot operations - things like upgrades or other operations that are not ongoing.
-* **RBAC objects** - optional rbac roles that an application might require.
-* **Bootstrap resources**, which are similar to resources, but are immutable - they're intended primarily as a means for bootstrapping new `Namespace` resources in EDA. It is typically to see things like allocation pools or default resources in this category.
+Based on the source API types defined in `.go` files, the `edabuilder generate` creates the following components:
 
-A simple application may contain only one of the above, while a more complex application may contain all of them.
+* Python models equivalent to your API structs defined in Go; stored in **`api/pysrc`** directory.
+* Custom Resource Definitions (CRDs) in **`crds`** directory.
+* OpenAPI schema files, which describe extensions to the schema of both Kubernetes and EDA and is located in **`openapiv3`** directory.
+
+The [`generate`](edabuilder.md#generating-your-app) command can be run separately, but many subcommands (like `deploy` and `release`) start off by running `edabuilder generate` to make sure your app state is always up-to-date.
+
+## Intents
+
+[Intents (aka Scripts)](scripts/index.md), are executable Python code that is triggered by the changes made to the respective resources. These scripts are used to implement the logic of the application for non-Kubernetes-controller apps.
+
+Intents are what most developers will write when building new applications on EDA or extending the existing apps provided by Nokia.
+
+> Check the [Banner application walkthrough](scripts/banner-script.md) to see what makes up a simple intent-based application.
+
+## Dashboards
+
+The developers can create and bundle custom UI dashboards, adding observability and monitoring capabilities for their apps. The dashboards are defined using JSON files and can be found in the **`ui`** directory of the app.
+
+## Workflows
+
+Workflows are the "run to completion" applications that can be triggered by the resources, users or API clients. Workflows are typically used to implement the logic of the application for one-shot operations - things like upgrades, network pings, route information collection or other operations that are not perpetually ongoing.
+
+Workflows are typically written in Go, but can be written in any language for which EDA Development Kit (EDK) support is available.
+
+## Documentation
+
+Each application contains its own documentation in the **`docs`** directory. The documentation is written in Markdown and includes the overview of the application, its components, license info, usage examples and documentation for each resource defined by the application.
+
+## Manifest
+
+The **`manifest.yaml`** file defines every aspect of the application packaging, including the application metadata, its components, dependencies, and other relevant information. EDA Store uses this manifest file to understand how to install, deploy and manage the application within an EDA platform.
+
+Whenever a user adds a new application component with the `edabuilder` CLI, the manifest file is automatically updated to include the new components, therefore users typically should not need to edit this file too often manually.
+
+## Other resources
+
+Some applications may include more specialized components, but these are less common and the majority of applications will consist of the components described above.

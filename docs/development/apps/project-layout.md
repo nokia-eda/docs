@@ -1,6 +1,6 @@
 # Project Layout
 
-When you followed the [quickstart](quick-start.md) and initialized a new EDA project with the `banners` application in it, your top level project directory should look like this:
+If you followed the [quickstart](quick-start.md) and initialized a new EDA project with the `banners` application in it, your top level project directory would look like this:
 
 ```shell
 .
@@ -8,21 +8,21 @@ When you followed the [quickstart](quick-start.md) and initialized a new EDA pro
 ├── common  # dir
 ├── test    # dir
 ├── utils   # dir
+├── .env
+├── .envrc
 ├── PROJECT
 ├── go.work
 ├── go.work.sum
+├── .gitignore
 ├── pyproject.toml
-├── ruff.toml
-├── .env
-├── .envrc
-└── .gitignore
+└── ruff.toml
 ```
 
 Let's cover the purpose of each directory in more detail.
 
 ## Application
 
-The `banners` directory contains the `banners` application files that `edabuilder` created for us when we executed `edabuilder create app banners`. We cover the contents of this directory in the [App Components](components.md) section.
+The `banners` directory contains the `banners` application files that `edabuilder` created for us when we executed `edabuilder create app banners`. The contents of this app directory is covered in the [App Components](components.md) section.
 
 ## Common
 
@@ -34,22 +34,23 @@ The `test` directory contains python packages that enable application unit testi
 
 ## Utils
 
-In the `utils` directory you will find utility functions that abstract some EDA API interactions via convenience functions.
+In the `utils` directory you will find shared utility functions that simplify some operations on EDA objects.
 
 ## Project
 
-The `PROJECT` file contains the metadata a project was initialized with. For example, if you are reading this after the quickstart, your project file should look like this:
+The `PROJECT` file contains the global config a project was initialized with. For example, if you are reading this after the quickstart, your project file should look similar to this:
 
 ```yaml
-builderVersion: v25.4.1
+builderVersion: v25.12.1
 domain: eda.local
 name: example
+registry: change.me
 vendor: community
 ```
 
 The `builderVersion` contains the EDA release version that is used by this particular version of the `edabuilder` tool.
 
-The rest of the fields are self explanatory and were passed as CLI arguments during the project instantiation.
+The rest of the fields are self explanatory and can be provided as CLI arguments during the project instantiation.
 
 ## Go workspace
 
