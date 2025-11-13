@@ -133,15 +133,17 @@ Following are the differences from the procedure in the [Creating the VM on brid
 An example `virt-install` command to deploy the Assets VM in KVM:
 
 ```bash
-virt-install -n eda-assets \ 
-  --description "EDA Assets Vm for EDA" \ 
-  --noautoconsole --os-type=generic \ 
-  --memory 16384 --vcpus 4 --cpu host \ 
-  --disk eda-assets-rootdisk.qcow2,format=qcow2,bus=virtio,size=300 \ 
-  --cdrom eda-asset-vm-nocloud-amd64.iso  \ 
-  --disk eda-assets-data.iso,device=cdrom \ 
+virt-install -n eda-assets \
+  --description "EDA Assets Vm for EDA" \
+  --noautoconsole --os-variant=generic \ #(1)!
+  --memory 16384 --vcpus 4 --cpu host \
+  --disk eda-assets-rootdisk.qcow2,format=qcow2,bus=virtio,size=300 \
+  --cdrom eda-asset-vm-nocloud-amd64.iso \
+  --disk eda-assets-data.iso,device=cdrom \
   --network bridge=br0,model=virtio
 ```
+
+1. Depending on the `virt-install` version, the `--os-variant=generic` option might not be supported. In that case use `--os-type=generic` instead.
 
 ### Creating the VM on a bridged network on VMware vSphere
 
@@ -170,13 +172,13 @@ export NODECONFIG=$(base64 -i eda-assets.domain.tld.yaml)
 An example `ovftool` command to deploy the Assets VM in VMware vSphere:
 
 ```bash
-ovftool --acceptAllEulas --noSSLVerify \ 
- -dm=thin \ 
- -ds=DATASTORE \ 
- -n=eda-assets \ 
- --net:"VM Network=OAM" \ 
- --prop:talos.config="${NODECONFIG}" \ 
-eda-asset-vm-vmware-amd64.ova \ 
+ovftool --acceptAllEulas --noSSLVerify \
+ -dm=thin \
+ -ds=DATASTORE \
+ -n=eda-assets \
+ --net:"VM Network=OAM" \
+ --prop:talos.config="${NODECONFIG}" \
+eda-asset-vm-vmware-amd64.ova \
 vi://administrator%40vsphere.local@vcenter.domain.tld/My-DC/host/My-Cluster/Resources/My-Resource-Group
 ```
 
@@ -189,7 +191,7 @@ Similar to bootstrapping an EDA Kubernetes cluster, the Assets VM can be bootstr
 Use the `edaadm` command with the EDAADM configuration file for the Assets VM to bootstrap Kubernetes:
 
 ```bash
-edaadm boostrap-k8s -c eda-assets-deployment.yaml
+edaadm bootstrap-k8s -c eda-assets-deployment.yaml
 ```
 
 ### Obtaining the Kubernetes Config File for kubectl
@@ -211,7 +213,7 @@ Use the `edaadm` command to obtain the Kubernetes configuration file for use wit
     You can configure your environment to use the ​kubeconfig​ file for use with the `kubectl` command.
 
     ```bash
-    export KUBECONFIG=eda-airgap-assets/kubeconfig
+    export KUBECONFIG=eda-airgap-assets/kubeconfig.yaml
     ```
 
 3. Inspect your server and check if all nodes are up and running.

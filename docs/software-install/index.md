@@ -127,7 +127,26 @@ Several key concepts are used throughout the documentation; following is an over
 *Air-gapped EDA Shipyard*
 : A name used to describe the combination of the container registry, git server and web server running on the Assets VM.
 
-### Deployment models
+## Version information
+
+The Talos Kubernetes cluster version Nokia EDA is deployed on is driven by the [`edaadm`](preparing-for-installation.md#download-extra-tools) CLI tool downloads the respective Talos images and generates the machine configurations and bootstraps the Kubernetes cluster.
+
+| edaadm version | Talos version | Kubernetes version |
+|----------------|---------------|--------------------|
+| [3.0.0][edaadm-gh-3.0.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
+| [2.0.0][edaadm-gh-2.0.0] | [1.9.2][talos-rel-1.9.2] | 1.32.1 |
+| [1.0.0][edaadm-gh-1.0.0] | [1.8.3][talos-rel-1.8.3] | 1.31.2 |
+
+[edaadm-gh-3.0.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.0.0
+[talos-rel-1.11.5]: https://github.com/siderolabs/talos/releases/tag/v1.11.5
+
+[edaadm-gh-2.0.0]: https://github.com/nokia-eda/edaadm/releases/tag/v2.0.0
+[talos-rel-1.9.2]: https://github.com/siderolabs/talos/releases/tag/v1.9.2
+
+[edaadm-gh-1.0.0]: https://github.com/nokia-eda/edaadm/releases/tag/v1.0.0
+[talos-rel-1.8.3]: https://github.com/siderolabs/talos/releases/tag/v1.8.3
+
+## Deployment models
 
 Nokia EDA is deployed as an application on a compatible Kubernetes cluster comprised of one, three, or more nodes (validated for up to six nodes). The nodes (VMs) run a Kubernetes cluster with the following composition:
 

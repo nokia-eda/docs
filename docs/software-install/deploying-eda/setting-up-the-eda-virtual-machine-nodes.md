@@ -146,11 +146,37 @@ The Kubernetes-specific configuration. The following parameters define the Kuber
 `stack`
 ////////
 //////// html | td
-Indicates the network stack to support. Values: `ipv4` or `ipv6`.
+Indicates the network stack to support. Values: `ipv4`, `ipv6`, or `dual`.
 
-Set to `ipv6` for IPv6-only deployments. For dual-stack or IPv4-only deployments, set to `ipv4`.
+* Set to `ipv6` for IPv6-only deployments. The value of `.k8s.vip.ipv6` will be used to set the Talos Virtual IP (VIP) address.
+
+* For IPv4-only deployments, set to `ipv4`. The value of `.k8s.vip.ipv4` will be used to set the Talos Virtual IP (VIP) address.
+
+* For dual-stack deployments, set to `dual`. Only one value can be specified for the VIP (`.k8s.vip.ipv4` or `.k8s.vip.ipv6`) address and the set value will be used to set the Talos Virtual IP (VIP) address.
 
 IPv6 and dual-stack are supported from EDA 25.8.2 onwards.
+////////
+///////
+
+/////// html | tr
+//////// html | td
+`vip`
+////////
+//////// html | td
+The [Virtual IP (VIP) address](https://www.talos.dev/v1.9/talos-guides/network/vip/) used for Kubernetes API access and the interfaces to which they should be attached in the control plane nodes. Choose the value depending on the IP stack in use:
+
+* `interface`: the interface to which the VIP is attached on the nodes.
+
+    Example: `eth0`
+
+* `ipv4`: the IPv4 VIP address.
+
+    Example: `192.0.2.10`
+
+* `ipv6`: the IPv6 VIP address.
+
+> Since VIP functionality relies on etcd for elections, the shared IP will not come alive until after you have bootstrapped Kubernetes.
+
 ////////
 ///////
 
@@ -199,28 +225,6 @@ A list of control plane nodes. Specify a machine name.
 ////////
 //////// html | td
 A list of worker nodes. Specify a machine name.
-////////
-///////
-
-/////// html | tr
-//////// html | td
-`vip`
-////////
-//////// html | td
-The [Virtual IP (VIP) address](https://www.talos.dev/v1.9/talos-guides/network/vip/) used for Kubernetes API access and the interfaces to which they should be attached in the control plane nodes. Choose the value depending on the IP stack in use:
-
-* `interface`: the interface to which the VIP is attached on the nodes.
-
-    Example: `eth0`
-
-* `ipv4`: the IPv4 VIP address.
-
-    Example: `192.0.2.10`
-
-* `ipv6`: the IPv6 VIP address
-
-> Since VIP functionality relies on etcd for elections, the shared IP will not come alive until after you have bootstrapped Kubernetes.
-
 ////////
 ///////
 
@@ -289,6 +293,22 @@ Kubernetes pods and services network settings.
     Sets the `cluster.controllerManager.extrArgs.node-cidr-mask-size-ipv6` Talos machine config property.
 
     Example value: `80`
+////////
+///////
+
+/////// html | tr
+//////// html | td
+`flannelArgs`
+////////
+//////// html | td
+[Flannel CNI CLI arguments](https://github.com/flannel-io/flannel/blob/master/Documentation/configuration.md#key-command-line-options) allow a user to customize the flannel configuration. Provided as a list of `key=value` pairs.
+
+Example:  
+    ```
+    - --iface=eth0
+    ```
+
+A common use case is to specify the interface used by flannel when the default route is not set up or the CNI needs to bound to a specific interface due to security or operational reasons.
 ////////
 ///////
 
