@@ -313,6 +313,8 @@ Requirement
 * at least one 10 Gbps NIC
 * the configured DNS servers must be reachable, functional, and able to resolve the hostnames used for the Nokia EDA nodes
 * for internet-based installations: Internet access directly or through a proxy
+* system time synced using NTP
+
 /////
 ////
 
@@ -384,6 +386,8 @@ Requirement
 * 1 Gbps NIC
 * 1 IPv4 IP and optionally 1 IPv6 IP
 * Preferably in the same OAM network as the EDA Kubernetes VMs, but minimally accessible by the EDA Kubernetes VMs via the OAM network
+* system time synced using NTP
+
 /////
 ////
 

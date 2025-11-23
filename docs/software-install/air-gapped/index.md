@@ -1,6 +1,6 @@
 # Air-gapped setup
 
-In case the installation will be Air-gapped, this section provides steps on how to set up the Assets VM and load it with the necessary assets for deploying EDA in an Air-gapped environment.
+In case the installation will be Air-gapped[^1], this section provides steps on how to set up the Assets VM and load it with the necessary assets for deploying EDA in an Air-gapped environment.
 
 ## Conceptual Overview
 
@@ -17,11 +17,13 @@ Similarly, by splitting up the assets in bundles, it is possible to only upload 
 Two environments will be discussed and used in an air-gapped installation:
 
 *Public Environment*
-: This environment has internet access. You use a system with Internet access to create the Assets VM image and to download all the necessary assets and tools.
+: This environment has Internet access. You use a system with Internet access to create the Assets VM image and to download all the necessary assets and tools.
 
-*Air-Gapped Environment*
-: This environment that does not have internet access. It is the environment in which EDA is deployed.
+*Air-gapped Environment*
+: This environment does not have Internet access. It is the environment in which EDA is deployed.
 
-In each environment, you must have a system from which you can execute the steps. You can use a system to first connect to the internet, execute the steps for the public network and then move the same system to the Air-Gapped environment to continue. Or, you can have two systems, and you would copy the data from the public system to the Air-Gapped system. More details on the requirements for these systems are included later in this document.
+In each environment, you must have a system from which you can execute the steps. You can use a system to first connect to the internet, execute the steps for the public network and then move the same system to the Air-gapped environment to continue. Or, you can have two systems, and you would copy the data from the public system to the Air-Gapped system. More details on the requirements for these systems are included later in this document.
 
 For each section, there will be a note in which environment the section applies.
+
+[^1]: An Air-gapped environment is an environment that does not have network connectivity to the Internet.

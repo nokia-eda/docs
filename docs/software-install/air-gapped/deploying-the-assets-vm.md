@@ -2,45 +2,39 @@
 
 /// admonition | Caution
     type: note
-This applies to the Air-Gapped environment, and is executed in the air-gapped tools-system.
+These steps are meant to be executed in the air-gapped environment.
 ///
 
-Deploying the Assets VM is very similar to deploying an EDA Kubernetes cluster.
+The procedure to deploying the Assets VM is similar to deploying the EDA Talos Kubernetes cluster nodes and uses `edaadm` CLI to manage the deployment process.
 
 ## Preparing the Assets VM EDAADM Configuration File
 
-The EDAADM configuration file for the Assets VM is very similar to the EDAADM configuration file of a EDA Kubernetes environment, with a few minor changes:
+The EDAADM configuration file declaratively defines the machine/VM configuration and the Kubernetes cluster parameters and is an abstraction on top of the [Talos machine config](https://docs.siderolabs.com/talos/v1.11/reference/configuration/overview). You will find the edaadm configuration for the Assets VM very similar to the config file used for [EDA Kubernetes nodes](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#preparing-the-edaadm-configuration-file) with a few minor differences:
 
 * It is a config file for a single machine.
 * The `clusterName` must be unique and different from the EDA Kubernetes cluster.
-* The following additions are made to the machine definition:
+* The following additions fields must be present in the Assets VM edaadm config:
 
     ```yaml
     enableImageCache: true
     localPathProvisioner: "/var/local-path-provisioner"
     ```
 
-Otherwise, the configuration is very similar to the [Preparing the EDAADM configuration file](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#preparing-the-edaadm-configuration-file) section.
-
-/// admonition | Note
+/// admonition | Notes
     type: subtle-note
-The Assets VM only needs one network interface, preferably on the OAM network of the EDA Kubernetes cluster. It must be reachable from the OAM network of the EDA Kubernetes cluster.
+
+1. Consult with the full list of edaadm configuration file options to customize your Assets VM configuration further: **[EDAADM Configuration file fields](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#edaadm-configuration-file-fields)**.
+2. The Assets VM only needs one network interface, preferably on the OAM network of the EDA Kubernetes cluster. It must be reachable from the OAM network of the EDA Kubernetes cluster.
+3. The `edaadm` tool still expects the definition of a storage disk in the machine definition, but this can be a reference to a non-existing disk.
 ///
 
-/// admonition | Caution
-    type: note
-The `edaadm` tool still expects the definition of a storage disk in the machine definition, but this can be a reference to a non-existing disk.
-///
+Consider an example edaadm configuration for an Assets VM that you can use as a reference when creating your own configuration file:
 
-### Example Assets VM EDAADM Configuration file
-
-The below configuration file is an example for an Assets VM using local DNS and NTP servers.
-
-```yaml
-version: 25.4.1
-clusterName: eda-airgap-assets
+```yaml title="Example edaadm configuration for the Assets VM - <code>eda-assets-deployment.yaml</code>"
+version: -{{ eda_version }}- #(1)!
+clusterName: eda-airgap-assets #(2)!
 machines:
-    - name: eda-assets.domain.tld
+    - name: eda-assets
       endpoint: 192.0.2.228
       enableImageCache: true
       localPathProvisioner: "/var/local-path-provisioner"
@@ -53,17 +47,17 @@ machines:
           routes:
             - network: 0.0.0.0/0
               gateway: 192.0.2.1
-          mtu: 9000
+          mtu: 9000 #(4)!
       disks:
         os: /dev/vda
-        storage: /dev/vdb
+        storage: /dev/vdb #(3)!
 k8s:
     stack: ipv4
-    primaryNode: eda-assets.domain.tls
+    primaryNode: eda-assets
     endpointUrl: https://192.0.2.228:6443
     allowSchedulingOnControlPlanes: true
     control-plane:
-        - eda-assets.domain.tld
+        - eda-assets
     time:
         disabled: false
         servers:
@@ -75,11 +69,16 @@ k8s:
             - 192.0.2.253
 ```
 
+1. EDA version string. Not relevant for the Assets VM, but required by edaadm.
+2. The kubernetes cluster name for the Assets VM, must be unique and not the same as the ones specified for the EDA Kubernetes cluster when deploying EDA.
+3. The storage disk definition is required by edaadm, but the disk does not need to exist on the Assets VM. Can be set to any value.
+4. Pay attention to the set MTU value as the linux bridges, interfaces, and networks between the Assets VM and the EDA Kubernetes cluster nodes must allow for the same MTU size.
+
+Considering you are in the `edaadm` repository root, save the configuration file as `eda-assets-deployment.yaml`.
+
 ## Generating the Talos Machine Configuration Files
 
-After creating the Assets VM EDAADM configuration file, the next step is to generate all the configuration files that are necessary to deploy the Kubernetes environment using Talos.
-
-This step is very similar to the [Generating the Talos machine configurations](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#generating-the-talos-machine-configurations) section.
+After creating the Assets VM EDAADM configuration file, the next step is to generate all the configuration files that are necessary to deploy the Kubernetes environment for the Assets VM.
 
 Use the `edaadm` tool to generate the Talos configuration out of the EDAADM configuration file:
 
@@ -92,111 +91,183 @@ The output should look similar to the following (a portion has been removed):
 ```
 ConfigFile is eda-assets-deployment.yaml
 ...
-[1/5] Validating Machines
-[1/5] Validated Machines
-[2/5] Validating Primary Node
-[2/5] Validated Primary Node
-[3/5] Validating Endpoint URL
-[3/5] Validated Endpoint URL
-[4/5] Validating Virtual IP
-[4/5] Validated Virtual IP
-[5/5] Validating Storage
-[5/5] Validated Storage
+[1/6] Validating Machines
+[1/6] Validated Machines
+[2/6] Validating Primary Node
+[2/6] Validated Primary Node
+[3/6] Validating Endpoint URL
+[3/6] Validated Endpoint URL
+[4/6] Validating Stack
+[4/6] Validated Stack
+[5/6] Validating Virtual IP
+[5/6] Validated Virtual IP
+[6/6] Validating Storage
+[6/6] Validated Storage
 [  OK  ] Spec is validated
-Generating secrets for eda-airgap-assets
-Created eda-airgap-assets/secrets.yaml
+[ INFO ] Existing secrets file found - loading:eda-airgap-assets/secrets.yaml
+[ INFO ] Loaded secrets bundle eda-airgap-assets/secrets.yaml
 generating PKI and tokens
-Created eda-airgap-assets/eda-assets.domain.tld.yaml
+Created eda-airgap-assets/eda-assets.yaml
 Created eda-airgap-assets/talosconfig.yaml
 Created eda-airgap-assets/rook-ceph-operator-values.yaml
 Created eda-airgap-assets/rook-ceph-cluster-values.yaml
 ```
 
+The generated Talos configuration files will be available in the `eda-airgap-assets` folder which is named after the `clusterName` specified in the EDAADM configuration file.  
+The machine config file for the Assets VM is named `eda-assets.yaml` after the `name` field specified in the `machines` section of the EDAADM configuration file.
+
 ## Deploy the Assets VM
 
-The Assets VM can be deployed on a KVM or VMware vSphere environment. This process is very similar to the documented procedures in the [Deploying the Talos virtual machines](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#deploying-the-talos-virtual-machines) section.
+The Assets VM can be deployed on a KVM or VMware vSphere environment. Follow the steps below depending on your hypervisor.
 
-### Creating the VM on a bridged network on KVM
+### Creating the Assets VM on KVM
 
 /// admonition | Caution
     type: note
 This procedure is executed on the KVM Hypervisor which will host the Assets VM.
 ///
 
-Following are the differences from the procedure in the [Creating the VM on bridged networks on KVM](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#creating-the-vm-on-bridged-networks-on-kvm) section:
+/// html | div.steps
 
-* Use the Assets VM ISO image generated by in the [Creating the KVM Assets VM Image](preparing-the-assets-vm.md#creating-the-kvm-assets-vm-image) step, instead of the standard Talos KVM image.
-* Use the Talos machine config file generated in the [Generating the Talos Machine Configuration Files](#generating-the-talos-machine-configuration-files) step for `user-data`.
-* Make sure the root disk is set to 300GB instead of 100GB.
-* No need to create a storage disk on the VM.
+1. Ensure that the `virt-install` and `genisoimage` tools are installed on the KVM hypervisor.
 
-An example `virt-install` command to deploy the Assets VM in KVM:
+    If you need to install the tools, use the following command:
 
-```bash
-virt-install -n eda-assets \
-  --description "EDA Assets Vm for EDA" \
-  --noautoconsole --os-variant=generic \ #(1)!
-  --memory 16384 --vcpus 4 --cpu host \
-  --disk eda-assets-rootdisk.qcow2,format=qcow2,bus=virtio,size=300 \
-  --cdrom eda-asset-vm-nocloud-amd64.iso \
-  --disk eda-assets-data.iso,device=cdrom \
-  --network bridge=br0,model=virtio
-```
+    ```bash
+    sudo yum install virt-install genisoimage
+    ```
 
-1. Depending on the `virt-install` version, the `--os-variant=generic` option might not be supported. In that case use `--os-type=generic` instead.
+    or
 
-### Creating the VM on a bridged network on VMware vSphere
+    ```bash
+    sudo apt --no-install-recommends install virtinst genisoimage
+    ```
+
+2. Verify that the Assets VM ISO image is available.
+
+    The Assets VM ISO image was generated in the [Creating the KVM Assets VM Image](preparing-the-assets-vm.md#creating-the-kvm-assets-vm-image) and should be available in the Air-gapped environment when you [copied the assets](preparing-the-air-gapped-environment.md) from the public environment.
+
+    ```bash title="executing the <code>ls</code> command from the edaadm repository root"
+    ls -lh ./bundles/eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso
+    ```
+
+    <div class="embed-result">
+    ```{.text .no-select .no-copy}
+    -rw-r--r-- 1 root root 684M Nov 12 18:10 eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso
+    ```
+    </div>
+
+3. Prepare Assets VM cloud-init files.
+
+    The next step is to create the cloud-init ISO file with the machine configuration file and the necessary metadata.
+
+    Standing in the root of the edaadm repository, copy the machine configuration file generated for the Assets VM to a file called `user-data`. If you have been using the example edaadm configuration file from above, the command would be:
+
+    ```
+    cp eda-airgap-assets/eda-assets.yaml user-data
+    ```
+
+    Create a file called `meta-data` with the instance-id and local-hostname values:
+
+    ```bash
+    cat <<'EOF' > meta-data
+    instance-id: eda-assets 
+    local-hostname: eda-assets
+    EOF
+    ```
+
+    And lastly, create a file called `network-config` for the node with the following content:
+
+    ```bash
+    cat <<'EOF' > network-config
+    version: 2
+    EOF
+    ```
+
+    Create an ISO file containing the newly created files.
+    For ease of use, name the ISO file with the name of the node for which you are creating the ISO.
+
+    ```bash
+    mkisofs -o eda-assets-data.iso -V cidata -J -r meta-data network-config user-data 
+    ```
+
+4. Create the virtual machine.
+    This step uses both the newly created ISO file and the ISO file downloaded from the Talos Machine Factory.
+
+    ```bash
+    virt-install -n eda-assets \
+    --description "EDA Assets VM for EDA" \
+    --noautoconsole --os-variant=generic \ #(1)!
+    --memory 16384 --vcpus 4 --cpu host \
+    --disk eda-assets-rootdisk.qcow2,format=qcow2,bus=virtio,size=300 \
+    --cdrom ./bundles/eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso \
+    --disk eda-assets-data.iso,device=cdrom \
+    --network bridge=br0,model=virtio
+    ```
+
+    1. Depending on the `virt-install` version, the `--os-variant=generic` option might not be supported. In that case use `--os-type=generic` instead.
+
+    //// warning
+    Pay attention to the MTU value set on the Linux bridge, interfaces, and networks between the Assets VM and the EDA Kubernetes cluster nodes must allow for the same MTU size.
+    ////
+
+///
+
+### Creating the Assets VM on VMware vSphere
 
 /// admonition | Caution
     type: note
-This procedure is executed on the Air-Gapped tools-system.
+This procedure is executed in the Air-gapped environment for a VMware vSphere deployment.
 ///
 
-Following are the differences from the procedure in the [Creating the VM on bridged networks on VMware vSphere](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#creating-the-vm-on-bridged-networks-on-vmware-vsphere) section:
+/// html | div.steps
 
-* Use the Assets VM ISO image generated by in the [Creating the VMware Assets VM Image](preparing-the-assets-vm.md#creating-the-vmware-assets-vm-image) step, instead of the standard Talos VMware image.
-* Use the Talos machine config file generated in the [Generating the Talos Machine Configuration Files](#generating-the-talos-machine-configuration-files) step for `user-data`.
-* No need to create a storage disk on the VM.
-* After deploying the VM using the OVA image:
+1. Ensure that the `ovftool` is installed.
+
+    To deploy the Assets VM OVA image on VMware vSphere, the `ovftool` must be installed on the system from which you will create the deployment.
+
+2. Deploy Assets VM OVA image.
+
+    Standing in the root of the edaadm repository, create a base64 encoded string from the Talos machine configuration for the Assets VM. If you have been using the example edaadm configuration file from above, the command would be:
+
+    ```bash
+    export NODECONFIG=$(base64 -i eda-airgap-assets/eda-assets.yaml)
+    ```
+
+    Deploy the Assets VM OVA image generated in the ["Creating the VMware Assets VM image"](preparing-the-assets-vm.md#creating-the-vmware-assets-vm-image) section using the `ovftool` command:
+
+    ```bash
+    ovftool --acceptAllEulas --noSSLVerify \
+    -dm=thin \
+    -ds=DATASTORE \
+    -n=eda-assets \
+    --net:"VM Network=OAM" \
+    --prop:talos.config="${NODECONFIG}" \
+    ./bundles/eda-cargo/talos-asset-vm-boot-imgs/vmware-amd64.ova \
+    vi://admin%40vsphere.local@vcenter.tld/My-DC/host/Cluster/Resources/My-Resource-Group
+    ```
+
+3. Adjust the Assets VM resources.
+
+    After deploying the VM using the OVA image:
+
     * Increase the number of vCPUs to 4.
     * Increase the memory to 16G.
     * Increase the main disk size to 300G. On boot, Talos automatically extends the file system.
     * Enable 100% resource reservation for the CPU, memory and disk.
-
-Create a base64 encoded hash from the Talos machine configuration for the node. For example:
-
-```bash
-export NODECONFIG=$(base64 -i eda-assets.domain.tld.yaml)
-```
-
-An example `ovftool` command to deploy the Assets VM in VMware vSphere:
-
-```bash
-ovftool --acceptAllEulas --noSSLVerify \
- -dm=thin \
- -ds=DATASTORE \
- -n=eda-assets \
- --net:"VM Network=OAM" \
- --prop:talos.config="${NODECONFIG}" \
-eda-asset-vm-vmware-amd64.ova \
-vi://administrator%40vsphere.local@vcenter.domain.tld/My-DC/host/My-Cluster/Resources/My-Resource-Group
-```
+///
 
 ## Bootstrap the Assets VM
 
-Similar to bootstrapping an EDA Kubernetes cluster, the Assets VM can be bootstrapped using the `edaadm` tool.
-
-### Bootstrapping Kubernetes on the Assets VM
-
-Use the `edaadm` command with the EDAADM configuration file for the Assets VM to bootstrap Kubernetes:
+The Assets VM runs Talos Kubernetes and needs to be bootstrapped using the `edaadm` tool. Use the edaadm configuration file created previously to bootstrap the Assets VM.
 
 ```bash
 edaadm bootstrap-k8s -c eda-assets-deployment.yaml
 ```
 
-### Obtaining the Kubernetes Config File for kubectl
+## Obtaining the Kubernetes Config File
 
-Use the `edaadm` command to obtain the Kubernetes configuration file for use with kubectl.
+Once the Assets VM Kubernetes cluster is bootstrapped, use the `edaadm` command to fetch the Kubernetes configuration file (kubeconfig) for use with `kubectl`.
 
 /// html | div.steps
 
@@ -283,56 +354,37 @@ export LIGHTTPD_EDA_HTPASSWD="base64 encoded htpasswd output"
 
 After deploying and bootstrapping the Assets VM itself, the container registry, git server and web server need to be deployed.
 
-/// html | div.steps
-
-1. Go to the correct directory in the `edaadm` repository.
-
-    In the `edaadm` repository that you have cloned or downloaded, go to the `kpt` folder.
-
-    ```bash
-    cd path/to/edaadm-repository/kpt
-    ```
-
-2. Deploy the Assets VM services.
-
-    Make sure your kubeconfig environment variable points to the kubeconfig of the Assets VM as you got it from the [Obtaining the Kubernetes Config File for `kubectl`](#obtaining-the-kubernetes-config-file-for-kubectl) section.
-
-    ```bash
-    make eda-setup-shipyard
-    ```
-
-///
+```bash
+make -C kpt/ eda-setup-shipyard
+```
 
 ## Uploading the Assets to the Assets VM
 
 Now that the Assets VM and its services are up and running, upload all the assets that you downloaded previously to the Assets VM.
 
-1. Go to the correct directory in the `edaadm` repository.
+Set the `EDA_CORE_VERSION` environment variable in your shell to the target EDA release version as was done during the [downloading assets step](downloading-the-assets.md#downloading-the-assets-bundles). This will ensure that the correct version of the cache and assets is uploaded to the Assets VM.
 
-    In the `edaadm` repository that you have cloned or downloaded, go to the `bundles` folder.
+```bash
+export EDA_CORE_VERSION=-{{ eda_version }}-
+```
 
-    ```bash
-    cd path/to/edaadm-repository/bundles
-    ```
+Then execute the following command to upload all the assets to the Assets VM:
 
-2. Upload the assets.
+```bash
+make -C bundles/ load-all-bundles \
+    ASSET_HOST=192.0.2.228 \
+    ASSET_HOST_GIT_USERNAME="ZWRh" \
+    ASSET_HOST_GIT_PASSWORD="ZWRh" \
+    ASSET_HOST_ARTIFACTS_USERNAME="ZWRh" \
+    ASSET_HOST_ARTIFACTS_PASSWORD="ZWRh"
+```
 
-    Make sure your kubeconfig environment variable points to the kubeconfig of the Assets VM as you got it from the [Obtaining the Kubernetes Config File for `kubectl`](#obtaining-the-kubernetes-config-file-for-kubectl) section.
+/// admonition | Notes
+    type: subtle-note
 
-    Make sure to replace the `ASSET_HOST` IP with the IP of your Asset VM.
+1. Make sure to replace the `ASSET_HOST` IP with the IP of your Asset VM.
+1. The username and passwords will be configurable in the near future. The `eda` username and password are used by default.
 
-    ```bash
-    make load-all-bundles \
-      ASSET_HOST=192.0.2.228 \
-      ASSET_HOST_GIT_USERNAME="ZWRh" \
-      ASSET_HOST_GIT_PASSWORD="ZWRh" \
-      ASSET_HOST_ARTIFACTS_USERNAME="ZWRh" \
-      ASSET_HOST_ARTIFACTS_PASSWORD="ZWRh"
-    ```
+///
 
-    /// admonition | Note
-        type: subtle-note
-    The username and passwords will be configurable in the near future.
-    ///
-
-Once all uploads have finished successfully, the Assets VM is ready for use with the installation process of EDA.
+Once all uploads have finished successfully, the Assets VM is ready to support the installation of the EDA Talos Kubernetes cluster in the Air-gapped environment.

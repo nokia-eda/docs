@@ -37,37 +37,29 @@ This command downloads the following git repositories to their respective direct
 
 ## Download the EDA EDAADM repository
 
-Ensure that your Linux installation environment meets the requirements described in [Installation platform requirements](eda-installation-overview.md#installation-platform-requirements).
+Ensure that your Linux installation environment meets the requirements described in [Installation platform requirements](index.md#installation-platform-requirements).
 
-Clone the EDAADM repository to your tools system and change to the directory.
+Clone the EDAADM repository:
 
 ```bash
 git clone https://github.com/nokia-eda/edaadm && cd edaadm
 ```
 
-### Download extra tools
+### Download edaadm tools
 
-#### Bundle tools
+The CLI tool that orchestrates the configuration and installation of the EDA platform in a production environment is called `edaadm`. To download `edaadm` run the following command from the root of the `edaadm` repository:
 
-Go to the bundles directory in the `edaadm` repository.  
-
-```bash title="execute from the root of the edaadm repository"
-cd bundles
+```bash
+make -C bundles/ download-tools
 ```
 
-And download the tools for the bundles.
+This step downloads[^2] the `edaadm` CLI tool for your architecture in the `./bundles/tools` directory. You can copy the `edaadm` binary from the `./bundles/tools` directory to a location in your `$PATH` to make it available in your shell for future use, for example:
 
-```bash title="execute from the bundler directory"
-make download-tools
+```bash title="copying edaadm to /usr/local/bin"
+sudo cp bundles/tools/edaadm* /usr/local/bin/edaadm
 ```
 
-This step downloads[^2] the `edaadm` CLI tool for your architecture in the `edaadm/bundles/tools` directory.
-
-The `edaadm` tool is used to generate configuration files for use while deploying the Talos Linux virtual machines and the Kubernetes environment. You can copy or move the `edaadm` tool from the `./tools` directory to a location in your `$PATH` to make it available in your shell for future use.
-
-#### kpt tools
-
-After downloading the tools for bundles, download the tools for kpt. Go to the kpt directory in the `edaadm` repository.
+<!-- After downloading the `edaadm` tool, download the tools for kpt. Go to the kpt directory in the `edaadm` repository.
 
 ```bash title="relative path assumes you are in the bundles directory"
 cd ../kpt
@@ -79,7 +71,7 @@ And download the tools for the kpt package.
 make download-tools
 ```
 
-This step downloads the `kpt` and `kubectl` tools in the `edaadm/kpt/tools` directory.
+This step downloads the `kpt` and `kubectl` tools in the `edaadm/kpt/tools` directory. -->
 
 ## Download the Talos machine image
 

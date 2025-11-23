@@ -11,6 +11,7 @@ def define_env(env):
     # take eda version from mkdocs.yml .extra.eda_version variable
     # and derive other versions flavors from it
     eda_version = env.variables.eda_version
+    eda_version_dashes = env.variables.eda_version.replace(".", "-")
     eda_v_version = f"v{eda_version}"
     eda_major_version = f"{eda_version.split('.')[0]}"
     eda_minor_version = f"{eda_version.split('.')[1]}"
@@ -24,6 +25,8 @@ def define_env(env):
     env.variables["eda_major_version"] = eda_major_version
     env.variables["eda_minor_version"] = eda_minor_version
     env.variables["eda_major_v_version"] = eda_major_v_version
+
+    env.variables["eda_version_dashes"] = eda_version_dashes
 
     @env.macro
     def diagram(url, page, title, zoom=2):
