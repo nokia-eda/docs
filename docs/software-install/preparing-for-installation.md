@@ -86,7 +86,7 @@ edaadm images --mach-type nocloud
 ```
 
 <div class="embed-result">
-```
+```{.text .no-copy .no-select}
 Schematic ID is :376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba
 Asset URLs are:
 https://factory.talos.dev/image/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba/v1.9.2/nocloud-amd64.iso
@@ -107,7 +107,7 @@ edaadm images --mach-type vmware
 ```
 
 <div class="embed-result">
-```
+```{.text .no-copy .no-select}
 Schematic ID is :903b2da78f99adef03cbbd4df6714563823f63218508800751560d3bc3557e40
 Asset URLs are:
 https://factory.talos.dev/image/903b2da78f99adef03cbbd4df6714563823f63218508800751560d3bc3557e40/v1.9.2/vmware-amd64.iso

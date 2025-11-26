@@ -105,6 +105,9 @@ Follow these steps to create the Assets VM Image for KVM. This will generate an 
 This is only needed if you plan to deploy the Assets VM on VMware vSphere.
 ///
 
+/// warning | This command requires Linux kernel version 6 or higher[^1]
+///
+
 Follow these steps to create the Assets VM Image for VMware vSphere. This will generate an ISO file based on the Talos VM base image containing a local cache. This image is different from the base Talos image ISO file that you will use for the EDA Kubernetes VMs, but is based on it.
 
 /// html | div.steps
@@ -172,3 +175,5 @@ Follow these steps to create the Assets VM Image for VMware vSphere. This will g
     The OVA disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-vmware-amd64.ova`.
 
 ///
+
+[^1]: See https://github.com/siderolabs/talos/issues/9264#issuecomment-2426756838
