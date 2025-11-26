@@ -157,6 +157,7 @@ theme:
 # Plugins
 plugins:
   - meta
+  - search
   - glightbox
   - macros:
       j2_block_start_string: "-{{%"
@@ -175,7 +176,8 @@ plugins:
       authors_profiles: true
   - tags
   - typeset
-  - search
+  - optimize:
+      concurrency: 2
   - minify:
       minify_html: true
   - rss:
@@ -202,6 +204,9 @@ plugins:
   - redirects:
       redirect_maps:
         software-install/eda-installation-overview.md: software-install/index.md
+  - privacy:
+      assets_exclude:
+        - giscus.app/*
 
 # Customization
 extra:

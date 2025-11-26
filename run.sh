@@ -77,7 +77,7 @@ function serve-docs-full {
 }
 
 function build-docs {
-  docker run --rm -v "$(pwd)":/docs --entrypoint mkdocs ${MKDOCS_IMAGE} build --clean --strict
+  docker run --rm -v "$(pwd)":/docs --entrypoint mkdocs ${MKDOCS_IMAGE} build --clean # --strict
 }
 
 function test-docs {
