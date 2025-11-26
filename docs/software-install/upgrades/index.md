@@ -16,6 +16,11 @@ The upgrade procedure does not change based on whether you have the Internet or 
 In geo redundant clusters, cluster members cannot run different versions. Therefore, before the software upgrade, you must first break cluster redundancy and then restore redundancy after the upgrade. To break the redundancy, remove the `.spec.cluster.redundant` section from the `EngineConfig` resource as described later in this document.
 ///
 
+/// admonition | The upgrade procedure scope
+    type: subtle-note
+This is the Nokia EDA software upgrade procedure. It does not cover upgrading Talos Linux or Kubernetes versions, please refer to the respective [Talos Linux upgrade documentation](https://docs.siderolabs.com/talos/v1.11/configure-your-talos-cluster/lifecycle-management/upgrading-talos) for upgrading Talos Linux and Kubernetes versions.
+///
+
 ## Backing up your cluster
 
 Backing up your existing cluster is performed using the [`edactl` CLI tool](../../user-guide/using-the-clis.md#edactl):
@@ -187,7 +192,7 @@ Proceed with EDA core components uninstallation:
 make eda-uninstall-core
 ```
 
-Now you should see no core components in your cluster. Check with the following command[^2]:
+Now you should see no core components in your cluster. Check with the following command[^1]:
 
 ```{.shell .no-select}
 kubectl get pods -n eda-system
@@ -281,5 +286,4 @@ Check the following to ensure your cluster is healthy:
 * No transaction failures exist.
 * All cluster members are synchronized.
 
-[^1]: see [Installation customization](../../software-install/deploying-eda/installing-the-eda-application.md#customizing-the-installation) for more details.
-[^2]: replace with your base namespace if you modified it.
+[^1]: replace with your base namespace if you modified it.

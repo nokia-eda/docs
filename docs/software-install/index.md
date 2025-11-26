@@ -42,7 +42,7 @@ These tasks must be completed for both Internet based installations and Air-gapp
 1. [Downloading the EDA Installation playground](preparing-for-installation.md#download-the-eda-installation-playground)  
     This task describes how to access the EDA installation playground for use during the installation. It also covers how to configure the playground.
 
-2. [Downloading the EDA EDAADM repository](preparing-for-installation.md#download-the-eda-edaadm-repository)  
+2. [Downloading the edaadm tools](preparing-for-installation.md#download-edaadm-tools)  
     This task describes how to download the EDAADM repository and the `edaadm` tool, used for several steps in the installation process.
 
 3. [Download the Talos machine image](preparing-for-installation.md#download-the-talos-machine-image)  
@@ -129,7 +129,9 @@ Several key concepts are used throughout the documentation; following is an over
 
 ## Version information
 
-The Talos Kubernetes cluster version Nokia EDA is deployed on is driven by the [`edaadm`](preparing-for-installation.md#download-extra-tools) CLI tool downloads the respective Talos images and generates the machine configurations and bootstraps the Kubernetes cluster.
+The Talos Kubernetes version Nokia EDA is deployed on is set by the [`edaadm`](preparing-for-installation.md#download-edaadm-tools) CLI tool. Edaadm downloads the respective Talos images and generates the machine configurations and bootstraps the Kubernetes cluster.
+
+The following table lists the default Talos and the corresponding Kubernetes versions for each `edaadm` version:
 
 | edaadm version | Talos version | Kubernetes version |
 |----------------|---------------|--------------------|

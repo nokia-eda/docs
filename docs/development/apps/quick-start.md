@@ -1,6 +1,6 @@
 # Quick Start
 
-As [explained in the introduction](index.md#theres-an-app-for-that), an application in EDA can contain many things and do way more than just generating node configurations from the abstracted input. But, still, the most common thing you're going to want an app for is to generate some configuration for a target, and potentially publishing some state relating to that configuration and/or target.
+[An application in EDA](index.md) can contain many things and do way more than just generating node configurations from the abstracted input. But, still, the most common thing you're going to want an app for is to generate some configuration for a target, and potentially publishing some state relating to that configuration and/or target.
 
 To fast track this common case an example demonstrating how to build an app is baked into the `edabuilder` CLI tool. In this quickstart we'll use the baked in example of an app that configures the login banner on a device and walk you through the steps required to build the app from scratch, iterate on it during the development cycle, and then publish it to a custom Catalog so you can share it with others.
 

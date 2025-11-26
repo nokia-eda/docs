@@ -2,7 +2,7 @@
 
 ## Download the EDA Installation playground
 
-Ensure that your Linux installation[^1] environment meets the requirements described in [Installation platform requirements](eda-installation-overview.md#installation-platform-requirements).
+Ensure that your Linux installation[^1] environment meets the requirements described in [Installation platform requirements](index.md#installation-platform-requirements).
 
 Clone the playground repository to your tools-system.
 
@@ -35,7 +35,7 @@ This command downloads the following git repositories to their respective direct
 * EDA kpt package in the `eda-kpt` directory
 * EDA built-in catalog in the `catalog` directory
 
-## Download the EDA EDAADM repository
+## Download edaadm tools
 
 Ensure that your Linux installation environment meets the requirements described in [Installation platform requirements](index.md#installation-platform-requirements).
 
@@ -44,8 +44,6 @@ Clone the EDAADM repository:
 ```bash
 git clone https://github.com/nokia-eda/edaadm && cd edaadm
 ```
-
-### Download edaadm tools
 
 The CLI tool that orchestrates the configuration and installation of the EDA platform in a production environment is called `edaadm`. To download `edaadm` run the following command from the root of the `edaadm` repository:
 

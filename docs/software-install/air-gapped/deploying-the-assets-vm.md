@@ -148,12 +148,12 @@ This procedure is executed on the KVM Hypervisor which will host the Assets VM.
     The Assets VM ISO image was generated in the [Creating the KVM Assets VM Image](preparing-the-assets-vm.md#creating-the-kvm-assets-vm-image) and should be available in the Air-gapped environment when you [copied the assets](preparing-the-air-gapped-environment.md) from the public environment.
 
     ```bash title="executing the <code>ls</code> command from the edaadm repository root"
-    ls -lh ./bundles/eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso
+    ls -lh ./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso
     ```
 
     <div class="embed-result">
     ```{.text .no-select .no-copy}
-    -rw-r--r-- 1 root root 684M Nov 12 18:10 eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso
+    -rw-r--r-- 1 root root 684M Nov 12 18:10 eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso
     ```
     </div>
 
@@ -200,7 +200,7 @@ This procedure is executed on the KVM Hypervisor which will host the Assets VM.
     --noautoconsole --os-variant=generic \ #(1)!
     --memory 16384 --vcpus 4 --cpu host \
     --disk eda-assets-rootdisk.qcow2,format=qcow2,bus=virtio,size=300 \
-    --cdrom ./bundles/eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso \
+    --cdrom ./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso \
     --disk eda-assets-data.iso,device=cdrom \
     --network bridge=br0,model=virtio
     ```

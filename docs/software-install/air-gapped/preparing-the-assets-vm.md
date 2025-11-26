@@ -88,11 +88,13 @@ Follow these steps to create the Assets VM Image for KVM. This will generate an 
     kernel command line: talos.platform=nocloud console=tty1 console=ttyS0 net.ifnames=0 talos.halt_if_installed=1 init_on_alloc=1 slab_nomerge pti=on consoleblank=0 nvme_core.io_timeout=4294967295 printk.devkmsg=on ima_template=ima-ng ima_appraise=fix ima_hash=sha512
     ISO ready
     output asset path: /out/nocloud-amd64.iso
+    renamed '/home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso' -> '/home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso'
+    --> INFO: Created /home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso
     ```
 
     ////
 
-    The ISO disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso`.
+    The ISO disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso`.
 
 ///
 
@@ -161,10 +163,12 @@ Follow these steps to create the Assets VM Image for VMware vSphere. This will g
     kernel command line: talos.platform=vmware talos.config=guestinfo console=tty0 console=ttyS0 earlyprintk=ttyS0,115200 net.ifnames=0 init_on_alloc=1 slab_nomerge pti=on consoleblank=0 nvme_core.io_timeout=4294967295 printk.devkmsg=on ima_template=ima-ng ima_appraise=fix ima_hash=sha512
     disk image ready
     output asset path: /out/vmware-amd64.ova
+    renamed '/home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/vmware-amd64.ova' -> '/home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-vmware-amd64.ova'
+    --> INFO: Created /home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-vmware-amd64.ova
     ```
 
     ////
 
-    The OVA disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/vmware-amd64.ova`.
+    The OVA disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-vmware-amd64.ova`.
 
 ///
