@@ -16,9 +16,22 @@ The upgrade procedure does not change based on whether you have the Internet or 
 In geo redundant clusters, cluster members cannot run different versions. Therefore, before the software upgrade, you must first break cluster redundancy and then restore redundancy after the upgrade. To break the redundancy, remove the `.spec.cluster.redundant` section from the `EngineConfig` resource as described later in this document.
 ///
 
-/// admonition | The upgrade procedure scope
+/// admonition | EDA upgrade procedure scope
     type: subtle-note
-This is the Nokia EDA software upgrade procedure. It does not cover upgrading Talos Linux or Kubernetes versions, please refer to the respective [Talos Linux upgrade documentation](https://docs.siderolabs.com/talos/v1.11/configure-your-talos-cluster/lifecycle-management/upgrading-talos) for upgrading Talos Linux and Kubernetes versions.
+This is the Nokia EDA software upgrade procedure, it does not cover upgrading Talos Linux or Kubernetes.
+
+To upgrade Talos and Kubernetes perform **one of** the following:
+/// tab | Install a new EDA cluster
+When running EDA cluster on virtual machines it might be easier to perform a new installation with the desired Talos and Kubernetes versions and restore your existing cluster backup into the new cluster:
+
+1. Take a backup of your existing EDA cluster.
+2. Download an `edaadm` version that comes with the desired Talos and Kubernetes versions as per the [version matrix](../index.md#version-information).
+3. Install a new EDA cluster following the [installation procedure](../index.md).
+4. Restore your backup in the new cluster and upgrade your EDA applications if necessary.
+///
+/// tab | Upgrade in a running EDA cluster
+Follow the respective [Talos Linux upgrade documentation](https://docs.siderolabs.com/talos/v1.11/configure-your-talos-cluster/lifecycle-management/upgrading-talos) for upgrading Talos Linux and Kubernetes versions in a running EDA cluster.
+///
 ///
 
 ## Backing up your cluster
