@@ -1,10 +1,10 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:145.0) Gecko/20100101 Firefox/145.0" version="29.2.1" pages="5">
   <diagram name="[0] high level setup" id="tJziRCqHFudNewLzHaw2">
-    <mxGraphModel dx="641" dy="763" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
+    <mxGraphModel dx="534" dy="636" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
       <root>
         <mxCell id="qbExKh2GQzYHgT6TWYTY-0" />
         <mxCell id="qbExKh2GQzYHgT6TWYTY-1" parent="qbExKh2GQzYHgT6TWYTY-0" />
-        <mxCell id="P-K8g6husN1xDYQWRV40-2" parent="qbExKh2GQzYHgT6TWYTY-1" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=3.87;indent=0;topLeftStyle=rounded;topRightStyle=rounded;strokeColor=light-dark(#757575,#757575);rotation=-180;fillColor=default;connectable=0;fillStyle=auto;" value="" vertex="1">
+        <mxCell id="P-K8g6husN1xDYQWRV40-2" parent="qbExKh2GQzYHgT6TWYTY-1" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=3.87;indent=0;topLeftStyle=rounded;topRightStyle=rounded;strokeColor=light-dark(#757575,#757575);rotation=-180;fillColor=light-dark(#CCCCCC,#CCCCCC);connectable=0;fillStyle=auto;" value="" vertex="1">
           <mxGeometry height="374" width="488" x="208" y="459" as="geometry" />
         </mxCell>
         <mxCell id="P-K8g6husN1xDYQWRV40-3" parent="qbExKh2GQzYHgT6TWYTY-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;dashed=1;strokeColor=light-dark(#757575,#EBEBEB);arcSize=3;connectable=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;" value="" vertex="1">
