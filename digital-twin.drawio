@@ -185,7 +185,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="2" id="uIwt3EtxbsMNw1i_lpdC">
-    <mxGraphModel dx="934" dy="1113" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
+    <mxGraphModel dx="641" dy="763" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
       <root>
         <mxCell id="wZ7CEqtaYqGVHGdgT6A1-0" />
         <mxCell id="wZ7CEqtaYqGVHGdgT6A1-1" parent="wZ7CEqtaYqGVHGdgT6A1-0" />
@@ -267,8 +267,8 @@
             </mxGeometry>
           </mxCell>
         </object>
-        <mxCell id="1Maj2EsbYpckhntaIjd6-17" parent="wZ7CEqtaYqGVHGdgT6A1-1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontFamily=Google Sans;fontStyle=0;fontColor=#FFFFFF;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="SimLink&lt;br&gt;&lt;font style=&quot;color: light-dark(rgb(117, 117, 117), rgb(117, 117, 117));&quot;&gt;type: interSwitch&lt;/font&gt;" vertex="1">
-          <mxGeometry height="36" width="93" x="562" y="488.5" as="geometry" />
+        <mxCell id="1Maj2EsbYpckhntaIjd6-17" parent="wZ7CEqtaYqGVHGdgT6A1-1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontFamily=Google Sans;fontStyle=0;fontColor=#FFFFFF;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="SimLink" vertex="1">
+          <mxGeometry height="24" width="52" x="562" y="494.5" as="geometry" />
         </mxCell>
         <mxCell id="1Maj2EsbYpckhntaIjd6-23" connectable="0" parent="wZ7CEqtaYqGVHGdgT6A1-1" style="group;fillColor=none;dashed=1;strokeWidth=2;" value="" vertex="1">
           <mxGeometry height="60" width="64" x="504.5" y="540" as="geometry" />
