@@ -788,7 +788,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="7" id="LkpnAYJRMk8kMILn6cvN">
-    <mxGraphModel dx="934" dy="1113" grid="0" gridSize="1" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" background="light-dark(#333333,#333333)" math="0" shadow="0" adaptiveColors="none">
+    <mxGraphModel dx="1601" dy="1909" grid="0" gridSize="1" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" background="light-dark(#333333,#333333)" math="0" shadow="0" adaptiveColors="none">
       <root>
         <mxCell id="7Y1EaJKQLuooH-czLqOt-0" />
         <mxCell id="7Y1EaJKQLuooH-czLqOt-1" parent="7Y1EaJKQLuooH-czLqOt-0" />
@@ -1143,9 +1143,15 @@
         </object>
         <mxCell id="EqCk23k-d2IJ5zZCsc0v-1" edge="1" parent="7Y1EaJKQLuooH-czLqOt-1" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;strokeColor=light-dark(#EBEBEB,#EBEBEB);" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="1104" y="631" as="sourcePoint" />
-            <mxPoint x="1099" y="372" as="targetPoint" />
+            <mxPoint x="1099" y="718" as="sourcePoint" />
+            <mxPoint x="1096" y="379" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="EqCk23k-d2IJ5zZCsc0v-2" parent="7Y1EaJKQLuooH-czLqOt-1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontFamily=Google Sans;fontStyle=1;fontColor=#FFFFFF;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="Physical Topology" vertex="1">
+          <mxGeometry height="36" width="178" x="784.5" y="256" as="geometry" />
+        </mxCell>
+        <mxCell id="EqCk23k-d2IJ5zZCsc0v-3" parent="7Y1EaJKQLuooH-czLqOt-1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontFamily=Google Sans;fontStyle=1;fontColor=#FFFFFF;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="Topology Resources" vertex="1">
+          <mxGeometry height="36" width="199" x="1174.5" y="256" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
