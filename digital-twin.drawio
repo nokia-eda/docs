@@ -1407,9 +1407,6 @@
             <mxGeometry height="15.5" width="16" x="393" y="554.5" as="geometry" />
           </mxCell>
         </object>
-        <mxCell id="5JoiWZYVgvmg41NVl0XB-42" parent="czCZ_EvVnssV-4wiFTeB-1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontFamily=Google Sans;fontStyle=1;fontColor=#FFFFFF;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="Physical Topology" vertex="1">
-          <mxGeometry height="36" width="178" x="283.5" y="351" as="geometry" />
-        </mxCell>
         <object label="" source="spine1" target="leaf1" id="nUU9zLaS_Ma2i-VXmi12-0">
           <mxCell edge="1" parent="czCZ_EvVnssV-4wiFTeB-1" source="5JoiWZYVgvmg41NVl0XB-16" style="endArrow=none;jumpStyle=none;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#F9F9F9,#EBEBEB);strokeWidth=0.3;rounded=0;curved=0;fillColor=#f8cecc;startArrow=none;startFill=0;endFill=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.059;entryY=0.004;entryDx=0;entryDy=0;entryPerimeter=0;" target="IlSv_tWQPoQFImL9-lK8-0">
             <mxGeometry relative="1" as="geometry">
