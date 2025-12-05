@@ -1,0 +1,34 @@
+apiVersion: topologies.eda.nokia.com/v1alpha1
+kind: NetworkTopology
+metadata:
+  generateName: replace-
+  namespace: net-topo-test
+spec:
+  operation: replace
+
+  nodeTemplates:
+    - name: node
+      nodeProfile: srlinux-ghcr-25.10.1
+      platform: 7220 IXR-D3L
+      labels:
+        eda.nokia.com/security-profile: managed
+  nodes:
+    - name: node1
+      template: node
+    - name: node2
+      template: node
+      platform: 7220 IXR-D2L
+
+  linkTemplates:
+    - name: isl
+      type: interSwitch
+  links:
+    - name: node1-node2
+      template: isl
+      endpoints:
+        - local:
+            node: node1
+            interface: ethernet-1-1
+          remote:
+            node: node2
+            interface: ethernet-1-1

@@ -33,9 +33,9 @@ nav:
           - KinD: software-install/non-production/kind.md
           - software-install/exposing-ui-api.md
   - User guide:
+      - Network Topology: user-guide/network-topology.md
       - Transactions: user-guide/transactions.md
       - Queries: user-guide/queries.md
-      - Topologies: user-guide/topologies.md
       - Using the CLIs: user-guide/using-the-clis.md
       - Allocation Pools: user-guide/allocation-pools.md
       - Access Control: user-guide/access-control.md
@@ -204,6 +204,7 @@ plugins:
   - redirects:
       redirect_maps:
         software-install/eda-installation-overview.md: software-install/index.md
+        user-guide/topologies.md: user-guide/network-topology.md
   - privacy:
       assets_exclude:
         - giscus.app/*

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Script to SSH into a specific node in the EDA topology
-# Usage: ./node-ssh <node-name> [<user-namespace>] [<core-namespace>]
+# Usage: ./node-ssh <node-name> [<user-namespace>:-eda] [<core-namespace>:-eda-system]
 
 # provide the TopoNode name as the first argument
-# e.g. bash node-ssh.sh leaf1
+# e.g. node-ssh leaf1
 NODE_NAME=${1}
 
 # user namespace to look up the TopoNode in

@@ -53,15 +53,18 @@ def define_env(env):
         return diagram_tmpl
 
     @env.macro
-    def video(url):
+    def video(url, title=""):
         """
         HTML5 video macro
         """
 
         video_tmpl = f"""
+<figure>
 <video style="overflow: hidden; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); border-radius: 0.25rem;" width="100%" controls playsinline>
     <source src="{url}" type="video/mp4">
 </video>
+{f"<figcaption>{title}</figcaption>" if title else ""}
+</figure>
 """
 
         return video_tmpl
