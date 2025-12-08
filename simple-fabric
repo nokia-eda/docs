@@ -1,80 +1,124 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:145.0) Gecko/20100101 Firefox/145.0" version="29.2.4">
   <diagram name="[0]" id="tJziRCqHFudNewLzHaw2">
-    <mxGraphModel dx="1121" dy="1343" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
+    <mxGraphModel dx="641" dy="767" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
       <root>
         <mxCell id="qbExKh2GQzYHgT6TWYTY-0" />
         <mxCell id="qbExKh2GQzYHgT6TWYTY-1" parent="qbExKh2GQzYHgT6TWYTY-0" />
         <mxCell id="sbB9SDfN_Eognzff8FXT-0" parent="qbExKh2GQzYHgT6TWYTY-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#EBEBEB;arcSize=8;" value="" vertex="1">
-          <mxGeometry height="96" width="145" x="246" y="197" as="geometry" />
+          <mxGeometry height="96" width="145" x="144" y="197" as="geometry" />
         </mxCell>
         <mxCell id="P-K8g6husN1xDYQWRV40-23" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#EBEBEB,#EBEBEB);fontSize=12;" value="Simple Fabrics" vertex="1">
-          <mxGeometry height="30" width="86" x="298" y="201.5" as="geometry" />
+          <mxGeometry height="30" width="86" x="196" y="201.5" as="geometry" />
         </mxCell>
         <mxCell id="sbB9SDfN_Eognzff8FXT-1" parent="qbExKh2GQzYHgT6TWYTY-1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=light-dark(#EBEBEB,#EBEBEB);fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=none;" value="SF" vertex="1">
-          <mxGeometry height="26" width="26" x="263" y="203.5" as="geometry" />
+          <mxGeometry height="26" width="26" x="161" y="203.5" as="geometry" />
         </mxCell>
         <mxCell id="sbB9SDfN_Eognzff8FXT-2" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#37CC73,#F9F9F9);fontSize=12;" value="name&lt;br&gt;underlay ASN Pool" vertex="1">
-          <mxGeometry height="30" width="116" x="262.58" y="249" as="geometry" />
+          <mxGeometry height="30" width="116" x="160.57999999999998" y="249" as="geometry" />
         </mxCell>
         <mxCell id="sbB9SDfN_Eognzff8FXT-3" parent="qbExKh2GQzYHgT6TWYTY-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=light-dark(#757575,#757575);arcSize=8;" value="" vertex="1">
-          <mxGeometry height="160" width="145" x="474" y="197" as="geometry" />
+          <mxGeometry height="160" width="145" x="372" y="197" as="geometry" />
         </mxCell>
         <mxCell id="sbB9SDfN_Eognzff8FXT-4" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#EBEBEB,#EBEBEB);fontSize=12;" value="Fabrics" vertex="1">
-          <mxGeometry height="30" width="86" x="526" y="201.5" as="geometry" />
+          <mxGeometry height="30" width="86" x="424" y="201.5" as="geometry" />
         </mxCell>
         <mxCell id="sbB9SDfN_Eognzff8FXT-5" parent="qbExKh2GQzYHgT6TWYTY-1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=light-dark(#EBEBEB,#EBEBEB);fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=none;" value="F" vertex="1">
-          <mxGeometry height="26" width="26" x="491" y="203.5" as="geometry" />
+          <mxGeometry height="26" width="26" x="389" y="203.5" as="geometry" />
         </mxCell>
         <mxCell id="sbB9SDfN_Eognzff8FXT-6" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#757575,#757575);fontSize=12;" value="name&lt;br&gt;leaf selector&lt;br&gt;&lt;div&gt;spine selector&lt;/div&gt;&lt;div&gt;ISL selector&lt;/div&gt;&lt;div&gt;underlay protocol&lt;/div&gt;&lt;div&gt;system IP pool&lt;br&gt;overlay protocol&lt;/div&gt;" vertex="1">
-          <mxGeometry height="30" width="116" x="490.58" y="281" as="geometry" />
+          <mxGeometry height="30" width="116" x="388.58" y="281" as="geometry" />
         </mxCell>
         <mxCell id="sbB9SDfN_Eognzff8FXT-7" edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;width=6.666666666666667;endSize=4.498850574712644;endWidth=11.673469387755103;strokeColor=light-dark(#EBEBEB,#EBEBEB);" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="404" y="249" as="sourcePoint" />
-            <mxPoint x="464" y="249" as="targetPoint" />
+            <mxPoint x="302" y="249" as="sourcePoint" />
+            <mxPoint x="362" y="249" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="sbB9SDfN_Eognzff8FXT-8" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#EBEBEB,#EBEBEB);fontSize=12;" value="creates" vertex="1">
-          <mxGeometry height="30" width="47" x="407" y="212" as="geometry" />
+          <mxGeometry height="30" width="47" x="305" y="212" as="geometry" />
         </mxCell>
         <object label="" source="spine1" target="leaf2" id="sbB9SDfN_Eognzff8FXT-9">
           <mxCell edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" source="sbB9SDfN_Eognzff8FXT-10" style="endArrow=none;jumpStyle=gap;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#EBEBEB,#EBEBEB);strokeWidth=1;rounded=0;curved=0;fillColor=#f8cecc;align=center;verticalAlign=middle;fontSize=11;fontColor=default;labelBackgroundColor=default;dashed=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0.849;exitY=0.271;exitDx=0;exitDy=0;exitPerimeter=0;">
             <mxGeometry relative="1" as="geometry">
-              <mxPoint x="298" y="329" as="sourcePoint" />
-              <mxPoint x="320.5799999999999" y="279" as="targetPoint" />
+              <mxPoint x="196" y="329" as="sourcePoint" />
+              <mxPoint x="218.57999999999993" y="279" as="targetPoint" />
             </mxGeometry>
           </mxCell>
         </object>
         <mxCell id="sbB9SDfN_Eognzff8FXT-10" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontFamily=Google Sans;fontStyle=0;fontColor=#FFFFFF;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="user-provided&lt;br&gt;inputs&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="48" width="82" x="222" y="311" as="geometry" />
+          <mxGeometry height="48" width="82" x="120" y="311" as="geometry" />
         </mxCell>
         <object label="" source="spine1" target="leaf2" id="sbB9SDfN_Eognzff8FXT-11">
           <mxCell edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" style="endArrow=none;jumpStyle=gap;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#EBEBEB,#EBEBEB);strokeWidth=1;rounded=0;curved=0;fillColor=#f8cecc;align=center;verticalAlign=middle;fontSize=11;fontColor=default;labelBackgroundColor=default;dashed=1;exitX=0.849;exitY=0.271;exitDx=0;exitDy=0;exitPerimeter=0;">
             <mxGeometry relative="1" as="geometry">
-              <mxPoint x="442.9950000000001" y="344.0079999999999" as="sourcePoint" />
-              <mxPoint x="488" y="299" as="targetPoint" />
+              <mxPoint x="340.9950000000001" y="344.0079999999999" as="sourcePoint" />
+              <mxPoint x="386" y="299" as="targetPoint" />
             </mxGeometry>
           </mxCell>
         </object>
         <mxCell id="sbB9SDfN_Eognzff8FXT-12" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontFamily=Google Sans;fontStyle=0;fontColor=#FFFFFF;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="derived and default&lt;br&gt;values&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="48" width="105" x="349" y="331" as="geometry" />
+          <mxGeometry height="48" width="105" x="247" y="331" as="geometry" />
         </mxCell>
         <object label="" source="spine1" target="leaf2" id="sbB9SDfN_Eognzff8FXT-13">
           <mxCell edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" source="sbB9SDfN_Eognzff8FXT-2" style="endArrow=none;jumpStyle=gap;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#EBEBEB,#EBEBEB);strokeWidth=1;rounded=0;curved=0;fillColor=#f8cecc;align=center;verticalAlign=middle;fontSize=11;fontColor=default;labelBackgroundColor=default;dashed=1;entryX=0.892;entryY=1.002;entryDx=0;entryDy=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryPerimeter=0;" target="sbB9SDfN_Eognzff8FXT-2">
             <mxGeometry relative="1" as="geometry">
-              <mxPoint x="322" y="349" as="sourcePoint" />
-              <mxPoint x="350.5799999999999" y="304" as="targetPoint" />
+              <mxPoint x="220" y="349" as="sourcePoint" />
+              <mxPoint x="248.57999999999993" y="304" as="targetPoint" />
             </mxGeometry>
           </mxCell>
         </object>
         <object label="" source="spine1" target="leaf2" id="sbB9SDfN_Eognzff8FXT-14">
           <mxCell edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" source="sbB9SDfN_Eognzff8FXT-3" style="endArrow=none;jumpStyle=gap;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#EBEBEB,#EBEBEB);strokeWidth=1;rounded=0;curved=0;fillColor=#f8cecc;align=center;verticalAlign=middle;fontSize=11;fontColor=default;labelBackgroundColor=default;dashed=1;entryX=0.09;entryY=0.35;entryDx=0;entryDy=0;exitX=0.09;exitY=0.925;exitDx=0;exitDy=0;entryPerimeter=0;exitPerimeter=0;" target="sbB9SDfN_Eognzff8FXT-3">
             <mxGeometry relative="1" as="geometry">
-              <mxPoint x="361" y="286" as="sourcePoint" />
-              <mxPoint x="464" y="286" as="targetPoint" />
+              <mxPoint x="259" y="286" as="sourcePoint" />
+              <mxPoint x="362" y="286" as="targetPoint" />
             </mxGeometry>
           </mxCell>
         </object>
+        <object label="" source="spine1" target="leaf2" id="DPAkxDYUGouIKBPhaUni-4">
+          <mxCell edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" source="sbB9SDfN_Eognzff8FXT-3" style="endArrow=none;jumpStyle=gap;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#757575,#757575);strokeWidth=1;rounded=0;curved=0;fillColor=#f8cecc;align=center;verticalAlign=middle;fontSize=11;fontColor=default;labelBackgroundColor=default;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="524" y="267.5079999999999" as="sourcePoint" />
+              <mxPoint x="538" y="277" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <mxCell id="DPAkxDYUGouIKBPhaUni-5" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#757575,#757575);fontSize=12;strokeColor=none;" value="BGP peers" vertex="1">
+          <mxGeometry height="30" width="86" x="608" y="227" as="geometry" />
+        </mxCell>
+        <mxCell id="DPAkxDYUGouIKBPhaUni-6" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#757575,#757575);fontSize=12;strokeColor=none;" value="creates" vertex="1">
+          <mxGeometry height="30" width="47" x="540" y="260" as="geometry" />
+        </mxCell>
+        <object label="" source="spine1" target="leaf2" id="DPAkxDYUGouIKBPhaUni-7">
+          <mxCell edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" source="DPAkxDYUGouIKBPhaUni-6" style="endArrow=none;jumpStyle=gap;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#757575,#757575);strokeWidth=1;rounded=0;curved=0;fillColor=#f8cecc;align=center;verticalAlign=middle;fontSize=11;fontColor=default;labelBackgroundColor=default;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="600" y="285" as="sourcePoint" />
+              <mxPoint x="603" y="249" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object label="" source="spine1" target="leaf2" id="DPAkxDYUGouIKBPhaUni-8">
+          <mxCell edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" source="DPAkxDYUGouIKBPhaUni-6" style="endArrow=none;jumpStyle=gap;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#757575,#757575);strokeWidth=1;rounded=0;curved=0;fillColor=#f8cecc;align=center;verticalAlign=middle;fontSize=11;fontColor=default;labelBackgroundColor=default;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="598" y="301" as="sourcePoint" />
+              <mxPoint x="607" y="275" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <mxCell id="DPAkxDYUGouIKBPhaUni-9" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#757575,#757575);fontSize=12;strokeColor=none;" value="Policies" vertex="1">
+          <mxGeometry height="30" width="86" x="612" y="260" as="geometry" />
+        </mxCell>
+        <object label="" source="spine1" target="leaf2" id="DPAkxDYUGouIKBPhaUni-10">
+          <mxCell edge="1" parent="qbExKh2GQzYHgT6TWYTY-1" source="DPAkxDYUGouIKBPhaUni-6" style="endArrow=none;jumpStyle=gap;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=light-dark(#757575,#757575);strokeWidth=1;rounded=0;curved=0;fillColor=#f8cecc;align=center;verticalAlign=middle;fontSize=11;fontColor=default;labelBackgroundColor=default;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="597" y="301" as="sourcePoint" />
+              <mxPoint x="602" y="296" as="targetPoint" />
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <mxCell id="DPAkxDYUGouIKBPhaUni-11" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#757575,#757575);fontSize=12;strokeColor=none;" value="Router (VRF)" vertex="1">
+          <mxGeometry height="30" width="86" x="608" y="285" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
