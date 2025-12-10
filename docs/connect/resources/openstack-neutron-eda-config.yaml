@@ -1,0 +1,24 @@
+parameter_defaults:
+  ControllerExtraConfig:
+    neutron::config::plugin_ml2_config:
+      DEFAULT/nic_mapping_provisioning:
+        value: 'True'
+      ml2_eda_connect/plugin_name:
+        value: '<OPENSTACK_PLUGIN_NAME>'
+      ml2_eda_connect/api_host:
+        value: 'https://api.eda.example.com:6443'
+      ml2_eda_connect/api_namespace:
+        value: 'default'
+      ml2_eda_connect/api_token:
+        value: '<SERVICE_ACCOUNT_TOKEN>'
+      ml2_eda_connect/ca_cert_path:
+        value: '/etc/pki/ca-trust/source/anchors/eda.crt.pem'
+  NeutronFirewallDriver: openvswitch
+  NeutronOVSFirewallDriver: openvswitch
+  NeutronServicePlugins: router,segments,trunk,qos,network_segment_range,port_forwarding,conntrack_helper,nic_mapping,log
+  NeutronTypeDrivers: vxlan,vlan,flat,gre
+  NeutronNetworkType: vlan,vxlan
+  NeutronMechanismDrivers: eda_connect,openvswitch,sriovnicswitch,l2population
+  NeutronAgentExtensions: nic-mapping,qos
+  NeutronPluginExtensions: eda_network,qos,port_security,tag_ports_during_bulk_creation,dns_domain_keywords
+

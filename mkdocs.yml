@@ -56,12 +56,30 @@ nav:
 
   - Cloud Connect:
       - Cloud Connect: connect/cloud-connect.md
+      - Installation: connect/cloud-connect-installation.md
       - Troubleshooting: connect/troubleshooting.md
       - Audit: connect/audit.md
-      - OpenShift Connect Plugin: connect/openshift-plugin.md
-      - VMware Plugin:
-          - VMware vSphere Plugin: connect/vmware-plugin.md
-          - VMware NSX Plugin: connect/vmware-nsx.md
+      - Nutanix:
+        - Nutanix Plugin: connect/nutanix-plugin.md
+        - Installation: connect/nutanix-plugin-installation.md
+      - Kubernetes:
+        - Kubernetes Plugin: connect/kubernetes-plugin.md
+        - Installation:
+          - Overview: connect/kubernetes-plugin-installation.md
+          - Helm Installation: connect/kubernetes-plugin-helm-installation.md
+          - OLM Installation: connect/kubernetes-plugin-olm-installation.md
+      - OpenStack:
+            - OpenStack Plugin: connect/openstack-plugin.md
+            - Installation:
+              - Overview: connect/openstack-plugin-installation.md
+              - RHOSP 17.1 Installation: connect/openstack-plugin-rhosp-installation.md
+      - VMware:
+          - vSphere:
+            - VMware vSphere Plugin: connect/vmware-plugin.md
+            - Installation: connect/vmware-plugin-installation.md
+          - NSX:
+            - VMware NSX Plugin: connect/vmware-nsx.md
+            - Installation: connect/vmware-nsx-installation.md
   - Development:
       - Applications:
           - There's an app for that: development/apps/index.md

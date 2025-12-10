@@ -1,0 +1,45 @@
+parameter_defaults:
+  ContainerImagePrepare:
+    - push_destination: true
+      set:
+        ceph_alertmanager_image: ose-prometheus-alertmanager
+        ceph_alertmanager_namespace: registry.redhat.io/openshift4
+        ceph_alertmanager_tag: v4.12
+        ceph_grafana_image: rhceph-6-dashboard-rhel9
+        ceph_grafana_namespace: registry.redhat.io/rhceph
+        ceph_grafana_tag: latest
+        ceph_image: rhceph-6-rhel9
+        ceph_namespace: registry.redhat.io/rhceph
+        ceph_node_exporter_image: ose-prometheus-node-exporter
+        ceph_node_exporter_namespace: registry.redhat.io/openshift4
+        ceph_node_exporter_tag: v4.12
+        ceph_prometheus_image: ose-prometheus
+        ceph_prometheus_namespace: registry.redhat.io/openshift4
+        ceph_prometheus_tag: v4.12
+        ceph_tag: latest
+        name_prefix: openstack-
+        name_suffix: ''
+        namespace: registry.redhat.io/rhosp-rhel9
+        neutron_driver: ovn
+        rhel_containers: False
+        tag: 17.1
+      excludes:
+        - neutron-server
+        - neutron-openvswitch-agent
+    - push_destination: true
+      set:
+        name_prefix: rhosp17-1-openstack-
+        name_suffix: ''
+        namespace: registry.connect.redhat.com/nokia-ni
+        neutron_driver: null
+        rhel_containers: false
+        tag: '17.1'
+      includes:
+        - neutron-server
+        - neutron-openvswitch-agent
+      tag_from_label: '{version}-{release}'
+  ContainerImageRegistryLogin: true
+  ContainerImageRegistryCredentials:
+    registry.connect.redhat.com:
+      <USERNAME>|<SERVICE_KEY>: "<PASSWORD>"
+

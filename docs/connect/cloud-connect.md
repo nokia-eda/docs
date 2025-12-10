@@ -2,8 +2,8 @@
 
 ## Overview
 
-The EDA Cloud Connect solution (or "Connect") acts as a bridge between EDA and different cloud environments like Red Hat OpenShift, VMware vSphere and
-others.
+The EDA Cloud Connect solution (or "Connect") acts as a bridge between EDA and different cloud environments like Red Hat OpenShift, VMware vSphere, 
+OpenStack and Nutanix.
 
 Connect is aware of the different processes and workloads running on the servers that make up the cloud environment, while at the same time being
 aware of the fabric as configured on EDA itself.
@@ -16,92 +16,40 @@ the topology based on the LLDP information arriving in the fabric switches, it c
 
 The Connect solution is built around a central service, called the Cloud Connect Core, and plugins for each supported cloud environment.
 
-The Connect Core is responsible for managing the plugins and the relationship between Connect interfaces (compute interfaces) and EDA interfaces (fabric
-interfaces or edge-links). It keeps track of the LLDP information of EDA interfaces and correlates that back to the Connect interfaces created by
-plugins to identify the different physical interfaces of the computes of a cloud environment.
+The Connect Core is responsible for managing the plugins and the relationship between `ConnectInterfaces` (compute interfaces) and EDA `Interfaces` 
+(fabric interfaces or edge-links). It keeps track of the LLDP information of EDA `Interfaces` and correlates that back to the `ConnectInterfaces` 
+created by plugins to identify the different physical interfaces of the computes of a cloud environment.
 
 Connect plugins are responsible for tracking the state of compute nodes, their physical interfaces, the virtual networks created in the cloud
 environment and their correlation to the physical network interfaces. As applications create networks and virtual machines or containers, the plugins
-will inform Connect Core of the changes needed to the fabric. Plugins will also create or manage EDA BridgeDomains to make sure the correct
-sub-interfaces are created for the application connectivity.
+will inform Connect Core of the changes needed to the fabric. Plugins will also create or manage EDA `BridgeDomains` and `VLANs` to make sure the 
+correct sub-interfaces are created for the application connectivity.
 
 ## Plugins Overview
 
-Connect plugins are specifically made to inspect one type of cloud environment. While these plugins can be developed specifically targeting a custom
-cloud environment, Connect comes with three Nokia supported plugins:
+Connect plugins are the pluggable components that connect the Connect Core service to a specific cloud environment. 
+Connect comes with four Nokia supported plugins:
 
+* Connect Nutanix plugin
 * Connect OpenShift plugin
-* Connect VMware plugin
+* Connect OpenStack plugin
+* Connect VMware & NSX plugin
 
 ## Feature Overview
 
 Connect supports the following features:
 
 * Creating Layer 2 EVPN overlay services on EDA.
+* Using pre-existing `Interfaces` including LAGs in the fabric.
 * Automatically discovering the cloud compute resources and connectivity to the fabric using LLDP.
 * Automatically resolving inconsistent states between Connect and the fabric by performing an audit between Connect and EDA.
-* Using pre-existing LAGs in the fabric.
-* Using the cloud management's standard network management tools to manage the fabric transparently.
+* Using the cloud management's standard network management tools to manage the fabric transparently ([CMS Managed](#cms-managed-integration-mode)).
 * Using EVPN services that are managed by EDA. This is the case in which an operator provisions a service in EDA before making them available in the
-  compute environment for use. This allows for more advanced use cases than the compute environment might support natively.
+  compute environment for use. This allows for more advanced use cases than the compute environment might support natively ([EDA Managed](#eda-managed-integration-mode)).
 
-## Installation of Cloud Connect Core
+## Installation
 
-Cloud Connect is an application in the EDA app ecosystem. It can be easily installed using the EDA Store UI.
-
-### Installation using Kubernetes API
-
-If you prefer installing the Connect Core using the Kubernetes API, you can do so by creating the following Workflow resource:
-
-/// details | Connect Core dependencies
-
-When installing through the UI, dependencies are automatically resolved; this is not the case through the API. Make sure all dependencies of the
-Connect Core app are installed before executing the below kubectl command.
-
-When the dependencies are not satisfied, an error like the following will be added to the status of the AppInstaller object:
-
-```app requirements validation failed: connect.nokia requires interfaces.nokia, but interfaces.nokia is not present```
-
-///
-
-/// tab | YAML Resource
-
-```yaml
---8<-- "docs/connect/resources/connect-appinstall.yaml"
-```
-
-///
-/// tab | `kubectl apply` command"
-
-```bash
-kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/connect-appinstall.yaml"
-EOF
-```
-
-///
-
-### Plugin Configuration Options
-
-When installing Cloud Connect via the EDA UI, users are prompted to configure the application using the following options. These settings control
-resource limits and behavior of the Connect controllers:
-
-| Configuration Option                                                         | Description                                                                                        | Default Value |
-|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|---------------|
-| **Interface Controller GraceTimer** (`interfaceControllerGraceTimer`)        | The grace period (in seconds) used by the Interface Controller before acting on missing LLDP data. | `10`          |
-| **Interface Controller Pod CPU Limit** (`interfaceControllerCpuLimit`)       | CPU limit for the connect-interface-controller pod.                                                | `1`           |
-| **Interface Controller Pod Memory Limit** (`interfaceControllerMemoryLimit`) | Memory limit for the connect-interface-controller pod.                                             | `2Gi`         |
-| **Plugin Controller Pod CPU Limit** (`pluginControllerCpuLimit`)             | CPU limit for the connect-plugin-controller pod.                                                   | `500m`        |
-| **Plugin Controller Pod Memory Limit** (`pluginControllerMemoryLimit`)       | Memory limit for the connect-plugin-controller pod.                                                | `128Mi`       |
-
-These options can be adjusted during installation to meet specific performance or resource requirements.
-
-/// details | Settings are an advanced use case
-type: warning
-
-These settings are intended for advanced users. Misconfiguration can lead to system instability or failure. Proceed with caution and ensure changes
-are validated in a test environment before applying them to production.
-///
+For detailed installation instructions, see the [Cloud Connect Core Installation Guide](cloud-connect-installation.md).
 
 ## Resources
 
@@ -110,17 +58,17 @@ hypervisor world with the fabric world. It is the plugin that is responsible for
 
 The following Custom Resources are involved:
 
-*ConnectPlugin*
+*`ConnectPlugin`*
 : The logical representation of the plugin, created for each plugin automatically when the plugin starts with valid credentials.
 
-*ConnectPluginActionable*
+*`ConnectPluginActionable`*
 : An actionable is an action to be taken by the `ConnectPlugin`. It is used by the Core to tell the plugin to do something (for example: initiate an
 audit).
 
-*ConnectPluginHeartbeat*
+*`ConnectPluginHeartbeat`*
 : The `ConnectPlugin` will continuously send heartbeats to the Cloud Connect service to report its status and alarms.
 
-*ConnectInterface*
+*`ConnectInterface`*
 : The logical representation of a hypervisor NIC and/or LAG. The labels on the `ConnectInterface` are used to label the EDA interface (leaf interface)
 correctly so that the correct subinterfaces are created.
 
@@ -130,23 +78,25 @@ Plugins are a core component of the Event Driven Automation (EDA) Connect enviro
 that communicates with the external cloud services. The following plugins are supported by EDA, and are further documented in their respective
 sections:
 
-* [OpenShift Connect plugin](./openshift-plugin.md)
+* [Nutanix Connect plugin](./nutanix-plugin.md)
+* [OpenStack Connect plugin](./openstack-plugin.md)
+* [OpenShift Connect plugin](kubernetes-plugin.md)
 * [VMware vSphere plugin](./vmware-plugin.md)
 * [VMware NSX plugin](./vmware-nsx.md)
 
 Plugins are automatically registered within the Connect service when they are deployed. Each is stored in the database with the following main
 properties:
 
-*Name*
+*`Name`*
 : A unique name based on the plugin type and compute environment it is connected to.
 
-*Plugin Type*
+*`Plugin Type`*
 : The type of plugin, for example, VMware or OpenShift.
 
-*Heartbeat Interval*
+*`Heartbeat Interval`*
 : The interval, in seconds, between heartbeats that the plugin intends to use.
 
-*Supported Actions*
+*`Supported Actions`*
 : The different actions a plugin can support. These are actions the Core can request the plugin to do. For example, to trigger an audit.
 
 ### Heartbeats
@@ -157,14 +107,14 @@ receive a heartbeat from the plugin after two intervals, it raises an alarm in E
 
 ### Connect Interfaces
 
-Connect interfaces are managed by the plugins and represent the network interfaces of a compute node. When a plugin notices a new compute or new
-network interface on a compute node, it will create a Connect interface in EDA for Connect Core to monitor.
+`ConnectInterfaces` are managed by the plugins and represent the network interfaces of a compute node. When a plugin notices a new compute or new
+network interface on a compute node, it will create a `ConnectInterface` in EDA for Connect Core to monitor.
 
-Connect Core uses the information from the Connect interface to determine the matching EDA interface. This is the interface on a leaf managed by EDA
-to which the interface on the compute is connected, or potentially multiple interfaces, in case of a LAG or bond.
+Connect Core uses the information from the `ConnectInterface` to determine the matching EDA `Interface`. This is the interface on a leaf managed by EDA
+to which the interface on the compute node is connected with potentially multiple interfaces, in case of a LAG or bond.
 
-The plugin will label these Connect interfaces to indicate that Connect Core needs to make sure the matching leaf interfaces have a subinterface
-created in the corresponding overlay service (BridgeDomain).
+The plugin will label these `ConnectInterfaces` to indicate that Connect Core needs to make sure the matching leaf interfaces have a subinterface
+created in the corresponding overlay service or `BridgeDomain`.
 
 This way, only those subinterfaces that are truly necessary are configured in the fabric. This limits configuration bloat and possible security risks.
 
@@ -181,11 +131,12 @@ The Connect UI can be found as part of the System Administrator section of the E
 managed by Connect. This Connect UI follows the same design as the regular EDA UI, where the left menu for Connect opens and displays the different
 resources available.
 
-/// details | Do not create new resources manually, as this could interfere with the behavior of the plugins.
-type: warning
+/// details | Do not edit resources manually, as this could interfere with the behavior of the plugins.
+    type: warning
 
 If you have made changes manually, an audit will revert them.
-Changes should be made through the Cloud orchestration platform.
+Changes should be made through the Cloud orchestration platform. When trying to perform changes through the UI a lock will be displayed, indicating 
+that the resource is managed by Connect.
 ///
 
 ## Connect Integration Modes
@@ -205,8 +156,9 @@ between them as needed. For instance, you can use one integration mode for one a
 
 ### CMS-Managed Integration Mode
 
-In the Cloud Management mode, Connect creates an EDA BridgeDomain resource for each subnet that is created in the Cloud Management system. In this mode, the
-changes in the Cloud Management system are transparently reflected into EDA. The administrator of the Cloud Management system does not require any
+In the Cloud Management mode, Connect creates a `BridgeDomain` resource for each subnet that is created in the Cloud Management System (CMS).
+In this mode, the
+changes in the CMS are transparently reflected into EDA. The administrator of the CMS does not require any
 knowledge about how to use EDA.
 
 ### EDA-Managed Integration Mode
@@ -218,17 +170,24 @@ from the application into the network service.
 In such cases, Nokia recommends using the EDA-managed integration mode, which instructs Connect to associate the subnets in the CMS with existing
 BridgeDomains in EDA, instead of creating new resources in EDA based on the cloud management networking.
 
-In this mode, an administrator (or orchestration engine) with knowledge of EDA first creates the necessary resources in EDA directly. You can create
+In this mode, an administrator, or orchestration engine, with knowledge of EDA first creates the necessary resources in EDA directly. You can create
 more complex configurations than the cloud management system itself would be able to do. When creating the networking constructs in the Cloud
-Management system, you provide a set of unique identifiers referring to those pre-created networking constructs. This way, the Connect plugin and
+Management system, you provide a set of unique identifiers referring to those pre-created `BridgeDomain` constructs. This way, the Connect plugin and
 Connect service know not to create their own resources, but to use the pre-created items.
 
+/// details | `VLAN` management
+    type: subtle-note
+
+In EDA-managed mode, Connect will still create the necessary `VLAN` resources in EDA as needed, based on the VLANs used in the CMS.
+///
 ## LLDP
 
 To bridge EDA with the cloud environment, Cloud Connect uses LLDP extensively. The LLDP information is collected at the fabric level and streamed to
 EDA.
 There is also support for reversing that LLDP relationship, by having the computes collect the LLDP information.
 
+* Nutanix Plugin: LLDP collected at fabric level
+* OpenStack Plugin: LLDP collected at fabric level
 * OpenShift Plugin: LLDP collected at hypervisor level
 * VMware plugin: LLDP collected at fabric level
 
@@ -237,6 +196,7 @@ that the host operating system is sending out.[^1][^2]
 
 [^1]: Instructions on how to disable in-hardware LLDP for Mellanox cards can be found
 here: https://forums.developer.nvidia.com/t/need-help-disabling-hardware-lldp-c5x-ex/294083
+
 [^2]: Instructions on how to disable in-hardware LLDP in VMware ESXI
 environments: https://knowledge.broadcom.com/external/article/344761/enabling-and-disabling-native-drivers-in.html
 
@@ -249,12 +209,13 @@ The gracetimer can be configured when installing Connect using the `interfaceCon
 
 # Support Matrix
 
-In the table below you can find the qualified matrix for the **Cloud Connect** service.
+In the table below you can find the qualified matrix for the Cloud Connect service.
 
-## 25.8
+## 25.12
 
-| Component          | Release       | Supported Versions (Cloud Type) | EDA Core Version            |
-|--------------------|---------------|---------------------------------|-----------------------------|
-| **OpenShift**      | 4.0.x         | OpenShift 4.16, 4.18            | v3.0.0 (EDA release 25.8.x) |
-| **VMware vCenter** | v4.0.x        | VMware vCenter 7.X, 8.X         | v3.0.0 (EDA release 25.8.x) |
-| **VMware NSX**     | v0.0.x (Beta) | VMware NSX 4.2.X                | v3.0.0 (EDA release 25.8.x) |
+| Component                 | Release       | Supported Versions (Cloud Type) | EDA Core Version             |
+|---------------------------|---------------|---------------------------------|------------------------------|
+| **OpenShift**             | 5.0.x         | OpenShift 4.16, 4.18, 4.20      | v4.0.0 (EDA release 25.12.x) |
+| **VMware vCenter**        | v5.0.x        | VMware vCenter 8.X              | v4.0.0 (EDA release 25.12.x) |
+| **VMware NSX**            | v5.0.x        | VMware NSX 4.2.X                | v4.0.0 (EDA release 25.12.x) |
+| **Nutanix Prism Central** | v0.0.x (Beta) | Nutanix Prism Central 7.3.X     | v4.0.0 (EDA release 25.12.x) |

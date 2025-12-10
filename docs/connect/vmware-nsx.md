@@ -1,19 +1,5 @@
 # VMware NSX Plugin
 
-//// warning | Technical Preview
-
-The VMware NSX Plugin is currently only available as alpha version for technical preview purposes. It can be used for demo, POC or lab purposes.
-
-The following features are **not** included in the technical preview:
-
-* Connect Audit
-* EDA-managed
-* Alarms
-* Lag support
-* NSX certificate support: As a workaround set nsxTlsVerify to false in the NsxPluginInstance
-
-////
-
 ## Overview
 
 The NSX plugin enables automated fabric configuration for VMware NSX environments, supporting both **Overlay** and **VLAN segments**. It integrates with EDA Connect to dynamically manage bridge domains and VLANs based on NSX segment definitions.
@@ -28,7 +14,9 @@ NSX provides advanced networking capabilities such as:
 This plugin focuses on automating fabric configuration for overlay and VLAN segments:
 
 * Automatic provisioning of the fabric based on the configured NSX VLAN segments.
-* Automatic provisioning of the fabric based on NSX Transport Node and Host Switch Profile. The plugin will facilitate the communication between the hypervisors on these overlay segments. EDA will not be involved in the actual overlay traffic in this case.
+* Automatic provisioning of the fabric based on NSX Host Transport Node and Host Switch Profile. The plugin will facilitate the communication between the hypervisors on these overlay segments. EDA will not be involved in the actual overlay traffic in this case.
+* Automatic provisioning of the fabric based on NSX Edge Node Transport VLANs.
+* CMS-managed and EDA-managed integration modes (See also [Operational Modes](#operational-modes))
 
 ### Supported Versions
 
@@ -45,129 +33,95 @@ to manage the VMware NSX plugins.
 *VMware NSX Plugin*
 : The plugin itself, which is responsible for connecting and monitoring the VMware NSX environment for changes.
 
-### Supported Features
+## Installation
 
-The following are some of the supported VMware NSX plugin features:
+For detailed deployment instructions, see the [VMware NSX Plugin Installation Guide](vmware-nsx-installation.md).
 
-* CMS-managed integration mode
-* EDA-managed integration mode (not in 25.8)
-* VLAN segment fabric management
-* Overlay segment fabric management
+## Features
 
-#### Overlay Segments
+### vCenter Support
+
+While NSX is used for defining overlay networking, vCenter is still used to configure the compute hosts and VMs. The NSX plugin has a dependency on one or more VMware vCenter plugins for the creation of the ConnectInterface objects in EDA.
+
+### Supported network scenarios
+
+#### Host Transport Nodes and Overlay Segments
 
 Overlay segments in NSX are L2 networks encapsulated in L3 using VXLAN or Geneve. The encapsulated traffic is VLAN-tagged and transported via uplinks defined in NSX configurations.
 
-The NSX plugin will create a `BridgeDomain` and a `VLAN` resource based on the *Transport VLAN* defined on the *Transport Node* in NSX.
+The NSX plugin will create a `BridgeDomain` and a `VLAN` resource based on the *Transport VLAN* defined on the *Host Transport Node* in NSX. EDA and the Fabric will not be involved in the overlay traffic itself; the plugin will only facilitate communication between the hypervisors on these overlay segments.
 
 #### VLAN Segments
 
-In NSX, it is also still possible to create VLAN segments; the NSX plugin will create the appropriate `BridgeDomain` and `VLAN` resources in EDA.
+In NSX, it is also still possible to create VLAN segments. When a VLAN segment is linked in a Host Transport Node, the NSX plugin will create the appropriate `BridgeDomain` and `VLAN` resources in EDA.
 
-## Deployment
+/// details | Constraints when using VLAN Segments
+    type: danger
 
-/// details | Similarity with VMware vSphere Plugin
-
-Those familiar with the VMware vSphere plugin will recognize the steps defined here.
-
-///
-To deploy the VMware NSX plugin, complete the following tasks:
-
-* Deploy the plugin app.
-* Deploy the plugin.
-
-### Connect VMware NSX Plugin App Deployment
-
-The VMware NSX plugin app is an application in the EDA app ecosystem. It can be easily installed using the EDA Store UI.
-
-#### Installation using Kubernetes API
-
-If you prefer installing the plugin using the Kubernetes API, you can do so by creating the following Workflow resource:
-
-/// tab | YAML Resource
-
-```yaml
---8<-- "docs/connect/resources/nsx-appinstall.yaml"
-```
-
-///
-/// tab | `kubectl apply` command
-
-```bash
-kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/nsx-appinstall.yaml"
-EOF
-```
+When linked to Edge nodes, VLAN segments are not configured by the NSX plugin. VLAN segments can only be linked to Host Transport Nodes.
 
 ///
 
-### Connect VMware NSX Plugin Deployment
+#### Edge Node
 
-A prerequisite for creating a `NsxPluginInstance` resource is a `Secret` resource with username and password fields that contain the account information for
-an account that can connect to the VMware NSX environment and has read-only access to the cluster so that it can monitor the necessary resources.
+In NSX Edge Nodes provide services at the edge of the network, such as routing between NSX logical networks and external physical networks. The plugin automatically provisions the transport network for the Edge Nodes when it is defined in NSX.
 
-/// tab | YAML Resource
+The uplinks of the Edge nodes are virtual rather than physical. To map these to the physical uplinks of the host, the plugin copies the uplink mapping from the Host Transport Node to the Edge Transport Node.
 
-```yaml
---8<-- "docs/connect/resources/vmware-secret.yaml"
-```
+The NSX plugin will create a `BridgeDomain` and a `VLAN` resource based on the *Transport VLAN* defined on the uplink profile and transport zone of the *Edge Node* in NSX. The VLAN is allocated only when a transport zone of type "overlay" is also set, since any overlay network requires a transport zone.
 
-///
-/// tab | `kubectl apply` command
+/// details | Constraints when using Edge Nodes
+    type: danger
 
-```bash
-kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/vmware-secret.yaml"
-EOF
-```
+The following constraints are imposed on Edge Node transport networks:
+
+* The Edge Node can only have a transport network on a switch that has a default uplink teaming for its parent host.
+* The Edge Node cannot have its transport network traffic go through a different NIC/Uplink than its parent host.
+* The Edge Node cannot exclude itself from a Host Switch that its host is participating on. In the example above, this means it is not possible to create the VLAN for one of the switches and not the other.
 
 ///
 
-/// details | Base64 encoding
+/// details | Host Transport Node to Edge Node connectivity
+    type: info
 
-Use the following command to base64 encode your username and password:
-
-```bash
-echo -n myUsernameOrPassword | base64
-```
-
+Most scenarios require connectivity between Host Transport Nodes and Edge Nodes. The easiest way to achieve this is by using [EDA-managed `BridgeDomains`](#operational-modes). Either with a single `BridgeDomain` for both Host Transport Nodes and Edge Nodes or by using multiple `BridgeDomains` interconnected through a `VirtualNetwork`. When using a single `BridgeDomain` make sure the IPAM configuration places both Host Transport Nodes and Edge Nodes in the same subnet.
 ///
 
-As the VMware NSX plugins are managed through the operator, you can use the EDA UI to create a new `NsxPluginInstance` resource under the *
-*System Administration > Connect > NSX Plugins** menu item.
+### Operational Modes
 
-As an alternative, you can also create the same `NsxPluginInstance` using the following custom resource example. Make sure to replace the specified
-values with their relevant content.
+The plugin supports the following operational modes:
 
-A VMware NSX instance can manage multiple VMware vCenter servers, this is reflected by referencing the vCenters and the corresponding Connect VMware Vcenter plugins in the `NsxPluginInstance`.
+*NSX Managed Mode*
+: Also referred to as *Connect Managed*. When using this mode, the plugin will create a unique `BridgeDomain` for each VLAN segment and to facilitate overlay segment communication between the hypervisors.
 
-/// details | vCenterFQDN
-    type: warning
+*EDA Managed Mode*
 
-The vCenterFQDN field has to correspond to the "FQDN or IP Address" field when creating the compute manager.
-![vCenter FQDN or IP](resources/nsx-vcenter-fqdn.png)
-///
-/// tab | YAML Resource
+: EDA managed BridgeDomains are supported for both VLAN and overlay networks. To specify an EDA managed BridgeDomain, use an NSX tag with:
 
-```yaml
---8<-- "docs/connect/resources/nsx-plugin-instance.yaml"
-```
 
-///
-/// tab | `kubectl apply` command
 
-```bash
-kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/nsx-plugin-instance.yaml"
-EOF
-```
+    >   **Scope (key)**: `ConnectBridgeDomain`
+    > 
+    >   **Tag (value)**: The BridgeDomain name
 
-///
+: 
+- For VLAN networks: Place the tag on the VLAN segment.
+- For overlay networks: Place the tag on the overlay transport zone.
+- For Edge Node transport VLANs: Place the tag on the Edge Node **overlay** transport zone.
 
-The plugin name and external ID must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'` and can only contain alphanumerical
-characters and `.`, `_` and `-`. It must start with an alphanumerical character.
+: A VLAN is uniquely defined by its hostSwitchID, vlanTag, and edaBridgeDomain (the tag value). Two segments with the same VLAN tag but different BridgeDomain tags will result in two Connect VLANs.
 
-## Functionality
+
+[//]: # ( TODO&#40;Tom&#41; Add a screenshot of a tag here.)
+
+
+### Heartbeat
+
+The plugin implements a heartbeat mechanism, polling Connect at a regular interval (configured by `heartbeatInterval`). This ensures the plugin's health and timely processing of actionable events from Connect.
+
+### Operator Initiated Audit
+
+In addition to the startup audit, users can initiate an [audit](./audit.md) manually. The audit object contains the status and results, including any discrepancies found between NSX and Connect.
 
 ### Startup
 
@@ -177,43 +131,54 @@ When the plugin is started, the following actions are taken by the plugin:
 * The plugin performs an audit: Any Connect-related state that was programmed in NSX while the plugin was not running is synchronized with
   Connect.
 
-### Polling Loop
+### Alarms
 
-The plugin will connect to a VMware NSX environment and poll for changes. The plugin will configure Connect and EDA based on the configuration in NSX.
+Alarms will notify users of issues such as:
 
-### vCenter Plugin Dependency
+- Incorrect NSX credentials
+- Bad certificate
+- No connectivity to NSX
+- EDA BridgeDomain missing for EDA managed resources
+- Misconfigured resources (e.g., invalid uplink name)
 
-While NSX is used for defining overlay networking, vCenter is still used to configure the compute hosts and VMs. The NSX plugin has a dependency on one or more VMware vCenter plugins for the creation of the ConnectInterface objects in EDA.
+[//]: # (- Required plugin or vCenter missing)
 
-### Operational Modes
+/// details | Required plugin or vCenter missing
+    type: warning
 
-The technical preview of the NSX plugin only supports NSX-managed mode.
-
-*NSX Managed Mode*
-: Also referred to as *Connect Managed*. When using this mode, the plugin will create a unique `BridgeDomain` for each VLAN segment and to facilitate overlay segment communication between the hypervisors.
+When the NSX plugin detects that a required vCenter plugin is missing, it will not raise an alarm in the current release. 
+Make sure that for all vCenters configured in NSX a corresponding vCenter plugin is installed and running in EDA.
+///
 
 ## Troubleshooting
 
-/// details | Technical preview
-    type: warning
-The technical preview in 25.8 will not support alarms. Please consult the logs of the NSX plugin pod for troubleshooting.
-///
-
 ### The plugin is not running
 
-If an incorrect NSX hostname or IP is configured in the `NsxPluginInstance` resource, the plugin will try to connect for 3 minutes and
-log an error if it fails to connect. To retry, the plugin can be restarted. In case the credentials are incorrect, the plugin will crash and restart immediately.
+If an incorrect NSX hostname or IP is configured in the `NsxPluginInstance` resource, the plugin will raise an alarm and retry the connection
+indefinitely. In case the credentials are incorrect, the plugin will also raise an alarm and retry indefinitely.
 
-[//]: # (TODO&#40;Tom&#41; Re-add these once the plugin supports alarms)
-[//]: # (* Check the raised plugin alarms.)
+* Check the raised NSX plugin alarms as well as any connect VMware plugin alarms.
+* Check that the 'NSXPluginInstance' matches the compute manager's server IP or FQDN field and the corresponding VMware plugin name field.
 * Check the connectivity from the EDA cluster to NSX.
-* Verify the credentials for NSX.
+* Verify the credentials for NSX. Make sure to check the base64 encoding of the Secret.
 * Check the logs of the plugin pod.
 
 ### The plugin is not creating any resources in EDA
 
-[//]: # (* Check the raised plugin alarms.)
+* Check the raised plugin alarms.
 * Check the connectivity from the EDA cluster to NSX.
 * Check the logs of the plugin pod.
 * Check the plugin staleness state field and verify that heartbeats are being updated.
 * Check the `NSXPluginInstance` resource and verify that it has valid values.
+* Make sure the LLDP settings are correctly configured on all distributed vSwitches.
+* Try to sync state by launching an Audit (see [Operator Initiated Audit](#operator-initiated-audit)).
+
+
+### The plugin is configuring an incorrect state in EDA
+
+* Check the raised NSX and VMware plugin alarms.
+* Check the logs of the plugin pod.
+* Make sure the LLDP settings are correctly configured on all distributed vSwitches.
+* Try to sync state by launching an Audit (see [Operator Initiated Audit](#operator-initiated-audit)).
+* Inspect the EDA resources, like `VLANs` and `BridgeDomains`.
+* Verify the required vCenter plugins are configured correctly.

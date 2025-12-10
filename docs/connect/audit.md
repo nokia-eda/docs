@@ -4,7 +4,7 @@
 
 The EDA Cloud Connect plugins are listening to or directly interacting with the cloud platforms they manage. Sometimes this connection can be broken temporarily or be out of sync. To automatically fix these _out of sync_ events, you can run an audit on the plugin.
 
-An audit can be launched through the UI by navigating to _System Administration_->_Connect_->_Audit_.
+An audit can be launched through the UI by navigating to _System Administration_>_Connect_>_Audit_.
 ![Create Audit](resources/audit-create.png)
 
 As an alternative, you can also create an `Audit` resource in the Kubernetes cluster of EDA with the following content:
