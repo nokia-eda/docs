@@ -255,10 +255,10 @@
         <mxCell id="AngB-APq5C20O3C2n4Xf-3" parent="8lNMCtHmZOUdM2l66rPx-0" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#757575,#757575);strokeColor=none;arcSize=17;" value="" vertex="1">
           <mxGeometry height="16.689655172413794" width="61.79310344827586" x="4.827586206896552" y="4.2988505747126435" as="geometry" />
         </mxCell>
-        <mxCell id="AngB-APq5C20O3C2n4Xf-8" parent="8lNMCtHmZOUdM2l66rPx-0" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#EBEBEB,#EBEBEB);fontSize=12;" value="Fabrics" vertex="1">
+        <mxCell id="AngB-APq5C20O3C2n4Xf-8" parent="8lNMCtHmZOUdM2l66rPx-0" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#EBEBEB,#EBEBEB);fontSize=10;" value="Fabrics" vertex="1">
           <mxGeometry height="15.172413793103448" width="41.51724137931034" x="25.103448275862068" y="5.310344827586206" as="geometry" />
         </mxCell>
-        <mxCell id="AngB-APq5C20O3C2n4Xf-9" parent="8lNMCtHmZOUdM2l66rPx-0" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=light-dark(#EBEBEB,#EBEBEB);fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=none;" value="F" vertex="1">
+        <mxCell id="AngB-APq5C20O3C2n4Xf-9" parent="8lNMCtHmZOUdM2l66rPx-0" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=light-dark(#EBEBEB,#EBEBEB);fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=none;fontSize=9;" value="F" vertex="1">
           <mxGeometry height="12.380689655172413" width="12.380689655172413" x="8.206896551724137" y="6.32183908045977" as="geometry" />
         </mxCell>
         <mxCell id="AngB-APq5C20O3C2n4Xf-14" parent="8lNMCtHmZOUdM2l66rPx-0" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Fira Code;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFira%2BCode;fontColor=light-dark(#757575,#757575);fontSize=10;" value="status:" vertex="1">
