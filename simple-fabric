@@ -164,7 +164,7 @@
           <mxGeometry height="33" width="128" x="382" y="143.5" as="geometry" />
         </mxCell>
         <mxCell id="AMuC8Pi3BH2gjavXkfcY-4" parent="AMuC8Pi3BH2gjavXkfcY-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#EBEBEB;arcSize=8;" value="" vertex="1">
-          <mxGeometry height="194" width="145" x="144" y="137" as="geometry" />
+          <mxGeometry height="194" width="150" x="144" y="137" as="geometry" />
         </mxCell>
         <mxCell id="AMuC8Pi3BH2gjavXkfcY-5" parent="AMuC8Pi3BH2gjavXkfcY-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#757575,#757575);strokeColor=none;arcSize=17;" value="" vertex="1">
           <mxGeometry height="33" width="128" x="152" y="160" as="geometry" />
@@ -181,7 +181,7 @@
         <mxCell id="AMuC8Pi3BH2gjavXkfcY-10" parent="AMuC8Pi3BH2gjavXkfcY-1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=light-dark(#EBEBEB,#EBEBEB);fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=none;" value="F" vertex="1">
           <mxGeometry height="26" width="26" x="389" y="147.5" as="geometry" />
         </mxCell>
-        <mxCell id="AMuC8Pi3BH2gjavXkfcY-11" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#757575,#757575);fontSize=12;" value="spec:" vertex="1">
+        <mxCell id="AMuC8Pi3BH2gjavXkfcY-11" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Fira Code;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFira%2BCode;fontColor=light-dark(#757575,#757575);fontSize=10;" value="spec:" vertex="1">
           <mxGeometry height="30" width="116" x="155.99999999999997" y="193" as="geometry" />
         </mxCell>
         <mxCell id="AMuC8Pi3BH2gjavXkfcY-12" edge="1" parent="AMuC8Pi3BH2gjavXkfcY-1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;width=6.666666666666667;endSize=4.498850574712644;endWidth=11.673469387755103;strokeColor=light-dark(#EBEBEB,#EBEBEB);" value="">
@@ -193,10 +193,10 @@
         <mxCell id="AMuC8Pi3BH2gjavXkfcY-13" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#EBEBEB,#EBEBEB);fontSize=12;" value="creates" vertex="1">
           <mxGeometry height="30" width="47" x="301" y="152" as="geometry" />
         </mxCell>
-        <mxCell id="VZt8sa7kKcQPdrOo0xPG-0" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#E23B3B,#E23B3B);fontSize=12;" value="&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;b&gt;status:&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;&lt;span style=&quot;&quot;&gt;Fabric Name: ???&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;&lt;span style=&quot;&quot;&gt;Operational State: ???&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="VZt8sa7kKcQPdrOo0xPG-0" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Fira Code;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFira%2BCode;fontColor=light-dark(#E23B3B,#E23B3B);fontSize=10;" value="&lt;span&gt;&lt;span&gt;&lt;span&gt;&lt;b&gt;status:&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;div&gt;&lt;font&gt;&lt;span&gt;Fabric Name: ???&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font&gt;&lt;span&gt;Operational State: ???&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="30" width="177" x="156" y="223" as="geometry" />
         </mxCell>
-        <mxCell id="D3ZrjIOeJjEzhYEDSoXT-0" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#757575,#757575);fontSize=12;" value="spec:&lt;br&gt;status:" vertex="1">
+        <mxCell id="D3ZrjIOeJjEzhYEDSoXT-0" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Fira Code;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFira%2BCode;fontColor=light-dark(#757575,#757575);fontSize=10;" value="spec:&lt;br&gt;status:" vertex="1">
           <mxGeometry height="30" width="116" x="382" y="183" as="geometry" />
         </mxCell>
         <mxCell id="p2eQJOlXKwYdYoUsISGX-0" parent="AMuC8Pi3BH2gjavXkfcY-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=light-dark(#EBEBEB,#EBEBEB);arcSize=8;dashed=1;" value="" vertex="1">
@@ -217,8 +217,8 @@
             <mxPoint x="365" y="294" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="p2eQJOlXKwYdYoUsISGX-5" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#757575,#757575);fontSize=12;" value="spec:&lt;br&gt;status:" vertex="1">
-          <mxGeometry height="30" width="116" x="382" y="294" as="geometry" />
+        <mxCell id="p2eQJOlXKwYdYoUsISGX-5" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Fira Code;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFira%2BCode;fontColor=light-dark(#EBEBEB,#EBEBEB);fontSize=10;" value="spec:&lt;br&gt;&amp;nbsp; fabricName: &amp;lt;name&amp;gt;" vertex="1">
+          <mxGeometry height="30" width="136" x="382" y="294" as="geometry" />
         </mxCell>
         <mxCell id="p2eQJOlXKwYdYoUsISGX-6" parent="AMuC8Pi3BH2gjavXkfcY-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#EBEBEB,#EBEBEB);fontSize=12;" value="creates" vertex="1">
           <mxGeometry height="30" width="47" x="305" y="262" as="geometry" />
