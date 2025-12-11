@@ -304,7 +304,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="Copy of 2" id="HYhEZYItvEccfKTAItTH">
-    <mxGraphModel dx="646" dy="767" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
+    <mxGraphModel dx="452" dy="537" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
       <root>
         <mxCell id="9wS-0DI7ErXybbzSabnv-0" />
         <mxCell id="9wS-0DI7ErXybbzSabnv-1" parent="9wS-0DI7ErXybbzSabnv-0" />
@@ -395,7 +395,7 @@
         <mxCell id="qHRy3R3r2FmZ2hLnHYDz-4" parent="9wS-0DI7ErXybbzSabnv-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Fira Code;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFira%2BCode;fontColor=light-dark(#757575,#757575);fontSize=10;" value="spec:" vertex="1">
           <mxGeometry height="30" width="116" x="598" y="187" as="geometry" />
         </mxCell>
-        <mxCell id="qHRy3R3r2FmZ2hLnHYDz-5" parent="9wS-0DI7ErXybbzSabnv-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Fira Code;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFira%2BCode;fontColor=light-dark(#37CC73,#F9F9F9);fontSize=10;" value="&lt;span style=&quot;color: light-dark(rgb(249, 249, 249), rgb(249, 249, 249));&quot;&gt;&lt;span&gt;&lt;span&gt;&lt;span&gt;&lt;b&gt;status:&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;div&gt;&lt;font&gt;&lt;span&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0);&quot;&gt;&lt;span&gt;Fabric Name:&lt;/span&gt;&lt;/span&gt; sf-my-simple-fabric&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font&gt;&lt;span&gt;Operational State: up&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="qHRy3R3r2FmZ2hLnHYDz-5" parent="9wS-0DI7ErXybbzSabnv-1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Fira Code;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DFira%2BCode;fontColor=light-dark(#37CC73,#F9F9F9);fontSize=10;" value="&lt;span style=&quot;color: light-dark(rgb(249, 249, 249), rgb(249, 249, 249));&quot;&gt;&lt;span&gt;&lt;span&gt;&lt;span&gt;&lt;b&gt;status:&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;div&gt;&lt;font&gt;&lt;span&gt;&lt;span style=&quot;color: light-dark(rgb(249, 249, 249), rgb(249, 249, 249));&quot;&gt;&lt;span style=&quot;color: light-dark(rgb(249, 249, 249), rgb(249, 249, 249));&quot;&gt;&lt;span style=&quot;color: light-dark(rgb(55, 204, 115), rgb(249, 249, 249));&quot;&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0);&quot;&gt;&lt;span&gt;Fabric Name:&lt;/span&gt;&lt;/span&gt; &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;sf-my-simple-fabric&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font&gt;&lt;span&gt;&lt;span style=&quot;color: light-dark(rgb(249, 249, 249), rgb(249, 249, 249));&quot;&gt;Operational State:&lt;/span&gt; up&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="30" width="177" x="598" y="223" as="geometry" />
         </mxCell>
         <mxCell id="gE7BdRPqhnzt6fHkbY4A-0" connectable="0" parent="9wS-0DI7ErXybbzSabnv-1" style="group" value="" vertex="1">
