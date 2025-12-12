@@ -64,7 +64,7 @@ As an app owner, you set the image value to an image URI that points to the regi
 + image: ghcr.io/eda-labs/banners:v2.1.0
 ```
 
-Now, `edabuilder build-push` has everything it needs - an image URI and the credentials for the container registry the image points to. Simply point the command towards your manifest and its build context[^2], like so:
+Now, `edabuilder build-push` has everything it needs - an image URI and the credentials for the container registry the image points to. Simply point the command towards your manifest and its build context, like so:
 
 ```shell title="run from the project's directory"
 edabuilder build-push --app manifest=banners/manifest.yaml #(1)!
@@ -76,7 +76,7 @@ A successful `build-push` action ends by prompting you with "Successfully pushed
 
 ## Publishing an App
 
-The second pillar of an app is its manifest file[^3], which we still need to publish to a catalog[^4] of our choice.
+The second pillar of an app is its manifest file, which we still need to publish to a catalog of our choice.
 
 The first thing you need to ensure is that you have a git repository created that you intend to use as an App Catalog for your EDA applications. In this example, we will be using our [eda-labs/catalog](https://github.com/eda-labs/catalog) repository that we use for our community-oriented applications.
 
@@ -160,7 +160,7 @@ This does the following:
 
 1. create a development catalog repository in the git server in your EDA cluster
 2. create a secret and Catalog CR for the dev catalog to configure the EDA Store
-3. create a simple[^5] development registry (Deployment, Service, and Secret and Registry CR to configure the EDA Store)
+3. create a simple[^2] development registry (Deployment, Service, and Secret and Registry CR to configure the EDA Store)
 4. `edabuilder generate` to keep all of your Python models, CRDs, etc. up-to-date
 5. rewrite the manifest AppImage URI (in memory) to point to the development registry, then `edabuilder build-push`
 6. `edabuilder publish` to the development catalog
@@ -170,13 +170,10 @@ When you run `edabuilder deploy` for the first time, step 3 could take a while i
 
 ### Bring your own catalog/registry
 
-The `edabuilder deploy` command is customisable through a configuration file, located at `~/.config/edabuilder/config.yaml`[^6]. It allows you to provide multiple custom OCI registries and/or application catalogs (Git repositories) by specifying the URL of the corresponding component and to select the current one to use for the `edabuilder deploy` command.
+The `edabuilder deploy` command is customisable through a configuration file, located at `~/.config/edabuilder/config.yaml`[^3]. It allows you to provide multiple custom OCI registries and/or application catalogs (Git repositories) by specifying the URL of the corresponding component and to select the current one to use for the `edabuilder deploy` command.
 
 Consult with the [:material-page-next-outline: deploy targets](edabuilder.md#configuring-deploy-targets) section of the `edabuilder` CLI documentation for more information on how to use this configuration file.
 
 [^1]: When creating your app development project through `edabuilder init`, you can use the `-r | --registry` option to specify your production registry. If you do so, the PROJECT file will store the registry and it will automatically be included in the image URI of any newly created apps' manifests.
-[^2]: For more information on the `--app` flag, and build context in general, refer to [terminology](terminology.md#application-build-context).
-[^3]: For more information on manifests, refer to [terminology](terminology.md#manifest)
-[^4]: For more information on catalogs, refer to [terminology](terminology.md#catalog)
-[^5]: A basic [CNCF Distribution Registry](https://distribution.github.io/distribution/) image is used here.
-[^6]: You can provide a custom location for this file by setting the `EDABUILDER_CONFIG` environment variable.
+[^2]: A basic [CNCF Distribution Registry](https://distribution.github.io/distribution/) image is used here.
+[^3]: You can provide a custom location for this file by setting the `EDABUILDER_CONFIG` environment variable.

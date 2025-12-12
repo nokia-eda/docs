@@ -65,7 +65,7 @@ Every EDA deployment gets a unique client secret token generated during installt
 /// tab | UI
 
 * Navigate to `https://{EDA_URL}/core/httpproxy/v1/keycloak` in your browser.
-* Log in with the Keycloak administrator username and password (default is `admin:admin` and can be changed[^1]).
+* Log in with the Keycloak administrator username and password (default is `admin:admin` and can be changed).
 * From the **Keycloak** drop-down list on the upper left, select **Event Driven Automation** (eda).
 * Select **Clients** from the menu on the left.
 * Select **eda** in the client table.
@@ -157,7 +157,7 @@ Detailed information about all of the individual API endpoints and their paramet
 
 ### API documentation in the EDA UI
 
-If you have EDA already installed[^2] you can find OpenAPI documentation and download specifications for both EDA Core as well as for every application you have installed in your cluster. To access the API Documentation, use the :octicons-question-24: icon in the top right corner and select API Documentation menu item:
+If you have EDA already installed[^1] you can find OpenAPI documentation and download specifications for both EDA Core as well as for every application you have installed in your cluster. To access the API Documentation, use the :octicons-question-24: icon in the top right corner and select API Documentation menu item:
 
 -{{video(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/9cc1e1fa7742e88b6d37292882af14cc/api-web-help.mp4")}}-
 
@@ -239,5 +239,4 @@ curl -s http://${EDA_HOST}/openapi/v3/apps/connect.eda.nokia.com/v1alpha1 \
   -H 'Content-Type: application/json'
 ```
 
-[^1]: https://documentation.nokia.com/eda/-{{eda_major_version}}---{{eda_minor_version}}-/books/user/change-internal-passwords.html#keycloak-and-the-eda-ui
-[^2]: [Try EDA](../../getting-started/try-eda.md) installation is a perfect fit for experimenting with the API.
+[^1]: [Try EDA](../../getting-started/try-eda.md) installation is a perfect fit for experimenting with the API.

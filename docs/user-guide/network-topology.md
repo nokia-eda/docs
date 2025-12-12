@@ -18,8 +18,8 @@ Here is how the same 3-node topology is modelled with the `TopoNode` and `TopoLi
 
 - For each device in the topology there is a corresponding [`TopoNode`][topoNode-crd]
 - For each link between the nodes there is a corresponding [`TopoLink`][topoLink-crd] representing the inter-switch connections
-- For each link from a node to an edge device (not shown in the diagram) there is a corresponding `TopoLink` representing the edge connections.[^2]
-- For each interface breakout on the nodes there is a corresponding [`TopoBreakout`][topoBreakout-crd] resource[^3]
+- For each link from a node to an edge device (not shown in the diagram) there is a corresponding `TopoLink` representing the edge connections.[^1]
+- For each interface breakout on the nodes there is a corresponding [`TopoBreakout`][topoBreakout-crd] resource[^2]
 
 The diagram below illustrates how the topology resources represent the same network topology:
 
@@ -1122,13 +1122,8 @@ The below video demonstrates how the Dry Run mode works in practice.
 
 [gs-guide]: ../getting-started/try-eda.md
 
-[^1]:
-    The `api-server-topo` CLI tool is available in the `eda-toolbox` pod.
+[^1]: Edge devices are not shown in the diagram because they are not (currently) managed by EDA and hence are not part of the topology. However, the links from the nodes to the edge devices must be modelled with `TopoLink` resources of type `edge` to allow EDA to manage these interfaces.
 
-    --8<-- "docs/user-guide/using-the-clis.md:open-toolbox"
-
-[^2]: Edge devices are not shown in the diagram because they are not (currently) managed by EDA and hence are not part of the topology. However, the links from the nodes to the edge devices must be modelled with `TopoLink` resources of type `edge` to allow EDA to manage these interfaces.
-
-[^3]: Interface breakouts are not shown in the diagram because there are no breakouts defined in the "Try EDA" three-node topology. However, if there were any port breakouts on the nodes, they would be modelled with the `TopoBreakout` resources.
+[^2]: Interface breakouts are not shown in the diagram because there are no breakouts defined in the "Try EDA" three-node topology. However, if there were any port breakouts on the nodes, they would be modelled with the `TopoBreakout` resources.
 
 <script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
