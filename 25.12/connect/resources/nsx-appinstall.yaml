@@ -1,0 +1,13 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
+metadata:
+  name: nsx-plugin
+  namespace: eda-system
+spec:
+  operation: install
+  apps:
+    - appId: nsx.eda.nokia.com
+      catalog: eda-catalog-builtin-apps
+      version:
+        type: semver
+        value: v5.0.0

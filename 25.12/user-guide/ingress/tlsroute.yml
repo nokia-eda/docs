@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
+metadata:
+  name: eda-ui
+  namespace: eda-system
+spec:
+  parentRefs:
+    - name: eda-gw-https
+      namespace: eda-system
+  rules:
+    - backendRefs:
+        - kind: Service
+          name: eda-api
+          port: 443

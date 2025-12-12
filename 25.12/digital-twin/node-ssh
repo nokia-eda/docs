@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Script to SSH into a specific node in the EDA topology
+# Usage: ./node-ssh <node-name> [<user-namespace>:-eda] [<core-namespace>:-eda-system]
+
+# provide the TopoNode name as the first argument
+# e.g. node-ssh leaf1
+NODE_NAME=${1}
+
+# user namespace to look up the TopoNode in
+# default is eda
+USER_NS=${2:-eda}
+
+# core namespace to cx pods in
+# default is eda
+CORE_NS=${3:-eda-system}
+
+function list_nodes() {
+  kubectl --namespace ${CORE_NS} get pods -l cx-cluster-name=eda \
+  -o=jsonpath='{.items[*].metadata.labels.cx-pod-name}' | tr ' ' '\n'
+}
+
+if [ -z "${NODE_NAME}" ]; then
+  echo "Usage: $0 <node-name> [<namespace>]"
+  echo "  Available nodes are:"
+  list_nodes | sed 's/^/    /'
+  exit 1
+fi
+
+NODE_ADDR=$(kubectl -n ${USER_NS} get targetnode "${NODE_NAME}" -o jsonpath='{.spec.address}')
+if [ -z "${NODE_ADDR}" ]; then
+  echo "Node ${NODE_NAME} not found in namespace ${USER_NS}; available nodes are:"
+  list_nodes | sed 's/^/    /'
+  exit 1
+fi
+
+USERNAME=admin
+# SSH to the node from the eda-toolbox pod
+kubectl -n ${CORE_NS} exec -it \
+  $(kubectl get -n ${CORE_NS} pods \
+  -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
+  -- ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+  -p 22 "${USERNAME}@${NODE_ADDR}" || {
+  echo "Failed to SSH into node ${NODE_NAME} at ${NODE_ADDR}"
+  exit 1
+}

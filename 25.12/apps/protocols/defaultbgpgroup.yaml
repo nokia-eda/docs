@@ -1,0 +1,15 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: DefaultBGPGroup
+metadata:
+  name: example-default-group
+  namespace: eda
+spec:
+  description: "Default VRF BGP group"
+  localAS:
+    autonomousSystem: 65001
+  timers:
+    holdTime: 90
+    keepAlive: 30
+  ipv4Unicast:
+    enabled: true
+    maxReceivedRoutes: 1000

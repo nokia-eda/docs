@@ -1,0 +1,20 @@
+apiVersion: prom.eda.nokia.com/v1alpha1
+kind: Export
+metadata:
+  name: mapped-values-metric
+  namespace: eda-system
+spec:
+  exports:
+    - path: .namespace.node.srl.interface
+      fields:
+        - admin-state
+        - oper-state
+      mappings:
+        - source: "up"
+          destination: "2"
+        - source: "down"
+          destination: "1"
+        - source: "enable"
+          destination: "2"
+        - source: "disable"
+          destination: "1"

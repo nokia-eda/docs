@@ -1,0 +1,16 @@
+apiVersion: config.eda.nokia.com/v1
+kind: ConnectControllerConfig
+metadata:
+  labels:
+    app.kubernetes.io/name: operator
+  name: connectcontrollerconfig
+  namespace: <eda-connect-k8s> # Refers to the namespace where the OLM operator was installed
+spec:
+  connectPluginName: k8s-controller-plugin
+  controllerImagePullSecret: eda-k8s-image-secret # Refers to the controller container image registry secret to be used
+  heartBeat: "10"
+  logLevel: info
+  edaNamespace: <eda-fabric-namespace> # The namespace in EDA containing the fabric and resources, this will different from the eda-system namespace.
+  skipTLSVerify: False
+  tlsCertificateData:
+  tlsEnabled: True

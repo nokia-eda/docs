@@ -1,0 +1,17 @@
+apiVersion: protocols.eda.nokia.com/v1alpha1
+kind: RouteReflector
+metadata:
+  name: example-custom-rr
+  namespace: eda
+spec:
+  clusterID: "2.2.2.2"
+  bgpGroup: "custom-rr-group"
+  interface: "customer-1"
+  interfaceKind: "ROUTEDINTERFACE"
+  ipv4ClientSelector:
+    - "role=customer-edge"
+  ipv6ClientSelector:
+    - "role=customer-edge"
+  clientIPs:
+    - "172.16.1.1"
+    - "172.16.1.2"

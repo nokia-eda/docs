@@ -1,0 +1,13 @@
+apiVersion: nutanix.eda.nokia.com/v1
+kind: NutanixPluginInstance
+metadata:
+  name: my-nutanix-plugin # A unique name for the plugin resource
+  namespace: eda-system # The system namespace.
+spec:
+  pluginNamespace: eda # The namespace in the EDA deployment holding the fabric associated with this plugin
+  heartbeatInterval: 30
+  prismCentralHost: example-host # The IP address or FQDN of the Prism Central
+  prismCentralTlsVerify: true # To verify TLS of the Prism Central
+  prismCentralCertificate: "" # If the Prism Central certificate is self signed, add it here to be able to verify from the plugin
+  authSecretRef: my-nutanix-creds # Credentials are hosted in a separate Secret
+

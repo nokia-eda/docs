@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: eda-gw-https
+  namespace: eda-system
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - allowedRoutes:
+        namespaces:
+          from: Same
+      name: tls-gw
+      port: 8080
+      protocol: TLS
+      tls:
+        mode: Passthrough

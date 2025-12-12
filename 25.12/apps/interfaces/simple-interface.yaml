@@ -1,0 +1,15 @@
+apiVersion: interfaces.eda.nokia.com/v1alpha1
+kind: Interface
+metadata:
+  name: leaf1-ethernet-1-13
+  namespace: eda
+  labels:
+    eda.nokia.com/role: edge
+spec:
+  type: interface
+  description: "Customer facing interface"
+  enabled: true
+  mtu: 9000
+  members:
+    - node: leaf1
+      interface: ethernet-1-13

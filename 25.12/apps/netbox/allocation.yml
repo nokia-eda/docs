@@ -1,0 +1,11 @@
+apiVersion: netbox.eda.nokia.com/v1alpha1
+kind: Allocation
+metadata:
+  name: netbox-isl-pool
+  namespace: eda
+spec:
+  enabled: true
+  instance: netbox  # <-- Reference to the Instance resource
+  tags:
+    - eda-isl-pool  # <-- Must match tags on NetBox prefixes
+  type: subnet      # <-- One of: ip-address, subnet, ip-in-subnet

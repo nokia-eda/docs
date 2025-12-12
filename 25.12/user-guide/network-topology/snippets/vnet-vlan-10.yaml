@@ -1,0 +1,20 @@
+apiVersion: services.eda.nokia.com/v1
+kind: VirtualNetwork
+metadata:
+  name: demo-vnet-bd-vlan-10
+  namespace: eda
+spec:
+  bridgeDomains:
+    - name: vnet-demo-bd
+      spec:
+        eviPool: evi-pool
+        tunnelIndexPool: tunnel-index-pool
+        type: EVPNVXLAN
+        vniPool: vni-pool
+  vlans:
+    - name: vnet-demo-vlan10
+      spec:
+        bridgeDomain: vnet-demo-bd
+        interfaceSelector:
+          - eda.nokia.com/role=edge
+        vlanID: "10"

@@ -1,0 +1,10 @@
+connectpluginname: openstack-plugin
+connectPassword: <SERVICE_ACCOUNT_TOKEN>
+connectUsername: openstack-plugin
+connectHost: https://api.eda.example.com:6443
+tlsenabled: true
+tlscertificatedata: ""
+skiptlsverify: false
+namespace: default
+heartbeat: 10
+

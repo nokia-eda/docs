@@ -1,0 +1,31 @@
+# https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoNode/v1@v24.12.1
+---
+apiVersion: core.eda.nokia.com/v1
+kind: TopoNode
+metadata:
+  name: clab-vlan-srl1
+  labels:
+    eda.nokia.com/security-profile: managed
+  namespace: eda
+spec:
+  nodeProfile: srlinux-clab-24.10.1
+  operatingSystem: srl
+  platform: 7220 IXR-D2L
+  version: 24.10.1
+  productionAddress:
+    ipv4: # IP address of the clab-vlan-srl1 node
+---
+apiVersion: core.eda.nokia.com/v1
+kind: TopoNode
+metadata:
+  name: clab-vlan-srl2
+  labels:
+    eda.nokia.com/security-profile: managed
+  namespace: eda
+spec:
+  nodeProfile: srlinux-clab-24.10.1
+  operatingSystem: srl
+  platform: 7220 IXR-D2L
+  version: 24.10.1
+  productionAddress:
+    ipv4: # IP address of the clab-vlan-srl2 node

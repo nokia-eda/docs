@@ -1,0 +1,8 @@
+apiVersion: notifiers.eda.nokia.com/v1
+kind: ClusterProvider
+metadata:
+  name: discord
+  namespace: eda-system
+spec:
+  enabled: true
+  uri: discord://discord.com/api/webhooks/webhookid/token

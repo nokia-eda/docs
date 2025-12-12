@@ -1,0 +1,13 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
+metadata:
+  name: connect-nokia
+  namespace: eda-system
+spec:
+  operation: install
+  apps:
+    - appId: connect.eda.nokia.com
+      catalog: eda-catalog-builtin-apps
+      version:
+        type: semver
+        value: v5.0.0
