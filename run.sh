@@ -107,7 +107,7 @@ function list-versions {
 # build-version 25.4 latest
 # this operation does not push the changes to the remote and only modifies the local repository.
 function build-version {
-  sudo chown -R $USER:$USER ./site ./cache
+  sudo chown -R $USER:$USER ./site ./.cache
   ${MIKE_CMD} deploy -b ${MIKE_BRANCH_NAME} --update-aliases "$@"
 
   # copy the 404 page to the root of the site
