@@ -32,7 +32,25 @@ There are two types of assets that need to be downloaded:
 
 3. Download the Assets Bundles.
 
-    The following command will download all Assets Bundles defined in the `bundles` folder and store them in the `eda-cargo` folder.
+    Container images used in EDA which are grouped by their function are called Assets Bundles. Users need to download these bundles to have all the necessary components available for the air-gapped installation.  
+
+    To optimize the download time and storage space, set the environment variables to skip downloading certain versions and/or types of assets. For example, consider the following set of environment variables and the inline explanations provided:
+
+    ```bash
+    export SKIP_APPS_25_8=1 #(1)!
+    export SKIP_APPS_25_4=1
+    export SKIP_APPS_24_12=1
+    export SKIP_APPS_24_8=1
+    export SKIP_APPS_24_4=1
+    export SKIP_APPS_CONNECT=1 #(2)!
+    ```
+
+    1. Skip EDA applications for older EDA versions.
+    2. Skip EDA Connect related assets if EDA Cloud Connect is not in use.
+
+    > Instead of downloading all bundles, individual bundles can also be downloaded as described in the section below.
+
+    The following command will download all Assets Bundles defined in the `bundles` folder respecting the environment variables set above and store them in the `eda-cargo` folder.
 
     ```bash
     make -C bundles/ save-all-bundles

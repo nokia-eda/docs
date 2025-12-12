@@ -360,9 +360,9 @@ make -C kpt/ eda-setup-shipyard
 
 ## Uploading the Assets to the Assets VM
 
-Now that the Assets VM and its services are up and running, upload all the assets that you downloaded previously to the Assets VM.
+Now that the Assets VM and its services are up and running, upload all the assets that you [downloaded previously](downloading-the-assets.md#downloading-the-assets-bundles) to the Assets VM.
 
-Set the `EDA_CORE_VERSION` environment variable in your shell to the target EDA release version as was done during the [downloading assets step](downloading-the-assets.md#downloading-the-assets-bundles). This will ensure that the correct version of the cache and assets is uploaded to the Assets VM.
+Set the `EDA_CORE_VERSION`[^1] environment variable (and any `SKIP_...` environment variables you used when downloading the assets)[^1] in your shell. This will ensure that the correct version of the cache and assets is uploaded to the Assets VM.
 
 ```bash
 export EDA_CORE_VERSION=-{{ eda_version }}-
@@ -383,8 +383,10 @@ make -C bundles/ load-all-bundles \
     type: subtle-note
 
 1. Make sure to replace the `ASSET_HOST` IP with the IP of your Asset VM.
-1. The username and passwords will be configurable in the near future. The `eda` username and password are used by default.
+2. The username and passwords will be configurable in the near future. The `eda` username and password are used by default.
 
 ///
 
 Once all uploads have finished successfully, the Assets VM is ready to support the installation of the EDA Talos Kubernetes cluster in the Air-gapped environment.
+
+[^1]: If you used `SKIP_...` environment variables when [downloading the assets](downloading-the-assets.md#downloading-the-assets-bundles), make sure to set the same variables when uploading the assets to the Assets VM.
