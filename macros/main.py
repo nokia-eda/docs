@@ -85,10 +85,27 @@ def define_env(env):
 
     @env.macro
     def image(
-        url="", light_url="", dark_url="", padding=0, border_radius=0.0, shadow=False
+        url="",
+        light_url="",
+        dark_url="",
+        padding=0,
+        border_radius=0.0,
+        shadow=False,
+        center=True,
+        title="",
     ):
         """
-        Image macro with dot background
+        Image macro with dot background.
+
+        Parameters:
+            url (str): Image URL. Used for both light and dark modes if no specific URLs are provided.
+            light_url (str): Image URL for light mode.
+            dark_url (str): Image URL for dark mode.
+            padding (int): Padding around the image (in px). Default is 0.
+            border_radius (float): Border radius for the image (in rem). Default is 0.0.
+            shadow (bool): Whether to apply a shadow to the image. Default is False.
+            center (bool): Whether to center the image in the figure. Default is True.
+            title (str): Optional caption/title for the image. Default is "".
         """
         # if shadow is True, apply the .img-shadow class to the image
         if shadow:
@@ -106,8 +123,27 @@ def define_env(env):
     <img src="{dark_url}#only-dark" class="{img_class}" alt="">
     """
 
-        image_tmpl = f"""
-<div class="polka" style="padding: {padding}px; border-radius: {border_radius}rem; position: relative; display: inline-block;">
+        # Compute base style
+        base_style = f"border-radius: {border_radius}rem; position: relative; display: inline-block;"
+        if center:
+            center_style = "text-align: center; width: 100%;"
+        else:
+            center_style = ""
+        div_style = f"padding: {padding}px; {base_style} {center_style}".strip()
+        # remove bottom padding when figure is used since figcaption adds its own spacing
+        figure_style = f"padding: {padding}px {padding}px 0 {padding}px; {base_style} {center_style}".strip()
+
+        # if title is provided, use figure element with figcaption inside the polka div
+        if title:
+            image_tmpl = f"""
+<figure class="polka" style="{figure_style}">
+    {img_src}
+    <figcaption>{title}</figcaption>
+</figure>
+"""
+        else:
+            image_tmpl = f"""
+<div class="polka" style="{div_style}">
     {img_src}
 </div>
 """

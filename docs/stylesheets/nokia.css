@@ -466,11 +466,16 @@ div.highlight:hover .md-code__nav:hover {
 }
 
 /* polka dot background */
-.polka {
+.polka,
+figure.polka {
   background-image:
     radial-gradient(var(--md-steps-border-color) 10%, transparent 10%);
   background-position: 0px 0px;
   background-size: 10px 10px;
+}
+
+figure.polka {
+  margin: 0;
 }
 
 /* quote styling */

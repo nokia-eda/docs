@@ -1,6 +1,6 @@
 # Application Components
 
-As was covered in the [Project Layout](project-layout.md) section, each app has its own directory in the EDA project. Taking the [quickstart app](quick-start.md) as a starting point, your project directory will contain the `banners` directory that has the following structure.
+Each application in EDA is its own directory in the EDA project repository[^1]. Taking the [quickstart app](quick-start.md) as a starting point, a project contains the `banners` directory that has the following structure.
 
 ```title="contents of the banners app directory"
 .
@@ -61,3 +61,5 @@ Whenever a user adds a new application component with the `edabuilder` CLI, the 
 ## Other resources
 
 Some applications may include more specialized components, but these are less common and the majority of applications will consist of the components described above.
+
+[^1]: The layout of the project is covered in the [Project Layout](project-layout.md) section.

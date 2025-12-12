@@ -87,15 +87,15 @@ nav:
           - Quick start: development/apps/quick-start.md
           - Project Layout: development/apps/project-layout.md
           - Components: development/apps/components.md
-          - Build and Publish: development/apps/build-publish.md
-          - Scripts:
+          - Script Apps:
               - development/apps/scripts/index.md
               - Config: development/apps/scripts/config.md
               - State: development/apps/scripts/state.md
               - Debugging: development/apps/scripts/debugging.md
-              - Banner Script Walkthrough: development/apps/scripts/banner-script.md
+              - Basic App Walkthrough: development/apps/scripts/banner-script.md
+              - Building Abstractions: development/apps/scripts/building-abstractions.md
+          - Build and Publish: development/apps/build-publish.md
           - EDABuilder: development/apps/edabuilder.md
-          - Terminology: development/apps/terminology.md
           # - Workflows: development/apps/workflows.md
           # - Handling versions: development/apps/versions.md
       - API:

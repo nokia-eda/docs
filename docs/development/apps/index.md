@@ -2,7 +2,7 @@
 
 EDA is all about extensibility, and the packaging of this extensibility is referred to as an "app".
 
-> If you need a refresher on what an app is, check out [apps](../../apps/app-store.md).
+> For a refresher on what an app is, check out [apps](../../apps/app-store.md).
 
 With base configuration your EDA cluster points to an app catalog supplied by Nokia. This gives you access to official Nokia-supported applications, including upgrades via the EDA store. If you're anything like us you have your own opinions about how you'd like to solve your automation problems! This is where building your own app comes in.
 
@@ -48,4 +48,4 @@ In its more advanced form you may:
 
 [:octicons-arrow-right-24: Setup the dev environment](setup-env.md)
 
-[^1]: [MicroPython](https://micropython.org/) to be precise. We will explain why MicroPython in later sections.
+[^1]: [MicroPython](https://micropython.org/) to be precise. The considerably faster cold startup times and lower memory footprint make it ideal for the event-driven nature of EDA.

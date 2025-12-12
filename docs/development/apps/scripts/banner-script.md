@@ -1,6 +1,6 @@
 # Banner Script Walkthrough
 
-To better understand how script apps work, we invite you to walk through the demo Banner application that is bundled with EDABuilder CLI and was part of the [quickstart guide](../quick-start.md).
+To better understand how script apps work, we invite you to walk through the demo Banner application that is bundled with EDABuilder CLI and was part of the [app development quickstart guide](../quick-start.md).
 
 The Banner app has a very simple purpose: to provision a login banner on the supported targets by submitting an abstracted input. This is the task of the configuration component of the app.  
 The state script of the Banner app simply lists the nodes that the Banner has been provisioned to.
