@@ -1,6 +1,6 @@
 # Ansible Collections for Nokia EDA
 
-<small>[:octicons-link-external-16: <https://ansible.eda.dev>](https://ansible.eda.dev) · [:octicons-link-external-16: Nokia EDA Collection in Galaxy][galaxy-namespace] · ==**Beta release**==</small>
+<small>[:octicons-link-external-16: <https://ansible.eda.dev>](https://ansible.eda.dev) · [:octicons-link-external-16: Nokia EDA Collection in Galaxy][galaxy-namespace]</small>
 
 [Ansible](https://docs.ansible.com) is an open-source automation platform that allows you to automate tasks across a wide range of IT environments. It uses a simple, human-readable language to describe automation tasks, making it accessible to both developers and operations teams.  
 In order to extend the platform and meet specific needs and target environments, Ansible allows users to create custom modules and plugins that are packaged as [Ansible collections](https://docs.ansible.com/ansible/latest/collections_guide/index.html) and hosted at [Ansible Galaxy](https://galaxy.ansible.com/ui/).

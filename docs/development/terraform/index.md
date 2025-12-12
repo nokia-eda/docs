@@ -1,6 +1,6 @@
 # Terraform
 
-<small>[:octicons-link-external-16: Nokia EDA Providers Reference][tf-registry-namespace] · ==**Beta release**==</small>
+<small>[:octicons-link-external-16: Nokia EDA Providers Reference][tf-registry-namespace]</small>
 
 [Terraform](https://www.terraform.io/) is open-source infrastructure as code software that allows users to define resources in human-readable configuration files, which can be versioned, reused, and shared.
 
@@ -35,11 +35,11 @@ This means automation users should focus on the API version supported, rather th
 
 This is the version of the Terraform provider itself, which is independent of the Application API version. It follows [Semantic Versioning](https://semver.org/) principles and indicates changes to the provider's functionality, compatibility, documentation, and more. The provider version is visible in the registry UI and in the Git repository where the provider's code is stored.
 
-> In summary, for the provider with the name `interfaces-v1alpha1` and version `0.1.0`:
+> In summary, for the provider with the name `interfaces-v1alpha1` and version `1.0.0`:
 >
 > * the application this provider is built for is `Interfaces`
 > * the Interfaces API version is `v1alpha1`
-> * and the provider version is `0.1.0`.
+> * and the provider version is `1.0.0`.
 
 ## Installation
 
@@ -50,7 +50,7 @@ terraform {
   required_providers {
     interfaces-v1alpha1 = {
       source  = "nokia-eda/interfaces-v1alpha1"
-      version = "0.0.5"
+      version = "1.0.0"
     }
   }
 }
@@ -107,7 +107,7 @@ terraform {
   required_providers {
     interfaces-v1alpha1 = {
       source  = "nokia-eda/interfaces-v1alpha1"
-      version = "0.1.0"
+      version = "1.0.0"
     }
   }
 }
@@ -131,21 +131,21 @@ Terraform, like other non-browser-based API clients, uses the [Resource Owner Pa
 
 <h5> EDA Client ID </h5>
 
-The `eda_client_id` is an identifier for your API client. It is used to authenticate your requests to the EDA API. By default EDA comes with a pre-created client id of `eda`. Administrators can create other clients.
+The `client_id` is an identifier for the EDA API client. It is used to authenticate your requests to the EDA API. By default EDA comes with a pre-created client id of `eda`. Administrators can create other clients.
 
 Default value: `eda`.
 
 <h5> EDA Client Secret </h5>
 
-The secret that is associated with the `eda_client_id`. Stored in Keycloak and can be retrieved by administrators and provided to the users of the API. Refer to the API documentation to see how to fetch the `eda_client_secret` using [Keycloak UI](../api/index.md#getting-the-client_secret).
+The `client_secret` is the secret that is associated with the `client_id`. Stored in Keycloak and can be retrieved by administrators and provided to the users of the API. Refer to the API documentation to see how to fetch the `client_secret` using [Keycloak UI](../api/index.md#getting-the-client_secret).
 
 /// warning
-If you omit the `eda_client_secret` parameter, the provider will try to fetch the secret by authenticating with the Keycloak service using `kc_*` variables that are set to their default values. While this might be tempting to use, this method is not recommended and should not be used in production.
+If you omit the `client_secret` parameter, the provider will try to fetch the secret by authenticating with the Keycloak service using `keycloak_*` variables that are set to their default values. While this might be tempting to use, this method is not recommended and should not be used in production.
 ///
 
 <h5> EDA Username and Password </h5>
 
-The API client - Terraform - should have credentials of the EDA user it authenticates as. This is done by providing the `eda_username` and `eda_password` parameters in the provider configuration.
+The API client - Terraform - should have credentials of the EDA user it authenticates as. This is done by providing the `username` and `password` parameters in the provider configuration.
 
 Default value for both is `admin` if not set.
 
@@ -161,11 +161,11 @@ With the mandatory options set, the provider configuration takes the following f
 
 ```hcl title="snippet from providers.tf"
 provider "interfaces-v1alpha1" {
-  base_url          = "https://eda-demo.test.io:9443"
-  eda_client_id     = "eda" # default value, can be omitted if not changed
-  eda_client_secret = "your_client_secret"
-  eda_username      = "your_username"
-  eda_password      = "your_password"
+  base_url      = "https://eda-demo.test.io:9443"
+  client_id     = "eda" # default value, can be omitted if not changed
+  client_secret = "your_client_secret"
+  username      = "your_username"
+  password      = "your_password"
 }
 ```
 
@@ -173,23 +173,23 @@ provider "interfaces-v1alpha1" {
 
 All configuration variables that can be provided to the EDA providers have a matching environment variable. The below table summarizes all available options:
 
-| TF variable         | OS env variable     | Default     | Description         |
-| ------------------- | ------------------- | ----------- | ------------------- |
-| base_url            | EDA_BASE_URL        |             | Base URL            |
-| kc_username         | KC_USERNAME         | "admin"     | Keycloak Username   |
-| kc_password         | KC_PASSWORD         | "admin"     | Keycloak Password   |
-| kc_realm            | KC_REALM            | "master"    | Keycloak Realm      |
-| kc_client_id        | KC_CLIENT_ID        | "admin-cli" | Keycloak Client ID  |
-| eda_username        | EDA_USERNAME        | "admin"     | EDA Username        |
-| eda_password        | EDA_PASSWORD        | "admin"     | EDA Password        |
-| eda_realm           | EDA_REALM           | "eda"       | EDA Realm           |
-| eda_client_id       | EDA_CLIENT_ID       | "eda"       | EDA Client ID       |
-| eda_client_secret   | EDA_CLIENT_SECRET   |             | EDA Client Secret   |
-| tls_skip_verify     | TLS_SKIP_VERIFY     | false       | TLS skip verify     |
-| rest_debug          | REST_DEBUG          | false       | REST Debug          |
-| rest_timeout        | REST_TIMEOUT        | "15s"       | REST Timeout        |
-| rest_retries        | REST_RETRIES        | 3           | REST Retries        |
-| rest_retry_interval | REST_RETRY_INTERVAL | "5s"        | REST Retry Interval |
+| TF variable              | OS env variable          | Default     | Description              |
+| ------------------------ | ------------------------ | ----------- | ------------------------ |
+| base_url                 | BASE_URL                 |             | Base URL                 |
+| keycloak_master_realm    | KEYCLOAK_MASTER_REALM    | "master"    | Keycloak Master Realm    |
+| keycloak_admin_client_id | KEYCLOAK_ADMIN_CLIENT_ID | "admin-cli" | Keycloak Admin Client ID |
+| keycloak_admin_username  | KEYCLOAK_ADMIN_USERNAME  | "admin"     | Keycloak Admin Username  |
+| keycloak_admin_password  | KEYCLOAK_ADMIN_PASSWORD  | "admin"     | Keycloak Admin Password  |
+| client_id                | CLIENT_ID                | "eda"       | EDA Client ID            |
+| client_secret            | CLIENT_SECRET            |             | EDA Client Secret        |
+| realm                    | REALM                    | "eda"       | EDA Realm                |
+| username                 | USERNAME                 | "admin"     | EDA Username             |
+| password                 | PASSWORD                 | "admin"     | EDA Password             |
+| tls_skip_verify          | TLS_SKIP_VERIFY          | false       | TLS skip verify          |
+| rest_debug               | REST_DEBUG               | false       | REST Debug               |
+| rest_timeout             | REST_TIMEOUT             | "15s"       | REST Timeout             |
+| rest_retries             | REST_RETRIES             | 3           | REST Retries             |
+| rest_retry_interval      | REST_RETRY_INTERVAL      | "5s"        | REST Retry Interval      |
 
 ## Bulk Installation
 
@@ -336,9 +336,7 @@ After the successful import, you can remove the `import` blocks.
 
 ## Issues and Limitations
 
-1. Workflows cannot be triggered via Terraform.
-2. Transaction-based operations are not supported yet. These operations, where resources are jointly committed via the Transaction API, are instead managed via REST API calls to the respective application endpoints, not through the Transaction API.
-3. Direct calls to application endpoints in the current release do not store node/resource diffs. Node diffs are only stored when using the Transaction API.
+1. Transaction-based operations are not supported yet. These operations, where resources are jointly committed via the Transaction API, are instead managed via REST API calls to the respective application endpoints, not through the Transaction API.
 
 [^1]: Such as interfaces, fabrics, virtual networks and so on.
 [^2]: Often the providers configuration goes into the `providers.tf` file as per the [style guide](https://developer.hashicorp.com/terraform/language/style#file-names).
