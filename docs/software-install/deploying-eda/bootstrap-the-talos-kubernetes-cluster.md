@@ -96,9 +96,10 @@ EDA uses Rook Ceph as a secure, distributed, and redundant data store for all th
 
     /// tab | Internet based installation
 
-    ```
+    ```bash
     helm install \
       --namespace rook-ceph \
+      --version -{{ rook_ceph_version }}- \
       --set operatorNamespace=rook-ceph \
       -f path/to/rook-ceph-cluster-values.yaml \
       rook-ceph-cluster rook-release/rook-ceph-cluster
@@ -109,12 +110,13 @@ EDA uses Rook Ceph as a secure, distributed, and redundant data store for all th
     /// tab | Air-gapped installation
 
     ```bash
-    helm install \ 
-      --namespace rook-ceph \ 
-      --set operatorNamespace=rook-ceph \ 
-      -f path/to/rook-ceph-cluster-values.yaml \ 
+    helm install \
+      --namespace rook-ceph \
+      --version -{{ rook_ceph_version }}- \
+      --set operatorNamespace=rook-ceph \
+      -f path/to/rook-ceph-cluster-values.yaml \
       rook-ceph-cluster \
-      http://eda:eda@<ASSETS VM IP>/artifacts/rook-ceph-cluster-v1.15.0.tgz
+      http://eda:eda@<ASSETS VM IP>/artifacts/rook-ceph-cluster--{{ rook_ceph_version }}-.tgz
     ```
 
     ///
