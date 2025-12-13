@@ -60,26 +60,26 @@ nav:
       - Troubleshooting: connect/troubleshooting.md
       - Audit: connect/audit.md
       - Nutanix:
-        - Nutanix Plugin: connect/nutanix-plugin.md
-        - Installation: connect/nutanix-plugin-installation.md
+          - Nutanix Plugin: connect/nutanix-plugin.md
+          - Installation: connect/nutanix-plugin-installation.md
       - Kubernetes:
-        - Kubernetes Plugin: connect/kubernetes-plugin.md
-        - Installation:
-          - Overview: connect/kubernetes-plugin-installation.md
-          - Helm Installation: connect/kubernetes-plugin-helm-installation.md
-          - OLM Installation: connect/kubernetes-plugin-olm-installation.md
+          - Kubernetes Plugin: connect/kubernetes-plugin.md
+          - Installation:
+              - Overview: connect/kubernetes-plugin-installation.md
+              - Helm Installation: connect/kubernetes-plugin-helm-installation.md
+              - OLM Installation: connect/kubernetes-plugin-olm-installation.md
       - OpenStack:
-            - OpenStack Plugin: connect/openstack-plugin.md
-            - Installation:
+          - OpenStack Plugin: connect/openstack-plugin.md
+          - Installation:
               - Overview: connect/openstack-plugin-installation.md
               - RHOSP 17.1 Installation: connect/openstack-plugin-rhosp-installation.md
       - VMware:
           - vSphere:
-            - VMware vSphere Plugin: connect/vmware-plugin.md
-            - Installation: connect/vmware-plugin-installation.md
+              - VMware vSphere Plugin: connect/vmware-plugin.md
+              - Installation: connect/vmware-plugin-installation.md
           - NSX:
-            - VMware NSX Plugin: connect/vmware-nsx.md
-            - Installation: connect/vmware-nsx-installation.md
+              - VMware NSX Plugin: connect/vmware-nsx.md
+              - Installation: connect/vmware-nsx-installation.md
   - Development:
       - Applications:
           - There's an app for that: development/apps/index.md
@@ -231,6 +231,7 @@ plugins:
 extra:
   eda_version: "25.12.1" # current EDA version (provided without the v prefix)
   srl_version: "25.10.1" # latest SRL version for the current EDA version
+  rook_ceph_version: "v1.18.7"
   social:
     - icon: nokia/N-white
       link: https://www.nokia.com/data-center-networks/data-center-fabric/event-driven-automation/

@@ -1,3 +1,4 @@
+
 # Bootstrap the Talos Kubernetes cluster
 
 When all the virtual machines are deployed and running, you can set up the Kubernetes cluster on the virtual machines using Talos.
@@ -68,11 +69,12 @@ EDA uses Rook Ceph as a secure, distributed, and redundant data store for all th
 
     /// tab | Internet based installation
 
-    ```
+    ```bash
     helm install --create-namespace \
       --namespace rook-ceph \
+      --version -{{ rook_ceph_version }}- \
       -f path/to/rook-ceph-operator-values.yaml \
-      rook-ceph rook-release/rook-ceph  
+      rook-ceph rook-release/rook-ceph
     ```
 
     ///
@@ -82,10 +84,10 @@ EDA uses Rook Ceph as a secure, distributed, and redundant data store for all th
     ```bash
     helm install --create-namespace \
       --namespace rook-ceph \
-      --version v1.15.0 \
+      --version -{{ rook_ceph_version }}- \
       -f path/to/rook-ceph-operator-values.yaml \
       rook-ceph \
-      http://eda:eda@<ASSETS VM IP>/artifacts/rook-ceph-v1.15.0.tgz
+      http://eda:eda@<ASSETS VM IP>/artifacts/rook-ceph--{{ rook_ceph_version }}-.tgz
     ```
 
     ///
