@@ -2,358 +2,374 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.eda.dev/25.12/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/app-store/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/fabric/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/interfaces/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/kafka-exporter/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/netbox/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/notifier/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/prometheus-exporter/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/protocols/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/remote-write/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/apps/virtualnetwork/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/subscribe/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/tags/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/the-beginning-of-an-era-eda/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/try-eda-like-a-pro/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/eda-254/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/150-minutes-of-eda/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/audit/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/cloud-connect-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/cloud-connect/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/kubernetes-plugin-helm-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/kubernetes-plugin-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/kubernetes-plugin-olm-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/kubernetes-plugin/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/nutanix-plugin-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/nutanix-plugin/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/openstack-plugin-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/openstack-plugin-rhosp-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/openstack-plugin/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/troubleshooting/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/vmware-nsx-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/vmware-nsx/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/vmware-plugin-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/connect/vmware-plugin/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/custom-catalog/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/custom-registry/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/ansible/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/api/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/build-publish/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/components/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/edabuilder/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/project-layout/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/quick-start/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/setup-env/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/versions/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/workflows/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/scripts/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/scripts/banner-script/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/scripts/building-abstractions/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/scripts/config/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/scripts/debugging/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/apps/scripts/state/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/development/terraform/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/digital-twin/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/getting-started/installation-process/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/getting-started/reset/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/getting-started/try-eda/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/getting-started/units-of-automation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/getting-started/verification/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/getting-started/virtual-network/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/exposing-ui-api/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/preparing-for-installation/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/air-gapped/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/air-gapped/deploying-the-assets-vm/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/air-gapped/downloading-the-assets/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/air-gapped/preparing-the-air-gapped-environment/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/air-gapped/preparing-the-assets-vm/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/deploying-eda/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/deploying-eda/bootstrap-the-talos-kubernetes-cluster/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/deploying-eda/installing-the-eda-application/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/deploying-eda/setting-up-the-eda-virtual-machine-nodes/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/software-install/deploying-eda/setters-reference/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/software-install/deploying-eda/setters-reference/eda-external-packages/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/software-install/deploying-eda/setters-reference/eda-kpt-base/</loc>
+         <lastmod>2025-12-19</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/software-install/deploying-eda/setters-reference/eda-kpt-playground/</loc>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/non-production/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/non-production/kind/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/non-production/macos/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/non-production/on-prem-cluster/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/non-production/wsl/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/upgrades/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/user-guide/access-control/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/user-guide/allocation-pools/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/user-guide/containerlab-integration/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/user-guide/network-topology/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/user-guide/queries/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/user-guide/transactions/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/user-guide/using-the-clis/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/author/rdodin/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/blog/author/bwallis/</loc>
-         <lastmod>2025-12-13</lastmod>
+         <lastmod>2025-12-19</lastmod>
     </url>
 </urlset>
