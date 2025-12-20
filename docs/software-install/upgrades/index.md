@@ -2,12 +2,14 @@
 
 Assuming you have a working EDA cluster the upgrade procedure will consist of the following steps:
 
-1. Backup your existing cluster.
-2. Update the [playground][playground] repository.
-3. Uninstall the existing version of EDA.
-4. Install the new EDA `kpt` package (on both active and standby members if running geo redundant).
-5. Restore your backup.
-6. Upgrade your applications.
+1. Pause NPP interactions.
+2. Backup your existing cluster.
+3. Update the [playground][playground] repository.
+4. Uninstall the existing version of EDA.
+5. Install the new EDA `kpt` package (on both active and standby members if running geo redundant).
+6. Restore your backup.
+7. Upgrade your applications.
+8. Resume NPP interactions.
 
 /// admonition | Nuances for Air-gapped and Geo-redundant clusters
     type: info
@@ -18,9 +20,9 @@ In geo redundant clusters, cluster members cannot run different versions. Theref
 
 /// admonition | EDA upgrade procedure scope
     type: subtle-note
-This is the Nokia EDA software upgrade procedure, it does not cover upgrading Talos Linux or Kubernetes.
+This is the Nokia EDA software upgrade procedure, it does not cover upgrading Talos Linux or Kubernetes. Nokia EDA does not require upgrading Talos or Kubernetes for every EDA version upgrade, unless explicitly stated in the release notes.
 
-To upgrade Talos and Kubernetes perform **one of** the following:
+In case Talos and/or Kubernetes upgrade is desired perform **one of** the following:
 /// tab | Install a new EDA cluster
 When running EDA cluster on virtual machines it might be easier to perform a new installation with the desired Talos and Kubernetes versions and restore your existing cluster backup into the new cluster:
 
@@ -34,33 +36,64 @@ Follow the respective [Talos Linux upgrade documentation](https://docs.siderolab
 ///
 ///
 
-## Backing up your cluster
+## Pausing NPP interactions
 
-Backing up your existing cluster is performed using the [`edactl` CLI tool](../../user-guide/using-the-clis.md#edactl):
+Prior to taking a backup of your cluster, place all `TopoNode` resources into `emulate` mode to avoid any ongoing interactions with the network devices during the upgrade process.
+
+In this mode, EDA does not interact with target devices, effectively pausing the cluster's interaction with your infrastructure. You can still interact with EDA and the `TopoNode` resources; changes are pushed upon switching back to `normal` mode.
+
+To set `emulate` mode in bulk, run the script from the [playground](https://github.com/nokia-eda/playground) repo directory on a machine where you have [`kubectl`](../../user-guide/using-the-clis.md#kubectl) configured with the access to your cluster:
 
 ```{.shell .no-select}
-edactl platform backup
+make set-npp-mode-emulate
 ```
 
-<div class="embed-result highlight">
+After the script has been run, verify that the `TopoNode` resources are in `emulate` mode:
+
+```{.shell .no-select}
+kubectl get toponode -A \
+-o custom-columns='NAMESPACE:.metadata.namespace,NAME:.metadata.name,MODE:.spec.npp.mode'
+```
+
+<div class="embed-result">
 ```{.shell .no-select .no-copy}
-Platform backup done at eda-backup-engine-config-2025-04-22_13-51-50.tar.gz
+NAMESPACE       NAME     MODE
+my-other-ns     leaf1    emulate
+my-other-ns     leaf2    emulate
+my-other-ns     leaf3    emulate
+my-other-ns     leaf4    emulate
+my-other-ns     spine1   emulate
+my-other-ns     spine2   emulate
+eda             leaf1    emulate
+eda             leaf2    emulate
+eda             spine1   emulate
 ```
 </div>
 
-This will create a backup in a gzipped tarball format in the toolbox pod. The backup archive contains all the necessary information to restore your cluster.
+## Backing up your cluster
 
-Copy this backup outside of your `eda-toolbox` pod - as this pod is destroyed and recreated during the upgrade. Replace the file name with the one from the `edactl platform backup` command output and run:
+Backing up your existing cluster is performed using the `collect-backup` target provided in the [`Makefile`](https://github.com/nokia-eda/playground/blob/main/Makefile) of the playground repository.
 
 ```{.shell .no-select}
-toolboxpod=$(kubectl -n eda-system get pods \
--l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}")
-
-kubectl cp eda-system/$toolboxpod:/eda/eda-backup-engine-config-2025-04-22_13-51-50.tar.gz \
-    /tmp/eda-backup.tar.gz
+make collect-backup
 ```
 
-The backup file will be copied to the `/tmp/eda-backup.tar.gz` file on your system.
+<div class="embed-result">
+```{.shell .no-select .no-copy}
+[ INFO ] Starting backup
+Platform backup done at /tmp/eda-platform-backup-2025-12-18-21-37-42.tar.gz
+[  OK  ] Collected backup
+[ INFO ] Transferring to host /tmp/eda-support/logs-2025-12-18/eda-platform-backup-2025-12-18-21-37-42.tar.gz
+tar: Removing leading `/' from member names
+[  OK  ] Transferred to /tmp/eda-support/logs-2025-12-18/eda-platform-backup-2025-12-18-21-37-42.tar.gz
+```
+</div>
+
+This will create a timestamped backup archive in the toolbox pod and copy it to the system where make target was run in the `/tmp/eda-support/logs-<date>` directory. The backup archive contains all the necessary information to restore your cluster.
+
+/// warning | Testing the backup
+It is highly recommended to test the backup by restoring it in a test cluster before proceeding with the upgrade of your production cluster.
+///
 
 ## Updating playground repository
 
@@ -70,7 +103,7 @@ The workflow to upgrade EDA slightly differs depending on whether you have the o
 
 /// tab | Playground repository present
 
-If you have an existing [playground repository][playground] ensure it is up to date by running:
+If you have an existing [playground repository][playground], ensure it is up to date by running:
 
 ```bash
 git pull --rebase --autostash -v
@@ -139,7 +172,7 @@ Ensure the package inventory is in sync with your existing cluster:
 make cluster-restore-inventory
 ```
 
-## Uninstalling EDA core components
+## Uninstalling EDA components
 
 The existing EDA core components must be uninstalled, before installing the new version.
 
@@ -152,41 +185,6 @@ If you have a geo-redundant installation, on your active cluster member, update 
 Do not update the EngineConfig resource on standby members. Although stopped, if the standby members were to start, they must continue to look for the active member (and fail to do so) throughout the upgrade.
 ///
 
-### Pausing NPP interactions
-
-Place your `TopoNode` resources into `emulate` mode by setting the resource's `.spec.npp.mode` from `normal` to `emulate`.
-
-* In this mode, EDA does not interact with targets, effectively pausing the cluster's interaction with your infrastructure.
-* You can still interact with EDA and the `TopoNode` resources; changes are pushed upon switching back to `normal` mode.
-
-You can do this with running the following script in on your machine where you have `kubectl` configured to access your cluster:
-
-```{.shell .no-select}
-make set-npp-mode-emulate
-```
-
-After patching script is run, verify that the `TopoNode` resources are in `emulate` mode:
-
-```{.shell .no-select}
-kubectl get toponode -A \
--o custom-columns='NAMESPACE:.metadata.namespace,NAME:.metadata.name,MODE:.spec.npp.mode'
-```
-
-<div class="embed-result">
-```{.shell .no-select .no-copy}
-NAMESPACE       NAME     MODE
-eda-telemetry   leaf1    emulate
-eda-telemetry   leaf2    emulate
-eda-telemetry   leaf3    emulate
-eda-telemetry   leaf4    emulate
-eda-telemetry   spine1   emulate
-eda-telemetry   spine2   emulate
-eda             leaf1    emulate
-eda             leaf2    emulate
-eda             spine1   emulate
-```
-</div>
-
 ### Stopping EDA platform
 
 To stop EDA components, enter the following command:
@@ -197,15 +195,20 @@ make eda-stop-core
 
 This command returns no output, but will result in all Pods packaged as part of `eda-kpt-base` being stopped and removed from the cluster.
 
-### Uninstalling EDA core
+/// details | Nuances for geo redundant clusters
+    type: info
+For geo redundant clusters, execute the `edactl platform stop` command on both active and standby members, via their respective `eda-toolbox` Pods.
+///
 
-Proceed with EDA core components uninstallation:
+### Uninstalling EDA core components
+
+Proceed with uninstalling EDA core components:
 
 ```bash
 make eda-uninstall-core
 ```
 
-Now you should see no core components in your cluster. Check with the following command[^1]:
+You should now see no core components in your cluster. Check with the following command[^1]:
 
 ```{.shell .no-select}
 kubectl get pods -n eda-system
@@ -224,10 +227,13 @@ trust-manager-69955c46b8-bghj6        1/1     Running   0          95m
 ```
 </div>
 
-/// details | Nuances for geo redundant clusters
-    type: info
-For geo redundant clusters, execute the `edactl platform stop` command on both active and standby members, via their respective `eda-toolbox` Pods.
-///
+### Stopping EDA git servers
+
+Continue with stopping EDA Git servers by scaling down the EDA Git deployments:
+
+```{.shell .no-select}
+make scale-down-git-servers
+```
 
 ## Updating EDA kpt packages
 
@@ -266,13 +272,15 @@ make install-external-packages eda-install-core eda-is-core-ready
 
 ## Restoring your backup
 
-Copy the backup file you extracted at the beginning of this procedure back into the new `eda-toolbox` pod:
+Copy the backup file you [collected at the beginning](#backing-up-your-cluster) of this procedure from your machine back into the new `eda-toolbox` pod:
 
 ```{.shell .no-select}
+backupfile=/tmp/eda-support/logs-2025-12-18/eda-platform-backup-2025-12-18-21-37-42.tar.gz
+
 toolboxpod=$(kubectl -n eda-system get pods \
 -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}")
 
-kubectl -n eda-system cp /tmp/eda-backup.tar.gz \
+kubectl -n eda-system cp $backupfile \
   $toolboxpod:/tmp/eda-backup.tar.gz
 ```
 
@@ -284,11 +292,41 @@ edactl platform restore /tmp/eda-backup.tar.gz
 
 ## Upgrading your applications
 
-A default install of EDA will install current-version applications, but your restore will have restored previous versions. These versions may be incompatible with the new version of EDA core, and must be upgraded immediately following the upgrade. The existing `Makefile` can be used to do so:
+Installing the new version of EDA will deploy application versions according to the installed release; however, the backup restore operation will have restored application versions as they were set in the original cluster. These versions may be incompatible with the new version of EDA core, and must be upgraded immediately following the EDA backup restore. The existing `Makefile` can be used to do so:
 
 ```{.shell .no-select}
 make eda-install-apps
 ```
+
+## Resume NPP interactions
+
+To resume NPP interactions, set all `TopoNode` resources back to the `normal` mode.
+
+```{.shell .no-select}
+make set-npp-mode-normal
+```
+
+After the script has been run, verify that the `TopoNode` resources are in `normal` mode:
+
+```{.shell .no-select}
+kubectl get toponode -A \
+-o custom-columns='NAMESPACE:.metadata.namespace,NAME:.metadata.name,MODE:.spec.npp.mode'
+```
+
+<div class="embed-result">
+```{.shell .no-select .no-copy}
+NAMESPACE       NAME     MODE
+my-other-ns     leaf1    normal
+my-other-ns     leaf2    normal
+my-other-ns     leaf3    normal
+my-other-ns     leaf4    normal
+my-other-ns     spine1   normal
+my-other-ns     spine2   normal
+eda             leaf1    normal
+eda             leaf2    normal
+eda             spine1   normal
+```
+</div>
 
 ## Verifying cluster health
 
