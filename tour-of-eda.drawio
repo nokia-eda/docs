@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:146.0) Gecko/20100101 Firefox/146.0" version="29.2.9">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:146.0) Gecko/20100101 Firefox/146.0" version="29.2.9" pages="2">
   <diagram name="[0] resource" id="tJziRCqHFudNewLzHaw2">
     <mxGraphModel dx="-6" dy="1096" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
       <root>
@@ -39,6 +39,110 @@
         <mxCell id="VyLH-RjyoORH8xBk3VA7-10" parent="qbExKh2GQzYHgT6TWYTY-1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#F9F9F9,#F9F9F9);fontSize=12;rotation=-90;" value="&lt;b&gt;Status&lt;/b&gt;" vertex="1">
           <mxGeometry height="30" width="108" x="932.5" y="880.24" as="geometry" />
         </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="[1] grouping" id="rnx6meT6pRdOoJqcpE9D">
+    <mxGraphModel dx="158" dy="1315" grid="0" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#333333" math="0" shadow="0" adaptiveColors="none">
+      <root>
+        <mxCell id="QZO2kj0FWcwdjQODwkPs-0" />
+        <mxCell id="QZO2kj0FWcwdjQODwkPs-1" parent="QZO2kj0FWcwdjQODwkPs-0" />
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-2">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=none;fillColor=light-dark(#757575,#757575);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="280" width="411" x="1211" y="259" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;div style=&quot;color: rgb(216, 222, 233); background-color: rgb(26, 29, 35); font-family: JetBrainsMono Nerd Font, JetBrainsMono, JetBrains Mono, Fira Code, Hasklig, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; font-size: 14px; line-height: 21px; white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(143, 188, 187);&quot;&gt;apiVersion&lt;/span&gt;&lt;span style=&quot;color: rgb(107, 120, 148);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(216, 222, 233);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(163, 190, 140);&quot;&gt;protocols.eda.nokia.com/v1alpha1&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(143, 188, 187);&quot;&gt;kind&lt;/span&gt;&lt;span style=&quot;color: rgb(107, 120, 148);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(216, 222, 233);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(163, 190, 140);&quot;&gt;BGPGroup&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" id="QZO2kj0FWcwdjQODwkPs-2">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="87" width="388" x="1221" y="317" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;div style=&quot;color: rgb(216, 222, 233); background-color: rgb(26, 29, 35); font-family: JetBrainsMono Nerd Font, JetBrainsMono, JetBrains Mono, Fira Code, Hasklig, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; font-size: 14px; line-height: 21px; white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(143, 188, 187);&quot;&gt;kind&lt;/span&gt;&lt;span style=&quot;color: rgb(107, 120, 148);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(216, 222, 233);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(163, 190, 140);&quot;&gt;BGPPeer&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" id="FeQKFn4M0KAB4V67Camn-0">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="49" width="177" x="1221" y="422" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;div style=&quot;color: rgb(216, 222, 233); background-color: rgb(26, 29, 35); font-family: JetBrainsMono Nerd Font, JetBrainsMono, JetBrains Mono, Fira Code, Hasklig, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; font-size: 14px; line-height: 21px; white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(143, 188, 187);&quot;&gt;kind&lt;/span&gt;&lt;span style=&quot;color: rgb(107, 120, 148);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(216, 222, 233);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(163, 190, 140);&quot;&gt;AggregateRoute&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" id="FeQKFn4M0KAB4V67Camn-1">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="49" width="191" x="1418" y="422" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="FeQKFn4M0KAB4V67Camn-3" parent="QZO2kj0FWcwdjQODwkPs-1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#F9F9F9,#F9F9F9);fontSize=21;" value="&lt;span style=&quot;color: light-dark(rgb(204, 204, 204), rgb(204, 204, 204));&quot;&gt;group:&lt;/span&gt;&lt;b&gt;&amp;nbsp;Protocols&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="108" x="1358.25" y="274" as="geometry" />
+        </mxCell>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-4">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1221" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-5">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1301" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-6">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1381.25" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-7">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1466.25" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-8">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1547" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-9">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=none;fillColor=light-dark(#757575,#757575);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="280" width="411" x="1684" y="259" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;div style=&quot;color: rgb(216, 222, 233); background-color: rgb(26, 29, 35); font-family: JetBrainsMono Nerd Font, JetBrainsMono, JetBrains Mono, Fira Code, Hasklig, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; font-size: 14px; line-height: 21px; white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(143, 188, 187);&quot;&gt;apiVersion&lt;/span&gt;&lt;span style=&quot;color: rgb(107, 120, 148);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(216, 222, 233);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(163, 190, 140);&quot;&gt;services.eda.nokia.com/v1alpha1&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(143, 188, 187);&quot;&gt;kind&lt;/span&gt;&lt;span style=&quot;color: rgb(107, 120, 148);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(216, 222, 233);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(163, 190, 140);&quot;&gt;BGPGroup&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" id="FeQKFn4M0KAB4V67Camn-10">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="87" width="388" x="1694" y="317" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;div style=&quot;color: rgb(216, 222, 233); background-color: rgb(26, 29, 35); font-family: JetBrainsMono Nerd Font, JetBrainsMono, JetBrains Mono, Fira Code, Hasklig, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; font-size: 14px; line-height: 21px; white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(143, 188, 187);&quot;&gt;kind&lt;/span&gt;&lt;span style=&quot;color: rgb(107, 120, 148);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(216, 222, 233);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(163, 190, 140);&quot;&gt;BrideDomain&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" id="FeQKFn4M0KAB4V67Camn-11">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="49" width="177" x="1694" y="422" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;div style=&quot;color: rgb(216, 222, 233); background-color: rgb(26, 29, 35); font-family: JetBrainsMono Nerd Font, JetBrainsMono, JetBrains Mono, Fira Code, Hasklig, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace, Menlo, Monaco, &amp;quot;Courier New&amp;quot;, monospace; font-weight: normal; font-size: 14px; line-height: 21px; white-space: pre;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: rgb(143, 188, 187);&quot;&gt;kind&lt;/span&gt;&lt;span style=&quot;color: rgb(107, 120, 148);&quot;&gt;:&lt;/span&gt;&lt;span style=&quot;color: rgb(216, 222, 233);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: rgb(163, 190, 140);&quot;&gt;RoutedInterface&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" id="FeQKFn4M0KAB4V67Camn-12">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="49" width="191" x="1891" y="422" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="FeQKFn4M0KAB4V67Camn-13" parent="QZO2kj0FWcwdjQODwkPs-1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=light-dark(#F9F9F9,#F9F9F9);fontSize=21;" value="&lt;span style=&quot;color: light-dark(rgb(204, 204, 204), rgb(204, 204, 204));&quot;&gt;group:&lt;/span&gt;&lt;b&gt;&amp;nbsp;Services&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="108" x="1831.25" y="274" as="geometry" />
+        </mxCell>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-14">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1694" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-15">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1774" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-16">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1854.25" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-17">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="1939.25" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" id="FeQKFn4M0KAB4V67Camn-18">
+          <mxCell parent="QZO2kj0FWcwdjQODwkPs-1" style="rounded=1;html=1;strokeColor=light-dark(#1a1d22, #5c79a3);fillColor=light-dark(#1B1D23,#1B1D23);arcSize=4;align=left;spacingLeft=10;fillStyle=solid;spacing=0;" vertex="1">
+            <mxGeometry height="34" width="62" x="2020" y="489" as="geometry" />
+          </mxCell>
+        </UserObject>
       </root>
     </mxGraphModel>
   </diagram>
