@@ -19,7 +19,9 @@ In addition to EDA-specific CLIs, users get to benefit from the vast ecosystem o
 
 ```bash title="Setting up <code>edactl</code> alias"
 alias edactl='kubectl -n eda-system exec -it $(kubectl -n eda-system get pods \
--l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
+-l eda.nokia.com/app=eda-toolbox \
+--field-selector=status.phase=Running \
+-o jsonpath="{.items[0].metadata.name}") \
 -- edactl'
 ```
 
@@ -70,7 +72,9 @@ It comes preinstalled in the `eda-toolbox` pod. You can either connect to the to
 
 ```bash title="e9s"
 alias e9s='kubectl -n eda-system exec -it $(kubectl -n eda-system get pods \
--l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
+-l eda.nokia.com/app=eda-toolbox \
+--field-selector=status.phase=Running \
+-o jsonpath="{.items[0].metadata.name}") \
 -- sh -c "TERM=xterm-256color e9s"'
 ```
 
@@ -127,17 +131,12 @@ sudo cp $(realpath ~/nokia-eda/playground/tools/helm) /usr/local/bin/helm
 
 [^1]:  
 <!-- --8<-- [start:open-toolbox] -->
-    You can log in to the `eda-toolbox` pod using the following command executed from the [playground repository](https://github.com/nokia-eda/playground):
-
-    ```{.shell .no-select}
-    make open-toolbox
-    ```
-
-    Or using this command when running outside the playground repository:
-
+    You can log in to the `eda-toolbox` pod using the following alias:
+    
     ```bash
-    kubectl -n eda-system exec -it $(kubectl -n eda-system get pods \
-    -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
-    -- env "TERM=xterm-256color" bash -l
+    alias edatoolbox='kubectl -n eda-system exec -it "$(kubectl -n eda-system get pods \
+      -l eda.nokia.com/app=eda-toolbox \
+      --field-selector=status.phase=Running \
+      -o jsonpath="{.items[0].metadata.name}")" -- env TERM=xterm-256color bash -l'
     ```
 <!-- --8<-- [end:open-toolbox] -->
