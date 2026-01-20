@@ -222,7 +222,6 @@ eda-fluentbit-b7fns                   1/1     Running   0          96m
 eda-fluentd-7cd48db9c5-9pvvp          1/1     Running   0          96m
 eda-git-5db9dfc7bc-mn4rw              1/1     Running   0          95m
 eda-git-replica-f69b9c9f4-bngf8       1/1     Running   0          95m
-eda-toolbox-6d598f6db7-thlj7          1/1     Running   0          95m
 trust-manager-69955c46b8-bghj6        1/1     Running   0          95m
 ```
 </div>
