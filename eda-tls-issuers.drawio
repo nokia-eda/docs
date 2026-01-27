@@ -150,7 +150,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="b4k9AeDym3CK1mYVLm_G" name="[1] API Certificates">
-    <mxGraphModel dx="-73" dy="273" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#4D5766,#9BA4B1)" math="0" shadow="0">
+    <mxGraphModel dx="291" dy="410" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#4D5766,#9BA4B1)" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -158,25 +158,19 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Ai2vc9QVh5i03YReuAIB-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA root Issuer&lt;br&gt;(selfSigned)" vertex="1">
-          <mxGeometry height="60" width="120" x="1238" y="210" as="geometry" />
+          <mxGeometry height="60" width="120" x="1240" y="210" as="geometry" />
         </mxCell>
         <mxCell id="Ai2vc9QVh5i03YReuAIB-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EDA API CA Certificate" vertex="1">
-          <mxGeometry height="60" width="120" x="1238" y="380" as="geometry" />
+          <mxGeometry height="60" width="120" x="1240" y="380" as="geometry" />
         </mxCell>
-        <mxCell id="Ai2vc9QVh5i03YReuAIB-17" edge="1" parent="1" source="Ai2vc9QVh5i03YReuAIB-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.466;entryY=0.95;entryDx=0;entryDy=0;entryPerimeter=0;" target="Ai2vc9QVh5i03YReuAIB-24">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1298" y="490" />
-              <mxPoint x="1296" y="490" />
-            </Array>
-            <mxPoint x="1298" y="510" as="sourcePoint" />
-          </mxGeometry>
+        <mxCell id="usELCNeyrxWI8hoE3Yr1-1" edge="1" parent="1" source="Ai2vc9QVh5i03YReuAIB-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="Ai2vc9QVh5i03YReuAIB-24">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Ai2vc9QVh5i03YReuAIB-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA API Issuer" vertex="1">
-          <mxGeometry height="60" width="120" x="1238" y="510" as="geometry" />
+          <mxGeometry height="60" width="120" x="1240" y="510" as="geometry" />
         </mxCell>
         <mxCell id="Ai2vc9QVh5i03YReuAIB-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="secret" vertex="1">
-          <mxGeometry height="20" width="50" x="1273" y="428" as="geometry" />
+          <mxGeometry height="20" width="50" x="1275" y="428" as="geometry" />
         </mxCell>
         <mxCell id="Ai2vc9QVh5i03YReuAIB-27" parent="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" value="Sign" vertex="1">
           <mxGeometry height="30" width="50" x="1243" y="288" as="geometry" />
