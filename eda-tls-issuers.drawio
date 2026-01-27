@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.4" pages="2">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.4" pages="3">
   <diagram name="[0] Issuers" id="dFMQ2CRv3CUvIGyMzIqD">
     <mxGraphModel dx="2434" dy="830" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#4D5766" math="0" shadow="0">
       <root>
@@ -242,6 +242,38 @@
         </mxCell>
         <mxCell id="Ai2vc9QVh5i03YReuAIB-50" parent="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1" value="Certificates" vertex="1">
           <mxGeometry height="40" width="120" x="1070" y="670" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="7UrjE3meErWVhwtAl5q1" name="[2] Custom API Certificate">
+    <mxGraphModel dx="1426" dy="-53" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="qYP0ibxLJk_wtIaa1UE0-14" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;KC&lt;/span&gt;" vertex="1">
+          <mxGeometry height="70" width="80" x="150.5" y="908" as="geometry" />
+        </mxCell>
+        <mxCell id="qYP0ibxLJk_wtIaa1UE0-15" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8.888888888888857;fillColor=#f8cecc;strokeColor=#b85450;" value="TLS" vertex="1">
+          <mxGeometry height="40" width="30" x="200.5" y="963" as="geometry" />
+        </mxCell>
+        <mxCell id="qYP0ibxLJk_wtIaa1UE0-16" parent="1" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;API Server&lt;/span&gt;" vertex="1">
+          <mxGeometry height="70" width="80" x="0.5" y="908" as="geometry" />
+        </mxCell>
+        <mxCell id="qYP0ibxLJk_wtIaa1UE0-17" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=8.888888888888857;fillColor=#f8cecc;strokeColor=#b85450;" value="TLS" vertex="1">
+          <mxGeometry height="40" width="30" x="50.5" y="963" as="geometry" />
+        </mxCell>
+        <mxCell id="qYP0ibxLJk_wtIaa1UE0-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="eda-api-user-certs" vertex="1">
+          <mxGeometry height="40" width="70" x="155.5" y="878" as="geometry" />
+        </mxCell>
+        <mxCell id="qYP0ibxLJk_wtIaa1UE0-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="eda-api-user-certs" vertex="1">
+          <mxGeometry height="40" width="70" x="5.5" y="878" as="geometry" />
+        </mxCell>
+        <mxCell id="qYP0ibxLJk_wtIaa1UE0-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="tls.crt:&lt;div&gt;tls.key:&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="10.5" y="838" as="geometry" />
+        </mxCell>
+        <mxCell id="qYP0ibxLJk_wtIaa1UE0-26" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="tls.crt:&lt;div&gt;tls.key:&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="160.5" y="838" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
