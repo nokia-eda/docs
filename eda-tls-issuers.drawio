@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.4">
   <diagram name="[0] Issuers" id="dFMQ2CRv3CUvIGyMzIqD">
-    <mxGraphModel dx="1901" dy="996" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="3702" dy="1494" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -20,131 +20,131 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA root Issuer&lt;br&gt;(selfSigned)" vertex="1">
-          <mxGeometry height="60" width="120" x="760" y="180" as="geometry" />
+          <mxGeometry height="60" width="120" x="340" y="210" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EDA Node CA Certificate" vertex="1">
-          <mxGeometry height="60" width="120" x="440" y="340" as="geometry" />
+          <mxGeometry height="60" width="120" x="20" y="370" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EDA Bootstrap CA Certificate" vertex="1">
-          <mxGeometry height="60" width="120" x="600" y="340" as="geometry" />
+          <mxGeometry height="60" width="120" x="180" y="370" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EDA Internal CA Certificate" vertex="1">
-          <mxGeometry height="60" width="120" x="760" y="340" as="geometry" />
+          <mxGeometry height="60" width="120" x="340" y="370" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EDA API CA Certificate" vertex="1">
-          <mxGeometry height="60" width="120" x="920" y="340" as="geometry" />
+          <mxGeometry height="60" width="120" x="500" y="370" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EDA Webhook CA Certificate" vertex="1">
-          <mxGeometry height="60" width="120" x="1080" y="340" as="geometry" />
+          <mxGeometry height="60" width="120" x="660" y="370" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="secret" vertex="1">
-          <mxGeometry height="20" width="50" x="520" y="390" as="geometry" />
+          <mxGeometry height="20" width="50" x="100" y="420" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-13" edge="1" parent="1" source="NmLOJnzgcl-orWKOTRUW-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="NmLOJnzgcl-orWKOTRUW-12">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="500" y="460" />
-              <mxPoint x="545" y="460" />
+              <mxPoint x="80" y="490" />
+              <mxPoint x="125" y="490" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA Node Issuer" vertex="1">
-          <mxGeometry height="60" width="120" x="440" y="480" as="geometry" />
+          <mxGeometry height="60" width="120" x="20" y="510" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-15" edge="1" parent="1" source="NmLOJnzgcl-orWKOTRUW-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="NmLOJnzgcl-orWKOTRUW-23">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="660" y="460" />
-              <mxPoint x="705" y="460" />
+              <mxPoint x="240" y="490" />
+              <mxPoint x="285" y="490" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA bootstrap Issuer" vertex="1">
-          <mxGeometry height="60" width="120" x="600" y="480" as="geometry" />
+          <mxGeometry height="60" width="120" x="180" y="510" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-17" edge="1" parent="1" source="NmLOJnzgcl-orWKOTRUW-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="NmLOJnzgcl-orWKOTRUW-24">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="820" y="460" />
-              <mxPoint x="865" y="460" />
+              <mxPoint x="400" y="490" />
+              <mxPoint x="445" y="490" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA Internal Issuer" vertex="1">
-          <mxGeometry height="60" width="120" x="760" y="480" as="geometry" />
+          <mxGeometry height="60" width="120" x="340" y="510" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-19" edge="1" parent="1" source="NmLOJnzgcl-orWKOTRUW-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="NmLOJnzgcl-orWKOTRUW-25">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="980" y="460" />
-              <mxPoint x="1025" y="460" />
+              <mxPoint x="560" y="490" />
+              <mxPoint x="605" y="490" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA API Issuer" vertex="1">
-          <mxGeometry height="60" width="120" x="920" y="480" as="geometry" />
+          <mxGeometry height="60" width="120" x="500" y="510" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-21" edge="1" parent="1" source="NmLOJnzgcl-orWKOTRUW-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="NmLOJnzgcl-orWKOTRUW-26">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1140" y="460" />
-              <mxPoint x="1185" y="460" />
+              <mxPoint x="720" y="490" />
+              <mxPoint x="765" y="490" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA Webhook Issuer" vertex="1">
-          <mxGeometry height="60" width="120" x="1080" y="480" as="geometry" />
+          <mxGeometry height="60" width="120" x="660" y="510" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="secret" vertex="1">
-          <mxGeometry height="20" width="50" x="680" y="390" as="geometry" />
+          <mxGeometry height="20" width="50" x="260" y="420" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="secret" vertex="1">
-          <mxGeometry height="20" width="50" x="840" y="390" as="geometry" />
+          <mxGeometry height="20" width="50" x="420" y="420" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="secret" vertex="1">
-          <mxGeometry height="20" width="50" x="1000" y="390" as="geometry" />
+          <mxGeometry height="20" width="50" x="580" y="420" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="secret" vertex="1">
-          <mxGeometry height="20" width="50" x="1160" y="390" as="geometry" />
+          <mxGeometry height="20" width="50" x="740" y="420" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-27" parent="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" value="Sign" vertex="1">
-          <mxGeometry height="30" width="50" x="765" y="258" as="geometry" />
+          <mxGeometry height="30" width="50" x="345" y="288" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-31" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=4;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="240" y="440" as="sourcePoint" />
-            <mxPoint x="1243" y="440" as="targetPoint" />
+            <mxPoint x="-180" y="470" as="sourcePoint" />
+            <mxPoint x="823" y="470" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-32" parent="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1" value="Issuers" vertex="1">
-          <mxGeometry height="40" width="100" x="277" y="490" as="geometry" />
+          <mxGeometry height="40" width="100" x="-143" y="520" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-33" parent="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1" value="Certificates" vertex="1">
-          <mxGeometry height="40" width="140" x="262" y="350" as="geometry" />
+          <mxGeometry height="40" width="140" x="-158" y="380" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-34" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=4;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="240" y="250" as="sourcePoint" />
-            <mxPoint x="1231" y="250" as="targetPoint" />
+            <mxPoint x="-180" y="280" as="sourcePoint" />
+            <mxPoint x="811" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-35" parent="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1" value="Root Issuer" vertex="1">
-          <mxGeometry height="40" width="150" x="257" y="190" as="geometry" />
+          <mxGeometry height="40" width="150" x="-163" y="220" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-36" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ref" vertex="1">
-          <mxGeometry height="30" width="60" x="481" y="436" as="geometry" />
+          <mxGeometry height="30" width="60" x="61" y="466" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-37" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ref" vertex="1">
-          <mxGeometry height="30" width="60" x="643" y="436" as="geometry" />
+          <mxGeometry height="30" width="60" x="223" y="466" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-38" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ref" vertex="1">
-          <mxGeometry height="30" width="60" x="805" y="436" as="geometry" />
+          <mxGeometry height="30" width="60" x="385" y="466" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-39" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ref" vertex="1">
-          <mxGeometry height="30" width="60" x="967" y="436" as="geometry" />
+          <mxGeometry height="30" width="60" x="547" y="466" as="geometry" />
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-40" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ref" vertex="1">
-          <mxGeometry height="30" width="60" x="1129" y="436" as="geometry" />
+          <mxGeometry height="30" width="60" x="709" y="466" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
