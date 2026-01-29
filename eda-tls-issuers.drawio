@@ -113,7 +113,7 @@
         <mxCell id="NmLOJnzgcl-orWKOTRUW-31" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=4;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <mxPoint x="-180" y="470" as="sourcePoint" />
-            <mxPoint x="823" y="470" as="targetPoint" />
+            <mxPoint x="840" y="470" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-32" parent="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1" value="Issuers" vertex="1">
@@ -125,7 +125,7 @@
         <mxCell id="NmLOJnzgcl-orWKOTRUW-34" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=4;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <mxPoint x="-180" y="288" as="sourcePoint" />
-            <mxPoint x="811" y="288" as="targetPoint" />
+            <mxPoint x="840" y="288" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="NmLOJnzgcl-orWKOTRUW-35" parent="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1" value="Root Issuer" vertex="1">
