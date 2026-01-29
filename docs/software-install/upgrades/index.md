@@ -234,6 +234,14 @@ Continue with stopping EDA Git servers by scaling down the EDA Git deployments:
 make scale-down-git-servers
 ```
 
+### Version-specific steps
+
+When upgrading from versions older than 25.12.1 stop the fluentd daemonset:
+
+```bash
+make uninstall-external-package-fluentd
+```
+
 ## Updating EDA kpt packages
 
 Set the desired EDA version in the `prefs.mk` file to match the target version you want to upgrade to. For example, to choose the -{{eda_version}}- version:
