@@ -551,7 +551,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="[6] EDA Node Custom Issuer" id="unXjxUMD5RerkHTO_a1d">
-    <mxGraphModel dx="2946" dy="707" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#4D5766,#9BA4B1)" math="0" shadow="0">
+    <mxGraphModel dx="1785" dy="271" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#4D5766,#9BA4B1)" math="0" shadow="0">
       <root>
         <mxCell id="FWqx8kKblkLfgD4a2tFB-0" />
         <mxCell id="FWqx8kKblkLfgD4a2tFB-1" parent="FWqx8kKblkLfgD4a2tFB-0" />
@@ -588,8 +588,8 @@
         </mxCell>
         <mxCell id="FWqx8kKblkLfgD4a2tFB-10" edge="1" parent="FWqx8kKblkLfgD4a2tFB-1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=4;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="240" y="780" as="sourcePoint" />
-            <mxPoint x="831.5" y="777" as="targetPoint" />
+            <mxPoint x="200" y="780" as="sourcePoint" />
+            <mxPoint x="832" y="780" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="FWqx8kKblkLfgD4a2tFB-11" parent="FWqx8kKblkLfgD4a2tFB-1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1" value="Issuers" vertex="1">
@@ -600,7 +600,7 @@
         </mxCell>
         <mxCell id="FWqx8kKblkLfgD4a2tFB-13" edge="1" parent="FWqx8kKblkLfgD4a2tFB-1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=4;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="328.5" y="587" as="sourcePoint" />
+            <mxPoint x="200" y="587" as="sourcePoint" />
             <mxPoint x="819.5" y="587" as="targetPoint" />
           </mxGeometry>
         </mxCell>
