@@ -420,7 +420,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-25" parent="EwWB8kgkkASsu52IDJpq-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="EDA root Issuer&lt;br&gt;(selfSigned)" vertex="1">
-          <mxGeometry height="60" width="120" x="556.5" y="507" as="geometry" />
+          <mxGeometry height="60" width="120" x="556.5" y="541" as="geometry" />
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-26" parent="EwWB8kgkkASsu52IDJpq-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="EDA Node CA Certificate" vertex="1">
           <mxGeometry height="60" width="120" x="556.5" y="677" as="geometry" />
@@ -442,7 +442,7 @@
           <mxGeometry height="20" width="50" x="591.5" y="725" as="geometry" />
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-30" parent="EwWB8kgkkASsu52IDJpq-1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" value="Sign" vertex="1">
-          <mxGeometry height="30" width="50" x="561.5" y="585" as="geometry" />
+          <mxGeometry height="30" width="50" x="559" y="635" as="geometry" />
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-31" edge="1" parent="EwWB8kgkkASsu52IDJpq-1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=4;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
@@ -458,12 +458,12 @@
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-34" edge="1" parent="EwWB8kgkkASsu52IDJpq-1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=4;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="328.5" y="587" as="sourcePoint" />
-            <mxPoint x="819.5" y="587" as="targetPoint" />
+            <mxPoint x="328.5" y="632" as="sourcePoint" />
+            <mxPoint x="819.5" y="632" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-35" parent="EwWB8kgkkASsu52IDJpq-1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1" value="Root Issuer" vertex="1">
-          <mxGeometry height="40" width="130" x="383.5" y="517" as="geometry" />
+          <mxGeometry height="40" width="130" x="383.5" y="554" as="geometry" />
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-36" parent="EwWB8kgkkASsu52IDJpq-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ref" vertex="1">
           <mxGeometry height="22" width="44" x="572.5" y="783" as="geometry" />
