@@ -551,7 +551,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="[6] EDA Node Custom Issuer" id="unXjxUMD5RerkHTO_a1d">
-    <mxGraphModel dx="1592" dy="198" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#4D5766,#9BA4B1)" math="0" shadow="0">
+    <mxGraphModel dx="701" dy="-136" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#4D5766,#9BA4B1)" math="0" shadow="0">
       <root>
         <mxCell id="FWqx8kKblkLfgD4a2tFB-0" />
         <mxCell id="FWqx8kKblkLfgD4a2tFB-1" parent="FWqx8kKblkLfgD4a2tFB-0" />
@@ -670,11 +670,11 @@
         <mxCell id="PagsQeCL8xhFlD8z1UzT-1" parent="FWqx8kKblkLfgD4a2tFB-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Enterprise Node Issuer" vertex="1">
           <mxGeometry height="60" width="120" x="700" y="807" as="geometry" />
         </mxCell>
-        <mxCell id="PagsQeCL8xhFlD8z1UzT-6" edge="1" parent="FWqx8kKblkLfgD4a2tFB-1" source="PagsQeCL8xhFlD8z1UzT-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.758;entryY=0.956;entryDx=0;entryDy=0;entryPerimeter=0;" target="PagsQeCL8xhFlD8z1UzT-1">
+        <mxCell id="PagsQeCL8xhFlD8z1UzT-6" edge="1" parent="FWqx8kKblkLfgD4a2tFB-1" source="PagsQeCL8xhFlD8z1UzT-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="PagsQeCL8xhFlD8z1UzT-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="PagsQeCL8xhFlD8z1UzT-4" parent="FWqx8kKblkLfgD4a2tFB-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Node Security Profile&lt;div&gt;(device2)&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="120" x="731.5" y="947" as="geometry" />
+          <mxGeometry height="60" width="120" x="730.5" y="947" as="geometry" />
         </mxCell>
         <mxCell id="PagsQeCL8xhFlD8z1UzT-7" parent="FWqx8kKblkLfgD4a2tFB-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="select" vertex="1">
           <mxGeometry height="30" width="60" x="741" y="1025" as="geometry" />
@@ -770,7 +770,7 @@
           <mxGeometry height="30" width="60" x="720.5" y="1175" as="geometry" />
         </mxCell>
         <mxCell id="PagsQeCL8xhFlD8z1UzT-19" parent="FWqx8kKblkLfgD4a2tFB-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ref" vertex="1">
-          <mxGeometry height="50" width="97" x="765" y="906" as="geometry" />
+          <mxGeometry height="50" width="97" x="722.5" y="900" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
