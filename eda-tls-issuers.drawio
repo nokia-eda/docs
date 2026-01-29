@@ -551,7 +551,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="[6] EDA Node Custom Issuer" id="unXjxUMD5RerkHTO_a1d">
-    <mxGraphModel dx="1964" dy="338" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#4D5766,#9BA4B1)" math="0" shadow="0">
+    <mxGraphModel dx="1254" dy="71" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#4D5766,#9BA4B1)" math="0" shadow="0">
       <root>
         <mxCell id="FWqx8kKblkLfgD4a2tFB-0" />
         <mxCell id="FWqx8kKblkLfgD4a2tFB-1" parent="FWqx8kKblkLfgD4a2tFB-0" />
@@ -616,9 +616,8 @@
         <mxCell id="FWqx8kKblkLfgD4a2tFB-18" edge="1" parent="FWqx8kKblkLfgD4a2tFB-1" source="FWqx8kKblkLfgD4a2tFB-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="FWqx8kKblkLfgD4a2tFB-7">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="695" y="1015" />
-              <mxPoint x="695" y="930" />
-              <mxPoint x="647" y="930" />
+              <mxPoint x="692" y="931" />
+              <mxPoint x="647" y="931" />
               <mxPoint x="647" y="867" />
             </Array>
           </mxGeometry>
@@ -632,10 +631,11 @@
         <mxCell id="PagsQeCL8xhFlD8z1UzT-18" edge="1" parent="FWqx8kKblkLfgD4a2tFB-1" source="FWqx8kKblkLfgD4a2tFB-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="PagsQeCL8xhFlD8z1UzT-1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="695" y="1015" />
-              <mxPoint x="695" y="930" />
-              <mxPoint x="730" y="930" />
+              <mxPoint x="692" y="931" />
+              <mxPoint x="730" y="931" />
             </Array>
+            <mxPoint x="690.5" y="1015" as="sourcePoint" />
+            <mxPoint x="724" y="867" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="FWqx8kKblkLfgD4a2tFB-19" parent="FWqx8kKblkLfgD4a2tFB-1" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;BSVR&lt;/span&gt;" vertex="1">
@@ -665,7 +665,7 @@
           <mxGeometry height="30" width="60" x="579.5" y="1025" as="geometry" />
         </mxCell>
         <mxCell id="FWqx8kKblkLfgD4a2tFB-30" parent="FWqx8kKblkLfgD4a2tFB-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Sign" vertex="1">
-          <mxGeometry height="30" width="60" x="666" y="900" as="geometry" />
+          <mxGeometry height="41" width="60" x="393" y="922" as="geometry" />
         </mxCell>
         <mxCell id="PagsQeCL8xhFlD8z1UzT-1" parent="FWqx8kKblkLfgD4a2tFB-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Enterprise Node Issuer" vertex="1">
           <mxGeometry height="60" width="120" x="700" y="807" as="geometry" />
