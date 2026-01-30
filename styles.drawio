@@ -17,7 +17,7 @@
           <mxGeometry height="109" width="305" x="709" y="271" as="geometry" />
         </mxCell>
         <mxCell id="QQfNyxyyI4NM195G_zYZ-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=14;fontColor=#ffffff;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="120" x="520" y="1220" as="geometry" />
+          <mxGeometry height="60" width="120" x="528" y="1108" as="geometry" />
         </mxCell>
         <mxCell id="QQfNyxyyI4NM195G_zYZ-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0050ef;strokeColor=#001DBC;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#ffffff;arcSize=0;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
           <mxGeometry height="60" width="120" x="530" y="524" as="geometry" />
