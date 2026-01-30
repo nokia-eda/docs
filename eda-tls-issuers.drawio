@@ -300,7 +300,7 @@
         <mxCell id="wq63oZsI_Mt8GzjhjH4M-29" edge="1" parent="1" source="wq63oZsI_Mt8GzjhjH4M-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;strokeColor=#F9F9F9;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" target="wq63oZsI_Mt8GzjhjH4M-6">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="wq63oZsI_Mt8GzjhjH4M-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7B737;strokeColor=#FEF3DC;align=center;verticalAlign=middle;arcSize=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontSize=12;fontColor=default;" value="EDA API Issuer" vertex="1">
+        <mxCell id="wq63oZsI_Mt8GzjhjH4M-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7B737;strokeColor=#FEF3DC;align=center;verticalAlign=middle;arcSize=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontSize=16;fontColor=default;" value="EDA API Issuer" vertex="1">
           <mxGeometry height="60" width="120" x="121.5" y="528" as="geometry" />
         </mxCell>
         <mxCell id="wq63oZsI_Mt8GzjhjH4M-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;strokeColor=#666666;align=center;verticalAlign=middle;fontSize=12;fontColor=default;fillColor=#EBEBEB;" value="secret" vertex="1">
