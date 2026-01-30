@@ -477,10 +477,10 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-32" parent="EwWB8kgkkASsu52IDJpq-1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#F9F9F9;" value="Issuers" vertex="1">
-          <mxGeometry height="36" width="81" x="370.5" y="819" as="geometry" />
+          <mxGeometry height="36" width="81" x="337" y="819" as="geometry" />
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-33" parent="EwWB8kgkkASsu52IDJpq-1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#F9F9F9;" value="CA Certificates" vertex="1">
-          <mxGeometry height="36" width="156" x="370.5" y="679" as="geometry" />
+          <mxGeometry height="36" width="156" x="337" y="679" as="geometry" />
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-34" edge="1" parent="EwWB8kgkkASsu52IDJpq-1" style="endArrow=none;html=1;rounded=0;fontStyle=0;strokeWidth=2;dashed=1;dashPattern=1 2;strokeColor=#757575;align=center;verticalAlign=middle;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontSize=11;fontColor=#FFFFFF;labelBackgroundColor=default;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
@@ -489,7 +489,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-35" parent="EwWB8kgkkASsu52IDJpq-1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#F9F9F9;" value="Root Issuer" vertex="1">
-          <mxGeometry height="36" width="119" x="370.5" y="556" as="geometry" />
+          <mxGeometry height="36" width="119" x="337" y="556" as="geometry" />
         </mxCell>
         <mxCell id="Se7BvKXsna6Sa_ZE0jkL-36" parent="EwWB8kgkkASsu52IDJpq-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#F9F9F9;" value="ref" vertex="1">
           <mxGeometry height="22" width="44" x="572.5" y="783" as="geometry" />
