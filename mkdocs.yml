@@ -42,6 +42,8 @@ nav:
       - Digital Twin:
           - digital-twin/index.md
           - user-guide/containerlab-integration.md
+      - Certificate Management:
+          - user-guide/certificate-management/index.md
   - Apps:
       - Store: apps/app-store.md
       - Fabric: apps/fabric.md
