@@ -313,10 +313,10 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="wq63oZsI_Mt8GzjhjH4M-9" parent="1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#F9F9F9;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="Issuers" vertex="1">
-          <mxGeometry height="36" width="81" x="-66.5" y="540" as="geometry" />
+          <mxGeometry height="36" width="81" x="-84" y="540" as="geometry" />
         </mxCell>
         <mxCell id="wq63oZsI_Mt8GzjhjH4M-10" parent="1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#F9F9F9;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="CA Certificates" vertex="1">
-          <mxGeometry height="36" width="156" x="-66.5" y="400" as="geometry" />
+          <mxGeometry height="36" width="156" x="-84" y="400" as="geometry" />
         </mxCell>
         <mxCell id="wq63oZsI_Mt8GzjhjH4M-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#F9F9F9;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="ref" vertex="1">
           <mxGeometry height="22" width="44" x="133" y="469" as="geometry" />
@@ -357,10 +357,10 @@
           <mxGeometry height="50" width="97" x="133" y="648" as="geometry" />
         </mxCell>
         <mxCell id="wq63oZsI_Mt8GzjhjH4M-24" parent="1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=20;fontStyle=1;fontColor=#F9F9F9;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" value="Certificates" vertex="1">
-          <mxGeometry height="36" width="123" x="-66.5" y="690" as="geometry" />
+          <mxGeometry height="36" width="123" x="-84" y="690" as="geometry" />
         </mxCell>
-        <mxCell id="wq63oZsI_Mt8GzjhjH4M-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#F9F9F9;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontSize=15;" value="User CA public and private keys" vertex="1">
-          <mxGeometry height="30" width="129" x="112.5" y="395" as="geometry" />
+        <mxCell id="wq63oZsI_Mt8GzjhjH4M-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#F9F9F9;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontSize=15;" value="User CA certificate and private keys" vertex="1">
+          <mxGeometry height="30" width="141.5" x="112.5" y="395" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
