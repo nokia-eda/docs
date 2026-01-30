@@ -1,23 +1,83 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0" version="29.3.6" pages="2">
   <diagram name="[0] Issuers" id="dFMQ2CRv3CUvIGyMzIqD">
-    <mxGraphModel dx="936" dy="1315" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" background="#1A222E" math="0" shadow="0" adaptiveColors="none">
+    <mxGraphModel dx="780" dy="1096" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" background="#1A222E" math="0" shadow="0" adaptiveColors="none">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="NmLOJnzgcl-orWKOTRUW-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#005AFF,#36210A);strokeColor=#99C2FF;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#F9F9F9;arcSize=0;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
+        <mxCell id="NmLOJnzgcl-orWKOTRUW-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
           <mxGeometry height="60" width="120" x="530" y="433" as="geometry" />
         </mxCell>
-        <mxCell id="NmLOJnzgcl-orWKOTRUW-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#37CC73;strokeColor=#DAF5E3;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="120" x="715" y="433" as="geometry" />
+        <mxCell id="NmLOJnzgcl-orWKOTRUW-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;strokeColor=#2D7600;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="686" y="433" as="geometry" />
         </mxCell>
-        <mxCell id="NmLOJnzgcl-orWKOTRUW-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7B737;strokeColor=#FEF3DC;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="120" x="887" y="433" as="geometry" />
+        <mxCell id="NmLOJnzgcl-orWKOTRUW-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6a00ff;strokeColor=#3700CC;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="686" y="524" as="geometry" />
         </mxCell>
         <mxCell id="enYkzJqyGApfHhi1W8ug-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#ECF3FF;fontSize=25;" value="This is a demo page to create styles variants" vertex="1">
-          <mxGeometry height="109" width="305" x="605" y="260" as="geometry" />
+          <mxGeometry height="109" width="305" x="709" y="271" as="geometry" />
         </mxCell>
-        <mxCell id="QQfNyxyyI4NM195G_zYZ-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F7B737;strokeColor=#FEF3DC;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=14;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="120" x="889" y="553" as="geometry" />
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=14;fontColor=#ffffff;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="520" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0050ef;strokeColor=#001DBC;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#ffffff;arcSize=0;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
+          <mxGeometry height="60" width="120" x="530" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#008a00;strokeColor=#005700;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="839" y="433" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="997" y="433" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="842" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;strokeColor=#6F0000;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="997" y="524" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
+          <mxGeometry height="60" width="120" x="530" y="616" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fa6800;strokeColor=#C73500;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#000000;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="686" y="616" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="686" y="707" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6d8764;strokeColor=#3A5431;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#ffffff;arcSize=0;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
+          <mxGeometry height="60" width="120" x="530" y="707" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#000000;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="839" y="616" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;strokeColor=#B09500;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#000000;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="997" y="616" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#76608a;strokeColor=#432D57;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="842" y="707" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a0522d;strokeColor=#6D1F00;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="997" y="707" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fillColor=#fad7ac;strokeColor=#b46504;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
+          <mxGeometry height="60" width="120" x="530" y="795" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="686" y="795" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-21" edge="1" parent="1" source="QQfNyxyyI4NM195G_zYZ-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="QQfNyxyyI4NM195G_zYZ-23" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="686" y="886" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
+          <mxGeometry height="60" width="120" x="530" y="886" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="839" y="795" as="geometry" />
+        </mxCell>
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="997" y="795" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
