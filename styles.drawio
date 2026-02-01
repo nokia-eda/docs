@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0" version="29.3.6" pages="2">
   <diagram name="[0] Issuers" id="dFMQ2CRv3CUvIGyMzIqD">
-    <mxGraphModel dx="985" dy="1315" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" background="#101824" math="0" shadow="0" adaptiveColors="none">
+    <mxGraphModel dx="328" dy="438" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" background="#101824" math="0" shadow="0" adaptiveColors="none">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -117,6 +117,18 @@
         </mxCell>
         <mxCell id="yZZPx21TwCD6jHNRfLDU-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6a00ff;strokeColor=#3700CC;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=12;fontColor=#ffffff;opacity=60;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
           <mxGeometry height="60" width="110" x="617" y="1672" as="geometry" />
+        </mxCell>
+        <mxCell id="iK4_N-6Brx3q14mijG1l-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A222E;strokeColor=#4A5361B2;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=5;fontColor=#ffffff;strokeWidth=0.5;" value="" vertex="1">
+          <mxGeometry height="227" width="207" x="489" y="1991" as="geometry" />
+        </mxCell>
+        <mxCell id="iK4_N-6Brx3q14mijG1l-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#262D39;strokeColor=#4A5361B2;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=5;fontColor=#ffffff;strokeWidth=0.5;" value="" vertex="1">
+          <mxGeometry height="104" width="138" x="499" y="2015" as="geometry" />
+        </mxCell>
+        <mxCell id="iK4_N-6Brx3q14mijG1l-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#ECF3FF;fontSize=25;" value="&lt;div&gt;working on layerd panels&lt;/div&gt;&lt;div&gt;based on eda design&lt;/div&gt;" vertex="1">
+          <mxGeometry height="109" width="305" x="443" y="1871" as="geometry" />
+        </mxCell>
+        <mxCell id="iK4_N-6Brx3q14mijG1l-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2D3D4E;strokeColor=#4A5361B2;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=5;fontColor=#ffffff;strokeWidth=0.5;" value="" vertex="1">
+          <mxGeometry height="25" width="138" x="499" y="2142" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
