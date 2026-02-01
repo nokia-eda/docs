@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:147.0) Gecko/20100101 Firefox/147.0" version="29.3.6" pages="2">
   <diagram name="[0] Issuers" id="dFMQ2CRv3CUvIGyMzIqD">
-    <mxGraphModel dx="1159" dy="1547" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" background="#1A222E" math="0" shadow="0" adaptiveColors="none">
+    <mxGraphModel dx="985" dy="1315" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="4681" background="#101824" math="0" shadow="0" adaptiveColors="none">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -16,8 +16,8 @@
         <mxCell id="enYkzJqyGApfHhi1W8ug-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontColor=#ECF3FF;fontSize=25;" value="This is a demo page to create styles variants" vertex="1">
           <mxGeometry height="109" width="305" x="709" y="271" as="geometry" />
         </mxCell>
-        <mxCell id="QQfNyxyyI4NM195G_zYZ-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=14;fontColor=#ffffff;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="120" x="528" y="1108" as="geometry" />
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101824;strokeColor=#A50040;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=14;fontColor=#ffffff;" value="&lt;div&gt;Bootstrap&lt;/div&gt;&lt;div&gt;Issuer&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="642" y="1027" as="geometry" />
         </mxCell>
         <mxCell id="QQfNyxyyI4NM195G_zYZ-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0050ef;strokeColor=#001DBC;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#ffffff;arcSize=0;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
           <mxGeometry height="60" width="120" x="530" y="524" as="geometry" />
@@ -40,7 +40,7 @@
         <mxCell id="QQfNyxyyI4NM195G_zYZ-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fa6800;strokeColor=#C73500;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#000000;" value="&lt;div&gt;Node&amp;nbsp;&lt;/div&gt;&lt;div&gt;CA Certificate&lt;/div&gt;" vertex="1">
           <mxGeometry height="60" width="120" x="686" y="616" as="geometry" />
         </mxCell>
-        <mxCell id="QQfNyxyyI4NM195G_zYZ-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=0;fontColor=#ffffff;" value="" vertex="1">
+        <mxCell id="QQfNyxyyI4NM195G_zYZ-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1A222E;strokeColor=#314354;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;arcSize=5;fontColor=#ffffff;" value="" vertex="1">
           <mxGeometry height="179" width="282" x="461" y="1570" as="geometry" />
         </mxCell>
         <mxCell id="QQfNyxyyI4NM195G_zYZ-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6d8764;strokeColor=#3A5431;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#ffffff;arcSize=0;" value="Root Issuer&lt;br&gt;(selfSigned)" vertex="1">
