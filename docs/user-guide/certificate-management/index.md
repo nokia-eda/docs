@@ -177,7 +177,7 @@ The procedure to modify the API Issuer to use your own (intermediate) CA include
       ca.crt: <base64-encoded-root-ca-certificate>
     ```
 
-Note that the rotation of the intermediate CA certificate(s) and key is the user's responsibility.
+    > Note that the rotation of the intermediate CA certificate(s) and key is the user's responsibility.
 
 2. **Update a Cert-Manager Issuer**
 
