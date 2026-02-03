@@ -27,9 +27,9 @@ fi
 # set the branch name for versioned docs
 MIKE_BRANCH_NAME="__versioned-docs__"
 
-MKDOCS_VERSION=${MKDOCS_VERSION:-9.6.12-insiders-4.53.16-hellt}
+MKDOCS_VERSION=${MKDOCS_VERSION:-v9.7.1-1}
 
-MKDOCS_INET_IMAGE=ghcr.io/nokia-eda/mkdocs-material-insiders:${MKDOCS_VERSION}
+MKDOCS_INET_IMAGE=ghcr.io/eda-labs/mkdocs-material:${MKDOCS_VERSION}
 MKDOCS_NOKIA_IMAGE=registry.srlinux.dev/pub/mkdocs-material-insiders:${MKDOCS_VERSION}
 
 if [ "${DOCS_ENV}" = "internet" ]; then
@@ -37,9 +37,6 @@ if [ "${DOCS_ENV}" = "internet" ]; then
 elif [ "${DOCS_ENV}" = "nokia" ]; then
   echo "Using Nokia internal mkdocs image"
   MKDOCS_IMAGE=${MKDOCS_NOKIA_IMAGE}
-else
-  echo "Using public mkdocs image"
-  MKDOCS_IMAGE=squidfunk/mkdocs-material:9.6.12
 fi
 
 MIKE_CMD_COMMON_DOCKER_RUN_ARGS="--rm -i -p ${PORT}:8000 \

@@ -1,0 +1,20 @@
+[project]
+name = "eda-docs"
+version = "0.1.0"
+description = "Nokia EDA documentation"
+requires-python = "~=3.12.0"
+dependencies = [
+    "mkdocs-macros-plugin==0.7.0",
+    "mkdocs-rss-plugin>=1.6.0",
+    "mkdocs-glightbox>=0.3.1",
+    "mkdocs-git-authors-plugin",
+    "mkdocs-git-revision-date-localized-plugin>=1.2.0",
+    "mkdocs-git-committers-plugin-2",
+    "srlinux-pygments @ https://github.com/srl-labs/srlinux-pygments/archive/main.zip",
+    "mike==2.1.3",
+    "setuptools",
+    "mkdocs-material[imaging]==9.7.1",
+    "mkdocs-minify-plugin==0.7.1",
+    "mkdocs-redirects==1.2.2",
+    "click >=7.0, <=8.2.1",
+]

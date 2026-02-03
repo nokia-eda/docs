@@ -3,12 +3,14 @@ nav:
   - Home: index.md
   - Getting started:
       - Try EDA: getting-started/try-eda.md
-      - Units of automation: getting-started/units-of-automation.md
-      - Details:
-          - Installation process: getting-started/installation-process.md
-          - Virtual network: getting-started/virtual-network.md
-          - Verification: getting-started/verification.md
-          - Resetting the Playground: getting-started/reset.md
+      - EDA in Codespaces: getting-started/codespaces.md
+      # - Units of automation: getting-started/units-of-automation.md
+      - The Tour of EDA:
+          - tour-of-eda/index.md
+          - EDA UI: tour-of-eda/ui.md
+          - Nodes: tour-of-eda/nodes.md
+          - Resource Model: tour-of-eda/resource-model.md
+          - Transactions: tour-of-eda/transactions.md
   - Installation:
       - software-install/index.md
       - Preparing for installation: software-install/preparing-for-installation.md
@@ -31,6 +33,7 @@ nav:
           - macOS: software-install/non-production/macos.md
           - Windows (WSL): software-install/non-production/wsl.md
           - KinD: software-install/non-production/kind.md
+          - Codespaces: software-install/non-production/codespaces.md
           - software-install/exposing-ui-api.md
   - User guide:
       - Network Topology: user-guide/network-topology.md
@@ -326,3 +329,4 @@ extra_javascript:
   # https://github.com/srl-labs/learn-srlinux/pull/133
   - javascripts/sh-annotation.js
   - javascripts/expandable-blocks.js
+  - javascripts/diagrams-in-tabs.js
