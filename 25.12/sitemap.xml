@@ -225,6 +225,10 @@
          <lastmod>2026-02-03</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/25.12/getting-started/codespaces/</loc>
+         <lastmod>2026-02-03</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/25.12/getting-started/installation-process/</loc>
          <lastmod>2026-02-03</lastmod>
     </url>
@@ -317,6 +321,10 @@
          <lastmod>2026-02-03</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/25.12/software-install/non-production/codespaces/</loc>
+         <lastmod>2026-02-03</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/25.12/software-install/non-production/kind/</loc>
          <lastmod>2026-02-03</lastmod>
     </url>
@@ -334,6 +342,26 @@
     </url>
     <url>
          <loc>https://docs.eda.dev/25.12/software-install/upgrades/</loc>
+         <lastmod>2026-02-03</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/tour-of-eda/</loc>
+         <lastmod>2026-02-03</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/tour-of-eda/nodes/</loc>
+         <lastmod>2026-02-03</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/tour-of-eda/resource-model/</loc>
+         <lastmod>2026-02-03</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/tour-of-eda/transactions/</loc>
+         <lastmod>2026-02-03</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/25.12/tour-of-eda/ui/</loc>
          <lastmod>2026-02-03</lastmod>
     </url>
     <url>
