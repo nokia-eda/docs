@@ -238,7 +238,7 @@ An inter switch link (ISL) is a point-to-point link that connects two network de
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='', page='2', zoom='2') }}-
+-{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Click to zoom in', page='2', zoom='2') }}-
 //////
 
 ```yaml
@@ -409,7 +409,7 @@ The edge link is a link that connects a topology node (typically a leaf switch) 
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='', page='3', zoom='2') }}-
+-{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Click to zoom in', page='3', zoom='2') }}-
 //////
 
 ```yaml
@@ -515,7 +515,7 @@ The "local" LAG aggregates ports **between a single pair** of nodes and is creat
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='', page='4', zoom='2') }}-
+-{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Click to zoom in', page='4', zoom='2') }}-
 //////
 
 ```yaml
@@ -675,7 +675,7 @@ The multihome LAG is created by specifying multiple endpoints each having only *
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='', page='5', zoom='2') }}-
+-{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Click to zoom in', page='5', zoom='2') }}-
 //////
 
 ```yaml

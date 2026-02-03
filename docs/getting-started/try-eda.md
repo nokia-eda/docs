@@ -18,7 +18,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
 1. **Choose where to run EDA**
 
     Since EDA uses Kubernetes as its application platform, you can deploy the EDA Playground anywhere a k8s cluster runs.  
-    The most popular way to install the demo EDA instance is on a Linux server/VM, but you can also [run it on macOS](../software-install/non-production/macos.md), in an [existing Kubernetes cluster](../software-install/non-production/on-prem-cluster.md), or on [Windows using WSL](../software-install/non-production/wsl.md).
+    The most popular way to install the demo EDA instance is on a Linux server/VM, but you can also [run it for free in Codespaces](../getting-started/codespaces.md), or on an [existing Kubernetes cluster](../software-install/non-production/on-prem-cluster.md), and even on a laptop running [macOS](../software-install/non-production/macos.md) or [Windows](../software-install/non-production/wsl.md).
 
     <small>If you get stuck with the installation, please reach out to us on [Discord](https://eda.dev/discord), we are happy to help!</small>
 
@@ -153,37 +153,46 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
     * Password: `admin`
 
 ///
-Now that you completed the installation, you can either read more on the installation details, or continue with creating your first unit of automation with EDA.
+
+And that's it! You now have a fully functional EDA instance suitable for learning, development, and demonstration that comes preloaded with a small, but functional Digital Twin network topology.
+
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+
+-{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
+
+With Try EDA up and running, you are all set to embark on your EDA journey by following our [Tour Of EDA](../tour-of-eda/index.md) exercises or explore EDA on your own.
 
 <div class="grid cards" markdown>
 
-* :material-hammer-screwdriver:{ .middle } **Creating a resource**
+* :fontawesome-solid-route:{ .middle } **The Tour Of EDA**
 
     ---
 
-    Now, that you are logged in, you are ready for your first EDA automation experience!
+    Learning by doing is the best way to get familiar with the EDA capabilities. Our Tour Of EDA offers a collection of hands-on exercises everyone can run on their Try EDA instance to learn the basics of EDA.
 
-    [:octicons-arrow-right-24: Creating your first unit of automation](units-of-automation.md)
+    [:octicons-arrow-right-24: Start the tour](../tour-of-eda/index.md)
 
-* :octicons-question-16:{ .middle } **How does install work?**
+* :material-hammer-screwdriver:{ .middle } **Production Installation**
 
     ---
 
-    If you want to understand how EDA playground installer works and what makes up the EDA installation, you can continue with the Installation process section.
+    For a production installation instructions, please refer to the Software Installation document.
 
-    [:octicons-arrow-right-24: Learn more about installation process](installation-process.md)
+    [:octicons-arrow-right-24: Software Installation](../software-install/index.md)
+
+<!-- * :octicons-question-16:{ .middle } **How does our playground installer work?**
+
+    ---
+
+    If you want to understand how EDA playground installer works and what makes up the EDA installation, have a look at the Installation Process page.
+
+    [:octicons-arrow-right-24: Learn more about installation process](installation-process.md) -->
 
 </div>
-
-/// details | Production installation
-    type: subtle-note
-For a production installation instructions, please refer to the [Software Installation](../software-install/index.md) document.
-///
 
 [playground-repo]: https://github.com/nokia-eda/playground
 
 [makefile]: https://github.com/nokia-eda/playground/blob/main/Makefile
-[prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 
 [^1]: As no other framework of comparable scale.
 [^2]: This as well accounts for the [playground network topology](virtual-network.md). Running a bigger topology or changing the node types may require more resources.

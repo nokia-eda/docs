@@ -762,7 +762,7 @@ A:root@leaf1#
 ```
 </div>
 
-But typing in this multiline command is a bit too much for a repetitive process, so here is a little script that you can put in your `$PATH` to quickly SSH to the desired node by its name:
+But typing in this multiline command is a bit too much for a repetitive process, so here is a little script that you can put in your `$PATH` to quickly SSH to the desired node by its name. This script will work for physical nodes as well as simulator nodes.
 
 /// details | `node-ssh` script to connect to a simulator node
     type: example
