@@ -1,12 +1,9 @@
 variables:
   GIT_DEPTH: 0
-  MKDOCS_IMAGE: cr.srlinux.dev/pub/mkdocs-material-insiders:9.6.1-insiders-4.53.15-hellt
+  MKDOCS_IMAGE: ghcr.io/eda-labs/mkdocs-material:v9.7.1-2
 
 htmltest:
   stage: test
-  needs:
-    - job: build
-      artifacts: true
   image:
     name: cr.srlinux.dev/pub/debian:bookworm-slim
   script:
@@ -15,12 +12,17 @@ htmltest:
     - ./bin/htmltest -c docs/htmltest.yml
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
 
 build:
   stage: test
   image:
     name: $MKDOCS_IMAGE
     entrypoint: [""]
+  cache:
+    key: mkdocs-cache
+    paths:
+      - .cache
   script:
     - mkdocs build --site-dir site
   artifacts:
@@ -35,11 +37,27 @@ upload_preview:
     - job: build
       artifacts: true
   image:
-    name: node:lts-alpine
+    name: $MKDOCS_IMAGE
+    entrypoint: [""]
   before_script:
+    - apk add --no-cache nodejs npm curl
     - npm install -g wrangler
   script:
-    - wrangler pages deploy site --project-name=eda-docs --branch=$CI_COMMIT_REF_NAME
+    - wrangler pages deploy site --project-name=eda-docs --branch=$CI_COMMIT_REF_NAME | tee /tmp/wrangler.log
+    - DEPLOY_URL=$(grep -oE 'https?://[^[:space:]]+' /tmp/wrangler.log | sed -n '1p')
+    - ALIAS_URL=$(grep -oE 'https?://[^[:space:]]+' /tmp/wrangler.log | sed -n '2p')
+    - |
+      if [ -n "$DEPLOY_URL" ] && [ -n "$ALIAS_URL" ] && [ -n "$CI_MERGE_REQUEST_IID" ]; then
+        BODY=$(printf "Preview deploy: %s\nPreview alias: %s" "$DEPLOY_URL" "$ALIAS_URL")
+        curl --request POST \
+          --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+          --data-urlencode "body=$BODY" \
+          --write-out " status=%{http_code}\n" \
+          --silent --show-error --fail \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes"
+      else
+        echo "Preview URLs or MR IID missing; skipping comment."
+      fi
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
