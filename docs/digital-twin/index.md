@@ -323,63 +323,6 @@ node2-ethernet-1-10   23m
 </div>
 ///
 
-Everything looks great, but the Interface resource `node2-ethernet-1-10` still shows as operationally down:
-
-```bash
-kubectl get -n net-topo-test interface
-```
-
-<div class="embed-result">
-```{.text .no-copy .no-select}
-NAME                  ENABLED   OPERATIONAL STATE   SPEED   LAST CHANGE   AGE
-node1-ethernet-1-1    true      up                  100G    22m           24m
-node2-ethernet-1-1    true      up                  100G    22m           24m
-node2-ethernet-1-10   true      down                100G    23m           24m
-```
-</div>
-
-Why? Because for SimNode of type `Linux`, EDA's Digital Twin does not automatically bring up the interfaces that we specified in the topology input.  
-If we connect to the shell of the `server2` container image we will see that the `eth1` interface that we specified in the links section of our topology is operationally down. We can bring it up manually with the standard Linux commands:
-
-```bash title="connecting to the shell of the server2 SimNode"
-kubectl -n eda-system exec -it \
-$(kubectl get -n eda-system pods -l 'cx-node-namespace=net-topo-test' \
--l 'cx-pod-name=server2' \
--o jsonpath='{.items[].metadata.name}') \
--- bash
-```
-
-<div class="embed-result">
-```{.text .no-copy .no-select}
-[*]─[cx-net-topo-test--server2-sim-58cb56dd56-sgh6r]─[/]
-└──> ip link show eth1
-3: eth1@eth1-cx: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether 5e:80:14:5e:bf:6f brd ff:ff:ff:ff:ff:ff
-```
-</div>
-
-Let's bring up the interface with the `ip link set` command:
-
-```bash
-[*]─[cx-net-topo-test--server2-sim-58cb56dd56-sgh6r]─[/]
-└──> ip link set eth1 up
-```
-
-Immediately after that we can see that the Interface resource for the `ethernet-1-10` port on `node2` is now operationally up:
-
-```bash
-kubectl get -n net-topo-test interface
-```
-
-<div class="embed-result">
-```{.text .no-copy .no-select}
-NAME                  ENABLED   OPERATIONAL STATE   SPEED   LAST CHANGE   AGE
-node1-ethernet-1-1    true      up                  100G    37m           38m
-node2-ethernet-1-1    true      up                  100G    37m           38m
-node2-ethernet-1-10   true      up                  100G    7s            38m
-```
-</div>
-
 Now you know how to define SimNodes in the Network Topology workflow and connect edge links to them.
 
 ### Connections topology
