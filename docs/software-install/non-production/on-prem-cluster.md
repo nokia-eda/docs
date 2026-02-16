@@ -32,7 +32,7 @@ rd-eda1-w6   Ready    <none>          31d   v1.30.1
 ```
 </div>
 
-:scream: A 6-node k8s cluster running vanilla Kubernetes 1.30.1 release! Each node has 4vCPU and 16GB of RAM amounting to a total of 24vCPU and 96GB of RAM. This is a decent-sized cluster for running EDA [playground][pg-repo].
+A 6-node k8s cluster running vanilla Kubernetes 1.30.1 release! Each node has 4vCPU and 16GB of RAM amounting to a total of 24vCPU and 96GB of RAM. This is a decent-sized cluster for running EDA [playground][pg-repo].
 
 ## Storage classes
 
@@ -111,7 +111,7 @@ Right, the same target that would otherwise install EDA on a local development K
 
 ![final-pods](https://gitlab.com/rdodin/pics/-/wikis/uploads/55b10f7ea1b74501ee2434641e17edc4/piceda1.webp){.img-shadow}
 
-Now you have a fully functional EDA installation running in a real Kubernetes cluster. Congratulations :partying_face:
+Now you have a fully functional EDA installation running in a real Kubernetes cluster. Congratulations!
 
 With a real cluster, you would likely want to have a GatewayAPI or Ingress configured so that you can access the EDA UI and API. We've prepared a [separate guide](../exposing-ui-api.md) to help you with that.
 
