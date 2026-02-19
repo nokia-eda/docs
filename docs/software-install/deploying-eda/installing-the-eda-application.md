@@ -171,6 +171,24 @@ Example: `203.0.113.10/32`
 The FQDN that resolves to the EDA VIP or the VIP itself.
 
 This value must be the FQDN or VIP address that is used to access the UI. If you use two networks, this value must be the FQDN or IP address of the OAM network.
+
+When you configure 
+```
+EXT_DOMAIN_NAME = some.unreachable.address
+EXT_IPV4_ADDR = 1.2.3.4 
+```
+or 
+```
+EXT_DOMAIN_NAME = some.unreachable.address
+EXT_IPV4_ADDR = 1.2.3.4 
+```
+You will get a keycloak error when you surf to 1.2.3.4:
+<img width="1409" height="931" alt="image" src="https://github.com/user-attachments/assets/1ef6b92d-2155-4504-a118-525eaa094f27" />
+If you do not have a valid domain name, you need to configure:
+```
+EXT_DOMAIN_NAME = 1.2.3.4
+EXT_IPV4_ADDR = 1.2.3.4 
+```
 /////
 ////
 
