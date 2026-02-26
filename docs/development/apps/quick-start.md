@@ -48,11 +48,12 @@ Without further ado, let's get started by going into a directory where we want t
     edabuilder create app banners #(1)!
     ```
 
-    //// warning
-    If your application name is more than one word, the name must be in a kebab-case format.
+    1.  
+        //// warning
+        If your application name is more than one word, the name must be in a kebab-case format.
 
-    In this example, the app name is simply `banners`, but if you wanted to name it "my banners", then you should've named it `my-banners`.
-    ////
+        In this example, the app name is simply `banners`, but if you wanted to name it "my banners", then you should've used `my-banners` argument value.
+        ////
 
     This step should generate the `banners` directory where you will find the scaffolded layout of the application with no particular logic implemented yet.
 
