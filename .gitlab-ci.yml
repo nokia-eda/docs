@@ -4,6 +4,9 @@ variables:
 
 htmltest:
   stage: test
+  needs:
+    - job: build
+      artifacts: true
   image:
     name: cr.srlinux.dev/pub/debian:bookworm-slim
   script:
