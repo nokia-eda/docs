@@ -10,6 +10,8 @@ The `edaadm` tool helps with the creation of the necessary machine configuration
 
 The EDAADM configuration file is a YAML file that describes your Talos Kubernetes environment. You can use it to configure the different nodes and the general Kubernetes cluster environment.
 
+> For better readability, hover on the top right corner of the table header and click the "Expand table" icon.
+
 /// html | table
 //// html | th[style='text-align: center;']
 Top-level parameter
@@ -163,7 +165,7 @@ IPv6 and dual-stack are supported from EDA 25.8.2 onwards.
 `vip`
 ////////
 //////// html | td
-The [Virtual IP (VIP) address](https://www.talos.dev/v1.9/talos-guides/network/vip/) used for Kubernetes API access and the interfaces to which they should be attached in the control plane nodes. Choose the value depending on the IP stack in use:
+The [Virtual IP (VIP) address](https://docs.siderolabs.com/talos/-{{ talos_version }}-/networking/vip) used for Kubernetes API access and the interfaces to which they should be attached in the control plane nodes. Choose the value depending on the IP stack in use:
 
 * `interface`: the interface to which the VIP is attached on the nodes.
 
@@ -238,7 +240,7 @@ Network settings for the nodes:
 * `validSubnets`: the list of IPv4 and/or IPv6 subnets used by the k8s nodes.
     Can be used to force the node convergence in a multi-nic environment to a single or a set of subnets.  
     Also sets the subnet over which etcd should converge, perform heartbeats and leader election.  
-    This property in the adm configuration sets the following talos [machine config properties](https://www.talos.dev/v1.9/introduction/prodnotes/#multihoming-and-etcd):  
+    This property in the adm configuration sets the following talos [machine config properties](https://docs.siderolabs.com/talos/-{{talos_version}}-/networking/multihoming):  
       - `cluster.k8s.etcd.advertisedSubnets`
       - `machine.kubelet.nodeIP.validSubnets`
 
@@ -396,6 +398,38 @@ Only needed for Air-gapped environment, following settings can be set:
 <!-- k8s descr cell end -->
 ////
 <!-- k8s row end -->
+<!-- logging row start -->
+//// html | tr
+///// html | td
+`logging`
+/////
+<!-- logging descr cell start -->
+///// html | td
+Talos [logging](https://docs.siderolabs.com/talos/-{{ talos_version }}-/configure-your-talos-cluster/logging-and-telemetry/logging#sending-logs) configuration settings:
+
+<!-- logging sub-table start -->
+////// html | table
+
+/////// html | tr
+//////// html | td
+`destinations`
+////////
+//////// html | td
+A list of logging destinations to which the Talos logs should be sent. Consult the [Talos logging documentation](https://docs.siderolabs.com/talos/-{{ talos_version }}-/configure-your-talos-cluster/logging-and-telemetry/logging#sending-logs) for the supported logging destinations options. Example:
+
+```yaml
+- endpoint: "udp://127.0.0.1:12345/"
+  format: "json_lines"
+- endpoint: "tcp://host:5044/"
+  format: "json_lines"
+```
+
+////////
+///////
+//////
+/////
+////
+<!-- logging row end -->
 ///
 
 ### Example EDAADM configuration file
