@@ -237,6 +237,7 @@ extra:
   eda_version: "25.12.1" # current EDA version (provided without the v prefix)
   srl_version: "25.10.1" # latest SRL version for the current EDA version
   rook_ceph_version: "v1.18.7"
+  talos_version: "v1.11" # current talos maj.min version
   social:
     - icon: nokia/N-white
       link: https://www.nokia.com/data-center-networks/data-center-fabric/event-driven-automation/
