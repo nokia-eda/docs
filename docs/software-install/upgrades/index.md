@@ -18,6 +18,35 @@ The upgrade procedure does not change based on whether you have the Internet or 
 In geo redundant clusters, cluster members cannot run different versions. Therefore, before the software upgrade, you must first break cluster redundancy and then restore redundancy after the upgrade. To break the redundancy, remove the `.spec.cluster.redundant` section from the `EngineConfig` resource as described later in this document.
 ///
 
+/// admonition | Version-specific upgrade considerations
+    type: info
+When upgrading from versions **older than 25.4.1**, ensure that the NodeGroup resources used by the nodes contain both gNOI and gNSI services.
+
+```bash title="Example NodeGroup resource with gNOI and gNSI services"
+kubectl get -n eda nodegroup sudo -o yaml
+```
+
+<div class="embed-result">
+```{.shell .no-select .no-copy}
+apiVersion: aaa.eda.nokia.com/v1alpha1
+kind: NodeGroup
+metadata:
+  labels:
+    eda.nokia.com/bootstrap: "true"
+  name: sudo
+  namespace: eda
+spec:
+  services:
+  - GNMI
+  - CLI
+  - NETCONF
+  - GNSI # <--- ensure gNSI is present
+  - GNOI # <--- ensure gNOI is present
+  superuser: true
+```
+</div>
+///
+
 /// admonition | EDA upgrade procedure scope
     type: subtle-note
 This is the Nokia EDA software upgrade procedure, it does not cover upgrading Talos Linux or Kubernetes. Nokia EDA does not require upgrading Talos or Kubernetes for every EDA version upgrade, unless explicitly stated in the release notes.
