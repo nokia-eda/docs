@@ -108,10 +108,19 @@ EOF
 ///
 
 After creating the Service Account Token, retrieve the actual token using the following command from the `eda-system` namespace:
-
+/// tab | YAML Resource
 ```bash
 kubectl get secrets/k8s-controller-plugin -n eda-system --template={{.data.token}} | base64 --decode
 ```
+/// tab | `for OLM based deployment` command
+This section is only applicable when using the OLM installation. The secret to be used  can be extracted usign below command
+
+```bash
+kubectl get secrets/k8s-controller-plugin -n eda-system --template={{.data.token}}
+```
+
+///
+kubectl get secret
 
 This token will be needed during plugin deployment.
 
