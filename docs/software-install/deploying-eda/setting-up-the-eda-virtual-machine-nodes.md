@@ -279,6 +279,8 @@ Kubernetes pods and services network settings.
         - 10.96.0.0/12
         - fd31:e17c:f07f:2dc0:4e2b:2ebc:cbc0:0/108
         ```
+  **Note:- Avoid using 172.16-19.X.X subnets as they conflict with hypervisor Docker subnets causing cluster bootstrappign issues.**
+
 
 * `node-cidr-mask-size-ipv4`: Defines the subnet mask size for IPv4 network as defined by the `podSubnets` that each node will use.  
     Default: `24`
