@@ -701,34 +701,20 @@ rtt min/avg/max/mdev = 2.886/2.886/2.886/0.000ms
 
 > More TestMan capabilities are coming soon, stay tuned!
 
-## Connecting to the Digital Twin Nodes
+## Connecting to the Digital Twin nodes
 
-By the virtue of being Kubernetes-native, each simulator node in the Digital Twin is represented by a pod that runs the network OS and the datapath component. Therefore, you can connect and expose the simulator nodes using the standard Kubernetes tooling and methods.
+Each simulator node in the Digital Twin is represented by a Kubernetes pod running the network OS and the datapath component. Therefore, you can connect and expose the simulator nodes using the standard Kubernetes tools.
 
-For long-term access to the simulated nodes an administrator might create a service and an ingress or loadbalancer resource. This typically requires some additional configuration and infrastructure setup, but achieves persistent access to the selected ports and protocols.
+> For long-term access to the simulated nodes, an administrator can create a service and an ingress or loadbalancer resource. This typically requires some additional configuration and infrastructure setup, but achieves persistent access to the selected ports and protocols.
 
-Typically, though, users would want to connect with SSH to the simulator nodes to inspect the configuration, logs or run ad-hoc commands. Start with listing the TopoNodes in your namespace using `kubectl`. If you are running the [Try EDA](../getting-started/try-eda.md) cluster, you can expect to see the three nodes in the output:
-
-```bash
-kubectl -n eda get toponodes 
-```
-
-<div class="embed-result">
-```{.text .no-copy .no-select}
-NAME     PLATFORM       VERSION   OS    ONBOARDED   MODE     NPP         NODE     AGE
-leaf1    7220 IXR-D3L   25.3.2    srl   true        normal   Connected   Synced   99m
-leaf2    7220 IXR-D3L   25.3.2    srl   true        normal   Connected   Synced   99m
-spine1   7220 IXR-H2    25.3.2    srl   true        normal   Connected   Synced   99m
-```
-</div>
-
-As we explained earlier, each TopoNode is backed by a Kubernetes deployment that runs the simulator. These deployments are spawned in the EDA core namespace (`eda-system` by default) and have the `eda.nokia.com/app-group=cx-cluster` label set:
+Digital Twin users often require connecting over SSH to the simulator nodes to inspect the configuration, logs, or run ad-hoc commands. Start by listing the TopoNodes in your namespace using `kubectl`. If you are running the [Try EDA](../getting-started/try-eda.md) cluster, you have the three TopoNode resources - leaf1, leaf2, spine2 - making up your topology.  
+As established earlier, each TopoNode is backed by a Kubernetes deployment that runs the simulator pod. These deployments are spawned in the EDA core namespace (`eda-system` by default) and have the `eda.nokia.com/app-group=cx-cluster` label set:
 
 ```bash
 kubectl -n eda-system get deploy -l eda.nokia.com/app-group=cx-cluster
 ```
 
-<div class="embed-result">
+<div markdown class="embed-result">
 ```{.bash .no-copy .no-select}
 NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
 cx-eda--leaf1-sim             1/1     1            1           3h32m
@@ -737,63 +723,18 @@ cx-eda--spine1-sim            1/1     1            1           3h32m
 cx-eda--testman-default-sim   1/1     1            1           3h32m
 ```
 
-<small>If you are running the Try EDA cluster, you will see the <code>testman</code> deployment as well. This is a special testing agent that we will cover in a later section.</small>
+<small markdown>In the Try EDA deployment, you will also see the <code>testman</code> deployment, a [special testing agent](#testman).</small>
 
 </div>
 
-As per the virtual topology that comes with the [Try EDA](../getting-started/try-eda.md) cluster, we got three simulator deployments for leaf1, leaf2 and spine1 nodes. Using `kubectl` we can connect to the node's shell and execute the CLI process to get the CLI access:
+To connect to the nodes over SSH, use the `node-ssh` script provided in the [Network Topology section](../user-guide/network-topology.md#connecting-to-the-nodes):
 
 ```bash
-kubectl --namespace eda-system exec -it \
-$(kubectl --namespace eda-system get pods -l cx-pod-name=leaf1 \
--o=jsonpath='{.items[*].metadata.name}') \
--- bash -l -c 'sudo sr_cli'
-```
-
-<div class="embed-result">
-```{.text .no-copy .no-select}
-Defaulted container "leaf1" out of: leaf1, cxdp
-Loading environment configuration file(s): ['/etc/opt/srlinux/srlinux.rc']
-Welcome to the Nokia SR Linux CLI.
-
---{ + running }--[  ]--
-A:root@leaf1#
-
-```
-</div>
-
-But typing in this multiline command is a bit too much for a repetitive process, so here is a little script that you can put in your `$PATH` to quickly SSH to the desired node by its name. This script will work for physical nodes as well as simulator nodes.
-
-/// details | `node-ssh` script to connect to a simulator node
-    type: example
-/// tab | script
-```bash
---8<-- "docs/digital-twin/node-ssh"
-```
-
-///
-/// tab | adding to `$PATH`
-
-You can paste this command in your terminal to add the script to `/usr/local/bin` directory, and make it executable:
-
-```bash
-cat << 'EOF' | sudo tee /usr/local/bin/node-ssh
---8<-- "docs/digital-twin/node-ssh"
-EOF
-sudo chmod +x /usr/local/bin/node-ssh
-```
-
-///
-///
-
-With the `node-ssh` script in place, you can connect with ssh to any node in your Digital Twin by its name:
-
-```bash
-# Usage: ./node-ssh <node-name> [<user-namespace>:-eda] [<core-namespace>:-eda-system]
+# Usage: node-ssh <node-name> [<user-namespace>:-eda] [<core-namespace>:-eda-system]
 node-ssh spine1
 ```
 
-For SimNodes that don't have SSH access (like SimNodes running generic Linux containers), use the `node-shell` script that opens up a shell in the simulator pod:
+For SimNodes that do not run an SSH server (like SimNodes running generic Linux containers), use the `node-shell` script that opens up a shell in the simulator pod:
 
 /// details | `node-shell` script to open a shell to a simulator node
     type: example
@@ -801,6 +742,13 @@ For SimNodes that don't have SSH access (like SimNodes running generic Linux con
 
 ```bash
 --8<-- "docs/digital-twin/node-shell"
+```
+
+With the `node-shell` script in place, you can open the shell to any node in your Digital Twin by its name:
+
+```bash
+# Usage: ./node-shell <node-name> [<user-namespace>:-eda] [<core-namespace>:-eda-system]
+node-shell testman-default
 ```
 
 ///
@@ -817,20 +765,6 @@ sudo chmod +x /usr/local/bin/node-shell
 
 ///
 ///
-
-With the script in place, you can connect to any node in your Digital Twin by its name:
-
-```bash
-# Usage: ./node-ssh <node-name> [<user-namespace>:-eda] [<core-namespace>:-eda-system]
-node-ssh spine1
-```
-
-With the `node-shell` script in place, you can open the shell to any node in your Digital Twin by its name:
-
-```bash
-# Usage: ./node-shell <node-name> [<user-namespace>:-eda] [<core-namespace>:-eda-system]
-node-shell testman-default
-```
 
 ## Configuring Simulator Resource Requests
 
@@ -938,5 +872,5 @@ leaf1   100m,50m      500Mi,100Mi
 
 [install-doc]: ../software-install/deploying-eda/installing-the-eda-application.md#customizing-the-installation
 
-[^1]: EDA does not bundle the virtual simulators for the 3rd-party vendors. Users should obtain the simulators themselves and made them available to the Digital Twin.
+[^1]: EDA does not bundle the virtual simulators for the 3rd-party vendors. Users should obtain the simulators themselves and make them available to the Digital Twin.
 [^2]: Like [Nokia SR Linux](https://github.com/nokia/srlinux-container-image), Nokia SR OS (SR-SIM) or third-party vendor simulator, e.g. Arista EOS.
