@@ -1,46 +1,68 @@
 #!/bin/bash
 
 # Script to SSH into a specific node in the EDA topology
-# Usage: ./node-ssh <node-name> [<user-namespace>:-eda] [<core-namespace>:-eda-system]
+# Usage: ./node-ssh <node-name> [<namespace>] [ssh-options...]
 
 # provide the TopoNode name as the first argument
-# e.g. node-ssh leaf1
+# e.g. bash node-ssh.sh leaf1
 NODE_NAME=${1}
 
 # user namespace to look up the TopoNode in
 # default is eda
 USER_NS=${2:-eda}
 
-# core namespace to cx pods in
-# default is eda
-CORE_NS=${3:-eda-system}
+# core namespace, override via CORE_NS env var
+CORE_NS=${CORE_NS:-eda-system}
+
+if [ $# -gt 2 ]; then
+  shift 2
+  SSH_EXTRA_ARGS=("$@")
+else
+  SSH_EXTRA_ARGS=()
+fi
 
 function list_nodes() {
-  kubectl --namespace ${CORE_NS} get pods -l cx-cluster-name=eda \
+  local node_ns=${1}
+  if ! kubectl get namespace "${node_ns}" &>/dev/null; then
+    echo "Error: namespace '${node_ns}' does not exist" >&2
+    return 1
+  fi
+  kubectl --namespace "${CORE_NS}" get pods -l cx-cluster-name=eda -l cx-node-namespace=${node_ns} \
   -o=jsonpath='{.items[*].metadata.labels.cx-pod-name}' | tr ' ' '\n'
 }
 
 if [ -z "${NODE_NAME}" ]; then
-  echo "Usage: $0 <node-name> [<namespace>]"
+  echo "Usage: $0 <node-name> [<namespace>] [ssh-options...]"
   echo "  Available nodes are:"
-  list_nodes | sed 's/^/    /'
+  list_nodes "${USER_NS}" | sed 's/^/    /'
   exit 1
 fi
 
 NODE_ADDR=$(kubectl -n ${USER_NS} get targetnode "${NODE_NAME}" -o jsonpath='{.spec.address}')
 if [ -z "${NODE_ADDR}" ]; then
   echo "Node ${NODE_NAME} not found in namespace ${USER_NS}; available nodes are:"
-  list_nodes | sed 's/^/    /'
+  list_nodes "${USER_NS}" | sed 's/^/    /'
   exit 1
 fi
 
 USERNAME=admin
-# SSH to the node from the eda-toolbox pod
-kubectl -n ${CORE_NS} exec -it \
-  $(kubectl get -n ${CORE_NS} pods \
-  -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}") \
-  -- ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-  -p 22 "${USERNAME}@${NODE_ADDR}" || {
+TOOLBOX_POD=$(kubectl get -n ${CORE_NS} pods \
+  -l eda.nokia.com/app=eda-toolbox -o jsonpath="{.items[0].metadata.name}")
+
+# Deploy the TCP relay to the toolbox pod
+kubectl -n "${CORE_NS}" exec -i "${TOOLBOX_POD}" -- sh -c 'cat > /tmp/sr.sh' <<'RELAY'
+exec 3<>/dev/tcp/$1/$2
+cat <&3 &
+PID=$!
+trap "kill $PID 2>/dev/null" EXIT
+cat >&3
+RELAY
+
+
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+  -o "ProxyCommand=kubectl -n ${CORE_NS} exec -i ${TOOLBOX_POD} -- bash /tmp/sr.sh %h %p" \
+  -A -p 22 "${SSH_EXTRA_ARGS[@]}" "${USERNAME}@${NODE_ADDR}" || {
   echo "Failed to SSH into node ${NODE_NAME} at ${NODE_ADDR}"
   exit 1
 }
+ 
