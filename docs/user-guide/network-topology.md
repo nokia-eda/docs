@@ -1120,6 +1120,46 @@ The below video demonstrates how the Dry Run mode works in practice.
 
 -{{video(url='https://gitlab.com/-/project/7617705/uploads/2d6af323ca96d821286e5badf37acf2a/checks.mp4')}}-
 
+## Connecting to the nodes
+
+EDA operators can fully manage the network nodes using the platform's API and UI interfaces. Occasionally, users might want to connect to the managed nodes over SSH to inspect the node configuration, logs, or run ad-hoc CLI commands.
+
+As EDA itself has network connectivity to the nodes, users can leverage its Toolbox pod as a jump host to establish the SSH connection.
+
+The `node-ssh` script below is a convenience wrapper around the `kubectl` and `ssh` commands that allows users to easily open SSH connection to the nodes under EDA's management while not having direct network connectivity to the nodes from their local machines.
+
+/// details | `node-ssh` script to connect to the nodes over SSH
+    type: example
+/// tab | script
+
+```bash
+--8<-- "docs/digital-twin/node-ssh"
+```
+
+///
+/// tab | adding to `$PATH`
+
+You can paste this command in your terminal to add the script to `/usr/local/bin` directory, and make it executable:
+
+```bash
+cat << 'EOF' | sudo tee /usr/local/bin/node-ssh
+--8<-- "docs/digital-twin/node-ssh"
+EOF
+sudo chmod +x /usr/local/bin/node-ssh
+```
+
+///
+///
+
+With the `node-ssh` script, users can provide the name and optionally the namespaces of the node they want to connect to:
+
+```bash
+# default namespaces:
+# Core namespace: eda-system
+# User namespace: eda
+node-ssh spine1
+```
+
 [gs-guide]: ../getting-started/try-eda.md
 
 [^1]: Edge devices are not shown in the diagram because they are not (currently) managed by EDA and hence are not part of the topology. However, the links from the nodes to the edge devices must be modelled with `TopoLink` resources of type `edge` to allow EDA to manage these interfaces.
