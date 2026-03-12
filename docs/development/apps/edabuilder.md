@@ -15,6 +15,7 @@
 * `generate appsettings`: Scaffold a new `settings` directory, which you can further customise to provide documentation for your app's settings.
 * `generate appsettings-openapi`: Generate an OpenAPI spec based on the settings struct in your `settings` directory.
 * `deploy`: build, publish and install your application in your EDA cluster, allowing you to test it immediately and iteratively, during development[^1].
+* `import pyapi`: import a Python API of an existing app into your app.[^2]
 
 /// admonition | Working directories
     type: note
@@ -137,7 +138,7 @@ spec:
 
 ## Configuring deploy targets
 
-The `edabuilder deploy` command is customisable through a configuration file located at `~/.config/edabuilder/config.yaml`[^2]. It allows a user to provide the so called _deploy targets_ - the custom OCI registry and application catalog pairs that a user can select from when deploying an app. The configuration file is structured as follows:
+The `edabuilder deploy` can be customized through a configuration file located at `~/.config/edabuilder/config.yaml`[^3]. This file lets users define _deploy targets_, pairs of OCI registries and application catalogs from which they can choose when deploying an app. The configuration file is structured as follows:
 
 ```yaml
 # a map of named deploy targets
@@ -196,13 +197,14 @@ Both the catalog and registry may require authentication for cloning or fetching
 
 However, when using public registries and catalogs, users do not need to provide authentication data for read operations.
 
-To provide this flexibility, the `read-authentication` boolean setting is available at the deploy-target level.
+To provide this flexibility, the `read-authentication` Boolean setting is available at the deploy-target level.
 
-* When set to `false` (or when not present), both the catalog and registry are considered public, and reads can be performed without authentication.
-* When set to `true`, authentication is required to read from the registry and catalog. In this case, during the `deploy` command, a prompt will appear asking if you want `edabuilder` to configure the associated secrets using authentication data previously provided via the `edabuilder login registry` or `edabuilder login catalog` commands (stored in `~/.config/edabuilder/auth.json`[^3]).
+* When set to `false` (or when not present), both the catalog and registry are considered public, allowing read operations without authentication.
+* When set to `true`, authentication is required to read from the registry and catalog. During the `deploy` command, a prompt appears asking whether `edabuilder` should configure the necessary secrets using authentication data you previously provided with the `edabuilder login registry` or `edabuilder login catalog` commands (stored in `~/.config/edabuilder/auth.json`[^4]).
 
 If you choose "Yes," the matching authentication data is provisioned as a Kubernetes secret and referenced in the corresponding catalog or registry. If you select "No," no secrets are configured, and a prompt will inform you that these secrets should be created manually.
 
 [^1]: For more information on packaging, publishing and iteratively deploying apps, refer to [Build and Publish](build-publish.md)
-[^2]: You can provide a custom location for this file by setting the `EDABUILDER_CONFIG` environment variable.
-[^3]: You can provide a custom location for this file by setting the `EDABUILDER_AUTH_CONFIG` environment variable.
+[^2]: For an example of how Python API of an existing app can be imported into your app, refer to [Building Abstractions](scripts/building-abstractions.md#dependencies).
+[^3]: You can provide a custom location for this file by setting the `EDABUILDER_CONFIG` environment variable.
+[^4]: You can provide a custom location for this file by setting the `EDABUILDER_AUTH_CONFIG` environment variable.
