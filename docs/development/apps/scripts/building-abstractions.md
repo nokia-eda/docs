@@ -644,7 +644,7 @@ The dependency directory - `deps` is also added to the `manifest.yaml` file to i
 +        path: simple_fabrics/deps
 ```
 
-Because our app requires the Fabrics app to be installed we also need to add the Fabrics app as a required app in the `manifest.yaml` file:
+Since the Simple Fabrics app now requires the Fabrics app to be installed, `edabuilder` also adds the Fabrics app as a requirement for the Simple Fabrics app in the `manifest.yaml` file:
 
 ```diff title="simple_fabrics/manifest.yaml"
 @@ -40,3 +40,6 @@ spec:
@@ -658,7 +658,7 @@ Because our app requires the Fabrics app to be installed we also need to add the
 
 The App ID is the fully qualified name of the Fabrics app as registered in the EDA App Catalog. It matches the `group` value in the apps' manifest.yaml file and can be seen in the URL when viewing the app details in the EDA Store UI.
 
-The version field sets the required version of an app we depend on. A loose version constraint like `v5.0.*` can be set to allow any minor or patch version of the Fabrics app in the 5.0 series to satisfy the dependency.
+The version field sets the required version of an app we depend on. A loose version constraint like `v5.0.*` is set to allow any minor or patch version of the Fabrics app in the 5.0 version to satisfy the dependency.
 
 If you now deploy the Simple Fabrics app again and open the EDA Store UI, you will see how the Fabrics app (and all the apps that Fabrics app requires) are automatically listed as requirements.
 

@@ -200,7 +200,7 @@ plugins:
   - tags
   - typeset
   - optimize:
-      concurrency: 2
+      concurrency: 1
   - minify:
       minify_html: true
   - rss:
