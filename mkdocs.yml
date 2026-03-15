@@ -182,6 +182,7 @@ plugins:
   - meta
   - search
   - glightbox
+  - crd-viewer
   - macros:
       j2_block_start_string: "-{{%"
       j2_block_end_string: "%}}-"
@@ -191,6 +192,8 @@ plugins:
       #   - macros/vars.yml
       include_dir: macros
       module_name: macros/main
+      modules:
+        - mkdocs_crd_viewer.macros
   - blog:
       post_url_format: "{slug}"
       archive: false
