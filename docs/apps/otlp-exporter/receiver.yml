@@ -1,0 +1,22 @@
+apiVersion: otlp.eda.nokia.com/v1alpha1
+kind: Receiver
+metadata:
+  name: receiver1
+  namespace: eda
+spec:
+  endpoint: http://otel-collector.example.com:4318/v1/metrics
+  protocol: http
+  authorization:
+    type: Bearer
+    credentials: ""
+  writeOptions:
+    bufferSize: 1000
+    compression: gzip
+    flushInterval: 10s
+    maxMetricsPerExport: 500
+    retries:
+      initialInterval: 1s
+      maxElapsedTime: 100s
+      maxInterval: 60s
+    timeout: 10s
+    headers: []

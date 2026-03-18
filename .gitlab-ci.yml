@@ -2,6 +2,10 @@ variables:
   GIT_DEPTH: 0
   MKDOCS_IMAGE: ghcr.io/eda-labs/mkdocs-material:v9.7.5-1
 
+default:
+  tags:
+    - esisogr87
+
 htmltest:
   stage: test
   needs:
@@ -26,8 +30,8 @@ build:
     key: mkdocs-cache
     paths:
       - .cache
-    unprotect: true
     when: always
+    unprotect: true
   script:
     - mkdocs build --site-dir site
   artifacts:

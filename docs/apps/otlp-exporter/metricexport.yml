@@ -1,0 +1,24 @@
+apiVersion: otlp.eda.nokia.com/v1alpha1
+kind: MetricExport
+metadata:
+  name: metricexport1
+  namespace: eda
+spec:
+  exports:
+    - path: .namespace.node{.name=="leaf-1"}.srl.interface{.name=="mgmt0"}.statistics
+      fields:
+        - name: out-octets
+          type: Gauge
+      interval: 10s
+      mode: periodic
+      metricName:
+        regex: out_octets
+        replacement: interface_out_octets
+      resource: {}
+      attributes:
+        static:
+          - name: exporter
+            value: eda
+      mappings: []
+  receivers:
+    - receiver1
