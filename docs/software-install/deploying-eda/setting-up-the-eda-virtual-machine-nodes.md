@@ -536,36 +536,23 @@ This procedure expects two networks to be available on the KVM hypervisors. The 
     ```
 
 2. Verify that the ISO image downloaded in [Downloading the KVM image](../preparing-for-installation.md#downloading-the-kvm-image) is available on the hypervisor.
-3. Copy the machine configuration file generated for this specific node to a file called user-data.
+3. Create the cloud-init ISO file for the EDA nodes.
 
-    ```
-    cp eda-node01-control-plane.yaml user-data 
-    ```
+    Use the `edaadm` tool to generate the cloud-init files for the EDA nodes using the edaadm configuration file:
 
-4. Create a file called meta-data for the node.
-    Use the appropriate instance-id and local-hostname values.
-
-    ```
-    instance-id: eda-node01 
-    local-hostname: eda-node01 
+    ```bash
+    edaadm make-iso -c eda-input-6-node.yaml #(1)!
     ```
 
-5. Create a file called `network-config` for the node.
+    1. Where `eda-input-6-node.yaml` is the name of the EDAADM configuration file for your EDA deployment.
 
-    The file should have the following content:
+    The `<machine-name>-data.iso`[^1] file(s) will be created in the `<cluster-name>` folder containing the cloud-init information for all EDA VMs defined in the EDAADM configuration file:
 
-    ```
-    version: 2
-    ```
+    * `meta-data` file containing the instance-id and local-hostname values set to `.machines[*].name`
+    * `network-config` file containing `version: 2` key/value pair. Device types are not specified and will be defined by Talos.
+    * `user-data` file containing the Talos machine configuration file for the corresponding EDA VM.
 
-6. Create an ISO file containing the newly created files.
-    For ease of use, name the ISO file with the name of the node for which you are creating the ISO.
-
-    ```
-    mkisofs -o eda-node01-data.iso -V cidata -J -r meta-data network-config user-data 
-    ```
-
-7. Create the virtual machine.
+4. Create the virtual machine.
     This step uses both the newly created ISO file and the ISO file downloaded from the Talos Machine Factory.
 
     ```
@@ -720,3 +707,5 @@ This procedure uses two networks (portgroups) to be available on the ESXi hyperv
 6. Power on the virtual machine.
 
 ///
+
+[^1]: For example, `eda-node01-data.iso` for the eda-node01 machine.

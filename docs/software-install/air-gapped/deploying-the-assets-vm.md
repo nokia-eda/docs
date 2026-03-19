@@ -74,7 +74,7 @@ k8s:
 3. The storage disk definition is required by edaadm, but the disk does not need to exist on the Assets VM. Can be set to any value.
 4. Pay attention to the set MTU value as the linux bridges, interfaces, and networks between the Assets VM and the EDA Kubernetes cluster nodes must allow for the same MTU size.
 
-Considering you are in the `edaadm` repository root, save the configuration file as `eda-assets-deployment.yaml`.
+Assuming you are in the `edaadm` repository root, save the configuration file as `eda-assets-deployment.yaml`.
 
 ## Generating the Talos Machine Configuration Files
 
@@ -129,18 +129,18 @@ This procedure is executed on the KVM Hypervisor which will host the Assets VM.
 
 /// html | div.steps
 
-1. Ensure that the `virt-install` and `genisoimage` tools are installed on the KVM hypervisor.
+1. Ensure that the `virt-install` tool is installed on the KVM hypervisor.
 
     If you need to install the tools, use the following command:
 
     ```bash
-    sudo yum install virt-install genisoimage
+    sudo yum install virt-install
     ```
 
     or
 
     ```bash
-    sudo apt --no-install-recommends install virtinst genisoimage
+    sudo apt --no-install-recommends install virtinst
     ```
 
 2. Verify that the Assets VM ISO image is available.
@@ -161,35 +161,17 @@ This procedure is executed on the KVM Hypervisor which will host the Assets VM.
 
     The next step is to create the cloud-init ISO file with the machine configuration file and the necessary metadata.
 
-    Standing in the root of the edaadm repository, copy the machine configuration file generated for the Assets VM to a file called `user-data`. If you have been using the example edaadm configuration file from above, the command would be:
-
-    ```
-    cp eda-airgap-assets/eda-assets.yaml user-data
-    ```
-
-    Create a file called `meta-data` with the instance-id and local-hostname values:
+    Use the `edaadm` tool to generate the cloud-init files for the Assets VM using the edaadm configuration file:
 
     ```bash
-    cat <<'EOF' > meta-data
-    instance-id: eda-assets 
-    local-hostname: eda-assets
-    EOF
+    edaadm make-iso -c eda-assets-deployment.yaml
     ```
 
-    And lastly, create a file called `network-config` for the node with the following content:
+    The `eda-assets-data.iso`[^2] file will be created in the `eda-airgap-assets` folder containing the cloud-init information for the Assets VM:
 
-    ```bash
-    cat <<'EOF' > network-config
-    version: 2
-    EOF
-    ```
-
-    Create an ISO file containing the newly created files.
-    For ease of use, name the ISO file with the name of the node for which you are creating the ISO.
-
-    ```bash
-    mkisofs -o eda-assets-data.iso -V cidata -J -r meta-data network-config user-data 
-    ```
+    * `meta-data` file containing the instance-id and local-hostname values set to `.machines[*].name`
+    * `network-config` file containing `version: 2` key/value pair. Device types are not specified and will be defined by Talos.
+    * `user-data` file containing the Talos machine configuration file for the Assets VM.
 
 4. Create the virtual machine.
     This step uses both the newly created ISO file and the ISO file downloaded from the Talos Machine Factory.
@@ -368,7 +350,7 @@ Set the `EDA_CORE_VERSION`[^1] environment variable (and any `SKIP_...` environm
 export EDA_CORE_VERSION=-{{ eda_version }}-
 ```
 
-Then execute the following command to upload all the assets to the Assets VM:
+Then, execute the following command to upload all the assets to the Assets VM:
 
 ```bash
 make -C bundles/ load-all-bundles \
@@ -390,3 +372,4 @@ make -C bundles/ load-all-bundles \
 Once all uploads have finished successfully, the Assets VM is ready to support the installation of the EDA Talos Kubernetes cluster in the Air-gapped environment.
 
 [^1]: If you used `SKIP_...` environment variables when [downloading the assets](downloading-the-assets.md#downloading-the-assets-bundles), make sure to set the same variables when uploading the assets to the Assets VM.
+[^2]: Where `eda-assets` is the name of the machine defined in the EDAADM configuration file.
