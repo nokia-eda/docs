@@ -3,7 +3,8 @@
 This guide provides step-by-step instructions for installing the EDA Connect Kubernetes plugin using Helm charts.
 
 /// warning
-Before proceeding with this installation method, ensure you have completed all the prerequisites and preparation steps described in the [Kubernetes Plugin Installation](kubernetes-plugin-installation.md) guide.
+Before proceeding with this installation method, ensure you have completed all the prerequisites and preparation steps
+described in the [Kubernetes Plugin Installation](kubernetes-plugin-installation.md) guide.
 ///
 
 ## Prerequisites
@@ -27,9 +28,18 @@ There are two ways to get the Helm charts to deploy the EDA Connect OpenShift pl
 2. Downloading the release tarball and unpacking it:
 
     ```bash
-    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/5.0.0.tar.gz
-    tar zxf 5.0.0.tar.gz 
+    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/5.0.0-1.tar.gz
+    tar zxf 5.0.0-1.tar.gz 
     ```
+
+/// details | Updating helm charts
+type: info
+
+To update the Helm charts to a newer version, simply execute
+```make update-connect-k8s-helm-charts``` or download and unpack the newer release tarball as shown above. Make sure to
+update the version number in the command accordingly.
+
+///
 
 ### Step 2: Create a Namespace for the OpenShift Plugin
 
@@ -41,7 +51,8 @@ kubectl create namespace eda-connect-k8s-controller
 
 ### Step 3: Configure a Pull Secret for the Controller Image
 
-If the EDA Connect OpenShift Plugin Controller image is hosted in a registry that requires authentication, create a Kubernetes secret for OpenShift to pull the image:
+If the EDA Connect OpenShift Plugin Controller image is hosted in a registry that requires authentication, create a
+Kubernetes secret for OpenShift to pull the image:
 
 ```bash
 export PULL_TOKEN=<PULL_TOKEN>
@@ -51,11 +62,41 @@ kubectl create secret docker-registry eda-k8s-image-secret \
   --docker-password=${PULL_TOKEN} \
   -n eda-connect-k8s-controller
 ```
-
 /// details | Getting the pull token
     type: info
 
-The pull token can be retrieved from your EDA deployment. See the [Get the Pull Token](kubernetes-plugin-installation.md#get-the-pull-token) section in the main installation guide for detailed instructions.
+The pull token can be retrieved from your EDA deployment. See
+the [Get the Pull Token](kubernetes-plugin-installation.md#get-the-pull-token) section in the main installation guide
+for detailed instructions.
+///
+
+/// details | Pulltokens In Airgapped Environments
+    type: warning
+If your OpenShift cluster does not have access to the public registry where the controller image is hosted, you
+can use the mirror set up by the airgapped installation method. No pull secret is needed then, but you'll need to update
+the `controller.image` field in the Helm values to point to the mirrored image in your registry.
+
+See [Step 5](#step-5-deploy-the-plugin) for detailed instructions on how to update the Helm values for this scenario.
+An example helm install command with the updated image field would look like this:
+
+```bash
+
+helm install eda-k8s connect-k8s-helm-charts/ \
+  -n eda-connect-k8s-controller \
+  -f helm-values.yaml \
+  --set controller.image=your-registry/eda-connect-k8s-controller:5.0.0 \
+  --set controller.imagePullSecretName="" # No pull secret needed when using mirrored image in airgapped environment
+```
+
+/// details | Update the saved bundle in edaadm
+    type: warning
+Make sure to run 
+```bash 
+make save-eda-bundle-connect-k8s-plugin-5-0-0
+```
+to update the saved bundle with the latest image reference in the eda adm deployment.
+///
+
 ///
 
 ### Step 4: Set Up the Helm Values
@@ -74,14 +115,16 @@ The possible Helm Values are:
 : A name for the plugin. Make sure this is a unique name within your EDA environment.
 
 /// warning | Plugin Name Requirements
-The plugin name must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'` and can only contain alphanumerical
-characters and `.`, `_` and `-`. It must start with an alphanumerical character, and have a length of 63 characters or fewer.
+The plugin name must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'` and can only contain
+alphanumerical
+characters and `.`, `_` and `-`. It must start with an alphanumerical character, and have a length of 63 characters or
+fewer.
 ///
 
 **`heartbeat`**
 : The interval in seconds at which the plugin should send heartbeats. Values between 10-30 are recommended.
 
-_**`namespace`**
+**`namespace`**
 : A name of a namespace in EDA containing the fabric and resources.
 
 /// details | EDA Namespace
@@ -90,10 +133,13 @@ The EDA Namespace is the namespace in EDA where the fabric is configured. This i
 ///
 
 **`skiptlsverify`**
-: Can be enabled to disable server TLS certificate verification when connecting to the EDA Kubernetes cluster (not recommended for production).
+: Can be enabled to disable server TLS certificate verification when connecting to the EDA Kubernetes cluster (not
+recommended for production).
 
 **`tlscertificatedata`**
-: When certificate validation is enabled, this property can contain the certificate information of the EDA Kubernetes cluster, similar to what a kubeconfig would contain. This is only needed if certificate validation is enabled and if the EDA Kubernetes certificate has not been signed by a trusted authority.
+: When certificate validation is enabled, this property can contain the certificate information of the EDA Kubernetes
+cluster, similar to what a kubeconfig would contain. This is only needed if certificate validation is enabled and if the
+EDA Kubernetes certificate has not been signed by a trusted authority.
 
 **`tlsenabled`**
 : Should always be true to make sure TLS is used to secure the communication with the EDA Kubernetes cluster.
@@ -102,10 +148,12 @@ The EDA Namespace is the namespace in EDA where the fabric is configured. This i
 : The URL to reach the EDA Kubernetes cluster API.
 
 **`connectPassword`**
-: The long-lived token created in the [Create a Service Account Token](kubernetes-plugin-installation.md#create-a-service-account-token) section.
+: The long-lived token created in
+the [Create a Service Account Token](kubernetes-plugin-installation.md#create-a-service-account-token) section.
 
 **`connectUsername`**
-: The service account name for the account created in the [Create a Service Account](kubernetes-plugin-installation.md#create-a-service-account) section.
+: The service account name for the account created in
+the [Create a Service Account](kubernetes-plugin-installation.md#create-a-service-account) section.
 
 ### Step 5: Deploy the Plugin
 
@@ -120,5 +168,7 @@ helm install eda-k8s connect-k8s-helm-charts/ \
 
 ## Post-Installation Verification
 
-After deployment, verify the installation was successful using the steps described in the [Post-Installation Verification](kubernetes-plugin-installation.md#post-installation-verification) section of the main installation guide.
+After deployment, verify the installation was successful using the steps described in
+the [Post-Installation Verification](kubernetes-plugin-installation.md#post-installation-verification) section of the
+main installation guide.
 
