@@ -14,7 +14,7 @@ Make sure to first follow the preparation steps outlined in this guide before pr
 ## Prerequisites
 
 /// details | Other Kubernetes Distributions than OpenShift
-type: warning
+    type: warning
 
 This guide focuses on installing the EDA Connect Kubernetes plugin on OpenShift clusters. While it may be possible to adapt these instructions for
 other Kubernetes distributions, such as vanilla Kubernetes or other managed services, please note that these environments are not officially
@@ -115,24 +115,6 @@ kubectl get secrets/k8s-controller-plugin -n eda-system --template={{.data.token
 
 This token will be needed during plugin deployment.
 
-### Get the Pull Token
-
-The EDA Connect OpenShift Plugin images are hosted on ghcr.io requiring authentication, you will need a pull token.
-
-/// details | Getting the pull token
-    type: note
-
-The easiest way to get the token/password for the pull secret is extract it from your EDA deployment and look for the
-`appstore-eda-apps-registry-image-pull` secret. By grabbing the content of that secret and using `base64` to decode the `dockerconfigjson`, you can
-find the password in the resulting JSON file.
-
-The following command shows how to get the token/password (make sure to have the KUBECONFIG for the EDA cluster loaded, not the OpenShift config):
-
-```bash
-kubectl get secret appstore-eda-apps-registry-image-pull -n eda-system -o json | jq -r '.data.".dockerconfigjson"' | base64 -d | jq -r '.auths."ghcr.io".password'
-```
-
-///
 
 ## Configuration Parameters
 
@@ -154,7 +136,7 @@ characters and `.`, `_` and `-`. It must start with an alphanumerical character,
 : The namespace in EDA containing the fabric and resources.
 
 /// details | EDA Namespace
-type: warning
+    type: warning
 The EDA Namespace is the namespace in EDA where the fabric is configured. This is different from the `eda-system` namespace used for EDA system components.
 ///
 

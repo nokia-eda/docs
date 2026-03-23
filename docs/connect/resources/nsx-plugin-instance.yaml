@@ -1,5 +1,5 @@
-apiVersion: vmware.eda.nokia.com/v1
-kind: NsxPluginInstance
+apiVersion: nsx.eda.nokia.com/v1
+kind: NSXPluginInstance
 metadata:
   name: my-nsx-plugin-instance # A unique name for the plugin resource (can be the same as the spec.name, or different)
   namespace: eda-system # The system namespace.

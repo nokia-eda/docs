@@ -7,7 +7,7 @@ metadata:
   namespace: <eda-connect-k8s> # Refers to the namespace where the OLM operator was installed
 spec:
   connectPluginName: k8s-controller-plugin
-  controllerImagePullSecret: eda-k8s-image-secret # Refers to the controller container image registry secret to be used
+  controllerImagePullSecret:  # No longer used since controller image is now hosted on ghcr.io
   heartBeat: "10"
   logLevel: info
   edaNamespace: <eda-fabric-namespace> # The namespace in EDA containing the fabric and resources, this will different from the eda-system namespace.
