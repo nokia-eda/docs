@@ -33,7 +33,7 @@ There are two ways to get the Helm charts to deploy the EDA Connect OpenShift pl
     ```
 
 /// details | Updating helm charts
-type: info
+    type: info
 
 To update the Helm charts to a newer version, simply execute
 ```make update-connect-k8s-helm-charts``` or download and unpack the newer release tarball as shown above. Make sure to
@@ -49,31 +49,15 @@ The OpenShift Plugin uses its own namespace to separate it from other resources 
 kubectl create namespace eda-connect-k8s-controller
 ```
 
-### Step 3: Configure a Pull Secret for the Controller Image
+### Step 3: Configure the Controller Image
 
-If the EDA Connect OpenShift Plugin Controller image is hosted in a registry that requires authentication, create a
-Kubernetes secret for OpenShift to pull the image:
+When the EDA Connect OpenShift Plugin Controller is being installed in an internet-enabled cluster, no further configuration is needed.
 
-```bash
-export PULL_TOKEN=<PULL_TOKEN>
-kubectl create secret docker-registry eda-k8s-image-secret \
-  --docker-server=ghcr.io/nokia-eda/eda-connect-k8s-controller \
-  --docker-username=nokia-eda-bot \
-  --docker-password=${PULL_TOKEN} \
-  -n eda-connect-k8s-controller
-```
-/// details | Getting the pull token
-    type: info
 
-The pull token can be retrieved from your EDA deployment. See
-the [Get the Pull Token](kubernetes-plugin-installation.md#get-the-pull-token) section in the main installation guide
-for detailed instructions.
-///
-
-/// details | Pulltokens In Airgapped Environments
+/// details | Airgapped Environments
     type: warning
 If your OpenShift cluster does not have access to the public registry where the controller image is hosted, you
-can use the mirror set up by the airgapped installation method. No pull secret is needed then, but you'll need to update
+can use the mirror set up by the airgapped installation method. You'll need to update
 the `controller.image` field in the Helm values to point to the mirrored image in your registry.
 
 See [Step 5](#step-5-deploy-the-plugin) for detailed instructions on how to update the Helm values for this scenario.
@@ -162,8 +146,7 @@ Deploy the EDA Connect OpenShift Plugin using Helm:
 ```bash
 helm install eda-k8s connect-k8s-helm-charts/ \
   -n eda-connect-k8s-controller \
-  -f helm-values.yaml \
-  --set controller.imagePullSecretName=eda-k8s-image-secret
+  -f helm-values.yaml
 ```
 
 ## Post-Installation Verification

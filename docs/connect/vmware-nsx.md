@@ -51,6 +51,13 @@ Overlay segments in NSX are L2 networks encapsulated in L3 using VXLAN or Geneve
 
 The NSX plugin will create a `BridgeDomain` and a `VLAN` resource based on the *Transport VLAN* defined on the *Host Transport Node* in NSX. EDA and the Fabric will not be involved in the overlay traffic itself; the plugin will only facilitate communication between the hypervisors on these overlay segments.
 
+
+/// details | Default Uplink Profiles
+    type: warning
+
+Due to restrictions in the NSX API, the default uplink profile cannot be used, rather the operator should create their own uplink profile.
+///
+
 #### VLAN Segments
 
 In NSX, it is also still possible to create VLAN segments. When a VLAN segment is linked in a Host Transport Node, the NSX plugin will create the appropriate `BridgeDomain` and `VLAN` resources in EDA.

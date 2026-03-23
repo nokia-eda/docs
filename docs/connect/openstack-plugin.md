@@ -12,7 +12,7 @@ It provides the following advantages and capabilities:
 
 * Direct integration into the network management workflow of OpenStack.
 * The use of the common ML2 plugins used by enterprise applications and VNFs like OVS, OVS-DPDK and SR-IOV.
-* Support for multiple operational modes, (See also [Operational Modes](#operational-modes).
+* Support for multiple operational modes, (See also [Operational Modes](#operational-modes)).
   * OpenStack-managed: Automatic provisioning of the fabric based on where the virtual machines need the connectivity.
   * EDA-managed: Support advanced workflows directly through EDA, including for VNF use cases with features like QoS, ACLs, and BGP PE-CE.
 * Interconnectivity between different cloud environments, allowing for flexible network configurations.

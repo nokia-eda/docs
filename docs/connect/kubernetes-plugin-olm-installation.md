@@ -42,28 +42,8 @@ Install the operator using the OpenShift console:
 
 7. Scroll down and click **Install**.
 
-### Step 2: Configure a Pull Secret for the Controller Image
 
-If the EDA Connect OpenShift Plugin Controller image is hosted in a registry that requires authentication, create a Kubernetes secret for OpenShift to
-pull the image:
-
-```bash
-export PULL_TOKEN=<PULL_TOKEN>
-kubectl create secret docker-registry eda-k8s-image-secret \
-  --docker-server=ghcr.io/nokia-eda/eda-connect-k8s-controller \
-  --docker-username=nokia-eda-bot \
-  --docker-password=${PULL_TOKEN} \
-  -n eda-connect-k8s-controller
-```
-
-/// details | Getting the pull token
-    type: info
-
-The pull token can be retrieved from your EDA deployment. See the [Get the Pull Token](kubernetes-plugin-installation.md#get-the-pull-token) section
-in the main installation guide for detailed instructions.
-///
-
-### Step 3: Create Controller Container Environment Secret
+### Step 2: Create Controller Container Environment Secret
 
 Create a `openshift-eda-connect-k8s-controller-env-secret.yaml` file with the following content and update the fields as appropriate:
 
@@ -97,7 +77,7 @@ The environment secret requires the following configuration values:
 **`CONNECT_PASSWORD`**
 : The long-lived token created in the [Create a Service Account Token](kubernetes-plugin-installation.md#create-a-service-account-token) section.
 
-### Step 4: Create EDA Connect K8s Controller Config
+### Step 3: Create EDA Connect K8s Controller Config
 
 Create a `eda-connect-k8s-controller-config-cr.yaml` file with the following content and update the fields as appropriate:
 
