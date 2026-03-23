@@ -1,6 +1,6 @@
 # OpenStack Plugin
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 ## Overview
 
@@ -26,7 +26,7 @@ It provides the following advantages and capabilities:
 The OpenStack Plugin deploys some components into the OpenStack environment to allow the management of the SR Linux based fabric through OpenStack.
 Below is an overview of these components:
 
--{{ diagram(url='nokia-eda/docs/diagrams/openstack-architecture.drawio', title='', page=0) }}-
+-{{ diagram(path='./diagrams/openstack-architecture.drawio', title='', page=0) }}-
 
 ### The Connect ML2 mechanism driver
 
@@ -72,7 +72,7 @@ network type as part of network creation.
 
 ///
 
-In Openstack managed mode only layer 2 `BridgeDomains` are defined in EDA. Layer 3 connectivity such as routing and floating ips 
+In Openstack managed mode only layer 2 `BridgeDomains` are defined in EDA. Layer 3 connectivity such as routing and floating ips
 is however supported through the usual OpenStack routing implementation. These layer 3 capabilities are then not supported by the fabric, but purely
 software defined.
 
@@ -139,7 +139,6 @@ The OpenStack plugin also supports the following virtualization types:
 * SR-IOV
 * DPDK
 
-
 ### Bonding
 
 The OpenStack plugin supports the following OpenStack supported bonding models:
@@ -148,7 +147,7 @@ The OpenStack plugin supports the following OpenStack supported bonding models:
     * VIRTIO
     * SR-IOV
 
-When an Active/Backup bond is used on the compute mode, the corresponding `Interfaces` should not be configured as LAGs in EDA. 
+When an Active/Backup bond is used on the compute mode, the corresponding `Interfaces` should not be configured as LAGs in EDA.
 Each physical interface in the bond should be represented as a separate `Interface` in EDA.
 
 * Active/Active LACP OVS bonds with:
@@ -160,7 +159,6 @@ Each physical interface in the bond should be represented as a separate `Interfa
     type: note
 Active/Active for VIRTIO and SR-IOV ports is supported by the OpenStack plugin, but might not be in your deployment model.
 ///
-
 
 When an Active/Active bond is used on the compute node, a corresponding LAG `Interface` must be configured in EDA. All physical interfaces should be
 added to a single `Interface`.
@@ -207,7 +205,6 @@ conflict would still occur when DHCP is enabled on the subnets.
 
 If the deployment use cases demand this wiring (for example, some of the deployed VNFs rely on DHCP), the system's VLAN ranges must be segregated per
 physical network in the neutron/ML2 configuration.
-
 
 ### Edge Topology Introspection
 

@@ -1,6 +1,6 @@
 # The Tour of EDA
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 Event Driven Automation (EDA) is the state-of-the-art automation platform that completes Nokia's Data Center portfolio:
 
@@ -31,7 +31,7 @@ The "Tour Of EDA" is a collection of hands-on exercises carefully selected by th
 
 To begin your journey, make sure you have the "Try EDA" environment running as described in the [Getting Started](../getting-started/try-eda.md) guide. The Try EDA environment is a fully functional EDA installation for demo/development purposes that comes with a Digital Twin network that we will use in the first exercises.
 
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
 
 As you progress through the tour exercises, you will modify the original three-node lab topology to add more devices and services.
 

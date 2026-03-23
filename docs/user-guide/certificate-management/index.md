@@ -1,6 +1,6 @@
 # Certificate Management
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 EDA integrates with [Cert-Manager](https://cert-manager.io/) to provide Kubernetes-native certificate lifecycle management, including generation, signing, rotation, and distribution.
 During installation, a local PKI is bootstrapped using Cert-Manager Issuer and Certificate resources, with configurable options to adapt certificate authorities and trust distribution to the various trust domains used by EDA.
@@ -26,7 +26,7 @@ These certificates are downloaded during ZTP and later replaced by certificates 
 
 To be able to sign certificates, each Issuer requires its own CA certificate and private key that are generated at EDA install time using a Cert-Manager `Certificate` Custom Resource. The `Certificate` for an Issuer is signed by the EDA root issuer (a `selfSigned` Cert-Manager issuer).
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='', page=0, zoom=1.1) }}-
+-{{ diagram(path='./diagrams/eda-tls-issuers.drawio', title='', page=0, zoom=1.1) }}-
 
 The signed Issuer CA certificate and the corresponding private key are stored in a Kubernetes Secret and is referenced by the Issuer resource.
 
@@ -94,7 +94,7 @@ EDA is composed of multiple trust domains:
 
 The API Issuer signs certificates that secure EDA's **API and Keycloak server pods**. It has a fixed name[^1], `eda-api-issuer`, is of type `CA`, and is backed by a secret called `eda-api-ca`.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='Northbound trust domain', page=1, zoom=1.0) }}-
+-{{ diagram(path='./diagrams/eda-tls-issuers.drawio', title='Northbound trust domain', page=1, zoom=1.0) }}-
 
 > See the [Bring your own API Certificate](#bring-your-own-api-certificate) section for options for modifying this Issuer.
 
@@ -150,9 +150,9 @@ EDA API certificates can be customized to integrate with your organization's PKI
 
 This approach integrates EDA into your organization's trust domain by modifying the default `eda-api-issuer` to chain to your enterprise CA. The CSI driver continues to handle certificate generation and automatic renewal, but certificates are now signed by your CA hierarchy.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='EDA API User CA Issuer', page=3, zoom=1.0) }}-
+-{{ diagram(path='./diagrams/eda-tls-issuers.drawio', title='EDA API User CA Issuer', page=3, zoom=1.0) }}-
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='EDA API Vault Issuer', page=4, zoom=1.0) }}-
+-{{ diagram(path='./diagrams/eda-tls-issuers.drawio', title='EDA API Vault Issuer', page=4, zoom=1.0) }}-
 
 > You can use any Cert-Manager Issuer type. Refer to the Cert-Manager documentation to choose and configure the Issuer that best fits your needs.
 
@@ -234,7 +234,7 @@ The procedure to modify the API Issuer to use your own (intermediate) CA include
 
 This approach bypasses Cert-Manager entirely for the API certificates. You supply via a Kubernetes Secret the pre-generated certificates that EDA serves directly. EDA will mount them to the right pods.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='API User Certificates', page=2, zoom=1.5) }}-
+-{{ diagram(path='./diagrams/eda-tls-issuers.drawio', title='API User Certificates', page=2, zoom=1.5) }}-
 
 The procedure to provide your own API certificates includes the following steps:
 
@@ -444,7 +444,7 @@ webhooks:
 
 The EDA southbound interface connects EDA to managed network nodes. EDA can manage the installation and rotation of node certificates used during the onboarding process (if required) and by the gRPC servers that EDA communicates with.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='EDA Node Certificate lifecycle', page=5, zoom=1.0) }}-
+-{{ diagram(path='./diagrams/eda-tls-issuers.drawio', title='EDA Node Certificate lifecycle', page=5, zoom=1.0) }}-
 
 #### NodeSecurityProfile
 
@@ -599,7 +599,7 @@ You can replace the default `eda-node-issuer` with a custom Cert-Manager Issuer 
 
 Unlike the API Issuer (which is a single issuer for all API certificates), node issuers are referenced per `NodeSecurityProfile`. This enables different groups of nodes to use different issuers based on their security requirements or organizational boundaries.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='EDA Node Certificate lifecycle', page=6, zoom=1.0) }}-
+-{{ diagram(path='./diagrams/eda-tls-issuers.drawio', title='EDA Node Certificate lifecycle', page=6, zoom=1.0) }}-
 
 ##### Step 1: Create a Cert-Manager Issuer
 

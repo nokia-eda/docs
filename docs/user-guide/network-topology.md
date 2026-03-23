@@ -10,7 +10,7 @@ Like an arbitrary topology is defined by its nodes and links, the network topolo
 
 If you come here after finishing the [Getting Started][gs-guide] guide, you may remember the 3-node topology that the "Try EDA" setup comes with:
 
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Physical topology', zoom="1.2", page=0) }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', title='Physical topology', zoom="1.2", page=0) }}-
 
 To represent this network topology in EDA the `TopoNode` and `TopoLink` resources must be created for each node and link in the network topology. Without network topology modelled with the respective topo resources, EDA cannot start managing the network devices.
 
@@ -23,7 +23,7 @@ Here is how the same 3-node topology is modelled with the `TopoNode` and `TopoLi
 
 The diagram below illustrates how the topology resources represent the same network topology:
 
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', zoom='1.3', title='EDA topology modelled with TopoNode and TopoLink resources', page=1) }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', zoom='1.3', title='EDA topology modelled with TopoNode and TopoLink resources', page=1) }}-
 
 Almost no difference with a physical topology, right? To see the topology diagram in EDA UI select **Topologies** in the left-hand menu and click on the **Physical** row in the table of topologies:
 
@@ -238,7 +238,7 @@ An inter switch link (ISL) is a point-to-point link that connects two network de
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Click to zoom in', page='2', zoom='2') }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', title='Click to zoom in', page='2', zoom='2') }}-
 //////
 
 ```yaml
@@ -409,7 +409,7 @@ The edge link is a link that connects a topology node (typically a leaf switch) 
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Click to zoom in', page='3', zoom='2') }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', title='Click to zoom in', page='3', zoom='2') }}-
 //////
 
 ```yaml
@@ -515,7 +515,7 @@ The "local" LAG aggregates ports **between a single pair** of nodes and is creat
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Click to zoom in', page='4', zoom='2') }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', title='Click to zoom in', page='4', zoom='2') }}-
 //////
 
 ```yaml
@@ -675,7 +675,7 @@ The multihome LAG is created by specifying multiple endpoints each having only *
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='Click to zoom in', page='5', zoom='2') }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', title='Click to zoom in', page='5', zoom='2') }}-
 //////
 
 ```yaml
@@ -842,7 +842,7 @@ Breakouts allow splitting a high-speed interface into multiple lower-speed chann
 
 While the "Try EDA 3-node topology" does not feature breakout ports, the example below will take a similar topology with two leafs and one spine, where the `ethernet-1-1` interface on `spine1` is broken down to four 100G interfaces to which the leafs connect.
 
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='', page='6', zoom='1.8') }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', title='', page='6', zoom='1.8') }}-
 
 The breakout template sets the number of channels and speed per channel, and the breakout definition references the template and specifies the nodes and interfaces where the breakout should be applied. In the example below only `spine1/ethernet-1-1` is broken out, but you can define nodes and interfaces on them as needed.
 
@@ -1166,4 +1166,4 @@ node-ssh spine1
 
 [^2]: Interface breakouts are not shown in the diagram because there are no breakouts defined in the "Try EDA" three-node topology. However, if there were any port breakouts on the nodes, they would be modelled with the `TopoBreakout` resources.
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>

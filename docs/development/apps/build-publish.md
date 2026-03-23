@@ -1,5 +1,7 @@
 # Build and Publish
 
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+
 We take pride in EDA's extensibility through applications, and one of the key aspects of this extensibility is the ease of build, publish, share and install workflows.  
 EDA uses standard, well-known and established toolchains for this purpose:
 
@@ -14,7 +16,7 @@ From the distribution point of view, EDA app consists of two distinct artifacts 
 
 This structure can be visualized as:
 
--{{diagram(url='nokia-eda/docs/diagrams/apps-dev',page=1, title='', zoom=1.5)}}-
+-{{diagram(path='./diagrams/apps-dev.drawio',page=1, title='', zoom=1.5)}}-
 
 In this chapter we will cover the process of building and publishing an application.
 
@@ -141,8 +143,6 @@ EOF
 Once added, the EDA Store will start parsing the referenced Git repo and display them as available applications in the EDA Store.
 
 Since our repo is public, we did not utilize the `authSecretRef` reference; if your Git repo is private, you would need to create a Secret and reference it.
-
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
 
 ## Local development
 

@@ -1,6 +1,6 @@
 # Building Abstractions
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 One of the key pillars of EDA is the notion of abstractions. Abstractions allow users to express a higher-level intent in a way that is decoupled from the underlying implementation details and/or vendor specific knowledge.  
 In EDA, every application is typically made up of one or more abstracted resources.
@@ -34,7 +34,7 @@ As the name suggests, the Simple Fabrics app will build an abstraction on top of
 EDA's native Fabric resource is an already abstracted resource, yet it is very flexible and exposes dozens of options to ensure many different fabric designs can be accommodated.  
 However, in many cases, as an operator, you may want to standardize the way your fabrics are built, limit the number of options that users can choose from, and set meaningful defaults for the rest. This is exactly the goal of the Simple Fabrics application that we are going to build.
 
--{{diagram(url='nokia-eda/docs/diagrams/simple-fabric',page=0, title='Simple Fabric provides abstraction on top of Fabric resource', zoom=1.5)}}-
+-{{diagram(path='./diagrams/simple-fabric.drawio',page=0, title='Simple Fabric provides abstraction on top of Fabric resource', zoom=1.5)}}-
 
 Our Simple Fabric app should be able to build an EVPN VXLAN fabric with the following design requirements:
 
@@ -878,17 +878,17 @@ Via this API declaration, we add two fields to the status of the SimpleFabric re
 
 Let's break down how state intents work in EDA and what are the required components by following the sequence of events that happen when we create a Simple Fabric resource. When a SimpleFabric resource is created, to trigger the state intent, the config script should also emit the associated state resource that represents the state intent for the SimpleFabric resource.
 
--{{diagram(url="nokia-eda/docs/diagrams/simple-fabric", page=1, title="Step 1. Config Intent creates the associated State resource")}}-
+-{{diagram(path='./diagrams/simple-fabric.drawio', page=1, title="Step 1. Config Intent creates the associated State resource")}}-
 
 When the Config Intent creates the associated State resource, it should pass the necessary information to its spec so that the state intent can use it for fetching the state. In our case, the only information needed is the name of the underlying Fabric resource that was created. Therefore, the state resource spec will have a single field called `fabricName` that holds this information.
 
 The state intent will use the Intent API and its spec to fetch the state it needs, which in our case is the status of the underlying Fabric resource.
 
--{{diagram(url="nokia-eda/docs/diagrams/simple-fabric", page=2, title="Step 2. State Intent fetches the necessary state using EDA Intent API and EDA DB")}}-
+-{{diagram(path='./diagrams/simple-fabric.drawio', page=2, title="Step 2. State Intent fetches the necessary state using EDA Intent API and EDA DB")}}-
 
 Once the state intent has fetched the necessary state information, it will compute the status fields of the SimpleFabric resource and update it accordingly. The key point here is that the State resource that was originally created by the config intent does not need to have state fields of its own; instead, it computes the state that the SimpleFabric resource has.
 
--{{diagram(url="nokia-eda/docs/diagrams/simple-fabric", page=3, title="Step 3. Computing the state fields for Simple Fabric resource and updating it")}}-
+-{{diagram(path='./diagrams/simple-fabric.drawio', page=3, title="Step 3. Computing the state fields for Simple Fabric resource and updating it")}}-
 
 In other words, the State resource acts as a helper resource that fetches the state for the SimpleFabric resource and updates its status.
 

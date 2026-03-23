@@ -24,7 +24,7 @@ make topology-load #(1)!
 
 As a result you will get you the following topology running in your cluster:
 
--{{ diagram(url='hellt/tmp/diagrams/playground-topology.drawio', title='', page=0) }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', title='', page=0) }}-
 
 As you would expect, it takes some time to spin up the nodes and establish the connections, you can check the status of the deployed topology in the [Verify](verification.md#node-connectivity) section of the quickstart.
 
@@ -68,4 +68,4 @@ This will remove the topology nodes resources, the accompanying simulators and N
 
 [3-node-example-topo-gh-url]: https://github.com/nokia-eda/playground/blob/main/topology/3-nodes-srl.yaml
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>

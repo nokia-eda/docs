@@ -2,7 +2,7 @@
 
 -{{% import 'icons.html' as icons %}}-
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 EDA is an automation framework that is based on the principles of declarative configuration management with abstractions. An operator's input to the system declares the desired state of the resources and EDA takes care of the deployment process of the resources in a network-wide, consistent and transactional manner.  
 In other words, you tell EDA what state you want your infra to be in, and the system carries out the "how" for you in a reliable and most efficient way.
@@ -115,7 +115,7 @@ In EDA, a resource is an intent in a declarative format that can represent virtu
 
 Continuing with the banner example, to configure the MOTD banner on a set of network devices using EDA, a user would submit the following resource definition to the EDA API server:
 
--{{ diagram(url='nokia-eda/docs/diagrams/tour-of-eda.drawio', title='Banner resource', page=0) }}-
+-{{ diagram(path='./diagrams/tour-of-eda.drawio', title='Banner resource', page=0) }}-
 
 A resource definition in EDA has the following sections:
 
@@ -131,7 +131,7 @@ Resource kinds in EDA are organized into versioned API groups based on their fun
 
 These resource groups and the kinds they contain are distributed as **EDA Applications** that can be installed and managed via [EDA Store](../apps/app-store.md).
 
--{{ diagram(url='nokia-eda/docs/diagrams/tour-of-eda.drawio', title='EDA applications and resource kinds', page=1) }}-
+-{{ diagram(path='./diagrams/tour-of-eda.drawio', title='EDA applications and resource kinds', page=1) }}-
 
 By installing EDA apps the new resource kinds are added which extend the capabilities of the EDA instance and is a key enabler for EDA's extensibility. Extensibility through the pluggable apps ensures a mode of continuous innovation where new features and capabilities can be added to EDA without the need to upgrade the core platform.
 
