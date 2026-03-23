@@ -1,6 +1,6 @@
 # Digital Twin
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 The key ingredient in a recipe for a reliable infrastructure automation is the rigorous testing of the changes before they are applied to the production environment. And when networks are concerned, the testing is better done in a controlled environment that resembles the production as closely as possible. This is where the Digital Twin feature of Nokia EDA comes into play.
 
@@ -10,7 +10,7 @@ The Digital Twin provides a scalable and flexible simulation platform for testin
 
 If you completed the [quickstart](../getting-started/try-eda.md), you noticed that the three-node network topology that the Try EDA cluster comes with is in fact powered by the Digital Twin feature. The `eda-cx` component is responsible for creating a virtual representation of the network, allowing you to test changes without affecting the production environment.
 
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
 
 EDA's Digital Twin comes with unique features that set it apart from other network virtualization solutions:
 
@@ -54,13 +54,13 @@ One of the key responsibilities of the Digital Twin system is to create and mana
 
 As extensively covered in the [Network Topology](../user-guide/network-topology.md) section, the network topology in EDA is modelled with the `TopoNode`, `TopoLink` and `TopoBreakout` resources. These resources are created by the Network Topology workflow and declaratively define the physical network topology. The three-node fabric we worked on in the [Getting Started](../getting-started/try-eda.md) guide therefore is depicted as follows:
 
--{{ diagram(url='nokia-eda/docs/diagrams/playground-topology.drawio', title='', page='7', zoom='2') }}-
+-{{ diagram(path='./diagrams/playground-topology.drawio', title='', page='7', zoom='2') }}-
 
 When a user creates the topology resources in an EDA cluster running in the Digital Twin mode, the `eda-cx` component that is responsible for the simulation network will create the virtual counterparts for the `TopoNode` and `TopoLink` resources, namely the **`SimNode`**/**`SimLink`** resources.  
 To illustrate this process, let's create a dummy topology with two nodes and one link between them in the `net-topo-test` namespace that we used in the [Network Topology](../user-guide/network-topology.md#topology-operations) section:
 
 /// tab | Topology diagram
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page='2', zoom='1.4') }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='', page='2', zoom='1.4') }}-
 ///
 /// tab | Workflow YAML
 
@@ -84,7 +84,7 @@ EOF
 
 As shown in the diagram above, the `TopoNode` and `TopoLink` resources represent the network devices and the connections between them. The Digital Twin component in EDA uses these resources to create the virtual simulators and connect them together in a topology that mirrors the physical design. For each `TopoNode` resource, a corresponding `SimNode` resource is created, and for each `TopoLink` resource, a corresponding `SimLink` resource is created:
 
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page='3', zoom='1.4') }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='', page='3', zoom='1.4') }}-
 
 > Check the [:material-page-next-outline: Topologies](../user-guide/network-topology.md) section for more information on how to create and manage the topologies in EDA.
 
@@ -149,7 +149,7 @@ The Digital Twin automatically created the simulation resources for the TopoNode
 Let's see what happens if we add an edge link to `node2` and redeploy the topology:
 
 /// tab | Topology diagram
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page='4', zoom='1.4') }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='', page='4', zoom='1.4') }}-
 ///
 /// tab | Workflow YAML
 
@@ -228,7 +228,7 @@ However, the Network Topology workflow allows users to define custom Sim Nodes t
 
 Building on top of our previous example, let's enhance our topology spec by defining a Sim Node that will be represented as a container image running off of `ghcr.io/srl-labs/network-multitool:latest` image and connect the edge link on `node2` to it:
 
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page='5', zoom='1.4') }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='', page='5', zoom='1.4') }}-
 
 /// tab | Workflow YAML
 
@@ -409,11 +409,11 @@ Another tension point is the API. The iPerfs, ICMPs and curls of the world don't
 These challenges and limitations served as a motivation to create the TestMan - a container image that is purpose-built to assist in testing and validation in the EDA Digital Twin environment.  
 Having ownership of the TestMan allows us to tightly integrate it with the EDA Digital Twin and provide a seamless experience for users.
 
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='A single TestMan container emulates many clients', page='6', zoom='2') }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='A single TestMan container emulates many clients', page='6', zoom='2') }}-
 
 In fact, the "Try EDA" topology that is featured in the [Getting Started](../getting-started/try-eda.md) guide leverages the TestMan as the emulated clients for all edge links in the topology.
 
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='TestMan container in Try EDA topology', page='7', zoom='1.2') }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='TestMan container in Try EDA topology', page='7', zoom='1.2') }}-
 
 To define the TestMan SimNode in the Network Topology users need to set the type of the Sim Node template to `TestMan` as follows:
 

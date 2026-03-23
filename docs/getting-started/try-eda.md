@@ -156,9 +156,9 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
 
 And that's it! You now have a fully functional EDA instance suitable for learning, development, and demonstration that comes preloaded with a small, but functional Digital Twin network topology.
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
 
 With Try EDA up and running, you are all set to embark on your EDA journey by following our [Tour Of EDA](../tour-of-eda/index.md) exercises or explore EDA on your own.
 

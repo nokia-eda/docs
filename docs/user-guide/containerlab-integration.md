@@ -1,6 +1,6 @@
 # Containerlab Integration
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 To facilitate end-to-end testing and validation of configuration changes, EDA comes equipped with its own multi vendor network emulation engine abbreviated as **CX**. CX is a highly scalable network emulation platform that powers EDA's Digital Twin capabilities.
 
@@ -8,7 +8,7 @@ Acknowledging that EDA CX is a new network emulation platform that is still in t
 
 In this section we cover how to integrate EDA with a lab built with Containerlab in a fully [automated](#automated-integration) way first, and then explain how to do this [manually](#manual-integration) with a deep dive on things involved in the onboarding process. To keep things practical, we will take a real lab built with Containerlab - [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) and integrate it with EDA.
 
--{{ diagram(url='srl-labs/srlinux-vlan-handling-lab/diagrams/vlan.drawio', title='VLAN handling lab', page=0) }}-
+-{{ diagram(path='./diagrams/vlan.drawio', title='VLAN handling lab', page=0) }}-
 
 This tiny lab consists of two SR Linux nodes and two clients connected to it which is all we need to demonstrate the integration. Let's deploy it like any other containerlab topology:
 
@@ -36,7 +36,7 @@ This article was validated using the following versions:
 
 Our end game is to install EDA and integrate it with the Containerlab topology so that we could manage the lab nodes using EDA. The integration scenario is depicted in the diagram below.
 
--{{ diagram(url='nokia-eda/docs/diagrams/clab-integration.drawio', title='', page=0) }}-
+-{{ diagram(path='./diagrams/clab-integration.drawio', title='', page=0) }}-
 
 ## Installing EDA
 
@@ -415,7 +415,7 @@ The [TopoLink][topoLink-crd] resource is responsible for defining the topology l
 
 Looking at our lab diagram we can identify three topology links (highlighted in cyan):
 
--{{ diagram(url='nokia-eda/docs/diagrams/clab-integration.drawio', title='TopoLink objects', page=1) }}-
+-{{ diagram(path='./diagrams/clab-integration.drawio', title='TopoLink objects', page=1) }}-
 
 In EDA, we call links between the switches **inter switch** links, links between the switches and the clients **edge** links, and loopback links are called just **loopback**. So our three topology links will be:
 
@@ -449,7 +449,7 @@ The [Interface][interface-crd] resource creates a physical interface on the node
 
 [interface-crd]: https://crd.eda.dev/interfaces.interfaces.eda.nokia.com/v1alpha1
 
--{{ diagram(url='nokia-eda/docs/diagrams/clab-integration.drawio', title='Interface objects', page=2) }}-
+-{{ diagram(path='./diagrams/clab-integration.drawio', title='Interface objects', page=2) }}-
 
 For a TopoLink resource to be valid, the Interface resources must be created first and then referenced in the TopoLink specification.
 

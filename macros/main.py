@@ -3,6 +3,22 @@ Mkdocs-macros module
 """
 
 
+def _normalize_path(url):
+    """Prepend ``../`` to relative URLs to compensate for MkDocs directory URLs.
+
+    MkDocs generates ``page/index.html`` from ``page.md``, placing the HTML
+    one directory deeper than the source file.  Standard Markdown images are
+    adjusted automatically, but raw HTML emitted by macros is not, so every
+    relative path ends up one level too shallow.  This helper adds the missing
+    ``../`` prefix for any URL that is not absolute or empty.
+    """
+    if not url:
+        return url
+    if url.startswith(("http://", "https://", "/", "#")):
+        return url
+    return f"../{url}"
+
+
 def define_env(env):
     """
     Macroses used in SR Linux documentation
@@ -29,22 +45,28 @@ def define_env(env):
     env.variables["eda_version_dashes"] = eda_version_dashes
 
     @env.macro
-    def diagram(url, page, title, zoom=2):
+    def diagram(url="", path="", page=0, title="", zoom=2):
         """
-        Diagram macro
+        Diagram macro. URL can be a local file `path` that starts with a ./ (dot) or ../ (dot-dot) prefix
+        or a remote URL `url` that starts with http or https or a shorthand syntax for drawio files kept in a GitHub repo.
         """
+
+        _location = ""
 
         # to allow shorthand syntax for drawio URLs, like:
         # srl-labs/srlinux-getting-started/main/diagrams/topology.drawio
         # we will append the missing prefix to it if it doesn't start with http already
         if not url.startswith("http"):
-            url = "https://raw.githubusercontent.com/" + url
+            _location = "https://raw.githubusercontent.com/" + url
+
+        if path:
+            _location = _normalize_path(path)
 
         diagram_tmpl = f"""
 <figure>
     <div class='mxgraph'
             style='max-width:100%;border:1px solid transparent;margin:0 auto; display:block; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); border-radius: 0.25rem;'
-            data-mxgraph='{{"url":"{url}","page":{page},"zoom":{zoom},"highlight":"#0000ff","nav":true,"resize":true,"edit":"_blank","dark-mode":false}}'>
+            data-mxgraph='{{"url":"{_location}","page":{page},"zoom":{zoom},"highlight":"#0000ff","nav":true,"resize":true,"edit":"_blank","dark-mode":false}}'>
     </div>
     {f"<figcaption>{title}</figcaption>" if title else ""}
 </figure>

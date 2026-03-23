@@ -1,6 +1,6 @@
 # Node Management
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 -{{% import 'icons.html' as icons %}}-
 
@@ -10,7 +10,7 @@ When a node is successfully onboarded into EDA the platform starts to act as the
 
 The simplified device onboarding flow is illustrated below:
 
--{{ diagram(url='nokia-eda/docs/diagrams/tour-of-eda.drawio', title='Simplified device onboarding flow', page=2, zoom=1.5) }}-
+-{{ diagram(path='./diagrams/tour-of-eda.drawio', title='Simplified device onboarding flow', page=2, zoom=1.5) }}-
 
 > Device onboarding procedure is covered in the user guide and is not part of this tour.
 
@@ -18,17 +18,17 @@ You don't need to have the real hardware network devices to experience EDA capab
 
 The Try EDA environment that you set up earlier, comes with a Kubernetes cluster powered by KinD that hosts the EDA platform and the three node Digital Twin topology pre-installed and ready to use:
 
--{{ diagram(url='nokia-eda/docs/diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
+-{{ diagram(path='./diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
 
 > To learn more about EDA's Digital Twin and how to define virtualized topologies, refer to the [Digital Twin documentation](../digital-twin/index.md).
 
 Regardless of whether you are using web UI or any of the automation/CLI tools, the interaction with the EDA system is carried out over the REST API exposed by the EDA API server or Kubernetes API server respectively. Users, however, don't need to interact with the nodes directly, as all node management operations are powered by EDA. This connectivity diagram in its simplified form presented below:
 
--{{ diagram(url='nokia-eda/docs/diagrams/tour-of-eda.drawio', title='', page=4, zoom=1.5) }}-
+-{{ diagram(path='./diagrams/tour-of-eda.drawio', title='', page=4, zoom=1.5) }}-
 
 The topology that Try EDA provides consists of three Nokia SR Linux virtual routers connected in a leaf-spine architecture with distinct hardware types emulated for each layer. The topology also describes the links between the devices as well as from the leaf nodes to emulated hosts. The node names in the physical topology and their corresponding emulated hardware types that Try EDA comes with is illustrated below:
 
--{{ diagram(url='nokia-eda/docs/diagrams/tour-of-eda.drawio', title='Physical topology', page=3, zoom=1.8) }}-
+-{{ diagram(path='./diagrams/tour-of-eda.drawio', title='Physical topology', page=3, zoom=1.8) }}-
 
 ## Node List
 
