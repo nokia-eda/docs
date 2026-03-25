@@ -49,7 +49,7 @@ mapping the relation between the physical NICs and the different networking cons
 
 ## Installation
 
-For detailed deployment instructions, see the [OpenStack Plugin Installation Guide](openstack-plugin-installation.md).
+For detailed deployment instructions, see the [OpenStack Plugin Installation Guide](installation.md).
 
 ## Features
 
@@ -218,7 +218,7 @@ The known interface mappings can be consulted using the CLI command `openstack e
 #### LLDP Provisioning
 
 LLDP must be enabled on all data plane interfaces of the controllers and computes for topology discovery. See
-the [Installation Guide](openstack-plugin-installation.md) for details on configuring LLDP.
+the [Installation Guide](installation.md) for details on configuring LLDP.
 
 ### Audit
 

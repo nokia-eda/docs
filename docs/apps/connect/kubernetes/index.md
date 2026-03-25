@@ -49,7 +49,7 @@ The underlay network used to transport this traffic is typically managed outside
     
 While the Kubernetes plugin is primarily tested on Red Hat OpenShift, it will also work on other Kubernetes flavors, as long as they provide the
 required prerequisites.
-See the [Installation Guide](./kubernetes-plugin-installation.md) for more details.
+See the [Installation Guide](installation/index.md) for more details.
 ///
 
 /// details | Running Kubernetes in VMs
@@ -76,7 +76,7 @@ manage the required EDA resources based on the Kubernetes configuration.
 
 ### Installation
 
-For detailed deployment instructions, see the [Kubernetes Plugin Installation Guide](./kubernetes-plugin-installation.md). 
+For detailed deployment instructions, see the [Kubernetes Plugin Installation Guide](installation/index.md). 
 
 ## Features
 
@@ -172,7 +172,7 @@ when they belong to different master interface. This is an example of Kubernetes
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/cnd-example1.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example1.yaml"
 ```
 
 ///
@@ -180,7 +180,7 @@ when they belong to different master interface. This is an example of Kubernetes
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/cnd-example1.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example1.yaml"
 EOF
 ```
 
@@ -196,7 +196,7 @@ and have them use trunk VLAN's:
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/cnd-example2.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example2.yaml"
 ```
 
 ///
@@ -204,7 +204,7 @@ and have them use trunk VLAN's:
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/cnd-example2.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example2.yaml"
 EOF
 ```
 
@@ -220,7 +220,7 @@ that was pre-created in EDA:
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/cnd-example3.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example3.yaml"
 ```
 
 ///
@@ -228,7 +228,7 @@ that was pre-created in EDA:
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/cnd-example3.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example3.yaml"
 EOF
 ```
 
@@ -253,7 +253,7 @@ The following is a sample configuration of the CND usage to be able to pre-confi
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/cnd-example4.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example4.yaml"
 ```
 
 ///
@@ -261,7 +261,7 @@ The following is a sample configuration of the CND usage to be able to pre-confi
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/cnd-example4.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example4.yaml"
 EOF
 ```
 
@@ -277,7 +277,7 @@ associated with a router:
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/cnd-example5.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example5.yaml"
 ```
 
 ///
@@ -285,7 +285,7 @@ associated with a router:
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/cnd-example5.yaml"
+--8<-- "docs/apps/connect/resources/cnd-example5.yaml"
 EOF
 ```
 

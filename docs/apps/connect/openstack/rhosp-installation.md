@@ -5,12 +5,12 @@ OpenStack Director (TripleO).
 
 /// warning
 Before proceeding with this installation method, ensure you have completed all the prerequisites and preparation steps described in
-the [OpenStack Plugin Installation](openstack-plugin-installation.md) guide.
+the [OpenStack Plugin Installation](installation.md) guide.
 ///
 
 ## Prerequisites
 
-* All prerequisites from the [OpenStack Plugin Installation](openstack-plugin-installation.md) guide must be met
+* All prerequisites from the [OpenStack Plugin Installation](installation.md) guide must be met
 * EDA Kubernetes preparation steps (Service Account and Token) must be completed
 * Red Hat OpenStack Platform Director (undercloud) is installed and operational
 * Refer to
@@ -55,7 +55,7 @@ Create a container preparation parameters file to use the Nokia-published images
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openstack-container-prepare-params.yaml"
+--8<-- "docs/apps/connect/resources/openstack-container-prepare-params.yaml"
 ```
 
 ///
@@ -66,7 +66,7 @@ Create the file at `/home/stack/templates/container-prepare-parameters.yaml` and
 
 ```bash
 cat > /home/stack/templates/container-prepare-parameters.yaml <<'EOF'
---8<-- "docs/connect/resources/openstack-container-prepare-params.yaml"
+--8<-- "docs/apps/connect/resources/openstack-container-prepare-params.yaml"
 EOF
 ```
 
@@ -82,7 +82,7 @@ adjust the values accordingly.
     type: note
 
 Replace `<USERNAME>|<SERVICE_KEY>` and `<PASSWORD>` with the credentials provided by Red Hat for accessing the container registry. See
-the [Get Container Registry Credentials](openstack-plugin-installation.md#create-a-service-account-token) section for more information.
+the [Get Container Registry Credentials](installation.md#create-a-service-account-token) section for more information.
 ///
 
 Run the container image prepare command to generate the image list:
@@ -102,7 +102,7 @@ Create a file at `/home/stack/templates/inject-trust-anchor.yaml`:
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openstack-inject-trust-anchor.yaml"
+--8<-- "docs/apps/connect/resources/openstack-inject-trust-anchor.yaml"
 ```
 
 ///
@@ -111,7 +111,7 @@ Create a file at `/home/stack/templates/inject-trust-anchor.yaml`:
 
 ```bash
 cat > /home/stack/templates/inject-trust-anchor.yaml <<EOF
---8<-- "docs/connect/resources/openstack-inject-trust-anchor.yaml"
+--8<-- "docs/apps/connect/resources/openstack-inject-trust-anchor.yaml"
 EOF
 ```
 
@@ -137,7 +137,7 @@ Create an environment file at `/home/stack/templates/neutron-eda-connect-config.
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openstack-neutron-eda-config.yaml"
+--8<-- "docs/apps/connect/resources/openstack-neutron-eda-config.yaml"
 ```
 
 ///
@@ -146,7 +146,7 @@ Create an environment file at `/home/stack/templates/neutron-eda-connect-config.
 
 ```bash
 cat > /home/stack/templates/neutron-eda-connect-config.yaml <<'EOF'
---8<-- "docs/connect/resources/openstack-neutron-eda-config.yaml"
+--8<-- "docs/apps/connect/resources/openstack-neutron-eda-config.yaml"
 EOF
 ```
 
@@ -170,7 +170,7 @@ The plugin name must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]
 
 **`ml2_eda_connect/api_token`**
 : The bearer token obtained from the service account token secret in
-the [Create a Service Account Token](openstack-plugin-installation.md#create-a-service-account-token) section
+the [Create a Service Account Token](installation.md#create-a-service-account-token) section
 
 **`ml2_eda_connect/ca_cert_path`**
 : Path to the CA certificate file (use `/etc/pki/ca-trust/source/anchors/eda.crt.pem` if injecting the certificate, or omit if using a trusted CA)
@@ -201,7 +201,7 @@ templates.
 For active-backup mode Linux bonds an example configuration is as follows:
 
 ```yaml
---8<-- "docs/connect/resources/openstack-linux-bond-example.yaml"
+--8<-- "docs/apps/connect/resources/openstack-linux-bond-example.yaml"
 ```
 
 Supported bonding modes:
@@ -218,7 +218,7 @@ For active-backup mode, no LAG configuration is required in EDA. For 802.3ad mod
 For balance-tcp mode with LACP an example is as follows:
 
 ```yaml
---8<-- "docs/connect/resources/openstack-ovs-dpdk-bond-example.yaml"
+--8<-- "docs/apps/connect/resources/openstack-ovs-dpdk-bond-example.yaml"
 ```
 
 Supported bonding modes:
@@ -280,7 +280,7 @@ Create an Ansible playbook file at `/home/stack/post-overcloud-lldp.yaml`:
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openstack-lldp-playbook.yaml"
+--8<-- "docs/apps/connect/resources/openstack-lldp-playbook.yaml"
 ```
 
 ///
@@ -289,7 +289,7 @@ Create an Ansible playbook file at `/home/stack/post-overcloud-lldp.yaml`:
 
 ```bash
 cat > /home/stack/post-overcloud-lldp.yaml <<'EOF'
---8<-- "docs/connect/resources/openstack-lldp-playbook.yaml"
+--8<-- "docs/apps/connect/resources/openstack-lldp-playbook.yaml"
 EOF
 ```
 

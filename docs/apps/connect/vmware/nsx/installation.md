@@ -6,8 +6,8 @@ This guide provides detailed instructions for installing the EDA Connect VMware 
 
 Before installing or deploying the VMware NSX plugin components, ensure that:
 
-* The Cloud Connect Core application is properly installed in the cluster (see [Cloud Connect Installation](cloud-connect-installation.md))
-* VMware vSphere Plugin is deployed for each vCenter managed by NSX (see [VMware vSphere Plugin Installation](vmware-plugin-installation.md))
+* The Cloud Connect Core application is properly installed in the cluster (see [Cloud Connect Installation](../../cloud-connect-installation.md))
+* VMware vSphere Plugin is deployed for each vCenter managed by NSX (see [VMware vSphere Plugin Installation](../vsphere/installation.md))
 * You have read-only access credentials to the VMware NSX environment
 
 ## Installation Steps
@@ -35,7 +35,7 @@ If you prefer installing the plugin using the Kubernetes API, you can do so by c
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/nsx-appinstall.yaml"
+--8<-- "docs/apps/connect/resources/nsx-appinstall.yaml"
 ```
 
 ///
@@ -43,7 +43,7 @@ If you prefer installing the plugin using the Kubernetes API, you can do so by c
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/nsx-appinstall.yaml"
+--8<-- "docs/apps/connect/resources/nsx-appinstall.yaml"
 EOF
 ```
 
@@ -60,7 +60,7 @@ resources.
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/vmware-secret.yaml"
+--8<-- "docs/apps/connect/resources/vmware-secret.yaml"
 ```
 
 ///
@@ -68,7 +68,7 @@ resources.
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/vmware-secret.yaml"
+--8<-- "docs/apps/connect/resources/vmware-secret.yaml"
 EOF
 ```
 
@@ -100,7 +100,7 @@ values with their relevant content.
     type: warning
 
 The vCenterFQDN field has to correspond to the "FQDN or IP Address" field when creating the compute manager in NSX.
-![vCenter FQDN or IP](resources/nsx-vcenter-fqdn.png)
+![vCenter FQDN or IP](../../resources/nsx-vcenter-fqdn.png)
 
 ///
 
@@ -112,7 +112,7 @@ vCenter plugins in the `NsxPluginInstance`.
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/nsx-plugin-instance.yaml"
+--8<-- "docs/apps/connect/resources/nsx-plugin-instance.yaml"
 ```
 
 ///
@@ -120,7 +120,7 @@ vCenter plugins in the `NsxPluginInstance`.
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/nsx-plugin-instance.yaml"
+--8<-- "docs/apps/connect/resources/nsx-plugin-instance.yaml"
 EOF
 ```
 
@@ -170,5 +170,5 @@ After installation, proceed to:
 
 * Configure VLAN or overlay segments in NSX
 * Set up NSX tags for EDA-managed mode (if required)
-* Review the [VMware NSX Plugin documentation](vmware-nsx.md) for usage and operational modes
+* Review the [VMware NSX Plugin documentation](index.md) for usage and operational modes
 

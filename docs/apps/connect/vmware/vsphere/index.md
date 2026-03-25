@@ -40,7 +40,7 @@ to manage the VMware vSphere plugins.
 
 ## Installation
 
-For detailed deployment instructions, see the [VMware vSphere Plugin Installation Guide](vmware-plugin-installation.md).
+For detailed deployment instructions, see the [VMware vSphere Plugin Installation Guide](installation.md).
 
 ## Features
 
@@ -80,7 +80,7 @@ Both the key of the Custom Attribute and the value are case-sensitive
     type: warning
 
 Make sure to create a Custom Attribute of type *Distributed Port Group* on the Port Group.
-![Distributed Port Group Custom Attributes](resources/vmware-custom-attribute.png)
+![Distributed Port Group Custom Attributes](../../resources/vmware-custom-attribute.png)
 
 ///
 
@@ -132,7 +132,7 @@ The plugin implements a heartbeat mechanism, polling Connect at a regular interv
 
 ### Operator Initiated Audit
 
-In addition to the startup audit, users can initiate an [audit](./audit.md) manually. The audit object contains the status and results, including any discrepancies found between NSX and Connect.
+In addition to the startup audit, users can initiate an [audit](../../audit.md) manually. The audit object contains the status and results, including any discrepancies found between NSX and Connect.
 
 ### LLDP
 

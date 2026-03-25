@@ -38,7 +38,7 @@ When the dependencies are not satisfied, an error like the following will be add
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/connect-appinstall.yaml"
+--8<-- "docs/apps/connect/resources/connect-appinstall.yaml"
 ```
 
 ///
@@ -46,7 +46,7 @@ When the dependencies are not satisfied, an error like the following will be add
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/connect-appinstall.yaml"
+--8<-- "docs/apps/connect/resources/connect-appinstall.yaml"
 EOF
 ```
 

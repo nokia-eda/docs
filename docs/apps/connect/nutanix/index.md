@@ -53,7 +53,7 @@ The Nutanix Prism Central plugin consists of two components:
 
 ## Installation
 
-For detailed deployment instructions, see the [Nutanix Prism Central Plugin Installation Guide](nutanix-plugin-installation.md).
+For detailed deployment instructions, see the [Nutanix Prism Central Plugin Installation Guide](installation.md).
 
 ## Features
 
@@ -110,7 +110,7 @@ If multiple values for the `connect.eda.nokia.com` category are associated with 
     type: subtle-note
 
 Categories can be assigned to subnets in Prism Central via the UI or API. An example configuration using the UI is shown below:
-![Category configuration in Prism Central](resources/nutanix-category-example.png)
+![Category configuration in Prism Central](../resources/nutanix-category-example.png)
 ///
 
 You can switch between EDA-managed and Prism-managed mode at any time.
@@ -154,7 +154,7 @@ The plugin subscribes to events in Prism Central and configures EDA resources ac
 
 ### Audit
 
-The plugin performs an audit on startup and when requested by the operator to ensure synchronization between Prism Central and EDA. Any discrepancies are resolved automatically. See also the [audit documentation](./audit.md).
+The plugin performs an audit on startup and when requested by the operator to ensure synchronization between Prism Central and EDA. Any discrepancies are resolved automatically. See also the [audit documentation](../audit.md).
 
 [//]: # (### Operator Initiated Audit)
 

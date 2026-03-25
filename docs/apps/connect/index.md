@@ -78,11 +78,11 @@ Plugins are a core component of the Event Driven Automation (EDA) Connect enviro
 that communicates with the external cloud services. The following plugins are supported by EDA, and are further documented in their respective
 sections:
 
-* [Nutanix Connect plugin](./nutanix-plugin.md)
-* [OpenStack Connect plugin](./openstack-plugin.md)
-* [OpenShift Connect plugin](kubernetes-plugin.md)
-* [VMware vSphere plugin](./vmware-plugin.md)
-* [VMware NSX plugin](./vmware-nsx.md)
+* [Nutanix Connect plugin](nutanix/index.md)
+* [OpenStack Connect plugin](openstack/index.md)
+* [OpenShift Connect plugin](kubernetes/index.md)
+* [VMware vSphere plugin](vmware/vsphere/index.md)
+* [VMware NSX plugin](vmware/nsx/index.md)
 
 Plugins are automatically registered within the Connect service when they are deployed. Each is stored in the database with the following main
 properties:

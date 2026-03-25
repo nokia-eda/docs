@@ -6,7 +6,7 @@ This guide provides an overview and prerequisites for installing the EDA Connect
 
 The EDA Connect OpenStack plugin can be installed using the below method:
 
-* **[RHOSP 17.1 Director Installation](openstack-plugin-rhosp-installation.md)**: Automated installation using Red Hat OpenStack Platform Director (
+* **[RHOSP 17.1 Director Installation](rhosp-installation.md)**: Automated installation using Red Hat OpenStack Platform Director (
   TripleO)
 
 [//]: # (* **Manual Installation**: Manual installation on existing OpenStack deployments &#40;documentation to be provided&#41;)
@@ -25,7 +25,7 @@ Make sure to first follow the preparation steps outlined in this guide before pr
 
 Before installing or deploying the OpenStack plugin components, ensure that:
 
-* The Cloud Connect Core application is properly installed in the EDA cluster (see [Cloud Connect Installation](cloud-connect-installation.md))
+* The Cloud Connect Core application is properly installed in the EDA cluster (see [Cloud Connect Installation](../cloud-connect-installation.md))
 * You have administrative access to both the EDA Kubernetes cluster and the OpenStack environment
 * The fabric is provisioned and operational in EDA
 * You have access to the Nokia EDA Connect OpenStack plugin container images from `registry.connect.redhat.com/nokia-ni`
@@ -49,7 +49,7 @@ This service account must be created in the `eda-system` namespace. Make sure to
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openstack-controller-sa-crb.yaml"
+--8<-- "docs/apps/connect/resources/openstack-controller-sa-crb.yaml"
 ```
 
 ///
@@ -57,7 +57,7 @@ This service account must be created in the `eda-system` namespace. Make sure to
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/openstack-controller-sa-crb.yaml"
+--8<-- "docs/apps/connect/resources/openstack-controller-sa-crb.yaml"
 EOF
 ```
 
@@ -71,7 +71,7 @@ This can be done with the below manifest, which should be applied on the EDA Kub
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openstack-service-account-token.yaml"
+--8<-- "docs/apps/connect/resources/openstack-service-account-token.yaml"
 ```
 
 ///
@@ -80,7 +80,7 @@ This can be done with the below manifest, which should be applied on the EDA Kub
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/openstack-service-account-token.yaml"
+--8<-- "docs/apps/connect/resources/openstack-service-account-token.yaml"
 EOF
 ```
 

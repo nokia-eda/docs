@@ -4,12 +4,12 @@ This guide provides step-by-step instructions for installing the EDA Connect Kub
 
 /// warning
 Before proceeding with this installation method, ensure you have completed all the prerequisites and preparation steps
-described in the [Kubernetes Plugin Installation](kubernetes-plugin-installation.md) guide.
+described in the [Kubernetes Plugin Installation](index.md) guide.
 ///
 
 ## Prerequisites
 
-* All prerequisites from the [Kubernetes Plugin Installation](kubernetes-plugin-installation.md) guide must be met
+* All prerequisites from the [Kubernetes Plugin Installation](index.md) guide must be met
 * EDA Kubernetes preparation steps (Service Account and Token) must be completed
 * Helm 3.x installed on your system
 
@@ -88,7 +88,7 @@ to update the saved bundle with the latest image reference in the eda adm deploy
 Create a `helm-values.yaml` file with the following content and update the fields as appropriate:
 
 ```yaml
---8<-- "docs/connect/resources/openshift-helm-values.yaml"
+--8<-- "docs/apps/connect/resources/openshift-helm-values.yaml"
 ```
 
 #### Helm Values Reference
@@ -133,11 +133,11 @@ EDA Kubernetes certificate has not been signed by a trusted authority.
 
 **`connectPassword`**
 : The long-lived token created in
-the [Create a Service Account Token](kubernetes-plugin-installation.md#create-a-service-account-token) section.
+the [Create a Service Account Token](index.md#create-a-service-account-token) section.
 
 **`connectUsername`**
 : The service account name for the account created in
-the [Create a Service Account](kubernetes-plugin-installation.md#create-a-service-account) section.
+the [Create a Service Account](index.md#create-a-service-account) section.
 
 ### Step 5: Deploy the Plugin
 
@@ -152,6 +152,6 @@ helm install eda-k8s connect-k8s-helm-charts/ \
 ## Post-Installation Verification
 
 After deployment, verify the installation was successful using the steps described in
-the [Post-Installation Verification](kubernetes-plugin-installation.md#post-installation-verification) section of the
+the [Post-Installation Verification](index.md#post-installation-verification) section of the
 main installation guide.
 
