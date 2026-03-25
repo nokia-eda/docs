@@ -132,7 +132,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
     The EDA system can perfectly run without a license with the following caveats:
 
     * Only the nodes inside the EDA's Digital Twin can be used. These include the SR Linux nodes that will be deployed for you by the time `make try-eda` step finishes as well as any 3rd party vendors supported by EDA's Digital Twin. No hardware nodes can be used in an unlicensed EDA mode[^5].
-    * No [integration](../connect/cloud-connect.md) with the cloud systems such as OpenShift, VMware, etc.
+    * No [integration](../apps/connect/index.md) with the cloud systems such as OpenShift, VMware, etc.
     ///
 
 6. **Access the UI**

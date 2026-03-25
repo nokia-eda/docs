@@ -4,12 +4,12 @@ This guide provides step-by-step instructions for installing the EDA Connect Kub
 
 /// warning
 Before proceeding with this installation method, ensure you have completed all the prerequisites and preparation steps described in
-the [Kubernetes Plugin Installation](kubernetes-plugin-installation.md) guide.
+the [Kubernetes Plugin Installation](index.md) guide.
 ///
 
 ## Prerequisites
 
-* All prerequisites from the [Kubernetes Plugin Installation](kubernetes-plugin-installation.md) guide must be met
+* All prerequisites from the [Kubernetes Plugin Installation](index.md) guide must be met
 * EDA Kubernetes preparation steps (Service Account and Token) must be completed
 * OLM enabled on your OpenShift cluster
 * Access to the OpenShift cluster console
@@ -25,20 +25,20 @@ Install the operator using the OpenShift console:
 2. From the main menu, navigate to **Operators → OperatorHub**.
 
    /// details | OperatorHub navigation
-   ![Navigate to OperatorHub](resources/select-operators-operatorhub.png)
+   ![Navigate to OperatorHub](../../resources/select-operators-operatorhub.png)
    ///
 
 3. Type `eda-openshift-operator` in the **All Items - Filter by keyword** filter/search box.
-   ![Find EDA OpenShift Operator](resources/find-eda-openshift-operator.png)
+   ![Find EDA OpenShift Operator](../../resources/find-eda-openshift-operator.png)
 
 4. Select the **EDA OpenShift Operator** tile when it displays. The EDA OpenShift Operator page displays.
 
 5. Click **Install**.
-   ![Install Operator](resources/install-operator.png)
+   ![Install Operator](../../resources/install-operator.png)
 
 6. Enter the namespace where the OLM should install the EDA OpenShift Operator on the OpenShift cluster. The default namespace is
    `eda-connect-k8s-controller`.
-   ![Enter namespace where Operator will be installed](resources/enter-namespace-operator.png)
+   ![Enter namespace where Operator will be installed](../../resources/enter-namespace-operator.png)
 
 7. Scroll down and click **Install**.
 
@@ -50,7 +50,7 @@ Create a `openshift-eda-connect-k8s-controller-env-secret.yaml` file with the fo
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openshift-eda-connect-k8s-controller-env-secret.yaml"
+--8<-- "docs/apps/connect/resources/openshift-eda-connect-k8s-controller-env-secret.yaml"
 ```
 
 ///
@@ -58,7 +58,7 @@ Create a `openshift-eda-connect-k8s-controller-env-secret.yaml` file with the fo
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/openshift-eda-connect-k8s-controller-env-secret.yaml"
+--8<-- "docs/apps/connect/resources/openshift-eda-connect-k8s-controller-env-secret.yaml"
 EOF
 ```
 
@@ -72,10 +72,10 @@ The environment secret requires the following configuration values:
 : The URL to reach the EDA Kubernetes cluster API.
 
 **`CONNECT_USERNAME`**
-: The service account name created in the [Create a Service Account](kubernetes-plugin-installation.md#create-a-service-account) section.
+: The service account name created in the [Create a Service Account](index.md#create-a-service-account) section.
 
 **`CONNECT_PASSWORD`**
-: The long-lived token created in the [Create a Service Account Token](kubernetes-plugin-installation.md#create-a-service-account-token) section.
+: The long-lived token created in the [Create a Service Account Token](index.md#create-a-service-account-token) section.
 
 ### Step 3: Create EDA Connect K8s Controller Config
 
@@ -84,7 +84,7 @@ Create a `eda-connect-k8s-controller-config-cr.yaml` file with the following con
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/eda-connect-k8s-controller-config-cr.yaml"
+--8<-- "docs/apps/connect/resources/eda-connect-k8s-controller-config-cr.yaml"
 ```
 
 ///
@@ -92,7 +92,7 @@ Create a `eda-connect-k8s-controller-config-cr.yaml` file with the following con
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/eda-connect-k8s-controller-config-cr.yaml"
+--8<-- "docs/apps/connect/resources/eda-connect-k8s-controller-config-cr.yaml"
 EOF
 ```
 
@@ -134,7 +134,7 @@ certificate validation is enabled and if the EDA Kubernetes certificate has not 
 ## Post-Installation Verification
 
 After deployment, verify the installation was successful using the steps described in
-the [Post-Installation Verification](kubernetes-plugin-installation.md#post-installation-verification) section of the main installation guide.
+the [Post-Installation Verification](index.md#post-installation-verification) section of the main installation guide.
 
 /// warning | Controller namespace
 When verifying the controller pod, use the namespace where you installed the EDA OpenShift Operator instead of `eda-connect-k8s-controller`.

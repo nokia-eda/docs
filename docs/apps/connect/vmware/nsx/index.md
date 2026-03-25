@@ -35,7 +35,7 @@ to manage the VMware NSX plugins.
 
 ## Installation
 
-For detailed deployment instructions, see the [VMware NSX Plugin Installation Guide](vmware-nsx-installation.md).
+For detailed deployment instructions, see the [VMware NSX Plugin Installation Guide](installation.md).
 
 ## Features
 
@@ -128,7 +128,7 @@ The plugin implements a heartbeat mechanism, polling Connect at a regular interv
 
 ### Operator Initiated Audit
 
-In addition to the startup audit, users can initiate an [audit](./audit.md) manually. The audit object contains the status and results, including any discrepancies found between NSX and Connect.
+In addition to the startup audit, users can initiate an [audit](../../audit.md) manually. The audit object contains the status and results, including any discrepancies found between NSX and Connect.
 
 ### Startup
 

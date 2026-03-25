@@ -11,13 +11,13 @@ As an alternative, you can also create an `Audit` resource in the Kubernetes clu
 
 /// tab | YAML Resource
 ```yaml
---8<-- "docs/connect/resources/connect-audit.yaml"
+--8<-- "docs/apps/connect/resources/connect-audit.yaml"
 ```
 ///
 /// tab | `kubectl apply` command
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/connect-audit.yaml"
+--8<-- "docs/apps/connect/resources/connect-audit.yaml"
 EOF
 ```
 ///

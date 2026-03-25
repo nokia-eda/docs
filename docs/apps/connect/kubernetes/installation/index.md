@@ -6,8 +6,8 @@ This guide provides an overview and prerequisites for installing the EDA Connect
 
 The EDA Connect Kubernetes plugin can be installed using two different methods:
 
-* **[Helm-based Installation](kubernetes-plugin-helm-installation.md)**: Traditional installation using Helm charts
-* **[OLM-based Installation](kubernetes-plugin-olm-installation.md)**: Installation using Red Hat Operator Lifecycle Manager (OLM)
+* **[Helm-based Installation](helm-installation.md)**: Traditional installation using Helm charts
+* **[OLM-based Installation](olm-installation.md)**: Installation using Red Hat Operator Lifecycle Manager (OLM)
 
 Make sure to first follow the preparation steps outlined in this guide before proceeding with either installation method.
 
@@ -27,7 +27,7 @@ steps.
 
 Before installing or deploying the Kubernetes plugin components, ensure that:
 
-* The Cloud Connect Core application is properly installed in the EDA cluster (see [Cloud Connect Installation](cloud-connect-installation.md))
+* The Cloud Connect Core application is properly installed in the EDA cluster (see [Cloud Connect Installation](../../cloud-connect-installation.md))
 * The OpenShift cluster is up and running
 * [NMState Operator](https://docs.openshift.com/container-platform/4.16/networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.html)
   and Multus are installed on the OpenShift cluster
@@ -70,7 +70,7 @@ This service account must be created in the `eda-system` namespace. Make sure to
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openshift-controller-sa-crb.yaml"
+--8<-- "docs/apps/connect/resources/openshift-controller-sa-crb.yaml"
 ```
 
 ///
@@ -78,7 +78,7 @@ This service account must be created in the `eda-system` namespace. Make sure to
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/openshift-controller-sa-crb.yaml"
+--8<-- "docs/apps/connect/resources/openshift-controller-sa-crb.yaml"
 EOF
 ```
 
@@ -92,7 +92,7 @@ This can be done with the below manifest, which should be applied on the EDA Kub
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/openshift-service-account-token.yaml"
+--8<-- "docs/apps/connect/resources/openshift-service-account-token.yaml"
 ```
 
 ///
@@ -101,7 +101,7 @@ This can be done with the below manifest, which should be applied on the EDA Kub
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/openshift-service-account-token.yaml"
+--8<-- "docs/apps/connect/resources/openshift-service-account-token.yaml"
 EOF
 ```
 
@@ -196,5 +196,5 @@ After successful installation and verification, proceed to:
 
 * Create Network Attachment Definitions (NADs) in Kubernetes
 * Configure Connect Network Definitions (CNDs) if needed
-* Review the [Kubernetes Plugin documentation](kubernetes-plugin.md) for usage and operational modes
+* Review the [Kubernetes Plugin documentation](../index.md) for usage and operational modes
 

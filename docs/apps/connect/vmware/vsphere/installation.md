@@ -6,7 +6,7 @@ This guide provides detailed instructions for installing the EDA Connect VMware 
 
 Before installing or deploying the VMware vSphere plugin components, ensure that:
 
-* The Cloud Connect Core application is properly installed in the cluster (see [Cloud Connect Installation](cloud-connect-installation.md))
+* The Cloud Connect Core application is properly installed in the cluster (see [Cloud Connect Installation](../../cloud-connect-installation.md))
 * You have read-only access credentials to the VMware vCenter environment
 
 ## Installation Steps
@@ -34,7 +34,7 @@ If you prefer installing the plugin using the Kubernetes API, you can do so by c
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/vmware-appinstall.yaml"
+--8<-- "docs/apps/connect/resources/vmware-appinstall.yaml"
 ```
 
 ///
@@ -42,7 +42,7 @@ If you prefer installing the plugin using the Kubernetes API, you can do so by c
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/vmware-appinstall.yaml"
+--8<-- "docs/apps/connect/resources/vmware-appinstall.yaml"
 EOF
 ```
 
@@ -59,7 +59,7 @@ necessary resources.
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/vmware-secret.yaml"
+--8<-- "docs/apps/connect/resources/vmware-secret.yaml"
 ```
 
 ///
@@ -67,7 +67,7 @@ necessary resources.
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/vmware-secret.yaml"
+--8<-- "docs/apps/connect/resources/vmware-secret.yaml"
 EOF
 ```
 
@@ -98,7 +98,7 @@ values with their relevant content.
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/vmware-plugin-instance.yaml"
+--8<-- "docs/apps/connect/resources/vmware-plugin-instance.yaml"
 ```
 
 ///
@@ -106,7 +106,7 @@ values with their relevant content.
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/vmware-plugin-instance.yaml"
+--8<-- "docs/apps/connect/resources/vmware-plugin-instance.yaml"
 EOF
 ```
 
@@ -155,4 +155,4 @@ After installation, proceed to:
 * Configure distributed Port Groups in vCenter
 * Set up Custom Attributes for EDA-managed mode (if required)
 * Make sure LLDP is enabled on the distributed vSwitch (at least advertise in Discovery protocol settings)
-* Review the [VMware vSphere Plugin documentation](vmware-plugin.md) for usage and operational modes
+* Review the [VMware vSphere Plugin documentation](index.md) for usage and operational modes

@@ -21,7 +21,7 @@ This guide provides detailed instructions for installing the EDA Connect Nutanix
 
 Before installing or deploying the Nutanix plugin components, ensure that:
 
-* The Cloud Connect Core application is properly installed in the cluster (see [Cloud Connect Installation](cloud-connect-installation.md))
+* The Cloud Connect Core application is properly installed in the cluster (see [Cloud Connect Installation](../cloud-connect-installation.md))
 * Nutanix Prism Central is installed and accessible
 * You have read-only access credentials to Nutanix Prism Central
 * LLDP is enabled on all Nutanix AHV hypervisors
@@ -52,7 +52,7 @@ If you prefer installing the plugin using the Kubernetes API, you can do so by c
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/nutanix-appinstall.yaml"
+--8<-- "docs/apps/connect/resources/nutanix-appinstall.yaml"
 ```
 
 ///
@@ -60,7 +60,7 @@ If you prefer installing the plugin using the Kubernetes API, you can do so by c
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/nutanix-appinstall.yaml"
+--8<-- "docs/apps/connect/resources/nutanix-appinstall.yaml"
 EOF
 ```
 
@@ -75,7 +75,7 @@ Before creating a `NutanixPluginInstance`, create a Kubernetes `Secret` with the
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/nutanix-secret.yaml"
+--8<-- "docs/apps/connect/resources/nutanix-secret.yaml"
 ```
 
 ///
@@ -84,7 +84,7 @@ Before creating a `NutanixPluginInstance`, create a Kubernetes `Secret` with the
 ```bash
 echo -n myUsernameOrPassword | base64
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/nutanix-secret.yaml"
+--8<-- "docs/apps/connect/resources/nutanix-secret.yaml"
 EOF
 ```
 
@@ -114,7 +114,7 @@ As an alternative, you can also create the same `NutanixPluginInstance` using th
 /// tab | YAML Resource
 
 ```yaml
---8<-- "docs/connect/resources/nutanix-plugin-instance.yaml"
+--8<-- "docs/apps/connect/resources/nutanix-plugin-instance.yaml"
 ```
 
 ///
@@ -122,7 +122,7 @@ As an alternative, you can also create the same `NutanixPluginInstance` using th
 
 ```bash
 kubectl apply -f - <<EOF
---8<-- "docs/connect/resources/nutanix-plugin-instance.yaml"
+--8<-- "docs/apps/connect/resources/nutanix-plugin-instance.yaml"
 EOF
 ```
 
@@ -167,5 +167,5 @@ After installation, proceed to:
 
 * Configure VLAN subnets in Prism Central
 * Set up categories for EDA-managed mode (if required)
-* Review the [Nutanix Prism Central Plugin documentation](nutanix-plugin.md) for usage and operational modes
+* Review the [Nutanix Prism Central Plugin documentation](index.md) for usage and operational modes
 
