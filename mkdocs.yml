@@ -327,6 +327,7 @@ extra_css:
   - stylesheets/steps.css
   - stylesheets/expandable-blocks.css
   - stylesheets/theme-toggle.css
+  - stylesheets/footer.css
 
 hooks:
   - hooks/hooks.py

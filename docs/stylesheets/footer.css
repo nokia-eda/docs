@@ -1,0 +1,21 @@
+.md-footer {
+    --md-footer-bg-color: var(--home-features-band-bg);
+    --md-footer-fg-color: var(--md-default-fg-color);
+    --md-footer-fg-color--light: var(--md-default-fg-color--light);
+    --md-footer-fg-color--lighter: var(--md-default-fg-color--lighter);
+    border-top: 0.5px solid #ABB4C2;
+    background-color: var(--md-primary-fg-color);
+}
+
+[data-md-color-scheme="slate"] .md-footer {
+    border-color: rgba(171, 180, 194, 0.3);
+}
+
+.md-footer-meta {
+    background-color: var(--md-primary-fg-color);
+    border-top: 0.5px solid #ABB4C2;
+}
+
+[data-md-color-scheme="slate"] .md-footer-meta {
+    border-color: rgba(171, 180, 194, 0.3);
+}
