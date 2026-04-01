@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <clipPath id="clip-Nokia_Favicon_512x512">
+      <rect width="512" height="512"/>
+    </clipPath>
+  </defs>
+  <g id="Nokia_Favicon_512x512" data-name="Nokia Favicon 512x512" clip-path="url(#clip-Nokia_Favicon_512x512)">
+    <rect width="512" height="512" fill="#005aff"/>
+    <g id="N_Amplifier" data-name="N Amplifier" transform="translate(47.407 36.03)">
+      <path id="Path_4" data-name="Path 4" d="M0,0V427.443H67.321v-282.7l346.918,292.9,2.946,2.5V351.676Z" fill="#fff"/>
+    </g>
+    <rect id="Rectangle_1" data-name="Rectangle 1" width="512" height="512" fill="none"/>
+  </g>
+</svg>

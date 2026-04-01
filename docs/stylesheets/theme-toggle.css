@@ -1,0 +1,172 @@
+/* Header chrome: `.md-header__icon-cluster` (theme + `.md-header__source`), theme button sizing.
+   Icon size: `--header-icon-size`; spacing among theme + GitHub + Discord: `--header-icon-cluster-gap`. */
+
+:root {
+  /* GitHub + theme toggle: one size so glyphs match (tune here only) */
+  --header-icon-size: 1rem;
+  /* Theme ↔ GitHub ↔ Discord: one gap for `.md-header__icon-cluster` and `.md-header__source` */
+  --header-icon-cluster-gap: 0.75rem;
+}
+
+/* ── `.md-header__source` (GitHub + Discord) inside `.md-header__icon-cluster` ─ */
+.md-header__source {
+  width: auto !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: var(--header-icon-cluster-gap);
+}
+
+/* Theme toggle + GitHub + Discord: single gap token without changing `.md-header__inner` row gaps */
+.md-header__icon-cluster {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: var(--header-icon-cluster-gap);
+  flex-shrink: 0;
+}
+
+.md-header__source .md-source {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.md-header__source .md-source__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--header-icon-size);
+  width: var(--header-icon-size);
+  flex-shrink: 0;
+}
+
+.md-header__source .md-source__icon svg {
+  margin: 0 !important;
+  width: var(--header-icon-size);
+  height: var(--header-icon-size);
+  display: block;
+}
+
+@media screen and (min-width: 60em) {
+  .md-header .md-search {
+    margin-right: 0.875rem;
+  }
+}
+
+.md-header__inner {
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ── Hide the default Material palette toggle ────────────────────────────── */
+/* Keep it in the DOM (not display:none) so JS .click() works on labels */
+.md-header__option {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ── Sun / Moon SVG base styles (inside `#theme-toggle`) ─────────────────── */
+.sun-and-moon> :is(.moon, .sun, .sun-beams) {
+  transform-origin: center center;
+}
+
+.sun-and-moon> :is(.moon, .sun) {
+  fill: currentColor;
+}
+
+.sun-and-moon>.sun-beams {
+  stroke: currentColor;
+  stroke-width: 2px;
+}
+
+/* ── Theme button — `.theme-toggle` (sibling of `.md-header__source`) ─────── */
+.theme-toggle {
+  --_size: var(--header-icon-size);
+  /* No inset padding — otherwise moon/GitHub look mismatched */
+  --_padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  line-height: 0;
+  block-size: var(--_size);
+  inline-size: var(--_size);
+  aspect-ratio: 1;
+  padding: var(--_padding);
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  outline-offset: 0.3125rem;
+  flex-shrink: 0;
+}
+
+.theme-toggle svg {
+  stroke-linecap: round;
+  block-size: 100%;
+  inline-size: 100%;
+}
+
+.theme-toggle:is(:hover, :focus-visible) {
+  opacity: 0.7;
+}
+
+/* ── Dark-mode transforms ────────────────────────────────────────────────── */
+[data-theme="dark"] .sun-and-moon>.sun {
+  transform: scale(1.75);
+}
+
+[data-theme="dark"] .sun-and-moon>.sun-beams {
+  opacity: 0;
+}
+
+[data-theme="dark"] .sun-and-moon>.moon>circle {
+  transform: translate(-7px);
+}
+
+/* ── Animations (respect prefers-reduced-motion) ─────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .sun-and-moon>.sun {
+    transition: transform 0.5s cubic-bezier(0.5, 1.25, 0.75, 1.25);
+  }
+
+  .sun-and-moon>.sun-beams {
+    transition:
+      transform 0.5s cubic-bezier(0.5, 1.5, 0.75, 1.25),
+      opacity 0.5s cubic-bezier(0.25, 0, 0.3, 1);
+  }
+
+  .sun-and-moon .moon>circle {
+    transition: transform 0.25s cubic-bezier(0, 0, 0, 1);
+  }
+
+  [data-theme="dark"] .sun-and-moon>.sun {
+    transform: scale(1.75);
+    transition-timing-function: cubic-bezier(0.25, 0, 0.3, 1);
+    transition-duration: 0.25s;
+  }
+
+  [data-theme="dark"] .sun-and-moon>.sun-beams {
+    transform: rotate(-25deg);
+    transition-duration: 0.15s;
+  }
+
+  [data-theme="dark"] .sun-and-moon>.moon>circle {
+    transition-delay: 0.25s;
+    transition-duration: 0.5s;
+  }
+}

@@ -1,0 +1,294 @@
+/* Home-page easter egg: matrix backdrop, mascot, kinetic type, lower third */
+
+.eda-egg-overlay {
+    --eda-egg-blue: #005aff;
+    --eda-egg-accent: #e03dcd;
+    --eda-egg-teal: #23abb6;
+    --eda-egg-matrix: rgba(0, 220, 130, 0.14);
+    --eda-egg-matrix-bright: rgba(0, 255, 170, 0.28);
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10050;
+    overflow: hidden;
+    opacity: 0;
+    animation: eda-egg-overlay-in 0.35s ease forwards;
+}
+
+.eda-egg-overlay.eda-egg-overlay--out {
+    animation: eda-egg-overlay-out 0.45s ease forwards;
+}
+
+@keyframes eda-egg-overlay-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes eda-egg-overlay-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.eda-egg-matrix {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+    font-size: 9px;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    color: var(--eda-egg-matrix);
+    user-select: none;
+    z-index: 0;
+}
+
+.eda-egg-matrix-row {
+    white-space: nowrap;
+    opacity: 0.85;
+}
+
+.eda-egg-matrix-row:nth-child(4n) {
+    color: var(--eda-egg-matrix-bright);
+    opacity: 0.55;
+}
+
+.eda-egg-backdrop {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 100% 90% at 50% 40%, rgba(4, 14, 22, 0.72) 0%, rgba(1, 4, 8, 0.9) 55%);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+}
+
+.eda-egg-overlay.eda-egg-phase-intro .eda-egg-backdrop,
+.eda-egg-overlay.eda-egg-phase-kinetic .eda-egg-backdrop,
+.eda-egg-overlay.eda-egg-phase-lockup .eda-egg-backdrop,
+.eda-egg-overlay.eda-egg-phase-lower .eda-egg-backdrop {
+    opacity: 1;
+}
+
+.eda-egg-hero {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%) scale(0.22);
+    z-index: 2;
+    width: min(32vw, 200px);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1.25);
+}
+
+/* Intro only: single mascot A zoom-out to place over 1.2s */
+.eda-egg-overlay.eda-egg-phase-intro:not(.eda-egg-phase-kinetic):not(.eda-egg-phase-lockup):not(.eda-egg-phase-lower) .eda-egg-hero {
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.eda-egg-overlay.eda-egg-phase-intro .eda-egg-hero,
+.eda-egg-overlay.eda-egg-phase-kinetic .eda-egg-hero,
+.eda-egg-overlay.eda-egg-phase-lockup .eda-egg-hero,
+.eda-egg-overlay.eda-egg-phase-lower .eda-egg-hero {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.eda-egg-mascot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.eda-egg-kinetic {
+    position: absolute;
+    left: 50%;
+    top: 62%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: min(96vw, 42rem);
+    text-align: center;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.eda-egg-fly-lockup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.12em;
+}
+
+.eda-egg-fly-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.05em;
+}
+
+.eda-egg-fly-row--main .eda-egg-fly-char {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 11vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: #fff;
+    text-shadow:
+        0 0 32px rgba(0, 90, 255, 0.5),
+        0 0 56px rgba(224, 61, 205, 0.28);
+}
+
+.eda-egg-fly-row--sub .eda-egg-fly-char {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 4.5vw, 2rem);
+    line-height: 1;
+    letter-spacing: 0.22em;
+    color: var(--eda-egg-teal);
+    text-shadow: 0 0 20px rgba(35, 171, 182, 0.45);
+}
+
+.eda-egg-fly-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(calc(var(--fx, 0) * 1em), calc(var(--fy, 0) * 1em), 0) scale(0.72);
+    filter: blur(4px);
+    animation-name: eda-egg-fly-to-slot;
+    animation-duration: calc(var(--fly-ms, 520) * 1ms);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-delay: calc(var(--stagger, 0) * 1ms);
+    animation-fill-mode: forwards;
+}
+
+@keyframes eda-egg-fly-to-slot {
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+        filter: blur(0);
+    }
+}
+
+.eda-egg-lockup {
+    position: absolute;
+    left: 50%;
+    top: 62%;
+    transform: translate(-50%, 0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.12em;
+    text-align: center;
+    opacity: 0;
+    z-index: 4;
+}
+
+.eda-egg-overlay.eda-egg-phase-lockup .eda-egg-lockup {
+    opacity: 1;
+}
+
+.eda-egg-lockup-main {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 11vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: #fff;
+    text-shadow: 0 0 32px rgba(0, 90, 255, 0.5);
+}
+
+.eda-egg-lockup-sub {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 4.5vw, 2rem);
+    line-height: 1;
+    letter-spacing: 0.22em;
+    color: var(--eda-egg-teal);
+    text-shadow: 0 0 20px rgba(35, 171, 182, 0.5);
+}
+
+.eda-egg-lower {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 16px 20px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.88) 0%,
+        rgba(12, 24, 48, 0.92) 45%,
+        rgba(0, 0, 0, 0.88) 100%
+    );
+    border-top: 3px solid var(--eda-egg-blue);
+    box-shadow: 0 -8px 40px rgba(0, 90, 255, 0.25);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 6;
+}
+
+.eda-egg-overlay.eda-egg-phase-lower .eda-egg-lower { transform: translateY(0); }
+
+.eda-egg-lower-logo {
+    width: 52px;
+    height: auto;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px rgba(0, 90, 255, 0.4));
+}
+
+.eda-egg-lower-body { flex: 1; min-width: 0; }
+
+.eda-egg-lower-title {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: 0.12em;
+    color: #fff;
+}
+
+.eda-egg-lower-stats {
+    margin-top: 4px;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--eda-egg-accent);
+    animation: eda-egg-lower-pulse 1.1s ease-in-out infinite;
+}
+
+.eda-egg-lower-stats.eda-egg-lower-stats--typing {
+    animation: none;
+}
+
+@keyframes eda-egg-lower-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.65; }
+}
+
+.eda-egg-overlay--reduced .eda-egg-kinetic { display: none; }
+.eda-egg-overlay--reduced .eda-egg-backdrop { opacity: 1; }
+.eda-egg-overlay--reduced .eda-egg-hero {
+    top: 40%;
+    transform: translate(-50%, -50%) scale(1);
+    transition: none;
+}
+.eda-egg-overlay--reduced .eda-egg-lockup {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+.eda-egg-overlay--reduced .eda-egg-lower { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+    .eda-egg-overlay {
+        animation: none;
+        opacity: 1;
+        transition: opacity 0.4s ease;
+    }
+    .eda-egg-overlay.eda-egg-overlay--out {
+        animation: none;
+        opacity: 0;
+    }
+    .eda-egg-lower-stats { animation: none; }
+}

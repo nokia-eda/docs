@@ -48,301 +48,301 @@
         }
     }
 
-    /* Get started button */
-    .md-typeset .md-button--primary {
-        color: var(--nokia-get-started-text-color);
-        background-color: var(--nokia-get-started-btn-color);
-        border-color: var(--nokia-get-started-btn-color);
-    }
-
-    .md-typeset .md-button--primary:hover {
-        color: var(--nokia-get-started-hover-text-color);
-        background-color: var(--nokia-get-started-hover-btn-color);
-        border-color: var(--nokia-get-started-hover-btn-color);
-    }
-
-    .tx-hero {
-        max-width: 700px;
+    /* Hero banner */
+    .hero-banner {
+        position: relative;
+        width: 100%;
+        background: url('images/banner.webp') center / cover no-repeat;
+        aspect-ratio: 7 / 1;
         display: flex;
-        padding: .4rem;
-        margin: 0 auto;
-        text-align: center;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
-    /* .tx-hero h1 {
+    .hero-banner__text {
+        padding: 2.5rem 2.5rem 0;
+    }
+
+    /* Fluid type scale: hero h1 > tagline > section h3 > h4/card h5 > body/card p */
+    .hero-banner__text h1 {
+        font-family: NokiaPureHeadlineLight, sans-serif;
         font-weight: 700;
-        font-size: 38px;
-        line-height: 46px;
-        color: rgb(38, 38, 38);
+        font-size: clamp(1.375rem, 2.5vw + 0.65rem, 2.25rem);
+        line-height: 1.2;
+        color: #ffffff;
+        margin: 0;
     }
 
-    .tx-hero p {
-        color: rgb(92, 92, 92);
-        font-weight: 400;
-        font-size: 20px;
-        line-height: 32px;
-    } */
+    .hero-banner__text p {
+        font-family: NokiaPureHeadlineUltraLight, sans-serif;
+        font-weight: 300;
+        font-size: clamp(0.9375rem, 1.25vw + 0.65rem, 1.375rem);
+        line-height: 1.35;
+        color: #ffffff;
+        margin: 0;
+    }
 
-    .tx-hero__image {
-        max-width: 1000px;
-        min-width: 600px;
-        width: 100%;
-        height: auto;
-        margin: 0 auto;
+    .hero-banner__buttons {
         display: flex;
-        align-items: stretch;
+        gap: 0.5rem;
+        padding: 1.5rem 2.5rem;
     }
 
-    .tx-hero__image img {
-        width: 100%;
-        height: 100%;
-        min-width: 0;
+    .hero-banner__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: #ffffff;
+        color: #005AFF;
+        font-family: var(--md-text-font), sans-serif;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.25rem;
+        letter-spacing: 0.16px;
+        padding: 0.25rem 1rem;
+        border-radius: 4px;
+        text-decoration: none !important;
+        white-space: nowrap;
+        transition: background-color 200ms, box-shadow 200ms;
     }
 
-    /* Secondary content styles */
-    .secondary-section {
-        /* background: #edf3f5 none repeat scroll 0% 0%; */
-        border-top: 1px solid rgb(222, 222, 222);
-        border-bottom: 1px solid rgb(222, 222, 222)
+    .hero-banner__btn:hover {
+        background-color: #e8f0ff;
+        color: #005AFF;
     }
 
-    @media screen and (max-width: 1012px) {
-        .secondary-section {
-            display: block;
+    .hero-banner__btn .twemoji {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    /* Hero height follows content on narrow/tablet viewports (fixed aspect-ratio clips CTAs) */
+    @media screen and (max-width: 48rem) {
+        .hero-banner {
+            aspect-ratio: unset;
         }
     }
 
-    .secondary-section .g {
-        position: relative;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0px 40px;
+    @media screen and (max-width: 30rem) {
+        .hero-banner {
+            justify-content: flex-start;
+            gap: 1rem;
+        }
+
+        .hero-banner__text {
+            padding: 1rem 1.25rem 0;
+        }
+
+        .hero-banner__buttons {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 1rem 1.25rem;
+        }
+
+        .hero-banner__btn {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.75rem;
+            justify-content: center;
+        }
+    }
+
+    /* ── Secondary section layout ─────────────────────────────────── */
+    .secondary-section {
+        border: 0;
+    }
+
+    .home-section {
         max-width: 1280px;
+        margin: 0 auto;
+        padding: 60px 40px;
     }
 
-    .secondary-section .g .section {
-        font-size: 18px;
-        /* font-weight: 400; */
-        line-height: 30px;
-        letter-spacing: normal;
-        padding: 20px 0px 116px;
-    }
-
-    .secondary-section .g .section.follow {
-        padding-top: 0px;
-    }
-
-
-    .secondary-section .g .section .component-wrapper {
+    .home-row {
         display: flex;
-        -moz-box-align: center;
+        gap: 80px;
         align-items: center;
     }
 
-    @media screen and (max-width: 1012px) {
-        .secondary-section .g .section .component-wrapper {
-            display: block;
-        }
+    .home-row--reverse {
+        flex-direction: row-reverse;
     }
 
-    .secondary-section .g .section .component-wrapper h3 {
-        /* color: rgb(38, 38, 38); */
-        font-size: 36px;
-        font-weight: 700;
-        line-height: 46px;
-        letter-spacing: normal;
-        margin-bottom: 12px;
+    .home-row--top {
+        align-items: flex-start;
     }
 
-    .secondary-section .g .section .component-wrapper h4 {
-        /* color: rgb(38, 38, 38); */
-    }
-
-    .secondary-section .g .section .component-wrapper p {
-        /* color: rgb(92, 92, 92); */
-        font-size: 18px;
-        /* font-weight: 400; */
-        line-height: 30px;
-        letter-spacing: normal;
-        margin-bottom: 16px;
-    }
-
-    .secondary-section .g .section .component-wrapper .image-wrapper {
-        margin-bottom: 12px;
-        overflow: hidden;
-        border-radius: 8px;
-        margin-top: 48px;
-        border: 1px solid rgb(222, 222, 222);
-        box-shadow: rgba(202, 202, 202, 0.15) 0px 0px 0px 6px;
-        max-width: 600px;
-        width: 100%;
-        height: auto;
-        margin: 0 auto;
-        display: flex;
-        align-items: stretch;
-    }
-
-    .image-wrapper {
-        width: 100%;
-        height: 100%;
+    .home-col {
+        flex: 1;
         min-width: 0;
     }
 
-    .secondary-section .g .section .component-wrapper .first-column {
-        padding-right: 100px;
-        flex: 0 1 auto;
-        height: auto;
-        width: 50%;
+    .home-col h3,
+    .home-features__inner h3 {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-size: clamp(1.25rem, 1.35vw + 0.95rem, 1.75rem);
+        font-weight: 300;
+        line-height: 1.28;
+        color: var(--md-default-fg-color);
+        margin: 0 0 1rem;
     }
 
-    @media screen and (max-width: 1012px) {
-        .secondary-section .g .section .component-wrapper .first-column {
-            padding-right: 0px;
-            width: 100%;
-            margin-bottom: 32px;
-        }
+    .home-features__inner h3 {
+        margin: 0 0 2.5rem;
     }
 
-    .secondary-section .g .section .component-wrapper .second-column {
-        flex: 0 1 auto;
-        height: auto;
-        width: 50%;
+    .home-col h4 {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-size: clamp(1.0625rem, 0.9vw + 0.85rem, 1.3125rem);
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--md-default-fg-color);
+        margin: 2rem 0 0.75rem;
     }
 
-    @media screen and (max-width: 1012px) {
-        .secondary-section .g .section .component-wrapper .second-column {
-            width: 100%;
-            margin-bottom: 32px;
-        }
+    .home-col h4:first-child {
+        margin-top: 0;
     }
 
-    .secondary-section .g .section .component-wrapper .responsive-grid {
-        display: grid;
+    .home-col p {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-size: clamp(0.875rem, 0.25vw + 0.82rem, 0.9375rem);
+        line-height: 1.6;
+        color: var(--md-default-fg-color);
+        margin: 0 0 0.75rem;
+    }
+
+    .home-screenshot {
         width: 100%;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 2rem;
+        max-width: 700px;
+        border-radius: 16px;
+        display: block;
+    }
+
+    /* Home only: Key Features band color continues through .md-main to footer */
+    .md-container:has(> .hero-banner) {
+        --home-features-band-bg: #ECF3FF;
+    }
+
+    [data-md-color-scheme="slate"] .md-container:has(> .hero-banner) {
+        --home-features-band-bg: #0f1620;
+    }
+
+    .md-container:has(> .hero-banner)>.md-main {
+        background-color: var(--home-features-band-bg);
+    }
+
+    /* ── Key Features band ─────────────────────────────────────────── */
+    .home-features {
+        background: var(--home-features-band-bg);
+        padding: 60px 40px 80px;
+    }
+
+    .home-features__inner {
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    @media screen and (min-width: 40rem) {
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 
     @media screen and (min-width: 64rem) {
-        .secondary-section .g .section .component-wrapper .responsive-grid {
+        .features-grid {
             grid-template-columns: repeat(3, 1fr);
         }
     }
 
-    .secondary-section .g .section .component-wrapper .responsive-grid a.card-wrapper {
-        text-decoration: none;
-        transition: none;
-        background: none;
-        padding: 0;
-    }
-
-    .secondary-section .g .section .component-wrapper .responsive-grid .card {
-        position: relative;
-        /* background-color: #98a2ae; */
-        padding: 1.5rem;
+    .feature-card {
+        background: #ffffff;
+        border: 1px solid #ABB4C2;
+        border-radius: 24px;
+        padding: 2rem 2.5rem;
         display: flex;
-        flex-direction: row;
-        -moz-box-align: center;
-        align-items: center;
-        height: 100%;
-        -moz-box-pack: start;
-        justify-content: flex-start;
-        box-shadow: rgba(0, 0, 0, 0.09) 0.3125rem 0.3125rem 0px -0.0625rem, rgba(0, 0, 0, 0.15) 0px 0.25rem 0.5rem 0px;
-        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
-    }
-
-    .secondary-section .g .section .component-wrapper .responsive-grid .card:hover {
-        box-shadow: rgba(0, 0, 0, 0.2) 0.3125rem 0.3125rem 0px -0.0625rem, rgba(0, 0, 0, 0.26) 0px 0.25rem 0.5rem 0px;
-    }
-
-    @media screen and (min-width: 75rem) {
-        .secondary-section .g .section .component-wrapper .responsive-grid .card {
-            padding: 2rem 2.5rem;
-        }
-    }
-
-    @media screen and (min-width: 36rem) {
-        .secondary-section .g .section .component-wrapper .responsive-grid .card {
-            padding: 1rem 1.5rem;
-        }
-    }
-
-    /* add margin top to the svg image so that it appears closer to the menu 
-    this is a dirty hack, because css is hard =(
-    */
-    @media screen and (min-width: 75rem) {
-        .second-column .eda-img {
-            margin-top: -40%;
-        }
-    }
-
-
-    .second-column .eda-img>img {
-        width: 40%;
-    }
-
-    /* image width for tablets and desktops */
-    @media screen and (min-width: 1014px) {
-        .second-column .eda-img>img {
-            width: 70%;
-        }
-    }
-
-
-
-    .secondary-section .g .section .component-wrapper .responsive-grid .card .logo {
-        margin-right: 0.75rem;
-        width: 1.2rem;
-        min-width: 1.2rem;
-    }
-
-    .secondary-section .g .section .component-wrapper .responsive-grid .card .card-content {
-        display: flex;
-        flex: 1 1 0%;
         flex-direction: column;
+    }
+
+    .feature-card__header {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6875rem;
+        min-width: 0;
+    }
+
+    .feature-card__icon {
+        flex-shrink: 0;
+        width: 1.375rem;
+        height: 1.375rem;
+        margin-top: 0.15em;
+        color: var(--nokia-heading-font-color);
+    }
+
+    .feature-card__icon .twemoji {
         width: 100%;
+        height: 100%;
     }
 
-    .secondary-section .g .section .component-wrapper .responsive-grid .card .card-content h5 {
-        /* color: rgb(61, 61, 61); */
+    .feature-card h5 {
+        font-family: var(--md-text-font), sans-serif;
+        font-size: clamp(1rem, 0.4vw + 0.9rem, 1.125rem);
+        font-weight: 500;
+        line-height: 1.3;
+        color: var(--md-default-fg-color);
         margin: 0;
+        min-width: 0;
     }
 
-    .secondary-section .g .section .component-wrapper .responsive-grid .card .card-content p {
-        margin-top: 0.25em;
-        margin-bottom: 0;
-        /* color: rgb(92, 92, 92); */
-        font-size: 0.65rem;
-        font-weight: 300;
-        line-height: normal;
+    .feature-card p {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-size: clamp(0.875rem, 0.2vw + 0.84rem, 0.9375rem);
+        line-height: 1.45;
+        color: var(--md-default-fg-color--light);
+        margin: 0.5rem 0 0;
     }
 
-    .secondary-section .g .section .component-wrapper .responsive-grid .card .card-content code {
-        background: rgba(0, 0, 0, 0.05) none repeat scroll 0% 0%;
-        padding: 2px 6px;
-        border-radius: 4px;
+    /* ── Responsive: stack on smaller screens ──────────────────────── */
+    @media screen and (max-width: 1012px) {
+
+        .home-row,
+        .home-row--reverse {
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .home-section {
+            padding: 40px 24px;
+        }
+
+        .home-features {
+            padding: 40px 24px 60px;
+        }
     }
 
+    @media screen and (max-width: 30rem) {
+        .home-section {
+            padding: 24px 16px;
+        }
 
-    .component-wrapper span.em {
-        color: rgb(61, 61, 61);
+        .home-features {
+            padding: 24px 16px 40px;
+        }
+
+        .feature-card {
+            padding: 1.5rem;
+        }
     }
 
-    .component-wrapper a {
-        transition: color 125ms;
-        /* color: rgb(61, 61, 61); */
-        background: rgba(0, 0, 0, 0.05) none repeat scroll 0% 0%;
-        padding: 2px 6px;
-        margin: 0px 1px;
-        border-radius: 4px;
-        display: inline;
-        cursor: pointer;
-        font-weight: 600;
-    }
-
-    .component-wrapper a:hover {
-        color: var(--md-typeset-a-color);
-        background: var(--md-accent-fg-color--transparent);
+    /* ── Dark mode overrides ───────────────────────────────────────── */
+    [data-md-color-scheme="slate"] .feature-card {
+        background: var(--md-primary-fg-color--light);
+        border-color: rgba(171, 180, 194, 0.3);
     }
 
     .twemoji {
@@ -350,205 +350,210 @@
     }
 </style>
 
-<!-- Hero for landing page -->
-<div class="md-container tx-hero">
-    <div class="md-grid md-typeset">
-        <div class="md-main__inner">
-            <div>
-                <h1>Nokia EDA<br>
-                    <small> the automation echidna </small>
-                </h1>
-                <a href="blog/the-beginning-of-an-era-eda/" title="What is EDA?" class="md-button md-button--primary">
-                    <span class="twemoji">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path
-                                d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.02 3.02 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.02 3.02 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.02 3.02 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814M9.545 15.568V8.432L15.818 12z" />
-                        </svg>
-                    </span> What is Nokia EDA?
-                </a>
-                <a href="getting-started/try-eda/" title="Try EDA" class="md-button md-button--primary">
-                    <span class="twemoji">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path
-                                d="M10 16.5v-9l6 4.5M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2" />
-                        </svg>
-                    </span>
-                    Try EDA
-                </a>
-                <p>&nbsp;</p>
-            </div>
-        </div>
+<!-- Hero banner -->
+<div class="hero-banner">
+    <div class="hero-banner__text">
+        <h1>Nokia Event Driven Automation</h1>
+        <p>the automation echidna</p>
+    </div>
+    <div class="hero-banner__buttons">
+        <a href="blog/the-beginning-of-an-era-eda/" title="What is EDA?" class="hero-banner__btn">
+            <span class="twemoji">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.02 3.02 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.02 3.02 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.02 3.02 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814M9.545 15.568V8.432L15.818 12z" />
+                </svg>
+            </span>
+            What is Nokia EDA?
+        </a>
+        <a href="getting-started/try-eda/" title="Try EDA" class="hero-banner__btn">
+            <span class="twemoji">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M10 16.5v-9l6 4.5M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2" />
+                </svg>
+            </span>
+            Try EDA
+        </a>
     </div>
 </div>
 
 <div class="md-container secondary-section">
-    <div class="g">
-        <!-- Architecture as building blocks -->
-        <div class="section">
-            <div class="component-wrapper">
-                <div class="first-column">
-                    <h3>EDA? Event Driven Automation.</h3>
-                    <p>
-                        Nokia EDA <small>(pron. <i>ee-dah</i>)</small> is <i>the</i> platform for automating your
-                        infrastructure.
-                    </p>
-                    <p>
-                        In Kubernetes, a Pod looks like a Pod no matter what container runtime you use.
-                        So why doesn't an Interface look like an Interface no matter what OS you use? Why doesn't a BGP
-                        peer look like a BGP peer no matter the underlying implementation?
-                        When will infrastructure get its time in automation utopia?
-                    </p>
-                    <h4>Going beyond workloads</h4>
-                    <p>
-                        Imagine interacting with your infrastructure in a way that is consistent, using the same set of
-                        abstract primitives no matter what the underlying implementation is.
-                    </p>
-                    <p>
-                        EDA is designed to be simple to use, but powerful enough to handle the most complex
-                        infrastructure setups.
-                    </p>
-                    <h4>Built for operations</h4>
-                    <p>
-                        Declare the final state of your infrastructure - the "what", not the "how".
-                    </p>
-                    <p>
-                        Never be out of step again with event-driven-everything.
-                    </p>
-                    <p>
-                        Drive change with confidence - know what will happen before it happens.
-                    </p>
-                    <p>
-                        Automation for operations - state and maintenance have always been an automation afterthought.
-                        No longer.
-                    </p>
-                    <p>
-                        All of this built and integrated with the toolchains you love, with the reliability
-                        you need for automating infrastructure.
-                    </p>
-                </div>
-                <div class="second-column">
-                    <div class="eda-img style="
-                        style="display: flex; justify-content: center; align-items: center;height:100%;">
-                        <img src="images/N-blue-EDA.svg" alt="" draggable="false">
-                    </div>
-                    <h3>What is an echidna?</h3>
-                    <p>
-                        You like hedgehogs, right? Well, echidnas are like hedgehogs, but bigger and better. They're
-                        also known as spiny anteaters, and they're one of the only mammals that lay eggs (the other
-                        being a platypus). Pretty neat eh?
-                    </p>
-                    <p>
-                        None of that relates to automation, but we all need a mascot right? And echidnas are pretty
-                        cool. EDA the automation echidna is here to help you automate your infrastructure.
-                    </p>
-                </div>
+    <!-- Section A: What is an echidna? -->
+    <div class="home-section">
+        <div class="home-row">
+            <div class="home-col">
+                <h3>What is an echidna?</h3>
+                <p>
+                    You like hedgehogs, right? Well, echidnas are like hedgehogs, but bigger and better. They're
+                    also known as spiny anteaters, and they're one of the only mammals that lay eggs (the other
+                    being a platypus). Pretty neat eh?
+                </p>
+                <p>
+                    None of that relates to automation, but we all need a mascot right? And echidnas are pretty
+                    cool. EDA the automation echidna is here to help you automate your infrastructure.
+                </p>
             </div>
-            <div class="component-wrapper" style="display: block;">
-                <h4>Key features</h4>
+            <div class="home-col">
+                <img src="images/eda-ui-1.png" alt="EDA dashboard" class="home-screenshot" draggable="false">
+            </div>
+        </div>
+    </div>
 
-                <!-- Declarative abstractions -->
-                <div class="responsive-grid">
-                    <div class="card">
-                        <div class="logo">
+    <!-- Section B: EDA? Event Driven Automation (image left, text right) -->
+    <div class="home-section">
+        <div class="home-row home-row--reverse">
+            <div class="home-col">
+                <h3>EDA? Event Driven Automation.</h3>
+                <p>
+                    Nokia EDA <small>(pron. <i>ee-dah</i>)</small> is <i>the</i> platform for automating your
+                    infrastructure.
+                </p>
+                <p>
+                    In Kubernetes, a Pod looks like a Pod no matter what container runtime you use.
+                    So why doesn't an Interface look like an Interface no matter what OS you use? Why doesn't a BGP
+                    peer look like a BGP peer no matter the underlying implementation?
+                    When will infrastructure get its time in automation utopia?
+                </p>
+            </div>
+            <div class="home-col">
+                <img src="images/eda-ui-2.png" alt="EDA topology view" class="home-screenshot" draggable="false">
+            </div>
+        </div>
+    </div>
+
+    <!-- Section C: Going beyond workloads / Built for operations -->
+    <div class="home-section">
+        <div class="home-row home-row--top">
+            <div class="home-col">
+                <h4>Going beyond workloads</h4>
+                <p>
+                    Imagine interacting with your infrastructure in a way that is consistent, using the same set of
+                    abstract primitives no matter what the underlying implementation is.
+                </p>
+                <p>
+                    EDA is designed to be simple to use, but powerful enough to handle the most complex
+                    infrastructure setups.
+                </p>
+            </div>
+            <div class="home-col">
+                <h4>Built for operations</h4>
+                <p>
+                    Declare the final state of your infrastructure - the "what", not the "how".
+                </p>
+                <p>
+                    Never be out of step again with event-driven-everything.
+                </p>
+                <p>
+                    Drive change with confidence - know what will happen before it happens.
+                </p>
+                <p>
+                    Automation for operations - state and maintenance have always been an automation afterthought.
+                    No longer.
+                </p>
+                <p>
+                    All of this built and integrated with the toolchains you love, with the reliability
+                    you need for automating infrastructure.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section D: Key Features -->
+    <div class="home-features">
+        <div class="home-features__inner">
+            <h3>Key Features</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
                             <span class="twemoji">
                                 {% include ".icons/octicons/globe-24.svg" %}
                             </span>
                         </div>
-                        <div class="card-content">
-                            <h5>Declarative abstractions</h5>
-                            <p>
-                                Define the end state of your infrastructure in abstract terms, and let EDA take care of
-                                the rest. EDA will ensure that your infrastructure is always in the desired state.
-                            </p>
-                        </div>
+                        <h5>Declarative abstractions</h5>
                     </div>
+                    <p>
+                        Define the end state of your infrastructure in abstract terms, and let EDA take care of
+                        the rest. EDA will ensure that your infrastructure is always in the desired state.
+                    </p>
+                </div>
 
-
-                    <!-- Drift/Deviations -->
-                    <div class="card">
-                        <div class="logo">
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
                             <span class="twemoji">
                                 {% include ".icons/octicons/git-merge-queue-24.svg" %}
                             </span>
                         </div>
-                        <div class="card-content">
-                            <h5>Streaming drift control</h5>
-                            <p>
-                                Leveraging streaming telemetry for deviation management, EDA can detect and correct
-                                deviations from the desired state in real-time.
-                            </p>
-                        </div>
+                        <h5>Streaming drift control</h5>
                     </div>
+                    <p>
+                        Leveraging streaming telemetry for deviation management, EDA can detect and correct
+                        deviations from the desired state in real-time.
+                    </p>
+                </div>
 
-
-                    <!-- Event Driven -->
-                    <div class="card">
-                        <div class="logo">
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
                             <span class="twemoji">
                                 {% include ".icons/octicons/rocket-24.svg" %}
                             </span>
                         </div>
-                        <div class="card-content">
-                            <h5>Event-driven-everything</h5>
-                            <p>
-                                Achieve massive scalability and real-time insights with event-driven automation.
-                                Do work only when it needs to done, no more churn via polling. A platform truly built
-                                around streaming telemetry.
-                            </p>
-                        </div>
+                        <h5>Event-driven-everything</h5>
                     </div>
+                    <p>
+                        Achieve massive scalability and real-time insights with event-driven automation.
+                        Do work only when it needs to done, no more churn via polling. A platform truly built
+                        around streaming telemetry.
+                    </p>
+                </div>
 
-
-                    <!-- Multi-x -->
-                    <div class="card">
-                        <div class="logo">
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
                             <span class="twemoji">
                                 {% include ".icons/octicons/code-of-conduct-24.svg" %}
                             </span>
                         </div>
-                        <div class="card-content">
-                            <h5>Multi-x</h5>
-                            <p>
-                                Multi vendor, multi domain, multi cloud, multi everything. EDA is truly an open platform
-                                that can be extended to support any vendor, any domain, any cloud, and any technology.
-                            </p>
-                        </div>
+                        <h5>Multi-x</h5>
                     </div>
+                    <p>
+                        Multi vendor, multi domain, multi cloud, multi everything. EDA is truly an open platform
+                        that can be extended to support any vendor, any domain, any cloud, and any technology.
+                    </p>
+                </div>
 
-
-                    <!-- Extensible -->
-                    <div class="card">
-                        <div class="logo">
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
                             <span class="twemoji">
                                 {% include ".icons/octicons/unlock-24.svg" %}
                             </span>
                         </div>
-                        <div class="card-content">
-                            <h5>Extensible by nature</h5>
-                            <p>
-                                Inheriting the best principles of Kubernetes, with nuance for infrastructure automation.
-                                EDA is designed to be extensible and flexible, allowing you to build on top of it.
-                            </p>
-                        </div>
+                        <h5>Extensible by nature</h5>
                     </div>
+                    <p>
+                        Inheriting the best principles of Kubernetes, with nuance for infrastructure automation.
+                        EDA is designed to be extensible and flexible, allowing you to build on top of it.
+                    </p>
+                </div>
 
-
-                    <!-- Operations -->
-                    <div class="card">
-                        <div class="logo">
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
                             <span class="twemoji">
                                 {% include ".icons/octicons/light-bulb-24.svg" %}
                             </span>
                         </div>
-                        <div class="card-content">
-                            <h5>Operations as code</h5>
-                            <p>
-                                Automation for state and operations without afterthought. Make the most complex
-                                tasks repeatable and reliable with workflows, dry runs, and automated pre and post
-                                checks.
-                            </p>
-                        </div>
+                        <h5>Operations as code</h5>
                     </div>
+                    <p>
+                        Automation for state and operations without afterthought. Make the most complex
+                        tasks repeatable and reliable with workflows, dry runs, and automated pre and post
+                        checks.
+                    </p>
                 </div>
             </div>
         </div>
@@ -562,4 +567,6 @@
 <!-- Application footer -->
 {% block footer %}
 {{ super() }}
+<link rel="stylesheet" href="{{ 'stylesheets/rebel.css' | url }}" />
+<script defer src="{{ 'javascripts/rebel.js' | url }}"></script>
 {% endblock %}
