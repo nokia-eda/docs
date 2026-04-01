@@ -1,4 +1,4 @@
-site_name: Nokia Event Driven Automation
+site_name: Event Driven Automation
 nav:
   - Home: index.md
   - Getting started:
@@ -61,31 +61,31 @@ nav:
       - Kafka Exporter: apps/kafka-exporter.md
       - NetBox: apps/netbox.md
       - Cloud Connect:
-        - apps/connect/index.md
-        - Installation: apps/connect/cloud-connect-installation.md
-        - Troubleshooting: apps/connect/troubleshooting.md
-        - Audit: apps/connect/audit.md
-        - Nutanix:
-            - apps/connect/nutanix/index.md
-            - Installation: apps/connect/nutanix/installation.md
-        - Kubernetes:
-            - apps/connect/kubernetes/index.md
-            - Installation:
-                - apps/connect/kubernetes/installation/index.md
-                - Helm Installation: apps/connect/kubernetes/installation/helm-installation.md
-                - OLM Installation: apps/connect/kubernetes/installation/olm-installation.md
-        - OpenStack:
-            - apps/connect/openstack/index.md
-            - Installation:
-                - Overview: apps/connect/openstack/installation.md
-                - RHOSP 17.1 Installation: apps/connect/openstack/rhosp-installation.md
-        - VMware:
-            - vSphere:
-                - apps/connect/vmware/vsphere/index.md
-                - Installation: apps/connect/vmware/vsphere/installation.md
-            - NSX:
-                - apps/connect/vmware/nsx/index.md
-                - Installation: apps/connect/vmware/nsx/installation.md
+          - apps/connect/index.md
+          - Installation: apps/connect/cloud-connect-installation.md
+          - Troubleshooting: apps/connect/troubleshooting.md
+          - Audit: apps/connect/audit.md
+          - Nutanix:
+              - apps/connect/nutanix/index.md
+              - Installation: apps/connect/nutanix/installation.md
+          - Kubernetes:
+              - apps/connect/kubernetes/index.md
+              - Installation:
+                  - apps/connect/kubernetes/installation/index.md
+                  - Helm Installation: apps/connect/kubernetes/installation/helm-installation.md
+                  - OLM Installation: apps/connect/kubernetes/installation/olm-installation.md
+          - OpenStack:
+              - apps/connect/openstack/index.md
+              - Installation:
+                  - Overview: apps/connect/openstack/installation.md
+                  - RHOSP 17.1 Installation: apps/connect/openstack/rhosp-installation.md
+          - VMware:
+              - vSphere:
+                  - apps/connect/vmware/vsphere/index.md
+                  - Installation: apps/connect/vmware/vsphere/installation.md
+              - NSX:
+                  - apps/connect/vmware/nsx/index.md
+                  - Installation: apps/connect/vmware/nsx/installation.md
   - Development:
       - Applications:
           - There's an app for that: development/apps/index.md
@@ -173,10 +173,10 @@ theme:
   font:
     code: Nova
   icon:
-    logo: nokia/eda
-    repo: nokia/N-white
+    logo: nokia/nokia-white
+    # repo: nokia/N-white
     edit: material/file-edit-outline
-  favicon: images/eda.svg
+  favicon: images/n-favicon.svg
 
 # Plugins
 plugins:
@@ -326,6 +326,7 @@ extra_css:
   - stylesheets/animations.css
   - stylesheets/steps.css
   - stylesheets/expandable-blocks.css
+  - stylesheets/theme-toggle.css
 
 hooks:
   - hooks/hooks.py
@@ -335,3 +336,4 @@ extra_javascript:
   - javascripts/sh-annotation.js
   - javascripts/expandable-blocks.js
   - javascripts/diagrams-in-tabs.js
+  - javascripts/theme-toggle.js

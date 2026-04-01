@@ -1,0 +1,94 @@
+{% set class = "md-header" %}
+{% if "navigation.tabs.sticky" in features %}
+{% set class = class ~ " md-header--shadow md-header--lifted" %}
+{% elif "navigation.tabs" not in features %}
+{% set class = class ~ " md-header--shadow" %}
+{% endif %}
+<header class="{{ class }}" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header') }}">
+    <a href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}" title="{{ config.site_name | e }}"
+      class="md-header__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
+      <span class="logo-light">{% include ".icons/nokia/nokia-blue.svg" %}</span>
+      <span class="logo-dark">{% include ".icons/nokia/nokia-white.svg" %}</span>
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      {% set icon = config.theme.icon.menu or "material/menu" %}
+      {% include ".icons/" ~ icon ~ ".svg" %}
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            {{ config.site_name }}
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            {% if page.meta and page.meta.title %}
+            {{ page.meta.title }}
+            {% else %}
+            {{ page.title }}
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {% if config.theme.palette %}
+    {% if not config.theme.palette is mapping %}
+    {% include "partials/palette.html" %}
+    {% endif %}
+    {% endif %}
+    {% if not config.theme.palette is mapping %}
+    {% include "partials/javascripts/palette.html" %}
+    {% endif %}
+    <script>document.documentElement.setAttribute("data-theme", document.body.getAttribute("data-md-color-scheme") === "slate" ? "dark" : "light")</script>
+
+    {% if config.extra.alternate %}
+    {% include "partials/alternate.html" %}
+    {% endif %}
+
+    {% if "material/search" in config.plugins %}
+    {% set search = config.plugins["material/search"] | attr("config") %}
+    {% if search.enabled %}
+    <label class="md-header__button md-icon" for="__search">
+      {% set icon = config.theme.icon.search or "material/magnify" %}
+      {% include ".icons/" ~ icon ~ ".svg" %}
+    </label>
+    {% include "partials/search.html" %}
+    {% endif %}
+    {% endif %}
+
+    <div class="md-header__icon-cluster">
+      <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="auto" aria-live="polite">
+        <svg class="sun-and-moon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+          <mask class="moon" id="moon-mask">
+            <rect x="0" y="0" width="100%" height="100%" fill="white" />
+            <circle cx="24" cy="10" r="6" fill="black" />
+          </mask>
+          <circle class="sun" cx="12" cy="12" r="6" mask="url(#moon-mask)" fill="currentColor" />
+          <g class="sun-beams" stroke="currentColor">
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </g>
+        </svg>
+      </button>
+
+      <div class="md-header__source">
+        {% include "partials/source.html" %}
+      </div>
+    </div>
+    <div class="md-header__version"></div>
+  </nav>
+  {% if "navigation.tabs.sticky" in features %}
+  {% if "navigation.tabs" in features %}
+  {% include "partials/tabs.html" %}
+  {% endif %}
+  {% endif %}
+</header>

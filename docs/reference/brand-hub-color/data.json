@@ -1,0 +1,917 @@
+{
+  "colors": [
+    {
+      "color": "#005aff",
+      "shades": [
+        "#005aff",
+        "#005adf",
+        "#0049b4",
+        "#003480",
+        "#001135",
+        "#e4f0ff",
+        "#badaff",
+        "#8ec2ff",
+        "#4092ff"
+      ],
+      "shadeInfo": {
+        "#005aff": {
+          "flags": [false, false, true, false, true, true, false, true, true],
+          "info": {
+            "name": "Blue 500",
+            "hex": "#005aff",
+            "rgb": "0, 90, 255",
+            "css": "rgb(0, 90, 255)",
+            "cmyk": "96/55/0/0",
+            "pantone": "2132",
+            "altName": "Bright Blue"
+          }
+        },
+
+        "#005adf": {
+          "flags": [false, false, true, false, true, true, false, true, true],
+          "info": {
+            "name": "Blue 600",
+            "hex": "#005adf",
+            "rgb": "0, 90, 223",
+            "css": "rgb(0, 90, 223)"
+          }
+        },
+        "#0049b4": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Blue 700",
+            "hex": "#0049b4",
+            "rgb": "0, 73, 180",
+            "css": "rgb(0, 73, 180)"
+          }
+        },
+        "#003480": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Blue 800",
+            "hex": "#003480",
+            "rgb": "0, 52, 128",
+            "css": "rgb(0, 52, 128)"
+          }
+        },
+        "#001135": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Blue 900",
+            "hex": "#001135",
+            "rgb": "0, 17, 53",
+            "css": "rgb(0, 17, 53)",
+            "cmyk": "100/46/0/89",
+            "pantone": "296c",
+            "altName": "Blue-black"
+          }
+        },
+        "#e4f0ff": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Blue 100",
+            "hex": "#e4f0ff",
+            "rgb": "228, 240, 255",
+            "css": "rgb(228, 240, 255)"
+          }
+        },
+        "#badaff": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Blue 200",
+            "hex": "#badaff",
+            "rgb": "186, 218, 255",
+            "css": "rgb(186, 218, 255)"
+          }
+        },
+        "#8ec2ff": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Blue 300",
+            "hex": "#8ec2ff",
+            "rgb": "142, 194, 255",
+            "css": "rgb(142, 194, 255)"
+          }
+        },
+        "#4092ff": {
+          "flags": [false, true, true, false, false, true, false, false, true],
+          "info": {
+            "name": "Blue 400",
+            "hex": "#4092ff",
+            "rgb": "64, 146, 255",
+            "css": "rgb(64, 146, 255)"
+          }
+        }
+      }
+    },
+
+    {
+      "color": "#23abb6",
+      "shades": [
+        "#23abb6",
+        "#0893a8",
+        "#027490",
+        "#01516e",
+        "#003047",
+        "#e4fbff",
+        "#b9eaf2",
+        "#90dce5",
+        "#50c4d0"
+      ],
+      "shadeInfo": {
+        "#23abb6": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Teal 500",
+            "hex": "#23abb6",
+            "rgb": "35, 171, 182",
+            "css": "rgb(35, 171, 182)",
+            "cmyk": "80/5/30/0",
+            "pantone": "3125",
+            "altName": "Teal"
+          }
+        },
+        "#0893a8": {
+          "flags": [true, true, true, false, true, true, false, true, true],
+          "info": {
+            "name": "Teal 600",
+            "hex": "#0893a8",
+            "rgb": "8, 147, 168",
+            "css": "rgb(8, 147, 168)"
+          }
+        },
+        "#027490": {
+          "flags": [false, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Teal 700",
+            "hex": "#027490",
+            "rgb": "2, 116, 144",
+            "css": "rgb(2, 116, 144)"
+          }
+        },
+        "#01516e": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Teal 800",
+            "hex": "#01516e",
+            "rgb": "1, 81, 110",
+            "css": "rgb(1, 81, 110)"
+          }
+        },
+        "#003047": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Teal 900",
+            "hex": "#003047",
+            "rgb": "0, 48, 71",
+            "css": "rgb(0, 48, 71)"
+          }
+        },
+        "#e4fbff": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Teal 100",
+            "hex": "#e4fbff",
+            "rgb": "228, 251, 255",
+            "css": "rgb(228, 251, 255)"
+          }
+        },
+        "#b9eaf2": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Teal 200",
+            "hex": "#b9eaf2",
+            "rgb": "185, 234, 242",
+            "css": "rgb(185, 234, 242)"
+          }
+        },
+        "#90dce5": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Teal 300",
+            "hex": "#90dce5",
+            "rgb": "144, 220, 229",
+            "css": "rgb(144, 220, 229)"
+          }
+        },
+        "#50c4d0": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Teal 400",
+            "hex": "#50C4D0",
+            "rgb": "80, 196, 208",
+            "css": "rgb(80, 196, 208)"
+          }
+        }
+      }
+    },
+    {
+      "color": "#37cc73",
+      "shades": [
+        "#37cc73",
+        "#14b949",
+        "#089b2a",
+        "#037312",
+        "#004702",
+        "#e4ffec",
+        "#c2f8d4",
+        "#a0f0be",
+        "#63e194"
+      ],
+      "shadeInfo": {
+        "#37cc73": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Green 500",
+            "hex": "#37cc73",
+            "rgb": "55,204,115",
+            "css": "rgb(55,204,115)",
+            "cmyk": "81/0/100/0",
+            "pantone": "2423",
+            "altName": "Green"
+          }
+        },
+        "#14b949": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Green 600",
+            "hex": "#14b949",
+            "rgb": "20,185,73",
+            "css": "rgb(20,185,73)"
+          }
+        },
+        "#089b2a": {
+          "flags": [true, true, true, false, true, true, false, true, true],
+          "info": {
+            "name": "Green 700",
+            "hex": "#089b2a",
+            "rgb": "8,155,42",
+            "css": "rgb(8,155,42)"
+          }
+        },
+        "#037312": {
+          "flags": [false, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Green 800",
+            "hex": "#037312",
+            "rgb": "3,115,18",
+            "css": "rgb(3,115,18)"
+          }
+        },
+        "#004702": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Green 900",
+            "hex": "#004702",
+            "rgb": "0,71,2",
+            "css": "rgb(0,71,2)"
+          }
+        },
+        "#e4ffec": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Green 100",
+            "hex": "#e4ffec",
+            "rgb": "228,255,236",
+            "css": "rgb(228,255,236)"
+          }
+        },
+        "#c2f8d4": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Green 200",
+            "hex": "#c2f8d4",
+            "rgb": "194,248,212",
+            "css": "rgb(194,248,212)"
+          }
+        },
+        "#a0f0be": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Green 300",
+            "hex": "#a0f0be",
+            "rgb": "160,240,190",
+            "css": "rgb(160,240,190)"
+          }
+        },
+        "#63e194": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Green 400",
+            "hex": "#63e194",
+            "rgb": "99,225,148",
+            "css": "rgb(99,225,148)"
+          }
+        }
+      }
+    },
+    {
+      "color": "#f7b737",
+      "shades": [
+        "#f7b737",
+        "#d98c0f",
+        "#b06205",
+        "#7e3b02",
+        "#471b00",
+        "#fff7d3",
+        "#fff0af",
+        "#ffe890",
+        "#ffd568"
+      ],
+      "shadeInfo": {
+        "#f7b737": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Yellow 500",
+            "hex": "#f7b737",
+            "rgb": "247,183,55",
+            "css": "rgb(247,183,55)",
+            "cmyk": "0/20/100/0",
+            "pantone": "116",
+            "altName": "Yellow"
+          }
+        },
+        "#d98c0f": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Yellow 600",
+            "hex": "#d98c0f",
+            "rgb": "217,140,15",
+            "css": "rgb(217,140,15)"
+          }
+        },
+        "#b06205": {
+          "flags": [true, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Yellow 700",
+            "hex": "#b06205",
+            "rgb": "176,98,5",
+            "css": "rgb(176,98,5)"
+          }
+        },
+        "#7e3b02": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Yellow 800",
+            "hex": "#7e3b02",
+            "rgb": "126,59,2",
+            "css": "rgb(126,59,2)"
+          }
+        },
+        "#471b00": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Yellow 900",
+            "hex": "#471b00",
+            "rgb": "71,27,0",
+            "css": "rgb(71,27,0)"
+          }
+        },
+        "#fff7d3": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Yellow 100",
+            "hex": "#fff7d3",
+            "rgb": "255,247,211",
+            "css": "rgb(255,247,211)"
+          }
+        },
+        "#fff0af": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Yellow 200",
+            "hex": "#fff0af",
+            "rgb": "255,240,175",
+            "css": "rgb(255,240,175)"
+          }
+        },
+        "#ffe890": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Yellow 300",
+            "hex": "#ffe890",
+            "rgb": "255,232,144",
+            "css": "rgb(255,232,144)"
+          }
+        },
+        "#ffd568": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Yellow 400",
+            "hex": "#ffd568",
+            "rgb": "255,213,104",
+            "css": "rgb(255,213,104)"
+          }
+        }
+      }
+    },
+    {
+      "color": "#f47f31",
+      "shades": [
+        "#f47f31",
+        "#d7560c",
+        "#af3903",
+        "#7d2101",
+        "#470e00",
+        "#fff1e4",
+        "#ffe1c5",
+        "#ffd0a5",
+        "#ffa663"
+      ],
+      "shadeInfo": {
+        "#f47f31": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Orange 500",
+            "hex": "#f47f31",
+            "rgb": "244,127,49",
+            "css": "rgb(244,127,49)",
+            "cmyk": "0/65/100/0",
+            "pantone": "165",
+            "altName": "Orange"
+          }
+        },
+        "#d7560c": {
+          "flags": [true, true, true, false, true, true, false, true, true],
+          "info": {
+            "name": "Orange 600",
+            "hex": "#d7560c",
+            "rgb": "215,86,12",
+            "css": "rgb(215,86,12)"
+          }
+        },
+        "#af3903": {
+          "flags": [false, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Orange 700",
+            "hex": "#af3903",
+            "rgb": "175,57,3",
+            "css": "rgb(175,57,3)"
+          }
+        },
+        "#7d2101": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Orange 800",
+            "hex": "#7D2101",
+            "rgb": "125,33,1",
+            "css": "rgb(125,33,1)"
+          }
+        },
+        "#470e00": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Orange 900",
+            "hex": "#470e00",
+            "rgb": "71,14,0",
+            "css": "rgb(71,14,0)"
+          }
+        },
+        "#fff1e4": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Orange 100",
+            "hex": "#fff1e4",
+            "rgb": "255,241,228",
+            "css": "rgb(255,241,228)"
+          }
+        },
+        "#ffe1c5": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Orange 200",
+            "hex": "#ffe1c5",
+            "rgb": "255,225,197",
+            "css": "rgb(255,225,197)"
+          }
+        },
+        "#ffd0a5": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Orange 300",
+            "hex": "#ffd0a5",
+            "rgb": "255,208,165",
+            "css": "rgb(255,208,165)"
+          }
+        },
+        "#ffa663": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Orange 400",
+            "hex": "#ffa663",
+            "rgb": "255,166,99",
+            "css": "rgb(255,166,99)"
+          }
+        }
+      }
+    },
+    {
+      "color": "#e23b3b",
+      "shades": [
+        "#e23b3b",
+        "#c91514",
+        "#a60808",
+        "#790303",
+        "#470000",
+        "#ffe6e4",
+        "#fdc8c5",
+        "#fbaaa7",
+        "#f26c69"
+      ],
+      "shadeInfo": {
+        "#e23b3b": {
+          "flags": [true, true, true, false, true, true, false, true, true],
+          "info": {
+            "name": "Red 500",
+            "hex": "#e23b3b",
+            "rgb": "226,59,59",
+            "css": "rgb(226,59,59)",
+            "cmyk": "0/90/100/4",
+            "pantone": "185",
+            "altName": "Red"
+          }
+        },
+        "#c91514": {
+          "flags": [false, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Red 600",
+            "hex": "#c91514",
+            "rgb": "201,21,20",
+            "css": "rgb(201,21,20)"
+          }
+        },
+        "#a60808": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Red 700",
+            "hex": "#a60808",
+            "rgb": "166,8,8",
+            "css": "rgb(166,8,8)"
+          }
+        },
+        "#790303": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Red 800",
+            "hex": "#790303",
+            "rgb": "121,3,3",
+            "css": "rgb(121,3,3)"
+          }
+        },
+        "#470000": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Red 900",
+            "hex": "#470000",
+            "rgb": "71,0,0",
+            "css": "rgb(71,0,0)"
+          }
+        },
+        "#ffe6e4": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Red 100",
+            "hex": "#ffe6e4",
+            "rgb": "255,230,228",
+            "css": "rgb(255,230,228)"
+          }
+        },
+        "#fdc8c5": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Red 200",
+            "hex": "#fdc8c5",
+            "rgb": "253,200,197",
+            "css": "rgb(253,200,197)"
+          }
+        },
+        "#fbaaa7": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Red 300",
+            "hex": "#fbaaa7",
+            "rgb": "251,170,167",
+            "css": "rgb(251,170,167)"
+          }
+        },
+        "#f26c69": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Red 400",
+            "hex": "#f26c69",
+            "rgb": "242,108,105",
+            "css": "rgb(242,108,105)"
+          }
+        }
+      }
+    },
+    {
+      "color": "#e03dcd",
+      "shades": [
+        "#e03dcd",
+        "#c816ac",
+        "#a50885",
+        "#78035a",
+        "#470031",
+        "#ffe4fe",
+        "#fdc6f9",
+        "#faa7f5",
+        "#f06ae5"
+      ],
+      "shadeInfo": {
+        "#e03dcd": {
+          "flags": [true, true, true, false, true, true, false, true, true],
+          "info": {
+            "name": "Pink 500",
+            "hex": "#e03dcd",
+            "rgb": "224,61,205",
+            "css": "rgb(224,61,205)",
+            "cmyk": "0/90/0/0",
+            "pantone": "Rhodamine Red",
+            "altName": "Pink"
+          }
+        },
+        "#c816ac": {
+          "flags": [false, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Pink 600",
+            "hex": "#c816ac",
+            "rgb": "200,22,172",
+            "css": "rgb(200,22,172)"
+          }
+        },
+        "#a50885": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Pink 700",
+            "hex": "#a50885",
+            "rgb": "165,8,133",
+            "css": "rgb(165,8,133)"
+          }
+        },
+        "#78035a": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Pink 800",
+            "hex": "#78035a",
+            "rgb": "120,3,90",
+            "css": "rgb(120,3,90)"
+          }
+        },
+        "#470031": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Pink 900",
+            "hex": "#470031",
+            "rgb": "71,0,49",
+            "css": "rgb(71,0,49)"
+          }
+        },
+        "#ffe4fe": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Pink 100",
+            "hex": "#ffe4fe",
+            "rgb": "255,228,254",
+            "css": "rgb(255,228,254)"
+          }
+        },
+        "#fdc6f9": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Pink 200",
+            "hex": "#fdc6f9",
+            "rgb": "253,198,249",
+            "css": "rgb(253,198,249)"
+          }
+        },
+        "#faa7f5": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Pink 300",
+            "hex": "#faa7f5",
+            "rgb": "250,167,245",
+            "css": "rgb(250,167,245)"
+          }
+        },
+        "#f06ae5": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Pink 400",
+            "hex": "#f06ae5",
+            "rgb": "240,106,229",
+            "css": "rgb(240,106,229)"
+          }
+        }
+      }
+    },
+    {
+      "color": "#7d33f2",
+      "shades": [
+        "#7d33f2",
+        "#5a0dd5",
+        "#4604ae",
+        "#33017d",
+        "#1e0047",
+        "#eae4ff",
+        "#d4c5ff",
+        "#c0a5ff",
+        "#9765fe"
+      ],
+      "shadeInfo": {
+        "#7d33f2": {
+          "flags": [false, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Purple 500",
+            "hex": "#7d33f2",
+            "rgb": "125,51,242",
+            "css": "rgb(125,51,242)",
+            "cmyk": "65/75/0/0",
+            "pantone": "2665",
+            "altName": "Purple"
+          }
+        },
+        "#5a0dd5": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Purple 600",
+            "hex": "#5a0dd5",
+            "rgb": "90,13,213",
+            "css": "rgb(90,13,213)"
+          }
+        },
+        "#4604ae": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Purple 700",
+            "hex": "#4604ae",
+            "rgb": "70,4,174",
+            "css": "rgb(70,4,174)"
+          }
+        },
+        "#33017d": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Purple 800",
+            "hex": "#33017d",
+            "rgb": "51,1,125",
+            "css": "rgb(51,1,125)"
+          }
+        },
+        "#1e0047": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Purple 900",
+            "hex": "#1e0047",
+            "rgb": "30,0,71",
+            "css": "rgb(30,0,71)"
+          }
+        },
+        "#eae4ff": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Purple 100",
+            "hex": "#eae4ff",
+            "rgb": "234,228,255",
+            "css": "rgb(234,228,255)"
+          }
+        },
+        "#d4c5ff": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Purple 200",
+            "hex": "#d4c5ff",
+            "rgb": "212,197,255",
+            "css": "rgb(212,197,255)"
+          }
+        },
+        "#c0a5ff": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Purple 300",
+            "hex": "#c0a5ff",
+            "rgb": "192,165,255",
+            "css": "rgb(192,165,255)"
+          }
+        },
+        "#9765fe": {
+          "flags": [true, true, true, false, true, true, false, true, true],
+          "info": {
+            "name": "Purple 400",
+            "hex": "#9765fe",
+            "rgb": "151,101,254",
+            "css": "rgb(151,101,254)"
+          }
+        }
+      }
+    },
+    {
+      "color": "#cccccc",
+      "shades": [
+        "#cccccc",
+        "#999999",
+        "#757575",
+        "#666666",
+        "#333333",
+        "#f9f9f9",
+        "#f3f3f3",
+        "#ebebeb",
+        "#dcdcdc"
+      ],
+      "shadeInfo": {
+        "#cccccc": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Gray 500",
+            "hex": "#cccccc",
+            "rgb": "204,204,204",
+            "css": "rgb(204,204,204)",
+            "cmyk": "12/8/8/23",
+            "pantone": "Cool gray 5",
+            "altName": "Gray"
+          }
+        },
+        "#999999": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Gray 600",
+            "hex": "#999999",
+            "rgb": "153,153,153",
+            "css": "rgb(153,153,153)"
+          }
+        },
+        "#757575": {
+          "flags": [true, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Gray 700",
+            "hex": "#757575",
+            "rgb": "117,117,117",
+            "css": "rgb(117,117,117)",
+            "cmyk": "20/15/11/26",
+            "pantone": "Cool gray 9"
+          }
+        },
+        "#666666": {
+          "flags": [false, true, true, true, true, true, true, true, true],
+          "info": {
+            "name": "Gray 800",
+            "hex": "#666666",
+            "rgb": "102,102,102",
+            "css": "rgb(102,102,102)"
+          }
+        },
+        "#333333": {
+          "flags": [false, false, false, true, true, true, true, true, true],
+          "info": {
+            "name": "Gray 900",
+            "hex": "#333333",
+            "rgb": "51,51,51",
+            "css": "rgb(51,51,51)",
+            "cmyk": "69/60/56/66",
+            "pantone": "Cool gray 11"
+          }
+        },
+        "#f9f9f9": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Gray 100",
+            "hex": "#f9f9f9",
+            "rgb": "249,249,249",
+            "css": "rgb(249,249,249)",
+            "cmyk": "4/3/2/0",
+            "pantone": "Cool gray 1"
+          }
+        },
+        "#f3f3f3": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Gray 200",
+            "hex": "#f3f3f3",
+            "rgb": "243,243,243",
+            "css": "rgb(243,243,243)"
+          }
+        },
+        "#ebebeb": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Gray 300",
+            "hex": "#ebebeb",
+            "rgb": "235,235,235",
+            "css": "rgb(235,235,235)",
+            "cmyk": "12/8/8/23",
+            "pantone": "Cool gray 2"
+          }
+        },
+        "#dcdcdc": {
+          "flags": [true, true, true, false, false, false, false, false, false],
+          "info": {
+            "name": "Gray 400",
+            "hex": "#dcdcdc",
+            "rgb": "220,220,220",
+            "css": "rgb(220,220,220)"
+          }
+        }
+      }
+    }
+  ]
+}
