@@ -2,21 +2,63 @@
 Mkdocs-macros module
 """
 
+import posixpath
 
-def _normalize_path(url):
-    """Prepend ``../`` to relative URLs to compensate for MkDocs directory URLs.
 
-    MkDocs generates ``page/index.html`` from ``page.md``, placing the HTML
-    one directory deeper than the source file.  Standard Markdown images are
-    adjusted automatically, but raw HTML emitted by macros is not, so every
-    relative path ends up one level too shallow.  This helper adds the missing
-    ``../`` prefix for any URL that is not absolute or empty.
+def _scale_to_width_percent(scale):
+    """Return a CSS width percentage from a numeric scale factor, or None.
+
+    ``scale`` is a multiplier on the container width: ``0.5`` → ``50%``,
+    ``2`` → ``200%``. ``1`` means natural layout (no width style). Empty
+    string is treated like the default. Only ``int``/``float`` are accepted
+    (booleans and other types are ignored).
     """
-    if not url:
-        return url
-    if url.startswith(("http://", "https://", "/", "#")):
-        return url
-    return f"../{url}"
+    if scale is None or scale == "":
+        return None
+    if isinstance(scale, bool):
+        return None
+    if not isinstance(scale, (int, float)):
+        return None
+    if scale <= 0:
+        return None
+    if scale == 1:
+        return None
+    pct = scale * 100.0
+    if pct.is_integer():
+        return f"{int(pct)}%"
+    return f"{pct:g}%"
+
+
+def _normalize_path(path, env):
+    """Turn a path relative to the current markdown file into a URL relative to the built HTML.
+
+    With ``use_directory_urls``, ``page.md`` becomes ``page/index.html`` while
+    ``section/index.md`` stays ``section/index.html``.  Raw HTML in macros is not
+    rewritten like Markdown image URLs, so the correct relative URL must be derived
+    from ``File.dest_path`` for the page and the asset.
+    """
+    if not path:
+        return path
+    if path.startswith(("http://", "https://", "/", "#")):
+        return path
+
+    page_file = env.page.file
+    page_src_dir = posixpath.dirname(page_file.src_path)
+    resolved_src = posixpath.normpath(posixpath.join(page_src_dir, path))
+    # mkdocs-macros attaches MkDocs' Files collection in on_nav (see plugin on_nav).
+    try:
+        files = env.variables["files"]
+    except (TypeError, KeyError, AttributeError):
+        files = None
+    if files is None:
+        return path
+    asset = files.get_file_from_path(resolved_src)
+    if asset is None:
+        return path
+    page_dest_dir = posixpath.dirname(page_file.dest_path) or "."
+    rel = posixpath.relpath(asset.dest_path, page_dest_dir)
+
+    return rel.replace("\\", "/")
 
 
 def define_env(env):
@@ -60,7 +102,7 @@ def define_env(env):
             _location = "https://raw.githubusercontent.com/" + url
 
         if path:
-            _location = _normalize_path(path)
+            _location = _normalize_path(path, env)
 
         diagram_tmpl = f"""
 <figure>
@@ -79,6 +121,8 @@ def define_env(env):
         """
         HTML5 video macro
         """
+
+        url = _normalize_path(url, env)
 
         video_tmpl = f"""
 <figure>
@@ -114,6 +158,7 @@ def define_env(env):
         border_radius=0.0,
         shadow=False,
         center=True,
+        scale=1,
         title="",
     ):
         """
@@ -127,23 +172,36 @@ def define_env(env):
             border_radius (float): Border radius for the image (in rem). Default is 0.0.
             shadow (bool): Whether to apply a shadow to the image. Default is False.
             center (bool): Whether to center the image in the figure. Default is True.
+            scale (int | float): Width as a multiple of the container width: ``1`` is default
+                (no extra width; natural size). ``0.5`` is half, ``2`` is double. Non-numeric
+                values, non-positive values, and ``1`` apply no width override.
             title (str): Optional caption/title for the image. Default is "".
         """
-        # if shadow is True, apply the .img-shadow class to the image
+        url = _normalize_path(url, env)
+        light_url = _normalize_path(light_url, env)
+        dark_url = _normalize_path(dark_url, env)
+
+        scale_width = _scale_to_width_percent(scale)
+        img_scale_style = (
+            f' style="width: {scale_width}; height: auto;"' if scale_width else ""
+        )
+
         if shadow:
             img_class = "img-shadow"
         else:
             img_class = ""
 
         # if only one url is provided the image is used for both light and dark modes
-        img_src = f'<img src="{url}" class="{img_class}" alt="">'
+        img_src = (
+            f'<img src="{url}" class="{img_class}"{img_scale_style} alt="{title}">'
+        )
 
         # if light and dark url are provided
         if light_url and dark_url:
-            img_src = f"""
-    <img src="{light_url}#only-light" class="{img_class}" alt="">
-    <img src="{dark_url}#only-dark" class="{img_class}" alt="">
-    """
+            img_src = (
+                f'<img src="{light_url}#only-light" class="{img_class}"{img_scale_style} alt="{title}">'
+                f'<img src="{dark_url}#only-dark" class="{img_class}"{img_scale_style} alt="{title}">'
+            )
 
         # Compute base style
         base_style = f"border-radius: {border_radius}rem; position: relative; display: inline-block;"
@@ -157,17 +215,11 @@ def define_env(env):
 
         # if title is provided, use figure element with figcaption inside the polka div
         if title:
-            image_tmpl = f"""
-<figure class="polka" style="{figure_style}">
-    {img_src}
-    <figcaption>{title}</figcaption>
-</figure>
-"""
+            image_tmpl = (
+                f'<figure class="polka" style="{figure_style}">{img_src}'
+                f"<figcaption>{title}</figcaption></figure>"
+            )
         else:
-            image_tmpl = f"""
-<div class="polka" style="{div_style}">
-    {img_src}
-</div>
-"""
+            image_tmpl = f'<div class="polka" style="{div_style}">{img_src}</div>'
 
         return image_tmpl
