@@ -179,7 +179,7 @@
     .home-section {
         max-width: 1280px;
         margin: 0 auto;
-        padding: 60px 40px;
+        padding: 40px 40px;
     }
 
     .home-row {
@@ -332,6 +332,32 @@
         margin: 0.5rem 0 0;
     }
 
+    /*
+     * Inline links in home columns and feature cards live outside `.md-typeset`, so they
+     * do not inherit `.md-typeset a` rules from nokia.css — mirror palette + underline here.
+     */
+    .secondary-section .home-col a,
+    .secondary-section .feature-card a {
+        color: var(--md-typeset-a-color);
+        text-decoration: underline;
+        text-decoration-thickness: 0.5px;
+        text-underline-offset: 0.2rem;
+        text-decoration-color: var(--md-typeset-a-color);
+        transition: color 0.15s ease, text-decoration-color 0.15s ease;
+    }
+
+    .secondary-section .home-col a:hover,
+    .secondary-section .feature-card a:hover {
+        color: #0049B4;
+        text-decoration-color: #0049B4;
+    }
+
+    [data-md-color-scheme="slate"] .secondary-section .home-col a:hover,
+    [data-md-color-scheme="slate"] .secondary-section .feature-card a:hover {
+        color: #8EC2FF;
+        text-decoration-color: #8EC2FF;
+    }
+
     /* ── Responsive: stack on smaller screens ──────────────────────── */
     @media screen and (max-width: 1012px) {
 
@@ -381,7 +407,8 @@
         <div class="hero-banner__body">
             <div class="hero-banner__text">
                 <h1>Nokia Event Driven Automation</h1>
-                <p>the automation echidna</p>
+                <!-- <p><i>the</i> automation platform</p> -->
+                <p>human error zero</p>
             </div>
             <div class="hero-banner__buttons">
                 <a href="blog/the-beginning-of-an-era-eda/" title="What is EDA?" class="hero-banner__btn">
@@ -408,81 +435,79 @@
 </div>
 
 <div class="md-container secondary-section">
-    <!-- Section A: What is an echidna? -->
+    <!-- Section A: Positioning and declarative configuration -->
     <div class="home-section">
         <div class="home-row">
             <div class="home-col">
-                <h3>What is an echidna?</h3>
+                <h3>The automation platform</h3>
                 <p>
-                    You like hedgehogs, right? Well, echidnas are like hedgehogs, but bigger and better. They're
-                    also known as spiny anteaters, and they're one of the only mammals that lay eggs (the other
-                    being a platypus). Pretty neat eh?
+                    Nokia Event Driven Automation (EDA) completes Nokia's data center portfolio: infrastructure
+                    automation that moves past imperative, box-by-box work to declarative intent. You describe the
+                    services and components you want in terms that abstract vendor-specific details; EDA translates
+                    that intent into device configuration and orchestrates rollout across the network.
                 </p>
                 <p>
-                    None of that relates to automation, but we all need a mascot right? And echidnas are pretty
-                    cool. EDA the automation echidna is here to help you automate your infrastructure.
+                    The configuration engine is built for performance and safety - validate changes before deployment,
+                    and roll back across the entire network when something goes wrong.
                 </p>
             </div>
             <div class="home-col">
-                <img src="images/eda-ui-1.png" alt="EDA dashboard" class="home-screenshot" draggable="false">
+                <img src="images/eda-ui-1.png" alt="EDA web UI: operational dashboard with service and device status"
+                    class="home-screenshot" draggable="false">
             </div>
         </div>
     </div>
 
-    <!-- Section B: EDA? Event Driven Automation (image left, text right) -->
+    <!-- Section B: Abstraction and multivendor (image left, text right) -->
     <div class="home-section">
         <div class="home-row home-row--reverse">
             <div class="home-col">
-                <h3>EDA? Event Driven Automation.</h3>
+                <h3>One model, many implementations</h3>
                 <p>
-                    Nokia EDA <small>(pron. <i>ee-dah</i>)</small> is <i>the</i> platform for automating your
-                    infrastructure.
+                    Like a Kubernetes Pod that looks like a Pod no matter the container runtime, EDA offers consistent
+                    resource
+                    semantics for interfaces, fabrics, and services regardless of OS or vendor. The platform is
+                    multivendor by design, so your automation is not tied to a single hardware line.
                 </p>
                 <p>
-                    In Kubernetes, a Pod looks like a Pod no matter what container runtime you use.
-                    So why doesn't an Interface look like an Interface no matter what OS you use? Why doesn't a BGP
-                    peer look like a BGP peer no matter the underlying implementation?
-                    When will infrastructure get its time in automation utopia?
+                    EDA is built for extensibility: install EDA Applications to add resources and capabilities on the
+                    fly, or
+                    build your own Kubernetes-style operators tuned for your infrastructure needs and integrations.
                 </p>
             </div>
             <div class="home-col">
-                <img src="images/eda-ui-2.png" alt="EDA topology view" class="home-screenshot" draggable="false">
+                <img src="images/eda-ui-2.png" alt="EDA web UI: network topology view with nodes and links"
+                    class="home-screenshot" draggable="false">
             </div>
         </div>
     </div>
 
-    <!-- Section C: Going beyond workloads / Built for operations -->
+    <!-- Section C: Configuration engine vs state and operations -->
     <div class="home-section">
         <div class="home-row home-row--top">
             <div class="home-col">
-                <h4>Going beyond workloads</h4>
+                <h4>From intent to configuration</h4>
                 <p>
-                    Imagine interacting with your infrastructure in a way that is consistent, using the same set of
-                    abstract primitives no matter what the underlying implementation is.
+                    You automate by declaring desired state. Resources - units of automation expressed as Kubernetes
+                    custom resources or via the APIs - can represent fabrics, interfaces, VPNs, and more. EDA
+                    reconciles that intent and drives configuration across devices in a controlled, concurrent, and safe
+                    way.
                 </p>
                 <p>
-                    EDA is designed to be simple to use, but powerful enough to handle the most complex
-                    infrastructure setups.
+                    The goal is predictable change at scale: less hand-tuning per box, more confidence that the
+                    network matches what you asked for.
                 </p>
             </div>
             <div class="home-col">
-                <h4>Built for operations</h4>
+                <h4>State and operations, first-class</h4>
                 <p>
-                    Declare the final state of your infrastructure - the "what", not the "how".
+                    EDA also owns runtime state for what it deploys, so you are not stitching together separate
+                    configuration and observability stories. Operational views and EQL give you fast, network-wide
+                    insight for auditing and troubleshooting - fed by streaming telemetry instead of constant polling.
                 </p>
                 <p>
-                    Never be out of step again with event-driven-everything.
-                </p>
-                <p>
-                    Drive change with confidence - know what will happen before it happens.
-                </p>
-                <p>
-                    Automation for operations - state and maintenance have always been an automation afterthought.
-                    No longer.
-                </p>
-                <p>
-                    All of this built and integrated with the toolchains you love, with the reliability
-                    you need for automating infrastructure.
+                    Use the APIs, CLI, Ansible, and Terraform integrations that fit your toolchain. Get hands-on with
+                    <a href="getting-started/try-eda/">Try EDA</a>.
                 </p>
             </div>
         </div>
@@ -530,7 +555,7 @@
                                 {% include ".icons/octicons/rocket-24.svg" %}
                             </span>
                         </div>
-                        <h5>Event-driven-everything</h5>
+                        <h5>Event-driven at the core</h5>
                     </div>
                     <p>
                         Achieve massive scalability and real-time insights with event-driven automation.
@@ -543,14 +568,16 @@
                     <div class="feature-card__header">
                         <div class="feature-card__icon">
                             <span class="twemoji">
-                                {% include ".icons/octicons/code-of-conduct-24.svg" %}
+                                {% include ".icons/octicons/copy-24.svg" %}
                             </span>
                         </div>
-                        <h5>Multi-x</h5>
+                        <h5>Digital twin</h5>
                     </div>
-                    <p>
-                        Multi vendor, multi domain, multi cloud, multi everything. EDA is truly an open platform
-                        that can be extended to support any vendor, any domain, any cloud, and any technology.
+                    <p> Nokia EDA's <a href="digital-twin/">Digital Twin</a> turns your
+                        declarative topology into a scalable virtual replica running on Kubernetes - so you can validate
+                        designs,
+                        test automation workflows, and catch issues before they ever touch production. The multivendor
+                        simulation engine will wire the replica the same way as the real network.
                     </p>
                 </div>
 
