@@ -86,7 +86,7 @@ function test-docs {
   # as they are not important for link testing
   find ./site -type f -name "*.html" -exec sed -i 's|href=\.\./[\.\/ ]*>|href="#">|g' {} +
 
-  docker run --rm -u $(id -u):$(id -g) -v "$(pwd)":/test wjdp/htmltest --conf ./site/htmltest.yml
+  docker run --rm -u $(id -u):$(id -g) -v "$(pwd)":/test -w /test wjdp/htmltest --conf ./docs/htmltest.yml
 
 	sudo rm -rf ./site
 }

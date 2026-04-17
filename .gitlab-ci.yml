@@ -14,8 +14,10 @@ htmltest:
   image:
     name: cr.srlinux.dev/pub/debian:bookworm-slim
   script:
-    - apt update && apt install -y --no-install-recommends curl file ca-certificates
+    - apt update && apt install -y --no-install-recommends curl file ca-certificates findutils
     - curl https://htmltest.wjdp.uk | bash
+    # Match run.sh test-docs: neutralize mike/version-picker href="../…" before link check
+    - find ./site -type f -name "*.html" -exec sed -i 's|href=\.\./[\.\/ ]*>|href="#">|g' {} +
     - ./bin/htmltest -c docs/htmltest.yml
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
