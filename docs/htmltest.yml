@@ -5,6 +5,9 @@ IgnoreURLs:
   - fonts.gstatic.com
   - https://github.com/nokia-eda/docs/edit
   - https://eda-api.k8s.orb.local/
+  - https://brand.nokia.com/ # requires login
+  - https://github.com/settings/billing/usage # requires login
+  - https://knowledge.broadcom.com/external/article/344761/enabling-and-disabling-native-drivers-in.html # typical bcom
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreAltMissing: true
 IgnoreSSLVerify: true
@@ -16,4 +19,7 @@ HTTPHeaders:
   "Range": "bytes=0-10"
   "Accept": "*/*"
 CacheExpires: "96h"
-HTTPConcurrencyLimit: 1
+HTTPConcurrencyLimit: 10
+LogLevel: 3
+DocumentConcurrencyLimit: 128
+TestFilesConcurrently: true

@@ -198,9 +198,11 @@ def define_env(env):
 
         # if light and dark url are provided
         if light_url and dark_url:
+            # data-proofer-ignore is used to ignore the htmltest checking for #only-light and #only-dark hashes
+            # that do not exist
             img_src = (
-                f'<img src="{light_url}#only-light" class="{img_class}"{img_scale_style} alt="{title}">'
-                f'<img src="{dark_url}#only-dark" class="{img_class}"{img_scale_style} alt="{title}">'
+                f'<img data-proofer-ignore src="{light_url}#only-light" class="{img_class}"{img_scale_style} alt="{title}">'
+                f'<img data-proofer-ignore src="{dark_url}#only-dark" class="{img_class}"{img_scale_style} alt="{title}">'
             )
 
         # Compute base style
