@@ -54,6 +54,7 @@ nav:
       - Virtual Network: apps/virtualnetwork.md
       - Interfaces: apps/interfaces.md
       - Notifier: apps/notifier.md
+      - NATS Exporter: apps/nats-exporter.md
       - ServiceNow: apps/service-now.md
       - OTLP Exporter: apps/otlp-exporter.md
       - Prometheus Exporter: apps/prometheus-exporter.md

@@ -1,0 +1,20 @@
+apiVersion: nats.eda.nokia.com/v1
+kind: ClusterExport
+metadata:
+  name: alarm-export
+  namespace: eda-system
+spec:
+  description: Publish alarms from selected namespaces
+  enabled: true
+  exports:
+    alarms:
+      namespaces:
+        - eda
+        - tenant-a
+      include:
+        - "*"
+      exclude:
+        - NATSServerConnectionFailed
+  destinations:
+    - name: jetstream-central
+      subject: eda.alarms
