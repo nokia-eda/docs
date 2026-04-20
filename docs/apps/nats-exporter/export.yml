@@ -1,0 +1,21 @@
+apiVersion: nats.eda.nokia.com/v1
+kind: Export
+metadata:
+  name: interface-events
+  namespace: eda
+spec:
+  description: Publish interface state changes to NATS
+  enabled: true
+  exports:
+    query:
+      - path: .node.srl.interface
+        fields:
+          - oper-state
+          - admin-state
+        where: admin-state = enable
+        mode: on-change
+        includeTimestamps: true
+  destinations:
+    - name: nats-publisher
+      subjectFromJsPath: true
+      subjectPrefix: eda
