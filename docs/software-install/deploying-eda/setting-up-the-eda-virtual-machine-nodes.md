@@ -513,6 +513,16 @@ The configuration files created by the `edaadm` tool are used in the next steps 
 Nokia strongly recommends that you store these files securely and keep a backup.
 ///
 
+The `edaadm generate` command creates, among the other files, the Talos configuration file (`talosconfig.yaml`) that contains the client certificate for the Talos API. The lifetime of this certificate is 1 year by default. If you need to change the lifetime of the client's certificate, run the `edaadm generate` command with the `--client-cert-duration` flag:
+
+```bash
+# client certificate lifetime set to 1 hour
+edaadm generate -c <edaadm config file> --client-cert-duration 1h
+
+# client certificate lifetime set to 10 minutes
+edaadm generate -c <edaadm config file> --client-cert-duration 10m
+```
+
 ## Deploying the Talos virtual machines
 
 This section provides the procedures for deploying an EDA node as a virtual machine on KVM or VMware vSphere.

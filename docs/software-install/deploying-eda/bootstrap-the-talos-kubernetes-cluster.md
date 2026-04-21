@@ -29,12 +29,12 @@ Use the talosctl command to obtain the Kubernetes configuration file for use wit
 Obtain the Kubernetes configuration file with:
 
 ```bash
-edaadm get-kubeconfig -c eda-6-node-deployment.yaml #(1)!
+edaadm get-kubeconfig -c eda-6-node-deployment.yaml
 ```
 
-1. `-c`: Specifies the EDAADM configuration file.
+> The kubeconfig certificate is valid for 1 year by default. To renew the kubeconfig certificate, run this command again.
 
-You can configure your environment to use the `​kubeconfig`​ file for use with the kubectl command.
+You can configure your environment to use the `​kubeconfig`​ file for use with the `kubectl` command.
 
 ```bash
 export KUBECONFIG=eda-compute-cluster/kubeconfig
