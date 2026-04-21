@@ -4,7 +4,7 @@
 
 Event Driven Automation (EDA) is the state-of-the-art automation platform that completes Nokia's Data Center portfolio:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/e32a57e04b7985cb3475d5d0301d5e1f/CleanShot_2025-12-14_at_12.59.08.png", padding=10, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2025-12-14_at_12.59.08.webp", padding=10, shadow=true)}}-
 
 The design goals behind EDA were lofty and our ambitions were to create an infrastructure automation platform that addresses many challenges seen in the data center networking and beyond. All our expertise in the model-driven network management, large-scale orchestration, and network automation were poured into EDA to create a platform that redefines how network automation is done.
 

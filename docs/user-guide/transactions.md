@@ -74,8 +74,8 @@ Transaction Topology displays all input and output resources of a transaction an
 Changed resources are colored yellow in the topology, and if an intent error occurred during the transaction the related resource is colored red.
 
 -{{image(
-    light_url="https://gitlab.com/-/project/74406595/uploads/89ea69512ee49bb65bad416ad7da065a/image-2.webp",
-    dark_url="https://gitlab.com/-/project/74406595/uploads/3c1b5ec13f7573b2b88ba765fc7f893d/image-1.webp",
+    light_url="graphics/transaction-topology-light.webp",
+    dark_url="graphics/transaction-topology-dark.webp",
     padding=20,shadow=true
 )
 }}-

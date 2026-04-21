@@ -36,19 +36,42 @@ nav:
           - Codespaces: software-install/non-production/codespaces.md
           - software-install/exposing-ui-api.md
   - User guide:
-      - Network Topology: user-guide/network-topology.md
-      - Transactions: user-guide/transactions.md
-      - Queries: user-guide/queries.md
-      - Using the CLIs: user-guide/using-the-clis.md
+      - user-guide/index.md
+      - GUI basics:
+          - Signing in: user-guide/gui-basics/sign-in.md
+          - Signing out: user-guide/gui-basics/sign-out.md
+          - Home Page: user-guide/gui-basics/home-page.md
+          - The Platform Status page: user-guide/gui-basics/platform-status-page.md
+          - GUI Elements: user-guide/gui-basics/gui-elements.md
+          - Key bindings: user-guide/gui-basics/key-bindings.md
+          - Working with the EDA menu: user-guide/gui-basics/work-with-menu.md
+          - Working with data grids: user-guide/gui-basics/work-with-data-grids.md
+          - Common data grid actions menu: user-guide/gui-basics/common-data-grid-actions.md
+      - Custom navigation panels: user-guide/custom-navigation-panels.md
+      - Dashboard designer: user-guide/dashboard-designer.md
+      - Namespaces: user-guide/namespaces.md
+      - Resources: user-guide/resources.md
+      - Workflows: user-guide/workflows.md
+      - Alarms: user-guide/alarms.md
+      - EDA Query Language (EQL): user-guide/eda-query-language.md
+      - Transactions: user-guide/transactions-docs.md
+      - Transactions for integration: user-guide/transactions.md
       - Allocation Pools: user-guide/allocation-pools.md
-      - Access Control: user-guide/access-control.md
+      - Node management: user-guide/node-management.md
+      - Topology: user-guide/topology.md
+      - Network topology for integration: user-guide/network-topology.md
+      - Security: user-guide/security.md
+      - Access control for integration: user-guide/access-control.md
+      - Certificate Management for integration: user-guide/certificate-management/index.md
+      - Platform security: user-guide/platform-security.md
+      - Node RBAC: user-guide/node-rbac.md
+      - Using the CLIs: user-guide/using-the-clis.md
       - Digital Twin:
           - digital-twin/index.md
           - user-guide/containerlab-integration.md
-      - Certificate Management:
-          - user-guide/certificate-management/index.md
+      - Administration: user-guide/administration.md
   - Apps:
-      - Store: apps/app-store.md
+      - apps/index.md
       - Fabric: apps/fabric.md
       - Protocols: apps/protocols.md
       - Virtual Network: apps/virtualnetwork.md
@@ -145,7 +168,7 @@ theme:
   features:
     - navigation.top
     - navigation.tabs
-    - navigation.sections
+    - navigation.instant
     - navigation.footer
     - search.suggest
     - content.code.annotate

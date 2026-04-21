@@ -6,6 +6,10 @@ default:
   tags:
     - esisogr87
 
+default:
+  tags:
+    - esisogr87
+
 htmltest:
   stage: test
   needs:

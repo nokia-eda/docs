@@ -129,7 +129,7 @@ A resource definition in EDA has the following sections:
 
 Resource kinds in EDA are organized into versioned API groups based on their functionality and purpose. For example, the Banner kind resides in the `siteinfo.eda.nokia.com` group. Other API groups that you will find installed in the "Try EDA" instance include `fabrics.eda.nokia.com` for DC fabric-related resources, `protocols.eda.nokia.com` for routing protocols, `services.eda.nokia.com` for higher-level service abstractions, and many more.
 
-These resource groups and the kinds they contain are distributed as **EDA Applications** that can be installed and managed via [EDA Store](../apps/app-store.md).
+These resource groups and the kinds they contain are distributed as **EDA Applications** that can be installed and managed via [EDA Store](../apps/index.md#eda-store).
 
 -{{ diagram(path='./diagrams/tour-of-eda.drawio', title='EDA applications and resource kinds', page=1) }}-
 
@@ -145,7 +145,7 @@ As expected, EDA supports the full lifecycle of resource operations including: l
 
 For instance, to [view](ui.md#resources-view) all Interface resources in the system find the -{{icons.circle(letter="I", text="Interfaces")}}- menu item in the side panel under the -{{icons.topology()}}- category:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/407f1acf862a2d86f817614bd1843944/CleanShot_2025-12-17_at_18.44.48.png", title="Resources page")}}-
+-{{image(url="graphics/CleanShot_2025-12-17_at_18.44.48.webp", title="Resources page")}}-
 
 The table lists all resources of the "Interface" kind in the system along with their key attributes such as name, labels, interface type/speed, and so on. You can click on any resource row to view its [details](ui.md#details-view) including the full YAML definition of the resource.
 
@@ -190,7 +190,7 @@ spine1-ethernet-1-4       true      up                  400G    2025-12-12T20:11
 
 To get the contents of a specific resource, click on its name in the Web UI to open the [details view](ui.md#details-view) where you can see the full definition of the resource (in schema and YAML/JSON formats) along with its status and other metadata.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/29b367bc96ecf3e8ac94a890320c4eec/CleanShot_2025-12-18_at_12.00.06.png", title="Resource details view")}}-
+-{{image(url="graphics/CleanShot_2025-12-18_at_12.00.06.webp", title="Resource details view")}}-
 
 To read a specific resource in YAML format using the command line, use `kubectl` or `edactl` as follows:
 
@@ -391,11 +391,11 @@ myfabric-1   1m            up
 
 In EDA UI you will find the newly created Fabric resource with the name `myfabric-1` under the Fabrics category:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/3d29f9102195ca647144c682dac5bc37/CleanShot_2026-01-06_at_23.07.44.png",title="Fabric resource in EDA UI", padding=20, shadow="true")}}-
+-{{image(url="graphics/CleanShot_2026-01-06_at_23.07.44.webp",title="Fabric resource in EDA UI", padding=20, shadow="true")}}-
 
 If you open the Fabric resource details view and navigate to the Resource Topology tab, you will see a complex graph of resources that were created as part of the Fabric resource deployment:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/a9d274f62dbda655847cfb0a6d2abb9e/CleanShot_2026-01-06_at_23.22.23.png",title="Fabric resource topology", padding=20, shadow="true")}}-
+-{{image(url="graphics/CleanShot_2026-01-06_at_23.22.23.webp",title="Fabric resource topology", padding=20, shadow="true")}}-
 
 The entrypoint of the topology is the Fabric resource itself on the left side of the diagram. From there, you can see how the Fabric resource created multiple lower-level resources[^1] such as DefaultRouter, ISL, PrefixSet and other resources that in their turn emitted their sub-resources to build the complete fabric configuration on the target devices.
 
@@ -416,7 +416,7 @@ You will often find the `status` field in resource definition to contain informa
 
 To illustrate the state fields and their significance, let's open the Fabrics view and select the `myfabric-1` resource that we created earlier. Open up the information panel on the right side of the table form to view the resource details, including its status:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/7383ae8de88a71d786c57a6fa5df870c/CleanShot_2026-02-01_at_10.36.50.png", title="Resource status")}}-
+-{{image(url="graphics/CleanShot_2026-02-01_at_10.36.50.webp", title="Resource status")}}-
 
 At first glance, the status information may seem trivial; who haven't seen an operational state field before on an interface, or BGP session, what's the big deal? The key is that the status field in this case is provided for the high-level Fabric resource that abstracts away multiple underlying resources and their states. The Fabric resource status aggregates the state information from all its sub-resources and presents a unified view of the overall health and operational state of the entire fabric.
 

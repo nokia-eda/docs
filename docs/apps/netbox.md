@@ -151,7 +151,7 @@ EOF
 
 ### Installation
 
-Install the NetBox app from the [EDA Store](app-store.md) or with `kubectl`:
+Install the NetBox app from the [EDA Store](index.md#eda-store) or with `kubectl`:
 
 /// tab | YAML
 
@@ -381,7 +381,7 @@ Next, we need to create a Prefix for our interswitch links. In EDA, the Fabric a
 
 We create the `eda-isl-v6` tag first and then the Prefix `2005::/64` with the Status=Container and this tag assigned.
 
--{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/2aba28211fc4b0a236484719e0f0ebd2/CleanShot_2025-06-15_at_10.14.51.webp", padding=20)}}-
+-{{image(url="graphics/CleanShot_2025-06-15_at_10.14.51.webp", padding=20)}}-
 
 <h4>EDA configuration</h4>
 
@@ -532,17 +532,17 @@ The Fabric app will use the referenced pools and will try to allocated the pool 
 
 From the Prefix we created for System IPs you will see the three allocated IPs populated back in NetBox server, one per each spine and leaf in our topology:
 
--{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/e9d7e4c0c7576aa627cae29aa7b3d95e/CleanShot_2025-06-15_at_11.37.00.webp", padding=20)}}-
+-{{image(url="graphics/CleanShot_2025-06-15_at_11.37.00.webp", padding=20)}}-
 
 In the same way, you will see interswitch subnets carved out from the `2005::/64` prefix, one per each link between leafs and spines:
 
--{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/a7f13496f85de337d8675a139dc870f9/CleanShot_2025-06-15_at_11.32.43.webp", padding=20)}}-
+-{{image(url="graphics/CleanShot_2025-06-15_at_11.32.43.webp", padding=20)}}-
 
 <h5>Custom Fields</h5>
 
 The NetBox app also creates some custom fields in NetBox model to backtrack the allocation of the resources. For example, if you select an allocated sub-prefix from the `2005::/64` prefix, you will see EDA custom fields that show the Allocation resource that created this allocation and the owner object that requested the allocation.
 
--{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/2a6b0cf2756bb5f261630d6bab42c8b0/CleanShot_2025-06-15_at_11.43.10.webp", padding=20)}}-
+-{{image(url="graphics/CleanShot_2025-06-15_at_11.43.10.webp", padding=20)}}-
 
 The objects allocated by EDA will also have the `EDAManaged` tag assigned to them.
 

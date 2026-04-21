@@ -34,11 +34,11 @@ The topology that Try EDA provides consists of three Nokia SR Linux virtual rout
 
 The simulator nodes are onboarded by EDA during the initial platform setup, so you should have them already managed by EDA. In the EDA UI you can navigate to the **Nodes** section under the **Targets** category to see the list of nodes entered in the EDA system and their status:
 
--{{ image(url='https://gitlab.com/-/project/7617705/uploads/8153d19669331376f18206f8e0681c2d/CleanShot_2026-01-03_at_17.15.37.png', title='Nodes list in EDA UI') }}-
+-{{ image(url='graphics/CleanShot_2026-01-03_at_17.15.37.webp', title='Nodes list in EDA UI') }}-
 
 The table lists the three nodes along with their current configuration and state values. Selecting a node -{{icons.circle(letter="1")}}- from the list and opening the information panel on the right side of the screen makes it easy to see the node details:
 
--{{ image(url='https://gitlab.com/-/project/7617705/uploads/0bf5972d4de3f7854bcb0b3b06dd8e99/CleanShot_2026-01-03_at_17.22.56.png', title='Node details', shadow="True", padding=20) }}-
+-{{ image(url='graphics/CleanShot_2026-01-03_at_17.22.56.webp', title='Node details', shadow="True", padding=20) }}-
 
 such as:
 
@@ -71,7 +71,7 @@ spine1   7220 IXR-D5    25.10.1   srl   true        normal   Connected   Synced
 
 EDA allows its users to label[^3] any resource under its management to facilitate resource organization, filtering, and selection. Nodes are not an exception and you will find the labels assigned to each node in the Try EDA topology:
 
--{{ image(url='https://gitlab.com/-/project/7617705/uploads/f63977dba6a95b883e90cb3d324f0214/CleanShot_2026-01-06_at_12.06.25.png', title='Node labels in EDA UI', shadow="True", padding=20) }}-
+-{{ image(url='graphics/CleanShot_2026-01-06_at_12.06.25.webp', title='Node labels in EDA UI', shadow="True", padding=20) }}-
 
 > Labels are free-form key-value pairs that can be assigned to any resource in EDA.
 
@@ -84,7 +84,7 @@ During the tour, you will see how `role` label is used in resource definitions t
 
 ## Physical Topology
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/e15be3a70990106fd7acf50178a648d8/CleanShot_2025-12-18_at_13.41.27.png", title="Physical Topology view")}}-
+-{{image(url="graphics/CleanShot_2025-12-18_at_13.41.27.webp", title="Physical Topology view")}}-
 
 Refer to the [Physical Topology](ui.md#physical-topology) section in the EDA UI page to read more about the topology view and how to interact with it.
 
@@ -96,7 +96,7 @@ As was discussed earlier, EDA is the authoritative source of truth for the confi
 
 The configuration view has a toggle -{{icons.circle(letter="1")}}- that allows to switch from a simple configuration view to a "blame" mode where each configuration region is annotated with the resource name that resulted in that configuration being generated.
 
--{{image(url='https://gitlab.com/-/project/7617705/uploads/6b9d768ae31cd3efec1ed80db7626b86/CleanShot_2026-01-03_at_19.12.53.png', title='Node configuration with resource annotations', shadow="True", padding=20) }}-
+-{{image(url='graphics/CleanShot_2026-01-03_at_19.12.53.webp', title='Node configuration with resource annotations', shadow="True", padding=20) }}-
 
 The Interface resource[^2] named `leaf1-ethernet-1-1` and highlighted with -{{icons.circle(letter="2")}}- icon above is responsible for generating the configuration snippet shown next to it. This makes it easy to trace back any part of the node configuration to the resource that created it.
 

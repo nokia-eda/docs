@@ -2,7 +2,7 @@
 
 EDA is all about extensibility, and the packaging of this extensibility is referred to as an "app".
 
-> For a refresher on what an app is, check out [apps](../../apps/app-store.md).
+> For a refresher on what an app is, check out [apps](../../apps/index.md).
 
 With base configuration your EDA cluster points to an app catalog supplied by Nokia. This gives you access to official Nokia-supported applications, including upgrades via the EDA store. If you're anything like us you have your own opinions about how you'd like to solve your automation problems! This is where building your own app comes in.
 

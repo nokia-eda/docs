@@ -6,9 +6,8 @@ Like an arbitrary topology is defined by its nodes and links, the network topolo
 
 [topoNode-crd]: https://crd.eda.dev/toponodes.core.eda.nokia.com/v1
 [topoLink-crd]: https://crd.eda.dev/topolinks.core.eda.nokia.com/v1
-[topoBreakout-crd]: https://crd.eda.dev/topobreakouts.core.eda.nokia.com/v1
 
-If you come here after finishing the [Getting Started][gs-guide] guide, you may remember the 3-node topology that the "Try EDA" setup comes with:
+If you have just completed the instructions in the [Getting Started][gs-guide] guide, recall the 3-node topology that the "Try EDA" setup comes with:
 
 -{{ diagram(path='./diagrams/playground-topology.drawio', title='Physical topology', zoom="1.2", page=0) }}-
 
@@ -19,7 +18,6 @@ Here is how the same 3-node topology is modelled with the `TopoNode` and `TopoLi
 - For each device in the topology there is a corresponding [`TopoNode`][topoNode-crd]
 - For each link between the nodes there is a corresponding [`TopoLink`][topoLink-crd] representing the inter-switch connections
 - For each link from a node to an edge device (not shown in the diagram) there is a corresponding `TopoLink` representing the edge connections.[^1]
-- For each interface breakout on the nodes there is a corresponding [`TopoBreakout`][topoBreakout-crd] resource[^2]
 
 The diagram below illustrates how the topology resources represent the same network topology:
 
@@ -27,7 +25,7 @@ The diagram below illustrates how the topology resources represent the same netw
 
 Almost no difference with a physical topology, right? To see the topology diagram in EDA UI select **Topologies** in the left-hand menu and click on the **Physical** row in the table of topologies:
 
--{{image(url='https://gitlab.com/-/project/7617705/uploads/9164ee1abebbbbc48d5d1c2612de379b/CleanShot_2025-12-01_at_12.08.14.png')}}-
+-{{image(url='graphics/CleanShot_2025-12-01_at_12.08.14.webp')}}-
 
 /// note | Digital Twin topology
 The Network Topology is used to model both the physical network and its matching Digital Twin. The Digital Twin topology (also known as the simulation topology) is covered in more detail on the [Digital Twin](../digital-twin/index.md) page.
@@ -35,19 +33,19 @@ The Network Topology is used to model both the physical network and its matching
 
 ## Topology resources
 
-The `TopoNode`, `TopoLink` and `TopoBreakout` resources in EDA make up the network topology that is used both by the real physical network and the [Digital Twin](../digital-twin/index.md). With the 3-node topology created in the EDA cluster you can see these resources in the EDA UI and using `kubectl` or `edactl`:
+The `TopoNode` and `TopoLink` resources in EDA make up the network topology that is used both by the real physical network and the [Digital Twin](../digital-twin/index.md). With the 3-node topology created in the EDA cluster, you can see these resources in the EDA UI and using `kubectl` or `edactl` commands:
 
 /// tab | EDA UI
 
 //// tab | TopoNode
 TopoNodes are displayed in the EDA UI under **Targets** > **Nodes**:
 
--{{ image(url='https://gitlab.com/-/project/7617705/uploads/e5ff11d9eaf3ba68d5de001dad67218b/CleanShot_2025-11-28_at_13.32.19.png') }}-
+-{{ image(url='graphics/CleanShot_2025-11-28_at_13.32.19.webp') }}-
 ////
 //// tab | TopoLink
 And to see the TopoLinks go to **Topology** > **Links**:
 
--{{ image(url='https://gitlab.com/-/project/7617705/uploads/c268a1a73556ec73677b6468450393d0/CleanShot_2025-11-28_at_13.36.12.png') }}-
+-{{ image(url='graphics/CleanShot_2025-11-28_at_13.36.12.webp') }}-
 ////
 ///
 /// tab | `kubectl`
@@ -100,10 +98,9 @@ leaf2-spine1-2       21m
 </div>
 ///
 
-If the `TopoNode`, `TopoLink` and `TopoBreakout` objects make up a topology, how do we create them?  
-A straightforward way is to create these resources directly, either in UI or using CLI tools or API, but this is going to be a tedious and likely an error-prone process as the number of nodes and especially links may grow quickly.
+The `TopoNode` and `TopoLink` objects make up a topology. You can create these resources directly via the UI, the CLI tools, or the API, but doing so can be tedious and error prone as the number of nodes, and especially links, grows quickly.
 
-To assist with the topology creation, EDA provides the Network Topology Workflow - a workflow to define and deploy arbitrary topologies in a transactional manner.
+To assist with the topology creation, EDA provides the Network Topology workflow - a workflow to define and deploy arbitrary topologies in a transactional manner.
 
 ## Network topology workflow
 
@@ -116,7 +113,7 @@ Let's look at the structure of Network Topology Workflow resource and how the Tr
 /// tab | Network Topology workflow structure
 
 ```yaml
-apiVersion: topologies.eda.nokia.com/v1alpha1
+apiVersion: topologies.eda.nokia.com/v1
 kind: NetworkTopology
 metadata:
   name: try-eda-topology
@@ -129,9 +126,6 @@ spec:
 
   linkTemplates: []     # list of link templates
   links: []             # list of links
-
-  breakoutTemplates: [] # list of breakout templates
-  breakouts: []         # list of breakouts
 
   simulation: {}        # digital twin topology settings
   checks: {}            # topology checks and dry runs
@@ -147,7 +141,7 @@ The three-node topology used in the Try EDA setup is defined with the following 
 
 ///
 
-As per the structure, the Network Topology workflow resource spec uses the template-based approach to define nodes, links and breakouts. Corresponding templates are defined in the `nodeTemplates`, `linkTemplates` and `breakoutTemplates` sections, and then referenced in the `nodes`, `links` and `breakouts` sections, respectively.
+As per the structure, the Network Topology workflow resource spec uses the template-based approach to define nodes and links. Corresponding templates are defined in the `nodeTemplates` and `linkTemplates` sections, and then referenced in the `nodes` and `links` sections, respectively.
 
 Using the template-based approach reduces repetition in the topology definition and lets users quickly change the common parameters in one place.
 
@@ -838,27 +832,35 @@ status:
 
 ### Breakouts
 
-Breakouts allow splitting a high-speed interface into multiple lower-speed channels, like a 400G port on Nokia SR Linux 7220 IXR-H4 can be broken out into multiple lower speed interfaces, e.g. 4 by 100G. To model port breakouts in EDA, the [`TopoBreakout`][topoBreakout-crd] resource is used. And to define the port breakouts, the familiar template-based approach is implemented in the Network Topology workflow.
+Breakouts allow splitting a high-speed interface into multiple lower-speed channels. For example, a 400G port on Nokia SR Linux 7220 IXR-H4 can be broken out into multiple lower speed interfaces, for example, 4 by 100G. Port breakouts are enabled by the [`Breakout`][breakout-crd] resource and can be provided in the Network Topology workflow's link template section.
 
-While the "Try EDA 3-node topology" does not feature breakout ports, the example below will take a similar topology with two leafs and one spine, where the `ethernet-1-1` interface on `spine1` is broken down to four 100G interfaces to which the leafs connect.
+[breakout-crd]: https://crd.eda.dev/breakouts.interfaces.eda.nokia.com/v1
+
+While the "Try EDA 3-node topology" does not use breakout ports, the example below will take a similar topology with two leafs and one spine, where the `ethernet-1-1` interface on `spine1` is broken down into four 100G interfaces to which the leafs connect.
 
 -{{ diagram(path='./diagrams/playground-topology.drawio', title='', page='6', zoom='1.8') }}-
 
-The breakout template sets the number of channels and speed per channel, and the breakout definition references the template and specifies the nodes and interfaces where the breakout should be applied. In the example below only `spine1/ethernet-1-1` is broken out, but you can define nodes and interfaces on them as needed.
+To capture the intent of using a breakout port on `spine1`, use the ISL link template and specify the breakout port in the `breakouts` section, as shown below:
+
+```{.yaml .code-scroll-lg hl_lines="6-9"}
+linkTemplates:
+  - name: isl
+    labels:
+      eda.nokia.com/role: interSwitch
+    type: interSwitch
+    breakouts:
+      - remote: #(1)!
+          channels: 4
+          speed: 100G
+```
+
+1. Remote side of this ISL uses breakout 4x100G
+
+The `isl` link template contains the `breakouts` section that specifies the breakout port configuration to be used on the **remote** side of the link that uses this template.
+
+The links can then use the `isl` link template to define the inter-switch connections between the leaf and spine nodes as usual, however, because the remote side of the link is now a breakout port, the interface name on the remote side must include the channel suffix - `ethernet-1-1-1`, `ethernet-1-1-2`, etc.
 
 ```{.yaml .code-scroll-lg}
-breakoutTemplates:
-  - name: 4x100
-    channels: 4
-    speed: 100G
-breakouts:
-  - name: breakouts
-    template: 4x100
-    node:
-      - spine1
-    interface:
-      - ethernet-1-1
-
 links:
   - name: leaf1-spine1-1
     template: isl
@@ -898,53 +900,55 @@ links:
           interface: ethernet-1-1-4
 ```
 
-1. Note, how the interface name of a port that is broken out is represented in a normalized way with its channel suffix - `ethernet-1-1-1`, `ethernet-1-1-2`, etc.
+1. Note, how the interface name of a **remote** port that uses the breakout is represented in a normalized way with its channel suffix - `ethernet-1-1-1`, `ethernet-1-1-2` denoting the channel index.
 
-The above breakout definition will result in creation of the two identical resources - `TopoBreakout` and `Breakout`. The `TopoBreakout` won't be visible in the EDA UI while the `Breakout` resource can be seen in the **Topology** > **Breakouts** section.
+> Because the link template specifies the breakout only on a **remote** side of a link, the remote endpoint uses the breakout notation. The link template may include breakouts on local, remote or both sides.
+
+The breakout definition shown above will result in creation of the `Breakout` resource that can be seen in the **Topology** > **Breakouts** section of the EDA UI.
 
 ```yaml
-apiVersion: interfaces.eda.nokia.com/v1alpha1
+apiVersion: interfaces.eda.nokia.com/v1
 kind: Breakout
 metadata:
   name: breakouts
   namespace: breakout-test
 spec:
   channels: 4
-  interface:
+  interfaces:
     - ethernet-1-1
-  node:
+  nodes:
     - spine1
   speed: 100G
 ```
 
+The `Breakout` resource is responsible for configuring the breakout port on the specified nodes and interfaces.
+
 ## Topology operations
 
-Now that you are familiar with how nodes, links, and breakouts are defined in the Network Topology workflow, let's see how to create, modify, and remove Network Topologies in EDA.
-
-Since Network Topology is a resource backed by the workflow it can be triggered via UI, REST API, CLIs and anything that can create a resource in EDA.
+Network Topology is a Workflow resource, it can be triggered via any of the EDA interfaces - UI, API or CLI.
 
 -{{video(url="https://gitlab.com/-/project/7617705/uploads/b17e9b8eda20991e79a2d0c79afda301/eda-nt-ui.mp4", title="Network Topology Workflow in EDA UI")}}-
 
-Regardless of the method used to create the Network Topology resource, a user would need to fill in the network topology resources as explained in the previous sections and select the desired operation - `create`, `replace`, or `delete`. Let's see what each operation does.
+Regardless of the interface chosen to create the Network Topology resource, you would need to populate the Network Topology resources and select the desired operation - `reconcile`, `create`, `replace`/`replaceAll`, or `delete`/`deleteAll`.
 
-To demonstrate the effects of each operation, let's create an empty namespace `net-topo-test` where we will deploy and modify the topology in the examples below.
+To demonstrate the behavior of each operation, create a `net-topo-test` namespace and use it to deploy the topology as per the examples below.
 
 ```bash
 edactl namespace bootstrap create --from-namespace eda net-topo-test #(1)!
 ```
 
-1. Don't have `edactl` installed? [It is one command away](using-the-clis.md#edactl).
-
-/// admonition | Workflow names
-    type: subtle-note
-Workflow resources should have unique names within a namespace. When creating a new workflow in EDA UI the name is auto-generated, and when using `kubectl` users can leverage Kubernetes' `generateName` feature to create unique names. In the examples below we will use `generateName` field with `kubectl` snippets instead of providing a fixed name.
-///
+1. Don't have `edactl` installed? [Install it with a single command](using-the-clis.md#edactl).
 
 ### Create
 
-To create a Network Topology select the `create` operation in the Network Topology workflow spec. Create operation will error if any of the topology resources already exist in the target namespace, therefore it is suitable for either creating a new topology in an empty namespace, or adding new nodes and links to an existing topology without modifying the existing resources.
+To create a Network Topology select the `Create` operation in the Network Topology workflow spec. The `Create` operation will generate an error if any of the topology resources already exist in the target namespace; therefore, it is suitable for either creating a new topology in an empty namespace, or adding new nodes and links to an existing topology without modifying the existing resources.
 
-Since our brand new `net-topo-test` namespace is empty, we can safely create the topology there, using the following workflow:
+/// admonition | Workflow names
+    type: subtle-note
+Workflow resources should have unique names within a namespace. When creating a new workflow in EDA UI the name is auto-generated, and when using `kubectl` users can leverage Kubernetes' `generateName` feature to create unique names. In the examples below, use the `generateName` field with `kubectl` snippets instead of providing a fixed name.
+///
+
+Since the new `net-topo-test` namespace is empty, you safely create the topology there, using the following workflow:
 
 /// tab | Topology
 
@@ -952,7 +956,7 @@ Since our brand new `net-topo-test` namespace is empty, we can safely create the
 --8<-- "docs/user-guide/network-topology/snippets/create.yaml"
 ```
 
-1. The `generateName` field is used to let Kubernetes generate a unique name for the workflow resource and is only applicable for cases when the workflow resource is created with `kubectl`. If you were to paste this snippet in the EDA UI, you would need to replace this field with the `name: some-unique-name` field.
+1. The `generateName` field is used to let Kubernetes generate a unique name for the workflow resource and is only applicable for cases when the workflow resource is created with `kubectl`. When pasting this snippet in the EDA, UI replace this field with the `name: some-unique-name` field.
 
 ///
 /// tab | `kubectl`
@@ -966,9 +970,11 @@ EOF
 ///
 You should expect the workflow created for this topology to complete and two nodes and one link to be created in the `net-topo-test` namespace.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/0389b3291f78e76a0fa37eee26a68adc/CleanShot_2025-11-30_at_23.27.29.png")}}-
+-{{image(url="graphics/CleanShot_2025-11-30_at_23.27.29.webp")}}-
 
-Because the `create` operation adds new topology resources without modifying the existing ones, it is possible to use it to incrementally add new nodes and links to an existing topology. For example, if we wanted to add a new node `node3` and connect it to `node1`, we could create a new workflow with the `create` operation and provide the new node and its links in the spec.
+> The `Create` operation fails if any of the topology resources provided in the spec already exist in the target namespace.
+
+As the `Create` operation adds new topology resources without modifying the existing ones, it is possible to use it to incrementally add new nodes and links to a topology. For example, to add a new node `node3` and connect it to `node1`, create a new workflow with the `Create` operation and provide only the new node and its links in the spec.
 
 /// tab | Topology
 
@@ -988,6 +994,40 @@ EOF
 ///
 
 The result of running this workflow will be that `node3` is added to the existing topology along with its link to `node1`, while `node1` and `node2` remain unchanged.
+
+### Reconcile
+
+The Reconcile operation is used to reconcile the existing topology with the desired one. It compares the existing topology with the desired one and makes the necessary changes to the existing topology to bring it to the desired state. The important difference between the `Reconcile` and `Create` operations is that the `Reconcile` operation will not generate an error if any of the topology resources do not exist in the target namespace, but will instead create them to match the desired topology.
+
+The `Reconcile` operation is suitable for both creating a new topology in an empty namespace, and adding new nodes and links to an existing topology without modifying the existing resources. However, it requires the full desired topology definition to be provided in the spec.
+
+To have a topology with just `node1` and `node3`, with the label `reconcile: test` added to both nodes, and one more link between them, create a specification like the one below:
+
+/// tab | Topology
+
+```yaml hl_lines="7"
+--8<-- "docs/user-guide/network-topology/snippets/reconcile-1.yaml"
+```
+
+///
+/// tab | `kubectl`
+
+```bash
+cat << 'EOF' | kubectl create -f -
+--8<-- "docs/user-guide/network-topology/snippets/reconcile-1.yaml"
+EOF
+```
+
+///
+
+The outcomes of this workflow will be:
+
+- `node1` and `node3` won't be re-created, because they already exist in the target namespace
+- label `reconcile: test` will be added to both nodes
+- an existing link between `node1` and `node3` will remain unchanged
+- a new link between `node1` and `node3` will be created to connect `node1` to `node3`
+- `node2` will be removed from the topology along with its link to `node1`
+- `node1` and `node3` will be briefly moved to `Onboarded: false` state and NPPs will reconnect to the nodes shortly after the workflow completes.
 
 ### Replace
 
@@ -1163,7 +1203,5 @@ node-ssh spine1
 [gs-guide]: ../getting-started/try-eda.md
 
 [^1]: Edge devices are not shown in the diagram because they are not (currently) managed by EDA and hence are not part of the topology. However, the links from the nodes to the edge devices must be modelled with `TopoLink` resources of type `edge` to allow EDA to manage these interfaces.
-
-[^2]: Interface breakouts are not shown in the diagram because there are no breakouts defined in the "Try EDA" three-node topology. However, if there were any port breakouts on the nodes, they would be modelled with the `TopoBreakout` resources.
 
 <script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>

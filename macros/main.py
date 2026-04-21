@@ -1,3 +1,7 @@
+# Copyright 2025 Nokia
+# Licensed under the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
 """
 Mkdocs-macros module
 """
@@ -65,26 +69,6 @@ def define_env(env):
     """
     Macroses used in SR Linux documentation
     """
-
-    # take eda version from mkdocs.yml .extra.eda_version variable
-    # and derive other versions flavors from it
-    eda_version = env.variables.eda_version
-    eda_version_dashes = env.variables.eda_version.replace(".", "-")
-    eda_v_version = f"v{eda_version}"
-    eda_major_version = f"{eda_version.split('.')[0]}"
-    eda_minor_version = f"{eda_version.split('.')[1]}"
-    eda_major_v_version = f"v{eda_major_version}"
-    eda_major_minor_version = f"{eda_major_version}.{eda_minor_version}"
-    eda_major_minor_v_version = f"v{eda_major_minor_version}"
-
-    env.variables["eda_v_version"] = eda_v_version
-    env.variables["eda_major_minor_version"] = eda_major_minor_version
-    env.variables["eda_major_minor_v_version"] = eda_major_minor_v_version
-    env.variables["eda_major_version"] = eda_major_version
-    env.variables["eda_minor_version"] = eda_minor_version
-    env.variables["eda_major_v_version"] = eda_major_v_version
-
-    env.variables["eda_version_dashes"] = eda_version_dashes
 
     @env.macro
     def diagram(url="", path="", page=0, title="", zoom=2):

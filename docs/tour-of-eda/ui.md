@@ -12,7 +12,7 @@ To access the EDA UI, open your web browser and navigate to https URL displayed 
 
 When you log in to the EDA UI you land on the **Main** page:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/f91c7a975c7717357376506ce50907e0/CleanShot_2025-12-14_at_20.40.42.png", title="Main page")}}-
+-{{image(url="graphics/CleanShot_2025-12-14_at_20.40.42.webp", title="Main page")}}-
 
 -{{icons.circle(letter="1")}}- Applications menu icon. Expands/collapses the left side menu, where all EDA apps and menu items are listed.
 
@@ -44,7 +44,7 @@ Every network engineer reaches for the topology view the moment they log in to a
 
 To view the graphical topology of the managed network, click on the -{{icons.circle(letter="1")}}- **Topologies** resource under the **Tools** category in the left sidebar. This will open up the list of available topologies where in EDA -{{ eda_version }}- there is only Physical Topology available. Double click on the Physical Topology row to open up the topology view. If you're using try-eda this will show your digital twin topology.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/e15be3a70990106fd7acf50178a648d8/CleanShot_2025-12-18_at_13.41.27.png", title="Physical Topology view")}}-
+-{{image(url="graphics/CleanShot_2025-12-18_at_13.41.27.webp", title="Physical Topology view")}}-
 
 -{{icons.circle(letter="2")}}- The topology view may be presented in the horizontal or vertical layout as driven by the map icon in the top toolbar.
 
@@ -63,7 +63,7 @@ When selecting a resource from the left side menu -{{icons.circle(letter="1")}}-
 
 In the example below we selected the -{{icons.circle(letter="I", text="Interfaces")}}- resource kind under the -{{icons.topology()}}- category in the left sidebar and got a list of all Interface resources that EDA manages.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/407f1acf862a2d86f817614bd1843944/CleanShot_2025-12-17_at_18.44.48.png", title="Resources page")}}-
+-{{image(url="graphics/CleanShot_2025-12-17_at_18.44.48.webp", title="Resources page")}}-
 
 The important elements on the resource view are:
 
@@ -81,7 +81,7 @@ The important elements on the resource view are:
 
 The information panel on the resource view page displays the resource's details such as its metadata, specification and status.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/948ed9cf4ce8c9bbf106c06ac60f5004/CleanShot_2025-12-17_at_23.31.03.png")}}-
+-{{image(url="graphics/CleanShot_2025-12-17_at_23.31.03.webp")}}-
 
 The main goal of the information panel is to provide an easy way to see the details about a selected resource when a user selects them in the table grid.
 
@@ -91,12 +91,12 @@ The main goal of the information panel is to provide an easy way to see the deta
 
 Double click on the row in the data grid table or using the "View" item of the row's context menu opens up the resource's detailed view.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/c4372eb603f9185d24569d77d9545bcd/CleanShot_2025-12-18_at_11.57.24.png", title="Opening the resource's details view")}}-
+-{{image(url="graphics/CleanShot_2025-12-18_at_11.57.24.webp", title="Opening the resource's details view")}}-
 
 By default the page opens in read-only mode.
 Let's break down the different elements of the "Details view":
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/29b367bc96ecf3e8ac94a890320c4eec/CleanShot_2025-12-18_at_12.00.06.png", title="Resource details view")}}-
+-{{image(url="graphics/CleanShot_2025-12-18_at_12.00.06.webp", title="Resource details view")}}-
 
 -{{icons.circle(letter="1")}}- The view selector is set to "Details" view. The dropdown allows to switch between different views available for this resource kind, such as Topology view, Resource targets view, and others.
 
@@ -124,7 +124,7 @@ The main area of the details view is divided into three panels:
 
 Naturally, you will spend quite some time creating and editing resources in EDA. To enter in the Resource Edit mode click **Create** button from the [Resource view](#resources-view) or **Edit** from the [Details view](#details-view). The Edit page looks very much like the Details view, with the difference that now you can edit the resource fields.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/2c10dd959ca60cfe9590c86888bdf0b4/CleanShot_2025-12-18_at_13.21.19.png", title="Resource edit view")}}-
+-{{image(url="graphics/CleanShot_2025-12-18_at_13.21.19.webp", title="Resource edit view")}}-
 
 When editing or creating a resource, you can use the Schema Form view where every resource field is represented as a form field, or the YAML view where you can edit the resource in the YAML format. You can start with a form view and continue in YAML editor, or vice versa, the changes are always synchronized.
 
