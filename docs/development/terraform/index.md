@@ -10,7 +10,7 @@ Terraform can manage low-level components such as compute, storage, and networki
 
 Terraform creates and manages resources on cloud platforms and other services through their application programming interfaces (APIs). Providers enable Terraform to interact with virtually any platform or service that exposes an API.
 
--{{image(url='https://gitlab.com/rdodin/pics/-/wikis/uploads/c203c48300d0c69a9a515a1b40401c6a/image.png',padding=20, shadow=True)}}-
+-{{image(url='graphics/c203c48300d0c69a9a515a1b40401c6a_image.webp',padding=20, shadow=True)}}-
 
 In the diagram above, the Nokia EDA API server represents the _Target API_, and the [Terraform providers published by Nokia][tf-registry-namespace] are used by Terraform to interface with it.
 
@@ -240,7 +240,7 @@ Navigating to the **Topology → Interfaces** in the left sidebar and creating a
 
 Would be represented like this in the UI:
 
--{{image(url='https://gitlab.com/rdodin/pics/-/wikis/uploads/625371d2534fed2d50ee0b3266845181/CleanShot_2025-08-20_at_19.55.36.webp', padding=10)}}-
+-{{image(url='graphics/CleanShot_2025-08-20_at_19.55.36.webp', padding=10)}}-
 
 Now look what would be the equivalent Terraform configuration in the next tab.
 

@@ -7,7 +7,7 @@
   --md-primary-bg-color: #2b2b2b;
 
   --md-typeset-a-color: #005AFF;
-  --md-accent-fg-color: #E03DCD;
+  --md-accent-fg-color: #001135;
 
   --nokia-heading-font-color: #005AFF;
 
@@ -16,6 +16,21 @@
   --nokia-get-started-text-color: #ffffff;
   --nokia-get-started-hover-text-color: #ffffff;
   --nokia-get-started-hover-btn-color: #23ABB6;
+
+  /* typeset .md-button (Material uses --md-primary-* which is header-themed) */
+  --nokia-typeset-button-color: #005AFF;
+  --nokia-typeset-button-border: #005AFF;
+  --nokia-typeset-button-bg: transparent;
+  --nokia-typeset-button-hover-color: #005ADF;
+  --nokia-typeset-button-hover-border: #005ADF;
+  --nokia-typeset-button-hover-bg: #E4F0FF;
+
+  --nokia-typeset-button-primary-color: #ffffff;
+  --nokia-typeset-button-primary-border: #005AFF;
+  --nokia-typeset-button-primary-bg: #005AFF;
+  --nokia-typeset-button-primary-hover-color: #ffffff;
+  --nokia-typeset-button-primary-hover-border: #005ADF;
+  --nokia-typeset-button-primary-hover-bg: #005ADF;
 
   /* wide annotations */
   --md-tooltip-width: 600px;
@@ -29,13 +44,27 @@
   --md-default-bg-color: #0C1017;
 
   --md-typeset-a-color: #ffffff;
-  --md-accent-fg-color: #E03DCD;
+  --md-accent-fg-color: #4092FF;
 
   --nokia-heading-font-color: #ffffff;
   --nokia-get-started-btn-color: #3D81FF;
   --nokia-get-started-text-color: #ffffff;
   --nokia-get-started-hover-text-color: #ffffff;
   --nokia-get-started-hover-btn-color: #336AD1;
+
+  --nokia-typeset-button-color: #ffffff;
+  --nokia-typeset-button-border: #3D81FF;
+  --nokia-typeset-button-bg: transparent;
+  --nokia-typeset-button-hover-color: #ffffff;
+  --nokia-typeset-button-hover-border: #336AD1;
+  --nokia-typeset-button-hover-bg: rgba(61, 129, 255, 0.12);
+
+  --nokia-typeset-button-primary-color: #ffffff;
+  --nokia-typeset-button-primary-border: #3D81FF;
+  --nokia-typeset-button-primary-bg: #3D81FF;
+  --nokia-typeset-button-primary-hover-color: #ffffff;
+  --nokia-typeset-button-primary-hover-border: #336AD1;
+  --nokia-typeset-button-primary-hover-bg: #336AD1;
 }
 
 .md-grid {
@@ -98,6 +127,33 @@ b {
 /* do not apply underline for line numbers in codeblocks */
 .md-typeset .linenodiv a {
   text-decoration: none;
+}
+
+/* typeset buttons: decouple from header --md-primary-* (swatches: nokia-brand-colors.md) */
+.md-typeset .md-button {
+  color: var(--nokia-typeset-button-color);
+  border-color: var(--nokia-typeset-button-border);
+  background-color: var(--nokia-typeset-button-bg);
+}
+
+.md-typeset .md-button:hover,
+.md-typeset .md-button:focus-visible {
+  color: var(--nokia-typeset-button-hover-color);
+  border-color: var(--nokia-typeset-button-hover-border);
+  background-color: var(--nokia-typeset-button-hover-bg);
+}
+
+.md-typeset .md-button--primary {
+  color: var(--nokia-typeset-button-primary-color);
+  border-color: var(--nokia-typeset-button-primary-border);
+  background-color: var(--nokia-typeset-button-primary-bg);
+}
+
+.md-typeset .md-button--primary:hover,
+.md-typeset .md-button--primary:focus-visible {
+  color: var(--nokia-typeset-button-primary-hover-color);
+  border-color: var(--nokia-typeset-button-primary-hover-border);
+  background-color: var(--nokia-typeset-button-primary-hover-bg);
 }
 
 /* setting the code font size a bit smaller. This is commented out now, as it breaks linenumbers in code blocks */

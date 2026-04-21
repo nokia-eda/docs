@@ -32,7 +32,7 @@ make download-tools #(1)!
 
     Subsequent steps use these versions of the binaries - you may use your own binaries for your own interactions. If you don't have `kubectl` in your `$PATH`, then consider copying the `kubectl` binary from the `tools` directory to a location in your `$PATH` to make use of it in the following steps.
 <!-- --8<-- [end:tools-install] -->
-
+w
 You will have to install the container runtime (e.g. `docker`) manually.
 
 ## EDA packages
@@ -40,7 +40,7 @@ You will have to install the container runtime (e.g. `docker`) manually.
 EDA is packaged using [`kpt`][kpt-home], and uses this package manager tool to install core EDA components as well as external tools like cert-manager. The installer downloads EDA kpt packages by cloning the [nokia-eda/kpt][kpt-repo].  
 These packages install EDA core and some external components onto the k8s cluster in the later steps.
 
-But EDA kpt packages only install the core EDA components, such as its config engine, digital sandbox and so on. The EDA applications, though, are distributed via [application catalogs](../apps/app-store.md#resources), which are just git repositories with application manifests. The [app catalog][catalog-repo] that "Try EDA" downloads contains Nokia apps such as Fabrics, Interfaces, AAA and other basic apps you get installed with EDA.
+But EDA kpt packages only install the core EDA components, such as its config engine, digital sandbox and so on. The EDA applications, though, are distributed via [application catalogs](../apps/index.md#catalogs), which are just git repositories with application manifests. The [app catalog][catalog-repo] that "Try EDA" downloads contains Nokia apps such as Fabrics, Interfaces, AAA and other basic apps you get installed with EDA.
 
 To clone both EDA kpt packages and the app catalog, the makefile packs the following target:
 
@@ -194,7 +194,7 @@ If everything checks out, you're ready to install the apps!
 
 ### Apps
 
-EDA is an automation framework that is powered by [Applications](../apps/app-store.md) - the little nuggets of automation goodness that you're probably interested in using. Almost everything in EDA is considered an app - from the abstracted building blocks of the network services to the composite workflows enabling the automation of complex tasks.
+EDA is an automation framework that is powered by [Applications](../apps/index.md) - the little nuggets of automation goodness that you're probably interested in using. Almost everything in EDA is considered an app - from the abstracted building blocks of the network services to the composite workflows enabling the automation of complex tasks.
 
 A basic set of Nokia-provided applications delivered via the [default App Catalog][catalog-gh-url] is installed with:
 

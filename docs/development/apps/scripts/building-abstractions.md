@@ -8,7 +8,7 @@ In EDA, every application is typically made up of one or more abstracted resourc
 Some resources provide a low-level abstraction - e.g., a familiar [Banner resource](banner-script.md) that abstracts away the vendor-specific configuration details of configuring a banner and MOTD on a network device, but is still fairly close to the actual configuration model of the target device.  
 Other resources provide a much higher abstraction that is built on top of a bunch of smaller abstractions - like a Fabric resource that on its own abstracts away all configuration details required to build an EVPN VXLAN fabric on a set of multivendor devices and uses Interfaces, BGP Peers, Route Reflectors, and so on.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/253d383de8874dbe7e3cdbfff8dca4db/CleanShot_2025-12-06_at_22.39.22.png", padding=20, shadow=True, title='Fabric resource and its lower-level abstractions it is based on')}}-
+-{{image(url="graphics/CleanShot_2025-12-06_at_22.39.22.webp", padding=20, shadow=True, title='Fabric resource and its lower-level abstractions it is based on')}}-
 
 When do you need to build an app on top of existing abstractions? Typically, the following goals call for building new abstractions:
 
@@ -271,17 +271,17 @@ edabuilder deploy --app simple-fabrics
 
 The `edabuilder deploy` command takes care of building the application, setting up the internal container registry in the active EDA cluster, pushing the application image to it, and installing the app via the regular EDA App Installer workflow. A lot of magic happens under the hood, but the developer only needs to run this single command to get the application deployed.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/47c427c42b32ed844b8f03dd36dd5460/CleanShot_2025-12-08_at_21.01.05.png", title="Application installation via Workflow")}}-
+-{{image(url="graphics/CleanShot_2025-12-08_at_21.01.05.webp", title="Application installation via Workflow")}}-
 
 Now that our app is installed, where do we find it in the UI? If you search for "simple" in the EDA sidebar, you will find the app listed under the "Simple Fabrics" section:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/3602dd1ccd55176b911582bad16328b7/CleanShot_2025-12-08_at_21.35.43.png", title="Simple Fabrics App in EDA UI")}}-
+-{{image(url="graphics/CleanShot_2025-12-08_at_21.35.43.webp", title="Simple Fabrics App in EDA UI")}}-
 
 As evident from the screenshot above, the app is categorized under the "SIMPLE FABRICS" category and the resource is titled "simplefabrics" - both values come from the `simple_fabrics/manifest.yaml` file created by `edabuilder`. We will see how to customize these values later in the tutorial.
 
 If you select the "simplefabrics" resource from the sidebar and click on "Create" button, you will see the schema form for this resource, which should look like this:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/12c855313e9723a8417f591e95358870/CleanShot_2025-12-09_at_13.52.43.png", title="Simple Fabric Resource Schema Form")}}-
+-{{image(url="graphics/CleanShot_2025-12-09_at_13.52.43.webp", title="Simple Fabric Resource Schema Form")}}-
 
 Even though our resource does not have any functionality yet, we can see that the basic API definition we created is valid, and the `underlayASNPool` field is correctly represented in the schema form.
 
@@ -319,7 +319,7 @@ By adding comments above the SimpleFabricSpec struct and the UnderlayASNPool fie
 
 If you were to call `edabuilder deploy --app simple-fabrics` again after saving these changes and reload the UI, you would see the updated descriptions in the schema form.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/f6e63323bd8c057c97333015be6baae9/CleanShot_2025-12-09_at_14.20.23.png", title="Updated Descriptions in Schema Form")}}-
+-{{image(url="graphics/CleanShot_2025-12-09_at_14.20.23.webp", title="Updated Descriptions in Schema Form")}}-
 
 ### Title
 
@@ -357,7 +357,7 @@ To provide the default value of `asn-pool`, we leverage another annotation - `+k
 
 To see the effect of this change, redeploy the app again, and open the schema form for the SimpleFabric resource. You will see that the `Underlay ASN Pool` field now has a default value of `asn-pool` pre-filled in the form - beautiful!
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/49990e8f34e25bb1c0fa3fc085e06670/CleanShot_2025-12-09_at_19.45.24.png", title="Default Value set in the Schema Form")}}-
+-{{image(url="graphics/CleanShot_2025-12-09_at_19.45.24.webp", title="Default Value set in the Schema Form")}}-
 
 ### Autocompletion
 
@@ -385,7 +385,7 @@ Let's add it:
 
 And now after redeploying the app and opening the schema form, when you focus on the `Underlay ASN Pool` field, you will see a dropdown with all available ASN pools in the cluster:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/1a09746a80b2c059268a1b8f5d93f5bf/CleanShot_2025-12-09_at_20.56.39.png", title="Autocompletion in Schema Form")}}-
+-{{image(url="graphics/CleanShot_2025-12-09_at_20.56.39.webp", title="Autocompletion in Schema Form")}}-
 
 The section and field descriptions, titles, default values, and autocompletion are just a few of the annotations available to EDA developers to enrich their resource API definitions. For the sake of this tutorial, we will stop here and move on to implementing the actual logic of the Simple Fabrics app.
 
@@ -430,7 +430,7 @@ You'll have a bunch of new files added as a result of this command. Edabuilder w
 
 It will also update the manifest.yaml file to register the new script intent. This is an important concept in EDA - every intent is associated with a resource through an explicit registration in the manifest file. The screenshot below shows how the `config_intent.py` script is associated with the SimpleFabric resource via the manifest file by the `trigger` section:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/9cc687c5df87cff5912feecf74812f18/CleanShot_2025-12-09_at_22.36.44.png", title="Intent Registration in Manifest", padding=20)}}-
+-{{image(url="graphics/CleanShot_2025-12-09_at_22.36.44.webp", title="Intent Registration in Manifest", padding=20)}}-
 
 By associating the intent script with the resource, the EDA Config Engine knows which script to execute when a SimpleFabric resource is created, updated, or deleted.
 
@@ -662,7 +662,7 @@ The version field sets the required version of an app we depend on. A loose vers
 
 If you now deploy the Simple Fabrics app again and open the EDA Store UI, you will see how the Fabrics app (and all the apps that Fabrics app requires) are automatically listed as requirements.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/a8e960815c428607df3d561f2c297e10/CleanShot_2025-12-11_at_10.06.36.png", title="App Requirements in EDA Store")}}-
+-{{image(url="graphics/CleanShot_2025-12-11_at_10.06.36.webp", title="App Requirements in EDA Store")}}-
 
 ## Creating the Fabric
 
@@ -825,7 +825,7 @@ Open the `simple_fabrics/manifest.yaml` file and change the fields under the `ui
 
 Redeploying the app and reloading the UI will now show the Simple Fabrics resource under the Fabrics category with the desired name:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/1d6046388ec49680a280b43dc98fee1b/CleanShot_2025-12-11_at_11.51.27.png", title="Customized Resource Name and Category")}}-
+-{{image(url="graphics/CleanShot_2025-12-11_at_11.51.27.webp", title="Customized Resource Name and Category")}}-
 
 ## Using the Simple Fabrics App
 

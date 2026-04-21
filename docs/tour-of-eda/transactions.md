@@ -21,7 +21,7 @@ The process of identifying the delta between the actual and desired states and a
 
 A popular implementation of the reconciliation loop is the Operator pattern popularized by Kubernetes. To illustrate the reconciliation loop, consider the following diagram where a user submits the desired state of a resource to the system, and the Operator reconciles (applies necessary changes to) the actual state of the resource to match the desired state.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/b80daae9e1b9a8d40bfc4b985e6cc454/CleanShot_2026-02-01_at_12.37.00.png", title="Reconciliation loop", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-01_at_12.37.00.webp", title="Reconciliation loop", padding=20, shadow=true)}}-
 
 Imagine, that a user wants to deploy a web server with three replicas across the worker nodes in a Kubernetes cluster. The user would submit a manifest declaring this intent and the Operator in Kubernetes would create the necessary components to realize this intent. And _eventually_ the actual state of the cluster would converge to the desired state.  
 The emphasis on "eventually" has been put for a reason. The reconciliation loop may take time to converge the states, and _sometimes it may never converge_ to the desired state if there are persistent issues preventing the deployment.
@@ -31,7 +31,7 @@ This case is illustrated above with the `worker1` node not being able to start t
 Running two web servers instead of three may sound acceptable in some scenarios, if there is ample time to fix the underlying issue and let the reconciliation loop converge the states. However, {==every network operator knows they can't afford partially applied changes==}.  
 In the network world, partially applied changes may lead to service outages, security vulnerabilities, and compliance violations. Therefore, network operators need stronger guarantees that either all changes are applied successfully, or none of them are applied at all. This is where EDA's Network-wide Transactions come into play.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/e7db2b14c83850de170bc323e7e5be5b/CleanShot_2026-02-01_at_19.47.08.png", title="Network-wide Transactions", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-01_at_19.47.08.webp", title="Network-wide Transactions", padding=20, shadow=true)}}-
 
 In EDA, the declarative network management principles meet the strong consistency guarantees of atomic transactions. Whenever a user submits a resource manifest to EDA, the platform creates a transaction with the calculated changes required to converge the actual state of the network with the desired state declared in the manifest. The transaction is then executed across all affected devices in the network in an atomic, all-or-nothing fashion.  
 No guesswork and no unnecessary tokens thrown at a problem that can be solved with some good old engineering to guarantee the safety and reliability of operations.
@@ -48,17 +48,17 @@ Before the first network request is made, EDA will perform a set of validations.
 
 If all these validation pass, the transaction will transition to the deploy phase.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/a69bccadf0214e9cbf49e2f9c25b9fd2/CleanShot_2026-02-01_at_21.09.45.png", title="Creating a transaction", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-01_at_21.09.45.webp", title="Creating a transaction", padding=20, shadow=true)}}-
 
 In the deploy phase, the transaction will target all affected devices in the network . EDA will concurrently apply the changes across all devices in the transaction, ensuring that the changes will be attempted on all devices at the same time. Even though the extensive set of validations performed before the deploy phase significantly reduces the chances of failure during the configuration push, failures may still happen due to nature of model-based checks and hardware resource constraints, transient network issues, or self-inflicted communication path failures.
 
 This is where EDA's Network-wide Transactions shine. When EDA applies the changes on each device, it uses gNMI Commit Confirmed extension so that each successful commit requires an explicit confirmation from EDA within a specified confirmation timeout window. Continuing with our example, let's imagine that first device successfully applied the changes and transitioned to the "waiting for confirmation" state. The third device hasn't yet processed its commit set, while the second device failed to apply the changes due exhausted TCAM resources:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/d8fbbc0ee08726d7190b856eec1a7b4e/CleanShot_2026-02-01_at_21.10.26.png", title="Transaction failure during deploy phase", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-01_at_21.10.26.webp", title="Transaction failure during deploy phase", padding=20, shadow=true)}}-
 
 Because one of the devices failed to apply the transaction change set, EDA is immediately notified of the failure and initiates the rollback phase of the transaction. The rollback in this case is as simple as sending the gNMI Commit Cancel message to all devices that either successfully applied the changes or are still in the process of applying them. Once the devices receive the Commit Cancel message, they will automatically revert to the previous configuration state, ensuring that no partial changes are left in the network.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/616cc193c914158cc1627dddf9e0c4b0/CleanShot_2026-02-01_at_21.10.42.png", title="Transaction rollback phase", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-01_at_21.10.42.webp", title="Transaction rollback phase", padding=20, shadow=true)}}-
 
 The network remains in a consistent state, with no partial changes applied, and the operator can investigate the root cause of the failure without worrying about cleaning up after a partially applied configuration.
 
@@ -66,7 +66,7 @@ The network remains in a consistent state, with no partial changes applied, and 
 
 In summary, each operation in EDA is put through a rigorous validation and check process with multiple safety barriers to ensure the the malicious or accidental misconfigurations are minimized to the greatest extent possible. As all transactions share fate, no matter how big or small the change set is, how big or small the target set of devices is, EDA will ensure the atomicity of the changes and record the successful transaction in its persistent Git repository for future audits and rollbacks.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/0eb4fe8eadef4768bcca6d6634d2e568/CleanShot_2026-02-01_at_23.46.54.png", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-01_at_23.46.54.webp", padding=20, shadow=true)}}-
 
 ## Working With Transactions
 
@@ -115,13 +115,13 @@ spec:
 
 After pasting the YAML snippet or filling the schema form, click on "Add" button to add the new interface resource to the transaction basket.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/7f4ece52ca56379a9dd31e68285a0f5d/CleanShot_2026-02-02_at_11.11.33.png", title="Adding to basket", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_11.11.33.webp", title="Adding to basket", padding=20, shadow=true)}}-
 
 By adding a resource to the transaction basket you are staging the resource for inclusion in the next transaction. No configuration changes are being pushed yet. Continue with adding the second interface resource for `leaf2` switch by repeating the same steps as above, but changing the `name` and `node` fields accordingly.
 
 After adding both interfaces to the transaction basket, you should see the counter next to the basket icon in the top right corner of the EDA UI indicating that there are two staged resources waiting to be committed. Clicking on the basket icon will open the transaction basket popup where you can review the staged resources, perform operations on them (edit, delete), or proceed with transaction operations.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/e190a96b0c2d3a5b3894661cea357555/CleanShot_2026-02-02_at_11.19.43.png", title="Transaction basket with two staged resources", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_11.19.43.webp", title="Transaction basket with two staged resources", padding=20, shadow=true)}}-
 
 > [EDA REST API](../development/api/index.md) and [EDA Ansible collections](../development/ansible/index.md) has full support for managing transactions.
 
@@ -133,13 +133,13 @@ Acknowledging this fact, EDA provides a "Dry run" feature that allows operators 
 
 To initiate a dry run, click on the dropdown selector next to the "Commit" button and choose "Dry run" option:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/90b15669ec1a2d380efd2a7a990f2ea1/CleanShot_2026-02-02_at_14.54.27.png", title="Initiating a dry run", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_14.54.27.webp", title="Initiating a dry run", padding=20, shadow=true)}}-
 
 EDA will start processing the resources in the basket's workspace and run another validation as part of the dry run. This validation includes schema validation using node's YANG models that EDA is aware of. Things like data types, ranges, mandatory fields and other constraints defined in the YANG models of the target devices are checked during this validation step.
 
 In a few moments, EDA will present the dry run results in the same popup window, from where a user can either proceed with committing the transaction upon a successful dry run, or look at the transaction details and diffs to understand the scope of the changes in the basket workspace.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/5ee9d096cc5bf45b1c4154247f943260/CleanShot_2026-02-02_at_15.10.31.png", title="Dry run results", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_15.10.31.webp", title="Dry run results", padding=20, shadow=true)}}-
 
 Let's start with the diff view, and leave transaction details for when we submit the actual transaction.
 
@@ -147,7 +147,7 @@ Let's start with the diff view, and leave transaction details for when we submit
 
 Clicking on the "Diffs" icon will pop up a new window with the calculated diffs that would look like this:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/6ae6e8251c624e8e821935c58239ad63/CleanShot_2026-02-02_at_15.43.27.png", title="Transaction diffs", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_15.43.27.webp", title="Transaction diffs", padding=20, shadow=true)}}-
 
 The diff view is split in two panes, on the left side we have the list of resources affected or created by the transaction and on the right side we have the familiar text diff view showing the exact changes in the "before/after" format for each resource.
 
@@ -163,12 +163,12 @@ Based on the dry run diff review an operator may want to edit the resources in t
 
 Pulling up the transaction basket will now show the "Commit" without the dropdown selector as we have already performed the dry run and haven't changed anything in the basket workspace since then.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/9c821579778c2086692a4f9cc90f324e/CleanShot_2026-02-02_at_16.09.52.png", title="Committing the transaction", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_16.09.52.webp", title="Committing the transaction", padding=20, shadow=true)}}-
 
 The commit process will look similar to the dry run, however, this time EDA will proceed with pushing the changes to the target devices using the Network-wide Transactions mechanism described earlier.  
 After clicking on the "Commit" button, EDA will show the transaction progress in the same popup window and display the final transaction result once the transaction is confirmed by all target devices.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/2a0a104a50fee511723e8a200c2e9d01/CleanShot_2026-02-02_at_16.18.08.png", title="Transaction commit", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_16.18.08.webp", title="Transaction commit", padding=20, shadow=true)}}-
 
 After the transaction is successfully committed, you can click "Done" to close the transaction basket popup and return to the main EDA UI.
 
@@ -187,14 +187,14 @@ The Git repository that backs up EDA transactions deserves its own chapter which
 
 You will find the transaction list right at the top section of the left side menu in the EDA UI, clicking on it will pull up the transaction list[^3]:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/fb23e941fbd0cd474ef429b30d9294e9/CleanShot_2026-02-02_at_19.44.23.png", title="Transaction list", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_19.44.23.webp", title="Transaction list", padding=20, shadow=true)}}-
 
 Attentive readers will notice that the transaction list contains both the transactions that were run in the dry run mode as well as the committed ones. Also both successful and failed transactions are listed here for audit and troubleshooting purposes.  
 With every transaction having the incremental identifier it is easy to track the sequence of changes applied to the network over time.
 
 Double-clicking on a transaction entry will pull up the transaction details view where all the information about the transaction can be found:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/78040bb22f256adb3358bb027bbe6851/CleanShot_2026-02-02_at_19.48.14.png", title="Transaction details", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_19.48.14.webp", title="Transaction details", padding=20, shadow=true)}}-
 
 The detailed transaction view covers a lot of ground. First, on the panel with the big checkmark status you see the transaction ID and its commit status. The panel to the right shows transaction KPI-s, like
 
@@ -232,7 +232,7 @@ Both actions are executed as a new transaction and committed with a new commit h
 
 The easiest way to access these actions is from the transaction details view where the `Revert` and `Restore` actions are available in the context menu of each committed transaction:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/b3c5f102d13f90d2d656a0f268d8688f/CleanShot_2026-02-02_at_20.34.50.png", title="Revert and Restore actions", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_20.34.50.webp", title="Revert and Restore actions", padding=20, shadow=true)}}-
 
 In the screenshot above, the selected transaction is the one where we created the two interfaces on `leaf1` and `leaf2` switches. Let's say we realized that we made a mistake and these interfaces are not needed after all. We could've gone to the interface list and deleted them, but in case your transaction involved multiple resources or changes were made to some existing resources, then reverting the transaction is a much easier and safer option.
 
@@ -272,7 +272,7 @@ Do you see the induced mistake? There is no `ethernet-1/99` interface on the 722
 
 With three interfaces in our basket, let's first run a dry run to see the diffs:
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/0a22d2b2acf5d13f8b750e6da314dc74/CleanShot_2026-02-02_at_21.53.40.png", title="Dry run with an invalid interface", padding=20, shadow=true)}}-
+-{{image(url="graphics/CleanShot_2026-02-02_at_21.53.40.webp", title="Dry run with an invalid interface", padding=20, shadow=true)}}-
 
 The dry run completes successfully, and the diffs shows that the node configuration change targeting the `spine1` switch will attempt to add the `ethernet-1/99` interface. Let's see what happens if we were to proceed with the change:
 

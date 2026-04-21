@@ -34,7 +34,7 @@ The cpu-hours counter is reset at the beginning of each calendar month, so you c
 
 Whenever you need to check what Codespaces environments you have running or created, you can do it in the [Codespaces panel][codespace-panel].
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/3f9c945ba979cd6052dc56364d2aefe5/CleanShot_2026-01-20_at_11.37.35.png", padding=20)}}-
+-{{image(url="graphics/CleanShot_2026-01-20_at_11.37.35.webp", padding=20)}}-
 
 The panel shows you all your existing Codespaces environments and their status. In the screenshot above there is one environment created from the `eda-labs/codespaces` repository, which is currently active (running).
 
@@ -42,7 +42,7 @@ Via the Control Panel users can manage their environments, including starting, s
 
 > When the EDA environment in Codespaces is started from a previously stopped state, it will take around 5 minutes for the Kubernetes cluster and EDA applications to be fully operational.
 
--{{image(url="https://gitlab.com/-/project/7617705/uploads/c677d443225b21a7ed547ee23c0127e0/CleanShot_2026-01-20_at_11.37.42.png", padding=20, title="Environment actions")}}-
+-{{image(url="graphics/CleanShot_2026-01-20_at_11.37.42.webp", padding=20, title="Environment actions")}}-
 
 ### Codespaces settings
 

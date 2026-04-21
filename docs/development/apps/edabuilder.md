@@ -107,7 +107,7 @@ Your app is now ready to be installed by the EDA Store with install-time setting
 
 /// warning | Installing with a non-default value of a setting
 
-App settings can be provided directly in the [AppInstaller workflow](../../apps/app-store.md#installing-an-app) or at the app install time in the EDA UI.
+App settings can be provided directly in the [AppInstaller workflow](../../apps/index.md#installing-apps) or at the app install time in the EDA UI.
 
 To provide a custom value for a setting in the workflow, add the `<setting-name>: <custom-value>` key-value pair to the list entry of the appropriate app in the Workflow's `spec.input.apps[*].appSettings` map.
 Here is an example Workflow to install some app with a custom value for the `controllerCpuLimit` setting:

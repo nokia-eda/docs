@@ -21,7 +21,7 @@ Use namespace-scoped resources when you want to export data only from a single u
 
 ## Installation
 
-The NATS Exporter app can be installed using [EDA Store](app-store.md) or by running an `AppInstaller` workflow with `kubectl`:
+The NATS Exporter app can be installed using [EDA Store](../apps/index.md#eda-store) or by running an `AppInstaller` workflow with `kubectl`:
 
 /// tab | YAML
 

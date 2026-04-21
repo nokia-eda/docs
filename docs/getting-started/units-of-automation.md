@@ -16,7 +16,7 @@ In EDA, **a resource is a unit of automation** and can represent virtually anyth
 As a Kubernetes citizen, EDA represents its resources via [Custom Resources (CRs)][CR-k8s-doc] of Kubernetes that can be created using multiple methods including the Kubernetes (K8s) API, the EDA API, or through a User Interface (UI).
 
 You probably wonder what resources are available in EDA and how to interact with them. Great question!  
-EDA resources become available as soon as you install an [**EDA Application**](../apps/app-store.md) which is a way to extend EDA with new resources and capabilities on the fly. Applications may be provided by anyone: Nokia, our partners or indie developers - EDA is an open platform!
+EDA resources become available as soon as you install an [**EDA Application**](../apps/index.md) which is a way to extend EDA with new resources and capabilities on the fly. Applications may be provided by anyone: Nokia, our partners or indie developers - EDA is an open platform!
 
 Nothing beats a hands-on experience, so let's learn more about Resources by following a short but powerful example of configuring a fabric on top of our 3-node topology deployed as part of our [playground](try-eda.md).
 
@@ -94,7 +94,7 @@ You see the power of abstraction and automation in action, where the complex con
     type: subtle-note
 It is absolutely fine if your view how the Fabric abstraction should look like is different from ours. EDA doesn't tell you how to do your infrastructure automation, EDA is here to help you do it.
 
-Leveraging the power of [pluggable applications](../apps/app-store.md), you can create your own Fabric abstraction and use them to configure your fabric in a way that is most convenient for you.
+Leveraging the power of [pluggable applications](../apps/index.md), you can create your own Fabric abstraction and use them to configure your fabric in a way that is most convenient for you.
 ///
 
 Now, when the abstracted and declarative input has been processed by EDA, a fully functional Fabric configuration has been deployed on the nodes of our virtual topology.  
@@ -228,7 +228,7 @@ The operational state can have different values that would help an operator to d
 
 And, of course, the same information can be layed out nicely in the UI using resources dashboards (you guessed it, they are also customizable by the application developer).
 
--{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/9059831c586c27cd6a1f7914c7ce66e8/image.png")}}-
+-{{image(url="graphics/9059831c586c27cd6a1f7914c7ce66e8_image.webp")}}-
 
 With a glance at the Fabric's dashboard an operator can determine the state of the whole fabric, without having to inspect a dozen of dashboards in a separate system.
 
@@ -347,7 +347,7 @@ Once the change is committed, BGP will take some time to converge. During this p
 
 Transactions made by a user in the UI[^5] are also visible in the Transactions UI[^4]:
 
--{{image(url="https://gitlab.com/rdodin/pics/-/wikis/uploads/aeb1dfb9ae61f6e43de48ed276175384/image.png", padding=20)}}-
+-{{image(url="graphics/aeb1dfb9ae61f6e43de48ed276175384_image.webp", padding=20)}}-
 
 Congratulations, your fabric is now using iBGP as its overlay protocol :partying_face:  
 From a tiny change in the Fabric' declarative abstraction through the transformation to sub-resources and eventually to the node-level configurations, that are reliably transacted and pushed to the constituent nodes. How cool is that?
