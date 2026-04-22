@@ -44,9 +44,10 @@ nav:
           - The Platform Status page: user-guide/gui-basics/platform-status-page.md
           - GUI Elements: user-guide/gui-basics/gui-elements.md
           - Key bindings: user-guide/gui-basics/key-bindings.md
-          - Working with the EDA menu: user-guide/gui-basics/work-with-menu.md
+          - Navigation Panels: user-guide/gui-basics/nav-panels.md
           - Working with data grids: user-guide/gui-basics/work-with-data-grids.md
           - Common data grid actions menu: user-guide/gui-basics/common-data-grid-actions.md
+      - Dashboards: user-guide/dashboards.md
       - Custom navigation panels: user-guide/custom-navigation-panels.md
       - Dashboard designer: user-guide/dashboard-designer.md
       - Namespaces: user-guide/namespaces.md
@@ -241,13 +242,13 @@ plugins:
       comments_path: "#__comments"
   - git-revision-date-localized:
       enable_creation_date: true
-      enabled: !ENV [CI, false]
+      enabled: !ENV [ CI, false ]
   - git-committers:
       repository: nokia-eda/docs
       branch: main
-      enabled: !ENV [GIT_COMMITTERS, false]
+      enabled: !ENV [ GIT_COMMITTERS, false ]
   - social:
-      enabled: !ENV [CI, false]
+      enabled: !ENV [ CI, false ]
       # enabled: true
       # debug: true
       # debug_color: yellow
@@ -300,8 +301,8 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji 
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg 
   - pymdownx.highlight:
       line_spans: __span
       anchor_linenums: true
@@ -325,7 +326,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+          format: !!python/name:pymdownx.superfences.fence_code_format 
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.blocks.tab:
