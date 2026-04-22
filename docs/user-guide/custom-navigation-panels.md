@@ -117,11 +117,12 @@ Optionally, instead of constructing the entire navigation panel from scratch, yo
         If you drag a menu category from **Available menu items**, all of its menu items are also added to your panel design under that category.
         ///
 
-    3.  Repeat [5.a](custom-navigation-panels.md#cnpsub5a) and [5.b](custom-navigation-panels.md#cnpsub5b) until you have added all of the required categories and menu items to your navigation panel design.
+    3. Repeat [5.a](custom-navigation-panels.md#cnpsub5a) and [5.b](custom-navigation-panels.md#cnpsub5b) until you have added all of the required categories and menu items to your navigation panel design.
 
 6. To remove a category or menu item from your navigation panel design by clicking the trash icon next to that item in the **Selected menu items** list.
 
-    /// Noate
+    /// admonition | Note
+        type: subtle-note
     This action is most useful if you began by duplicating another, complete menu from which you would like to trim some items.
     ///
 
