@@ -245,7 +245,7 @@ that the host operating system is sending out.[^1][^2]
 here: https://forums.developer.nvidia.com/t/need-help-disabling-hardware-lldp-c5x-ex/294083
 
 [^2]: Instructions on how to disable in-hardware LLDP in VMware ESXI
-environments: https://knowledge.broadcom.com/external/article/344761/enabling-and-disabling-native-drivers-in.html
+environments: https://knowledge.broadcom.com/external/article/310348/configuring-advanced-driver-module-param.html
 
 ### LLDP gracetimer
 
