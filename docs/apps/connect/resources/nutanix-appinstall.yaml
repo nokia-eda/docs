@@ -9,5 +9,5 @@ spec:
     - appId: nutanix.eda.nokia.com
       catalog: eda-catalog-builtin-apps
       version:
-        type: semver
-        value: v0.0.1-beta
+        type: alias
+        version: latest

@@ -25,20 +25,20 @@ Install the operator using the OpenShift console:
 2. From the main menu, navigate to **Operators → OperatorHub**.
 
    /// details | OperatorHub navigation
-   ![Navigate to OperatorHub](../../resources/select-operators-operatorhub.png)
+   -{{image(url="../../resources/select-operators-operatorhub.webp", title="Navigate to OperatorHub")}}-
    ///
 
 3. Type `eda-openshift-operator` in the **All Items - Filter by keyword** filter/search box.
-   ![Find EDA OpenShift Operator](../../resources/find-eda-openshift-operator.png)
+   -{{image(url="../../resources/find-eda-openshift-operator.webp", title="Find EDA OpenShift Operator")}}-
 
 4. Select the **EDA OpenShift Operator** tile when it displays. The EDA OpenShift Operator page displays.
 
 5. Click **Install**.
-   ![Install Operator](../../resources/install-operator.png)
+   -{{image(url="../../resources/install-operator.webp", title="Install Operator")}}-
 
 6. Enter the namespace where the OLM should install the EDA OpenShift Operator on the OpenShift cluster. The default namespace is
    `eda-connect-k8s-controller`.
-   ![Enter namespace where Operator will be installed](../../resources/enter-namespace-operator.png)
+   -{{image(url="../../resources/enter-namespace-operator.webp", title="Enter namespace where Operator will be installed")}}-
 
 7. Scroll down and click **Install**.
 

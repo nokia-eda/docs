@@ -1,20 +1,5 @@
 # Nutanix Prism Central Plugin Installation
 
-//// warning | Technical Preview
-
-The Nutanix Prism Central Plugin is currently only available as beta version for technical preview purposes. It can be used for demo, POC or lab
-purposes.
-
-The following features are **not** included in the technical preview:
-
-* SR-IOV support
-* NIC Offloading
-* Audit
-* Alarms
-* Heartbeats
-
-////
-
 This guide provides detailed instructions for installing the EDA Connect Nutanix Prism Central plugin.
 
 ## Prerequisites

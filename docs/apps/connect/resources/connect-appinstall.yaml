@@ -9,5 +9,5 @@ spec:
     - appId: connect.eda.nokia.com
       catalog: eda-catalog-builtin-apps
       version:
-        type: semver
-        value: v5.0.0
+        type: alias
+        version: latest

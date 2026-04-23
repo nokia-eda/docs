@@ -10,6 +10,6 @@ spec:
       catalog: eda-catalog-builtin-apps
       vendor: nokia
       version:
-        type: semver
-        value: v3.0.0
+        type: alias
+        version: latest
   type: app-installer

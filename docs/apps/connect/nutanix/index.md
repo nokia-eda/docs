@@ -1,20 +1,5 @@
 # Nutanix Prism Central Plugin
 
-//// warning | Technical Preview
-
-The Nutanix Prism Central Plugin is currently only available as beta version for technical preview purposes. It can be used for demo, POC or lab
-purposes.
-
-The following features are **not** included in the technical preview:
-
-* SR-IOV support
-* NIC Offloading
-* Audit
-* Alarms
-* Heartbeats
-
-////
-
 ## Overview
 
 The Nutanix Prism Central plugin integrates Nokia EDA with Nutanix Prism Central, enabling automated network provisioning and management for Nutanix
@@ -30,6 +15,11 @@ Key capabilities include:
 * Basic workflows managed completely through Prism Central ([Prism Managed Mode](#operational-modes))
 * Advanced workflows managed through EDA ([EDA Managed Mode](#operational-modes))
 * Interconnectivity between different cloud environments through EDA
+
+Currently not supported:
+
+* SR-IOV
+* NIC Offloading
 
 ### Supported Versions
 
@@ -60,9 +50,7 @@ For detailed deployment instructions, see the [Nutanix Prism Central Plugin Inst
 ### Limitations
 
 * VM NICs in Trunked mode are not supported
-* Audit functionality is not supported in the technical preview
-* Heartbeats are not supported in the technical preview
-* SR-IOV and NIC offloading are not supported in the technical preview
+* SR-IOV and NIC offloading are not supported
 
 ### Operational Modes
 
@@ -102,7 +90,7 @@ BridgeDomain is created later, the plugin will automatically reconcile and estab
 /// details | Multiple values for connect.eda.nokia.com Category
     type: subtle-note
 
-If multiple values for the `connect.eda.nokia.com` category are associated with a single subnet, EDA-Ignored will get precedence.
+If multiple values for the `connect.eda.nokia.com` category are associated with a single subnet, `EDA Ignored` will get precedence.
 
 ///
 
@@ -110,7 +98,7 @@ If multiple values for the `connect.eda.nokia.com` category are associated with 
     type: subtle-note
 
 Categories can be assigned to subnets in Prism Central via the UI or API. An example configuration using the UI is shown below:
-![Category configuration in Prism Central](../resources/nutanix-category-example.png)
+-{{image(url="../resources/nutanix-category-example.webp", title="Category configuration in Prism Central")}}-
 ///
 
 You can switch between EDA-managed and Prism-managed mode at any time.
@@ -124,6 +112,8 @@ When switching between the two available modes, connectivity will be temporarily
 #### VPC Overlay Subnets
 
 Subnets created in a VPC are overlay (Geneve-based) and are not visible to the EDA fabric. Only breakout subnets (VLAN-based) can be managed by EDA.
+EDA will correctly manage the connectivity for the transport subnets, used to carry the overlay subnet traffic between the hypervisors.
+
 
 ### Virtual Switch Modes
 
@@ -135,12 +125,6 @@ A Nutanix virtual switch can operate in several modes:
 
 The plugin provisions the correct `ConnectInterface` objects based on the virtual switch mode. The corresponding Interface objects in EDA must be
 created before installing the plugin.
-
-/// details | Unsupported virtual switch modes in the technical preview
-    type: warning
-
-In the technical preview, only the Active-Backup mode is supported. Active-Active modes with MAC pinning or LACP are not supported.
-///
 
 ### Event Monitoring
 
@@ -156,10 +140,10 @@ The plugin subscribes to events in Prism Central and configures EDA resources ac
 
 The plugin performs an audit on startup and when requested by the operator to ensure synchronization between Prism Central and EDA. Any discrepancies are resolved automatically. See also the [audit documentation](../audit.md).
 
-[//]: # (### Operator Initiated Audit)
+#### Operator Initiated Audit
 
-[//]: # ()
-[//]: # (In addition to the startup audit, users can initiate an [audit]&#40;./audit.md&#41; manually. The audit object contains the status and results, including any discrepancies found between Nutanix and Connect.)
+In addition to the startup audit, users can initiate an [audit](../audit.md) manually. The audit object contains the status and results, including any discrepancies found between Nutanix and Connect.
+
 
 ### Startup
 
