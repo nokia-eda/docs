@@ -100,7 +100,7 @@ values with their relevant content.
     type: warning
 
 The vCenterFQDN field has to correspond to the "FQDN or IP Address" field when creating the compute manager in NSX.
-![vCenter FQDN or IP](../../resources/nsx-vcenter-fqdn.png)
+-{{image(url="../../resources/nsx-vcenter-fqdn.webp", title="vCenter FQDN or IP")}}-
 
 ///
 

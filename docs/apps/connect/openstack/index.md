@@ -26,7 +26,7 @@ It provides the following advantages and capabilities:
 The OpenStack Plugin deploys some components into the OpenStack environment to allow the management of the SR Linux based fabric through OpenStack.
 Below is an overview of these components:
 
--{{ diagram(path='./diagrams/openstack-architecture.drawio', title='', page=0) }}-
+-{{ diagram(path='../diagrams/openstack-architecture.drawio', title='', page=0) }}-
 
 ### The Connect ML2 mechanism driver
 

@@ -1,4 +1,4 @@
-apiVersion: nsx.eda.nokia.com/v1
+apiVersion: nsx.eda.nokia.com/v2
 kind: NSXPluginInstance
 metadata:
   name: my-nsx-plugin-instance # A unique name for the plugin resource (can be the same as the spec.name, or different)
@@ -6,10 +6,10 @@ metadata:
 spec:
   pluginNamespace: eda # The namespace in the EDA deployment holding the fabric associated with this plugin
   externalId: example-external-id # A unique Identifier for the plugin (can be same as the name)
-  heartbeatInterval: 30
+  heartbeatIntervalSeconds: 30
   name: example-NSX # A unique name for the plugin
   nsxManagementIP: exampleHost # The IP address of the NSX Server
-  nsxPollInterval: 2 # The plugin will poll NSX for changes every x seconds
+  nsxPollIntervalSeconds: 2 # The plugin will poll NSX for changes every x seconds
   nsxTlsVerify: false # To verify TLS of the NSX server
   nsxCertificate: "" # If the NSX certificate is self signed, add it here to be able to verify from the plugin
   authSecretRef: my-nsx-creds # Credentials are hosted in a separate Secret

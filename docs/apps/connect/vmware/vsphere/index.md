@@ -66,6 +66,13 @@ existing one. This allows for more advanced configuration of the application net
 
 #### Using EDA-Managed Mode
 
+EDA-Managed mode can be configured through two different methods:
+
+1. Using a Custom Attribute
+2. Using the `VmwareEDAManagedBridgeDomain` custom resource
+
+#### Using a Custom Attribute
+
 To use the EDA-managed mode follow these steps:
 
 1. Create a `BridgeDomain` in EDA with the desired settings
@@ -80,7 +87,7 @@ Both the key of the Custom Attribute and the value are case-sensitive
     type: warning
 
 Make sure to create a Custom Attribute of type *Distributed Port Group* on the Port Group.
-![Distributed Port Group Custom Attributes](../../resources/vmware-custom-attribute.png)
+-{{image(url="../../resources/vmware-custom-attribute.webp", title="Distributed Port Group Custom Attributes")}}-
 
 ///
 
@@ -93,6 +100,32 @@ You can switch between EDA-managed and VMware-managed mode at any time. You can 
     type: warning
 
 When switching between the two available modes, connectivity will be temporarily disrupted while the plugin reconfigures the resources in EDA.
+///
+
+#### Using the `VmwareEDAManagedBridgeDomain` custom resource
+
+To use the EDA-managed mode through the `VmwareEDAManagedBridgeDomain` custom resource follow these steps:
+
+1. Create a `BridgeDomain` in EDA with the desired settings
+2. Create a `Distributed Virtual Switch` in vCenter with the desired settings
+3. Create a `Distributed Port Group` in vCenter with the desired settings
+4. Create a `VmwareEDAManagedBridgeDomain` custom resource in EDA referring to the `BridgeDomain`, `Distributed Virtual Switch` and `Distributed Port Group`.
+
+-{{image(
+    light_url="../../resources/eda-mgd-from-eda-light.webp",
+    dark_url="../../resources/eda-mgd-from-eda-dark.webp",
+    padding=20,shadow=true,
+    title="In the Nokia EDA UI, autocomplete functionality allows you to select the VMware resources automatically with a dropdown menu."
+)}}-
+
+#### Restricting Operational Modes
+
+The plugin configuration allows you to restrict the operational modes that are allowed. By default, both modes are allowed (`Unrestricted`). You can restrict the modes to only allow VMware-managed mode by setting the `OperationalMode` to `ConnectManagedOnly`. You can restrict the modes to only allow EDA-managed mode by setting the `OperationalMode` to `EDAManagedOnly`.
+
+/// details | Restricting Operational Modes during operation
+    type: info
+
+If you restrict the operational modes, existing resources that do not adhere to the new restrictions will be deleted..
 ///
 
 ### Event Monitoring
