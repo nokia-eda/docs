@@ -75,7 +75,7 @@ The environment secret requires the following configuration values:
 : The service account name created in the [Create a Service Account](index.md#create-a-service-account) section.
 
 **`CONNECT_PASSWORD`**
-: The long-lived token created in the [Create a Service Account Token](index.md#create-a-service-account-token) section.
+: The long-lived token created in the [Create a Service Account Token](index.md#create-a-service-account-token) section. Do not base64 decode this token in an OLM-based setup.
 
 ### Step 3: Create EDA Connect K8s Controller Config
 

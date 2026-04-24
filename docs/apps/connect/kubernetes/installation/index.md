@@ -110,7 +110,7 @@ EOF
 After creating the Service Account Token, retrieve the actual token using the following command from the `eda-system` namespace:
 
 ```bash
-kubectl get secrets/k8s-controller-plugin -n eda-system --template={{.data.token}} | base64 --decode
+TOKEN=$(kubectl get secrets/k8s-controller-plugin -n eda-system --template={{.data.token}})
 ```
 
 This token will be needed during plugin deployment.
