@@ -70,7 +70,14 @@ nav:
       - Digital Twin:
           - digital-twin/index.md
           - user-guide/containerlab-integration.md
-      - Administration: user-guide/administration.md
+      - Administration:
+          - Image management: user-guide/administration/image-management.md
+          - Technical support: user-guide/administration/technical-support-script.md
+          - Platform operations: user-guide/administration/platform-operations.md
+          - Backup and restore: user-guide/administration/backup-and-restore.md
+          - Redundancy: user-guide/administration/redundancy.md
+          - Draining traffic: user-guide/administration/drain-traffic.md
+          - Platform logging: user-guide/administration/log-forwarding.md
   - Apps:
       - apps/index.md
       - Fabric: apps/fabric.md
@@ -301,8 +308,8 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji 
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg 
+      emoji_index: !!python/name:material.extensions.emoji.twemoji ""
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg ""
   - pymdownx.highlight:
       line_spans: __span
       anchor_linenums: true
@@ -326,7 +333,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format 
+          format: !!python/name:pymdownx.superfences.fence_code_format ""
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.blocks.tab:
