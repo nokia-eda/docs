@@ -57,7 +57,8 @@ nav:
       - Workflows: user-guide/workflows.md
       - Alarms: user-guide/alarms.md
       - EDA Query Language (EQL): user-guide/eda-query-language.md
-      - Transactions: user-guide/transactions-docs.md
+      - Transactions: user-guide/transactions.md
+      - Merge requests: user-guide/merge-requests.md
       - Allocation Pools: user-guide/allocation-pools.md
       - Network topology: user-guide/network-topology.md
       - Node management: user-guide/node-management.md
@@ -162,10 +163,6 @@ theme:
   static_templates:
     - 404.html
 
-  # Don't include MkDocs' JavaScript
-  include_search_page: false
-  search_index_only: true
-
   features:
     - navigation.top
     - navigation.tabs
@@ -196,7 +193,7 @@ theme:
         icon: material/toggle-switch
         name: Switch to light mode
   font:
-    code: Nova
+    code: JetBrains Mono
   icon:
     logo: nokia/nokia-white
     # repo: nokia/N-white
@@ -291,7 +288,6 @@ markdown_extensions:
       guess_lang: false
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
-  - markdown.extensions.meta
   - toc:
       permalink: "#"
   - pymdownx.arithmatex
@@ -301,8 +297,8 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji 
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg 
+      emoji_index: !!python/name:material.extensions.emoji.twemoji ""
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg ""
   - pymdownx.highlight:
       line_spans: __span
       anchor_linenums: true
@@ -326,7 +322,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format 
+          format: !!python/name:pymdownx.superfences.fence_code_format ""
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.blocks.tab:

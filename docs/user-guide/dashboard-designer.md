@@ -12,7 +12,7 @@ For each list layout or dashlet layout in the dashboard, you define source data 
 
 Dashboard builder also supports filters. Filters use variable substitution to modify dashlet queries based on user input. For example, a dashboard which displays data for all TopoNodes can be filtered to display only data from a specific TopoNode.
 
-The Dashboard designer displays dashboards that can originate from three sources \(as indicated in the **Source** column\):
+The Dashboard designer displays dashboards that can originate from three sources (as indicated in the **Source** column):
 
 - dashboards that were created by EDA and its installed applications
 - dashboards created by the current user
@@ -43,7 +43,7 @@ Table: Default Dashboard display columns
 |Column|Description|
 |------|-----------|
 |Name|The display name configured for the dashboard.|
-|Source|The source from which the dashboard originated. This can be one of the following values: <ul> <li>An app name \(such as Fabrics or Default Routing\): this is the source application for this dashboard. </li> <li>User Storage: this is a user-created dashboard.</li></ul>|
+|Source|The source from which the dashboard originated. This can be one of the following values: <ul> <li>An app name (such as Fabrics or Default Routing): this is the source application for this dashboard. </li> <li>User Storage: this is a user-created dashboard.</li></ul>|
 |Type|<ul><li>Application: a dashboard associated with EDA or one of its installed apps. You cannot edit, delete, or publish these dashboards, as signified by the lock icon beside the dashboard name.</li> <li>Personal: a dashboard created by the current user account.</li> <li>Shared: a user-created dashboard that has been published for sharing. When you share your own dashboards, the Shared version is a different entity than the original Personal dashboard. Both can be edited independently.</li></ul>|
 |Last Changed|The time and date that the last modification was saved for this dashboard.|
 
@@ -130,7 +130,7 @@ Table: Counter dashlet properties
 |Dashlet height|The relative height of the dashlet.|
 |API Specification|
 |Query|Click the More icon to open a page on which to configure the data source for this dashlet.On that page you configure the data source as one of the following:<ol><>li>EQL Query</li><li>Natural Language query</li><li>GVK Definition</li><li> URL Endpoint</li></ol>|
-|Counters|These properties configure the highlighting of values that meet criteria on the counts dashlet:<ul><li>**Label**: the label shown beside qualifying values</li><li>**Color**: the color used to highlight qualifying values</li><li>**Field**: the field within the data source to be evaluated for possible highlighting</li><li>**Criteria** \(Equals, Not Equal, Greater Than, Less Than\): the logical operator that qualifies for this highlight \(in combination with Value\)</li><li>**Value**: the comparison value for the logical criterion.|
+|Counters|These properties configure the highlighting of values that meet criteria on the counts dashlet:<ul><li>**Label**: the label shown beside qualifying values</li><li>**Color**: the color used to highlight qualifying values</li><li>**Field**: the field within the data source to be evaluated for possible highlighting</li><li>**Criteria** (Equals, Not Equal, Greater Than, Less Than): the logical operator that qualifies for this highlight (in combination with Value)</li><li>**Value**: the comparison value for the logical criterion.|
 |Additional dashlet properties|
 |Show total|Indicates whether to display a count of all values retrieved in the source data set should be displayed on the chart, in addition to qualifying values.|
 |Show total at end|When the total is shown, controls the position of the total display. Changes between the total being the first count, or the last.|
@@ -139,7 +139,7 @@ Table: Counter dashlet properties
 
 ### The line chart dashlet <span id="dashlet-line-chart"></span>
 
-A line chart dashlet places a line chart on the dashboard layout. It supports both stacked line charts \(in which values are successively added to show a series of cumulative totals\) and overlaid \(a standard line chart in which values are displayed independently, not as a sum\).
+A line chart dashlet places a line chart on the dashboard layout. It supports both stacked line charts (in which values are successively added to show a series of cumulative totals) and overlaid (a standard line chart in which values are displayed independently, not as a sum).
 
 -{{image(url="graphics/sc0222.png", title="A sample line chart dashlet", shadow=true, padding=20)}}-
 
@@ -156,7 +156,7 @@ Table: Line dashlet properties
 |Dashlet height|The relative height of the dashlet.|
 |API Specification|
 |Query|Click the More icon to open a page on which to configure the data source for this dashlet.On that page you configure the data source as one of the following: <ol><li>EQL Query </li><li> Natural Language query </li><li>GVK Definition </li><li>URL Endpoint </li></ol>|
-|Chart Configuration|These properties control the display of the line chart:<ul><li>Maximum number of data points</li><li>Y-Axis Units</li><li>Scaling Function \(None, Metric Prefix Scaling\)</li></ul>|
+|Chart Configuration|These properties control the display of the line chart:<ul><li>Maximum number of data points</li><li>Y-Axis Units</li><li>Scaling Function (None, Metric Prefix Scaling)</li></ul>|
 
 ### The donut dashlet <span id="dashlet-donut"></span>
 
@@ -186,7 +186,7 @@ Table: Donut chart properties
 |Label|Indicates whether this slice should display its own label.|
 |Color|The shading color applied to this slice.|
 |Field|From the selected data source, the individual field that corresponds to this slide.|
-|Criteria|The logical criterion for this slide \(Equals, Not Equal, Greater Than, Less Than\)|
+|Criteria|The logical criterion for this slide (Equals, Not Equal, Greater Than, Less Than)|
 |Value|The fixed value against which the current field value and the Criteria are compared.|
 |+|Click this icon to add the slice configuration to the set of slices included in this chart.|
 
@@ -210,7 +210,7 @@ Table: Dataview properties
 |Charts|
 |Query|Click the More icon to open a page on which to configure the data source for this dashlet.On that page you configure the data source as one of the following: <ol> <li>EQL Query </li><li>Natural Language query </li> <li> GVK Definition</li><li> URL Endpoint</li></ol>|
 |Show information panel|Indicates whether an information panel should be available on this dashlet.|
-|Show status bar|Indicates whether to include a status bar on the dashlet, showing \(for example\) whether any filters are applied, and the total number of rows in the list.|
+|Show status bar|Indicates whether to include a status bar on the dashlet, showing (for example) whether any filters are applied, and the total number of rows in the list.|
 
 ### The bar chart dashlet <span id="dashlet-bar-chart"></span>
 
@@ -233,7 +233,7 @@ Table: Bar chart properties
 |Dashlet height|The relative height of the dashlet.|
 |API Specification|
 |Query|Click the More icon to open a page on which to configure the data source for this dashlet.On that page you configure the data source as one of the following:<ol><li>EQL Query</li><li>Natural Language query</li><li>GVK Definition</li><li>URL Endpoint</li>|
-|Chart Configuration|These properties control the display of the line chart: <ul> <li>Group By </li><li>Secondary Grouping </li><li>Value Field </li><li>Unit of Measure </li><li>Scaling Function \(None, Metric Prefix Scaling\) </li><li> Use Columns instead of Bars \(yes/no\) </li><li>Show stacked data \(Off/Value/Percent\) </li>|
+|Chart Configuration|These properties control the display of the line chart: <ul> <li>Group By </li><li>Secondary Grouping </li><li>Value Field </li><li>Unit of Measure </li><li>Scaling Function (None, Metric Prefix Scaling) </li><li> Use Columns instead of Bars (yes/no) </li><li>Show stacked data (Off/Value/Percent) </li>|
 
 ## Designing a dashboard <span id="designing-dashboard"></span>
 
@@ -293,7 +293,7 @@ This task guides you through the steps of adding and configuring layouts within 
 
     5. Click **Save**.
 
-9.  Go to step [20](dashboard-designer.md#dd-step-20).
+9. Go to step [20](dashboard-designer.md#dd-step-20).
 
 10. In the **Definition** panel, configure basic properties for the dashboard:
 
@@ -340,15 +340,15 @@ This task guides you through the steps of adding and configuring layouts within 
 
 17. Configure the dashlet by setting:
 
-    - Screen properties \(these are common to all dashlets\).
-    - Dashlet properties \(some are common to all dashlets; others vary by dashlet type\).
+    - Screen properties (these are common to all dashlets).
+    - Dashlet properties (some are common to all dashlets; others vary by dashlet type).
   
     /// admonition | Note
         type: subtle-note
     See the topics for dashlet types for details about the individual parameters available for each type of dashlet.
     ///
 
-18. <span id="dd-step-20"></span> To configure the source data for the dashlet \(among the dashlet properties\):
+18. <span id="dd-step-20"></span> To configure the source data for the dashlet (among the dashlet properties):
 
     1. Click the vertical dots icon beside the **Query** field to open a window in which to configure data source for the dashlet.
 
@@ -425,7 +425,7 @@ After you have configured one or more filters, corresponding filter fields are d
 
 - on the query configuration page for every dashlet within the dashboard. On the query configuration page you can add the filter expression to the dashlet's underlying query. When the query includes the filter expression, you can test the result by entering filter values to immediately constrain the dashlet's underlying data set.
 
-- on the dashboard configuration page \(if you enable their display\). Entering a filter value here immediately impacts the data displayed in each dashlet whose underlying data set refers to the filter.
+- on the dashboard configuration page (if you enable their display). Entering a filter value here immediately impacts the data displayed in each dashlet whose underlying data set refers to the filter.
 
 - on the dashlet itself.
 
@@ -436,7 +436,7 @@ If you have configured filters for the dashboard, the filter widget displays at 
 The query that is displayed on the Query Builder page includes the "where" clause but its content depends on whether you have applied any filters:
 
 <ul>
-<li>if you have applied no filters, the "where" clause is present, but all filter values are set to wildcards \(\*\) so the filter has no effect.</li>
+<li>if you have applied no filters, the "where" clause is present, but all filter values are set to wildcards (\*) so the filter has no effect.</li>
 <li>if you have applied one or more filters, the filter "where" clause is present, and the filter values you entered are included within the query string and are applied to the displayed results.</li>
 </ul>
 
@@ -549,9 +549,9 @@ If you would like to share a dashboard for use by others, follow the steps in th
     type: subtle-note
 Once you share a dashboard, it appears as a new, shared entry in the dashboard list. This shared copy can be modified by other users. Changes to the shared dashboard do not alter the original Personal dashboard.
 
-To view shared dashboards, users require URL Rule read permission to path '/core/user-storage/v2/shared/
+To view shared dashboards, users require URL Rule read permission to path `/core/user-storage/v2/shared/`
 
-To publish and edit shared dashboards, users require URL Rule readWrite permission to path '/core/user-storage/v2/shared/
+To publish and edit shared dashboards, users require URL Rule readWrite permission to path `/core/user-storage/v2/shared/`
 ///
 
 If you later modify a Personal dashboard that you previously published, you can share these changes by Publishing the dashboard again. This overwrites the previous Shared version of that dashboard.
