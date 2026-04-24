@@ -11,22 +11,21 @@ new MutationObserver(syncDataTheme).observe(document.body, {
   attributeFilter: ["data-md-color-scheme"],
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  syncDataTheme();
-
-  var topic = document.querySelector(".md-header__topic");
-  var versionTarget = document.querySelector(".md-header__version");
-  if (topic && versionTarget) {
-    new MutationObserver(function () {
-      var versionEl = topic.querySelector(".md-version");
-      if (versionEl) {
-        versionTarget.appendChild(versionEl);
-      }
-    }).observe(topic, { childList: true });
+function relocateMikeVersion() {
+  var target = document.querySelector(".md-header__version");
+  if (!target) return;
+  var picker = document.querySelector(".md-header .md-version");
+  if (picker && !target.contains(picker)) {
+    target.appendChild(picker);
   }
+}
 
+function bindThemeToggle() {
   var toggle = document.getElementById("theme-toggle");
-  if (!toggle) return;
+  if (!toggle || toggle.getAttribute("data-nokia-theme-toggle-bound") === "1") {
+    return;
+  }
+  toggle.setAttribute("data-nokia-theme-toggle-bound", "1");
 
   toggle.addEventListener("click", function () {
     var isDark = document.documentElement.getAttribute("data-theme") === "dark";
@@ -46,4 +45,16 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   });
-});
+}
+
+function initThemeTogglePage() {
+  syncDataTheme();
+  relocateMikeVersion();
+  bindThemeToggle();
+}
+
+if (typeof document$ !== "undefined" && document$.subscribe) {
+  document$.subscribe(initThemeTogglePage);
+} else {
+  document.addEventListener("DOMContentLoaded", initThemeTogglePage);
+}
