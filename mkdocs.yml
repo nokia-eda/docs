@@ -44,9 +44,11 @@ nav:
           - The Platform Status page: user-guide/gui-basics/platform-status-page.md
           - GUI Elements: user-guide/gui-basics/gui-elements.md
           - Key bindings: user-guide/gui-basics/key-bindings.md
-          - Navigation Panels: user-guide/gui-basics/nav-panels.md
+          - Working with the EDA menu: user-guide/gui-basics/work-with-menu.md
           - Working with data grids: user-guide/gui-basics/work-with-data-grids.md
           - Common data grid actions menu: user-guide/gui-basics/common-data-grid-actions.md
+          - Navigation Panels: user-guide/gui-basics/nav-panels.md
+          - Topologies: user-guide/topology.md
       - Dashboards: user-guide/dashboards.md
       - Custom navigation panels: user-guide/custom-navigation-panels.md
       - Dashboard designer: user-guide/dashboard-designer.md
@@ -56,11 +58,9 @@ nav:
       - Alarms: user-guide/alarms.md
       - EDA Query Language (EQL): user-guide/eda-query-language.md
       - Transactions: user-guide/transactions-docs.md
-      - Transactions for integration: user-guide/transactions.md
       - Allocation Pools: user-guide/allocation-pools.md
+      - Network topology: user-guide/network-topology.md
       - Node management: user-guide/node-management.md
-      - Topology: user-guide/topology.md
-      - Network topology for integration: user-guide/network-topology.md
       - Security: user-guide/security.md
       - Access control for integration: user-guide/access-control.md
       - Certificate Management for integration: user-guide/certificate-management/index.md
