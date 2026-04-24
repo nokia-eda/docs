@@ -8,5 +8,5 @@ controllerEnvConfig:
   tlsenabled: True
 controllerEnvSecret:
   connectHost: https://<EDA-k8s-cluster-ip or hostname>:<port> # (Caution - Do not use EDA API values, use EDA k8s API values)
-  connectPassword: <Secret long-lived token of the service account created before>
+  connectPassword: <Secret long-lived token of the service account created before (base64 decoded!)>
   connectUsername: <Name of the service account based on which secret token was created>

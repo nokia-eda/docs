@@ -98,7 +98,8 @@ The possible Helm Values are:
 **`connectpluginname`**
 : A name for the plugin. Make sure this is a unique name within your EDA environment.
 
-/// warning | Plugin Name Requirements
+/// details | Plugin Name Requirements
+    type: warning
 The plugin name must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'` and can only contain
 alphanumerical
 characters and `.`, `_` and `-`. It must start with an alphanumerical character, and have a length of 63 characters or
@@ -134,6 +135,11 @@ EDA Kubernetes certificate has not been signed by a trusted authority.
 **`connectPassword`**
 : The long-lived token created in
 the [Create a Service Account Token](index.md#create-a-service-account-token) section.
+Make sure to base64 decode the token:
+
+```bash
+echo "$TOKEN" | base64 --decode
+```
 
 **`connectUsername`**
 : The service account name for the account created in
