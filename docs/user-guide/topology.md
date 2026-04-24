@@ -1,111 +1,64 @@
-# Topology
+# Topologies
 
-A common visualization used to describe relationships between structures is a graph or topology diagram. A topology consists of a set of nodes, links, and endpoints, with one or more toggle-able overlays and badges to indicate various types of status for the displayed objects.
+The EDA UI includes a framework for visualizing topology diagrams, and overlaying state information with colors and badges. Topologies and their overlay are created by EDA apps.
 
-A node in the topology is an anchor for endpoints, and the relationship between endpoints is described using links.
+A topology diagram can represent the relationships between any set of data that has a structured relationship. The most common is the 'Physical' topology provided by the EDA app 'Topologies', illustrating the physical nodes, links, and interfaces managed within EDA.
 
-In EDA, a topology can represent the relationships between any set of resources that have a structured relationship. The most common form of this is a physical topology, which EDA uses to illustrate how managed `TopoNode` resources interact with each other using `TopoLink` resources.
+The EDA topologies framework is comprised of 'nodes', 'links', and 'endpoints'. For the physical topology this maps to:
 
-The most common topology visualization, and the one currently supported by EDA, is a tree in which:
+- `TopoNode` resources are the 'nodes', representing network switches and routers managed by EDA.
+- members of the `TopoLink` resources are the 'links', representing physical cables between nodes.
+- members of the `Interface` resources are the 'endpoints', representing physical ports of the nodes.
 
-- Nodes and links are included in the tree
-- Each level of the tree is denoted as a "tier"
-- A tier may have one or more groups of resources
-- Relationships between tiers are drawn based on links present
+## The topology diagram
 
-## Nodes
+In the EDA UI, you can view the available topology diagrams by selecting **Topologies** in EDA's Main navigation panel. From here the UI displays a list of all topologies installed in the system.
 
-In a physical topology, a node is simply a termination point for endpoints. For example, in a data center a topology can be represented using:
+Double-clicking or selecting **Show Topology** from the actions menu on the **Topologies** page opens the selected topology diagram.
 
-- A leaf switch that is abstracted using a `TopoNode`, which becomes a "node" in the topology.
-- The interface connecting to a spine is abstracted using an `Interface`, which becomes an "endpoint" in the topology.
-- The physical cable plugged into the interface is abstracted using a `TopoLink`, which becomes the "link" in the topology.
+-{{image(url="graphics/topology-page-with-callouts.png", title="The physical topology diagram", shadow=true, padding=20)}}-
 
-Within the EDA GUI's topology display, nodes can display badges and adopt a particular shading based on a selected overlay.
-
-## Links
-
-Any links with endpoints on nodes selected is drawn as links connecting those nodes in the topology illustration. Other links may extend into an abstract "edge" icon.
-
-## Endpoints
-
-An endpoint is one end of a link, and is commonly used in physical topologies.
-
-## The Topologies page <span id="topologies-page"></span>
-
-You can view the topology page by selecting **Topologies** in EDA's Main navigation panel.
-
-The page includes the following elements:
-
-- Topology list: Displays a list of available topologies. Currently, the Physical topology is supported.
-- The table row actions list: Select to take an action for the current row. Currently the **Show Topology** action is supported.
-- Information panel: Like most pages of the EDA GUI, the Topologies list includes an information panel that displays details about the currently selected object.
-
-### The topology illustration
-
-When you select **Show Topology** from the actions on the Topologies page, EDA displays a graphical representation of the topology including nodes and links.
-
-By default, the topology displays in a horizontal, left-to-right orientation. You can use the orientation selector button to switch between a horizontal and vertical orientation for the illustration.
-
--{{image(url="graphics/temp-topology-page.png", title="The topology illustration", shadow=true, padding=20)}}-
-
-Table: Elements of the topology illustration
+Table: Elements of the topology diagram
 
 |\#|Name|Function|
 |:---:|----|--------|
 |1|Topology breadcrumb|Displays the name of the topology currently being displayed. You can click **Topologies** to return to the Topologies page.|
-|2|Orientation selector|Click this button to select between a vertical (top to bottom) or horizontal (left to right) display for the topology elements.|
-|3|Grouping, Overlay, and Badge selectors|Use this drop-down list to:<ul><li>Role: control the grouping of elements within the topology display</li><li>Overlay: add shading to nodes to indicate the selected status</li><li>Badges: add one or more badges to nodes to indicate the selected status.</li></ul>Each overlay applies shading to the topology illustration to indicate the related status of all nodes and links.<br>Badges display on the nodes within the topology, and the badge icon and color indicate the related status of each node. You can select up to three badges for inclusion in the Topology display.|
-|4|Links|These are examples of links within the topology. Click on any link to view details about that link, the connected nodes, and the link endpoints in the **Information** panel.<br>|
-|5|Node|This is an example of a node within the topology.Click on any node to view details about that node in the **Information** panel.<br>Right-click on any node to access the standard node actions menu.|
-|6|Actions menu for nodes|Right-clicking on a node opens a menu for standard node actions. See the documentation for node management for details about these actions.|
+|2|View selector|Click this button to select between a vertical (top to bottom) or horizontal (left to right) display for the topology elements.|
+|3|Grouping, Overlay, and Badge selectors|Use this drop-down list to:<ul><li>**Grouping**: Controls the layout of nodes within the diagram, including the tier where it appears and if it is grouped with other nodes.</li><li>**Overlay State**: Select an overlay to apply shading to the diagram to indicate the related status of nodes, links, and endpoints. The selected overlay also displays additional details in the information panel.</li><li>**Overlay Badges**: Select up to three badges from the list. Badges display on the nodes within the topology, and each badge icon and color indicates the related status. The set of selected badges and their shading also displays in the information panel when a node is selected.</li></ul>|
+|4|Display controls|Allow you control the topology diagram display in the following ways: <ul><li>**Orientation**: click to toggle between horizontal and vertical orientation.</li><li>**Zoom in**: click to make objects larger</li><li>**Zoom out**: click to make objects smaller.</li><li>**Reset zoom**: click to restore objects to their original scale.</li></ul>|
+|5|Node|A node within the topology.Click on any node to view details about that node in the **Information** panel.<br>Right-click on any node to access the action menu for the related resource.|
+|6|Links|A link within the topology. Click on any link to view details about that link, the connected nodes, and the link endpoints in the **Information** panel.<br>|
+|7|Overlay badges|Used to indicate status based on current selections in the Overlay Badge(s) drop-down.|
+|8|Edge link icon|Indicates the presence of edge links (links with no remote endpoint). When selected, the information panel lists the specific endpoints for that node.|
 
-### Grouping
 
-The Grouping selection determines how elements within the topology are arranged within the topology diagram.
+## Overlays
 
-The Physical Topology includes one grouping, named **Role**, by default. To customize the physical topology grouping, create or edit TopologyGrouping resources via Kubernetes.
-
-When grouped by **Role**, nodes are tiered from left to right based on the following labels:
-
-- eda.nokia.com/role=backbone
-- eda.nokia.com/role=superspine
-- eda.nokia.com/role=leaf
-- eda.nokia.com/role=borderleaf
-
-Grouping can also control how multiple nodes are consolidated into a single expandable node within the topology illustration.
-
-### Overlays
-
-Information can be overlaid on a topology as either a state or as a badge. States shade the nodes and links of a topology with a color corresponding to the information. For example, EDA's Operational Status overlay shades nodes and link green for operationally up, and red for operationally down.
-
-In EDA, you can toggle overlays on and off.
+Information can be overlaid on a topology as either a state or as a badge. States shade the nodes, and links of a topology with a color corresponding to the information. For example, The Physical topology Operational Status overlay shades nodes and link green for operationally up, and red for operationally down. 
 
 More details about the significance of overlay shading are available in the **Information** panel for each node.
 
-Overlays may also include state information for topology endpoints. This is not represented in the graph, but is available in the **Information** panel by selecting the appropriate link.
+Overlays may also include state information for topology endpoints. This is not represented in the graph, but is available in the **Information** panel by selecting the appropriate link or a node's edge link icon.
 
 -{{image(url="graphics/sc0244.png", title="CPU Utilization Overlay and information panel", shadow=true, padding=20)}}-
 
-The following overlays are available for physical topologies in EDA:
+Here are some of the overlays provided for to the physical topology:
 
 - The CPU utilization overlay shades nodes based on the percentage of CPU capacity that is in use on the node.
 - The Memory overlay shades nodes based on the percentage of memory that is in use on the node.
 - The Volume overlay shades nodes based on the percentage of disk usage on the node.
-- The LLDP overlay shades links based on the discovered peer or interface on each endpoint, and the correlation of this with each link, to ensure alignment. It thereby acts as a kind of topology intent check.
-- The Operational Status overlay indicates the operational status of each TopoNode and TopoLink member in the topology. This status derived from the status of NPP connectivity to the node, and the operational state of underlying interfaces making up the TopoLink. As with other overlays, updates are constantly updated to reflect moment-by-moment status.
+- The LLDP overlay shades links based on the discovered peer on each endpoint, and the correlation of this with the configured intent.
+- The Operational Status overlay indicates the operational status of each node and link in the topology.
 
-### Overlay badges
+## Overlay badges
 
-Overlay badges are displayed only on nodes within the topology. You can select up to three badges to display simultaneously. Each badge consists of an icon or a single-digit character (to identify the information type) and a set of colors (to indicate status related to that information type). Where multiple badges are available and enabled, they display in a series at the upper right of the node image.
-
-The Operational Status badge indicates the operational status of each TopoNode in the topology. This value is derived from the status of NPP connectivity to the node.
+Overlay badges are displayed only on nodes within the topology. You can select up to three badges to display simultaneously. Each badge consists of an icon and a color to indicate the related status. Where multiple badges are available and enabled, they display in a series at the upper right of the node image. For example, The Physical topology Alarm overlay displays an alarm severity badge when there are active alarms affecting the node.
 
 More details about the significance of a badge are available in the **Information** panel for a badged node.
 
 -{{image(url="graphics/sc0245.png", title="A badge indicating that a node's Operational Status is 'Synced'", shadow=true, padding=20)}}-
 
-### Information panel
+## Information panel
 
 As with many pages in the EDA GUI, an information panel is available on the right side of the topology illustration. Expand this panel to view detailed information about a selected object within the illustration.
 
@@ -133,62 +86,192 @@ Table: Elements of the link information panel
 |3|Node actions|A contextual action menu is available for displayed nodes|
 |4|Link and endpoint actions|A contextual action menu is available for individual links (shown in the illustration) and endpoints (not shown).|
 
-## Viewing a topology <span id="viewing-topologies"></span>
+## Groupings
+
+The Grouping selection determines how elements within the topology are arranged within the topology diagram. Groupings use two factors to display the Topology diagram:
+
+- **Tiers** define the hierarchy of nodes; either left-to-right or top-to-bottom, depending on the user selected orientation.
+- **Groups** define how nodes will be clustered together in the diagram within a tier.
+
+The Physical topology includes one grouping, named **Role**, by default. When grouped by **Role**, nodes are tiered based on the following labels:
+
+- `eda.nokia.com/role=backbone`
+- `eda.nokia.com/role=superspine`
+- `eda.nokia.com/role=leaf`
+- `eda.nokia.com/role=borderleaf`
+
+### Tier selectors
+
+Each grouping defines a set of tiers that organize nodes into a hierarchy. Tiers are display in the diagram lowest to highest, either left-to-right or top-to-bottom; based on the user selected orientation.
+
+For each tier, label selectors specify which nodes to display and a numerical value establishes its place in the grouping's hierarchy.
+
+For example, the Physical topology Role grouping defines a tier with the value 1 that includes all backbone nodes (nodes with the label `eda.nokia.com/role=backbone`).  It also defines a second tier with the value 2 that includes all super-spine nodes (nodes with label `eda.nokia.com/role=superspine`), and so on.
+
+Tiers are displayed in the diagram, lowest to highest, either left-to-right or top-to-bottom; depending on the user selected orientation.
+
+### Group selectors
+
+For each grouping you can also define groups based on the presence of certain labels.
+
+For each group, you define one or more label selectors to define the group memebers. 
+
+The following example groups spine nodes and leaf nodes within their tier based on the presence of the labels `eda.nokia.com/pod=topo1` and `eda.nokia.com/pod=topo2`.
+
+```yaml
+apiVersion: topologies.eda.nokia.com/v1
+kind: TopologyGrouping
+metadata:
+  name: pod-groups
+  namespace: eda-system
+spec:
+  groupSelectors:
+    - group: pod-leafs1
+      groupUIName: pod-leafs1
+      nodeSelector:
+        - eda.nokia.com/pod=topo1
+        - eda.nokia.com/role=leaf
+    - group: pod-leafs2
+      groupUIName: pod-leafs2
+      nodeSelector:
+        - eda.nokia.com/pod=topo2
+        - eda.nokia.com/role=leaf
+    - group: pod-spine-1
+      groupUIName: pod-spine-1
+      nodeSelector:
+        - eda.nokia.com/role=spine
+        - eda.nokia.com/pod=topo1
+    - group: pod-spine-2
+      groupUIName: pod-spine-2
+      nodeSelector:
+        - eda.nokia.com/pod=topo2
+        - eda.nokia.com/role=spine
+  tierSelectors:
+    - nodeSelector:
+        - eda.nokia.com/role=leaf
+      tier: 4
+    - nodeSelector:
+        - eda.nokia.com/role=spine
+      tier: 3
+    - nodeSelector:
+        - eda.nokia.com/role=superspine
+      tier: 2
+```
+
+Group selectors are optional. The Physical topology default Role grouping does not include any group selectors.
+
+### Creating a topology grouping
+
+You can create or modify groupings to customize the way nodes are displayed in the topology diagram. After you create a custom grouping, it is available for selection in the **Grouping** dropdown of the topology diagram for all users.
+
+Follow these steps to create a custom topology grouping:
 
 /// html | div.steps
 
-1. Use the **Main** navigation panel to select **Topologies** and open the Topologies page.
+1. Use the **Main** navigation panel to select **Topologies**; this opens the **Topologies** page.
 
-2. Click on a topology in the list.
+1. Double-click a topology in the list, or use the **Table row actions** drop-down list to click **Show Topology**.
 
-3. Use the **Table row actions** drop-down list to click **Show Topology**.
+    The topology diagram displays, showing a graphical representation of the nodes and links within network topology.
 
-    The Topology Diagram displays, showing a graphical representation of the nodes and links within network topology.
+1. Use the **View** drop-down to select **Manage Groups**; this opens the **Group List** view.
 
-4. Optionally, select an overlay by clicking the **Overlay State** drop-down and selecting an overlay from the list.
+1. Click **Create** to display the **Topology Grouping** form.
 
-    Nodes in the topology illustration are shaded to signify their status with regard to the selected overlay data.
+1. Set the grouping's **Name**, **Labels**, and **Annotations** fields.  If you do not define a UI Name, the Name value you provide here will be displayed for this grouping in the **Grouping** drop-down list.
 
-5. Optionally, select one or more badge types by clicking the **Overlay Badge** drop-down and selecting up to three badge types from the list.
+1. Optionally, create one or more group selectors:
 
-    Nodes in the topology illustration display corresponding badges, shaded to signify the nodes' status with respect to the selected badge data.
+    1. In the **Group Selectors** panel, click **Add** to open the **Group Selectors** form.
+    1. On the **Group Selectors** form, enter the name of a **Group** to which any node with a label matching these selectors should be assigned.
+    1. Enter a **UI name**, which is the name for this group that will be displayed in the GUI.
+    1. Click the + icon beside **Add a Label Selector**, and in the resulting field enter a label-value pair that qualifies a node for inclusion in this group.
+    1. Add more label-value pairs to act as group selectors as required.
+    1. Click **Add** at the bottom of the **Group Selectors** form to close it.
 
-6. To view details about an individual node, select the node and then expand the **Information** panel.
+1. Add tier selectors to define the criteria by which to sort the group members into a hierarchy:
 
-    The panel shows:
+    1. In the **Tier Selectors** panel, click **Add** to open the **Tier Selectors** form.
+    1. On the **Tier Selectors** form, click the + icon beside **Add a Label Selector**, and in the resulting field enter the name of a label-value pair that qualifies a node for inclusion in this tier.
+    1. Add more label-values pairs to act as tier selectors as required.
+    1. Assign a **Tier** value to establish this tier's position in the hierarchy for this group. 0 is the highest tier; 1 the next highest; and so on.
+    1. Click **Add** at the bottom of the **Tier Selectors** form to close it.
 
-    - identifying information for the selected node
-    - overlay and badge status for the selected node
-    - an action menu that includes supported node actions
+1. Enter the following:
 
-7. To view information about a link within the topology, click the link. If it is not already expanded, expand the **Information** panel.
+    - a **UI Description** to be displayed as a description for this grouping in the GUI.
 
-    The panel shows information about:
+    - a **UI Description Key** to act as the translation key for the description of the topology grouping in the UI.
 
-    - the nodes at either end of the link, and their status
-    - the inter-switch links that connect the nodes, and their status
-    - the endpoints of each link and their status.
-    - an action menu for the nodes, links, and endpoints within the information panel
+    - a **UI Name**, which if provided replaces Name as the value displayed for this grouping in the **Grouping** drop-down list.
+
+    - a **UI Name Key** to act as the translation key for the description of the topology grouping to expose to the UI-->
+
+1. Click **Commit** to immediately apply the changes or click **Add To Basket** to store these changes to be processed later as part of a transaction. Alternatively, select **Dry Run** to test your changes immediately, and reveal any issues before proceeding.
 
 ///
 
-## Resource topologies <span id="resource-topologies"></span>
+### Managing topology groupings
 
-Because the volume of resources and their relationships within EDA is very large, it can be difficult to effectively grasp the relationship between one resources, and all of the other configured resources on which it somehow depends.
+Follow these steps to view, edit, duplicate, and delete groupings. These changes are applicable to all users.
 
-To help represent resources and their interconnections, EDA builds on its topology visualization framework by providing a Topology illustration. This illustration shows the selected resource, and the other EDA resources to which it is connected.
+/// html | div.steps
 
-To see the topology view for a resource, open the Details view for an individual resource, and then select **Topology** from the drop-down list of available views.
+1. Use the **Main** navigation panel to select **Topologies**; this opens the **Topologies** page.
 
-For example, the following illustration shows the resource topology for a fabric. It shows not the fabric's physical topology, but its connection to the set of other resources configured within EDA:
+1. Double-click a topology in the list, or use the **Table row actions** drop-down list to click **Show Topology**.
 
-- default routers
-- ISLs
-- routing policies
-- system interfaces
-- BGP groups
-- prefix sets
+    The topology diagram displays, showing a graphical representation of the nodes and links within network topology.
 
--{{image(url="graphics/sc0310.png", title="An example of a fabric resource topology", shadow=true, padding=20)}}-
+1. Use the **View** drop-down to select **Manage Groups**; this opens the **Group List** view.
 
-In the EDA UI, you can click any resource in the illustration to see more information in the Information panel.
+1. Do one of the following:
+
+    - To delete a grouping, go to step [5](#mng-grouping-delete).
+    - To view details about one specific grouping, go to step [6](#mng-grouping-view).
+    - To edit a grouping, go to step [7](#mng-grouping-edit).
+    - To duplicate a grouping, go to step [8](#mng-grouping-duplicate).
+
+1. <span id="mng-grouping-delete"></span>To delete a grouping, do the following:
+
+      1. Locate the grouping you want to delete in the list, and use the **Table row actions** control to select **Delete**.
+
+      1. Respond to the resulting confirmation dialog with either **Commit** to delete it now, or **Add to Basket** to add the deletion to the Transactions basket to be part of a future transaction.
+
+      1. Go to step [9](#mng-grouping-exit).
+
+1. <span id="mng-grouping-view"></span>To view details about one grouping, do the following:
+
+      1. Locate the grouping you want to delete in the list, and use the **Table row actions** control to select **View**.
+
+        This opens the Topology Groupings view for the selected topology.  This view shows the outline view, YAML view, and the details for the Grouping including  sub-panels to show all of its constituent Group Selectors and Tier Selectors.
+
+      1. To view details about any Group Selector or Tier Selector use the **Table row actions** control to select **View**.
+
+      1. Go to step [9](#mng-grouping-exit).
+
+1. <span id="mng-grouping-edit"></span>To edit a grouping, do the following:
+
+      1. Locate the grouping you want to edit in the list, and use the **Table row actions** control to select **Edit**.
+
+        This opens the same **Topology Grouping** page originally used to create the grouping.
+
+      1. Modify the grouping as required. The name cannot be altered, but you can add labels and annotations, and add, remove, or modify group selectors and tier selectors along with other properties for this grouping.
+
+      1. Click **Commit** to immediately apply the changes or click **Add To Basket** to store these changes to be processed later as part of a transaction. Alternatively, select **Dry Run** to test your changes immediately, and reveal any issues before proceeding.
+
+      1. Go to step [9](#mng-grouping-exit).
+
+1. <span id="mng-grouping-duplicate"></span>To create a new grouping that uses an existing grouping as a starting point, do the following:
+
+      1. Locate the grouping you want to duplicate in the list, and use the **Table row actions** control to select **Duplicate**.
+
+        This opens the same **Topology Grouping** page originally used to create the grouping. Group selectors, tier selectors, and other configured properties are retained, but the **Name** field is blank.
+
+      1. Enter a **Name** for the new grouping.
+
+      1. Modify the grouping as required. You can add labels and annotations, and add, remove, or modify group selectors and tier selectors along with other properties for this grouping.
+
+      1. Click **Commit** to immediately apply the changes or click **Add To Basket** to store these changes to be processed later as part of a transaction. Alternatively, select **Dry Run** to test your changes immediately, and reveal any issues before proceeding.
+
+1. <span id="mng-grouping-exit"></span>You have completed this procedure.

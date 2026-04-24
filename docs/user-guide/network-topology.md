@@ -1,8 +1,8 @@
 # Network Topology
 
-A network topology in a broader sense describes the network design on physical and logical levels. Be it a Clos, a Fat Tree or a Ring design, the topology is what inherently defines the network.
+A network topology in a broad sense describes the network design on physical and logical levels. Whether Clos, a Fat Tree or a Ring design, the topology is what inherently defines the network.
 
-Like an arbitrary topology is defined by its nodes and links, the network topology in EDA is modelled with the [`TopoNode`][topoNode-crd] and [`TopoLink`][topoLink-crd] resources. The EDA topology nodes are represented by the devices in your network, and the topology links define the connectivity between them.
+Just as an arbitrary topology is defined by its nodes and links, the network topology in EDA is modelled with the [`TopoNode`][topoNode-crd] and [`TopoLink`][topoLink-crd] resources. The EDA topology nodes are represented by the devices in your network, and the topology links define the connectivity between them.
 
 [topoNode-crd]: https://crd.eda.dev/toponodes.core.eda.nokia.com/v1
 [topoLink-crd]: https://crd.eda.dev/topolinks.core.eda.nokia.com/v1
@@ -11,19 +11,19 @@ If you have just completed the instructions in the [Getting Started][gs-guide] g
 
 -{{ diagram(path='./diagrams/playground-topology.drawio', title='Physical topology', zoom="1.2", page=0) }}-
 
-To represent this network topology in EDA the `TopoNode` and `TopoLink` resources must be created for each node and link in the network topology. Without network topology modelled with the respective topo resources, EDA cannot start managing the network devices.
+To represent this network topology in EDA you must create the `TopoNode` and `TopoLink` for each node and link in the network topology. Without network topology modelled with the respective topo resources, EDA cannot start managing the network devices.
 
-Here is how the same 3-node topology is modelled with the `TopoNode` and `TopoLink` resources:
+The three-node topology in Getting Started is modelled with the `TopoNode` and `TopoLink` resources:
 
 - For each device in the topology there is a corresponding [`TopoNode`][topoNode-crd]
 - For each link between the nodes there is a corresponding [`TopoLink`][topoLink-crd] representing the inter-switch connections
 - For each link from a node to an edge device (not shown in the diagram) there is a corresponding `TopoLink` representing the edge connections.[^1]
 
-The diagram below illustrates how the topology resources represent the same network topology:
+The following diagram illustrates how the topology resources represent the same network topology:
 
 -{{ diagram(path='./diagrams/playground-topology.drawio', zoom='1.3', title='EDA topology modelled with TopoNode and TopoLink resources', page=1) }}-
 
-Almost no difference with a physical topology, right? To see the topology diagram in EDA UI select **Topologies** in the left-hand menu and click on the **Physical** row in the table of topologies:
+There is almost no difference with a physical topology. To see the topology diagram in the EDA UI select **Topologies** in the left-hand menu and click on the **Physical** row in the table of topologies:
 
 -{{image(url='graphics/CleanShot_2025-12-01_at_12.08.14.webp')}}-
 
@@ -31,9 +31,11 @@ Almost no difference with a physical topology, right? To see the topology diagra
 The Network Topology is used to model both the physical network and its matching Digital Twin. The Digital Twin topology (also known as the simulation topology) is covered in more detail on the [Digital Twin](../digital-twin/index.md) page.
 ///
 
+Viewing and working with network topologies in the EDA GUI is described in more detail on the [Working with topology in the GUI](topology.md) page.
+
 ## Topology resources
 
-The `TopoNode` and `TopoLink` resources in EDA make up the network topology that is used both by the real physical network and the [Digital Twin](../digital-twin/index.md). With the 3-node topology created in the EDA cluster, you can see these resources in the EDA UI and using `kubectl` or `edactl` commands:
+The `TopoNode` and `TopoLink` resources in EDA make up the network topology that is used both by the real physical network and the [Digital Twin](../digital-twin/index.md). With the three-node topology created in the EDA cluster, you can see these resources in the EDA UI and using `kubectl` or `edactl` commands:
 
 /// tab | EDA UI
 
@@ -98,17 +100,17 @@ leaf2-spine1-2       21m
 </div>
 ///
 
-The `TopoNode` and `TopoLink` objects make up a topology. You can create these resources directly via the UI, the CLI tools, or the API, but doing so can be tedious and error prone as the number of nodes, and especially links, grows quickly.
+The `TopoNode` and `TopoLink` objects make up a topology. You can create these resources directly in the EDA UI, with the CLI tools, or using the API; but doing so can be tedious and error-prone as the number of nodes, and especially links, grows quickly.
 
 To assist with the topology creation, EDA provides the Network Topology workflow - a workflow to define and deploy arbitrary topologies in a transactional manner.
 
 ## Network topology workflow
 
-Instead of creating the topology resources individually, EDA provides a way to describe the topology via the Network Topology workflow that can be triggered via UI, REST API, or via CLIs and applied in a single transaction.
+Instead of creating the topology resources individually, EDA provides a way to describe the topology via the Network Topology workflow that can be triggered using the UI, REST API, or via CLIs and applied in a single transaction.
 
 > A Workflow in EDA is a resource that defines a job or a set of jobs to be executed in a run-to-completion manner. A typical example of a workflow is the Image Upgrade workflow that performs the upgrade of a network device OS image.
 
-Let's look at the structure of Network Topology Workflow resource and how the Try EDA topology is defined with it:
+Below is an example of a Network Topology Workflow resource, and how the Try EDA topology is defined with it:
 
 /// tab | Network Topology workflow structure
 
@@ -141,17 +143,17 @@ The three-node topology used in the Try EDA setup is defined with the following 
 
 ///
 
-As per the structure, the Network Topology workflow resource spec uses the template-based approach to define nodes and links. Corresponding templates are defined in the `nodeTemplates` and `linkTemplates` sections, and then referenced in the `nodes` and `links` sections, respectively.
+The structure shows that the Network Topology workflow resource spec uses the template-based approach to define nodes and links. Corresponding templates are defined in the `nodeTemplates` and `linkTemplates` sections, and then referenced in the `nodes` and `links` sections, respectively.
 
-Using the template-based approach reduces repetition in the topology definition and lets users quickly change the common parameters in one place.
+Using the template-based approach reduces repetition in the topology definition and lets you quickly change the common parameters in one place.
 
 /// note
-This document does not dive into the details of the Digital Twin topology (`simulation` section) as this topic is covered on the [Digital Twin](../digital-twin/index.md) page.
+This document does not dive into the details of the Digital Twin topology (`simulation` section). That topic is covered on the [Digital Twin](../digital-twin/index.md) page.
 ///
 
 ### Nodes
 
-To define the nodes, create one or more templates and reference them in the `nodes` section. The values specified on the node level override the template values.
+To define the nodes, you create one or more templates and reference them in the `nodes` section. The values specified on the node level override the template values.
 
 ```yaml
 nodeTemplates:
@@ -271,7 +273,7 @@ links:
     You will see how edge links don't have a `remote` side defined in the next example.
 9. Reference to the link template that this link is based on.
 
-As a result of this link definition, EDA will create two resources - a `TopoLink` resource representing the link itself, and two `Interface` resources representing the interfaces on both ends of the link. The `Interface` resources will be responsible for configuring the respective interfaces on the devices.
+As a result of this link definition, EDA creates two resources: a `TopoLink` resource representing the link itself, and two `Interface` resources representing the interfaces on both ends of the link. The `Interface` resources is responsible for configuring the respective interfaces on the devices.
 
 /// tab | TopoLink
 
@@ -423,10 +425,10 @@ links:
           interface: ethernet-1-3
 ```
 
-1. Edge links have their own special type - `edge`.
-2. The label is optional, but since the edge links are targeted by the overlay services like Virtual Network, it's a good practice to label them accordingly so that these applications can easily select the edge links.
+1. Edge links have their own special type: `edge`.
+2. The label is optional, but since the edge links are targeted by the overlay services like Virtual Network, you should label them accordingly so that applications can easily select the edge links.
 
-As a result of this link definition, EDA will create two resources - a `TopoLink` resource representing the link itself, and the `Interface` resource representing the interfaces on the leaf side. The `Interface` resources will be responsible for configuring the respective interface on the leaf device.
+As a result of this link definition, EDA will create two resources: a `TopoLink` resource representing the link itself, and the `Interface` resource representing the interfaces on the leaf side. The `Interface` resources will be responsible for configuring the respective interface on the leaf device.
 
 /// tab | TopoLink
 
@@ -505,7 +507,7 @@ status:
 
 The Link Aggregation Group (LAG) link combines multiple physical interfaces into a single logical link. In EDA, two types of LAG exist: local LAG and multihomed LAG.
 
-The "local" LAG aggregates ports **between a single pair** of nodes and is created by specifying multiple endpoints each having only **local** sides defined on the **same node**. In the example below, the LAG will consist of `ethernet-1-10` and `ethernet-1-11` interfaces on the `leaf1` node reaching out to an edge device that is expected to have a matching LAG configuration.
+The "local" LAG aggregates ports between a single pair of nodes, and is created by specifying multiple endpoints each having only local sides defined on the same node. In the example below, the LAG consists of `ethernet-1-10` and `ethernet-1-11` interfaces on the `leaf1` node reaching out to an edge device that is expected to have a matching LAG configuration.
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
@@ -532,11 +534,11 @@ links:
           interface: ethernet-1-11
 ```
 
-1. Both endpoints in this example refer to the same node - `leaf1`, indicating that this is a local LAG link, where both interfaces are belonging to the same node.
+1. Both endpoints in this example refer to the same node: `leaf1`. This indicates that this is a local LAG link, in which both interfaces belong to the same node.
 
-As a result of this link definition, EDA will create two resources - a `TopoLink` resource representing the link itself, and **only one** `Interface` resource with two members in it representing the local LAG.
+As a result of this link definition, EDA creates two resources: a `TopoLink` resource representing the link itself, and only one `Interface` resource with two members in it, representing the local LAG.
 
-Also note, that the `Interface` resource also features LAG-specific configuration under the `lag` section in its spec.
+Also, note that the `Interface` resource features LAG-specific configuration under the `lag` section in its spec.
 
 /// tab | TopoLink
 
@@ -663,9 +665,9 @@ status:
 
 //// tab | Multihome LAG
 
-In contrast to the local LAG, the multihome LAG aggregates ports from a single node **towards two and more** nodes. A typical application of a multihome LAG is the ESI LAG in EVPN deployments where up to four switches connect to the same downstream device (e.g. server or a router) using a LAG.
+In contrast to a local LAG, the multihome LAG aggregates ports from a single node towards two and more nodes. A typical application for a multihome LAG is the ESI LAG in EVPN deployments where up to four switches connect to the same downstream device (for example, a server or a router) using a LAG.
 
-The multihome LAG is created by specifying multiple endpoints each having only **local** sides defined for **different nodes**. Like in the example below, the multihome LAG will consist of `ethernet-1-12` on the `leaf1` and same `ethernet-1-12` on the `leaf2` node.
+You create a multihome LAG by specifying multiple endpoints each having only local sides defined for different nodes. In the example below, the multihome LAG consists of `ethernet-1-12` on the `leaf1` and the same `ethernet-1-12` on the `leaf2` node.
 
 ////// admonition | Diagram
     attrs: {class: inline end subtle-note}
@@ -694,9 +696,9 @@ links:
 
 1. In contrast to the local LAG example, here the `local` sides of the endpoint object refer to different nodes - `leaf1` and `leaf2`. This denotes the "multihome" nature of this LAG link.
 
-As a result of this link definition, EDA will create two resources - a `TopoLink` resource representing the link itself, and **only one** `Interface` resource with two members where each member belongs to a different node.
+As a result of this link definition, EDA will create two resources - a `TopoLink` resource representing the link itself, and only one `Interface` resource with two members, where each member belongs to a different node.
 
-Also note, that the `Interface` resource also features LAG-specific configuration under the `lag` section in its spec.
+Also, note that the `Interface` resource features LAG-specific configuration under the `lag` section in its spec.
 
 /// tab | TopoLink
 
@@ -832,13 +834,13 @@ status:
 
 ### Breakouts
 
-Breakouts allow splitting a high-speed interface into multiple lower-speed channels. For example, a 400G port on Nokia SR Linux 7220 IXR-H4 can be broken out into multiple lower speed interfaces, for example, 4 by 100G. Port breakouts are enabled by the [`Breakout`][breakout-crd] resource and can be provided in the Network Topology workflow's link template section.
+Breakouts allow you to split a high-speed interface into multiple lower-speed channels. For example, a 400G port on Nokia SR Linux 7220 IXR-H4 can be broken out into multiple lower speed interfaces; for example, 4 by 100G. You enable port breakouts with the [`Breakout`][breakout-crd] resource, which you can provide in the Network Topology workflow's link template section.
 
 [breakout-crd]: https://crd.eda.dev/breakouts.interfaces.eda.nokia.com/v1
 
-While the "Try EDA 3-node topology" does not use breakout ports, the example below will take a similar topology with two leafs and one spine, where the `ethernet-1-1` interface on `spine1` is broken down into four 100G interfaces to which the leafs connect.
+While the Try EDA three-node topology does not use breakout ports, the example below takes a similar topology with two leafs and one spine, where the `ethernet-1-1` interface on `spine1` is broken down into four 100G interfaces to which the leafs connect.
 
--{{ diagram(path='./diagrams/playground-topology.drawio', title='', page='6', zoom='1.8') }}-
+While the "Try EDA 3-node topology" does not use breakout ports, the example below will take a similar topology with two leafs and one spine, where the `ethernet-1-1` interface on `spine1` is broken down into four 100G interfaces to which the leafs connect.
 
 To capture the intent of using a breakout port on `spine1`, use the ISL link template and specify the breakout port in the `breakouts` section, as shown below:
 
@@ -856,9 +858,9 @@ linkTemplates:
 
 1. Remote side of this ISL uses breakout 4x100G
 
-The `isl` link template contains the `breakouts` section that specifies the breakout port configuration to be used on the **remote** side of the link that uses this template.
+The `isl` link template contains the `breakouts` section that specifies the breakout port configuration to use on the remote side of the link that uses this template.
 
-The links can then use the `isl` link template to define the inter-switch connections between the leaf and spine nodes as usual, however, because the remote side of the link is now a breakout port, the interface name on the remote side must include the channel suffix - `ethernet-1-1-1`, `ethernet-1-1-2`, etc.
+The links can then use the `isl` link template to define the inter-switch connections between the leaf and spine nodes as usual. However, because the remote side of the link is now a breakout port, the interface name on the remote side must include the channel suffix: `ethernet-1-1-1`, `ethernet-1-1-2`, etc.
 
 ```{.yaml .code-scroll-lg}
 links:
@@ -900,11 +902,11 @@ links:
           interface: ethernet-1-1-4
 ```
 
-1. Note, how the interface name of a **remote** port that uses the breakout is represented in a normalized way with its channel suffix - `ethernet-1-1-1`, `ethernet-1-1-2` denoting the channel index.
+1. Note that the interface name of a **remote** port that uses the breakout is represented in a normalized way with its channel suffix, `ethernet-1-1-1`, `ethernet-1-1-2`, denoting the channel index.
 
-> Because the link template specifies the breakout only on a **remote** side of a link, the remote endpoint uses the breakout notation. The link template may include breakouts on local, remote or both sides.
+> Because the link template specifies the breakout only on a remote side of a link, the remote endpoint uses the breakout notation. The link template may include breakouts on local, remote, or both sides.
 
-The breakout definition shown above will result in creation of the `Breakout` resource that can be seen in the **Topology** > **Breakouts** section of the EDA UI.
+The breakout definition shown above creates the `Breakout` resource that can be seen in the **Topology** > **Breakouts** section of the EDA UI.
 
 ```yaml
 apiVersion: interfaces.eda.nokia.com/v1
@@ -925,30 +927,30 @@ The `Breakout` resource is responsible for configuring the breakout port on the 
 
 ## Topology operations
 
-Network Topology is a Workflow resource, it can be triggered via any of the EDA interfaces - UI, API or CLI.
+Network Topology is a Workflow resource. You can trigger it using any of the EDA interfaces: UI, API, or CLI.
 
 -{{video(url="https://gitlab.com/-/project/7617705/uploads/b17e9b8eda20991e79a2d0c79afda301/eda-nt-ui.mp4", title="Network Topology Workflow in EDA UI")}}-
 
-Regardless of the interface chosen to create the Network Topology resource, you would need to populate the Network Topology resources and select the desired operation - `reconcile`, `create`, `replace`/`replaceAll`, or `delete`/`deleteAll`.
+Regardless of the interface you choose to create the Network Topology resource, you need to populate the Network Topology resources and select the desired operation: `reconcile`, `create`, `replace`/`replaceAll`, or `delete`/`deleteAll`.
 
-To demonstrate the behavior of each operation, create a `net-topo-test` namespace and use it to deploy the topology as per the examples below.
+To demonstrate the behavior of each operation, create a `net-topo-test` namespace and use it to deploy the topology following the examples below.
 
 ```bash
 edactl namespace bootstrap create --from-namespace eda net-topo-test #(1)!
 ```
 
-1. Don't have `edactl` installed? [Install it with a single command](using-the-clis.md#edactl).
+1. If you don't have `edactl` installed, [install it with a single command](using-the-clis.md#edactl).
 
 ### Create
 
-To create a Network Topology select the `Create` operation in the Network Topology workflow spec. The `Create` operation will generate an error if any of the topology resources already exist in the target namespace; therefore, it is suitable for either creating a new topology in an empty namespace, or adding new nodes and links to an existing topology without modifying the existing resources.
+To create a Network Topology, select the `Create` operation in the Network Topology workflow spec. The `Create` operation generates an error if any of the topology resources already exist in the target namespace; therefore, it is suitable for either creating a new topology in an empty namespace, or adding new nodes and links to an existing topology without modifying the existing resources.
 
 /// admonition | Workflow names
     type: subtle-note
 Workflow resources should have unique names within a namespace. When creating a new workflow in EDA UI the name is auto-generated, and when using `kubectl` users can leverage Kubernetes' `generateName` feature to create unique names. In the examples below, use the `generateName` field with `kubectl` snippets instead of providing a fixed name.
 ///
 
-Since the new `net-topo-test` namespace is empty, you safely create the topology there, using the following workflow:
+Since the new `net-topo-test` namespace is empty, you safely create the topology there using the following workflow:
 
 /// tab | Topology
 
@@ -956,7 +958,7 @@ Since the new `net-topo-test` namespace is empty, you safely create the topology
 --8<-- "docs/user-guide/network-topology/snippets/create.yaml"
 ```
 
-1. The `generateName` field is used to let Kubernetes generate a unique name for the workflow resource and is only applicable for cases when the workflow resource is created with `kubectl`. When pasting this snippet in the EDA, UI replace this field with the `name: some-unique-name` field.
+1. The `generateName` field lets Kubernetes generate a unique name for the workflow resource, and is only applicable for cases when the workflow resource is created with `kubectl`. When pasting this snippet in the EDA UI, replace this field with the `name: some-unique-name` field.
 
 ///
 /// tab | `kubectl`
@@ -968,13 +970,13 @@ EOF
 ```
 
 ///
-You should expect the workflow created for this topology to complete and two nodes and one link to be created in the `net-topo-test` namespace.
+You should expect the workflow created for this topology to create two nodes and one link in the `net-topo-test` namespace.
 
 -{{image(url="graphics/CleanShot_2025-11-30_at_23.27.29.webp")}}-
 
 > The `Create` operation fails if any of the topology resources provided in the spec already exist in the target namespace.
 
-As the `Create` operation adds new topology resources without modifying the existing ones, it is possible to use it to incrementally add new nodes and links to a topology. For example, to add a new node `node3` and connect it to `node1`, create a new workflow with the `Create` operation and provide only the new node and its links in the spec.
+Because the `Create` operation adds new topology resources without modifying the existing ones, you can use it to incrementally add new nodes and links to a topology. For example, to add a new node `node3` and connect it to `node1`, create a new workflow with the `Create` operation and provide only the new node and its links in the spec.
 
 /// tab | Topology
 
@@ -997,11 +999,11 @@ The result of running this workflow will be that `node3` is added to the existin
 
 ### Reconcile
 
-The Reconcile operation is used to reconcile the existing topology with the desired one. It compares the existing topology with the desired one and makes the necessary changes to the existing topology to bring it to the desired state. The important difference between the `Reconcile` and `Create` operations is that the `Reconcile` operation will not generate an error if any of the topology resources do not exist in the target namespace, but will instead create them to match the desired topology.
+Use the Reconcile operation to reconcile the existing topology with the desired one. It compares the existing topology with the desired one and makes the necessary changes to the existing topology to bring it to the desired state. The important difference between the `Reconcile` and `Create` operations is that the `Reconcile` operation does not generate an error if any of the topology resources do not exist in the target namespace, but will instead create them to match the desired topology.
 
-The `Reconcile` operation is suitable for both creating a new topology in an empty namespace, and adding new nodes and links to an existing topology without modifying the existing resources. However, it requires the full desired topology definition to be provided in the spec.
+The `Reconcile` operation is suitable for both creating a new topology in an empty namespace, and adding new nodes and links to an existing topology without modifying the existing resources. However, it requires that you provide the full desired topology definition in the spec.
 
-To have a topology with just `node1` and `node3`, with the label `reconcile: test` added to both nodes, and one more link between them, create a specification like the one below:
+To have a topology with just `node1` and `node3`, with the label `reconcile: test` added to both nodes and one more link between them, create a specification like the example below:
 
 /// tab | Topology
 
@@ -1022,18 +1024,18 @@ EOF
 
 The outcomes of this workflow will be:
 
-- `node1` and `node3` won't be re-created, because they already exist in the target namespace
-- label `reconcile: test` will be added to both nodes
-- an existing link between `node1` and `node3` will remain unchanged
-- a new link between `node1` and `node3` will be created to connect `node1` to `node3`
-- `node2` will be removed from the topology along with its link to `node1`
-- `node1` and `node3` will be briefly moved to `Onboarded: false` state and NPPs will reconnect to the nodes shortly after the workflow completes.
+- `node1` and `node3` is not re-created, because they already exist in the target namespace
+- label `reconcile: test` is added to both nodes
+- an existing link between `node1` and `node3` remains unchanged
+- a new link between `node1` and `node3` is created to connect `node1` to `node3`
+- `node2` is removed from the topology along with its link to `node1`
+- `node1` and `node3` briefly move to the `Onboarded: false` state, and NPPs reconnect to the nodes shortly after the workflow completes.
 
 ### Replace
 
-Replace operation is used to replace the existing topology with a new one and it comes in two variants - `replace` and `replaceAll`.
+Use the Replace operation to replace the existing topology with a new one. It comes in two variants: `replace` and `replaceAll`.
 
-When using `replace` operation, the workflow will **only** replace the existing topology resources whose names match the ones defined in the workflow spec. Topology resources that exist in the target namespace but are not part of the new topology definition will be left unmodified. The example below demonstrates changing `node2` definition by adding the node-level platform value, overriding the template. The result of this replace operation will be that `node1` will remain unchanged, but `node2` will have its platform set to `7220 IXR-D2L`.
+When using the `replace` operation, the workflow only replaces the existing topology resources whose names match the ones defined in the workflow spec. Topology resources that exist in the target namespace but are not part of the new topology definition are left unmodified. The example below demonstrates changing the `node2` definition by adding the node-level platform value, overriding the template. The result of this replace operation is that `node1` remains unchanged, but `node2` has its platform set to `7220 IXR-D2L`.
 
 /// tab | Topology
 
@@ -1053,14 +1055,14 @@ EOF
 ///
 > Changing node-specific parameters like platform, operating system, version, etc. triggers re-onboarding of the node.
 
-When using `replaceAll` operation, the workflow will first **remove all** topology resources from the targeted namespace and then add the resources defined in the workflow spec. This operation is useful when you want to completely replace the existing topology with a new one.
+When using the `replaceAll` operation, the workflow first removes all of the topology resources from the targeted namespace and then adds the resources defined in the workflow spec. This operation is useful when you want to completely replace the existing topology with a new one.
 
 /// admonition | Danger
     type: danger
-Running the workflow with the `replaceAll` operation will effectively delete all topology resources in the target namespace and create the new node and link objects as defined in the workflow spec. Use with caution to avoid unintentional topology changes.
+Running the workflow with the `replaceAll` operation effectively deletes all of the topology resources in the target namespace and creates the new node and link objects as defined in the workflow spec. Use this with caution to avoid unintentional topology changes.
 ///
 
-The below example demonstrates how the previous topology with `node1` and `node2` is replaced with a new topology that consists of the three nodes - `switch1`, `switch2`, and `switch3`, and two links connecting them. As you can see, the names of the nodes are different, but this is not a problem, because the `replaceAll` operation removes all previous nodes and links and replaces them with the new ones.
+The example below demonstrates how the previous topology with `node1` and `node2` is replaced with a new topology that consists of the three nodes, `switch1`, `switch2`, and `switch3`, and two links connecting them. The names of the nodes are different, but this is not a problem because the `replaceAll` operation removes all previous nodes and links and replaces them with the new ones.
 
 /// tab | Topology
 
@@ -1081,9 +1083,9 @@ EOF
 
 ### Delete
 
-Use `delete` operation to remove named topology resources from the target namespace or `deleteAll` operation to remove all topology resources from the target namespace.
+Use the `delete` operation to remove named topology resources from the target namespace, or the `deleteAll` operation to remove all topology resources from the target namespace.
 
-Continuing from the previous step where we had three nodes - `switch1`, `switch2`, and `switch3` - we can delete the `switch3` node by providing a workflow with the `delete` operation and specifying the name of the node and its link to be deleted.
+Continuing from the previous step where there were three nodes - `switch1`, `switch2`, and `switch3` - we can delete the `switch3` node by providing a workflow with the `delete` operation and specifying the name of the node and its link to be deleted.
 
 /// tab | Topology
 
@@ -1125,11 +1127,11 @@ Running this workflow will remove all topology resources from the `net-topo-test
 
 ## Topology checks
 
-Performing operations on the topology is a high-touch activity as removing or changing the nodes and links accidentally clearly impacts the network services running on top of the network. To reduce the risk of making accidental changes to the topology, the Network Topology workflow allows a user to run it in the Dry Run mode by setting the `.spec.checks.dryRun: true` field in the workflow spec.
+Performing operations on the topology is a high-touch activity, as removing or changing the nodes and links accidentally would clearly impact the network services running on top of the network. To reduce the risk of making accidental changes to the topology, the Network Topology workflow allows you to run it in the Dry Run mode by setting the `.spec.checks.dryRun: true` field in the workflow spec.
 
-With Dry Run enabled, the workflow will pause and ask for the user's confirmation before adding/removing or changing any of the topology resources.
+With Dry Run enabled, the workflow pauses and asks for your confirmation before adding, removing, or changing any of the topology resources.
 
-To demonstrate how Dry Run works, we will create a workflow that uses the `replaceAll` operation to remove any existing topology and create a new one with just one `node1` node. The workflow definition is as follows:
+To demonstrate how Dry Run works, the example below creates a workflow that uses the `replaceAll` operation to remove any existing topology, and creates a new one with just one `node1` node. The workflow definition is as follows:
 
 /// tab | Topology
 
@@ -1148,13 +1150,14 @@ EOF
 
 ///
 
-Because the `replaceAll` operation translates to two actions:
+The `replaceAll` operation translates to two actions:
 
 1. Deleting all existing topology resources
 2. Creating new topology resources
 
-The workflow will pause two times, first asking to confirm the transaction that removes all existing topology elements and resources that were created for the nodes by EDA. After confirming this action, the workflow will proceed to the second pause where it will ask to confirm the creation of the new topology resources as a second transaction.  
-The topology checks are implemented as a transaction in the Dry Run mode, hence you will be able to inspect the transaction details like for any other transaction in EDA.
+Therefore the workflow will pause twice. First it pauses to confirm the transaction that removes all existing topology elements and resources that were created for the nodes by EDA. After confirming this action, the workflow pauses a second time to confirm the creation of the new topology resources as a second transaction.
+
+The topology checks are implemented as a transaction in the Dry Run mode, so you will be able to inspect the transaction details as for any other transaction in EDA.
 
 The below video demonstrates how the Dry Run mode works in practice.
 
@@ -1162,11 +1165,11 @@ The below video demonstrates how the Dry Run mode works in practice.
 
 ## Connecting to the nodes
 
-EDA operators can fully manage the network nodes using the platform's API and UI interfaces. Occasionally, users might want to connect to the managed nodes over SSH to inspect the node configuration, logs, or run ad-hoc CLI commands.
+You can fully manage the network nodes using the platform's API and UI interfaces. Occasionally, you might want to connect to the managed nodes over SSH to inspect the node configuration, logs, or run ad-hoc CLI commands.
 
-As EDA itself has network connectivity to the nodes, users can leverage its Toolbox pod as a jump host to establish the SSH connection.
+Because EDA itself has network connectivity to the nodes, you can leverage its Toolbox pod as a jump host to establish the SSH connection.
 
-The `node-ssh` script below is a convenience wrapper around the `kubectl` and `ssh` commands that allows users to easily open SSH connection to the nodes under EDA's management while not having direct network connectivity to the nodes from their local machines.
+The `node-ssh` script below is a convenience wrapper around the `kubectl` and `ssh` commands that allows you to easily open SSH connection to the nodes under EDA's management while not having direct network connectivity to the nodes from their local machines.
 
 /// details | `node-ssh` script to connect to the nodes over SSH
     type: example

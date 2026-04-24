@@ -81,8 +81,8 @@ Requirements are dependencies on other apps that are defined in an app's manifes
 
 The EDA Store calculates a full dependency tree of the app requirements, and a **Target Version** for each required app.
 
-- For requried apps already installed, the target version preferences the currently installed version.
-- For required apps not yet installed, the target version preferences the latest compatiable verison.
+- For required apps already installed, the target version preferences the currently installed version.
+- For required apps not yet installed, the target version preferences the latest compatible version.
 
 When installing or upgrading an app via the EDA UI, any required apps that must be installed or upgraded together will be included with the app install. The install wizard lists all app installations and upgrades that will be included.
 
