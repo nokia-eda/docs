@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitlab-secret
+  namespace: eda
+type: Opaque
+stringData:
+  token: glpat-exampleTokenValue
+---
+apiVersion: gitlab.eda.nokia.com/v1alpha1
+kind: GitlabInstance
+metadata:
+  name: gitlab-server
+  namespace: eda
+spec:
+  apiBaseURL: https://gitlab.example.com
+  authSecretRef:
+    name: gitlab-secret
+    key: token
