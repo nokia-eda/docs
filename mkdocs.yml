@@ -49,6 +49,7 @@ nav:
           - Common data grid actions menu: user-guide/gui-basics/common-data-grid-actions.md
           - Navigation Panels: user-guide/gui-basics/nav-panels.md
           - Topologies: user-guide/topology.md
+          - Schema forms: user-guide/gui-basics/schema-forms.md
       - Dashboards: user-guide/dashboards.md
       - Custom navigation panels: user-guide/custom-navigation-panels.md
       - Dashboard designer: user-guide/dashboard-designer.md
