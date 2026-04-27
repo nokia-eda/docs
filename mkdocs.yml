@@ -51,6 +51,7 @@ nav:
           - Topologies: user-guide/topology.md
           - Schema forms: user-guide/gui-basics/schema-forms.md
       - Dashboards: user-guide/dashboards.md
+      - Ask EDA: user-guide/ask-eda.md
       - Custom navigation panels: user-guide/custom-navigation-panels.md
       - Dashboard designer: user-guide/dashboard-designer.md
       - Namespaces: user-guide/namespaces.md
