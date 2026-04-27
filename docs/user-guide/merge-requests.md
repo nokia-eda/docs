@@ -3,25 +3,25 @@
 <!-- The creation of merge requests (and handling/merging them) is supported in EDA 26.4.
 The approval mechanism is planned for EDA 26.8. -->
 
-In EDA, a merge request (MR) is a set of provisional resource configuration changes that is awaiting execution in the form of a transaction. If you are familiar with Git merge requests, then you will recognize the role of merge requests in EDA.
+In Nokia Event-Driven Automation (EDA), a merge request (MR) is a set of provisional resource configuration changes that is awaiting execution in the form of a transaction. If you are familiar with Git merge requests, then you will recognize the role of merge requests in Nokia EDA.
 
 /// admonition | Note
     type: subtle-note
 The terms "merge request and "MR" are used interchangeably here.
 ///
 
-There are two ways a set of provisional configurations requiring a merge request might arise in EDA:
+There are two ways a set of provisional configurations requiring a merge request might arise in Nokia EDA:
 
 - users who have permission to propose changes to resource configurations, but without permissions to enact those changes themselves, can create an MR. The MR allows another operator with the necessary permissions to review the MR before proceeding with the merge.
 
-- if you are using EDA branches, there may be a branch that includes a collection of proposed configuration changes. The MR requests that all of the changes in that branch be written to the active system.  
+- if you are using Nokia EDA branches, there may be a branch that includes a collection of proposed configuration changes. The MR requests that all of the changes in that branch be written to the active system.  
 
 /// admonition | Note
     type: subtle-note
-The current release of EDA supports the creation of MRs, and the other actions described below.  EDA does not yet support assigning specific reviewers or approvers to MRs.
+The current release of Nokia EDA supports the creation of MRs, and the other actions described below.  Nokia EDA does not yet support assigning specific reviewers or approvers to MRs.
 ///
 
-EDA supports the following capabilities regarding merge requests:
+Nokia EDA supports the following capabilities regarding merge requests:
 
 - creating and deleting MRs
 - listing MRs
@@ -32,21 +32,21 @@ EDA supports the following capabilities regarding merge requests:
 - handling three-way-merges to resolve conflicts arising from MRs
 
 ## Merging
-An MR captures a set of configuration changes that are planned for one or more EDA-managed resources. When you proceed with the merge, or a dry run of that merge, EDA creates a new transaction and tries to enact the changes in the MR.
+An MR captures a set of configuration changes that are planned for one or more Nokia EDA-managed resources. When you proceed with the merge, or a dry run of that merge, Nokia EDA creates a new transaction and tries to enact the changes in the MR.
 
 On any attempted merge or dry run, the Transaction ID of the resulting transaction is recorded in the MR.
 
 ### Rebasing
 Because time will have passed between the creation of the merge request and its execution, it is possible that some aspects of the target resource configuration will have been changed by some other process during the interval.  
 
-When you perform a merge, EDA's ConfigEngine checks to see whether the expected "previous" state of the MR's target resources is valid, or if any of the target resources have since been altered.
+When you perform a merge, Nokia EDA's ConfigEngine checks to see whether the expected "previous" state of the MR's target resources is valid, or if any of the target resources have since been altered.
 
-If there are changes to the resources, but the changes are wholly separate from the changes in the MR, EDA will only require you to rebase the MR. Rebasing updates the "previous" resource configurations stored in the MR to match the current state. Then ConfigEngine tries to complete the requested merge.
+If there are changes to the resources, but the changes are wholly separate from the changes in the MR, Nokia EDA will only require you to rebase the MR. Rebasing updates the "previous" resource configurations stored in the MR to match the current state. Then ConfigEngine tries to complete the requested merge.
 
 ### Conflicts
 But if the intervening changes on a resource affect the same parts of its configuration that are being modified by the MR, then someone will need to examine these two competing sets of configuration changes, and manually decide which changes should prevail after the merge.  
 
-If a conflict is found, ConfigEngine updates the status of the request to Conflict, and the user must resolve all conflicts before the MR can be merged. The EDA GUI provides a three-way merge interface for resolving conflcits. This constitutes a merge between:
+If a conflict is found, ConfigEngine updates the status of the request to Conflict, and the user must resolve all conflicts before the MR can be merged. The Nokia EDA GUI provides a three-way merge interface for resolving conflicts. This constitutes a merge between:
 
 - The **Previous** configurations originally recorded in the MR when it was created
 - The **Proposed** configuration changes included in the MR
@@ -57,12 +57,12 @@ Once these conflicts are resolved, you can proceed with the merge.
 ### Merge failure
 If any merge request fails to merge, it persists in the merge request queue. This allows you to edit the MR to resolve any blocking issues, and retry the merge.
 
-After a merge request is edited while in a Failed or Conflict state, EDA sets the merge requests back to the Open state.
+After a merge request is edited while in a Failed or Conflict state, Nokia EDA sets the merge requests back to the Open state.
 
-If a merge request successfully merges, EDA updates its state to Merged.
+If a merge request successfully merges, Nokia EDA updates its state to Merged.
 
 ## Merge request data
-In EDA, a merge request schema includes the following data:
+In Nokia EDA, a merge request schema includes the following data:
 
 - The list of input resources, and their prior states. These prior states are stored so they can be checked against to see if a rebase or a three-way merge to resolve a conflict is required.
 - A description that explains why the merge request was created. This is passed through to the transaction comment for consistency.
@@ -80,19 +80,19 @@ In EDA, a merge request schema includes the following data:
     Multiple transactions might be executed for an MR if, for example, you perform a dry run (which has its own TransactionId), or the MR fails initially, before you proceed with the final merge. The MR's Transaction ID field indicates the most recent transaction. Previous transaction IDs can be found in the MR's history.
     ///
 
-The contents of merge request can be modified. When you choose to edit an MR from the EDA GUI, the resources will be added back into the Transaction Basket. From there you can edit the resources, add or remove resources, and then save the contents of the basket as the new content of the original MR.
+The contents of merge request can be modified. When you choose to edit an MR from the Nokia EDA GUI, the resources will be added back into the Transaction Basket. From there you can edit the resources, add or remove resources, and then save the contents of the basket as the new content of the original MR.
 
 ## Data storage and limits
 
-EDA retains MR data regardless of any restarts of the platform or ConfigEngine.
+Nokia EDA retains MR data regardless of any restarts of the platform or ConfigEngine.
 
-EDA stores up to 1,000 merge requests, including closed and merged MRs. The ConfigEngine rejects any new MRs beyond this limit.  You can manually clean up the set of stored MRs using the Delete action.
+Nokia EDA stores up to 1,000 merge requests, including closed and merged MRs. The ConfigEngine rejects any new MRs beyond this limit.  You can manually clean up the set of stored MRs using the Delete action.
 
 Merge requests that are left inactive expire after a period of time; by default, this is 30 days. When the configured period has elapsed, the merge request is automatically deleted from the system.
 
 ## Permissions
 
-The EDA user permission system includes a new verb, "propose", in the set of actions available for users and for which permission can be granted by an administrator. A user with "propose" permission can create merge requests and dry run resource changes, but such a user cannot proceed with the merge without write permission for those resources.  
+The Nokia EDA user permission system includes a new verb, "propose", in the set of actions available for users and for which permission can be granted by an administrator. A user with "propose" permission can create merge requests and dry run resource changes, but such a user cannot proceed with the merge without write permission for those resources.  
 
 Merge requests are subject to the following permission requirements:
 
@@ -105,7 +105,7 @@ The ability to delete a merge request is governed by CusterRole UrlRule; it is a
 
 ## Merge requests using edactl
 
-You can interact with merge requests using edactl, the EDA CLI.  Merge requests use the edactl `mergerequest` tree.
+You can interact with merge requests using edactl, the Nokia EDA CLI.  Merge requests use the edactl `mergerequest` tree.
 
 Without options, `edactl mergerequest` lists any Open, Merging, or Conflict merge requests.
 
@@ -135,10 +135,9 @@ The `edactl mergerequest` command tree supports the following actions:
 
 These commands block further operations until they are complete.
 
+## Merge requests in the Nokia EDA GUI
 
-## Merge requests in the EDA GUI
-
-The EDA GUI includes several elements supporting merge requests:
+The Nokia EDA GUI includes several elements supporting merge requests:
 
 The **Transactions Basket** includes an option to create a **Merge Request**, in addition to the **Commit** and **Dry Run** options. This create a new Merge Requests with the proposed resource changes. If the basket contains resources which the user has propose (but not write) permission, the **Commit** option will be unavailable.
 
@@ -162,8 +161,8 @@ The columns displayed on this page are:
     - Closed: the MR has been set to the Closed state to make it inactive.  It cannot be merged until it is re-opened.
 - **Description**: an optional description explaining the purpose of the changes in the MR.
 - **Resource Count**: the number of managed resources that would be, or were, affected by this MR.
-- **Created By**: the EDA user account that created the MR.
-- **Last Modified By**: the EDA user account that last modified the MR.
+- **Created By**: the Nokia EDA user account that created the MR.
+- **Last Modified By**: the Nokia EDA user account that last modified the MR.
 - **Transaction ID**: the ID of the most recent transaction associated with this MR, including any dry runs.
 - **Dry Run**: indicates whether the transaction identified in Transaction ID was a dry run.
 - **Created**: the date on which the MR was initially created.
@@ -192,7 +191,7 @@ The following row actions are available for each item in the merge request list.
 
 The **Merge Request Details** page displays information about a single transaction.  It is also the view from which you can proceed with the requested merge.
 
--{{image(url="graphics/mr-summary-page-with-callouts.png", title="The Merge Request Details page", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0493.png", title="The Merge Request Details page", shadow=true, padding=20)}}-
 
 Table: Elements of the Merge Request Details page
 
@@ -236,11 +235,11 @@ You must have write or propose permissions for all of the resources included in 
 
 /// html | div.steps
 
-1. Create, modify, or delete one or more resources within EDA.
+1. Create, modify, or delete one or more resources within Nokia EDA.
 
 2. Select **Add to Basket** to save each configuration change to the Transaction Basket.
 
-3. Open the **Transaction Basket** by clicking on the basket icon at the top of the EDA GUI.
+3. Open the **Transaction Basket** by clicking on the basket icon at the top of the Nokia EDA GUI.
 
 4. (Optionally) Use the checkboxes at the left of each resource in the basket to include it in, or exclude it from, the merge request.
 
@@ -258,7 +257,7 @@ Follow these steps to view a list of all merge requests, and optionally a detail
 
 /// admonition | Note
     type: subtle-note
-EDA stores the information for a maximum of 1,000 merge requests.
+Nokia EDA stores the information for a maximum of 1,000 merge requests.
 ///
 
 /// html | div.steps
@@ -297,7 +296,7 @@ Follow these steps to edit a merge request:
 
 1. If you want to add more configuration changes to the MR, configure new resource changes that were not part of the original MR use the **Add to Basket** action in the resource edit/create/delete forms.
 
-1. Open the **Basket** by clicking the **Basket** icon at the top of the EDA UI.
+1. Open the **Basket** by clicking the **Basket** icon at the top of the Nokia EDA UI.
 
 1. In the **Basket**, do any of the following:
 
@@ -319,7 +318,7 @@ You can use the row action menu from the **Merge Requests List** to close, re-op
 
 Closing a merge request renders it inactive without deleting it.  A Closed merge request cannot be merged unless it is re-opened.
 
-Deleting a merge request removes it from EDA entirely.  Since EDA will only store information about 1,000 merge requests, deleting unnecessary MR records can help ensure that EDA retain records of those MRs you think are important.
+Deleting a merge request removes it from Nokia EDA entirely.  Since Nokia EDA will only store information about 1,000 merge requests, deleting unnecessary MR records can help ensure that Nokia EDA retain records of those MRs you think are important.
 
 Follow these steps to close, re-open, or delete a merge request:
 
@@ -378,15 +377,15 @@ Follow these steps to merge an MR:
 
 ### Resolving conflicts
 
-A merge conflict can arise when there have been changes to a resource that is the subject of the MR during the interval between the creation of the MR, and the merge.  If the MR tries to change the same part of the resource configuration that was changed by another process during that interval, EDA flags this conflict and requires human intervention to decide how to reconcile the competing configurations.
+A merge conflict can arise when there have been changes to a resource that is the subject of the MR during the interval between the creation of the MR, and the merge.  If the MR tries to change the same part of the resource configuration that was changed by another process during that interval, Nokia EDA flags this conflict and requires human intervention to decide how to reconcile the competing configurations.
 
--{{image(url="mr-summary-page-with-conflict.png", title="The Merge Request Details page showing a conflict", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0492.png", title="The Merge Request Details page showing a conflict", shadow=true, padding=20)}}-
 
 Resolving a merge conflict is called a "three-way merge" because it attempts to reconcile three things:
 
 - the **Previous** version of the resources that is stored as part of the merge request. This is the configuration to which the MR expected to apply its changes. (in Git terminology this is call "base")
 - the **Proposed** resource configuration changes requested by the MR
-- the **Latest** version of the resource, currently running in the EDA system (in Git terminology this is call "head")
+- the **Latest** version of the resource, currently running in the Nokia EDA system (in Git terminology this is call "head")
 
 The result of this three-way merge is the new intended state after the MR applies its changes.  This will reflect your choices when resolving the conflict (whether you chose the lines in "Proposed", those in "Latest", or a mixture of the two).
 
