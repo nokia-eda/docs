@@ -1,16 +1,16 @@
 # Transactions
 
-Transactions form the foundation of EDA's configuration deployment and revision control. Transactions applying configuration changes atomically, network-wide.
+Transactions form the foundation of Nokia Event-Driven Automation (EDA)'s configuration deployment and revision control. Transactions applying configuration changes atomically, network-wide.
 
-At a very high-level, EDA transactions perform the following functions:
+At a very high-level, Nokia EDA transactions perform the following functions:
 
 - Generate configuration from abstractions
 - Deploy configuration changes, network-wide
 - Commit to Git for revision control
 
-Every action that leads to a network configuration change - modifying a resource, installing an EDA application, upgrading a network operating system - is processed as a transaction.
+Every action that leads to a network configuration change - modifying a resource, installing a Nokia EDA application, upgrading a network operating system - is processed as a transaction.
 
-Within EDA, ConfigEngine is the main service behind transactions. Its job is to compute the complete set of resources that must be modified, deleted, or created as part of the transaction; ensure all dependencies and outputs are captured; and then transact the updates.
+Within Nokia EDA, ConfigEngine is the main service behind transactions. Its job is to compute the complete set of resources that must be modified, deleted, or created as part of the transaction; ensure all dependencies and outputs are captured; and then transact the updates.
 
 Changes within a transaction must succeed or fail together. If the change is not deployable on any of the target nodes, the whole transaction is pronounced failed and the changes are reverted from all nodes.
 
@@ -24,21 +24,21 @@ Only successful commits are stored in Git for revision control. This means you c
 
 ### Dry runs
 
-EDA allows you to perform a dry run of any transaction. A dry run can reveal anticipated configuration issues if the transaction were to proceed normally, and allow you to troubleshoot any errors before committing the transaction on actual resources.
+Nokia EDA allows you to perform a dry run of any transaction. A dry run can reveal anticipated configuration issues if the transaction were to proceed normally, and allow you to troubleshoot any errors before committing the transaction on actual resources.
 
-In a dry run, the system does not send any of the configuration changes to the managed nodes. However, it executes the transaction against EDA's stored information about each participating resource and validates the results against the managed nodes' YANG schema.
+In a dry run, the system does not send any of the configuration changes to the managed nodes. However, it executes the transaction against Nokia EDA's stored information about each participating resource and validates the results against the managed nodes' YANG schema.
 
 After the dry run is complete, transaction details and diffs are available just as with a normal commit.
 
 ### Transaction results
 
-EDA provides the following summary information for completed transactions:
+Nokia EDA provides the following summary information for completed transactions:
 
 - **Input Resources** are resources created, updated, or deleted by the user.
 - **Intents Run** are configuration intent scripts executed during the transaction.
 - **Output Resources** are resources derived from the intents run.
 - **Changed Resources** are input and output resources that are changed, compared to the previous committed transaction.
-- **Nodes Affected** are nodes which are impacted by this transaction. This includes node configuration changes, node version changes, or changes to the associated `TopoNode` resource in EDA.
+- **Nodes Affected** are nodes which are impacted by this transaction. This includes node configuration changes, node version changes, or changes to the associated `TopoNode` resource in Nokia EDA.
 
 Diffs for changed resources, and node configurations of affected nodes are available in the transaction.
 
@@ -46,21 +46,21 @@ Failed transactions may include the following error types:
 
 - **Intent Errors** - Errors returned by an intent script
 - **Node Config Errors** - Error in YANG schema validation or errors returned by the node when pushing configuration
-- **General Errors** - Errors related to the EDA environment
+- **General Errors** - Errors related to the Nokia EDA environment
 
 /// admonition | Note
     type: subtle-note
-Output Resources often include internal EDA resource that are not user-facing. For example, an EDA configuration intent may create a "state" resource that initializes the process for reporting operational status.
+Output Resources often include internal Nokia EDA resource that are not user-facing. For example, a Nokia EDA configuration intent may create a "state" resource that initializes the process for reporting operational status.
 ///
 
 /// admonition | Note
     type: subtle-note
-`NodeConfig` is a special resource in EDA that is not published to EDB or Kubernetes, but that you will often see in transaction results. `NodeConfig` functions as an internal configlet that intent scripts create to contribute specific sections of node configuration. EDA combines all the `NodeConfig` resources into a complete node configuration. This is why you will see both 'NodeConfig' and 'Node Configuration' in the transaction diffs.
+`NodeConfig` is a special resource in Nokia EDA that is not published to EDB or Kubernetes, but that you will often see in transaction results. `NodeConfig` functions as an internal configlet that intent scripts create to contribute specific sections of node configuration. Nokia EDA combines all the `NodeConfig` resources into a complete node configuration. This is why you will see both 'NodeConfig' and 'Node Configuration' in the transaction diffs.
 ///
 
 #### Retention period
 
-Whenever you create/update/delete a resource in EDA, a number of scripts associated with that resource run. These scripts are called "intents". Any intent that is run with the same set of inputs will always result in the same set of outputs. Therefore, EDA has no need to persistently store anything that can be derived or computed. EDA persistently stores intent scripts, input resources, and pool allocations in Git. Other data (e.g. failed transactions, dry-run transactions, output resources, node configuration diffs, etc.) is stored in-memory for a limited time.
+Whenever you create, update, or delete a resource in Nokia EDA, a number of scripts associated with that resource run. These scripts are called "intents". Any intent that is run with the same set of inputs will always result in the same set of outputs. Therefore, Nokia EDA does not need to persistently store anything that can be derived or computed. Nokia EDA persistently stores intent scripts, input resources, and pool allocations in Git. Other data (e.g. failed transactions, dry-run transactions, output resources, node configuration diffs, etc.) is stored in-memory for a limited time.
 
 There are three named detail levels, which indicate the available data for any given transaction:
 
@@ -68,18 +68,18 @@ There are three named detail levels, which indicate the available data for any g
 - **Standard** does not include the changed resources list, changed resource diffs, and node configuration diffs
 - **Basic** includes only data committed to Git
 
-Transactions created from the EDA GUI include **detailed** results by default. Transactions created with the EDA API or Kubernetes interfaces include **standard** results by default.
+Transactions created from the Nokia EDA GUI include **detailed** results by default. Transactions created with the Nokia EDA API or Kubernetes interfaces include **standard** results by default.
 
-After a certain number of transactions, EDA reduces older transactions to the **basic** level. Failed and dry-run transactions are purged from this history during this clean-up.
+After a certain number of transactions, Nokia EDA reduces older transactions to the **basic** level. Failed and dry-run transactions are purged from this history during this clean-up.
 
 - Details are retained for each user's 25 most recent transactions. Reduce details from any older transactions.
 - When more than 10,000 resource diffs are in memory, reduce details from the oldest transactions until there are less than 10,000 resource diffs.
 
 ### Revert
 
-The **revert** action exists to reverse the changes in a specific transaction. On revert, EDA creates a new additive commit that sets the input resources from a specific transaction back to their previously committed value.
+The **Revert** action exists to reverse the changes in a specific transaction. On revert, Nokia EDA creates a new additive commit that sets the input resources from a specific transaction back to their previously committed value.
 
-However, if there have been subsequent changes to resources being reverted, this can produce unexpected results. To avoid this, EDA always causes such a revert action to fail. To revert such a transaction, first revert any subsequent transactions that affected the same resources.
+However, if there have been subsequent changes to resources being reverted, this can produce unexpected results. To avoid this, Nokia EDA always causes such a revert action to fail. To revert such a transaction, first revert any subsequent transactions that affected the same resources.
 
 /// admonition | Note
     type: subtle-note
@@ -88,18 +88,18 @@ Executing a Revert operation requires Read-Write permission for all input resour
 
 ### Restore
 
-The **restore** action selects a specific past commit and sets all EDA resources, apps, and allocations to exactly as they were at the specified commit.
+The **Restore** action selects a specific past commit and sets all Nokia EDA resources, apps, and allocations to exactly as they were at the specified commit.
 
 /// admonition | Note
     type: subtle-note
 Executing a Restore operation requires readWrite permission for the transaction restore API endpoint.
 ///
 
-## Transactions in the EDA GUI
+## Transactions in the Nokia EDA GUI
 
-Several elements within the EDA GUI support the creation and management of transactions.
+Several elements within the Nokia EDA GUI support the creation and management of transactions.
 
-- When you make any change to a resource, EDA offers choices to:
+- When you make any change to a resource, Nokia EDA offers choices to:
 
     - **Commit**: immediately commit the configuration change (performing a transaction with just this change)
 
@@ -107,11 +107,11 @@ Several elements within the EDA GUI support the creation and management of trans
 
     - **Add to Basket**: add the resource change to a set of resources stored in the **Transactions Basket**. These can be included together in a transaction that you commit later.
 
-- The basket icon at the top of the EDA GUI indicates how many resource changes are pending. Clicking the icon opens the **Transactions Basket**.
+- The **Basket** icon at the top of the Nokia EDA GUI indicates how many resource changes are pending. Clicking the icon opens the **Transactions** basket.
 
 - Any resource that is in the Basket will display a basket icon beside its name in a corresponding resource list.  If a resource has been un-selected in the basket in order to exclude it from the transaction, this icon is not displayed beside the resource.
 
-    -{{image(url="graphics/basket-in-list.png", title="A resource list showing the basket icon", shadow=true, padding=20)}}-
+    -{{image(url="sc0465.png", title="A resource list showing the basket icon", shadow=true, padding=20, scale=0.8)}}-
 
 - The **Transaction Log** displays a record of past transactions.
 
@@ -119,20 +119,20 @@ Several elements within the EDA GUI support the creation and management of trans
 
 - The **Transaction status bar** displays at the top of any configured resource page, and allows you to view past states for the same resource that were associated with past commits.
 
-### The Transactions Basket
+### The Transactions basket
 
-When one or more resource configuration changes have been added to the **Transactions Basket** to be part of a transaction, and that transaction has not yet been committed, the **Basket** icon is highlighted and displays a count of the resources selected for inclusion in the transaction.
+When one or more resource configuration changes have been added to the **Transactions** basket to be part of a transaction, and that transaction has not yet been committed, the **Basket** icon is highlighted and displays a count of the resources selected for inclusion in the transaction.
 
--{{image(url="graphics/transactions-basket-highlighted.png", title="The basket showing one pending resource change", shadow=true, padding=20, scale=0.6)}}-
+-{{image(url="graphics/sc0476.png", title="The basket showing one pending resource change", shadow=true, padding=20, scale=0.6)}}-
 
 /// admonition | Note
     type: subtle-note
 Adding a change to the basket does not mean it must be committed at the same time as all of the other changes already in the Basket.  You can decide before committing the transaction to include, or exclude, individual resources in the Basket from the transaction.  Any resources in the basket that are not committed now can be committed later as part of a different transaction.
 ///
 
-You can open the **Transactions Basket** by clicking the **Basket** icon.
+You can open the **Transactions** basket by clicking the **Basket** icon.
 
-From the **Basket** you can:
+From the **Transactions** basket you can:
 
 - review the changes in the basket
 - add a commit message to the transaction
@@ -142,15 +142,15 @@ From the **Basket** you can:
 - discard the changes in the basket
 - view a list of recently completed transactions
 
-You can also manage the individual resources within the **Basket**. You can:
+You can also manage the individual resources within the **Transactions** basket. You can:
 
 - from the actions menu, edit a resource
 - from the actions menu, delete a resource (removing it from the basket)
 - select or un-select any resource, so that it will be included in, or excluded from, the transaction
 
-You also use the **Basket** to view the **EDA Transaction Log**.
+You also use the **Transactions** basket to view the **Transaction Log**.
 
--{{image(url="graphics/sc0237.png", title="The Transaction panel the Basket", shadow=true, padding=20, scale=0.5)}}-
+-{{image(url="graphics/sc0466.png", title="The Transactions basket", shadow=true, padding=20, scale=0.5)}}-
 
 <!-- Missing Add to merge request in table below.  For that:
 "Merge Request - generate a merge request from the transaction.
@@ -171,15 +171,14 @@ Table: Elements of the Transactions basket
 
 /// admonition | Note
     type: subtle-note
-When your transaction is in progress, a blue dot pulses beside the **Basket** icon. If the transaction is successful, the dot disappears.
-If the in progress transaction fails while the basket is closed, the blue dot becomes a red dot to notifiy the user.
+When your transaction is in progress, a blue dot pulses beside the Basket icon. If the transaction is successful, the dot disappears. If the in progress transaction fails while the basket is closed, the blue dot becomes a red dot to notify the user.
 ///
 
 #### Adding resource changes to the Basket
 
 /// html | div.steps
 
-1. Create, edit, or delete any resource in the EDA GUI.
+1. Create, edit, or delete any resource in the Nokia EDA GUI.
 
 2. Select the **Add to Basket** action on the configuration form or delete prompt.
 
@@ -203,7 +202,7 @@ Closing the Transaction basket dismisses the form, but retains information about
 
 <!-- Updated this image for 26.4; minor cosmetic changes -->
 
--{{image(url="graphics/dry-run-basket-results.png", title="A sample result of a dry run", shadow=true, padding=20, scale=0.5)}}-
+-{{image(url="graphics/sc0469.png", title="A sample result of a dry run", shadow=true, padding=20, scale=0.5)}}-
 
 Table: Elements of the dry run results display
 
@@ -226,13 +225,13 @@ The following information displayed in the transactions log:
 |Column|Description|
 |------|-----------|
 |Transaction ID |A unique ID for the transaction assigned internally.|
-|Transaction type|Whether the transaction was a dry run or commit. In a dry run, the system does not send any of the configuration changes to the managed nodes. However, it executes the transaction against EDA's stored information about each participating node, and validates the transaction against that data.|
+|Transaction type|Whether the transaction was a dry run or commit. In a dry run, the system does not send any of the configuration changes to the managed nodes. However, it executes the transaction against Nokia EDA's stored information about each participating node, and validates the transaction against that data.|
 |Status|Whether the transaction was successful, or failed.|
 |Description|An optional description provided at the time the transaction is committed.|
-|Created by|The originator of the transaction. This could be a specific user, or an EDA component such as "workflow" or "admin" or "kubernetes".|
+|Created by|The originator of the transaction. This could be a specific user, or a Nokia EDA component such as "workflow" or "admin" or "kubernetes".|
 |Completion Timestamp|The date and time the transaction was completed.|
 |State|The state of the completed transaction.|
-|Commit Hash|A unique string that identifies this transaction in the EDA repository.|
+|Commit Hash|A unique string that identifies this transaction in the Nokia EDA repository.|
 
 /// admonition | Note
     type: subtle-note
@@ -254,7 +253,7 @@ For each row in the Transaction log, a set of actions available from the **table
 
 While the **Transaction log** is a list of past transactions, the **Transaction summary** page shows detailed information about a single transaction.
 
--{{image(url="graphics/transaction-summary.png", title="The Transactions summary page", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0474.png", title="The Transactions summary page", shadow=true, padding=20)}}-
 
 This includes:
 
@@ -271,7 +270,7 @@ This includes:
     - Output Resources: resources derived from the intent run
     - Changed Resources: input and output resources that are changed, compared to the previous committed transaction
 
-You can enable the **Advanced** toggle at the top of the page to hide internal EDA resources from the results.
+You can enable the **Advanced** toggle at the top of the page to hide internal Nokia EDA resources from the results.
 
 The advanced toggle is applicable to the **Diffs**, **Transaction Topology**, and resource lists in the **Details** view. It does not filter the counters in the **Resource Summary** of the **Details** view.
 
@@ -285,7 +284,7 @@ The information displayed can be [Detailed, Standard, or Basic](#retention-perio
 
 From the breadcrumb at the top of the Transactions summary page you can select **Diffs** to view the **Transaction diffs** view.  This view shows details of the specific configurations changes that were part of this transaction.
 
--{{image(url="graphics/transaction-diffs-page.png", title="The Transaction Diffs view", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0472.png", title="The Transaction Diffs view", shadow=true, padding=20)}}-
 
 Each changed CR and resulting node configuration change as part of this transaction is displayed, along with a diff view representing the new or changed lines in the respective configuration data.  Lines shaded red were removed or changed; lines shaded green were added.
 
@@ -309,7 +308,7 @@ From the breadcrumb at the top of the **Transactions Summary** page you can sele
 
 Resources are displayed as nodes within the topology.
 
-Links in the Transaction Topology page represents resource relationships established by the intent runs where:
+Links in the **Transaction Topology** page represents resource relationships established by the intent runs where:
 
 - endpoint A represents the resource which triggered the intent script
 - endpoint B represents the resource that was updated or created by the intent script
@@ -327,9 +326,9 @@ If an intent error occurred during the transaction, the resource that triggered 
 
 /// admonition | Note
     type: subtle-note
-The Transaction Topology page only graphs createUpdate relationships. For example, when a fabric intent creates ISL resources, this is represented as links between the fabric resource and those ISL resources.
+The **Transaction Topology** page only graphs createUpdate relationships. For example, when a fabric intent creates ISL resources, this is represented as links between the fabric resource and those ISL resources.
 
-The Transaction Topology page does not graph Read relationships. For example, when a fabric intent reads information from allocation pool resources, the links between the fabric resource and allocation pool resources are not illustrated in the Transaction Topology page.
+The **Transaction Topology** page does not graph Read relationships. For example, when a fabric intent reads information from allocation pool resources, the links between the fabric resource and allocation pool resources are not illustrated in the **Transaction Topology** page.
 ///
 
 Some elements in the illustration represent a group of resources. Click the **+** at the upper right of such elements to expand the group and see the complete set of individual resources.
@@ -340,11 +339,10 @@ Additional information about any selected element or connection within the trans
 
 Every committed resource configuration is associated with a particular transaction. As you alter the resource over time, it accumulates a permanent commit history representing all the versions of itself that were ever committed as part of the current and past transactions.
 
-By default, viewing a resource in EDA shows the latest version of that resource. But you can view past versions of the same resource using the transaction status bar at the top of the page to view the resource's states in past commits.
+By default, viewing a resource in Nokia EDA shows the latest version of that resource. But you can view past versions of the same resource using the transaction status bar at the top of the page to view the resource's states in past commits.
 
--{{image(url="graphics/transaction-status-bar.png", title="Transaction status bar", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0473.png", title="Transaction status bar", shadow=true, padding=20, scale=0.8)}}-
 
-<-->
 Table: Elements of the Transaction status bar
 
 |#|Name|Function|

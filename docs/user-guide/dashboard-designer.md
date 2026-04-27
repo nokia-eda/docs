@@ -1,6 +1,6 @@
 # Dashboard designer
 
-In EDA, you can construct your own dashboard pages to display the data you deem important for your operation.
+In Nokia Event-Driven Automation (EDA), you can construct your own dashboard pages to display the data you deem important for your operation.
 
 The Dashboards page allows you to construct a dashboard, which itself can contain one or more layouts. Each layout is a separate dashboard page, selectable using a drop-down on the main dashboard.
 
@@ -8,13 +8,13 @@ Each dashboard layout can be either a page consisting of a collection of dashlet
 
 For dashboard layouts, you can construct each layout by selecting from a set of pre-defined dashlets. Each dashlet can show a particular type of data like counters, lists, and charts. You can then add these dashlets to a page you design, optionally distributing them among a set of rows and columns you have specified within the page. Individual dashlets can be set to span multiple rows or columns.
 
-For each list layout or dashlet layout in the dashboard, you define source data by constructing an EDA query, natural language query, GVK definition, or specifying a URL endpoint. You can then specify details about which parts of that data is displayed, set thresholds for highlighting, and make other formatting choices depending on the dashlet type.
+For each list layout or dashlet layout in the dashboard, you define source data by constructing a Nokia EDA query, natural language query, GVK definition, or specifying a URL endpoint. You can then specify details about which parts of that data is displayed, set thresholds for highlighting, and make other formatting choices depending on the dashlet type.
 
 Dashboard builder also supports filters. Filters use variable substitution to modify dashlet queries based on user input. For example, a dashboard which displays data for all TopoNodes can be filtered to display only data from a specific TopoNode.
 
 The Dashboard designer displays dashboards that can originate from three sources (as indicated in the **Source** column):
 
-- dashboards that were created by EDA and its installed applications
+- dashboards that were created by Nokia EDA and its installed applications
 - dashboards created by the current user
 - dashboards that the current or other users have chosen to share.
 
@@ -36,7 +36,7 @@ Table: Elements of the Dashboard list
 |2|Row actions|Clicking the Table row actions icon reveals the actions available for the current row in the dashboards data grid.|
 |3|**Create** button|Click to open the Dashboard Designer view for a new dashboard.|
 |5|**Import Layout** button|Click to open a file selection dialog. Select the file for a previously exported dashboard and click **Open** to import the selected dashboard. The new dashboard is then displayed in the Dashboards list.|
-|6|Information panel|A standard EDA information panel, displaying details about the dashboard that is currently selected in the dashboard list.|
+|6|Information panel|A standard Nokia EDA information panel, displaying details about the dashboard that is currently selected in the dashboard list.|
 
 Table: Default Dashboard display columns
 
@@ -44,16 +44,16 @@ Table: Default Dashboard display columns
 |------|-----------|
 |Name|The display name configured for the dashboard.|
 |Source|The source from which the dashboard originated. This can be one of the following values: <ul> <li>An app name (such as Fabrics or Default Routing): this is the source application for this dashboard. </li> <li>User Storage: this is a user-created dashboard.</li></ul>|
-|Type|<ul><li>Application: a dashboard associated with EDA or one of its installed apps. You cannot edit, delete, or publish these dashboards, as signified by the lock icon beside the dashboard name.</li> <li>Personal: a dashboard created by the current user account.</li> <li>Shared: a user-created dashboard that has been published for sharing. When you share your own dashboards, the Shared version is a different entity than the original Personal dashboard. Both can be edited independently.</li></ul>|
+|Type|<ul><li>Application: a dashboard associated with Nokia EDA or one of its installed apps. You cannot edit, delete, or publish these dashboards, as signified by the lock icon beside the dashboard name.</li> <li>Personal: a dashboard created by the current user account.</li> <li>Shared: a user-created dashboard that has been published for sharing. When you share your own dashboards, the Shared version is a different entity than the original Personal dashboard. Both can be edited independently.</li></ul>|
 |Last Changed|The time and date that the last modification was saved for this dashboard.|
 
 Table: Non-default Dashboard display columns
 
 |Column|Description|
 |------|-----------|
-|ID|A unique ID assigned internally by the EDA system.|
+|ID|A unique ID assigned internally by the Nokia EDA system.|
 |File Name|The name and path for the JSON file that contains this dashboard configuration. For example, services/ui/router-dashboard-v0.2.json.|
-|Group|The group within the EDA database where this dashboard is stored. For example, services.eda.nokia.com|
+|Group|The group within the Nokia EDA database where this dashboard is stored. For example, services.eda.nokia.com|
 |Version|The current version of the dashboard. For example, v1. Editing and saving a dashboard creates a new version.|
 
 ### Row actions for dashboards
@@ -88,7 +88,7 @@ Table: Elements of the Dashboard Designer page
 |5|Add List Layout|Select this option in the drop-down to add a List page to the dashboard.|
 |6|Save|Click to save the current dashboard design.|
 |7|Reset|Click to discard all changes since you last saved the layout, after confirmation.|
-|8|More icon|Click to view a list of available actions for the current Dashboard:<ul><li>**Preview saved changes**: open a new tab that displays the current dashboard design.</li><li>**Export**: save the dashboard design as a file, which others can import into their copy of EDA.</li></ul>|
+|8|More icon|Click to view a list of available actions for the current Dashboard:<ul><li>**Preview saved changes**: open a new tab that displays the current dashboard design.</li><li>**Export**: save the dashboard design as a file, which others can import into their copy of Nokia EDA.</li></ul>|
 
 ## Flex grids <span id="dashboard-flex-grids"></span>
 
@@ -109,22 +109,22 @@ When you select a specific cell in the Layout panel, the Properties panel displa
 
 ## Dashlet types <span id="dashlet-types"></span>
 
-Dashlets are the building block from which you can build your dashboard. Several types of dashlets are available in EDA; each can be dragged and dropped on to your dashboard design. If you have added flex columns or rows, you can distribute dashlets within the resulting grid.
+Dashlets are the building block from which you can build your dashboard. Several types of dashlets are available in Nokia EDA; each can be dragged and dropped on to your dashboard design. If you have added flex columns or rows, you can distribute dashlets within the resulting grid.
 
 ### The counts dashlet <span id="dashlet-counts"></span>
 
-The counts dashlet displays a simple count of qualifying instances of something in EDA. You select a data source, and can then specify criteria to distinguish qualifying instances of the selected data that are counted and highlighted, versus the basic number of all records in the selected data source.
+The counts dashlet displays a simple count of qualifying instances of something in Nokia EDA. You select a data source, and can then specify criteria to distinguish qualifying instances of the selected data that are counted and highlighted, versus the basic number of all records in the selected data source.
 
--{{image(url="graphics/sc0221.png", title="A sample counter dashlet", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0221.png", title="A sample counter dashlet", shadow=true, padding=20, scale=0.6)}}-
 
 Table: Counter dashlet properties
 
 |Property|Description|
 |--------|-----------|
 |Common properties|
-|Title|The title of the dashlet when displayed in the EDA UI.|
+|Title|The title of the dashlet when displayed in the Nokia EDA GUI.|
 |Subtitle|A subtitle, displayed below the title and in a smaller font.|
-|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the EDA UI. The target can be:<ul><li>a page within the EDA GUI that you select from the displayed drop-down list</li><li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**.<br><br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
+|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the Nokia EDA GUI. The target can be:<ul><li>a page within the Nokia EDA GUI that you select from the displayed drop-down list</li><li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**.<br><br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
 |Fill available width|Dynamically changes the dashlet width based on the browser window and neighboring dashlets.|
 |Dashlet width|The relative width of the dashlet.|
 |Dashlet height|The relative height of the dashlet.|
@@ -141,16 +141,16 @@ Table: Counter dashlet properties
 
 A line chart dashlet places a line chart on the dashboard layout. It supports both stacked line charts (in which values are successively added to show a series of cumulative totals) and overlaid (a standard line chart in which values are displayed independently, not as a sum).
 
--{{image(url="graphics/sc0222.png", title="A sample line chart dashlet", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0222.png", title="A sample line chart dashlet", shadow=true, padding=20, scale=0.8)}}-
 
 Table: Line dashlet properties
 
 |Property|Description|
 |--------|-----------|
 |Common properties|
-|Title|The title of the dashlet when displayed in the EDA UI.|
+|Title|The title of the dashlet when displayed in the Nokia EDA GUI.|
 |Subtitle|A subtitle, displayed below the title and in a smaller font.|
-|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the EDA UI. The target can be:<ul><li>a page within the EDA GUI that you select from the displayed drop-down list <li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**.</li></ul> <br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
+|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the Nokia EDA GUI. The target can be:<ul><li>a page within the Nokia EDA GUI that you select from the displayed drop-down list <li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**.</li></ul> <br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
 |Fill available width|Dynamically changes the dashlet width based on the browser window and neighboring dashlets.|
 |Dashlet width|The relative width of the dashlet.|
 |Dashlet height|The relative height of the dashlet.|
@@ -162,16 +162,16 @@ Table: Line dashlet properties
 
 A donut dashlet places a pie chart on the dashboard layout. You must configure a data source, and then set criteria for various pie slices describing qualifying subsets of that data. Many parameters are available to control the way the appearance of the chart and the individual pie slices.
 
--{{image(url="graphics/sc0223.png", title="A sample donut dashlet", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0223.png", title="A sample donut dashlet", shadow=true, padding=20, scale=0.6)}}-
 
 Table: Donut chart properties
 
 |Property|Description|
 |--------|-----------|
 |Common properties|
-|Title|The title of the dashlet when displayed in the EDA UI.|
+|Title|The title of the dashlet when displayed in the Nokia EDA GUI.|
 |Subtitle|A subtitle, displayed below the title and in a smaller font.|
-|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the EDA UI. The target can be:<ul><li>a page within the EDA GUI that you select from the displayed drop-down list</li><li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**.</li></ul><br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
+|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the Nokia EDA GUI. The target can be:<ul><li>a page within the Nokia EDA GUI that you select from the displayed drop-down list</li><li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**.</li></ul><br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
 |Fill available width|Dynamically changes the dashlet width based on the browser window and neighboring dashlets.|
 |Dashlet width|The relative width of the dashlet.|
 |Dashlet height|The relative height of the dashlet.|
@@ -194,16 +194,16 @@ Table: Donut chart properties
 
 A data view dashlet places a data grid on the dashboard. You must specify a data source as part of the dashlet design.
 
--{{image(url="graphics/sc0262.png", title="A sample dataview dashlet", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0262.png", title="A sample dataview dashlet", shadow=true, padding=20, scale=0.6)}}-
 
 Table: Dataview properties
 
 |Property|Description|
 |--------|-----------|
 |Common properties|
-|Title|The title of the dashlet when displayed in the EDA UI.|
+|Title|The title of the dashlet when displayed in the Nokia EDA GUI.|
 |Subtitle|A subtitle, displayed below the title and in a smaller font.|
-|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the EDA UI. The target can be:<ul><li>a page within the EDA GUI that you select from the displayed drop-down list </li><li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**. <br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
+|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the Nokia EDA GUI. The target can be:<ul><li>a page within the Nokia EDA GUI that you select from the displayed drop-down list </li><li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**. <br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
 |Fill available width|Dynamically changes the dashlet width based on the browser window and neighboring dashlets.|
 |Dashlet width|The relative width of the dashlet.|
 |Dashlet height|The relative height of the dashlet.|
@@ -218,16 +218,16 @@ A bar chart dashlet places a bar chart on the dashboard layout. It supports both
 
 You can also configure the chart to show stacked bars contributing to a total value, with the elements in the stack indicated as either a raw value or a percentage of the whole.
 
--{{image(url="graphics/sc0224.png", title="A sample bar chart dashlet", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0224.png", title="A sample bar chart dashlet", shadow=true, padding=20, scale=0.6)}}-
 
 Table: Bar chart properties
 
 |Property|Description|
 |--------|-----------|
 |Common properties|
-|Title|The title of the dashlet when displayed in the EDA UI.|
+|Title|The title of the dashlet when displayed in the Nokia EDA GUI.|
 |Subtitle|A subtitle, displayed below the title and in a smaller font.|
-|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the EDA UI. The target can be:<ul><li>a page within the EDA GUI that you select from the displayed drop-down list</li><li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**.<br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
+|Navigation target|Adds a **View** button to the dashlet that, when clicked, opens a selected page within the Nokia EDA GUI. The target can be:<ul><li>a page within the Nokia EDA GUI that you select from the displayed drop-down list</li><li>the Query Builder page. For this option, enter the navigation target /ui/main/queryapi. This causes an additional field to display among the dashlet properties: **Optional Navigation Query**.<br>The query that is displayed on the Query Builder page after a user clicks the **View** link on the dashlet depends on the value in the **Optional Navigation Query** field. Here you can set the query that displays in the Query Builder; this could be the query that underlies the dashlet, or another.|
 |Fill available width|Dynamically changes the dashlet width based on the browser window and neighboring dashlets.|
 |Dashlet width|The relative width of the dashlet.|
 |Dashlet height|The relative height of the dashlet.|
@@ -264,7 +264,7 @@ This task guides you through the steps of adding and configuring layouts within 
 5. In the **Definition** panel, configure basic properties for the dashboard:
 
     - **Layout name**: an internal name for this layout. This name cannot include spaces or special characters.
-    - **Display name**: the name for this layout, as displayed within the EDA GUI. Unlike the layout name, you can include spaces in the Display name.
+    - **Display name**: the name for this layout, as displayed within the Nokia EDA GUI. Unlike the layout name, you can include spaces in the Display name.
     - **Description**: an optional description of the layout and its purpose.
     - **Show navigation toolbar?**: governs whether a breadcrumb bar displays above the dashboard.
 
@@ -298,7 +298,7 @@ This task guides you through the steps of adding and configuring layouts within 
 10. In the **Definition** panel, configure basic properties for the dashboard:
 
     - **Layout name**: an internal name for this layout. This name cannot include spaces or special characters.
-    - **Display name**: the name for this layout, as displayed within the EDA GUI. Unlike the layout name, you can include spaces in the Display name.
+    - **Display name**: the name for this layout, as displayed within the Nokia EDA GUI. Unlike the layout name, you can include spaces in the Display name.
     - **Description**: an optional description of the layout and its purpose.
     - **Show navigation toolbar?**:
 
@@ -380,7 +380,7 @@ This task guides you through the steps of adding and configuring layouts within 
     - To add a new dashboard layout to your dashboard, click **Add**.
     - To add a new list layout to your dashboard, use the drop-down beside the **Add** control to select **Add list Layout**.
     - To preview your dashboard, click the **More** icon and select **Preview Saved Changes** from the list of actions.
-    - To save your dashboard layout as a file, suitable for others to import into their EDA system, click the **More** icon and select **Export** from the list of actions.
+    - To save your dashboard layout as a file, suitable for others to import into their Nokia EDA system, click the **More** icon and select **Export** from the list of actions.
 
 ///
 
@@ -421,7 +421,7 @@ For example, the following query includes a where clause referring to three diff
 .namespace.node.srl.interface.statistics where (out-octets != 0 and in-octets != 0 and .namespace.node.name = "${nodename}" and .namespace.name = "${target.namespace}" and .namespace.node.srl.interface.name = "${custom}") delta milliseconds 250
 ```
 
-After you have configured one or more filters, corresponding filter fields are displayed in the following places in the EDA GUI:
+After you have configured one or more filters, corresponding filter fields are displayed in the following places in the Nokia EDA GUI:
 
 - on the query configuration page for every dashlet within the dashboard. On the query configuration page you can add the filter expression to the dashlet's underlying query. When the query includes the filter expression, you can test the result by entering filter values to immediately constrain the dashlet's underlying data set.
 
@@ -473,7 +473,7 @@ The query that is displayed on the Query Builder page includes the "where" claus
 
        /// admonition | Note
             type: subtle-note
-       If you do not press the Enter key, the EDA UI does not recognize that the query is complete and you are unable to proceed.
+       If you do not press the Enter key, the Nokia EDA GUI does not recognize that the query is complete and you are unable to proceed.
        ///
 
     4. Click **Save**.
@@ -490,7 +490,7 @@ The query that is displayed on the Query Builder page includes the "where" claus
 
         /// admonition | Note
             type: subtle-note
-        If you do not press the Enter key, the EDA UI does not recognize that the query is complete and you are unable to proceed.
+        If you do not press the Enter key, the Nokia EDA GUI does not recognize that the query is complete and you are unable to proceed.
 
         You may need to wait a moment for the system to finish resolving the query before selecting a field from the query results in the next step.
         ///

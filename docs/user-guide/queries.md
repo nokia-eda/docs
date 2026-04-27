@@ -1,8 +1,8 @@
 # EQL - the EDA Query Language
 
-A key philosophy of EDA is to make state streamable for further processing, where state can be sourced externally via gRPC, internally via core services, or locally via Kubernetes. Beyond being used as event triggers, state is incredibly useful for debugging, and so we required a means to allow humans to interact with it also. Enter the EDA Query Language, or EQL.
+A key philosophy of Nokia Event-Driven Automation (EDA) is to make state streamable for further processing, where state can be sourced externally via gRPC, internally via core services, or locally via Kubernetes. Beyond being used as event triggers, state is incredibly useful for debugging, and so we required a means to allow humans to interact with it also. Enter the Nokia EDA Query Language, or EQL.
 
-Loosely based on [Jira Query Language][jql-overview], EQL allows the full surface area of the EDA API, all state info in EDB, along with the full surface area of managed endpoints to be queried and parsed in real time. Queries can be made real time in the heat of troubleshooting, with instantaneous, streaming results. Queries can be sourced as data for visualizations, and streamed via the API or StateAggregator, allowing external applications to constrain event triggers.
+Loosely based on [Jira Query Language][jql-overview], EQL allows the full surface area of the Nokia EDA API, all state info in EDB, along with the full surface area of managed endpoints to be queried and parsed in real time. Queries can be made real time in the heat of troubleshooting, with instantaneous, streaming results. Queries can be sourced as data for visualizations, and streamed via the API or StateAggregator, allowing external applications to constrain event triggers.
 
 The easiest way to interact with queries is via the UI - simply click `Queries` in the navigation menu. You optionally can use the REST API, or `edactl`.
 
