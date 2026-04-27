@@ -14,8 +14,6 @@ To log into the EDA GUI, you must have:
     The default port for EDA is 9443, but consult your local administrator for your organization's URL for EDA.
     ///
 
-    -{{image(url="../graphics/sc0203.png", title="Figure: The EDA login page", shadow=true, padding=20)}}-
-
 2. Enter your username or email address and password.
 
     If you have forgotten your password, click the **Forgot password?** link. Enter your email address in the field displayed and click **Submit** to receive instructions for resetting your password.

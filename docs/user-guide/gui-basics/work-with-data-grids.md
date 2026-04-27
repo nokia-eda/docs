@@ -13,7 +13,7 @@ Table: Data grid controls
 
 |\#|Name|Function|
 |:---:|----|--------|
-|1|Row selectors|Use these to select one or more individual rows. <br>**Note:** You can use the space key to toggle the focused (active) check box in the row.|
+|1|Row selectors|Use these to select one or more individual rows.<br>**Note:** You can use the space key to toggle the focused (active) check box in the row.|
 |2|Multiple row selector|Use this to toggle between selecting all rows, and un-selecting all rows.|
 |3|Text string filter|Enter an alphanumeric string to filter the list based on matching values in that column.|
 |4|Selection filter|Select a value to filter the list based on matching values in that column.|
@@ -36,7 +36,7 @@ Columns may be collected into groups; in this case, individual columns are neste
 
 For any table, you can select which columns are displayed and which are hidden from view.
 
-In the list of standard table actions, click **Manage columns...** to open a Manage Columns dialog. This dialog lists all available columns; those checked are included in the data grid, and those unchecked are excluded. By default, some possible columns may already be excluded from view.
+In the list of standard table actions, click **Manage columns** to open a Manage Columns dialog. This dialog lists all available columns; those checked are included in the data grid, and those unchecked are excluded. By default, some possible columns may already be excluded from view.
 
 Select or un-select the available columns and click **Apply** to close the dialog and update the data grid display based on your selections.
 
@@ -88,13 +88,56 @@ You can filter the displayed data to include only those with specific values in 
 
 To clear all filtering from the data grid, click the **Table settings &amp; actions** icon and select **Clear filters** from the action list.
 
+## Advanced filtering
+
+For EQL-based data grids such as alarms, resources, and queries, you have the option of filtering using the EDA query language (EQL). To switch to advanced filtering, select **Advanced filtering** from the **Table settings &amp; actions** menu. 
+
+-{{image(url="../graphics/advanced-filtering.png", title="Advanced filtering for data grids", shadow=true, padding=20)}}-
+
+The text input bar supports the EQL `where` clause syntax. For information about how to use EQL, see [EDA query language](../eda-query-language.md)
+
+/// admonition | Note
+    type: subtle-note
+Switching from advanced to basic mode will clear existing filters.
+///
+
+## Using the column menu
+
+For some data grids, when you hover a column heading, a **Menu** icon displays.
+
+-{{image(url="../graphics/column-menu.png", title="Column menu", shadow=true, padding=20)}}-
+
+From the column menu, you can select from the following options:
+
+- **Sort by ASC** and **Sort by Desc**: sort by ascending and descending order
+- pin to the left or to the right
+- **Filter**: click to open a **Multiple Filters** form where you can create multiple filters.
+- group columns by the selected title
+- hide the column
+- **Manage columns**: opens a form where you can do one of the following:
+  
+      - select the columns to display
+      - search for a column
+      - select to show or hide all columns
+
+<!-- EDA-4049 switch between raw and UI rendered data -->
+## Switching to raw value for column headings
+
+By default, the EDA UI displays user-friendly versions of the field names and values.
+
+For EQL-based data grids such as alarms, and resources you can switch to the raw API field names and values. This is useful when using the UI as reference for API calls and EQL queries. 
+
+To switch to raw values, select **Show raw values** from the **Table settings &amp; actions** menu.
+
+-{{image(url="../graphics/raw-values.png", title="Raw values for UI titles", shadow=true, padding=20)}}-
+
+To return to the UI rendered values, click **Show user-friendly values** from the **Table settings &amp; actions** menu.
+
 ## Multi-row actions
 
 Some tables support actions that can be simultaneously applied to all selected rows. When available, these actions are displayed under a sub menu of the **Table settings and actions** menu.
 
-Some tables also support the option to **Revert** multiple deleted resources simultaneously. For more information on the **Revert** button, see [Transactions](../transactions.md).
-
--{{image(url="../graphics/sc0214.png", title="Multi-row actions for nodes list", shadow=true, padding=20)}}-
+-{{image(url="../graphics/sc0214.png", title="Multi-row actions for alarms list", shadow=true, padding=20)}}-
 
 ## Special actions
 
@@ -104,18 +147,18 @@ Some tables support special actions appropriate to the particular data displayed
 
 ## Counters
 
-Many data grids throughout the EDA UI contain counters for alarms and deviations. Each of these counters appears as a column in the data grid.
+All resource data grids throughout the EDA UI contain counters for alarms and deviations. Each of these counters appears as a column in the data grid.
 
-The Alarm column displays the number of alarms present in each of the following categories for the specified resource:
+The Alarm column displays the number of active alarms, per severity, that are raised against the specified resource:
 
 - critical
 - major
 - minor
 - warning
 
-The Deviation column displays the number of deviations associated with the specified resource.
+For Node resources, the alarm counters include alarms raised against the resource and alarms where the node is listed as an affected target.
 
-For Node resources, the alarm counters include both alarms raised against the resource and alarms where the node is listed as an affected target.
+The Deviation column displays the number of deviations associated with the specified resource.
 
 **Related information**  
 
@@ -128,7 +171,7 @@ To aid on those occasions where you need to make the same change to multiple ite
 
 -{{image(url="../graphics/sc0216.png", title="Actions for the nodes list", shadow=true, padding=20)}}-
 
-The Bulk Edit option allows you to:
+The **Bulk Edit** option allows you to:
 
 1. Select a set of objects in a list.
 
@@ -136,22 +179,27 @@ The Bulk Edit option allows you to:
 
 3. Apply those same changes to all of the selected objects (immediately as a commit, or later as part of a transaction).
 
-After you select all of the objects that are the subject of your change (using the check box at the left of each row), selecting the **Bulk Edit** option opens the Bulk Edit page.
+After you select all of the objects that are the subject of your change (using the check box at the left of each row), selecting the **Bulk Edit** option from **Table settings & actions** opens the **Bulk Edit** page.
 
-The Bulk Edit page indicates the number of objects selected, and lists all of the editable properties those objects share. For each property, a check box allows you to select it for modification.
+The **Bulk Edit** page indicates the number of objects selected, and lists all of the editable properties those objects share. For each property, a check box allows you to select it for modification.
 
 After an item has been selected for editing, a drop-down control allows you to choose the type of change to make, and a field displays the specific changes you have indicated for that property.
 
--{{image(url="../graphics/sc0217.png", title="The bulk edits page", shadow=true, padding=20)}}-
+<!-- EDA-3520 Review selected resources in bulk edit -->
 
-Table: Elements of the Bulk Edit page
+The **Selected Items** split view button displays the selected items you are making changes to. You can deselect items from this list to exclude them from the bulk edit.
+
+-{{image(url="../graphics/sc0217-placeholder.png", title="The bulk edits page", shadow=true, padding=20)}}-
+
+Table: Elements of the **Bulk Edit** page
 
 |Item|Description|
 |:---:|-----------|
 |1|The page name and an indication of the number of selected objects that are subject to these bulk changes after they are committed.|
 |2|A list of modifiable properties for the selected objects.|
-|3|In this case the Labels field is selected for modification. Because the field has been selected for modification, the actions drop-down list is displayed. Available options are specific to the Labels field.|
-|4|After configuring the set of changes for all parameters, choose from among the standard Commit options for this bulk edit:<ul><li>**Commit** to immediately apply the changes on this Bulk Edit page.</li><li>**Add to Transaction** to store these changes to be processed later as part of a transaction (which can include other accumulated commits to be applied as part of the same operation).|
+|3|In this, case the **Labels** field is selected for modification. Because the field has been selected for modification, the actions drop-down list is displayed. Available options are specific to the **Labels** field.|
+|4|The **Selected Items** split view displays the selected items and allows you to select or deselect items from the list. This view can be collapsed.|
+|5|After configuring the set of changes for all parameters, choose from among the standard Commit options for this bulk edit:<ul><li>**Commit** to immediately apply the changes on this Bulk Edit page.</li><li>**Add To Basket** to store these changes to be processed later as part of a transaction (which can include other accumulated commits to be applied as part of the same operation).<li>**Dry Run** to test your changes, so you can reveal and resolve any issues before proceeding.|
 
 The actions available for a specific parameter as part of a bulk edit depend on the type of data being modified.
 
@@ -164,7 +212,7 @@ Single-value fields are those that contain integers, strings, or enums (single s
 
 /// admonition | Note
     type: subtle-note
-If a field is required, the Remove option is not available.
+If a field is required, the **Remove** option is not available.
 ///
 
 -{{image(url="../graphics/sc0251.png", title="Bulk edit options for an optional text field", shadow=true, padding=20)}}-

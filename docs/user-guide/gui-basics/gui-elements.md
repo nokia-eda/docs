@@ -29,6 +29,14 @@ When you click the **Workflows** button, the 10 most recent workflows that you e
 - click one of the workflow executions to take you to its Summary page.
 - click the **List** button to take you to the Workflow Executions page.
 
+## Ask EDA
+
+**Ask EDA** is EDA chat interface. You can click the Ask EDA icon from anywhere in the EDA to open a chat window.
+
+-{{image(url="../graphics/ask-eda-icon.png", title="Ask EDA icon", shadow=true, padding=20)}}-
+
+From the **Ask EDA** chat interface, you can make natural-language queries, enter CLI **show** commands, perform root-cause analysis of alarms and transactions, create charts, and so forth. See [Ask EDA](..//ask-eda.md) for more information.
+
 **Related information**  
 
 - [Workflows](../workflows.md)
