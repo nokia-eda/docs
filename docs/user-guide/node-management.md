@@ -33,7 +33,7 @@ To specify whether the node configuration is saved after each commit or not, in 
 
 Ensure that you meet the following requirements:
 
-- The NodeSecurityProfile resource (for TLS) must be configured to ensure successful onboarding. For details, see [Node security profile](node-rbac.md#node-security-profile).
+- The NodeSecurityProfile resource (for TLS) must be configured to ensure successful onboarding. For details, see [Node security profile](security/node-rbac.md#node-security-profile).
 
 - A node requires the relevant Nokia EDA License resource to be applied. Without this license, the node will not be onboarded.
 

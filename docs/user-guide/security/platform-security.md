@@ -1,10 +1,14 @@
-# Changing internal passwords
+# Platform security
+
+This section discusses how to secure the EDA infrastructure and manage internal passwords.
+
+## Changing internal passwords
 
 EDA uses internal passwords to communicate between its internal services. These passwords are either hard-coded or are set before system installation.
 
 After the system has been installed, administrators with cluster role privileges can update internal passwords for the following services using the applicable UI or scripts:
 
-- Git passwords, Go Git server \(Gogs\) passwords
+- Git passwords, Go Git server (Gogs) passwords
 - Keycloak passwords and secrets
 - PostgreSQL passwords
 
@@ -18,9 +22,7 @@ The following scripts are also available in the EDA toolbox pod:
 
 - `reset-04-pgdb-password.sh`: resets the PostgreSQL database password
 
-**Parent topic:** [Platform security](platform-security.md)
-
-## Updating the Git server password <span id="updating-git-server-password"></span>
+### Updating the Git server password <span id="updating-git-server-password"></span>
 
 /// html | div.steps
 
@@ -132,7 +134,7 @@ The following scripts are also available in the EDA toolbox pod:
 
 ///
 
-## Updating the Keycloak password <span id="keycloak-and-the-eda-ui"></span>
+### Updating the Keycloak password <span id="keycloak-and-the-eda-ui"></span>
 
 /// html | div.steps
 
@@ -183,7 +185,7 @@ The following scripts are also available in the EDA toolbox pod:
 
 ///
 
-## Update the PostgreSQL database using the script <span id="update-postreg-database-using-script"></span>
+### Updating the PostgreSQL database using the script <span id="update-postreg-database-using-script"></span>
 
 /// html | div.steps
 
@@ -224,4 +226,102 @@ Perform this procedure using the `reset-04-pgdb-password.sh` script from the too
     ```
     kubectl rollout restart deployment eda-postgres eda-keycloak
     ```
+
 ///
+
+## Unique Keycloak client secret per installation
+
+To avoid the risk of a secret revealed at one customer can affect the installations of other installations, internal secrets used by the different EDA components must be unique for each installation. This practice is especially important for the Keycloak secrets that are used by the API server to configure and communicate with the Keycloak API server.
+
+### Changing the Keycloak secret <span id="changing-the-keycloak-secret"></span>
+
+/// html | div.steps
+
+By default, a unique secret is generated per installation. Use this procedure to regenerate a new Keycloak secret.
+
+1. From your web browser, navigate to `{EDA_URL}/core/httpproxy/v1/keycloak`.
+
+2. Log in with the Keycloak administrator username and password.
+
+3. From the **Keycloak** drop-down list on the upper left, select **Event Driven Automation eda**.
+
+4. Select **Clients** from the menu on the left.
+
+5. Select "eda" in the client table in the main web page area.
+
+6. Select **"Credentials"** in the tab bar containing, **"Settings/Keys/Credentials/Roles/..."**
+
+7. Note the current "Client Secret".
+
+8. Click **Regenerate** to generate a new random value for the secret.
+
+///
+
+### Changing the Keycloak admin password <span id="change-keycloak-user-pw"></span>
+
+Use this procedure to change the Keycloak admin password.
+/// html | div.steps
+
+1. From your web browser, navigate to `{EDA_URL}/core/httpproxy/v1/keycloak`.
+
+2. Log in with the current Keycloak administrator username and password.
+
+3. From the user drop-down list on the upper right, select **Manage Account**.
+
+4. From the menu on the left, select **Account Security** &gt; **Signing In**.
+
+5. Click **Update** next to **My Password**.
+
+6. Configure a new password and save it.
+
+7. Generate the Base 64 hash of the new password.
+
+8. Using a system with access to the Kubernetes API of the EDA deployment, execute the following command:
+
+    ```
+    kubectl -n eda-system patch secret keycloak-admin-secret -p
+            '{"data": { "password": "<NEW BASE64 HASH>" }}'
+    ```
+
+9. Restart the Keycloak service.
+
+    ```
+    kubectl -n eda-system rollout restart deployment/eda-keycloak
+    ```
+
+///
+
+## Proxy forward headers
+
+Forward headers are required for accurate access-logging of the source IP on proxied servers, notably, Keycloak.
+The engine-config parameter `ProxyMode` controls Keycloak endpoint handles these headers. It has the following settings:
+
+- `None` (the default): if EDA is deployed behind a reverse proxy, the setting cannot be `None`; the setting must be `Forwarded` or `XForward`.
+- `Forward`: the API server trusts the `Forwarded` header on incoming traffic and forwards it unchanged to the destination. All `X-Forwarded-*` headers are dropped.
+- `XForward`: the API server trusts the `X-Forwarded-*` HTTP header on incoming traffic and forwards them unchanged to the destination. The `Forwarded` header is dropped.
+
+/// Admonition | Note
+    type: subtle-note
+The end user is responsible for the secure configuration of forward headers on their reverse proxy.
+///
+
+The setting for `ProxyMode` interacts with Keycloak configuration as follows:
+
+- If `ProxyMode` is set to None  or forwarded, configure Keycloak with "--proxy-headers forwarded"
+- If `ProxyMode` is set to **XForward**, configure Keycloak with "--proxy-headers xforwarded"
+
+Table: Summary of how Keycloak handles forward headers
+
+|    | `relaxDomainNameEnforcement`=FALSE | `relaxDomainNameEnforcement`=TRUE |
+|---|---|---|
+| `ProxyMode`=`None` | --proxy-headers forwarded | --hostname-strict false --proxy-headers forwarded |
+| `ProxyMode`=`Forward` | --proxy-headers forwarded | --hostname-strict false --proxy-headers forwarded |
+| `ProxyMode`=`XForward` | --proxy-headers xforwarded | --hostname-strict false --proxy-headers xforwarded |
+
+Table: Summary of how the API-server handles forward headers
+
+|  | `relaxDomainNameEnforcement = FALSE` | `relaxDomainNameEnforcement = TRUE` |
+| ----------- | -------------------------------------- | -------------------------------------- |
+| `ProxyMode`=`None`  | • Drop `Forwarded` and `X‑Forwarded‑*` headers.<br>• Generate a new `Forwarded` header containing a `for=` directive.<br>• Add a `host=` directive only for the built‑in identity proxy. | Pass all `Forwarded` and `X‑Forwarded‑*` headers unchanged. |
+| `ProxyMode`=`Forward` | • If a `Forwarded` header exists, append a `for=` directive and forward the rest unchanged.<br>• If absent, create a `Forwarded` header with a `for=` directive.<br>• Drop all `X‑Forwarded‑*` headers.<br>• No extra `host=` directives for the built‑in identity proxy. | Pass all `Forwarded` and `X‑Forwarded‑*` headers unchanged. |
+| `ProxyMode`=`XForward` | • If an `X‑Forwarded‑For` header exists, append the client IP to the list<br>• If absent, create an `X‑Forwarded‑For` header with the client IP.<br>• Forward other `X‑Forwarded‑*` headers unchanged.<br>• Drop the `Forwarded` header.<br>• No `X‑Forwarded‑Host` header for the built‑in identity proxy. | Pass all `Forwarded` and `X‑Forwarded‑*` headers unchanged. |

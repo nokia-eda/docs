@@ -59,11 +59,11 @@ nav:
       - Allocation Pools: user-guide/allocation-pools.md
       - Network topology: user-guide/network-topology.md
       - Node management: user-guide/node-management.md
-      - Security: user-guide/security.md
-      - Access control for integration: user-guide/access-control.md
-      - Certificate Management for integration: user-guide/certificate-management/index.md
-      - Platform security: user-guide/platform-security.md
-      - Node RBAC: user-guide/node-rbac.md
+      - Security:
+          - User management: user-guide/security/user-management.md
+          - Certificate management: user-guide/security/certificate-management.md
+          - Platform security: user-guide/security/platform-security.md
+          - Node RBAC: user-guide/security/node-rbac.md
       - Using the CLIs: user-guide/using-the-clis.md
       - Digital Twin:
           - digital-twin/index.md

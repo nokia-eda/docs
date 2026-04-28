@@ -35,7 +35,7 @@ EDA supports a `superuser` attribute; if enabled for a node user group, users th
 
 ### TACACS+
 
-System administrators commonly use TACACS+ to authenticate users, and then use the local device to enforce a locally-defined rule set, or role. In EDA, enforcement uses the privilege level in TACACS+. If TACACS+ is used for authentication and if a privilege level is returned, a user is granted the set of permissions from all groups that match that privilege level and lower \(following TACACS+ implementation of higher privilege levels inheriting permissions of lower levels\).
+System administrators commonly use TACACS+ to authenticate users, and then use the local device to enforce a locally-defined rule set, or role. In EDA, enforcement uses the privilege level in TACACS+. If TACACS+ is used for authentication and if a privilege level is returned, a user is granted the set of permissions from all groups that match that privilege level and lower (following TACACS+ implementation of higher privilege levels inheriting permissions of lower levels).
 
 **Note:** TACACS+ server configuration is currently done through a `Configlet` application.
 

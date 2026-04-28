@@ -21,4 +21,9 @@ You can use the `edactl platform` command options:
 
     - Start the cluster again using `edactl platform start`. This command restores everything (including CRDs).
     - Complete an uninstall by removing the EngineConfig CRD, and the eda-ce Deployment. At this point the cluster would be "clean" - that is, in a pre-EDA state.
-  
+
+## Restoring a user's settings to default
+
+The `edactl aaa user settings clear` command restores a user's persistent settings in EDA to the default settings. This command is useful in scenarios where a user inadvertently writes an incompatible or errored change to their persistent settings, resulting in the browser going into a perpetual error loop.
+
+The command does not impact dashboards and other user-generated content, but does impact settings for grid layouts, dark mode settings, and so forth.
