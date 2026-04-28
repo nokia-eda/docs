@@ -1,18 +1,18 @@
 # Topologies
 
-The EDA UI includes a framework for visualizing topology diagrams, and overlaying state information with colors and badges. Topologies and their overlay are created by EDA apps.
+The Nokia EDA GUI includes a framework for visualizing topology diagrams, and overlaying state information with colors and badges. Topologies and their overlay are created by Nokia EDA apps.
 
-A topology diagram can represent the relationships between any set of data that has a structured relationship. The most common is the 'Physical' topology provided by the EDA app 'Topologies', illustrating the physical nodes, links, and interfaces managed within EDA.
+A topology diagram can represent the relationships between any set of data that has a structured relationship. The most common is the 'Physical' topology provided by the Nokia EDA app 'Topologies', illustrating the physical nodes, links, and interfaces managed within Nokia EDA.
 
-The EDA topologies framework is comprised of 'nodes', 'links', and 'endpoints'. For the physical topology this maps to:
+The Nokia EDA topologies framework is comprised of 'nodes', 'links', and 'endpoints'. For the physical topology this maps to:
 
-- `TopoNode` resources are the 'nodes', representing network switches and routers managed by EDA.
+- `TopoNode` resources are the 'nodes', representing network switches and routers managed by Nokia EDA.
 - members of the `TopoLink` resources are the 'links', representing physical cables between nodes.
 - members of the `Interface` resources are the 'endpoints', representing physical ports of the nodes.
 
 ## The topology diagram
 
-In the EDA UI, you can view the available topology diagrams by selecting **Topologies** in EDA's Main navigation panel. From here the UI displays a list of all topologies installed in the system.
+In the Nokia EDA GUI, you can view the available topology diagrams by selecting **Topologies** in Nokia EDA's Main navigation panel. From here the UI displays a list of all topologies installed in the system.
 
 Double-clicking or selecting **Show Topology** from the actions menu on the **Topologies** page opens the selected topology diagram.
 
@@ -60,7 +60,7 @@ More details about the significance of a badge are available in the **Informatio
 
 ## Information panel
 
-As with many pages in the EDA GUI, an information panel is available on the right side of the topology illustration. Expand this panel to view detailed information about a selected object within the illustration.
+As with many pages in the Nokia EDA GUI, an information panel is available on the right side of the topology illustration. Expand this panel to view detailed information about a selected object within the illustration.
 
 For links, the information panel includes nested summaries for each selected link showing its endpoints. Actions are available through a contextual menu associated with each eligible object.
 
