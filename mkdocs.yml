@@ -16,10 +16,9 @@ nav:
       - Preparing for installation: software-install/preparing-for-installation.md
       - Air-gapped setup:
           - software-install/air-gapped/index.md
-          - Preparing the Assets VM: software-install/air-gapped/preparing-the-assets-vm.md
           - Downloading the Assets: software-install/air-gapped/downloading-the-assets.md
-          - Preparing the environment: software-install/air-gapped/preparing-the-air-gapped-environment.md
           - Deploying the Assets VM: software-install/air-gapped/deploying-the-assets-vm.md
+          - Uploading the Assets: software-install/air-gapped/uploading-assets.md
       - Deploying EDA:
           - software-install/deploying-eda/index.md
           - Setting up the EDA nodes: software-install/deploying-eda/setting-up-the-eda-virtual-machine-nodes.md

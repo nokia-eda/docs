@@ -370,7 +370,7 @@ An optional set of PEM-formatted certificates that need to be trusted; this sett
 `mirror`
 ////////
 //////// html | td
-Only needed for Air-gapped environment, following settings can be set:
+Only needed for air-gapped environment, following settings can be set:
 
 * `name`: The name of the mirror
 * `url`: The URL of the mirror
@@ -434,7 +434,7 @@ A list of logging destinations to which the Talos logs should be sent. Consult t
 
 ### Example EDAADM configuration file
 
-The following examples show an EDAADM configuration file for a 6-node Kubernetes cluster. For a standard Internet based installation, as well as for an Air-gapped installation. These are the same two files, with only the `mirror` addition on the second tab/file.
+The following examples show an EDAADM configuration file for a 6-node Kubernetes cluster. For a standard Internet based installation, as well as for an air-gapped installation. These are the same two files, with only the `mirror` addition on the second tab/file.
 
 /// tab | Internet based installation
 

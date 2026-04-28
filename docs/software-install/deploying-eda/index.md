@@ -1,6 +1,6 @@
 # Deploying EDA
 
-These are the major steps for installing the EDA deployment. This applies to both Air-gapped installations and Internet based installations. Some steps will differ depending on the type of install, this will be clearly called out highlighting both options.
+These are the major steps for installing the EDA deployment. This applies to both air-gapped installations and Internet based installations. Some steps will differ depending on the type of install, this will be clearly called out highlighting both options.
 
 /// html | div.steps
 

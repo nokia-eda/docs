@@ -16,8 +16,6 @@ There are two types of assets that need to be downloaded:
 
 1. Change into the `edaadm` repository.
 
-    In case you have changed directories after the ["Preparing the Assets VM"](preparing-the-assets-vm.md) step, ensure that you are in the `edaadm` repository.
-
     ```bash title="changing into edaadm repository directory"
     cd path/to/edaadm
     ```
@@ -129,3 +127,25 @@ To deploy the EDA Kubernetes VMs, the base Talos image is needed for KVM or VMwa
     The downloaded images will be stored in the `./bundles/eda-cargo/talos-stock-boot-media/` folder and can be used during the [deploying the Assets VM](deploying-the-assets-vm.md) step.
 
 ///
+
+Depending on the approach used to host the services, follow the appropriate section below.
+
+<div class="grid cards" markdown>
+
+* :octicons-container-16:{ .middle } **Using EDA Assets VM**
+
+    ---
+
+    When using the EDA Assets VM you next step is to deploy the Assets VM.
+
+    [:octicons-arrow-right-24: Deploy the Assets VM](deploying-the-assets-vm.md)
+
+* :material-hammer-screwdriver:{ .middle } **Using existing services**
+
+    ---
+
+    In case you are using existing services for one of the required components (git server, container registry or web server), you need to upload the relevant assets using the `edaadm`.
+
+    [:octicons-arrow-right-24: Upload the assets](uploading-assets.md)
+
+</div>
