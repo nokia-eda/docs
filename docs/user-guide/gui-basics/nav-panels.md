@@ -1,21 +1,21 @@
-# Navigation panels
+# Navigation panel
 
-The EDA side panel navigation menu always includes a set of core items. As you install new apps, the menu items grow to include the resources provided by those apps.
+The Nokia EDA side panel navigation panel always includes a set of core items. As you install new apps, the menu items grow to include the resources provided by those apps.
 
 By default, The menu items are divided into two panels:
 
-- **Main**: this panel contains the majority of options you can use to manage resources with EDA.
-- **System Administration**: this panel contains options you can use to manage the EDA application itself, as well as user management and node management selections.
+- **Main**: this panel contains the majority of options you can use to manage resources with Nokia EDA.
+- **System Administration**: this panel contains options you can use to manage the Nokia EDA application itself, as well as user management and node management selections.
 
 You can use the menu options to display the **Main** panel; or the **System Administration** menu; or select (**All**) to display items from both.
 
 -{{image(url="../graphics/sc0208.png", title="Menu display options", shadow=true, padding=20)}}-
 
-## Pinning and un-pinning the main menu
+## Pinning and un-pinning the panel
 
-Click the hamburger button at the upper left off the EDA GUI to expand the menu horizontally and pin it open, or to un-pin it and allow it to collapse against the left edge of the EDA GUI.
+Click the hamburger button at the upper left off the EDA UI to expand the menu horizontally and pin it open, or to un-pin it and allow it to collapse against the left edge of the Nokia EDA UI.
 
--{{image(url="../graphics/sc0207.png", title="The EDA main menu showing an expanded category", shadow=true, padding=20)}}-
+-{{image(url="../graphics/sc0207.png", title="The Nokia EDA navigation panel showing an expanded category", shadow=true, padding=20)}}-
 
 ## Menu categories
 
@@ -30,7 +30,7 @@ You can vertically expand or collapse individual categories using the chevron be
 
 You can also expand or collapse all categories simultaneously using the **EXPAND CATEGORIES** or **COLLAPSE CATEGORIES** toggle near the top of the menu.
 
--{{image(url="../graphics/sc0210.png", title="Expand menu toggle", shadow=true, padding=20)}}-
+-{{image(url="../graphics/sc0210-26-4-1.png", title="Expand menu toggle", shadow=true, padding=20)}}-
 
 ## Searching the menu
 
@@ -38,26 +38,26 @@ You can use the Search box to find all of the menu selections whose names includ
 
 If your search matches a category name, all of the selections within that category are included in the search results (even though the selections themselves may not match your search string).
 
--{{image(url="../graphics/sc0211.png", title="Menu search results", shadow=true, padding=20)}}-
+-{{image(url="../graphics/sc0211-26-4-1.png", title="Menu search results", shadow=true, padding=20)}}-
 
 To clear the text within the Search field, click the **X** at the right of the field.
 
--{{image(url="../graphics/sc0250.png", title="Search text clear control", shadow=true, padding=20)}}-
+-{{image(url="../graphics/sc0250-26-4-1.png", title="Search text clear control", shadow=true, padding=20)}}-
 
 ## Custom navigation panels
 
-EDA allows you to create custom navigation panels containing only the categories and navigation links that you select. This allows you to customize the UI to the features you use most often, or even create multiple panels optimized for particular tasks.
+Nokia EDA allows you to create custom navigation panels containing only the categories and navigation links that you select. This allows you to customize the UI to the features you use most often, or even create multiple panels optimized for particular tasks.
 
 Custom panels can also include links to saved EQL queries, and saved dashboards, and external URLs.
 
-To further help you manage navigation, you can also show or hide any of the standard or custom EDA navigation panels.
+To further help you manage navigation, you can also show or hide any of the standard or custom Nokia EDA navigation panels.
 
-Using the [**Manage Panels**](#managing-panels) option in the EDA menu, you can:
+Using the [**Manage Panels**](#managing-panels) option in the Nokia EDA menu, you can:
 
 - Duplicate an existing standard or custom navigation panel (a duplicated navigation panel generally serves as the starting point for creating a modified version of it)
 - Edit or duplicate an existing custom panel
 - Hide or show a standard or custom navigation panel
-- Publish your custom panel with other EDA users
+- Publish your custom panel with other Nokia EDA users
 - Export a custom navigation panel as JSON file
 - Import a custom navigation panel from a JSON file
 
@@ -70,16 +70,16 @@ The panel editor is used whenever you:
 - Edit an existing custom navigation panel
 - Duplicate an existing navigation panel, to modify it and save it as a new panel
 
--{{image(url="graphics/sc0271.png", title="The custom navigation panel editor", shadow=true, padding=20)}}-
+-{{image(url="../graphics/sc0271.png", title="The custom navigation panel editor", shadow=true, padding=20)}}-
 
 Table: Elements of the Custom Navigation Panel Editor
 
 |Dashlet|Description|
 |-------|-----------|
-|Panel name|Enter the name to be displayed in the EDA navigation menu for this panel.|
+|Panel name|Enter the name to be displayed in the Nokia EDA navigation menu for this panel.|
 |Add menu items link|Opens a form on which to define a custom menu item and add it to an existing category within the navigation panel you are designing.|
 |Create new category link|Opens a form on which to define a custom menu category with a name and associated icon, and add it to an existing category within the navigation panel you are designing.|
-|Available navigation items|A full list of standard EDA menu categories and their available navigation items. Drag whole categories or individual navigation items to any position within the navigation panel you are designing.|
+|Available navigation items|A full list of standard Nokia EDA menu categories and their available navigation items. Drag whole categories or individual navigation items to any position within the navigation panel you are designing.|
 |Selected navigation items|A preview of the navigation panel you are designing.|
 
 #### Creating a custom panel <span id="creating-custom-nav-panel"></span>
@@ -128,7 +128,7 @@ Table: Elements of the Custom Navigation Panel Editor
 
     1. Specify the target page for the custom link by providing a URL in the **Custom Menu Link** field. Both internal and external links are supported.
 
-        - For an internal link, click the **Custom Menu Link** drop-down list and select an existing page in the EDA GUI from the displayed list. Some internal links require additional configuration:
+        - For an internal link, click the **Custom Menu Link** drop-down list and select an existing page in the Nokia EDA GUI from the displayed list. Some internal links require additional configuration:
 
             - Alarms: Delect a **Screen Name** to identify the specific Alarms page to display. If navigating to the alarm list screen, optionally enter a EQL expression to filter to set of alarms displayed. Click **Validate** to confirm the EQL expression is valid before saving the custom menu item.
 

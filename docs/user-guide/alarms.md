@@ -134,12 +134,12 @@ Table: Non-default alarm display columns
 
 **Related information**  
 
-- [Working with data grids](gui-basics/work-with-data-grids.md)
+- [Working with data grids](gui-basics/data-grids.md)
 - [Namespaces](namespaces.md)
 
 ## The Alarms Information panel <span id="alarms-information-panel"></span>
 
-The Alarms list page contains an Information panel that you can open by clicking the Expand/Contract control at the middle right of the page. This **Information** panel appears throughout the EDA GUI, for details see [Information panel](gui-basics/gui-elements.md#). The following figure shows an example of an expanded Alarms Information panel for a selected alarm.
+The Alarms list page contains an Information panel that you can open by clicking the Expand/Contract control at the middle right of the page. The following figure shows an example of an expanded Alarms Information panel for a selected alarm.
 
 -{{image(url="graphics/sc0264.png", title="The expanded Alarms Information panel", shadow=true, padding=20)}}-
 

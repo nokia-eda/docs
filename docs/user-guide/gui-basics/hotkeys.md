@@ -1,14 +1,15 @@
-# Key bindings
+# Hotkeys
 
-In the EDA UI, you can perform some common actions by pressing a fixed set of keys or key combinations.
+In the Nokia EDA UI, you can perform some common actions by pressing a fixed set of keys or key combinations.
 
 /// admonition | Note
     type: subtle-note
 For a guide to these key combinations, do either of the following:
-///
 
-- press "Shift-?" on your keyboard
-- click the **Help** icon from any page of the EDA GUI and select **Hotkeys**
+- press "?" on your keyboard
+- click the **Help** icon from any page of the Nokia EDA GUI and select **Hotkeys**
+
+///
 
 Where a combination is shown as &lt;key&gt; + &lt;key&gt;, press the second key simultaneously or within two seconds of the first key to perform the action.
 
