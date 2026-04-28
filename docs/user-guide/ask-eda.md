@@ -84,16 +84,12 @@ The following agents currently exist:
 
 | Agent | Primary function | Typical invocation |
 | --- | --- | --- |
-| Main | Orchestrates all user-initiated flows. |Default entry point for most queries. |
-| Alarms | Root-cause analysis for alarms.| Triggered   via alarm sparkles or “Explain alarm” prompts.|
-| WhatJustHappened | Retrieves   events for a specific timestamp. | “What   happened at 14:32 UTC?” |
-| Charts | Converts data queries into dashlets. | “Show   a line chart of CPU usage.” |
-| Query | Executes NQL → EQL translations. | “Run   EQL: SELECT * FROM transactions …” |
-| Resources | Looks up network resources and their attributes. | “Give   me details of router R1.” |
-| Deviations | Detects and explains metric deviations. | “Why   is latency deviating?” |
-| Logs | Retrieves syslog entries from managed nodes. | “Show   logs for host H2 in the last hour.” |
-| Transactions | Summarizes transaction outcomes. | “Explain   transaction 12345.” |
-| Topology | Generates dynamic topology overlays. | “Show   path from A to B.” |
+| Main | Orchestrates all user-initiated flows. | Default entry point for most queries. |
+| Alarms | Root-cause analysis for alarms.| "Diagnose alarm InterfaceDown-leaf-1" or "What just happened ?"|
+| Query | Executes NQL → EQL translations. | “Can you show the subinterface names and their corresponding operational down reasons on `leaf-1`?” |
+| Resources | Looks up network resources and their attributes. | “Is my fabric healthy ?” |
+| NetOps | Runs network related operations | "Ping leaf-1 from leaf-2 | 
+| Charts | Converts data queries into dashlets. | “Build a donut chart showing active alarms by severity.” |
 
 ### Model selection options
 
