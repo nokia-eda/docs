@@ -90,6 +90,7 @@ nav:
       - Remote Write: apps/remote-write.md
       - Kafka Exporter: apps/kafka-exporter.md
       - NetBox: apps/netbox.md
+      - GitHub: apps/github.md
       - GitLab: apps/gitlab.md
       - Cloud Connect:
           - apps/connect/index.md

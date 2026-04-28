@@ -1,0 +1,31 @@
+apiVersion: github.eda.nokia.com/v1alpha1
+kind: GitHubAction
+metadata:
+  name: interface-admin-down
+  namespace: eda
+spec:
+  trigger:
+    query:
+      path: .namespace.node.srl.interface
+      fields: []
+      where: .namespace.node.name = "leaf-1" and name = "ethernet-1/9" and admin-state = "disable"
+  repo: network-operations
+  workflow: ci.yml
+  ref: main
+  instance: github-server
+  parameters:
+    - name: trigger_source
+      value:
+        staticValue: EDA
+    - name: interface_name
+      value:
+        dynamicValue:
+          path: .namespace.node{.name=="leaf-1"}.srl.interface
+          field: name
+          where: name = "ethernet-1/9" and admin-state = "disable"
+    - name: interface_index
+      value:
+        dynamicValue:
+          path: .namespace.node{.name=="leaf-1"}.srl.interface
+          field: ifindex
+          where: name = "ethernet-1/9" and admin-state = "disable"
