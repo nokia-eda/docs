@@ -1,0 +1,25 @@
+apiVersion: github.eda.nokia.com/v1alpha1
+kind: GitHubIssue
+metadata:
+  name: influxdb-connection-issue
+  namespace: eda
+spec:
+  trigger:
+    alarm:
+      include:
+        - InfluxDBServerConnectionFailed
+  repo: network-operations
+  instance: github-server
+  closeOnResolve: true
+  issue:
+    title: "[ALERT] InfluxDB server connection failed"
+    body: |
+      Probable cause: {{ index . "probableCause" }}
+      Last changed: {{ index . "lastChanged" }}
+      Details: {{ index . "description" }}
+    assignees:
+      - network-ops
+    milestone: Rel-25.10
+    labels:
+      - eda
+      - alarm

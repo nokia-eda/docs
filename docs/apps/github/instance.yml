@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-secret
+  namespace: eda
+type: Opaque
+stringData:
+  token: ghp_exampleTokenValue
+---
+apiVersion: github.eda.nokia.com/v1alpha1
+kind: GitHubInstance
+metadata:
+  name: github-server
+  namespace: eda
+spec:
+  apiBaseURL: https://api.github.com
+  authSecretRef:
+    name: github-secret
+    key: token
