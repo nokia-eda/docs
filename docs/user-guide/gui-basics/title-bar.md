@@ -51,6 +51,10 @@ When you click the **Workflows** button, the 10 most recent workflows that you e
 
 From the **Ask EDA** chat interface, you can make natural-language queries, enter CLI **show** commands, perform root-cause analysis of alarms and transactions, create charts, and so forth.
 
+**Related information**  
+
+- [Ask EDA](../ask-eda.md)
+
 ## User settings <span id="btn_user-settings"></span>
 
 Opening the **User** drop-down panel displays information and available actions for the currently logged-in user.
