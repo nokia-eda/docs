@@ -1,6 +1,6 @@
 # Node RBAC
 
-EDA supports the use of node RBAC to secure communication between EDA and nodes. System administrators can configure node security profile, node groups and node users using TACACS.
+Nokia Event-Driven Automation (EDA) supports the use of node RBAC to secure communication between Nokia EDA and nodes. System administrators can configure node security profile, node groups and node users using TACACS.
 
 ## Node groups <span id="node-groups"></span>
 
@@ -31,17 +31,17 @@ The default for `action` is set to `ReadWrite`, and to simplify the majority of 
 
 ### Superuser
 
-EDA supports a `superuser` attribute; if enabled for a node user group, users that belong to the node group can perform all functions on the system, including `sudo` and `root` access, if available.
+Nokia EDA supports a `superuser` attribute; if enabled for a node user group, users that belong to the node group can perform all functions on the system, including `sudo` and `root` access, if available.
 
 ### TACACS+
 
-System administrators commonly use TACACS+ to authenticate users, and then use the local device to enforce a locally-defined rule set, or role. In EDA, enforcement uses the privilege level in TACACS+. If TACACS+ is used for authentication and if a privilege level is returned, a user is granted the set of permissions from all groups that match that privilege level and lower (following TACACS+ implementation of higher privilege levels inheriting permissions of lower levels).
+System administrators commonly use TACACS+ to authenticate users, and then use the local device to enforce a locally-defined rule set, or role. In Nokia EDA, enforcement uses the privilege level in TACACS+. If TACACS+ is used for authentication and if a privilege level is returned, a user is granted the set of permissions from all groups that match that privilege level and lower (following TACACS+ implementation of higher privilege levels inheriting permissions of lower levels).
 
 **Note:** TACACS+ server configuration is currently done through a `Configlet` application.
 
 ### Services
 
-You can select the services \(management services such as gNMI, NETCONF, CLI\) that a group is allowed in the **Services** field. Select one or more of the following services:
+You can select the services (management services such as gNMI, NETCONF, CLI) that a group is allowed in the **Services** field. Select one or more of the following services:
 
 - CLI
 - FTP
@@ -85,14 +85,16 @@ spec:
 4. Provide the following metadata for this resource:
 
     - name
-    - namespace \(if none is selected\)
+    - namespace (if none is selected)
     - labels
     - annotations
+  
 5. Configure specifications for the node group.
 
     - Provide a group name. If you do not provide a name, the system uses the resource name.
     - In the **Services** drop-down list, select the services that users who belong to this group can access.
     - Set the **Superuser** field to **True** to make members of this node user group superusers.
+  
 6. In the **Rules** section, click **Add** to configure rules.
 
     Set the following fields to define the operating system match rule for this group:
@@ -100,6 +102,7 @@ spec:
     - **Action**: select an action from the drop-down list
     - **Operating System**: select **srl** for SR Linux or **sros** for SR OS.
     - **Match**: a string to match input against; for example, **interface** for SR Linux or **configure port** for SR OS. Rules here should be specified in the target specific format.
+  
 7. If TACACS is used for authentication, in the **TACACS** section, select the privilege level.
 
 8. Click **Commit** to commit your change immediately or click **Add To Transaction** to add this item to transactions to commit later.
@@ -127,9 +130,10 @@ The `NodeUser` resource defines a node user using the following parameters:
 4. Provide the following metadata for the node user:
 
     - name
-    - namespace \(if none is selected\)
+    - namespace (if none is selected)
     - labels
     - annotations
+  
 5. Configure the specifications for this node user.
 
     In the **Specification** section, provide a username and password for this user.
@@ -139,9 +143,12 @@ The `NodeUser` resource defines a node user using the following parameters:
     In the **Group Bindings** section, click **Add**.
 
     - Select the TopoNodes.
+  
         - To use a label selector to select nodes, in the **Node Selector** section, click **Add a Label Selector**.
         - To identify specific nodes, in the **Nodes** section, click **Add item** to select TopoNodes from the drop-down list.
+  
     - In the **Groups** section, click **Add** to specify the node groups to which this user belongs.
+
 7. In the **SSH Public Keys** field, click **Add item** to set the SSH public key to deploy for the user.
 
 8. Click **Commit** to commit your change immediately or click **Add To Transaction** to add this item to transactions to commit later.
@@ -172,7 +179,7 @@ spec:
 
 ## Node security profile <span id="node-security-profile"></span>
 
-The `NodeSecurityProfile` resource provides the parameters that define how to secure communication between EDA and a node. The `NodeSecurityProfile` resource facilitates the configuration, generation, and rotation of TLS certificates, trust bundle management, and secure communication with specified nodes.
+The `NodeSecurityProfile` resource provides the parameters that define how to secure communication between Nokia EDA and a node. The `NodeSecurityProfile` resource facilitates the configuration, generation, and rotation of TLS certificates, trust bundle management, and secure communication with specified nodes.
 
 ### Node selection
 
@@ -181,24 +188,24 @@ In `NodeSecurityProfile` resource, you can select nodes using the following meth
 - by listing the nodes: in the `nodes` field, list the `TopoNodes` to which the profile applies
 - by label: in the `nodeSelector` field, select a label that applies to `TopoNodes` that meet the criteria selected. This field can contain a list of label selectors; a `TopoNode` must contain at least one of the labels to inherit the profile's settings.
 
-    A `nodeSelector` set to an empty string \(`""`\) means that the profile applies to all nodes.
+    A `nodeSelector` set to an empty string (`""`) means that the profile applies to all nodes.
 
 The `nodes` field takes precedence over the `nodeSelector` setting. If multiple profiles match a node's labels, the profile whose name is first in alphabetic order is applied.
 
 ### TLS configuration
 
-The `tls` context indicates whether the connection to the node is secure \(with TLS\) or insecure \(without TLS\). The absence of the `tls` field implies an insecure connection, while its presence signals a secure connection.
+The `tls` context indicates whether the connection to the node is secure (with TLS) or insecure (without TLS). The absence of the `tls` field implies an insecure connection, while its presence signals a secure connection.
 
-### EDA-managed certificates
+### Nokia EDA-managed certificates
 
-When EDA is responsible for managing node certificates, the `tls` context must include the following entries:
+When Nokia EDA is responsible for managing node certificates, the `tls` context must include the following entries:
 
 - `issuerRef`: a reference to a CertManager Issuer, which is responsible for issuing the certificates.
 
-- `csrParams`: the Certificate Signing Request \(CSR\) parameters define the parameters for certificate generation and rotation.
+- `csrParams`: the Certificate Signing Request (CSR) parameters define the parameters for certificate generation and rotation.
 
     - `csrSuite`: the key and digest set to be used for generating the CSR.
-    - `commonName`: the common name \(CN\) to include in the certificate. This value is auto-generated.
+    - `commonName`: the common name (CN) to include in the certificate. This value is auto-generated.
     - `country`: the legally registered country of the organization.
     - `state`: the state or province where the organization is located.
     - `city`: the city in which the organization is based.
@@ -211,7 +218,7 @@ When EDA is responsible for managing node certificates, the `tls` context must i
         - `ips`: IP addresses that the certificate should validate.
         - `uris`: Specific URIs that the certificate needs to authenticate.
 
-The following is an example of a `nodeSecurityProfile` CR where EDA manages certificates:
+The following is an example of a `nodeSecurityProfile` CR where Nokia EDA manages certificates:
 
 ```
 apiVersion: v1
@@ -271,7 +278,7 @@ metadata:
 
 ### External certificate management
 
-If certificates are managed outside of EDA, the `tls` section must reference an external trust bundle. The `trustBundle` field contains a reference to a ConfigMap that holds a CA certificate. EDA uses this CA certificate to verify the node’s certificate whenever it establishes a connection. The trust bundle must be provided if node certificate management is performed outside of EDA, allowing the node to validate certificates through an external authority.
+If certificates are managed outside of Nokia EDA, the `tls` section must reference an external trust bundle. The `trustBundle` field contains a reference to a ConfigMap that holds a CA certificate. Nokia EDA uses this CA certificate to verify the node’s certificate whenever it establishes a connection. The trust bundle must be provided if node certificate management is performed outside of Nokia EDA, allowing the node to validate certificates through an external authority.
 
 ```
 apiVersion: core.eda.nokia.com/v1

@@ -2,20 +2,20 @@
 
 The concept of a workflow is typically used in automation platforms to make an operational task reproducible; it is the logic or code required to execute the task. Workflows might perform node upgrades, validate connectivity in a virtual network, or performing a simple ping test.
 
-In EDA, workflows are container images that take some input, perform some work, and provide some output. Like EDA resources, the input and output schema for EDA workflows are defined as a Kubernetes CRD (Custom Resource Definition). These 'Workflow Definitions' and associated container images are packaged in EDA apps.
+In Nokia Event-Driven Automation (EDA), workflows are container images that take some input, perform some work, and provide some output. Like Nokia EDA resources, the input and output schema for Nokia EDA workflows are defined as a Kubernetes CRD (Custom Resource Definition). These 'Workflow Definitions' and associated container images are packaged in Nokia EDA apps.
 
-EDA workflows support:
+Nokia EDA workflows support:
 
 - Reporting runtime 'stages' - Indicating the workflow's steps and their current state
 - Reporting a status on workflow completion
 - Waiting for user input
 - Subflows - A workflow can trigger child workflows
 - Artifacts - A workflow may return artifacts, such as tech support files
-- Log steaming - Workflow container logs are retreivable via EDA UI and API.
+- Log steaming - Workflow container logs are retrievable via Nokia EDA UI and API.
 
 ## FlowEngine
 
-EDA FlowEngine is the controller behind the instantiation, status reporting, and interaction with workflows.
+Nokia EDA FlowEngine is the controller behind the instantiation, status reporting, and interaction with workflows.
 
 On creating a new workflow, the FlowEngine:
 
@@ -28,7 +28,7 @@ Flow IDs are incremental. In the event of FlowEngine restart, previously execute
 
 /// Admonition | Note
     type: subtle-note
-To avoid excessive memory use by FlowEngine, EDA enforces the following:
+To avoid excessive memory use by FlowEngine, Nokia EDA enforces the following:
 
     <ul>
     <li>Only 256 parent workflows are persisted.</li>
@@ -39,10 +39,10 @@ To avoid excessive memory use by FlowEngine, EDA enforces the following:
        
 ///
 
-## Workflows in the EDA UI
+## Workflows in the Nokia EDA UI
 ### Workflow Definition List <span id="workflows-definition-list-page"></span>
 
-The Workflow Definition List page shows all available workflow definitions provided from EDA apps. From the **Main** navigation panel, click **Workflows** under the **SYSTEM** group. Then, select Workflow Definition List from the drop-down list.
+The Workflow Definition List page shows all available workflow definitions provided from Nokia EDA apps. From the **Main** navigation panel, click **Workflows** under the **SYSTEM** group. Then, select Workflow Definition List from the drop-down list.
 
 -{{image(url="graphics/sc0272.png", title="Figure: Workflow Definition List page", shadow=true, padding=20)}}-
 
@@ -52,7 +52,7 @@ Table: Workflow definitions
 
 |Workflow definition|App Name|Description|
 |-------------------|-------|-------|
-|App Installer|EDA Store|Used to install or delete EDA apps.|
+|App Installer|EDA Store|Used to install or delete Nokia EDA apps.|
 |Attachment Lookup|Routing|Used to look up attachments (where an address is attached in the network) on a set of nodes. The output shows the matching attachments, including the node, network instance, prefix, interface, and next hop group ID.|
 |Check BGP|Protocols|Checks the state and status of the BGP peers that match the selection criteria.|
 |Check Interfaces|Interfaces|Used to check the state and status of the matched notes. Use interface selectors to select target interfaces on which to run this workflow.|
@@ -151,7 +151,7 @@ You can run a workflow by creating another instance of that kind of workflow and
 
 2. In the form that displays, fill in the values for the workflow.
 
-    The contents of the form vary depending on the workflow definition selected. The EDA UI auto-generates a unique name for the workflow execution. You can override this name with a custom name.
+    The contents of the form vary depending on the workflow definition selected. The Nokia EDA UI auto-generates a unique name for the workflow execution. You can override this name with a custom name.
 
 3. Click **Run**.
 ///
@@ -174,7 +174,7 @@ You can create a new workflow by selecting the type of workflow that you want or
         2. Select the workflow that you want to run from the drop-down list.
         3. In the form that opens, enter the specifications for the workflow.
 
-            The contents of the form vary depending on the workflow definition that selected. EDA auto-generates a unique name for the workflow execution. You can override this name with a name of your choice.
+            The contents of the form vary depending on the workflow definition that selected. Nokia EDA auto-generates a unique name for the workflow execution. You can override this name with a name of your choice.
 
     - Duplicate an existing workflow.
         1. Locate the workflow that you want to duplicate and click **Duplicate** from its **Table row actions** menu.
@@ -215,7 +215,7 @@ The following example executes the Ping workflow.
 
 ## Using workflows with edactl <span id="manage-workflows-edactl"></span>
 
-You can use the `edactl` command to provide input so a workflow can proceed or to query EDA about workflows.
+You can use the `edactl` command to provide input so a workflow can proceed or to query Nokia EDA about workflows.
 
 ### Workflow status
 

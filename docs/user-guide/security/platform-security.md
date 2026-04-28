@@ -1,10 +1,10 @@
 # Platform security
 
-This section discusses how to secure the EDA infrastructure and manage internal passwords.
+This section discusses how to secure the Nokia EDA infrastructure and manage internal passwords.
 
 ## Changing internal passwords
 
-EDA uses internal passwords to communicate between its internal services. These passwords are either hard-coded or are set before system installation.
+Nokia EDA uses internal passwords to communicate between its internal services. These passwords are either hard-coded or are set before system installation.
 
 After the system has been installed, administrators with cluster role privileges can update internal passwords for the following services using the applicable UI or scripts:
 
@@ -12,7 +12,7 @@ After the system has been installed, administrators with cluster role privileges
 - Keycloak passwords and secrets
 - PostgreSQL passwords
 
-The following scripts are also available in the EDA toolbox pod:
+The following scripts are also available in the Nokia EDA toolbox pod:
 
 - `reset-01-gogs-user-pass.sh`: resets the Gogs user password
 
@@ -45,7 +45,7 @@ The following scripts are also available in the EDA toolbox pod:
             3. From the right sidebar, select **Applications** &gt; **Generate New Token**. This token is required to access some admin-level REST endpoints.
         2. Change the user password.
 
-            Open a shell to the EDA toolbox pod. The following example resets the user password for eda-git and eda-git-replica.
+            Open a shell to the Nokia EDA toolbox pod. The following example resets the user password for eda-git and eda-git-replica.
 
             ```
             /eda/tools/reset-01-gogs-user-pass.sh \
@@ -73,7 +73,7 @@ The following scripts are also available in the EDA toolbox pod:
 
 2. Update the Gogs initialization secret.
 
-    1. Open a shell to the EDA toolbox pod.
+    1. Open a shell to the Nokia EDA toolbox pod.
 
     2. Base64 encode the new password.
 
@@ -93,7 +93,7 @@ The following scripts are also available in the EDA toolbox pod:
 
         Where:
 
-        `-n <namespace>` is the base namespace where EDA is deployed
+        `-n <namespace>` is the base namespace where Nokia EDA is deployed
 
         `-p <password>` is the Base64 encoded new password for the user
 
@@ -103,7 +103,7 @@ The following scripts are also available in the EDA toolbox pod:
 
 3. Update the secret used by ConfigEngine.
 
-    1. Open a shell to the EDA toolbox pod.
+    1. Open a shell to the Nokia EDA toolbox pod.
 
     2. Use the following command to change the Git secret:
 
@@ -113,7 +113,7 @@ The following scripts are also available in the EDA toolbox pod:
 
         Where:
 
-        `-n <namespace>` is the base namespace where EDA is deployed
+        `-n <namespace>` is the base namespace where Nokia EDA is deployed
 
         `-p <password>` is the new password for the user
 
@@ -121,9 +121,9 @@ The following scripts are also available in the EDA toolbox pod:
         /eda/tools/reset-02-k8s-secret.sh -n eda-system -s git-secret -p oranges
         ```
 
-4. Restart the EDA cluster.
+4. Restart the Nokia EDA cluster.
 
-    1. Open a shell to the EDA Toolbox.
+    1. Open a shell to the Nokia EDA Toolbox.
 
     2. Enter the follow commands to gracefully restart the cluster:
 
@@ -147,7 +147,7 @@ The following scripts are also available in the EDA toolbox pod:
         4. Click the admin account.
         5. Click the **Credentials** tab, then click **Reset password** Follow the prompts to update the password.
     - Using the CLI script:
-        1. Open a shell to the EDA toolbox pod.
+        1. Open a shell to the Nokia EDA toolbox pod.
         2. Set a temporary Keycloak password.
 
             For example:
@@ -170,7 +170,7 @@ The following scripts are also available in the EDA toolbox pod:
 
 2. Update the keycloak-admin-secret secret in Kubernetes
 
-    1. Open a shell to the EDA toolbox pod
+    1. Open a shell to the Nokia EDA toolbox pod
     2. The following example changes the keycloak-admin-secret secret:
 
         ```
@@ -179,7 +179,7 @@ The following scripts are also available in the EDA toolbox pod:
 
         Where:
 
-        -n &lt;namespace&gt; is the base namespace where EDA is deployed
+        -n &lt;namespace&gt; is the base namespace where Nokia EDA is deployed
 
         -p &lt;password&gt; is the new password for the user
 
@@ -191,7 +191,7 @@ The following scripts are also available in the EDA toolbox pod:
 
 Perform this procedure using the `reset-04-pgdb-password.sh` script from the toolbox pod.
 
-1. Open a shell to the EDA toolbox pod.
+1. Open a shell to the Nokia EDA toolbox pod.
 
 2. Update the database password.
 
@@ -203,11 +203,11 @@ Perform this procedure using the `reset-04-pgdb-password.sh` script from the too
 
     Where:
 
-    - `-n <namespace>` is the base namespace where EDA is deployed
+    - `-n <namespace>` is the base namespace where Nokia EDA is deployed
     - `-p <password>` is the new password for the user
   
     ```
-    -   `-n <namespace>` is the base namespace where EDA is deployed
+    -   `-n <namespace>` is the base namespace where Nokia EDA is deployed
     -   `-p <password>` is the new password for the user
     ```
 
@@ -231,7 +231,7 @@ Perform this procedure using the `reset-04-pgdb-password.sh` script from the too
 
 ## Unique Keycloak client secret per installation
 
-To avoid the risk of a secret revealed at one customer can affect the installations of other installations, internal secrets used by the different EDA components must be unique for each installation. This practice is especially important for the Keycloak secrets that are used by the API server to configure and communicate with the Keycloak API server.
+To avoid the risk of a secret revealed at one customer can affect the installations of other installations, internal secrets used by the different Nokia EDA components must be unique for each installation. This practice is especially important for the Keycloak secrets that are used by the API server to configure and communicate with the Keycloak API server.
 
 ### Changing the Keycloak secret <span id="changing-the-keycloak-secret"></span>
 
@@ -276,7 +276,7 @@ Use this procedure to change the Keycloak admin password.
 
 7. Generate the Base 64 hash of the new password.
 
-8. Using a system with access to the Kubernetes API of the EDA deployment, execute the following command:
+8. Using a system with access to the Kubernetes API of the Nokia EDA deployment, execute the following command:
 
     ```
     kubectl -n eda-system patch secret keycloak-admin-secret -p
@@ -296,7 +296,7 @@ Use this procedure to change the Keycloak admin password.
 Forward headers are required for accurate access-logging of the source IP on proxied servers, notably, Keycloak.
 The engine-config parameter `ProxyMode` controls Keycloak endpoint handles these headers. It has the following settings:
 
-- `None` (the default): if EDA is deployed behind a reverse proxy, the setting cannot be `None`; the setting must be `Forwarded` or `XForward`.
+- `None` (the default): if Nokia EDA is deployed behind a reverse proxy, the setting cannot be `None`; the setting must be `Forwarded` or `XForward`.
 - `Forward`: the API server trusts the `Forwarded` header on incoming traffic and forwards it unchanged to the destination. All `X-Forwarded-*` headers are dropped.
 - `XForward`: the API server trusts the `X-Forwarded-*` HTTP header on incoming traffic and forwards them unchanged to the destination. The `Forwarded` header is dropped.
 
