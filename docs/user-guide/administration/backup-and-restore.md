@@ -5,7 +5,7 @@ Critical systems are often backed up to ensure continuity in the event of an out
 - to replicate a customer issue when debugging
 - to restore a cluster to a previous state \(often via re-installation\)
 
-EDA's implementation for backup and restore include the following features:
+Nokia Event-Driven Automation (EDA) implementation for backup and restore include the following features:
 
 - You can perform backups at any time with no outages or maintenance actions required.
 - Backups are atomic and contain the lost known set of working configuration. The system waits until an in-progress transaction is completed before proceeding with a backup.
@@ -13,7 +13,7 @@ EDA's implementation for backup and restore include the following features:
 - You can restore into a clean/freshly installed cluster.
 
 ## Backups
-In EDA, a backup is simply the copy of all Git repositories in use at the time of the backup and an `EngineConfig` resource file from the source that can be optionally restored.
+In Nokia EDA, a backup is simply the copy of all Git repositories in use at the time of the backup and an `EngineConfig` resource file from the source that can be optionally restored.
 
 The `edactl platform backup` command is used to create a backup. At a high-level, this command does the following:
 

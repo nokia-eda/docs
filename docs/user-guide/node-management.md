@@ -4,7 +4,7 @@ This chapter provides the following information:
 
 - bootstrapping and related procedures
 - background information about zero-touch provisioning (ZTP)
-- how to display information about and interact with nodes using the following views from the **Nodes** section the EDA UI:
+- how to display information about and interact with nodes using the following views from the **Nodes** section the Nokia Event-Driven Automation (EDA) UI:
     - Resources view
     - Deleted Resources view
     - Discovered Resources view
@@ -19,7 +19,7 @@ Additionally, the `Init` application generates the Python provisioning script fo
 
 The bootstrap file or Python provisioning script ensures that the node boots into the version specified in the TopoNode. The software and any other artifacts are downloaded to the node during ZTP using HTTP/HTTPS.
 
-By default, if no TopoNode selectors are present in the `Init` resource, an initial configuration file is generated for every TopoNode present in EDA.
+By default, if no TopoNode selectors are present in the `Init` resource, an initial configuration file is generated for every TopoNode present in Nokia EDA.
 
 ### Management interface IP address assignment
 
@@ -35,7 +35,7 @@ Ensure that you meet the following requirements:
 
 - The NodeSecurityProfile resource (for TLS) must be configured to ensure successful onboarding. For details, see [Node security profile](node-rbac.md#node-security-profile).
 
-- A node requires the relevant EDA License resource to be applied. Without this license, the node will not be onboarded.
+- A node requires the relevant Nokia EDA License resource to be applied. Without this license, the node will not be onboarded.
 
     ```yaml
     apiVersion: core.eda.nokia.com/v1
@@ -48,7 +48,7 @@ Ensure that you meet the following requirements:
       data: "ACoAgOlJq7AABoAU6V6W6XAERezbcYa+ZRZLg8M5IyqMgAABAATAEVEQS1bQkNdLTAuMC4qAAACABIATm9raWEuY29tLOVEQQAAAMAAMQCjorJ+SPKP3if9pcD3OhqlyaWK1VE89JWreOWkyOJcbIWO602C+iwp+FFp8AwAAAADAB4ARWRhIGxpY2Vuc2UgSW50ZXJuYWwgVGVzdAAAAAUAHADl0zNnAAAAAABgKWcAAAAAADohaAAAAADAACQAoKr6XCCQCZj1rWFYik1dGbiqG7TWRK2orh+0sjUKXNYBACkAMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwAAAAAAYADAABAAQAAAAAAMAAMAC/KQqX7Di/m1d0zYz9quIyghaHatF0yDvDgK/fFr011Wa/7FN3LO/OoD3aHg8AXQFkOEh6ejQrTlFyNmVJNTNsVW9SMi9JV2xXd1NqMUF3QVh0eEd6LzhGdlp0WXphTkdOQ1RWRnNCQ3wwZ0p2b21pSDNiZHFTSFBYQ2R6d0xxVlNhM3FZZUZuL1BGMnhoSjN6OS8yS3RlVGpmUngreWFNS1NwZ0p5OE12YlBVbmw2TUFpNHRXR1g4U3R0WXFBN21uVUNhVHp5eXpLOWtXcWgwZVZtR1oyV09RTURML0thaWY1RGMva21tc0NVY042RUdNZUNiTmdvV2RKUFlXZ1o4c2hlaG03b2tsZHdsSDBxMXZWdjhHMjZ4OVUxbTd2ellBN3BDNkFXODJyZ3FsaExWTUJxYm11VDdKSzdPWWhzYVp4Q3h4a2lIbWZ5KytNY3FLVHFBUk1McWhYRzRIb290ME0xK1RaRVZTdUJKNFl5a3pkeHdVV3pGZGRZdjg5Ym5uUHBsdXc9PQAAAAA="
     ```
 
-- If the deployment uses EDA DHCP for bootstrapping, the `GlobalConfig` and `UdpProxy` CRs may be needed.
+- If the deployment uses Nokia EDA DHCP for bootstrapping, the `GlobalConfig` and `UdpProxy` CRs may be needed.
 
     Following is an example of `GlobalConfig` resource:
 
@@ -310,16 +310,16 @@ Most ZTP implementations rely on DHCP to provide an IP address to the DUT and us
 
 For devices running SR OS and SR Linux, the devices send a DHCP Discover message with option 61 (client-id) set to the chassis serial number. This setting is used on the DHCP server to associate a DHCP discover message with a specific DUT and allows for the DHCP server to allocate static DHCP leases (IP addresses) and potentially device-specific boot artifacts (Python script or boot file).
 
-EDA supports the following modes of operation for DHCP aspect of ZTP:
+Nokia EDA supports the following modes of operation for DHCP aspect of ZTP:
 
-- Use of an internal DHCP server (hosted and managed by EDA)
-- Use of an external DHCP server (hosted and managed outside of EDA)
+- Use of an internal DHCP server (hosted and managed by Nokia EDA)
+- Use of an external DHCP server (hosted and managed outside of Nokia EDA)
 
-To serve the boot artifacts (Python script, boot file, software, or any other files needed during the bootstrapping process), an artifact server must be present in EDA. An intent is used to allow for artifacts to be added to the server, which is then retrieved by the devices during boot.
+To serve the boot artifacts (Python script, boot file, software, or any other files needed during the bootstrapping process), an artifact server must be present in Nokia EDA. An intent is used to allow for artifacts to be added to the server, which is then retrieved by the devices during boot.
 
 ### DHCP server
 
-In deployments that use EDA to handle ZTP in its entirety, a DHCP server is required to provide IP addresses to devices.
+In deployments that use Nokia EDA to handle ZTP in its entirety, a DHCP server is required to provide IP addresses to devices.
 
 When a device issues a DHCP discovery message, the client-id option (61) attribute includes their chassis serial number. This serial number is used to associate real devices with node objects in EDA. Additionally, an IP address is assigned to device via a `Target` object.
 
@@ -336,7 +336,7 @@ The DHCP server must support the following capabilities:
     - Log server option 7
 - Support both IPv4 and IPv6 IP addressing
 
-## Working with nodes from the EDA UI
+## Working with nodes from the Nokia EDA UI
 
 This section provides information about how to work with nodes using the UI.
 
@@ -435,7 +435,7 @@ You can select from one of the following options:
 
 5. Set the production address for this node.
 
-    These settings are required if the TopoNode is not bootstrapped by EDA. If left blank, an address is allocated from the management IP pool specified in the referenced NodeProfile resource.
+    These settings are required if the TopoNode is not bootstrapped by Nokia EDA. If left blank, an address is allocated from the management IP pool specified in the referenced NodeProfile resource.
 
     Click the **Specification \| Production Address** toggle to enter the IPv4 and IPv6 production addresses for this node.
 
@@ -551,7 +551,7 @@ You can associate a selected discovered node to an existing node.
 
 2. Click **Associate to existing node**.
 
-    EDA opens the **Associate to existing node** page where you can select an available existing node to associate the discovered node to.
+    Nokia EDA opens the **Associate to existing node** page where you can select an available existing node to associate the discovered node to.
 
 3. Click **Next**.
 

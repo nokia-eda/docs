@@ -1,20 +1,20 @@
 # Redundancy
 
-As part of critical infrastructure, EDA must be resilient in case of outages to continue to support the infrastructure. Outages can be caused by power outages, network outages, storage outages, or any other dependent infrastructure outages and EDA must be able to mitigate the loss of visibility and automation during these events. Outages can also impact the connectivity between members of an EDA cluster; in these cases, EDA needs to avoid split brain scenarios.
+As part of critical infrastructure, Nokia EDA must be resilient in case of outages to continue to support the infrastructure. Outages can be caused by power outages, network outages, storage outages, or any other dependent infrastructure outages and Nokia EDA must be able to mitigate the loss of visibility and automation during these events. Outages can also impact the connectivity between members of an Nokia EDA cluster; in these cases, Nokia EDA needs to avoid split brain scenarios.
 
-EDA provides resiliency via redundancy, using the following strategies:
+Nokia EDA provides resiliency via redundancy, using the following strategies:
 
-- Localized restartability: assuming any application can fail at any time, and the system must reconcile. EDA takes this approach and is relevant for services like ConfigEngine. In general, any service should be able to restart and the system should converge back to a golden state. When any EDA pod fails, either Kubernetes or ConfigEngine should restart it.
+- Localized restartability: assuming any application can fail at any time, and the system must reconcile. Nokia EDA takes this approach and is relevant for services like ConfigEngine. In general, any service should be able to restart and the system should converge back to a golden state. When any Nokia EDA pod fails, either Kubernetes or ConfigEngine should restart it.
 - Localized redundancy and microservices: multiple instances of a common service with load balancing. This strategy limits localized outages, and in most cases, only inflight requests are lost.
-- Remote redundancy: multiple clusters \(or cluster members depending on hierarchy\). Typically referred to as geo-redundancy, where one or more cluster members are present and each one can operate the full load of management activities, with only one active at a time. In EDA, pushes to redundant sites are not synchronous as long as changes are persisted in the majority of configured Git servers. This does mean some inflight changes could be lost during a switchover.
+- Remote redundancy: multiple clusters (or cluster members depending on hierarchy). Typically referred to as geo-redundancy, where one or more cluster members are present and each one can operate the full load of management activities, with only one active at a time. In Nokia EDA, pushes to redundant sites are not synchronous as long as changes are persisted in the majority of configured Git servers. This does mean some inflight changes could be lost during a switchover.
 
 ## Local redundancy
 
-EDA supports automatic recovery of local services in the event of a failure. EDA leverages Kubernetes for deployment of its core services, which provides out-of-the-box redundancy when more than one worker node is available, with EDA services able to be scheduled or rescheduled to remaining available nodes during failures.
+Nokia EDA supports automatic recovery of local services in the event of a failure. Nokia EDA leverages Kubernetes for deployment of its core services, which provides out-of-the-box redundancy when more than one worker node is available, with Nokia EDA services able to be scheduled or rescheduled to remaining available nodes during failures.
 
 ## Cluster recovery
 
-EDA supports cluster recovery by allowing the bootstrapping of a cluster from any member. This process removes all members, starts the active member, and then adds members back.
+Nokia EDA supports cluster recovery by allowing the bootstrapping of a cluster from any member. This process removes all members, starts the active member, and then adds members back.
 
 ## Remote redundancy
 
@@ -34,21 +34,21 @@ Support for the following alarms, generated only on the active cluster:
 
 ## Geo-redundancy (remote redundancy) <span id="geo-redundancy"></span>
 
-EDA supports two concepts of remote redundancy that can be used together or separately:
+Nokia EDA supports two concepts of remote redundancy that can be used together or separately:
 
 Git redundancy
-:   EDA supports remote redundancy through the backup of configuration information and data to a set of Git servers and restoring backed up data from the same set of Git servers.
+:   Nokia EDA supports remote redundancy through the backup of configuration information and data to a set of Git servers and restoring backed up data from the same set of Git servers.
 
     The Git servers are defined in the `.spec.git.servers` context of the `EngineConfig` CR. Whenever a change occurs in the system, the active ConfigEngine asynchronously pushes changes to all Git servers, and from there, any other ConfigEngine can start with the same content via the same Git servers.
 
 Cluster redundancy
-:   In a true geo-redundant environment, multiple EDA deployments are running in different locations, where one deployment is designated the active, and the other deployment is designated as standby. Both deployments must have the same Git servers configured so they have access to the same data.
+:   In a true geo-redundant environment, multiple Nokia EDA deployments are running in different locations, where one deployment is designated the active, and the other deployment is designated as standby. Both deployments must have the same Git servers configured so they have access to the same data.
 
-    An operator must define the members of a geo-redundant cluster, where each member is a standalone EDA deployment configured to be part of a cluster. It takes two members to form a cluster, with manual intervention currently required for switchovers to occur. For details, see [Switching the active deployment](redundancy.md#).
+    An operator must define the members of a geo-redundant cluster, where each member is a standalone Nokia EDA deployment configured to be part of a cluster. It takes two members to form a cluster, with manual intervention currently required for switchovers to occur. For details, see [Switching the active deployment](redundancy.md#).
 
 /// Admonition | Note
     type: subtle-note
-These two concepts are distinct and can be used separately. For example, a single EDA deployment can use multiple Git servers so that data is stored redundantly across multiple Git servers. You can also deploy two EDA deployments for a redundant cluster with only a single Git server (the same one) configured for each deployment. If multiple deployments for a redundant cluster are used, the same Git servers must be configured on both deployments.
+These two concepts are distinct and can be used separately. For example, a single Nokia EDA deployment can use multiple Git servers so that data is stored redundantly across multiple Git servers. You can also deploy two Nokia EDA deployments for a redundant cluster with only a single Git server (the same one) configured for each deployment. If multiple deployments for a redundant cluster are used, the same Git servers must be configured on both deployments.
 ///
 
 ### Adding remotes <span id="adding-remotes"></span>
@@ -81,9 +81,9 @@ spec:
       domainName: cluster.eda.nokia.com
 ```
 
-#### Adding another EDA instance
+#### Adding another Nokia EDA instance
 
-To grow this cluster, first, install another EDA instance into another Kubernetes cluster. The following sample `EngineConfig` CR is for the new EDA instance, `us-east-2`:
+To grow this cluster, first, install another Nokia EDA instance into another Kubernetes cluster. The following sample `EngineConfig` CR is for the new Nokia EDA instance, `us-east-2`:
 
 ```
 apiVersion: core.eda.nokia.com/v1
@@ -219,7 +219,7 @@ To update the configuration so there is only a standalone member, `us-west-1`, t
 
 ### Migrating to the new Git server in the active cluster in standalone mode <span id="migrate-new-git-server-active-cluster-standalone_mode"></span>
 
-- Nokia recommends that you use the southbound interface for georedundancy configuration \(port 51201\).
+- Nokia recommends that you use the southbound interface for georedundancy configuration (port 51201).
 - If the deployment has multiple active systems, that is, separate standalone systems, each system should point to a different set of Git servers.
 
 #### Procedure
@@ -313,7 +313,7 @@ root in on eda-toolbox-6584b57449-lb59m /eda/tools
 
 Before switching the active deployment, verify that the connectivity between the deployments is as expected. If both deployments are up and running, but there is no connectivity between them, a switchover can cause both deployments to think they are active, which can cause issues.
 
-To switch which EDA deployment is active, open the EDA toolbox on the EDA deployment that needs to be made active and execute the following command:
+To switch which Nokia EDA deployment is active, open the Nokia EDA toolbox on the Nokia EDA deployment that needs to be made active and execute the following command:
 
 ```
 edactl cluster take-activity <name of member to make active>
