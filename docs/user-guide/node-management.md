@@ -42,92 +42,17 @@ Ensure that you meet the following requirements:
     kind: License
     metadata:
       name: eda-license
-      namespace: eda-system
+      namespace: eda-system #(1)!
     spec:
       enabled: true
       data: "ACoAgOlJq7AABoAU6V6W6XAERezbcYa+ZRZLg8M5IyqMgAABAATAEVEQS1bQkNdLTAuMC4qAAACABIATm9raWEuY29tLOVEQQAAAMAAMQCjorJ+SPKP3if9pcD3OhqlyaWK1VE89JWreOWkyOJcbIWO602C+iwp+FFp8AwAAAADAB4ARWRhIGxpY2Vuc2UgSW50ZXJuYWwgVGVzdAAAAAUAHADl0zNnAAAAAABgKWcAAAAAADohaAAAAADAACQAoKr6XCCQCZj1rWFYik1dGbiqG7TWRK2orh+0sjUKXNYBACkAMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwAAAAAAYADAABAAQAAAAAAMAAMAC/KQqX7Di/m1d0zYz9quIyghaHatF0yDvDgK/fFr011Wa/7FN3LO/OoD3aHg8AXQFkOEh6ejQrTlFyNmVJNTNsVW9SMi9JV2xXd1NqMUF3QVh0eEd6LzhGdlp0WXphTkdOQ1RWRnNCQ3wwZ0p2b21pSDNiZHFTSFBYQ2R6d0xxVlNhM3FZZUZuL1BGMnhoSjN6OS8yS3RlVGpmUngreWFNS1NwZ0p5OE12YlBVbmw2TUFpNHRXR1g4U3R0WXFBN21uVUNhVHp5eXpLOWtXcWgwZVZtR1oyV09RTURML0thaWY1RGMva21tc0NVY042RUdNZUNiTmdvV2RKUFlXZ1o4c2hlaG03b2tsZHdsSDBxMXZWdjhHMjZ4OVUxbTd2ellBN3BDNkFXODJyZ3FsaExWTUJxYm11VDdKSzdPWWhzYVp4Q3h4a2lIbWZ5KytNY3FLVHFBUk1McWhYRzRIb290ME0xK1RaRVZTdUJKNFl5a3pkeHdVV3pGZGRZdjg5Ym5uUHBsdXc9PQAAAAA="
     ```
 
-- If the deployment uses Nokia EDA DHCP for bootstrapping, the `GlobalConfig` and `UdpProxy` CRs may be needed.
+    1. If you changed your base namespace, make sure to update the namespace in the metadata.
 
-    Following is an example of `GlobalConfig` resource:
+- The node's images must be uploaded to the artifacts server before bootstrapping. The upload process is triggered by creating an `Artifact` resource that references the source file by the `remoteFileUrl` field and supports http(s), ftp and sftp protocols.
 
-    ```
-    apiVersion: v1
-    items:
-      - apiVersion: core.eda.nokia.com/v1
-        kind: GlobalConfig
-        metadata:
-          name: global
-          namespace: eda-system
-        spec:
-          dhcp:
-            domainName: mv1-3.dclab.nuq.ion.nokia.net
-            httpPort: 9200
-            httpsPort: 9443
-            ipv4Address: 10.11.12.13
-            ipv6Address: 3001:cafe:11::2
-    kind: List
-    metadata:
-      resourceVersion: ""
-    ```
-
-    Following is an example of a `UdpProxy` resource:
-
-    ```
-    apiVersion: v1
-    items:
-      - apiVersion: core.eda.nokia.com/v1
-        kind: UdpProxy
-        metadata:
-          annotations:
-            config.k8s.io/owning-inventory: aeb8a5709fd9a90c89d3d3dcc1d9c3817f2618ae-1732279916926223978
-            kubectl.kubernetes.io/last-applied-configuration: >
-              {"apiVersion":"core.eda.nokia.com/v1","kind":"UdpProxy","metadata":{"annotations":{"config.k8s.io/owning-inventory":"aeb8a5709fd9a90c89d3d3dcc1d9c3817f2618ae-1732279916926223978"},"name":"eda-dhcp","namespace":"eda-system"},"spec":{"bufferSize":65535,"destHost":"eda-dhcp","destPort":67,"idleTimeout":60,"proxyPort":67}}
-          name: eda-dhcp
-          namespace: eda-system
-        spec:
-          bufferSize: 65535
-          destHost: eda-dhcp
-          destPort: 67
-          idleTimeout: 60
-          proxyPort: 67
-      - apiVersion: core.eda.nokia.com/v1
-        kind: UdpProxy
-        metadata:
-          annotations:
-            config.k8s.io/owning-inventory: aeb8a5709fd9a90c89d3d3dcc1d9c3817f2618ae-1732279916926223978
-            kubectl.kubernetes.io/last-applied-configuration: >
-              {"apiVersion":"core.eda.nokia.com/v1","kind":"UdpProxy","metadata":{"annotations":{"config.k8s.io/owning-inventory":"aeb8a5709fd9a90c89d3d3dcc1d9c3817f2618ae-1732279916926223978"},"name":"eda-dhcp6","namespace":"eda-system"},"spec":{"bufferSize":65535,"destHost":"eda-dhcp6","destPort":547,"idleTimeout":60,"proxyPort":547}}
-          name: eda-dhcp6
-          namespace: eda-system
-        spec:
-          bufferSize: 65535
-          destHost: eda-dhcp6
-          destPort: 547
-          idleTimeout: 60
-          proxyPort: 547
-    kind: List
-    metadata:
-      resourceVersion: ""
-    
-    ```
-
-- The init and relevant images must be downloaded to the artifacts server.
-
-    The following resource must be present:
-
-    ```
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: srl-node-cred
-      namespace: eda
-    type: Opaque
-    data:
-      username: YWRtaW4=
-      password: Tm9raWFTcmwxIQ==
-    ---
+    ```yaml title="Example Artifact resource to upload the SR Linux image to the artifacts server"
     apiVersion: v1
     kind: Secret
     metadata:
@@ -135,8 +60,8 @@ Ensure that you meet the following requirements:
       namespace: eda
     type: Opaque
     data:
-      username: ZnRwdXNlcg==
-      password: U2ghbmluZyR0YXIxIQ==
+      username: base64(username)
+      password: base64(password)
     ---
     apiVersion: artifacts.eda.nokia.com/v1
     kind: Artifact
@@ -149,79 +74,6 @@ Ensure that you meet the following requirements:
       remoteFileUrl:
         fileUrl: ftp://10.10.10.10/eda/srl_images/srlinux-24.10.1-492.bin
       secret: srl-ftp-cred
-    ---
-    apiVersion: artifacts.eda.nokia.com/v1
-    kind: Artifact
-    metadata:
-      name: srlinux-24.10.1-492-md5
-      namespace: eda
-    spec:
-      repo: images
-      filePath: srl.bin.md5
-      remoteFileUrl:
-        fileUrl: ftp://10.10.10.10/eda/srl_images/srlinux-24.10.1-492.bin.md5
-      secret: srl-ftp-cred
-    ---
-    apiVersion: artifacts.eda.nokia.com/v1
-    kind: Artifact
-    metadata:
-      name: sros-iom-24-10-r4
-      namespace: eda
-    spec:
-      repo: images
-      filePath: iom.tim
-      remoteFileUrl:
-        fileUrl: ftp://10.10.10.10/fsp/sros_images/24.10.r4/iom.tim
-      secret: srl-ftp-cred
-    ---
-    apiVersion: artifacts.eda.nokia.com/v1
-    kind: Artifact
-    metadata:
-      name: sros-both-24-10-r4
-      namespace: eda
-    spec:
-      repo: images
-      filePath: both.tim
-      remoteFileUrl:
-        fileUrl: ftp://10.10.10.10/fsp/sros_images/24.10.r4/both.tim
-      secret: srl-ftp-cred
-    ---
-    apiVersion: artifacts.eda.nokia.com/v1
-    kind: Artifact
-    metadata:
-      name: sros-support-24-10-r4
-      namespace: eda
-    spec:
-      repo: images
-      filePath: support.tim
-      remoteFileUrl:
-        fileUrl: ftp://10.10.10.10/fsp/sros_images/24.10.r4/support.tim
-      secret: srl-ftp-cred
-    ---
-    apiVersion: artifacts.eda.nokia.com/v1
-    kind: Artifact
-    metadata:
-      name: sros-cpm-24-10-r4
-      namespace: eda
-    spec:
-      repo: images
-      filePath: cpm.tim
-      remoteFileUrl:
-        fileUrl: ftp://10.10.10.10/fsp/sros_images/24.10.r4/cpm.tim
-      secret: srl-ftp-cred
-    ---
-    apiVersion: artifacts.eda.nokia.com/v1
-    kind: Artifact
-    metadata:
-      name: sros-kernel-24-10-r4
-      namespace: eda
-    spec:
-      repo: images
-      filePath: kernel.tim
-      remoteFileUrl:
-        fileUrl: ftp://10.10.10.10/fsp/sros_images/24.10.r4/kernel.tim
-      secret: srl-ftp-cred
-    ---
     ```
 
 ### Enabling DHCP clients
