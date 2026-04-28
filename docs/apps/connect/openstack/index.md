@@ -20,6 +20,7 @@ It provides the following advantages and capabilities:
 ## Supported Versions
 
 * Red Hat OpenStack Platform (RHOSP) 17.1
+* Red Hat OpenStack Services on OpenShift (RHOSO) 18.0
 
 ## Architecture
 
@@ -49,7 +50,7 @@ mapping the relation between the physical NICs and the different networking cons
 
 ## Installation
 
-For detailed deployment instructions, see the [OpenStack Plugin Installation Guide](installation.md).
+For detailed deployment instructions, see the [OpenStack Plugin Installation Guide](installation/index.md).
 
 ## Features
 
@@ -217,8 +218,9 @@ The known interface mappings can be consulted using the CLI command `openstack e
 
 #### LLDP Provisioning
 
-LLDP must be enabled on all data plane interfaces of the controllers and computes for topology discovery. See
-the [Installation Guide](installation.md) for details on configuring LLDP.
+LLDP must be enabled on all data plane interfaces of the controllers and computes for topology discovery. For RHOSP 17.1, see the
+[RHOSP 17.1 Installation](installation/rhosp-installation.md#step-7-configure-lldp-on-overcloud-nodes) guide; for RHOSO 18, configure LLDP on EDPM nodes via an
+`OpenStackDataPlaneService` as described in the [RHOSO 18 Installation](installation/rhoso-installation.md#step-5-data-plane) guide.
 
 ### Audit
 

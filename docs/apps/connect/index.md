@@ -261,11 +261,13 @@ is 10 seconds.
 
 In the table below you can find the qualified matrix for the Cloud Connect service.
 
-## 25.12
+## 26.4
 
-| Component                 | Release | Supported Versions (Cloud Type) | EDA Core Version             |
-|---------------------------|---------|---------------------------------|------------------------------|
-| **OpenShift**             | 6.0.x   | OpenShift 4.16, 4.18, 4.20      | v5.0.0 (EDA release 25.12.x) |
-| **VMware vCenter**        | v6.0.x  | VMware vCenter 8.X, 9.X         | v5.0.0 (EDA release 25.12.x) |
-| **VMware NSX**            | v6.0.x  | VMware NSX 4.2.X , 9.X          | v5.0.0 (EDA release 25.12.x) |
-| **Nutanix Prism Central** | v6.0.x  | Nutanix Prism Central 7.3.X     | v5.0.0 (EDA release 25.12.x) |
+| Component                 | Release | Supported Versions (Cloud Type) | EDA Core Version            |
+|---------------------------|---------|---------------------------------|-----------------------------|
+| **OpenShift**             | 6.0.x   | OpenShift 4.18, 4.20            | v5.0.0 (EDA release 26.4.x) |
+| **VMware vCenter**        | v6.0.x  | VMware vCenter 8.X, 9.X         | v5.0.0 (EDA release 26.4.x) |
+| **VMware NSX**            | v6.0.x  | VMware NSX 4.2.X , 9.X          | v5.0.0 (EDA release 26.4.x) |
+| **Nutanix Prism Central** | v6.0.x  | Nutanix Prism Central 7.3.X     | v5.0.0 (EDA release 26.4.x) |
+| **OpenStack Plugin**      | v6.0.X  | Red Hat RHOSO 18.0.x            | v5.0.0 (EDA release 26.4.x) |
+| **OpenStack Plugin**      | v6.0.X  | Red Hat RHOSP 17.1.x            | v5.0.0 (EDA release 26.4.x) |
