@@ -1,22 +1,23 @@
 # OpenStack Plugin Installation
 
-This guide provides an overview and prerequisites for installing the EDA Connect OpenStack plugin on Red Hat OpenStack Platform (RHOSP) clusters.
+This guide provides an overview and prerequisites for installing the EDA Connect OpenStack plugin on supported Red Hat OpenStack deployments:
+**Red Hat OpenStack Platform (RHOSP) 17.1** and **Red Hat OpenStack Services on OpenShift (RHOSO) 18.0**.
 
 ## Installation Methods
 
-The EDA Connect OpenStack plugin can be installed using the below method:
+The EDA Connect OpenStack plugin can be installed using one of the following methods:
 
-* **[RHOSP 17.1 Director Installation](rhosp-installation.md)**: Automated installation using Red Hat OpenStack Platform Director (
-  TripleO)
+* **[RHOSP 17.1 Director Installation](rhosp-installation.md)**: Automated installation using Red Hat OpenStack Platform Director (TripleO)
+* **[RHOSO 18 Installation](rhoso-installation.md)**: Installation on Red Hat OpenStack Services on OpenShift using the OpenStack Operator and
+  OpenShift custom resources
 
 [//]: # (* **Manual Installation**: Manual installation on existing OpenStack deployments &#40;documentation to be provided&#41;)
 
-/// details | Non-RHOSP OpenStack Distributions
+/// details | Non-Red Hat OpenStack distributions
     type: warning
-This guide focuses on installing the EDA Connect OpenStack plugin on Red Hat OpenStack Platform 17.1. While it may be possible to adapt these
-instructions for other OpenStack distributions, such as vanilla OpenStack or other managed services, these environments are not officially supported.
-Users attempting to deploy the plugin on unsupported OpenStack distributions do so at their own risk and may encounter issues that are not covered in
-this documentation.
+This documentation covers **RHOSP 17.1** and **RHOSO 18.0** only. While it may be possible to adapt these instructions for other OpenStack
+distributions, such as vanilla OpenStack or other managed services, those environments are not officially supported. Users attempting to deploy the
+plugin on unsupported OpenStack distributions do so at their own risk and may encounter issues that are not covered in this documentation.
 ///
 
 Make sure to first follow the preparation steps outlined in this guide before proceeding with either installation method.
@@ -25,7 +26,7 @@ Make sure to first follow the preparation steps outlined in this guide before pr
 
 Before installing or deploying the OpenStack plugin components, ensure that:
 
-* The Cloud Connect Core application is properly installed in the EDA cluster (see [Cloud Connect Installation](../cloud-connect-installation.md))
+* The Cloud Connect Core application is properly installed in the EDA cluster (see [Cloud Connect Installation](../../cloud-connect-installation.md))
 * You have administrative access to both the EDA Kubernetes cluster and the OpenStack environment
 * The fabric is provisioned and operational in EDA
 * You have access to the Nokia EDA Connect OpenStack plugin container images from `registry.connect.redhat.com/nokia-ni`
@@ -130,14 +131,28 @@ openstack-plugin   Ready    5m
 
 ### Verify the OpenStack Plugin is Active in OpenStack
 
-From the OpenStack undercloud or a system with access to the overcloud controllers, check the Neutron server logs to verify the EDA Connect OpenStack plugin
-loaded successfully:
+**RHOSP 17.1**
+
+From the OpenStack undercloud or a system with access to the overcloud controllers, check the Neutron server logs to verify the EDA Connect OpenStack
+plugin loaded successfully:
 
 ```bash
 sudo podman exec -it neutron_api grep -i "eda_connect" /var/log/neutron/server.log
 ```
 
 You should see log entries indicating the OpenStack plugin initialized successfully and established communication with the EDA cluster.
+
+**RHOSO 18**
+
+From a workstation with `oc` access to the OpenShift cluster hosting RHOSO:
+
+```bash
+NEUTRON_POD=$(oc get pods -n openstack -l service=neutron -o jsonpath='{.items[0].metadata.name}')
+oc logs "${NEUTRON_POD}" -n openstack | grep -i eda_connect
+```
+
+You should see log lines indicating the mechanism driver initialized and registered with EDA. For more checks (including the `openstackclient` image),
+see [Post-Installation Configuration](rhoso-installation.md#post-installation-configuration) in the RHOSO installation guide.
 
 ### Verify Topology Discovery
 
@@ -147,4 +162,6 @@ Ensure LLDP is functioning properly and the OpenStack plugin can discover the ne
 openstack eda interface mapping list
 ```
 
-This command should display the discovered mappings between physical networks (physnets) and compute node interfaces.
+This command should display the discovered mappings between physical networks (physnets) and compute node interfaces. On RHOSO 18, run it from a shell
+that has OpenStack credentials for the deployment (for example `oc rsh` into the `openstackclient` pod when you use the Nokia client image described
+in the [RHOSO 18 Installation](rhoso-installation.md) guide under **Step 8: Nokia Container Images (`OpenStackVersion`)**).

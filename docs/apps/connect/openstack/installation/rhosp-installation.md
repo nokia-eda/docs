@@ -5,12 +5,12 @@ OpenStack Director (TripleO).
 
 /// warning
 Before proceeding with this installation method, ensure you have completed all the prerequisites and preparation steps described in
-the [OpenStack Plugin Installation](installation.md) guide.
+the [OpenStack Plugin Installation](index.md) guide.
 ///
 
 ## Prerequisites
 
-* All prerequisites from the [OpenStack Plugin Installation](installation.md) guide must be met
+* All prerequisites from the [OpenStack Plugin Installation](index.md) guide must be met
 * EDA Kubernetes preparation steps (Service Account and Token) must be completed
 * Red Hat OpenStack Platform Director (undercloud) is installed and operational
 * Refer to
@@ -82,7 +82,7 @@ adjust the values accordingly.
     type: note
 
 Replace `<USERNAME>|<SERVICE_KEY>` and `<PASSWORD>` with the credentials provided by Red Hat for accessing the container registry. See
-the [Get Container Registry Credentials](installation.md#create-a-service-account-token) section for more information.
+the [Get Container Registry Credentials](index.md#create-a-service-account-token) section for more information.
 ///
 
 Run the container image prepare command to generate the image list:
@@ -170,7 +170,7 @@ The plugin name must comply with the regex check of `'([A-Za-z0-9][-A-Za-z0-9_.]
 
 **`ml2_eda_connect/api_token`**
 : The bearer token obtained from the service account token secret in
-the [Create a Service Account Token](installation.md#create-a-service-account-token) section
+the [Create a Service Account Token](index.md#create-a-service-account-token) section
 
 **`ml2_eda_connect/ca_cert_path`**
 : Path to the CA certificate file (use `/etc/pki/ca-trust/source/anchors/eda.crt.pem` if injecting the certificate, or omit if using a trusted CA)

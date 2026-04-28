@@ -109,8 +109,9 @@ nav:
           - OpenStack:
               - apps/connect/openstack/index.md
               - Installation:
-                  - Overview: apps/connect/openstack/installation.md
-                  - RHOSP 17.1 Installation: apps/connect/openstack/rhosp-installation.md
+                  - Overview: apps/connect/openstack/installation/index.md
+                  - RHOSP 17.1 Installation: apps/connect/openstack/installation/rhosp-installation.md
+                  - RHOSO 18 Installation: apps/connect/openstack/installation/rhoso-installation.md
           - VMware:
               - vSphere:
                   - apps/connect/vmware/vsphere/index.md
