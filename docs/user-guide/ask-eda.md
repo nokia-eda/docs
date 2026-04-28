@@ -119,7 +119,12 @@ Table: Elements of the Ask EDA window
 |4|**Full screen** toggle|When the panel is docked, the **Full screen** icon is a left arrow. Click it to make the chat overlay the main view. In this mode, the **Full screen** icon is a right arrow; click it to dock the ASK EDA window.|
 |5|**X**|Click to close the chat window.|
 
-### Conversations
+You can set up the **Ask EDA** chat window to display in one of the following modes:
+
+- Docked mode: The chat occupies a pane on the right, leaving most of the EDA workspace available for other tasks.
+- Full screen mode: Click the **Full screen** toggle to cover the main UI view with the chat.
+
+### Managing conversations
 
 When you first open Ask EDA, a new conversation is automatically created. When you make a query, Nokia EDA provides a default title for your conversation and the **Open conversation history** icon becomes visible; click it to display the conversation list.
 
@@ -130,8 +135,6 @@ All active and completed conversations appear in the side-bar, ordered by most r
  -{{image(url="graphics/conversation-list.png", title="Conversation list", shadow=true, padding=20)}}-
 
 Conversations persist for the duration of the Nokia EDA session. If Nokia EDA is restarted, transient conversations are cleared unless the administrator has enabled permanent storage.
-
-### Managing conversations
 
 You can rename a conversation or delete it entirely.
 
@@ -163,13 +166,4 @@ Currently, **Ask EDA** provides contextual help for transactions and alarms.
 
 **Ask EDA** can generate multiple types of dashlets from your prompt. If you do not provide a dashlet type, **Ask EDA** infers the most appropriate type of dashlet based based on your requested data. If it cannot infer the dashlet type, it asks you to select one.
 
-Once the dashlet is generated, you can drag and drop it in an opened dashboard designer view. For more information about how to work with dashlets, see [Dashboard designer](dashboard-designer.md).
-
-### Adjusting the **Ask EDA** window size
-
-You can set up the **Ask EDA** chat window to display in one of the following modes:
-
-- Docked mode: The chat occupies a slim pane on the right, leaving most of the EDA workspace available for other tasks. Click the **Full screen** toggle (arrow points right) to return to this view.
-- Overlay mode: Click the **Full screen** toggle to cover the main view, while keeping the surrounding UI visible.
-- Full-screen mode: Press **F11** to hide the navigation menu and work exclusively within the chat. Press **F11** again to return to the previous view.
-  
+Once the dashlet is generated, you can drag and drop it in an opened dashboard designer view. For more information about how to build dashboards, see [Dashboards](dashboards.md).
