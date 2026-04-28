@@ -1,5 +1,226 @@
 # Deploying the Assets VM
 
+## Preparing the VM
+
+The Assets VM will run as a single Virtual Machine inside the air-gapped environment. This VM will hold all of the assets and can be used across multiple deployments and EDA versions, containing the assets for multiple versions.
+
+These steps help create the Assets VM from a base Talos VM image and populate it with the local cache needed to deploy the Assets VM in the air-gapped environment.
+
+/// admonition | Caution
+    type: note
+These steps are meant to be executed in the public environment with Internet access.
+///
+
+### Creating Assets VM Image Cache
+
+Before creating the Assets VM Image for a specific environment, an image cache must be created that will contain the necessary bootstrap images used by the Assets VM.
+
+Change into the cloned `edaadm` repository root directory.
+
+```bash
+cd path/to/edaadm
+```
+
+And run the following command to create the image cache:
+
+```bash
+make -C bundles/ create-assets-host-bootstrap-image-cache
+```
+
+### Creating the KVM Assets VM Image
+
+/// admonition | Note
+    type: subtle-note
+This is only needed if you plan to deploy the Assets VM on KVM.
+///
+
+Follow these steps to create the Assets VM Image for KVM. This will generate an ISO file based on the Talos VM base image containing a local cache. This image is different from the base Talos image ISO file that you will use for the EDA Kubernetes VMs, but is based on it.
+
+/// html | div.steps
+
+1. Change into the `edaadm` repository.
+
+    In case you have changed directories, ensure that you are in the `edaadm` repository.
+
+    ```bash title="changing into edaadm repository directory"
+    cd path/to/edaadm
+    ```
+
+2. Generate the Assets VM ISO for KVM.
+
+    Execute the following command to generate the KVM Talos ISO for the Assets VM.
+
+    ```bash
+    make -C bundles/ create-asset-vm-nocloud-boot-iso
+    ```
+
+    //// details | Output example
+        type: subtle-note
+    The output should look similar to:
+
+    ```
+    --> INFO: List of goals: create-asset-vm-nocloud-boot-iso
+    docker pull ghcr.io/siderolabs/imager:v1.9.2
+    v1.9.2: Pulling from siderolabs/imager
+    Digest: sha256:b99d29d04df9eea89d50cb0d13d57e1e035e54cbd9970a26af99b18154e443a9
+    Status: Image is up to date for ghcr.io/siderolabs/imager:v1.9.2
+    ghcr.io/siderolabs/imager:v1.9.2
+    skipped pulling overlay (no overlay)
+    profile ready:
+    arch: amd64
+    platform: nocloud
+    secureboot: false
+    version: v1.9.2
+    input:
+      kernel:
+        path: /usr/install/amd64/vmlinuz
+      initramfs:
+        path: /usr/install/amd64/initramfs.xz
+      baseInstaller:
+        imageRef: ghcr.io/siderolabs/installer:v1.9.2
+      imageCache:
+        imageRef: ""
+        ociPath: /image-cache.oci
+    output:
+      kind: iso
+      imageOptions:
+        diskSize: 2147483648
+      outFormat: raw
+    skipped initramfs rebuild (no system extensions)
+    kernel command line: talos.platform=nocloud console=tty1 console=ttyS0 net.ifnames=0 talos.halt_if_installed=1 init_on_alloc=1 slab_nomerge pti=on consoleblank=0 nvme_core.io_timeout=4294967295 printk.devkmsg=on ima_template=ima-ng ima_appraise=fix ima_hash=sha512
+    ISO ready
+    output asset path: /out/nocloud-amd64.iso
+    renamed '/home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/nocloud-amd64.iso' -> '/home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso'
+    --> INFO: Created /home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso
+    ```
+
+    ////
+
+    The ISO disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso`.
+
+///
+
+### Creating the VMware Assets VM Image
+
+/// admonition | Note
+    type: subtle-note
+This is only needed if you plan to deploy the Assets VM on VMware vSphere.
+///
+
+/// warning | This command requires Linux kernel version 6 or higher[^1]
+///
+
+Follow these steps to create the Assets VM Image for VMware vSphere. This will generate an ISO file based on the Talos VM base image containing a local cache. This image is different from the base Talos image ISO file that you will use for the EDA Kubernetes VMs, but is based on it.
+
+/// html | div.steps
+
+1. Change into the `edaadm` repository.
+
+    In case you have changed directories, ensure that you are in the `edaadm` repository.
+
+    ```bash title="changing into edaadm repository directory"
+    cd path/to/edaadm
+    ```
+
+2. Generate the Assets VM OVA for VMware vSphere.
+
+    Execute the following command to generate the VMware vSphere Talos OVA for the Assets VM.
+
+    ```bash
+    make -C bundles/ create-asset-vm-vmware-boot-ova
+    ```
+
+    //// details | Output example
+        type: subtle-note
+
+    The output should look similar to:
+
+    ```
+    --> INFO: List of goals: create-asset-vm-vmware-boot-ova
+    docker pull ghcr.io/siderolabs/imager:v1.9.2
+    v1.9.2: Pulling from siderolabs/imager
+    Digest: sha256:b99d29d04df9eea89d50cb0d13d57e1e035e54cbd9970a26af99b18154e443a9
+    Status: Image is up to date for ghcr.io/siderolabs/imager:v1.9.2
+    ghcr.io/siderolabs/imager:v1.9.2
+    skipped pulling overlay (no overlay)
+    profile ready:
+    arch: amd64
+    platform: vmware
+    secureboot: false
+    version: v1.9.2
+    input:
+      kernel:
+        path: /usr/install/amd64/vmlinuz
+      initramfs:
+        path: /usr/install/amd64/initramfs.xz
+      baseInstaller:
+        imageRef: ghcr.io/siderolabs/installer:v1.9.2
+      imageCache:
+        imageRef: ""
+        ociPath: /image-cache.oci
+    output:
+      kind: image
+      imageOptions:
+        diskSize: 2147483648
+        diskFormat: ova
+      outFormat: raw
+    skipped initramfs rebuild (no system extensions)
+    kernel command line: talos.platform=vmware talos.config=guestinfo console=tty0 console=ttyS0 earlyprintk=ttyS0,115200 net.ifnames=0 init_on_alloc=1 slab_nomerge pti=on consoleblank=0 nvme_core.io_timeout=4294967295 printk.devkmsg=on ima_template=ima-ng ima_appraise=fix ima_hash=sha512
+    disk image ready
+    output asset path: /out/vmware-amd64.ova
+    renamed '/home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/vmware-amd64.ova' -> '/home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-vmware-amd64.ova'
+    --> INFO: Created /home/user/ws/edaadm/public/bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-vmware-amd64.ova
+    ```
+
+    ////
+
+    The OVA disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-vmware-amd64.ova`.
+
+///
+
+A single Assets VM can be used for multiple deployments and versions of EDA, as the assets for multiple versions of EDA can be uploaded to the same Assets VM.
+
+## Preparing the air-gapped environment
+
+The downloaded assets need to be made available in the air-gapped environment. Two options are available:
+
+1. Move the system that was used to prepare the Assets VM to the air-gapped environment. For instance, if it is a laptop or a VM, you can move to the air-gapped environment by changing its network configuration.
+2. Copy the data from the system that was used to prepare the Assets VM to the air-gapped environment using a USB key or a temporary network connection. The data should include:
+    * The playground repository cloned during the ["Preparing for installation"](../preparing-for-installation.md) step.
+    * The edaadm repository which includes the `eda-cargo` folder holding the air-gapped data (bundles, asset VM image and Talos base VM images). The `eda-cargo` folder was populated during the [preparing](#preparing-the-vm) the Assets VM and [downloading](downloading-the-assets.md) the necessary assets steps.
+
+### Loading the Kpt Setters image
+
+/// admonition | Note
+    type: subtle-note
+These steps are to be executed in the air-gapped environment.
+///
+
+The procedures for setting up the Assets VM and installing EDA use [Kpt](https://kpt.dev) - a package manager for Kubernetes. Kpt relies on the `kpt-apply-setters` container to be present in the local Docker image cache of the air-gapped system to be able to perform its operations.  
+The container image is part of the `eda-bundle-tools` bundle in the `edaadm/bundles` list. If you used the `save-all-bundles` option when downloading the assets, you will have that bundle on your air-gapped system. If you do not have it yet, you can download the bundle on the system with Internet and copy over the content of the bundle to the air-gapped environment before executing the steps.
+
+To load the `kpt-apply-setters` image from the `eda-bundle-tools` bundle, follow these steps:
+
+/// html | div.steps
+
+1. Go to the `edaadm` repository directory.
+
+    Change into the `edaadm` repository that you have copied from the Internet-connected system:
+
+    ```bash
+    cd path/to/edaadm
+    ```
+
+2. Import the image into the local docker image cache
+
+    Note that the version of the bundle might update to a newer version in the future. In that case, replace the `1-0-0` with the appropriate version and the correct `kpt-apply-setters` version as well.
+
+    ```bash
+    docker load -i ./bundles/eda-cargo/eda-bundle-tools-1-0-0/images/srl-labs-kpt-apply-setters-0-1-1
+    ```
+
+## Deploying the VM
+
 /// admonition | Caution
     type: note
 These steps are meant to be executed in the air-gapped environment.
@@ -7,7 +228,7 @@ These steps are meant to be executed in the air-gapped environment.
 
 The procedure to deploying the Assets VM is similar to deploying the EDA Talos Kubernetes cluster nodes and uses `edaadm` CLI to manage the deployment process.
 
-## Preparing the Assets VM EDAADM Configuration File
+### Preparing the Assets VM EDAADM Configuration File
 
 The EDAADM configuration file declaratively defines the machine/VM configuration and the Kubernetes cluster parameters and is an abstraction on top of the [Talos machine config](https://docs.siderolabs.com/talos/v1.11/reference/configuration/overview). You will find the edaadm configuration for the Assets VM very similar to the config file used for [EDA Kubernetes nodes](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#preparing-the-edaadm-configuration-file) with a few minor differences:
 
@@ -76,7 +297,7 @@ k8s:
 
 Assuming you are in the `edaadm` repository root, save the configuration file as `eda-assets-deployment.yaml`.
 
-## Generating the Talos Machine Configuration Files
+### Generating the Talos Machine Configuration Files
 
 After creating the Assets VM EDAADM configuration file, the next step is to generate all the configuration files that are necessary to deploy the Kubernetes environment for the Assets VM.
 
@@ -116,10 +337,6 @@ Created eda-airgap-assets/rook-ceph-cluster-values.yaml
 The generated Talos configuration files will be available in the `eda-airgap-assets` folder which is named after the `clusterName` specified in the EDAADM configuration file.  
 The machine config file for the Assets VM is named `eda-assets.yaml` after the `name` field specified in the `machines` section of the EDAADM configuration file.
 
-## Deploy the Assets VM
-
-The Assets VM can be deployed on a KVM or VMware vSphere environment. Follow the steps below depending on your hypervisor.
-
 ### Creating the Assets VM on KVM
 
 /// admonition | Caution
@@ -145,7 +362,7 @@ This procedure is executed on the KVM Hypervisor which will host the Assets VM.
 
 2. Verify that the Assets VM ISO image is available.
 
-    The Assets VM ISO image was generated in the [Creating the KVM Assets VM Image](preparing-the-assets-vm.md#creating-the-kvm-assets-vm-image) and should be available in the Air-gapped environment when you [copied the assets](preparing-the-air-gapped-environment.md) from the public environment.
+    The Assets VM ISO image was generated in the [Creating the KVM Assets VM Image](#creating-the-kvm-assets-vm-image) and should be available in the air-gapped environment when you [copied the assets](#preparing-the-air-gapped-environment) from the public environment.
 
     ```bash title="executing the <code>ls</code> command from the edaadm repository root"
     ls -lh ./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso
@@ -199,7 +416,7 @@ This procedure is executed on the KVM Hypervisor which will host the Assets VM.
 
 /// admonition | Caution
     type: note
-This procedure is executed in the Air-gapped environment for a VMware vSphere deployment.
+This procedure is executed in the air-gapped environment for a VMware vSphere deployment.
 ///
 
 /// html | div.steps
@@ -216,7 +433,7 @@ This procedure is executed in the Air-gapped environment for a VMware vSphere de
     export NODECONFIG=$(base64 -i eda-airgap-assets/eda-assets.yaml)
     ```
 
-    Deploy the Assets VM OVA image generated in the ["Creating the VMware Assets VM image"](preparing-the-assets-vm.md#creating-the-vmware-assets-vm-image) section using the `ovftool` command:
+    Deploy the Assets VM OVA image generated in the ["Creating the VMware Assets VM image"](#creating-the-vmware-assets-vm-image) section using the `ovftool` command:
 
     ```bash
     ovftool --acceptAllEulas --noSSLVerify \
@@ -340,36 +557,9 @@ After deploying and bootstrapping the Assets VM itself, the container registry, 
 make -C kpt/ eda-setup-shipyard
 ```
 
-## Uploading the Assets to the Assets VM
+Once the Assets VM is deployed and bootstrapped, you need to upload the assets to the Assets Host.
 
-Now that the Assets VM and its services are up and running, upload all the assets that you [downloaded previously](downloading-the-assets.md#downloading-the-assets-bundles) to the Assets VM.
+[:octicons-arrow-right-24: Upload the assets](uploading-assets.md)
 
-Set the `EDA_CORE_VERSION`[^1] environment variable (and any `SKIP_...` environment variables you used when downloading the assets)[^1] in your shell. This will ensure that the correct version of the cache and assets is uploaded to the Assets VM.
-
-```bash
-export EDA_CORE_VERSION=-{{ eda_version }}-
-```
-
-Then, execute the following command to upload all the assets to the Assets VM:
-
-```bash
-make -C bundles/ load-all-bundles \
-    ASSET_HOST=192.0.2.228 \
-    ASSET_HOST_GIT_USERNAME="ZWRh" \
-    ASSET_HOST_GIT_PASSWORD="ZWRh" \
-    ASSET_HOST_ARTIFACTS_USERNAME="ZWRh" \
-    ASSET_HOST_ARTIFACTS_PASSWORD="ZWRh"
-```
-
-/// admonition | Notes
-    type: subtle-note
-
-1. Make sure to replace the `ASSET_HOST` IP with the IP of your Asset VM.
-2. The username and passwords will be configurable in the near future. The `eda` username and password are used by default.
-
-///
-
-Once all uploads have finished successfully, the Assets VM is ready to support the installation of the EDA Talos Kubernetes cluster in the Air-gapped environment.
-
-[^1]: If you used `SKIP_...` environment variables when [downloading the assets](downloading-the-assets.md#downloading-the-assets-bundles), make sure to set the same variables when uploading the assets to the Assets VM.
+[^1]: See https://github.com/siderolabs/talos/issues/9264#issuecomment-2426756838
 [^2]: Where `eda-assets` is the name of the machine defined in the EDAADM configuration file.

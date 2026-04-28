@@ -58,7 +58,7 @@ EDA uses Rook Ceph as a secure, distributed, and redundant data store for all th
 
     /// admonition | Caution
         type: note
-    Only do this step for an **Internet based installation**, not for an Air-Gapped installation.
+    Perform this step for an **Internet based installation**, not for an air-gapped installation.
     ///
 
     ```

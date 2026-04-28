@@ -263,7 +263,7 @@ Optional: The list of IP addresses, IP ranges and hostnames that should not be p
 `USE_ASSET_HOST`
 /////
 ///// html | td
-Must be set to `1` for an Air-gapped Installation and set to `0` for an Internet based installation. `0` is the default value if not set.
+Must be set to `1` for an air-gapped Installation and set to `0` for an Internet based installation. `0` is the default value if not set.
 /////
 ////
 
@@ -272,7 +272,7 @@ Must be set to `1` for an Air-gapped Installation and set to `0` for an Internet
 `ASSET_HOST`
 /////
 ///// html | td
-The IP address of the Assets VM for the Air-gapped installation.
+The IP address of the Assets VM for the air-gapped installation.
 /////
 ////
 
@@ -437,7 +437,7 @@ The simulation mode can't be changed post-install.
 
 ///
 
-You can find examples of the `prefs.mk` file contents for Internet based and Air-gapped installations for your reference:
+You can find examples of the `prefs.mk` file contents for Internet based and air-gapped installations for your reference:
 
 /// tab | Internet based installation
 
@@ -448,14 +448,16 @@ You can find examples of the `prefs.mk` file contents for Internet based and Air
 ///
 /// tab | Air-gapped installation
 
-```makefile
+This example uses a [single Assets Host](../air-gapped/uploading-assets.md#uploading-all-assets-to-a-single-asset-host) to host the container registry, git server and web server.
+
+```makefile title="Air-gapped installation using a single Assets Host"
 --8<-- "docs/software-install/resources/prefs-example.mk"
 USE_ASSET_HOST=1
 ASSET_HOST=192.0.2.228
-ASSET_HOST_GIT_USERNAME="eda"
-ASSET_HOST_GIT_PASSWORD="eda"
-ASSET_HOST_ARTIFACTS_USERNAME="eda"
-ASSET_HOST_ARTIFACTS_PASSWORD="eda"
+B64_ASSET_HOST_GIT_USERNAME="ZWRh"
+B64_ASSET_HOST_GIT_PASSWORD="ZWRh"
+B64_ASSET_HOST_ARTIFACTS_USERNAME="ZWRh"
+B64_ASSET_HOST_ARTIFACTS_PASSWORD="ZWRh"
 ```
 
 ///

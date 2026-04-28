@@ -35,7 +35,7 @@ The installation consists of the following high-level tasks:
 
 ### General preparation
 
-These tasks must be completed for both Internet based installations and Air-gapped installations.
+These tasks must be completed for both Internet based installations and air-gapped installations.
 
 /// html | div.steps
 
@@ -52,21 +52,18 @@ These tasks must be completed for both Internet based installations and Air-gapp
 
 ### Air-gapped setup
 
-In case the installation will be Air-gapped, this section provides steps on how to set up the Assets VM and load it with the necessary assets for deploying EDA in an Air-gapped environment.
+In case the installation will be air-gapped, this section provides steps on how to set up the Assets VM and load it with the necessary assets for deploying EDA in an air-gapped environment.
 
 /// html | div.steps
 
-1. [Preparing the Assets VM](air-gapped/preparing-the-assets-vm.md)  
-    This task describes how to create the Asset VM image on a system with Internet access, so it can be used to deploy the Assets VM in the Air-gapped environment.
+1. [Downloading the Assets](air-gapped/downloading-the-assets.md)  
+    This task describes how to download all the necessary assets using a system with Internet access, so they can be used to deploy EDA in the air-gapped environment.
 
-2. [Downloading the Assets](air-gapped/downloading-the-assets.md)  
-    This task describes how to download all the necessary assets using a system with Internet access, so they can be used to deploy EDA in the Air-gapped environment.
+2. [Deploying the Assets VM](air-gapped/deploying-the-assets-vm.md) <small>optional</small>  
+    Deploys the Assets VM in the air-gapped environment, bootstraps it and uploads all the Assets to the it.
 
-3. [Preparing the Air-gapped environment](air-gapped/preparing-the-air-gapped-environment.md)  
-    Describes how to prepare the Air-gapped environment by copying the files downloaded on the Internet facing system to the Air-gapped environment and prepare it so it can be used to install the Assets VM and EDA.
-
-4. [Deploying the Assets VM](air-gapped/deploying-the-assets-vm.md)  
-    Deploys the Assets VM in the Air-gapped environment, bootstraps it and uploads all the Assets to the it.
+3. [Uploading the Assets](air-gapped/uploading-assets.md)  
+    Uploads all the Assets to the Assets VM.
 
 ///
 
@@ -101,8 +98,8 @@ Several key concepts are used throughout the documentation; following is an over
 *Playground git repository*
 : The Playground git repository is [publicly available](https://github.com/nokia-eda/playground) and is used to deploy EDA itself.
 
-*`edaadm`*
-: A tool that will be used for several steps in the process:
+*[`edaadm`](preparing-for-installation.md#download-edaadm-tools)*
+: A CLI tool that will be used for several steps in the process:
 
     * Get the location to download the base Talos image for KVM and VMware environments.
     * Generate Talos machine configuration files for the deployment of both the Assets VM and the EDA Kubernetes cluster VMs.
@@ -234,7 +231,7 @@ Docker must be running and you should be able to run containers
 * `curl` - Used to download files.
 * `jq` and `yq` - Used to parse JSON and YAML files.
 * `sed` - Used to parse and replace content.
-* `tar` and `zip` - Used to create and unpack bundles and assets for the Air-gapped installation process.
+* `tar` and `zip` - Used to create and unpack bundles and assets for the air-gapped installation process.
 * `edaadm` - Used to generate configuration for Talos and other useful commands to initiate the Talos environments. It can be downloaded from the [`edaadm` repository releases](https://github.com/nokia-eda/edaadm/releases/latest) page.
 * `htpasswd` - (Optional) Used in case a custom username and password is required for the Assets VM web server.
 * `base64` - (Optional) Used in case a custom username and password is required for the Assets VM web server or git server.
@@ -255,7 +252,7 @@ The following tools are also helpful. If they are not present, the installation 
 **Internet access**
 /////
 ///// html | td
-Required for Internet-based installations. For Air-gapped installations, at least one system needs internet access.
+Required for Internet-based installations. For air-gapped installations, at least one system needs internet access.
 
 Either directly or through a proxy.
 /////
@@ -265,7 +262,7 @@ Either directly or through a proxy.
 
 /// admonition | Note
     type: subtle-note
-In case of an Air-gapped installation, the guide will refer to two tools-systems, one with public internet access and one in the air-gapped environment. These can be the same system that is moved from the public side to the air-gapped side after downloading all the resources; or it can be two different systems.
+In case of an air-gapped installation, the guide will refer to two tools-systems, one with public internet access and one in the air-gapped environment. These can be the same system that is moved from the public side to the air-gapped side after downloading all the resources; or it can be two different systems.
 ///
 
 ### Nokia EDA node requirements
@@ -341,7 +338,7 @@ You can run the Nokia EDA nodes as virtual machines using the following virtuali
 
 /// admonition | Note
     type: subtle-note
-This only applies if you plan to use the Air-gapped installation process.
+This only applies if you plan to use the air-gapped installation process.
 ///
 
 The Assets VM runs as a single VM inside the air-gapped environment. This VM holds all of the assets and can be used across multiple deployments and EDA versions, containing the assets for multiple versions. This VM has the following requirements:
