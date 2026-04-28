@@ -12,7 +12,6 @@ It provides the following advantages and capabilities:
 * Direct integration into the network management workflow of Kubernetes
 * Use of the common CNIs used by Enterprise applications and CNFs like IPVLAN and SR-IOV
 * Automatic provisioning of the fabric based on where the application pods need the connectivity
-* Support for advanced workflows
 * Different [operational modes](#operational-modes):
     - Kubernetes-managed operational mode
     - EDA-managed operational mode
@@ -20,6 +19,7 @@ It provides the following advantages and capabilities:
     - Network Attachment Definition Transparent operational mode (Kubernetes-managed only)
     - Connect Network Definition operational mode (Kubernetes-managed and EDA-managed)
     - Network Attachment Definition Annotation operational mode (EDA-managed only)
+* Support for advanced use cases through EDA with EDA-managed operational mode.
 * Optimally configure subinterfaces to minimize configuration and security footprint of network services
 * LAG/LACP interfaces
 * VLAN Trunking
@@ -164,7 +164,7 @@ Multiple CNDs can exist, for instance one per application.
 The below section details a couple of examples of CND usage.
 
 /// details | Example 1: Multiple `NADs` in One `BridgeDomain`
-#### Example 1: 
+    type: code-example
 
 The following is a sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be residing in a single subnet,
 when they belong to different master interface. This is an example of Kubernetes Managed Mode.
@@ -189,6 +189,7 @@ EOF
 ///
 
 /// details | Example 2: Multiple `NADs` in One `BridgeDomain` with VLAN Trunking
+    type: code-example
 
 The following is a sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be residing in a single subnet,
 and have them use trunk VLAN's:
@@ -213,6 +214,7 @@ EOF
 ///
 
 /// details |  Example 3: Using EDA-managed mode with CND
+    type: code-example
 
 The following is a sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be part of a single `BridgeDomain`
 that was pre-created in EDA:
@@ -237,6 +239,7 @@ EOF
 ///
 
 /// details | Example 4: Using preProvisionHostGroupSelector to pre-provision connect interface with the label selector
+    type: code-example
 
 To be able to consume this attribute in CND, ensure that the Kubernetes nodes are labelled correctly and the same value is used in the CND.
 
@@ -270,6 +273,7 @@ EOF
 ///
 
 /// details | Example 5: Multiple `NADs` in One `BridgeDomain` associated to a `Router`
+    type: code-example
 
 The following is a sample configuration of the CND usage to be able to have multiple `NetworkAttachmentDefinitions` be residing in a single subnet,
 associated with a router:

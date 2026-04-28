@@ -131,7 +131,7 @@ openstack-plugin   Ready    5m
 
 ### Verify the OpenStack Plugin is Active in OpenStack
 
-**RHOSP 17.1**
+/// tab | RHOSP 17.1
 
 From the OpenStack undercloud or a system with access to the overcloud controllers, check the Neutron server logs to verify the EDA Connect OpenStack
 plugin loaded successfully:
@@ -141,8 +141,9 @@ sudo podman exec -it neutron_api grep -i "eda_connect" /var/log/neutron/server.l
 ```
 
 You should see log entries indicating the OpenStack plugin initialized successfully and established communication with the EDA cluster.
+///
 
-**RHOSO 18**
+/// tab | RHOSO 18
 
 From a workstation with `oc` access to the OpenShift cluster hosting RHOSO:
 
@@ -153,6 +154,7 @@ oc logs "${NEUTRON_POD}" -n openstack | grep -i eda_connect
 
 You should see log lines indicating the mechanism driver initialized and registered with EDA. For more checks (including the `openstackclient` image),
 see [Post-Installation Configuration](rhoso-installation.md#post-installation-configuration) in the RHOSO installation guide.
+///
 
 ### Verify Topology Discovery
 
@@ -162,6 +164,5 @@ Ensure LLDP is functioning properly and the OpenStack plugin can discover the ne
 openstack eda interface mapping list
 ```
 
-This command should display the discovered mappings between physical networks (physnets) and compute node interfaces. On RHOSO 18, run it from a shell
-that has OpenStack credentials for the deployment (for example `oc rsh` into the `openstackclient` pod when you use the Nokia client image described
-in the [RHOSO 18 Installation](rhoso-installation.md) guide under **Step 8: Nokia Container Images (`OpenStackVersion`)**).
+This command should display the discovered mappings between physical networks (physnets) and compute node interfaces. Run it from a shell
+that has OpenStack credentials for the deployment (for example `oc rsh` into the `openstackclient` pod for RHOSO 18).

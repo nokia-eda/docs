@@ -121,16 +121,16 @@ characters and `.`, `_` and `-`. It must start with an alphanumerical character,
 
 The `VmwarePluginInstance` resource supports the following key parameters:
 
-| **Field**           | **Description**                                                                           | **Required** |
-|---------------------|-------------------------------------------------------------------------------------------|--------------|
-| `name`              | Name of the plugin instance in EDA.                                                       | Yes          |
-| `externalID`        | Unique identifier of the Plugin.                                                          | Yes          |
-| `pluginNamespace`   | The namespace in the EDA deployment holding the fabric associated with this plugin.       | Yes          |
-| `vcsaHost`          | URL of the VCSA (e.g `vcenter.mydomain.com`). Note that no URI scheme should be provided. | Yes          |
-| `authSecretRef`     | Name of the Kubernetes Secret containing VCSA credentials                                 | Yes          |
-| `heartbeatInterval` | Interval in seconds for plugin heartbeat to EDA (default: 30s).                           | No           |
-| `vcsaTlsVerify`     | Whether to verify the TLS certificate of VCSA (default: true).                            | No           |
-| `VCSACertificate`   | PEM encoded certificate for VCSA if self-signed (default: empty).                         | No           |
+| **Field**                  | **Description**                                                                           | **Required** |
+|----------------------------|-------------------------------------------------------------------------------------------|--------------|
+| `name`                     | Name of the plugin instance in EDA.                                                       | Yes          |
+| `externalID`               | Unique identifier of the Plugin.                                                          | Yes          |
+| `pluginNamespace`          | The namespace in the EDA deployment holding the fabric associated with this plugin.       | Yes          |
+| `vcsaHost`                 | URL of the VCSA (e.g `vcenter.mydomain.com`). Note that no URI scheme should be provided. | Yes          |
+| `authSecretRef`            | Name of the Kubernetes Secret containing VCSA credentials                                 | Yes          |
+| `heartbeatIntervalSeconds` | Interval in seconds for plugin heartbeat to EDA (default: 30s).                           | No           |
+| `vcsaTlsVerify`            | Whether to verify the TLS certificate of VCSA (default: true).                            | No           |
+| `VCSACertificate`          | PEM encoded certificate for VCSA if self-signed (default: empty).                         | No           |
 
 ## Post-Installation Verification
 

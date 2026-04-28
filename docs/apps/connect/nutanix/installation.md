@@ -118,15 +118,16 @@ EOF
 
 The `NutanixPluginInstance` resource supports the following fields:
 
-| **Field**                 | **Description**                                                                     | **Required** |
-|---------------------------|-------------------------------------------------------------------------------------|--------------|
-| `name`                    | Name of the plugin instance in EDA.                                                 | Yes          |
-| `pluginNamespace`         | The namespace in the EDA deployment holding the fabric associated with this plugin. | Yes          |
-| `prismCentralHost`        | URL of the Prism Central instance (e.g `https://prismcentral.mydomain.com:9440`).   | Yes          |
-| `authSecretRef`           | Name of the Kubernetes Secret containing Prism Central credentials                  | Yes          |
-| `heartbeatInterval`       | Interval in seconds for plugin heartbeat to EDA (default: 30s).                     | No           |
-| `prismCentralTlsVerify`   | Whether to verify the TLS certificate of Prism Central (default: true).             | No           |
-| `prismCentralCertificate` | PEM encoded certificate for Prism Central if self-signed (default: empty).          | No           |
+| **Field**                         | **Description**                                                                     | **Required** |
+|-----------------------------------|-------------------------------------------------------------------------------------|--------------|
+| `name`                            | Name of the plugin instance in EDA.                                                 | Yes          |
+| `pluginNamespace`                 | The namespace in the EDA deployment holding the fabric associated with this plugin. | Yes          |
+| `prismCentralHost`                | URL of the Prism Central instance (e.g `https://prismcentral.mydomain.com:9440`).   | Yes          |
+| `authSecretRef`                   | Name of the Kubernetes Secret containing Prism Central credentials                  | Yes          |
+| `prismCentralPollIntervalSeconds` | Interval in seconds for EDA to poll Prism Central changes (default: 2s).            | Yes          |
+| `heartbeatIntervalSeconds`        | Interval in seconds for plugin heartbeat to EDA (default: 30s).                     | No           |
+| `prismCentralTlsVerify`           | Whether to verify the TLS certificate of Prism Central (default: true).             | No           |
+| `prismCentralCertificate`         | PEM encoded certificate for Prism Central if self-signed (default: empty).          | No           |
 
 ## Post-Installation Verification
 

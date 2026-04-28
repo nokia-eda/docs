@@ -28,8 +28,8 @@ There are two ways to get the Helm charts to deploy the EDA Connect OpenShift pl
 2. Downloading the release tarball and unpacking it:
 
     ```bash
-    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/5.0.0-1.tar.gz
-    tar zxf 5.0.0-1.tar.gz 
+    curl -sLO https://github.com/nokia-eda/connect-k8s-helm-charts/archive/refs/tags/6.0.0.tar.gz
+    tar zxf 6.0.0.tar.gz 
     ```
 
 /// details | Updating helm charts
@@ -68,7 +68,7 @@ An example helm install command with the updated image field would look like thi
 helm install eda-k8s connect-k8s-helm-charts/ \
   -n eda-connect-k8s-controller \
   -f helm-values.yaml \
-  --set controller.image=your-registry/eda-connect-k8s-controller:5.0.0 \
+  --set controller.image=your-registry/eda-connect-k8s-controller:6.0.0 \
   --set controller.imagePullSecretName="" # No pull secret needed when using mirrored image in airgapped environment
 ```
 
@@ -76,7 +76,7 @@ helm install eda-k8s connect-k8s-helm-charts/ \
     type: warning
 Make sure to run 
 ```bash 
-make save-eda-bundle-connect-k8s-plugin-5-0-0
+make save-eda-bundle-connect-k8s-plugin-6-0-0
 ```
 to update the saved bundle with the latest image reference in the eda adm deployment.
 ///

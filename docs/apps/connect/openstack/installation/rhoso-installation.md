@@ -54,7 +54,7 @@ If the EDA K8S API uses a self-signed certificate, store the CA in a `Secret` in
 you retrieved earlier (see also [OpenStack Plugin Installation](index.md#create-a-service-account-token)).
 
 /// details | Trusted public CA
-type: info
+    type: info
 
 If EDA uses certificates signed by a well-known certificate authority, skip creating `eda-ca-secret`, omit the CA volume from `extraMounts`, and remove
 the `ca_cert_path` setting from the ML2 fragment in Step 5.
@@ -176,7 +176,7 @@ spec:
       customServiceConfig: | #(2)!
         [DEFAULT]
         debug = True
-        service_plugins = ovn-router,segments,trunk,qos,port_forwarding,placement,nic_mapping
+        service_plugins = segments,trunk,qos,port_forwarding,placement,nic_mapping
 
         [ml2]
         type_drivers = flat,vlan,vxlan
@@ -211,6 +211,7 @@ spec:
 1. Custom Neutron image from registry.connect.redhat.com/nokia-ni that includes the eda_connect ML2 driver, adjust the image tag to the appropriate one for your environment.
 2. We override the configuration of the Neutron service to include the eda_connect mechanism driver and the eda_network extension driver.
    Note that all other configuration should be adapted to your environment, you can omit any entries to use the default values.
+   Note that layer 3 OVN functionality is not supported together with the EDA Connect OpenStack driver.
 3. We mount the nokia-eda-ml2-config from Step 1 to provide the EDA Connect OpenStack ML2 plugin with its configuration.
 4. If the EDA K8S API uses a self-signed CA, we mount that CA in the pod to validate communication with the EDA K8S API. Leave this block out if the EDA K8S API is signed by an official CA.
 
@@ -320,7 +321,7 @@ Define your `OpenStackDataPlaneNodeSet` following
 and, if applicable,
 [Deploying an NFV environment with SR-IOV and DPDK](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_a_network_functions_virtualization_environment/assembly_create-data-plane-sriov-dpdk_rhoso-nfv).
 
-Include the previously created `edpm-lldp-service* in `spec.services` after the standard services that should run before LLDP (for example after `ovn` and Neutron
+Include the previously created `edpm-lldp-service` in `spec.services` after the standard services that should run before LLDP (for example after `ovn` and Neutron
 metadata services). Exact ordering should follow your validated service list from Red Hat; a typical pattern is to add `edpm-lldp-service` alongside
 other post-network services.
 
@@ -430,11 +431,9 @@ EDPM documentation) so nodes reboot into the configured kernel.
 
 ## Reference
 
-| Resource                                   | URL                                                                                                                                                                                                   |
-|--------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| RHOSO 18 Deployment Guide                  | https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/                                                         |
-| RHOSO 18 Preparing RHOCP for RHOSO         | https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_preparing-rhocp-for-rhoso                       |
-| RHOSO 18 Installing the OpenStack Operator | https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_installing-and-preparing-the-openstack-operator |
-| RHOSO 18 Data Plane                        | https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-data-plane                         |
-| RHOSO 18 NFV — SR-IOV and DPDK Data Plane  | https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_a_network_functions_virtualization_environment/assembly_create-data-plane-sriov-dpdk_rhoso-nfv   |
-| EDPM Ansible Variables                     | https://openstack-k8s-operators.github.io/edpm-ansible/                                                                                                                                               |
+* [RHOSO 18 Deployment Guide](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/)
+* [RHOSO 18 Preparing RHOCP for RHOSO](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_preparing-rhocp-for-rhoso)
+* [RHOSO 18 Installing the OpenStack Operator](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_installing-and-preparing-the-openstack-operator)
+* [RHOSO 18 Data Plane](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-data-plane)
+* [RHOSO 18 NFV — SR-IOV and DPDK Data Plane](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_a_network_functions_virtualization_environment/assembly_create-data-plane-sriov-dpdk_rhoso-nfv)
+* [EDPM Ansible Variables](https://openstack-k8s-operators.github.io/edpm-ansible/)

@@ -151,18 +151,18 @@ You should see your NSX plugin listed with status information.
 
 The `NsxPluginInstance` resource supports the following key parameters:
 
-| Parameter           | Description                                                                                              | Required         |
-|---------------------|----------------------------------------------------------------------------------------------------------|------------------|
-| `name`              | Unique name for the plugin instance                                                                      | Yes              |
-| `namespace`         | EDA namespace containing the fabric                                                                      | Yes              |
-| `externalID`        | Unique identifier for the NSX environment                                                                | Yes              |
-| `nsxManagementIP`   | FQDN or IP address of the NSX Manager (eg. nsx.example.com). Note that no URI scheme should be provided. | Yes              |
-| `authSecretRef`     | Reference to the Kubernetes Secret with credentials                                                      | Yes              |
-| `heartbeatInterval` | Interval in seconds for heartbeat updates                                                                | No (default: 30) |
-| `nsxTlsVerify`      | Whether to verify the TLS certificate of NSX (default: true).                                            | No               |
-| `nsxCertificate`    | PEM encoded certificate for NSX if self-signed (default: empty).                                         | No               |
-| `nsxPollInterval`   | Interval in seconds for polling NSX for changes (default: 2).                                            | No (default: 60) |
-| `vCenters`          | List of vCenter references with FQDN and plugin names                                                    | Yes              |
+| Parameter                  | Description                                                                                              | Required         |
+|----------------------------|----------------------------------------------------------------------------------------------------------|------------------|
+| `name`                     | Unique name for the plugin instance                                                                      | Yes              |
+| `namespace`                | EDA namespace containing the fabric                                                                      | Yes              |
+| `externalID`               | Unique identifier for the NSX environment                                                                | Yes              |
+| `nsxManagementIP`          | FQDN or IP address of the NSX Manager (eg. nsx.example.com). Note that no URI scheme should be provided. | Yes              |
+| `authSecretRef`            | Reference to the Kubernetes Secret with credentials                                                      | Yes              |
+| `heartbeatIntervalSeconds` | Interval in seconds for heartbeat updates                                                                | No (default: 30) |
+| `nsxTlsVerify`             | Whether to verify the TLS certificate of NSX (default: true).                                            | No               |
+| `nsxCertificate`           | PEM encoded certificate for NSX if self-signed (default: empty).                                         | No               |
+| `nsxPollIntervalSeconds`   | Interval in seconds for polling NSX for changes (default: 2).                                            | No (default: 60) |
+| `vCenters`                 | List of vCenter references with FQDN and plugin names                                                    | Yes              |
 
 ## Next Steps
 
