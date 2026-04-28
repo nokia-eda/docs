@@ -1,6 +1,6 @@
 # Platform operations
 
-The `edactl platform` utility provides a set of commands for managing EDA operations such as taking EDA offline for maintenance, restarting the system, and uninstalling EDA.
+The `edactl platform` utility provides a set of commands for managing Nokia EDA operations such as taking EDA offline for maintenance, restarting the system, and uninstalling Nokia EDA.
 
 You can use the `edactl platform` command options:
 
@@ -15,7 +15,7 @@ You can use the `edactl platform` command options:
 
 - `--start`: triggers the system to start up and recreates the resources removed by `--stop`.
 
-- `--uninstall`: performs a full clean-up of the cluster, removing every object created by ConfigEngine and every EDA-related app. After this command, the cluster is in a pre-EDA state.
+- `--uninstall`: performs a full clean-up of the cluster, removing every object created by ConfigEngine and every Nokia EDA-related app. After this command, the cluster is in a pre-EDA state.
 
     From this cleaned state you can:
 

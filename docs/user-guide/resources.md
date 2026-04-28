@@ -1,13 +1,13 @@
 # Resources
 
-In EDA, a resource is a unit of automation and can represent virtually anything:
+In Nokia Event-Driven Automation (EDA), a resource is a unit of automation and can represent virtually anything:
 
 - an interface on a network device
 - a complete fabric configuration
 - a network service like a VPN or a VRF
 - and even non-network related resources like a user account, a DNS record, or a firewall rule.
 
-As a Kubernetes citizen, EDA represents its resources using Custom Resources (CRs) of Kubernetes that can be created using multiple methods including the Kubernetes (K8s) API, the EDA API, or through the EDA UI. By using CRs, EDA also implements the Kubernetes Resource Model, or KRM.
+As a Kubernetes citizen, Nokia EDA represents its resources using Custom Resources (CRs) of Kubernetes that can be created using multiple methods including the Kubernetes (K8s) API, the Nokia EDA API, or through the Nokia EDA UI. By using CRs, Nokia EDA also implements the Kubernetes Resource Model, or KRM.
 
 The KRM defines how Kubernetes resources are described, created, updated, and monitored. Kubernetes resources consist of a combination of fields that describe their state and behavior within the cluster.
 
@@ -21,21 +21,21 @@ Every resource in Kubernetes is defined using a standard structure that includes
 
 ## Derived resources
 
-As part of the execution of a transaction, EDA applications sometimes generate a set of resources. These resources are not "owned" by the user or operator; instead, they owned by the application that generated them. To ensure the ongoing operation of the owning application, such resources can only be changed by that same application.
+As part of the execution of a transaction, Nokia EDA applications sometimes generate a set of resources. These resources are not "owned" by the user or operator; instead, they owned by the application that generated them. To ensure the ongoing operation of the owning application, such resources can only be changed by that same application.
 
-In EDA, such a resource is known as a derived resource; it is a resource whose entire content is derived from some other resource.
+In Nokia EDA, such a resource is known as a derived resource; it is a resource whose entire content is derived from some other resource.
 
-The EDA GUI prevents you from modifying or deleting derived resources. To indicate that a resource is derived and cannot be modified or deleted, derived resources are presented as read-only, and the usual modification actions are restricted; for example, EDA does not allow you to use a Delete action to delete a derived resource. Unavailable actions are grayed out in action lists.
+The Nokia EDA GUI prevents you from modifying or deleting derived resources. To indicate that a resource is derived and cannot be modified or deleted, derived resources are presented as read-only, and the usual modification actions are restricted; for example, Nokia EDA does not allow you to use a Delete action to delete a derived resource. Unavailable actions are grayed out in action lists.
 
 In data grids, rows displaying derived resources are include a lock icon to indicate that those resources cannot be modified or deleted.
 
 ### Resource Topology <span id="resource-topologies"></span>
 
-Because the volume of resources and their relationships within EDA can be very large, the EDA UI provides a topology visualization of derived and parent resources to help understand and navigate between the interconnections.
+Because the volume of resources and their relationships within Nokia EDA can be very large, the Nokia EDA UI provides a topology visualization of derived and parent resources to help understand and navigate between the interconnections.
 
 To see the topology view for a resource, open the Details view for an individual resource, and then select **Topology** from the drop-down list of available views.
 
-For example, the following illustration shows the resource topology for a fabric. It shows not the fabric's physical topology, but its connection to the set of other resources configured within EDA:
+For example, the following illustration shows the resource topology for a fabric. It shows not the fabric's physical topology, but its connection to the set of other resources configured within Nokia EDA:
 
 - Default Routers
 - ISLs
@@ -48,7 +48,7 @@ For example, the following illustration shows the resource topology for a fabric
 
 ## Labels <span id="labels"></span>
 
-EDA uses labels to organize and describe resources. Labels are among the metadata common to all resources in EDA. In the EDA UI, labels can be viewed and entered in the Metadata panel for a resource.
+Nokia EDA uses labels to organize and describe resources. Labels are among the metadata common to all resources in Nokia EDA. In the Nokia EDA UI, labels can be viewed and entered in the Metadata panel for a resource.
 
 -{{image(url="graphics/sc0227.png", title="Labels", shadow=true, padding=20, scale=0.8)}}-
 
@@ -64,7 +64,7 @@ Label changes are considered normal changes for the purposes of transactions. A 
 
 ### Labeling resources
 
-In the EDA UI, labels can be added in the **Label** field under the heading **Metadata** of the resource edit form.
+In the Nokia EDA UI, labels can be added in the **Label** field under the heading **Metadata** of the resource edit form.
 
 -{{image(url="graphics/sc0228.png", title="Adding a label", shadow=true, padding=20)}}-
 
@@ -75,9 +75,9 @@ The UI will autocomplete from existing label keys and values. Type the first few
 Labels are particularly useful for selecting objects; for example, you can use a label to indicate which interfaces a service should be configured on. The following illustration shows a segment of a fabric configuration in which participating leaf nodes are selected among those that possess the label "role" and its value is "leaf".
 
 /// Note
-Label selectors in EDA work slightly differently from label selectors in Kubernetes. In particular, Kubernetes objects typically use the `metav1.LabelSelector` Go struct in order to select labels of a certain resource type. This `LabelSelector` is not supported in EDA.
+Label selectors in Nokia EDA work slightly differently from label selectors in Kubernetes. In particular, Kubernetes objects typically use the `metav1.LabelSelector` Go struct in order to select labels of a certain resource type. This `LabelSelector` is not supported in Nokia EDA.
 
-Instead, EDA uses an array of one or more expressions to select labels. Each string can contain one or more comma-seperated selectors expressions; the comma acts as a logical AND (similar to Kubernetes' `LabelSelector`). Multiple labels selectors in the array act as a logical OR.
+Instead, Nokia EDA uses an array of one or more expressions to select labels. Each string can contain one or more comma-seperated selectors expressions; the comma acts as a logical AND (similar to Kubernetes' `LabelSelector`). Multiple labels selectors in the array act as a logical OR.
 ///
 
 A selector supports various operators, including but not limited to `=`, `!=`, `in`, `notin`. Some examples:
@@ -94,7 +94,7 @@ A selector supports various operators, including but not limited to `=`, `!=`, `
 #### Label selector previews
 <!-- EDA-4051 Label selector preview -->
 
-When editing or creating a resource that uses a label selection, EDA UI can display a preview of the resources that match your selector.
+When editing or creating a resource that uses a label selection, Nokia EDA UI can display a preview of the resources that match your selector.
 
 In the example below, the resource selects which nodes to apply its configuration by using label selector in the field **Target Selector**.
 After entering a selector in the **Target Selector** field, click the **Preview Target Selector** icon to open the **Target Selector** form. This displays all nodes matching the label selector.
@@ -113,18 +113,18 @@ Table: Elements of the label selector preview
 
 Like labels, annotations are metadata about a resource consistent of key-value pairs.
 
-EDA uses annotations to organize and describe resources. Annotations are among the metadata common to all resources in EDA. Annotations are similar to labels, but are used for different purposes.
+Nokia EDA uses annotations to organize and describe resources. Annotations are among the metadata common to all resources in Nokia EDA. Annotations are similar to labels, but are used for different purposes.
 
-However, annotations values are not subject to the same length restrictions as labels. Annotations can store lengthy information that resembles the information contained in labels, but frequently overruns labels length restrictions. Annotations are typically used to store arbitrary data like configuration details, URLs, object tracking information, or any other information that does not need to be part of Kubernetes’ or EDA's logic.
+However, annotations values are not subject to the same length restrictions as labels. Annotations can store lengthy information that resembles the information contained in labels, but frequently overruns labels length restrictions. Annotations are typically used to store arbitrary data like configuration details, URLs, object tracking information, or any other information that does not need to be part of Kubernetes’ or Nokia EDA's logic.
 
-Annotations are not used for selection. Annotations are more informational; and although they are not used by EDA's resource selection systems, they can still be useful to external systems, people, or automation tools.
+Annotations are not used for selection. Annotations are more informational; and although they are not used by Nokia EDA's resource selection systems, they can still be useful to external systems, people, or automation tools.
 
 Examples of possible annotations values:
 
 - `author=team-name`
 - `description="Stores the last applied configuration of a resource for use by kubectl apply"`
 
-Annotation changes are considered normal changes for the purposes of transactions. They trigger execution of configuration intent scripts, and if executions are successful, their changes are persisted to Git. However, there are a small number of exceptions; EDA does not trigger, monitor, or persist any annotations with the following keys:
+Annotation changes are considered normal changes for the purposes of transactions. They trigger execution of configuration intent scripts, and if executions are successful, their changes are persisted to Git. However, there are a small number of exceptions; Nokia EDA does not trigger, monitor, or persist any annotations with the following keys:
 
 - `core.eda.nokia.com/failed-transaction`
 - `core.eda.nokia.com/running-version`
@@ -132,7 +132,7 @@ Annotation changes are considered normal changes for the purposes of transaction
 
 ### Annotating resources
 
-In the EDA UI, labels can be added in the **Annotations** field under the heading **Metadata** of the resource edit form.
+In the Nokia EDA UI, labels can be added in the **Annotations** field under the heading **Metadata** of the resource edit form.
 
 -{{image(url="graphics/adding-annotation.png", title="Adding an annotation", shadow=true, padding=20)}}-
 

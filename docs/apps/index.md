@@ -2,16 +2,16 @@
 
 ## Overview
 
-Almost everything in EDA is considered an Application (App), including all the Apps that were installed during the [Getting Started - Install step](../getting-started/installation-process.md#apps). Apps extend the functionality of EDA by exposing custom resources to the EDA API and MicroPython code that will be executed by EDA whenever such a custom resource is manipulated either by a user or another App. Some apps deploy controller pods into the EDA Kubernetes cluster for integrating with other systems.
+Almost everything in Nokia Event-Driven Automation (EDA) is considered an Application (App), including all the Apps that were installed during the [Getting Started - Install step](../getting-started/installation-process.md#apps). Apps extend the functionality of Nokia EDA by exposing custom resources to the Nokia EDA API and MicroPython code that will be executed by Nokia EDA whenever such a custom resource is manipulated either by a user or another App. Some apps deploy controller pods into the Nokia EDA Kubernetes cluster for integrating with other systems.
 
-## EDA Store
+## Nokia EDA Store
 
-The EDA Store is used to manage the applications inside EDA. EDA Store relies on the following resources to manage apps:
+The Nokia EDA Store is used to manage the applications inside Nokia EDA. Nokia EDA Store relies on the following resources to manage apps:
 
-- **Catalogs**: [EDA app catalogs](#catalogs) are a Git repository that contains the manifests of apps. The manifest contains all information needed to display the app in the Store UI and to perform the installation.
-- **Registries**: [EDA app registries](#registries) are container registries that serve a OCI images of the apps. All of an app's content and code are contained in a single OCI image.
+- **Catalogs**: [Nokia EDA app catalogs](#catalogs) are a Git repository that contains the manifests of apps. The manifest contains all information needed to display the app in the Store UI and to perform the installation.
+- **Registries**: [Nokia EDA app registries](#registries) are container registries that serve a OCI images of the apps. All of an app's content and code are contained in a single OCI image.
 
-All apps available in the configured catalog(s) are displayed in the EDA Store UI. You can access the **EDA Store** page from the **System Administration** navigation panel and selecting **Store**. EDA Store displays all apps in a tile view, with high-level details for each app.
+All apps available in the configured catalog(s) are displayed in the Nokia EDA Store UI. You can access the **EDA Store** page from the **System Administration** navigation panel and selecting **Store**. Nokia EDA Store displays all apps in a tile view, with high-level details for each app.
 
 If the app is installed, the tile shows an **Installed** badge or an **Updates Available** badge if it is installed and there is a newer version available.
 
@@ -23,9 +23,9 @@ You can use the following fields to filter for apps:
 
 - From the **Status** drop-down list, select from the following options:
 
-    - **All**: displays all app packages know to EDA.
+    - **All**: displays all app packages know to Nokia EDA.
     - **Updates Available**: displays apps for which an upgrade is available.
-    - **Installed**: displays all the installed apps in the current EDA deployment.
+    - **Installed**: displays all the installed apps in the current Nokia EDA deployment.
     - **Not Installed**: displays all apps that are not installed.
 
 - To filter for apps by catalog, click the **Catalog** drop-down list.
@@ -34,14 +34,14 @@ You can use the following fields to filter for apps:
 
 /// admonition | Note
     type: subtle-note
-If an app is published in multiple catalogs, EDA Store displays this as a single app. This allows you to upgrade app versions accross catalog boundries.
+If an app is published in multiple catalogs, Nokia EDA Store displays this as a single app. This allows you to upgrade app versions across catalog boundaries.
 The catalog filter only applied to the title view. In the app details view, the versions list combined versions available in all catalogs.
 
 ///
 
 ### App details
 
-From the EDA Store GUI, click any app to display details for that app.
+From the Nokia EDA Store GUI, click any app to display details for that app.
 
 -{{image(url="/user-guide/graphics/sc0307-26.4.1v2.png", title="Figure: Fabric app example", shadow=true, padding=20)}}-
 
@@ -66,31 +66,31 @@ The tabs shown in this view vary depending on the app.
 - **Licenses**: provides licensing information for the app.
 - **Available settings**: displays only for specific apps; see [App settings](#app-settings) for details.
 
-#### Resource and Workflow Definitions
+#### Resource and workflow definitions
 
-The **Overview** tab lists the **Resource Definitions** and **Workflow Definitions** that are included in the app. These are the extensions to the EDA API delivered with this app:
+The **Overview** tab lists the **Resource Definitions** and **Workflow Definitions** that are included in the app. These are the extensions to the Nokia EDA API delivered with this app:
 
 - API Group, Kind, and Version
-- A Title, which is used to identify these resources and workflows throughout the EDA UI
-- API Access, which indicates how the resource definition to exposed on the EDA REST API (Value may be "None", "Read", or "Read Write")
-- Associated script type ("Configuration", "State", or none) which indicates the type of EDA MicroPython script that is triggered by creating a resource of this kind, if any.
+- A Title, which is used to identify these resources and workflows throughout the Nokia EDA UI
+- API Access, which indicates how the resource definition to exposed on the Nokia EDA REST API (Value may be "None", "Read", or "Read Write")
+- Associated script type ("Configuration", "State", or none) which indicates the type of Nokia EDA MicroPython script that is triggered by creating a resource of this kind, if any.
 
 #### App requirements
 
 Requirements are dependencies on other apps that are defined in an app's manifest. The requirements must be satisfied for an app to be installed. The requirement of an app specifies a list of apps and version constraints (e.g. `v3.0.*`, `>=v3.0.0`).
 
-The EDA Store calculates a full dependency tree of the app requirements, and a **Target Version** for each required app.
+The Nokia EDA Store calculates a full dependency tree of the app requirements, and a **Target Version** for each required app.
 
 - For required apps already installed, the target version preferences the currently installed version.
 - For required apps not yet installed, the target version preferences the latest compatible version.
 
-When installing or upgrading an app via the EDA UI, any required apps that must be installed or upgraded together will be included with the app install. The install wizard lists all app installations and upgrades that will be included.
+When installing or upgrading an app via the Nokia EDA UI, any required apps that must be installed or upgraded together will be included with the app install. The install wizard lists all app installations and upgrades that will be included.
 
-The EDA Store makes sure that all the app requirements stay valid at all times to prevent invalid app version configurations. If an app requirement can not be satisfied, such as when a required app is missing or version requirement conflict with the requirement or another app, installation will fail. Uninstalling apps may also be blocked if it breaks the requirement of another app.
+The Nokia EDA Store makes sure that all the app requirements stay valid at all times to prevent invalid app version configurations. If an app requirement can not be satisfied, such as when a required app is missing or version requirement conflict with the requirement or another app, installation will fail. Uninstalling apps may also be blocked if it breaks the requirement of another app.
 
 /// admonition | Note
     type: subtle-note
-Apps also have dependencies on the EDA core platform version. Apps which are not compatible with your EDA cluster display "(incompatible)" in the version drop down in the Store UI.
+Apps also have dependencies on the Nokia EDA core platform version. Apps which are not compatible with your ENokia DA cluster display "(incompatible)" in the version drop down in the Store UI.
 
 ///
 
@@ -289,9 +289,9 @@ Use this procedure to update the settings of an app after installation. This pro
 
 ## Catalogs
 
-A catalog is a Git repository that contains the manifests of applications. A manifest contains all the details of an app needs to display the app in the EDA Store UI and for performing the installation. EDA Store builds a list of available apps using the manifests from all the catalogs registered in EDA.
+A catalog is a Git repository that contains the manifests of applications. A manifest contains all the details of an app needs to display the app in the Nokia EDA Store UI and for performing the installation. Nokia EDA Store builds a list of available apps using the manifests from all the catalogs registered in Nokia EDA.
 
-In the EDA UI, you can view the configured catalogs from the **System Administration** &gt; **Catalogs** page.
+In the Nokia EDA UI, you can view the configured catalogs from the **System Administration** &gt; **Catalogs** page.
 
 The **Catalogs** page displays all the catalogs available in EDA. You can double-click a catalog to view or edit its details.
 
@@ -314,7 +314,7 @@ The **Catalogs** page displays all the catalogs available in EDA. You can double
     - **Remote Type**: select from the drop-down list
     - **Remote URL**: provide the path to the catalog, the URL of the Git repo where the catalog resides
     - **Skip TLS Verify**: by default, TLS verification is enabled; set this parameter to skip TLS verification
-    - **Title**: Catalog name, as it will appear in the EDA Store GUI
+    - **Title**: Catalog name, as it will appear in the Nokia EDA Store GUI
 
 5. Click **Commit** to commit your change immediately or click **Add To Basket** to add this item to **Transactions Basket** to commit later.
 ///
@@ -358,9 +358,9 @@ To create a catalog credentials secret, apply the following `Secret` in the Kube
 
 ## Registries
 
-The app's code is stored in an Open Container Initiative (OCI) image. This image is stored in a container registry. This registry must be known to the EDA deployment so EDA Store can pull the image and use the data in the image to deploy the app. Registry resources configure registries available to the EDA Store.
+The app's code is stored in an Open Container Initiative (OCI) image. This image is stored in a container registry. This registry must be known to the Nokia EDA deployment so Nokia EDA Store can pull the image and use the data in the image to deploy the app. Registry resources configure registries available to the Nokia EDA Store.
 
-In the EDA UI, you can manage registries from the **System Administration** &gt; **Registries** page. The **Registries** page displays all configured registries in the EDA system.
+In the Nokia EDA UI, you can manage registries from the **System Administration** &gt; **Registries** page. The **Registries** page displays all configured registries in the Nokia EDA system.
 
 ### Adding a registry <span id="add-registry"></span>
 
@@ -412,11 +412,11 @@ To create a registry credentials secret, apply the following `Secret` in the Kub
     ```
 
 - Provide a unique name in the `name` field. This should match the **Authentication Secret Reference** in the registry resource.
-- Provide the `namespace` where EDA is deployed
+- Provide the `namespace` where Nokia EDA is deployed
 - Provide base64 encoded values for the `data` fields.
 
 ## App documentation
 
-EDA generates an app documentation web site, which is updated when apps are installed in the system. In the EDA UI, the link to app documentation is available from the UI pages of the resources definitions provided by that app. Click the **Go to documentation** link from a resource page, as shown in the following example:
+Nokia EDA generates an app documentation web site, which is updated when apps are installed in the system. In the Nokia EDA UI, the link to app documentation is available from the UI pages of the resources definitions provided by that app. Click the **Go to documentation** link from a resource page, as shown in the following example:
 
 -{{image(url="/user-guide/graphics/aggregate-routes-doc.png", title="Figure: Link to documentation", shadow=true, padding=20)}}-

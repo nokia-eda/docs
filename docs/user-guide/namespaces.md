@@ -2,24 +2,25 @@
 
 A namespace is a logical partition within a cluster that provides a mechanism for isolating sets of resources from each other. Such resource segmentation allows multiple teams or applications to share the same cluster without conflict, because each has its own set of resources in its own namespace.
 
-Using namespaces, you can use a single EDA instance to manage multiple sets of resources. Each EDA user can be granted resource access to specified namespaces, or cluster-wide. A common real-world case for such system is an operator with regional operations teams, where a single controller instance supports all of the regions, but users within a region can only see the resources and states relating to their region.
+Using namespaces, you can use a single Nokia Event-Driven Automation (EDA) instance to manage multiple sets of resources. Each Nokia EDA user can be granted resource access to specified namespaces, or cluster-wide. A common real-world case for such system is an operator with regional operations teams, where a single controller instance supports all of the regions, but users within a region can only see the resources and states relating to their region.
 
 ## The base namespace
 
-EDA always includes one built-in namespace; by default, this is `eda-system`. The default can be modified during EDA installation.
+Nokia EDA always includes one built-in namespace; by default, this is `eda-system`. The default can be modified during Nokia EDA installation.
 
-All EDA core services run in the base namespace, including pods for NPP and CX-simulated TopoNodes. Resources that are not namespaced (those with "namespaced" set to false in their manifest) also exist in the base namespace.
+All Nokia EDA core services run in the base namespace, including pods for NPP and CX-simulated TopoNodes. Resources that are not namespaced (those with "namespaced" set to false in their manifest) also exist in the base namespace.
 
 In the API responses, this base namespace is included in the `.metadata.namespace` field for non-namespaced resources and workflows.
 
 In the UI, the `.metadata.namespace` value appears in the schema form split view (YAML/JSON) for non-namespaced resources and workflows.
 
-## Namespaces in the EDA GUI
+## Namespaces in the Nokia EDA GUI
 
-The top of every page in the EDA GUI includes a namespace selector. You must use this field to specify the namespace you are working in.
+The top of every page in the Nokia EDA GUI includes a namespace selector. You must use this field to specify the namespace you are working in.
 
-/// Note
-The namespaces listed in the selector is limited to the namespaces that you have permission to access. Access to namespaces is granted by permissions configured by the EDA administrator. You have access to a namespace if you are a member of a group with a role of that namespace assigned.
+/// admonition | Note
+    type: subtle-note
+The namespaces listed in the selector is limited to the namespaces that you have permission to access. Access to namespaces is granted by permissions configured by the Nokia EDA administrator. You have access to a namespace if you are a member of a group with a role of that namespace assigned.
 ///
 
 You have access to every available namespace if you are:
@@ -32,7 +33,7 @@ The data displayed in data grids always conforms to the selected namespace.
 
 - If you have selected **All Namespaces**, data grids contain data from all namespaces. You must have permissions defined in a cluster role to access data in this view.
 - If you have selected a specific namespace, data grids contain data exclusively from that namespace. You must have permissions defined in either a cluster role or a namespace role to access data in this view.
-- If you have permission for non-namespace resources, these are displayed in the EDA GUI for any selected namespace.
+- If you have permission for non-namespace resources, these are displayed in the Nokia EDA GUI for any selected namespace.
 
     /// Admonition | Note
         type: subtle-note
