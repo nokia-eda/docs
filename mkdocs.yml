@@ -37,23 +37,18 @@ nav:
           - software-install/exposing-ui-api.md
   - User guide:
       - user-guide/index.md
-      - GUI basics:
+      - EDA UI basics:
           - Signing in: user-guide/gui-basics/sign-in.md
           - Signing out: user-guide/gui-basics/sign-out.md
-          - Home Page: user-guide/gui-basics/home-page.md
-          - The Platform Status page: user-guide/gui-basics/platform-status-page.md
-          - GUI Elements: user-guide/gui-basics/gui-elements.md
-          - Key bindings: user-guide/gui-basics/key-bindings.md
-          - Working with the EDA menu: user-guide/gui-basics/work-with-menu.md
-          - Working with data grids: user-guide/gui-basics/work-with-data-grids.md
-          - Common data grid actions menu: user-guide/gui-basics/common-data-grid-actions.md
-          - Navigation Panels: user-guide/gui-basics/nav-panels.md
-          - Topologies: user-guide/topology.md
+          - Home page: user-guide/gui-basics/home-page.md
+          - Title bar: user-guide/gui-basics/title-bar.md
+          - Navigation panel: user-guide/gui-basics/nav-panels.md
+          - Data grids: user-guide/gui-basics/data-grids.md
           - Schema forms: user-guide/gui-basics/schema-forms.md
+          - Topologies: user-guide/topology.md
+          - Hotkeys: user-guide/gui-basics/hotkeys.md
       - Dashboards: user-guide/dashboards.md
       - Ask EDA: user-guide/ask-eda.md
-      - Custom navigation panels: user-guide/custom-navigation-panels.md
-      - Dashboard designer: user-guide/dashboard-designer.md
       - Namespaces: user-guide/namespaces.md
       - Resources: user-guide/resources.md
       - Workflows: user-guide/workflows.md

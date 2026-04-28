@@ -23,7 +23,7 @@ EDA comes with a default local user called admin. The admin user is assigned to 
 
 ## Users page
 
-The **Users** page in the UI lists all local and remote EDA users and a provides a summary of user details. You can sort and filter for users using the typical mechanisms described in [Working with data grids](gui-basics/work-with-data-grids.md).
+The **Users** page in the UI lists all local and remote EDA users and a provides a summary of user details. You can sort and filter for users using the typical mechanisms described in [Working with data grids](gui-basics/data-grids.md).
 
 |Column|Description|
 |------|-----------|

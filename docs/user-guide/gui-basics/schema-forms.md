@@ -1,6 +1,12 @@
-# Working with schema forms
+# Schema forms
 
 Schema forms allow you to create or edit a resource from the EDA UI instead of editing YAML files. This section highlights some features of the schema forms.
+
+## Split view panel
+
+When viewing resources and workflows in the Nokia EDA UI, The **Split view** panel displays the configuration information in either YAML or JSON format.
+
+You can switch between YAML and JSON format by clicking the menu buttons. To hide the split view, click the active button.
 
 ## Input selection from data grids
 
@@ -14,6 +20,6 @@ When you click on the data grid icon, a table opens that contains the relevant r
 
 <!-- EDA-5346 Advanced fields in schema forms -->
 
-The **Advanced** toggle appears in upper right of the EDA UI schema form, when the resource definition includes advanced fields. This options allows you to toggle between viewing advanced fields on the page or limiting the view to the basic fields.
+The **Advanced** toggle appears in upper right of the Nokia EDA UI schema form, when the resource definition includes advanced fields. This option allows you to toggle between viewing advanced fields on the page or limiting the view to the basic fields.
 
 -{{image(url="../graphics/advanced-toggle.png", title="Advanced field toggle", shadow=true, padding=20)}}-
