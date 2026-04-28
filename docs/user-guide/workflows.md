@@ -1,46 +1,30 @@
 # Workflows
 
-A workflow is a sequence of steps required to perform some process.
+The concept of a workflow is typically used in automation platforms to make an operational task reproducible; it is the logic or code required to execute the task. Workflows might perform node upgrades, validate connectivity in a virtual network, or performing a simple ping test.
 
-The concept of a workflow is typically used in automation platforms to make an operational task reproducible; it is the logic or code required to execute the task. It is not too much of an extrapolation from the concept of a workflow to a CI/CD pipeline, which describes a sequence of actions to run, with workflow semantics between them.
+In EDA, workflows are container images that take some input, perform some work, and provide some output. Like EDA resources, the input and output schema for EDA workflows are defined as a Kubernetes CRD (Custom Resource Definition). These 'Workflow Definitions' and associated container images are packaged in EDA apps.
 
-In EDA, workflows can define the steps required to upgrade a node, validate connectivity in a virtual network, or perform a simple ping operation.
+EDA workflows support:
 
-A workflow in EDA is implemented via an orchestrated Kubernetes job. Workflows themselves are container images that take some input, perform some work, and provide some output. EDA uses CRDs to define the schema for the workflow input and output. EDA applications manifest tagged the `workflow` Boolean and include the relevant workflow to associate the CRD with the container image
-
-EDA supports interactions with workflows through the following means:
-
-- Through the EDA UI.
-    - The **Workflows** button allows you to interact with workflows from anywhere in the UI.
-    - **Workflow Definitions List** and **Workflows Executions** pages allow you to view and manage workflow definition lists and executed workflows.
-    - From target resources, you can create and run workflows from the row actions menu.
-- Through the API.
-- Through the `edactl` command.
-- Through Kubernetes: creating a resource whose CRD is marked as a workflow.
+- Reporting runtime 'stages' - Indicating the workflow's steps and their current state
+- Reporting a status on workflow completion
+- Waiting for user input
+- Subflows - A workflow can trigger child workflows
+- Artifacts - A workflow may return artifacts, such as tech support files
+- Log steaming - Workflow container logs are retreivable via EDA UI and API.
 
 ## FlowEngine
 
-In EDA, workflows are supported through the FlowEngine - the controller behind the instantiation, status, and interaction with workflows.
+EDA FlowEngine is the controller behind the instantiation, status reporting, and interaction with workflows.
 
 On creating a new workflow, the FlowEngine:
 
 - Validates the resources input against schema.
-- Publishes a Kubernetes `Job` resource, which runs a container image provided in the corresponding `WorkflowDefinition`.
+- Publishes a Kubernetes `Job`, which runs the container image associated to the workflow.
 - Assigns a Flow ID to the workflow.
-- Updates the status of the flow based on gRPC interactions.
+- Updates the status of the flow based on gRPC interactions from the workflow container.
 
 Flow IDs are incremental. In the event of FlowEngine restart, previously executed or currently running flows are lost and a new Flow ID restarts at 1.
-
-FlowEngine supports the following:
-
-- Loading of new workflow definitions via EDA apps.
-- Manual triggering of workflows.
-- Reporting the status of executed workflows.
-- General user interactions with workflows - the ability to block a flow and wait for user input.
-- Workflow hierarchy - one workflow may be a parent of another.
-- Automatic creation of workflow IDs.
-- Artifacts - a workflow may return artifacts, such as tech support files, to the FlowEngine.
-- Non-blocking behavior; up to 256 workflows can be executing at the same time.
 
 /// Admonition | Note
     type: subtle-note
@@ -55,40 +39,41 @@ To avoid excessive memory use by FlowEngine, EDA enforces the following:
        
 ///
 
-## Workflow Definition List page <span id="workflows-definition-list-page"></span>
+## Workflows in the EDA UI
+### Workflow Definition List <span id="workflows-definition-list-page"></span>
 
-The Workflow Definition List page shows all available workflow definitions provided from EDA apps. From the **Main** navigation panel, click **Systems** under the **SYSTEM** group. Then, select Workflow Definition List from the drop-down list.
+The Workflow Definition List page shows all available workflow definitions provided from EDA apps. From the **Main** navigation panel, click **Workflows** under the **SYSTEM** group. Then, select Workflow Definition List from the drop-down list.
 
 -{{image(url="graphics/sc0272.png", title="Figure: Workflow Definition List page", shadow=true, padding=20)}}-
 
-The following table summarizes the default workflow definitions shipped with the EDA apps.
+The following table summarizes some of the workflow definitions shipped with the Nokia EDA apps.
 
 Table: Workflow definitions
 
-|Workflow definition|Purpose|
-|-------------------|-------|
-|App Installer|Used to install or delete apps.|
-|Attachment Lookup|Used to look up attachments (where an address is attached in the network) on a set of nodes. The output shows the matching attachments, including the node, network instance, prefix, interface, and next hop group ID.|
-|Check BGP|Checks the state and status of the BGP peers that match the selection criteria.|
-|Check Interfaces|Used to check the state and status of the matched notes. Use interface selectors to select target interfaces on which to run this workflow.|
-|Edge Ping|Used to initiate a ping to an edge interface resource; specify a gateway or edge mesh.|
-|Image|Used to upgrade or downgrade software images on specified targets. This workflow can be used directly on a target or list of targets, or with selectors to select targets through labels. It also supports tranches, which are groups of targets that can be upgraded together. By default, the system runs a set of checks before and after the image change; you can upgrade this behavior by setting the **Checks** field.<br>This workflow also supports canary nodes, which are used to test images before a broader roll out. Canary nodes are upgraded before any other targets. To identify the canary nodes, use node selectors that match labels on TopoNode resources, including those in the list of nodes to be imaged.|
-|ISL Ping|Used to ping inter-switch links (ISLs) to verify connectivity within a fabric. You can specify a list of fabrics, ISLs, or selectors for both to match ISLs. This workflow shows the results of the pings, including the status of each ISL.|
-|Locator|Typically used to guide on-site technicians to the correct target requiring maintenance; enables the LED locator for a target.|
-|Network Topology|Allows you to perform create, replace, and delete operations on the specified topology.<br><ul><li>Create - creates/updates the topology resources based on the provided specifications.</li><li>Replace - replaces the resources matched by name with the provided specifications.</li><li>ReplaceAll - first removes all existing topology resources and then creates new ones based on the provided specifications.</li><li>Delete resources matched by name.</li><li>Delete all - delete all topology resources found in the specified namespace.</li></ul>
-|Ping|Used to initiate a ping to an address on a node or a set of nodes|
-|Push CLI Plugin|Used to push a CLI plug-in to a node. For SR Linux, the plug-in that you specify must include the `.py` extension, without leading slashes, for example, `"myplugin.py"`.|
-|Push Environment|Used to set up the global environment on a node. For SR Linux, this results in an overwrite of the `/etc/opt/srlinux/env` file.|
-|Route Lookup|Used to look up routes on a set of nodes. The output shows the matching route and the set of ingress interfaces used to reach it.|
-|Route Trace|Used to trace routes for specified targets.|
-|Tech Support|Used to generate technical support packages for a node or set of nodes; typically used for debugging.|
-|Workflow|A generic workflow definition. This workflow is used by some workflows to create subflows without a predefined schema.|
+|Workflow definition|App Name|Description|
+|-------------------|-------|-------|
+|App Installer|EDA Store|Used to install or delete EDA apps.|
+|Attachment Lookup|Routing|Used to look up attachments (where an address is attached in the network) on a set of nodes. The output shows the matching attachments, including the node, network instance, prefix, interface, and next hop group ID.|
+|Check BGP|Protocols|Checks the state and status of the BGP peers that match the selection criteria.|
+|Check Interfaces|Interfaces|Used to check the state and status of the matched notes. Use interface selectors to select target interfaces on which to run this workflow.|
+|Edge Ping|Services|Used to initiate a ping to an edge interface resource; specify a gateway or edge mesh.|
+|Image|Operating System|Used to upgrade or downgrade software images on specified targets. This workflow can be used directly on a target or list of targets, or with selectors to select targets through labels. It also supports tranches, which are groups of targets that can be upgraded together. By default, the system runs a set of checks before and after the image change; you can upgrade this behavior by setting the **Checks** field.<br>This workflow also supports canary nodes, which are used to test images before a broader roll out. Canary nodes are upgraded before any other targets. To identify the canary nodes, use node selectors that match labels on TopoNode resources, including those in the list of nodes to be imaged.|
+|ISL Ping|Fabrics|Used to ping inter-switch links (ISLs) to verify connectivity within a fabric. You can specify a list of fabrics, ISLs, or selectors for both to match ISLs. This workflow shows the results of the pings, including the status of each ISL.|
+|Locator|Support|Typically used to guide on-site technicians to the correct target requiring maintenance; enables the LED locator for a target.|
+|Network Topology|Topologies|Performs create, replace, and delete operations for topology resources.|
+|Ping|OAM|Performs a ping to an address on a node or a set of nodes.|
+|Push CLI Plugin|Environment|Used to push a CLI plug-in to a node. For SR Linux, the plug-in that you specify must include the `.py` extension, without leading slashes, for example, `"myplugin.py"`.|
+|Push Environment|Environment|Used to set up the global environment on a node. For SR Linux, this results in an overwrite of the `/etc/opt/srlinux/env` file.|
+|Route Lookup|Routing|Used to look up routes on a set of nodes. The output shows the matching route and the set of ingress interfaces used to reach it.|
+|Route Trace|Routing|Used to trace routes for specified targets.|
+|Tech Support|OAM|Generate technical support packages for a node or set of nodes; typically used for debugging.|
+|Workflow|Core|A generic workflow definition. This workflow is used by some workflows to create subflows without a predefined schema.|
 
-## Workflow Executions page <span id="workflows-executions-page"></span>
+### Workflow Executions list <span id="workflows-executions-page"></span>
 
-The **Workflow Executions** page shows all the workflows that have been executed.
+The **Workflow Executions** page lists the in-progress and historical workflow runs.
 
-From the **Main** navigation panel, click **Systems** under the **SYSTEM** group. Then, select **Workflow Executions** from the drop-down list.
+From the **Main** navigation panel, click **Workflows** under the **SYSTEM** group. Then, select **Workflow Executions** from the drop-down list.
 
 ​​Any workflow waiting for user input is highlighted in yellow.
 
@@ -103,9 +88,9 @@ From **Workflow Executions** page, you can:
 - cancel a running workflow
 - display the Summary page for a workflow
 
-    Click the Table row actions menu for a workflow and select **Details** to display the Summary page for the workflow.
+Double-click a row to display the Summary page for the workflow.
 
-### Displaying subflows
+#### Displaying subflows
 
 By default, only top-level workflows are displayed. To display subflows, click the **Table settings &amp; actions** icon and select **Show Subflows**.
 
@@ -115,11 +100,11 @@ The system displays only the workflows with subflows. For example:
 
 -{{image(url="graphics/sc0275.png", title="Figure: Workflow executions with subflows", shadow=true, padding=20)}}-
 
-## Workflow Summary page <span id="workflow-summary-page"></span>
+### Workflow Summary page <span id="workflow-summary-page"></span>
 
 The **Summary** page provides details about a workflow execution. Click any workflow in the **Workflow Executions** page to display its summary.
 
-The following example is for a DeployImage workflow.
+The following example is for a `DeployImage` workflow.
 
 -{{image(url="graphics/sc0276.png", title="Figure: Workflow Summary page", shadow=true, padding=20)}}-
 
@@ -132,34 +117,22 @@ The **Workflow Summary** panel provides the status of the workflow, name, namesp
     - Failed
     - Terminated
     - Waiting for input
-- Stages of the workflow.
 
-    The **Workflow Stages** panel shows the progress of workflow and the status of the workflow as it passes through the stages.
+The **Workflow Stages** panel shows the progress of workflow and the status of the workflow as it passes through the stages. If the workflow has subflows, a link to the subflow's summary page will appear under the related stage.
 
-- The **Workflows Results** panel provides details of the workflow results, including the specification (input) and status (output) of the workflow that was executed.
+The **Workflows Results** panel provides details of the workflow results, including the specification (input) and status (output) of the workflow that was executed.
 
-You can display more information about a stage in a workflow when an arrow is present in its box. In the preceding example, if you click the arrow in the **Imaging nodes** box, the following screen displays:
-
--{{image(url="graphics/sc0306.png", title="Figure: Details for Imaging node stage", shadow=true, padding=20)}}-
-
-### Workflow logs
+#### Workflow logs
 
 The **Workflow Logs** view display logs from the workflow container. From the **Summary** drop-down list, select **Workflow Log**. The logs are used for troubleshooting and debugging purposes.
 
 -{{image(url="graphics/sc0277.png", title="Figure: Sample workflow log", shadow=true, padding=20)}}-
 
-### Workflow artifacts for download
+#### Workflow artifacts
 
-The execution of some workflows produce artifacts that you can download. For example, the Tech Support workflow creates a `tech-support .zip` file. If a file is available for download, the download button is visible from the **Workflow Summary** page. Click it to download the artifact and save the file locally.
+The execution of some workflows produce artifacts that you can download. If a file is available for download, the download button is visible from the **Workflow Summary** page. Click it to download the artifact and save the file locally.
 
-/// Admonition | Note
-    type: subtle-note
-This capability is currently supported only on SR Linux deployments.
-///
-
-You can also download artifacts using the `edactl` command; see [Managing workflows with edactl](workflows.md#).
-
-## Workflow creation <span id="workflow-creation"></span>
+### Running workflows <span id="workflow-creation"></span>
 
 You can create a workflow using one of the following procedures:
 
@@ -167,7 +140,7 @@ You can create a workflow using one of the following procedures:
 - [Running a workflow from the Workflow Executions page](workflows.md#)
 - [Triggering a workflow from the resource action menu](workflows.md#)
 
-### Running a workflow from the Workflow Definition List page <span id="run-workflow-from-workflow-definition-list-page"></span>
+#### Running a workflow from the Workflow Definition List page <span id="run-workflow-from-workflow-definition-list-page"></span>
 
 You can run a workflow by creating another instance of that kind of workflow and running it.
 
@@ -183,12 +156,11 @@ You can run a workflow by creating another instance of that kind of workflow and
 3. Click **Run**.
 ///
 
-### Running a workflow from the Workflow Executions page <span id="run-workflow-from-workflow-executions-page"></span>
+#### Running a workflow from the Workflow Executions page <span id="run-workflow-from-workflow-executions-page"></span>
 
 You can create a new workflow by selecting the type of workflow that you want or by duplicating an existing workflow and updating the prepopulated specifications.
 
-#### Procedure
-
+**Procedure**
 /// html | div.steps
 
 1. From the **Main** navigation panel, click **Workflows**.
@@ -213,7 +185,7 @@ You can create a new workflow by selecting the type of workflow that you want or
 4. When you are finished entering specifications for the workflow, click **Run**.
 ///
 
-### Triggering a workflow from the resource action menu <span id="trigger-workflows-from-resource-action-menu"></span>
+#### Triggering a workflow from the resource action menu <span id="trigger-workflows-from-resource-action-menu"></span>
 
 You can run a workflow from the **Row action menu** of target resources.
 
@@ -241,47 +213,13 @@ The following example executes the Ping workflow.
 5. Click **Run**.
 ///
 
-## Managing workflows with edactl <span id="manage-workflows-edactl"></span>
+## Using workflows with edactl <span id="manage-workflows-edactl"></span>
 
 You can use the `edactl` command to provide input so a workflow can proceed or to query EDA about workflows.
 
-### Providing input to workflows
+### Workflow status
 
-Some workflows may require user input to allow the workflow to proceed. You can use the following commands to handle workflows that require user input:
-
-- To find workflows awaiting input, use the following command and look for status 'WAITING\_FOR\_INPUT':
-
-    ```
-    edactl workflow get -A -a
-    ```
-
-- To acknowledge a workflow and allow it to continue, use the following command:
-
-    ```
-    edactl workflow ack <id>
-    ```
-
-    For example, to acknowledge the workflow whose ID is 10:
-
-    ```
-    edactl workflow ack 10
-    ```
-
-- To terminate a workflow, use the following command:
-
-    ```
-    edactl workflow nack <id>
-    ```
-
-    For example, to terminate the workflow whose ID is 20:
-
-    ```
-    edactl workflow nack 20
-    ```
-
-### Querying EDA
-
-Use the following `edactl` commands to query EDA about workflows:
+Use the following `edactl` commands to get a workflow's status:
 
 - To view all workflows, use the following command:
 
@@ -321,6 +259,11 @@ Use the following `edactl` commands to query EDA about workflows:
     ↓ Installed
     ```
 
+
+### Workflow logs
+
+Use the following `edactl` commands to get workflow logs:
+
 - To view logs for a workflow, use the following command:
 
     ```
@@ -334,6 +277,10 @@ Use the following `edactl` commands to query EDA about workflows:
     ```
     edactl workflow logs <id> --follow 
     ```
+
+### Workflow artifacts
+
+Use the following `edactl` commands to get workflow artifacts:
 
 - To list files associated with a specific workflow, use the following command:
 
@@ -394,4 +341,38 @@ Use the following `edactl` commands to query EDA about workflows:
 
     ```
     edactl workflow artifacts 2 download --from tech-support-20250207_050610-mv1nd01-spine-1.zip --to /tmp/ Downloading artifacts to: /tmp tech-support-20250207_050610-mv1nd01-spine-1.zip 100% [===============] (5.9/5.9 MB, 104 MB/s) root in on eda-toolbox-6f6c686487-xdks4 /eda 
+    ```
+
+### Providing input to workflows
+
+Some workflows may require user input to allow the workflow to proceed. You can use the following commands to handle workflows that require user input:
+
+- To find workflows awaiting input, use the following command and look for status 'WAITING\_FOR\_INPUT':
+
+    ```
+    edactl workflow get -A -a
+    ```
+
+- To acknowledge a workflow and allow it to continue, use the following command:
+
+    ```
+    edactl workflow ack <id>
+    ```
+
+    For example, to acknowledge the workflow whose ID is 10:
+
+    ```
+    edactl workflow ack 10
+    ```
+
+- To terminate a workflow, use the following command:
+
+    ```
+    edactl workflow nack <id>
+    ```
+
+    For example, to terminate the workflow whose ID is 20:
+
+    ```
+    edactl workflow nack 20
     ```
