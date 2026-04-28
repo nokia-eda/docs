@@ -1,41 +1,41 @@
 # User management
 
 /// Caution
-This page covers access control of the EDA API Server.
-The EDA Config Engine can also be operated via the Kubernetes API. Kubernetes access control should be considered when securing an EDA deployment.
+This page covers access control of the Nokia Event-Driven Automation (EDA) API server.
+The Nokia Config Engine can also be operated via the Kubernetes API. Kubernetes access control should be considered when securing a Nokia EDA deployment.
 ///
 
-Role-based access control (RBAC) restricts API requests based on the user's role in your organization. EDA uses the [OAuth 2.0](https://oauth.net/2/) standard for authorization. 
+Role-based access control (RBAC) restricts API requests based on the user's role in your organization. Nokia EDA uses the [OAuth 2.0](https://oauth.net/2/) standard for authorization.
 
-EDA uses [Keycloak](https://www.keycloak.org/) as the OAuth 2.0 identity provider, authenticating users and group membership. The EDA API Server validates request authorization based on the role(s) assigned to the user's group(s).
+Nokia EDA uses [Keycloak](https://www.keycloak.org/) as the OAuth 2.0 identity provider, authenticating users and group membership. The Nokia EDA API server validates request authorization based on the role(s) assigned to the user's group(s).
 
-Common Keyclock administrative actions including User and User Group management, are available via the EDA API and UI.
+Common Keyclock administrative actions including user and user group management, are available via the Nokia EDA API and UI.
 
-## Users & User Groups
+## Users and user groups
 
-EDA users and user groups are stored in Keycloak.
+Nokia EDA users and user groups are stored in Keycloak.
 
-In the EDA UI, you can find Users and User Groups in the `System Administration` panel under `User Management` > `User Management`.
+In the Nokia EDA UI, you can find Users and User Groups in the `System Administration` panel under `User Management` > `User Management`.
 
 /// admonition | Note
     type: subtle-note
-Changes to users and user groups are passed through from EDA to Keycloak. These changes are not processed as EDA transactions.
+Changes to users and user groups are passed through from Nokia EDA to Keycloak. These changes are not processed as Nokia EDA transactions.
 ///
 
 User passwords set by an administrator can be flagged as temporary; this will prompt the user to change the password on first login. Administrators can also perform password resets, which sends the user an email with a password reset link.
 
 /// admonition | Note
     type: subtle-note
-Email server configuration is not exposed in the EDA API/UI. This must be configured directly in KeyCloak.
+Email server configuration is not exposed in the Nokia EDA API/UI. This must be configured directly in KeyCloak.
 ///
 
-EDA comes with a default local user called `admin`. The admin user is assigned to the `system-administrator` group.
+Nokia EDA comes with a default local user called `admin`. The admin user is assigned to the `system-administrator` group.
 
 ### Federations
 
 Federations configure users and user group synchronization with remote directories such as OpenLDAP or Active Directory.
 
-EDA supports:
+Nokia EDA supports:
 
 - The configuration of up to five directories
 - LDAP and Active Directory directories
@@ -43,17 +43,17 @@ EDA supports:
 - Group synchronization from the directory and user group membership mapping
 - Limiting imported users and groups using LDAP filters
 
-Federated users are imported into Keycloak the first time a user logs in or when the user list is read via the EDA API/UI. Additionally, you can configure periodic sync of created and updates users.
+Federated users are imported into Keycloak the first time a user logs in or when the user list is read via the Nokia EDA API and UI. Additionally, you can configure periodic sync of created and updates users.
 
-In the EDA UI, federated users are identified in the **Federated User** field in users list.
+In the Nokia EDA UI, federated users are identified in the **Federated User** field in users list.
 
-When a federation is configured, system administrators can continue to create local users and groups in EDA.
+When a federation is configured, system administrators can continue to create local users and groups in Nokia EDA.
 
-The EDA API server server blocks all edits to federated users except for adding or removing the user to local groups. Local changes to federated groups are not supported; federated group membership must be configured on the LDAP server.
+The Nokia EDA API server server blocks all edits to federated users except for adding or removing the user to local groups. Local changes to federated groups are not supported; federated group membership must be configured on the LDAP server.
 
 /// admonition | Note
     type: subtle-note
-EDA only configures federation providers in Keycloak using unsynchronized mode. This mode imports users and groups into EDA's Keycloak database, but does not write local changes back to the Lightweight Directory Access Protocol (LDAP) server.
+Nokia EDA only configures federation providers in Keycloak using unsynchronized mode. This mode imports users and groups into Nokia EDA's Keycloak database, but does not write local changes back to the Lightweight Directory Access Protocol (LDAP) server.
 ///
 
 When connecting a federation provider using LDAPS or STARTTLS, Keycloak must trust the server's TLS certificate. To add certificate authorities to the EDA Keycloak truststore, create a Kubernetes secret named `ldap-ca-secret` of type `Opaque` in the EDA base namespace with a base64 encoded PEM certificate in the `ca` field. For example:
@@ -69,7 +69,7 @@ data:
   ca: <base64 certificate> # Base64 encoded PEM certificate
 ```
 
-EDA monitors this secret and if it changes, EDA updates the certificate authority information used by Keycloak. Modifying the authority information results in a restart of the Keycloak server.
+Nokia EDA monitors this secret and if it changes, Nokia EDA updates the certificate authority information used by Keycloak. Modifying the authority information results in a restart of the Keycloak server.
 
 ### Password policies
 
@@ -91,9 +91,9 @@ Session information includes:
 - Username
 - Start time
 - User's source IP address
-- Clients (e.g. The EDA UI)
+- Clients (for example, the Nokia EDA UI)
 
-From the EDA API and UI. You can:
+From the Nokia EDA API and UI, you can:
 
 - View a system-wide list of active sessions
 - View per-user list of active sessions
@@ -102,32 +102,32 @@ From the EDA API and UI. You can:
 /// admonition | Note
     type: subtle-note
 
-Session logout prevents the user from using a refresh token to get a new access token. The existing access token remains valid until it's expiration time. The default lifespan of the access token is 5 minutes.
+Session logout prevents the user from using a refresh token to get a new access token. The existing access token remains valid until its expiration time. The default lifespan of the access token is 5 minutes.
 
 ///
 
 ## Roles
 
-EDA `ClusterRole` and `Role` resources define user permissions.
+Nokia EDA `ClusterRole` and `Role` resources define user permissions.
 
 Roles define permissions within a specific namespace, whereas Cluster Role permissions apply to all namespaces.
 
-Non-namespaced EDA API endpoints can only be enforced by Cluster Roles. This includes cluster-wide resources (e.g. `LogOutputs`), EDA administrative APIs, and transaction results. In general, any API that doesn't specify a namespace in the path or payload is enforced by Cluster Roles.
+Non-namespaced Nokia EDA API endpoints can only be enforced by Cluster Roles. This includes cluster-wide resources (for example, `LogOutputs`), Nokia EDA administrative APIs, and transaction results. In general, any API that doesn't specify a namespace in the path or payload is enforced by Cluster Roles.
 
 /// admonition | Note
     type: subtle-note
-While similar in concept, EDA `Role` and `ClusterRole` resources are not the same as Kubernetes `Role` and `ClusterRole`.
+While similar in concept, Nokia EDA `Role` and `ClusterRole` resources are not the same as Kubernetes `Role` and `ClusterRole`.
 ///
 
 For `ClusterRole` and `Role`, the following rule types are supported:
 
-- **Resource Rules**: defined EDA resource and workflow permissions using Group-Version-Kind (GVK) semantics.
+- **Resource Rules**: defined Nokia EDA resource and workflow permissions using Group-Version-Kind (GVK) semantics.
 - **Table Rules**: defines permissions for queries to EDB.
-- **URL Rules**: defines permissions for EDA API endpoints based on their URL path. URL Rule permission is not required for API endpoints which are Resource Rule or Table Rule enforced.
+- **URL Rules**: defines permissions for Nokia EDA API endpoints based on their URL path. URL Rule permission is not required for API endpoints which are Resource Rule or Table Rule enforced.
 
 ### Resource rules
 
-Resource rules define access to EDA resources and EDA workflows. These rules are relevant for resource-aware EDA API endpoints including:
+Resource rules define access to Nokia EDA resources and Nokia EDA workflows. These rules are relevant for resource-aware Nokia EDA API endpoints including:
 
 - `/core/transaction/..`
 - `/apps/..`
@@ -135,13 +135,13 @@ Resource rules define access to EDA resources and EDA workflows. These rules are
 
 A resource rule is defined by the following parameters:
 
-- **API groups**: Identifies the EDA API groups for the resources controlled by the rule, in the format `{group}/{version}`. 
+- **API groups**: Identifies the Nokia EDA API groups for the resources controlled by the rule, in the format `{group}/{version}`.
 
     An asterisk `*` indicates wildcard of any API group. A `*` wildcard can also be used for the group version, for example, `core.eda.nokia.com/*`.
 
-- **Permissions**: Specifies `none`, `read`, `readWrite`, or `readPropose` permissions for the EDA resources matching the rule.
+- **Permissions**: Specifies `none`, `read`, `readWrite`, or `readPropose` permissions for the Nokia EDA resources matching the rule.
 
-    `readPropose` allows users to [dry-run](../transactions.md#dry-runs) transactions, create [merge requests](../merge-requests.md), and commit in a branch. It does not allow the user to commit directly to the main EDA cluster.
+    `readPropose` allows users to [dry-run](../transactions.md#dry-runs) transactions, create [merge requests](../merge-requests.md), and commit in a branch. It does not allow the user to commit directly to the main Nokia EDA cluster.
 
 - **Resources**: The resource names of the resources controlled by the rule. For example `toponodes`.
 
@@ -156,7 +156,7 @@ Access to transaction results is based on a user's access to the *input resource
   - If a user has read permission for **none** or **some** of the input resources, that user cannot list any derived resources or view their diffs.
   - Access to Node Configuration diffs require a URL rule. This is because the Node Configuration diff API returns the full node config, and not limited to the scope of the transaction.
   - To revert a transaction, a user must have `readWrite` permission for **all** input resources of the transaction.
-  - To restore the EDA cluster to a specific transaction, a user must have `readWrite` permission to the restore API from a `ClusterRole` URL rule. Restore is a powerful action which should be limited to trusted administrators.
+  - To restore the Nokia EDA cluster to a specific transaction, a user must have `readWrite` permission to the restore API from a `ClusterRole` URL rule. Restore is a powerful action which should be limited to trusted administrators.
 
 ///
 
@@ -171,11 +171,11 @@ For example, a `DeployImage` workflow creates `Ping` subflows during it's pre an
 
 ### Table rules
 
-Table rules are similar to resource rules, except that they are relevant to the API endpoints used for querying the EDA database (EDB). A table rule is defined by the following parameters:
+Table rules are similar to resource rules, except that they are relevant to the API endpoints used for querying the Nokia EDA database (EDB). A table rule is defined by the following parameters:
 
 - **Path**: Specifies the path of the database table for which this rule applies.
 
-    Table Rules support wildcarding of the final EDA path segment (`.*`) or multiple EDA path segments (`.**`)
+    Table Rules support wildcarding of the final Nokia EDA path segment (`.*`) or multiple Nokia EDA path segments (`.**`)
 
 - **Permissions**: Specifies `none` or `read` permissions for the EDB table.
 
@@ -204,7 +204,7 @@ URL rules define generic enforcement of URL paths exposed by an API server. URL 
 
 ### Multiple rule behavior
 
-EDA rules are additive. Users are granted the combined permission of all rules in the roles assigned to their user groups. If a request does not match any rule, it is implicitly denied.
+Nokia EDA rules are additive. Users are granted the combined permission of all rules in the roles assigned to their user groups. If a request does not match any rule, it is implicitly denied.
 
 The `None` permission acts as an override; these are enforced before any other rule.
 
@@ -221,7 +221,7 @@ Avoid `None` rules where possible. If resource, table, or URL access is not requ
 /// details | Default system-administrator `ClusterRole`
     type: code-example
 
-EDA provides a default `system-administrator` cluster role with the following configuration:
+Nokia EDA provides a default `system-administrator` cluster role with the following configuration:
 
 ```yaml
 apiVersion: core.eda.nokia.com/v1
@@ -230,7 +230,7 @@ metadata:
   name: system-administrator
 spec:
   description: >-
-    This is the default administrator role for EDA. It cannot be deleted.  A
+    This is the default administrator role for Nokia EDA. It cannot be deleted.  A
     user with this role can do anything.
   resourceRules:
     - apiGroups:
@@ -391,7 +391,7 @@ spec:
 /// details | Example - Topologies access in specific namespace
     type: code-example
 
-Topology diagrams and their overlays are defined cluster-wide in EDA, but the state data which populates the topology diagrams is namespaced. Therefore, to limit topologies access to specific namespaces requires a combination of ClusterRoles and Roles.
+Topology diagrams and their overlays are defined cluster-wide in Nokia EDA, but the state data which populates the topology diagrams is namespaced. Therefore, to limit topologies access to specific namespaces requires a combination of ClusterRoles and Roles.
 
 /// details | ClusterRole - Physical topology
     type: code-example
@@ -443,11 +443,11 @@ spec:
 
 ///
 
-## User management in the EDA UI
+## User management in the Nokia EDA UI
 
 ### Users page
 
-The **Users** page in the UI lists all local and remote EDA users and a provides a summary of user details. You can sort and filter for users using the typical mechanisms.
+The **Users** page in the UI lists all local and remote Nokia EDA users and a provides a summary of user details. You can sort and filter for users using the typical mechanisms.
 
 |Column|Description|
 |------|-----------|
@@ -524,7 +524,7 @@ To display all user sessions, from the **System Administration** navigation pane
 
 ### Changing your password
 
-Perform this task from any page on EDA UI.
+Perform this task from any page on Nokia EDA UI.
 
 /// html | div.steps
 
@@ -610,7 +610,7 @@ LDAP groups are displayed in the **User Groups** page only after they are import
     Set the following parameters:
 
     - **Connection URL**
-    - **Use TLS**: If this field is set to True, the certificate should be established on the LDAP server side. After configuring certificate from LDAP server, create the LDAP CA secret (`ldap-ca-secret`) on the platform where EDA is managed.
+    - **Use TLS**: If this field is set to True, the certificate should be established on the LDAP server side. After configuring certificate from LDAP server, create the LDAP CA secret (`ldap-ca-secret`) on the platform where Nokia EDA is managed.
     - **Bind Type**
     - **User DN**
     - **Username LDAP Attribute**
@@ -638,7 +638,7 @@ LDAP groups are displayed in the **User Groups** page only after they are import
 
 7. Enable and configure group federation support.
 
-    If group support is disabled, groups are not synchronized with EDA. If group support is enabled, set the following parameters:
+    If group support is disabled, groups are not synchronized with Nokia EDA. If group support is enabled, set the following parameters:
 
     - **Object Classes**
     - **Group LDAP DN**
@@ -703,7 +703,7 @@ LDAP groups are displayed in the **User Groups** page only after they are import
 
 /// html | div.steps
 
-A `ClusterRole` resource defines a set of permissions to access EDA resources. Use this procedure to create a cluster role from the EDA UI.
+A `ClusterRole` resource defines a set of permissions to access Nokia EDA resources. Use this procedure to create a cluster role from the Nokia EDA UI.
 
 1. From the **System Administration** navigation panel, expand the **USER MANAGEMENT** group, then select **Cluster Roles**.
 
@@ -749,7 +749,7 @@ A `ClusterRole` resource defines a set of permissions to access EDA resources. U
 
 ### Creating a role <span id="create-roles"></span>
 
-The `Role` resource defines a set of permissions to access EDA resources. The `Role` resource exists within a namespace.
+The `Role` resource defines a set of permissions to access Nokia EDA resources. The `Role` resource exists within a namespace.
 
 /// html | div.steps
 
@@ -798,10 +798,10 @@ The `Role` resource defines a set of permissions to access EDA resources. The `R
 
 ## Privacy considerations
 
-From a privacy perspective, EDA stores user information securely in a database. This information
+From a privacy perspective, Nokia EDA stores user information securely in a database. This information
 includes the username, password, email, first name, last name, and login times of each user in
 the system. Additionally, user activity is logged securely for security and support perspectives. The
-information is not processed or shared outside of the deployed EDA environment. A backup contains
+information is not processed or shared outside of the deployed Nokia EDA environment. A backup contains
 the same information for the purpose of restoring the users if a restore is required.
 /// Caution
 Ensure that you store the backup information securely and limit access to both the running environment and any backup storage environment.
