@@ -53,6 +53,7 @@ nav:
       - Workflows: user-guide/workflows.md
       - Alarms: user-guide/alarms.md
       - EDA Query Language (EQL): user-guide/eda-query-language.md
+      - Branches: user-guide/branches.md
       - Transactions: user-guide/transactions.md
       - Merge requests: user-guide/merge-requests.md
       - Allocation Pools: user-guide/allocation-pools.md
