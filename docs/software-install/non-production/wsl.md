@@ -1,13 +1,13 @@
-# EDA on Windows (WSL)
+# Nokia EDA on Windows (WSL)
 
-Thanks to EDA's deployment model that uses Kubernetes, you can install EDA anywhere where a Kubernetes cluster can run. And Windows is no exception!  
+Thanks to Nokia EDA's deployment model that uses Kubernetes, you can install Nokia EDA anywhere where a Kubernetes cluster can run. And Windows is no exception!  
 Thanks to the [Windows Subsystem Linux](https://learn.microsoft.com/en-us/windows/wsl/install) (aka WSL). WSL allows Windows users to run a Linux distribution as a tightly-integrated VM.
 
 ## Installation prerequisites
 
 ### Hardware requirements
 
-Before proceeding with the installation, users have to ensure they meet the hardware requirements for EDA Playground installation that are outlined in the [Try EDA](../../getting-started/try-eda.md) section:
+Before proceeding with the installation, users have to ensure they meet the hardware requirements for Nokia EDA Playground installation that are outlined in the [Try EDA](../../getting-started/try-eda.md) section:
 
 --8<-- "docs/getting-started/try-eda.md:resources-reqs"
 
@@ -17,7 +17,7 @@ Users can [fine tune the resource allocations](https://learn.microsoft.com/en-us
 
 ### WSL version
 
-An important prerequisite for installing EDA on WSL is to have WSL version at 2.5 version or later. Check what version of the WSL you have running on your Windows, by running the following command in the Windows terminal:
+An important prerequisite for installing Nokia EDA on WSL is to have WSL version at 2.5 version or later. Check what version of the WSL you have running on your Windows, by running the following command in the Windows terminal:
 
 ```shell
 wsl --version
@@ -37,10 +37,10 @@ Download the `.wsl` distributive file from the [releases page](https://github.co
 
 You should be able to see "Containerlab" as a program in your start menu, and by opening this program you will start the distributive.
 
-## EDA installation
+## Nokia EDA installation
 
-Once you are in the shell of a chosen WSL distributive, proceed with the EDA installation steps as laid out on the [Try EDA page](../../getting-started/try-eda.md).
+Once you are in the shell of a chosen WSL distributive, proceed with the Nokia EDA installation steps as laid out on the [Try EDA page](../../getting-started/try-eda.md).
 
 ## UI/API access
 
-Once the installation of the EDA Playground is complete, you can start the UI/API port forward as outlined in Step 6 from the [Try EDA page](../../getting-started/try-eda.md).
+Once the installation of the Nokia EDA Playground is complete, you can start the UI/API port forward as outlined in Step 6 from the [Try EDA page](../../getting-started/try-eda.md).

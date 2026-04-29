@@ -1,18 +1,18 @@
-# Installation Overview
+# Installation overview
 
-There are several non-production deployment options that can be used to run and deploy EDA in a lab environment for testing, development and demo purposes:
+There are several non-production deployment options that can be used to run and deploy Nokia EDA in a lab environment for testing, development and demo purposes:
 
 [Own On-prem cluster](./on-prem-cluster.md)
 
-:   Use your own Kubernetes cluster to deploy EDA. This can be used for most types of standard Kubernetes clusters.
+:   Use your own Kubernetes cluster to deploy Nokia EDA. This can be used for most types of standard Kubernetes clusters.
 
 [Playground using KinD](../../getting-started/try-eda.md)
 
-:   Deploy EDA in a Kubernetes environment running on Linux server.
+:   Deploy Nokia EDA in a Kubernetes environment running on Linux server.
 
 [Playground on macOS](./macos.md)
 
-:   Deploy EDA Playground in a Kubernetes environment running on your personal Macbook, whether it is ARM or Intel-based.
+:   Deploy Nokia EDA Playground in a Kubernetes environment running on your personal Macbook, whether it is ARM or Intel-based.
 
 [Playground on WSL](./wsl.md)
 

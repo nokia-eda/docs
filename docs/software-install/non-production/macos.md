@@ -2,26 +2,26 @@
 comments: true
 ---
 
-# EDA on macOS
+# Nokia EDA on macOS
 
-Do you want to get full EDA experience on your macOS machine? Well, can't judge you!
+Do you want to get full Nokia EDA experience on your macOS machine? Well, can't judge you!
 
-Typically, the management and automation platforms of EDA' caliber require a ton of resources to run. But that is not the case with EDA! The microservices architecture and reliance on Kubernetes as a deployment platform make it possible to run EDA on a laptop using open-source tools. And macOS-powered machines (even with M chips[^1]) is not an exception!
+Typically, the management and automation platforms of Nokia EDA' caliber require a ton of resources to run. But that is not the case with Nokia EDA! The microservices architecture and reliance on Kubernetes as a deployment platform make it possible to run Nokia EDA on a laptop using open-source tools. And macOS-powered machines (even with M chips[^1]) is not an exception!
 
 /// details | Watch the video
     type: subtle-note
 -{{youtube(url='https://www.youtube.com/embed/QV8PwaSsNo8')}}-
 ///
 
-This guide will talk you through installing the EDA Playground which consists of a [simulated network topology](../../getting-started/virtual-network.md) and full EDA platform installation. No EDA licenses are required to run the Playground.
+This guide will talk you through installing the Nokia EDA Playground which consists of a [simulated network topology](../../getting-started/virtual-network.md) and full Nokia EDA platform installation. No Nokia EDA licenses are required to run the Playground.
 
 ## Playground repository
 
-We will need the playground repository on our machine to run EDA installation steps. Pull it, as explained in the [Try EDA](../../getting-started/try-eda.md) section.
+We will need the playground repository on our machine to run Nokia EDA installation steps. Pull it, as explained in the [Try EDA](../../getting-started/try-eda.md) section.
 
 --8<-- "docs/getting-started/try-eda.md:pull-playground"
 
-When the playground repo is cloned (you will need to install `git` to clone it), let's install the CLI tools that we will need to run EDA installation steps.
+When the playground repo is cloned (you will need to install `git` to clone it), let's install the CLI tools that we will need to run Nokia EDA installation steps.
 
 --8<-- "docs/getting-started/installation-process.md:tools-install"
 
@@ -79,7 +79,7 @@ Colima does not provide the Docker CLI client, so you will need to install one s
 brew install docker
 ```
 
-Now, Colima can launch a linux/arm64 VM for us; this VM runs the Docker daemon so that we could run KinD with EDA inside. Here is a command to start the VM with 8 vcpu cores and 16 GB of RAM; this should be enough to run the quickstart demo:
+Now, Colima can launch a linux/arm64 VM for us; this VM runs the Docker daemon so that we could run KinD with Nokia EDA inside. Here is a command to start the VM with 8 vcpu cores and 16 GB of RAM; this should be enough to run the quickstart demo:
 
 ```bash
 colima start --cpu 8 --memory 16 --profile eda \
@@ -113,7 +113,7 @@ colima-eda *   colima [profile=eda]       unix:///Users/romandodin/.colima/eda/d
     type: tip
 The downside of having a VM that runs the Docker daemon is that additional layer of networking is introduced. Hence, the MetalLB Load Balancer that we install in the kind cluster will use the IP range that is not visible from the macOS host.
 
-You don't need Load Balancer to enjoy EDA, since you can always expose the UI and the necessary services using `kubectl expose` command, but if you want to have the Load Balancer you will have to setup additional routes[^3].
+You don't need Load Balancer to enjoy Nokia EDA, since you can always expose the UI and the necessary services using `kubectl expose` command, but if you want to have the Load Balancer you will have to setup additional routes[^3].
 ////
 
 ///
@@ -146,7 +146,7 @@ orbstack   Ready    control-plane,master   28m   v1.29.3+orb1
 ```
 </div>
 
-Now, your cluster is ready to run its first EDA installation!
+Now, your cluster is ready to run its first Nokia EDA installation!
 ///
 /// tab | KinD
 Should you choose not to use embedded k8s support in the tool of your choice, you can install a KinD cluster manually.
@@ -159,7 +159,7 @@ make kind
 
 ///
 
-## Installing EDA
+## Installing Nokia EDA
 
 When running docker/k8s on a mac we have some layered networking to deal with, as the k8s cluster runs in a VM.
 
@@ -175,7 +175,7 @@ And also set a pair of no proxy variables set to the cluster cidr of your cluste
 kubectl get nodes -o jsonpath='{.items[0].spec.podCIDR}'
 ```
 
-And once all the variables are known, you can start the installation. If you are running OrbStack, you can use the following command verbatim to install EDA:
+And once all the variables are known, you can start the installation. If you are running OrbStack, you can use the following command verbatim to install Nokia EDA:
 
 ```shell
 EXT_IPV4_ADDR=198.19.249.2 \
@@ -213,12 +213,12 @@ If your browser can not resolve the `eda-api.k8s.orb.local` domain, you need to 
 
 ![ui](https://gitlab.com/rdodin/pics/-/wikis/uploads/1180ab27c1aa9017c1db3339ccae5f74/image.png)
 
-The default EDA credentials are `admin:admin`.
+The default Nokia EDA credentials are `admin:admin`.
 ///
 
 ## Tearing down
 
-If something goes wrong during installation, or if you want to reinstall, or maybe you finished playing with EDA, feel free to destroy the cluster following the documentation for the tool you're using to run k8s.
+If something goes wrong during installation, or if you want to reinstall, or maybe you finished playing with Nokia EDA, feel free to destroy the cluster following the documentation for the tool you're using to run k8s.
 
 /// tab | In OrbStack
 To remove the k8s cluster provided by OrbStack run the following command in the terminal:
@@ -233,7 +233,7 @@ This will remove the VM that backs up the k8s cluster. To bring back the empty k
 orb start k8s
 ```
 
-and now you can restart the EDA installation.
+and now you can restart the Nokia EDA installation.
 
 ///
 

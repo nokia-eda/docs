@@ -8,7 +8,7 @@ These steps are meant to be executed in the public environment with Internet acc
 There are two types of assets that need to be downloaded:
 
 * Assets Bundles - The bundles that contain all the resources needed to run Nokia EDA. This includes container images, repositories, tools and more.
-* Base Talos VM Image - The base images for the EDA Kubernetes nodes (VMs) that will run the EDA application.
+* Base Talos VM Image - The base images for the Nokia EDA Kubernetes nodes (VMs) that will run the Nokia EDA application.
 
 ## Downloading the Assets Bundles
 
@@ -20,9 +20,9 @@ There are two types of assets that need to be downloaded:
     cd path/to/edaadm
     ```
 
-2. Select EDA version.
+2. Select Nokia EDA version.
 
-    Set the `EDA_CORE_VERSION` environment variable in your shell to the target EDA release version, otherwise the latest version will be assumed. This will ensure that the correct version of the cache and assets is downloaded and prepared for the Assets VM.
+    Set the `EDA_CORE_VERSION` environment variable in your shell to the target Nokia EDA release version, otherwise the latest version will be assumed. This will ensure that the correct version of the cache and assets is downloaded and prepared for the Assets VM.
 
     ```bash
     export EDA_CORE_VERSION=-{{ eda_version }}-
@@ -30,7 +30,7 @@ There are two types of assets that need to be downloaded:
 
 3. Download the Assets Bundles.
 
-    Container images used in EDA which are grouped by their function are called Assets Bundles. Users need to download these bundles to have all the necessary components available for the air-gapped installation.  
+    Container images used in Nokia EDA which are grouped by their function are called Assets Bundles. Users need to download these bundles to have all the necessary components available for the air-gapped installation.  
 
     To optimize the download time and storage space, set the environment variables to skip downloading certain versions and/or types of assets. For example, consider the following set of environment variables and the inline explanations provided:
 
@@ -43,8 +43,8 @@ There are two types of assets that need to be downloaded:
     export SKIP_APPS_CONNECT=1 #(2)!
     ```
 
-    1. Skip EDA applications for older EDA versions.
-    2. Skip EDA Connect related assets if EDA Cloud Connect is not in use.
+    1. Skip Nokia EDA applications for older Nokia EDA versions.
+    2. Skip Nokia EDA Connect-related assets if Nokia EDA Cloud Connect is not in use.
 
     > Instead of downloading all bundles, individual bundles can also be downloaded as described in the section below.
 
@@ -72,9 +72,9 @@ There are two types of assets that need to be downloaded:
 
 ///
 
-## Downloading the Base Talos VM Images
+## Downloading the Base Talos VM images
 
-To deploy the EDA Kubernetes VMs, the base Talos image is needed for KVM or VMware vSphere. These images can also be downloaded using the edaadm bundles folder as described below.
+To deploy the Nokia EDA Kubernetes VMs, the base Talos image is needed for KVM or VMware vSphere. These images can also be downloaded using the edaadm bundles folder as described below.
 
 /// html | div.steps
 

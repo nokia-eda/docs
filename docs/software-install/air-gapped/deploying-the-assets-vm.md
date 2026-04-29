@@ -226,14 +226,14 @@ To load the `kpt-apply-setters` image from the `eda-bundle-tools` bundle, follow
 These steps are meant to be executed in the air-gapped environment.
 ///
 
-The procedure to deploying the Assets VM is similar to deploying the EDA Talos Kubernetes cluster nodes and uses `edaadm` CLI to manage the deployment process.
+The procedure to deploying the Assets VM is similar to deploying the Nokia EDA Talos Kubernetes cluster nodes and uses `edaadm` CLI to manage the deployment process.
 
 ### Preparing the Assets VM EDAADM Configuration File
 
-The EDAADM configuration file declaratively defines the machine/VM configuration and the Kubernetes cluster parameters and is an abstraction on top of the [Talos machine config](https://docs.siderolabs.com/talos/v1.11/reference/configuration/overview). You will find the edaadm configuration for the Assets VM very similar to the config file used for [EDA Kubernetes nodes](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#preparing-the-edaadm-configuration-file) with a few minor differences:
+The EDAADM configuration file declaratively defines the machine/VM configuration and the Kubernetes cluster parameters and is an abstraction on top of the [Talos machine config](https://docs.siderolabs.com/talos/v1.11/reference/configuration/overview). You will find the edaadm configuration for the Assets VM very similar to the config file used for [Nokia EDA Kubernetes nodes](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#preparing-the-edaadm-configuration-file) with a few minor differences:
 
 * It is a config file for a single machine.
-* The `clusterName` must be unique and different from the EDA Kubernetes cluster.
+* The `clusterName` must be unique and different from the Nokia EDA Kubernetes cluster.
 * The following additions fields must be present in the Assets VM edaadm config:
 
     ```yaml
@@ -245,7 +245,7 @@ The EDAADM configuration file declaratively defines the machine/VM configuration
     type: subtle-note
 
 1. Consult with the full list of edaadm configuration file options to customize your Assets VM configuration further: **[EDAADM Configuration file fields](../deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#edaadm-configuration-file-fields)**.
-2. The Assets VM only needs one network interface, preferably on the OAM network of the EDA Kubernetes cluster. It must be reachable from the OAM network of the EDA Kubernetes cluster.
+2. The Assets VM only needs one network interface, preferably on the OAM network of the Nokia EDA Kubernetes cluster. It must be reachable from the OAM network of the Nokia EDA Kubernetes cluster.
 3. The `edaadm` tool still expects the definition of a storage disk in the machine definition, but this can be a reference to a non-existing disk.
 ///
 
@@ -290,10 +290,10 @@ k8s:
             - 192.0.2.253
 ```
 
-1. EDA version string. Not relevant for the Assets VM, but required by edaadm.
-2. The kubernetes cluster name for the Assets VM, must be unique and not the same as the ones specified for the EDA Kubernetes cluster when deploying EDA.
+1. Nokia EDA version string. Not relevant for the Assets VM, but required by edaadm.
+2. The kubernetes cluster name for the Assets VM, must be unique and not the same as the ones specified for the Nokia EDA Kubernetes cluster when deploying Nokia EDA.
 3. The storage disk definition is required by edaadm, but the disk does not need to exist on the Assets VM. Can be set to any value.
-4. Pay attention to the set MTU value as the linux bridges, interfaces, and networks between the Assets VM and the EDA Kubernetes cluster nodes must allow for the same MTU size.
+4. Pay attention to the set MTU value as the linux bridges, interfaces, and networks between the Assets VM and the Nokia EDA Kubernetes cluster nodes must allow for the same MTU size.
 
 Assuming you are in the `edaadm` repository root, save the configuration file as `eda-assets-deployment.yaml`.
 
@@ -407,7 +407,7 @@ This procedure is executed on the KVM Hypervisor which will host the Assets VM.
     1. Depending on the `virt-install` version, the `--os-variant=generic` option might not be supported. In that case use `--os-type=generic` instead.
 
     //// warning
-    Pay attention to the MTU value set on the Linux bridge, interfaces, and networks between the Assets VM and the EDA Kubernetes cluster nodes must allow for the same MTU size.
+    Pay attention to the MTU value set on the Linux bridge, interfaces, and networks between the Assets VM and the Nokia EDA Kubernetes cluster nodes must allow for the same MTU size.
     ////
 
 ///
@@ -464,7 +464,7 @@ The Assets VM runs Talos Kubernetes and needs to be bootstrapped using the `edaa
 edaadm bootstrap-k8s -c eda-assets-deployment.yaml
 ```
 
-## Obtaining the Kubernetes Config File
+## Obtaining the Kubernetes config file
 
 Once the Assets VM Kubernetes cluster is bootstrapped, use the `edaadm` command to fetch the Kubernetes configuration file (kubeconfig) for use with `kubectl`.
 
@@ -498,7 +498,7 @@ Once the Assets VM Kubernetes cluster is bootstrapped, use the `edaadm` command 
 
 When the node is up and ready, continue with deploying the Assets VM services.
 
-## Deploying the Assets VM Services
+## Deploying the Assets VM services
 
 <!--
 /// details | Defining custom usernames and passwords for the services
@@ -517,7 +517,7 @@ echo -n 'new-username' | base64
 echo -n 'new-password' | base64
 ```
 
-Keep the output of these two commands saved somewhere, as you will need to use them in the next step, as well as when installing the EDA Talos Kubernetes cluster and EDA.
+Keep the output of these two commands saved somewhere, as you will need to use them in the next step, as well as when installing the Nokia EDA Talos Kubernetes cluster and Nokia EDA.
 
 Export these values as environment variables in your shell so they can be used by the kpt platform to configure the services when you execute the commands later in this section:
 
@@ -540,7 +540,7 @@ Use the string from this command and also do a base64 encoding of it:
 echo -n 'new-username:...' | base64
 ```
 
-Keep the output of this command saved somewhere, as you will need to use them in the next step, as well as when installing the EDA Talos Kubernetes cluster and EDA.
+Keep the output of this command saved somewhere, as you will need to use them in the next step, as well as when installing the Nokia EDA Talos Kubernetes cluster and Nokia EDA.
 
 Export the value as environment variable in your shell so it can be used by the kpt platform to configure the services when you execute the commands later in this section.
 

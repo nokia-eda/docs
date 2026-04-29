@@ -1,11 +1,11 @@
 # Software Installation Guide
 
-This document describes the installation procedure in a production environment; to install EDA in a lab, development or test environment, see [Getting Started](../getting-started/try-eda.md).  
+This document describes the installation procedure in a production environment; to install Nokia Event-Driven Automation (EDA) in a lab, development or test environment, see [Getting Started](../getting-started/try-eda.md).  
 It includes procedures for preparing the nodes that host the application, installing the application, upgrading and uninstalling.
 
 /// admonition | Note
     type: subtle-note
-This document covers the current release and may also contain some content that will be released in later maintenance loads. See the EDA Release Notes for information about features supported in each load.
+This document covers the current release and may also contain some content that will be released in later maintenance loads. See the Nokia EDA Release Notes for information about features supported in each load.
 ///
 
 //// details | Precautionary and information messages
@@ -39,8 +39,8 @@ These tasks must be completed for both Internet based installations and air-gapp
 
 /// html | div.steps
 
-1. [Downloading the EDA Installation playground](preparing-for-installation.md#download-the-eda-installation-playground)  
-    This task describes how to access the EDA installation playground for use during the installation. It also covers how to configure the playground.
+1. [Downloading the Nokia EDA Installation playground](preparing-for-installation.md#download-the-eda-installation-playground)  
+    This task describes how to access the NokiaEDA installation playground for use during the installation. It also covers how to configure the playground.
 
 2. [Downloading the edaadm tools](preparing-for-installation.md#download-edaadm-tools)  
     This task describes how to download the EDAADM repository and the `edaadm` tool, used for several steps in the installation process.
@@ -67,7 +67,7 @@ In case the installation will be air-gapped, this section provides steps on how 
 
 ///
 
-### Deploying EDA
+### Deploying Nokia EDA
 
 /// html | div.steps
 
@@ -83,8 +83,8 @@ In case the installation will be air-gapped, this section provides steps on how 
 4. [Bootstrap the Talos Kubernetes cluster](deploying-eda/bootstrap-the-talos-kubernetes-cluster.md)  
     This task bootstraps the Talos Kubernetes environment using the VMs you have created.
 
-5. [Installing the EDA application](deploying-eda/installing-the-eda-application.md)  
-    Using the EDA Installation playground, this step installs EDA on the Kubernetes environment in the EDA nodes.
+5. [Installing the Nokia EDA application](deploying-eda/installing-the-eda-application.md)  
+    Using the Nokia EDA Installation playground, this step installs Nokia EDA on the Kubernetes environment in the Nokia EDA nodes.
 
 ///
 
@@ -93,35 +93,35 @@ In case the installation will be air-gapped, this section provides steps on how 
 Several key concepts are used throughout the documentation; following is an overview of these concepts and components:
 
 *Talos Linux and Kubernetes*
-: EDA uses Talos Linux and Kubernetes to host its services. Talos Linux is a minimalistic, locked-down, read-only and secured Linux environment purposely built to run Kubernetes. This ensures a more secure environment with significantly lower security footprint than regular Linux and Kubernetes environments.
+: Nokia EDA uses Talos Linux and Kubernetes to host its services. Talos Linux is a minimalistic, locked-down, read-only and secured Linux environment purposely built to run Kubernetes. This ensures a more secure environment with significantly lower security footprint than regular Linux and Kubernetes environments.
 
 *Playground git repository*
-: The Playground git repository is [publicly available](https://github.com/nokia-eda/playground) and is used to deploy EDA itself.
+: The Playground git repository is [publicly available](https://github.com/nokia-eda/playground) and is used to deploy Nokia EDA itself.
 
 *[`edaadm`](preparing-for-installation.md#download-edaadm-tools)*
 : A CLI tool that will be used for several steps in the process:
 
     * Get the location to download the base Talos image for KVM and VMware environments.
-    * Generate Talos machine configuration files for the deployment of both the Assets VM and the EDA Kubernetes cluster VMs.
+    * Generate Talos machine configuration files for the deployment of both the Assets VM and the Nokia EDA Kubernetes cluster VMs.
     * Initiate Talos Kubernetes clusters.
 
 *`edaadm` git repository*
 : A [publicly available](https://github.com/nokia-eda/edaadm) git repository that contains details and definitions for:
 
-    * Assets bundles for air-gapped installations: EDA Assets are defined in different bundles, based on their purpose. The repository provides the bundles and the means to download the content of the bundles from the internet and then upload them to the deployed Assets VM.
+    * Assets bundles for air-gapped installations: Nokia EDA Assets are defined in different bundles, based on their purpose. The repository provides the bundles and the means to download the content of the bundles from the internet and then upload them to the deployed Assets VM.
     * A KPT package to initiate the Assets VM.
 
 *Air-gapped Assets VM*
 : Used in an air-gapped environment, the Assets VM is a Virtual Machine deployed on a KVM or VMware environment. It is a single VM K8s cluster that will run:
 
-    * A container registry to host all the container images used by EDA.
+    * A container registry to host all the container images used by Nokia EDA.
     * A git server to host the App Store Catalog.
-    * A web server to host certain artifacts used by EDA.
+    * A web server to host certain artifacts used by Nokia EDA.
 
 *Air-gapped Bundles*
-: Used in air-gapped installations, a bundle is a definition of a group of assets that are related. For instance a bundle for the core components of EDA for a specific version, or a bundle of the standard Apps for a specific version. Bundles are downloaded using the `edaadm` tool from the internet, and then uploaded using `edaadm` to the Assets VM. The product comes with a set of standard bundles and custom bundles can be created based on their examples.
+: Used in air-gapped installations, a bundle is a definition of a group of assets that are related. For instance a bundle for the core components of Nokia EDA for a specific version, or a bundle of the standard Apps for a specific version. Bundles are downloaded using the `edaadm` tool from the internet, and then uploaded using `edaadm` to the Assets VM. The product comes with a set of standard bundles and custom bundles can be created based on their examples.
 
-*Air-gapped EDA Shipyard*
+*Air-gapped Nokia EDA Shipyard*
 : A name used to describe the combination of the container registry, git server and web server running on the Assets VM.
 
 ## Version information
@@ -159,11 +159,11 @@ Nokia EDA is deployed as an application on a compatible Kubernetes cluster compr
 
 ### OpenShift
 
-Nokia EDA can also be deployed on an existing OpenShift v4.16+ cluster[^1] with the Security Context Constraint (SCC) resource applied prior to installing EDA packages. The SCC manifest is provided in [nokia-eda/edaadm/openshift/eda-scc.yaml](https://github.com/nokia-eda/edaadm/blob/main/openshift/eda-scc.yaml) file.
+Nokia EDA can also be deployed on an existing OpenShift v4.16+ cluster[^1] with the Security Context Constraint (SCC) resource applied prior to installing Nokia EDA packages. The SCC manifest is provided in [nokia-eda/edaadm/openshift/eda-scc.yaml](https://github.com/nokia-eda/edaadm/blob/main/openshift/eda-scc.yaml) file.
 
 Adding the SCC resource is the only additional requirement that needs to be satisfied, the rest of the installation procedure remains the same.
 
-## Networking for EDA nodes
+## Networking for Nokia EDA nodes
 
 This guide describes the deployment of EDA on a Kubernetes cluster with a single network, where access from both users and orchestrators to the UI and API, and access from EDA to the fabric (for example, SR Linux devices) go over the same interface.
 
@@ -341,7 +341,7 @@ You can run the Nokia EDA nodes as virtual machines using the following virtuali
 This only applies if you plan to use the air-gapped installation process.
 ///
 
-The Assets VM runs as a single VM inside the air-gapped environment. This VM holds all of the assets and can be used across multiple deployments and EDA versions, containing the assets for multiple versions. This VM has the following requirements:
+The Assets VM runs as a single VM inside the air-gapped environment. This VM holds all of the assets and can be used across multiple deployments and Nokia EDA versions, containing the assets for multiple versions. This VM has the following requirements:
 
 /// html | table
 //// html | th[style='text-align: center;']
@@ -387,7 +387,7 @@ Requirement
 
 * 1 Gbps NIC
 * 1 IPv4 IP and optionally 1 IPv6 IP
-* Preferably in the same OAM network as the EDA Kubernetes VMs, but minimally accessible by the EDA Kubernetes VMs via the OAM network
+* Preferably in the same OAM network as the Nokia EDA Kubernetes VMs, but minimally accessible by the Nokia EDA Kubernetes VMs via the OAM network
 * system time synced using NTP
 
 /////
@@ -398,7 +398,7 @@ Requirement
 **Virtualization platform**
 /////
 ///// html | td
-You can run the EDA Assets VM as a virtual machine using the following virtualization platforms:
+You can run the Nokia EDA Assets VM as a virtual machine using the following virtualization platforms:
 
 * operating system: VMware vSphere 7.0 or 8.0 or RHEL/Rocky
 * hypervisor: ESXi 7.0 or 8.0 or KVM
@@ -408,7 +408,7 @@ You can run the EDA Assets VM as a virtual machine using the following virtualiz
 
 ### Virtual IP requirements
 
-The deployment of EDA requires two virtual IP addresses in the management network:
+The deployment of Nokia EDA requires two virtual IP addresses in the management network:
 
 * Kubernetes VIP: the virtual IP address used by all the control plane nodes in the Kubernetes cluster.
 * Nokia EDA API/UI VIP: the virtual IP address used by the Nokia EDA API and UI.

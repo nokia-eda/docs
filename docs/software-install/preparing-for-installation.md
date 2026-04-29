@@ -1,6 +1,6 @@
 # Preparing for installation
 
-## Download the EDA Installation playground
+## Download the Nokia EDA installation playground
 
 Ensure that your Linux installation[^1] environment meets the requirements described in [Installation platform requirements](index.md#installation-platform-requirements).
 
@@ -20,11 +20,11 @@ make download-tools
 
 As a result of this command, the `kind`, `kubectl`, `kpt`, and `yq` utilities will be installed in the `./tools` directory.
 
-### Obtaining the EDA packages
+### Obtaining the Nokia EDA packages
 
-EDA is packaged using the [Kubernetes Package Tool](https://kpt.dev) (kpt). EDA uses this package manager tool to install core EDA components. The installer downloads two kpt packages by downloading their relevant git repositories.
+Nokia EDA is packaged using the [Kubernetes Package Tool](https://kpt.dev) (kpt). Nokia EDA uses this package manager tool to install core Nokia EDA components. The installer downloads two kpt packages by downloading their relevant git repositories.
 
-To obtain the EDA package, enter the following command:
+To obtain the Nokia EDA package, enter the following command:
 
 ```
 make download-pkgs
@@ -32,8 +32,8 @@ make download-pkgs
 
 This command downloads the following git repositories to their respective directories:
 
-* EDA kpt package in the `eda-kpt` directory
-* EDA built-in catalog in the `catalog` directory
+* Nokia EDA kpt package in the `eda-kpt` directory
+* Nokia EDA built-in catalog in the `catalog` directory
 
 ## Download edaadm tools
 
@@ -45,7 +45,7 @@ Clone the EDAADM repository:
 git clone https://github.com/nokia-eda/edaadm && cd edaadm
 ```
 
-The CLI tool that orchestrates the configuration and installation of the EDA platform in a production environment is called `edaadm`. To download `edaadm` run the following command from the root of the `edaadm` repository:
+The CLI tool that orchestrates the configuration and installation of the Nokia EDA platform in a production environment is called `edaadm`. To download `edaadm` run the following command from the root of the `edaadm` repository:
 
 ```bash
 make -C bundles/ download-tools
@@ -117,7 +117,7 @@ https://factory.talos.dev/image/903b2da78f99adef03cbbd4df6714563823f632185088007
 
 Download the `vmware-amd64.ova` image from the OVA URL, filepath.ova.
 
-You can download using your browser or you can use the curl or wget commands. You can also use the URL directly with the ovftool command to deploy the OVA to your VMware vSphere environment.
+You can download using your browser or you can use the curl or wget commands. You can also use the URL directly with the `ovftool` command to deploy the OVA to your VMware vSphere environment.
 
 [^1]: This system might also be referred to as the "tools-system" further in this documentation.
 [^2]: The `edaadm` binary for different platforms can be manually downloaded from https://github.com/nokia-eda/edaadm/releases/.
