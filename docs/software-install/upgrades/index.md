@@ -73,7 +73,7 @@ Prior to taking a backup of your cluster, place all `TopoNode` resources into `e
 
 In this mode, Nokia EDA does not interact with target devices, effectively pausing the cluster's interaction with your infrastructure. You can still interact with Nokia EDA and the `TopoNode` resources; changes are pushed upon switching back to `normal` mode.
 
-To set `emulate` mode in bulk, run the script from the [playground](https://github.com/nokia-eda/playground) repo directory on a machine where you have [`kubectl`](../../user-guide/using-the-clis.md#kubectl) configured with the access to your cluster:
+To set `emulate` mode in bulk, run the script from the [playground](https://github.com/nokia-eda/playground) repo directory on a machine where you have [`kubectl`](../../user-guide/command-line-tools.md#kubectl) configured with the access to your cluster:
 
 ```{.shell .no-select}
 make set-npp-mode-emulate
@@ -136,7 +136,7 @@ Nokia highly recommends that you test the backup by restoring it in a test clust
 
 The workflow to upgrade Nokia EDA slightly differs depending on whether you have the original [playground repository][playground] present in a system that you used to install Nokia EDA originally from or not.
 
-[playground]: ../preparing-for-installation.md#download-the-eda-installation-playground
+[playground]: ../preparing-for-installation.md#download-the-nokia-eda-installation-playground
 
 /// tab | Playground repository present
 
@@ -263,7 +263,7 @@ cd playground && \
 make download-tools
 ```
 
-Identify what Nokia EDA version you are running using [edactl](../../user-guide/using-the-clis.md#edactl):
+Identify what Nokia EDA version you are running using [edactl](../../user-guide/command-line-tools.md#edactl):
 
 ```bash
 edactl cluster

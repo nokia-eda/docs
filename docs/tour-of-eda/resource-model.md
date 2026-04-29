@@ -129,7 +129,7 @@ A resource definition in EDA has the following sections:
 
 Resource kinds in EDA are organized into versioned API groups based on their functionality and purpose. For example, the Banner kind resides in the `siteinfo.eda.nokia.com` group. Other API groups that you will find installed in the "Try EDA" instance include `fabrics.eda.nokia.com` for DC fabric-related resources, `protocols.eda.nokia.com` for routing protocols, `services.eda.nokia.com` for higher-level service abstractions, and many more.
 
-These resource groups and the kinds they contain are distributed as **EDA Applications** that can be installed and managed via [EDA Store](../apps/index.md#eda-store).
+These resource groups and the kinds they contain are distributed as **EDA Applications** that can be installed and managed via [EDA Store](../apps/index.md#nokia-eda-store).
 
 -{{ diagram(path='./diagrams/tour-of-eda.drawio', title='EDA applications and resource kinds', page=1) }}-
 

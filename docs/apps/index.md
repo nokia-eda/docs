@@ -48,7 +48,7 @@ The catalog filter only applied to the title view. In the app details view, the 
 
 From the Nokia EDA Store GUI, click any app to display details for that app.
 
--{{image(url="/user-guide/graphics/sc0307-26.4.1v2.png", title="Figure: Fabric app example", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/sc0307-26.4.1v2.png", title="Fabric app example", shadow=true, padding=20)}}-
 
 This view provides the following information about the app:
 
@@ -101,7 +101,7 @@ Apps also have dependencies on the Nokia EDA core platform version. Apps which a
 
 To view the dependencies for an app, from **EDA Store** click the app's tile to open its page, then click the **Required Applications** tab.
 
--{{image(url="/user-guide/graphics/sc0283-26.4.1v2.png", title="Figure: App requirements", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/sc0283-26.4.1v2.png", title="App requirements", shadow=true, padding=20)}}-
 
 As shown in the example, requirements that are satisfied are checked. The **Relation** column shows dependencies with apps in the **Required applications** list:
 
@@ -111,7 +111,7 @@ As shown in the example, requirements that are satisfied are checked. The **Rela
 
 For a graphical view of the app dependencies, click the **Graph View** toggle.
 
--{{image(url="/user-guide/graphics/sc0456_gs.png", title="Figure: App requirements in graph view", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/sc0456_gs.png", title="App requirements in graph view", shadow=true, padding=20)}}-
 
 You can use the typical UI controls to:
 
@@ -123,7 +123,7 @@ You can use the typical UI controls to:
 
 If an app has fields that you can set during installation, the **Available Settings** tab shows the fields that you can set. App settings is commonly used to customizing the Kubernetes cpu and memory requests for apps which deploy controllers.
 
--{{image(url="/user-guide/graphics/sc0284-26.4.1v2.png", title="Figure: Available Settings tab", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/sc0284-26.4.1v2.png", title="Available Settings tab", shadow=true, padding=20)}}-
 
 During app install, the installer wizard will prompt you to set these fields. This step can be skipped to accept default values.
 
@@ -442,4 +442,4 @@ EOF
 
 Nokia EDA generates an app documentation web site, which is updated when apps are installed in the system. In the Nokia EDA UI, the link to app documentation is available from the UI pages of the resources definitions provided by that app. Click the **Go to documentation** link from a resource page, as shown in the following example:
 
--{{image(url="/user-guide/graphics/aggregate-routes-doc.png", title="Figure: Link to documentation", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/aggregate-routes-doc.png", title="Link to documentation", shadow=true, padding=20)}}-

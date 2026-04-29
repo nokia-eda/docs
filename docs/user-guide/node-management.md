@@ -194,7 +194,7 @@ This section provides information about how to work with nodes using the UI.
 
 ### Node Resources view
 
--{{image(url="graphics/sc0279.png", title="Figure: Nodes Resources view", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0279.png", title="Nodes Resources view", shadow=true, padding=20)}}-
 
 The following table lists the default columns shown in the **Node Resources** page.
 
@@ -224,7 +224,7 @@ The following table lists the default columns shown in the **Node Resources** pa
 
 Click the **Row actions menu** for a node to display the actions that you can perform on the node. For example:
 
--{{image(url="graphics/sc0280.png", title="Figure: Row actions", scale=0.25, shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0280.png", title="Row actions", scale=0.25, shadow=true, padding=20)}}-
 
 You can select from one of the following options:
 
@@ -244,7 +244,7 @@ You can select from one of the following options:
     - do a route trace
     - do an attachment lookup
 
-    For more information about these workflows, see [Workflow Definition List page](workflows.md#workflow-definition-list-page).
+    For more information about these workflows, see [Workflow Definition List page](workflows.md#workflow-definition-list).
 
 ### Creating a TopoNode
 
@@ -301,7 +301,7 @@ You can select from one of the following options:
 
 The **Deleted Resources** page displays all of the nodes that have previously been deleted from the system. From here you can view details about the reverted nodes, and if necessary, revert the deletion.
 
--{{image(url="graphics/sc0281.png", title="Figure: The Deleted Resources view", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0281.png", title="The Deleted Resources view", shadow=true, padding=20)}}-
 
 |\#|Name|Function|
 |:---:|----|--------|
@@ -353,7 +353,7 @@ You can create a new node from scratch or from an existing node.
 
 2. Click **Create a new node**.
 
-    EDA opens the Create a new node page. To create a new node from scratch, go to step [3](node-management.md#nm-step3). To create a new node from an existing node, go to step [4](node-management.md#nm-step4).
+    EDA opens the Create a new node page. To create a new node from scratch, go to step 3. To create a new node from an existing node, go to step 4.
 
 3. <span id="nm-step3"></span>To create a node from scratch:
 

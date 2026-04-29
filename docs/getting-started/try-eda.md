@@ -112,7 +112,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
 
 5. **Install the EDA Playground**
 
-    A single command separates you from the EDA Playground installation. But before you run it, if you want to enable the Natural Language support for the [EDA Query](../user-guide/queries.md) functionality, provide the LLM key (OpenAI) with an environment variable[^4]:
+    A single command separates you from the EDA Playground installation. But before you run it, if you want to enable the Natural Language support for the [EDA Query](../user-guide/eda-query-language.md) functionality, provide the LLM key (OpenAI) with an environment variable[^4]:
 
     ```shell
     export LLM_API_KEY=<your-OpenAI-API-key>
@@ -124,7 +124,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
     make try-eda
     ```
 
-    The installation will take approximately 10 minutes to complete. Once it is done, you can optionally [verify](verification.md) the installation.
+    The installation will take approximately 10 minutes to complete.
 
     /// details | EDA License
         type: info

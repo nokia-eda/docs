@@ -13,7 +13,7 @@
 
 ## Installation
 
-The Prometheus exporter app can be installed using [EDA Store](index.md#eda-store)or by running the `app-install` workflow with `kubectl`:
+The Prometheus exporter app can be installed using [EDA Store](../apps/index.md#nokia-eda-store)or by running the `app-install` workflow with `kubectl`:
 
 /// tab | YAML
 
@@ -34,7 +34,7 @@ EOF
 
 ## Configuration
 
-After installing the app you can configure the metrics you wish to be exported by defining an EDB path (also referred to as `jsPath`) and, optionally, a `fields` list and a `where` EQL statement. You can check what is returned by the path using the EDA Query UI or [`edactl`](../user-guide/using-the-clis.md#edactl).
+After installing the app you can configure the metrics you wish to be exported by defining an EDB path (also referred to as `jsPath`) and, optionally, a `fields` list and a `where` EQL statement. You can check what is returned by the path using the EDA Query UI or [`edactl`](../user-guide/command-line-tools.md#edactl).
 
 At every scrape request the app will retrieve the configured paths and fields and automatically generate the metric name, its labels and its value based on the path, fields and values received back from EDA.
 

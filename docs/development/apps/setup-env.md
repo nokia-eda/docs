@@ -64,7 +64,7 @@ If you have completed the Try EDA step, then kubectl has already been downloaded
 ///
 
 /// tab | `edactl`
-`edactl` will help you query the EDA cluster and debug your application. You don't even need to download it directly, you can use an alias to run it from within the EDA cluster as explained in the [CLI Tools](../../user-guide/using-the-clis.md#edactl) guide.
+`edactl` will help you query the EDA cluster and debug your application. You don't even need to download it directly, you can use an alias to run it from within the EDA cluster as explained in the [CLI Tools](../../user-guide/command-line-tools.md#edactl) guide.
 ///
 
 And now with these tools in your toolchest, you've got everything you need to start building your first app! Choose your preferred path, would you want to put the code to the compiler right away or want to beef up your knowledge on the matter?

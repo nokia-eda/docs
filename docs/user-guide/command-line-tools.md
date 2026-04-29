@@ -258,7 +258,7 @@ And behold the power of `e9s`!
 ![e9s](https://gitlab.com/rdodin/pics/-/wikis/uploads/f716432aa9db2dca2928faaf65bdb620/image.png)
 ///
 /// tab | e9s query screen
-Here is a quick demonstration on how to use the powerful [EDA Query Language (EQL)](queries.md) to run queries in `e9s`:
+Here is a quick demonstration on how to use the powerful [EDA Query Language (EQL)](eda-query-language.md) to run queries in `e9s`:
 
 -{{ video(url='https://gitlab.com/rdodin/pics/-/wikis/uploads/c07acc0be3a26e8a93e23ae0e2e36d40/e9s_walkthrough.mp4') }}-
 ///

@@ -1,6 +1,6 @@
 # Nokia EDA on an on-prem k8s cluster
 
-The [quickstart guide](../../getting-started/installation-process.md) did a great job of getting you up and running with a local Kubernetes cluster powered by KinD. However, you may be willing to step away from the beaten path and install Nokia EDA in a non-KinD cluster. Well, Nokia EDA welcomes courageous souls like you!
+The [Try EDA](../../getting-started/try-eda.md) guide gets you up and running with a local Kubernetes cluster powered by KinD in no time. However, you may be willing to step away from the beaten path and install Nokia EDA in a non-KinD cluster. Well, Nokia EDA welcomes courageous souls like you!
 
 /// admonition | Note
     type: subtle-note
@@ -107,7 +107,7 @@ With the `prefs.mk` file populated, we can simply run:
 make try-eda
 ```
 
-Right, the same target that would otherwise install Nokia EDA on a local development KinD cluster can be used to install Nokia EDA on an existing cluster, like the one we have in this guide. After the installation process completes, you can use the [verification commands](../../getting-started/verification.md) to make sure everything is up and running.
+Right, the same target that would otherwise install Nokia EDA on a local development KinD cluster can be used to install Nokia EDA on an existing cluster, like the one we have in this guide. After the installation process completes, you can go through the [short checklist](../../tour-of-eda/index.md#checklist) to make sure everything is up and running.
 
 ![final-pods](https://gitlab.com/rdodin/pics/-/wikis/uploads/55b10f7ea1b74501ee2434641e17edc4/piceda1.webp){.img-shadow}
 

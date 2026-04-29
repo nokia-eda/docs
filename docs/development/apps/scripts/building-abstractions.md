@@ -455,7 +455,7 @@ def process_cr(cr):
     init_globals_defaults(cr_obj)
 ```
 
-The `process_cr` function is called each time there is a change to a SimpleFabric resource instance - be it creation, update, or deletion. The function receives the resource instance as input in the form of a dictionary called `cr`, which contains the resource manifest as provided by the user. Let's see this in action by deploying the app in its current state and creating a debug session for the SimpleFabric config intent using [`edactl`](../../../user-guide/using-the-clis.md#edactl):
+The `process_cr` function is called each time there is a change to a SimpleFabric resource instance - be it creation, update, or deletion. The function receives the resource instance as input in the form of a dictionary called `cr`, which contains the resource manifest as provided by the user. Let's see this in action by deploying the app in its current state and creating a debug session for the SimpleFabric config intent using [`edactl`](../../../user-guide/command-line-tools.md#edactl):
 
 ```bash
 edactl -n eda intent config debug simplefabric

@@ -25,7 +25,7 @@ The app supports both OTLP/HTTP and OTLP/gRPC receivers, optional authorization 
 
 ## Installation
 
-Install the app from [EDA Store](../apps/index.md#eda-store) or with `kubectl`:
+Install the app from [EDA Store](../apps/index.md#nokia-eda-store) or with `kubectl`:
 
 /// tab | YAML
 
