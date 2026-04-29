@@ -1,0 +1,13 @@
+apiVersion: influxdb.eda.nokia.com/v1alpha1
+kind: ClusterServer
+metadata:
+  name: cluster-server1
+  namespace: eda-system
+spec:
+  url: http://influxdb.eda-system.svc.cluster.local:8086
+  org: eda_team
+  credentialsSecret: influx-secret
+  batchSize: 100
+  flushTimer: 10s
+  timestampPrecision: milliseconds
+  useGzip: false
