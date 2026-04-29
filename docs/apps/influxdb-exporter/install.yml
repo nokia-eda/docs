@@ -1,0 +1,13 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
+metadata:
+  name: influxdb-exporter-install
+  namespace: eda-system
+spec:
+  operation: install
+  apps:
+    - appId: influxdb.eda.nokia.com
+      catalog: eda-catalog-builtin-apps
+      version:
+        type: alias
+        value: latest

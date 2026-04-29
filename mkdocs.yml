@@ -82,6 +82,7 @@ nav:
       - Protocols: apps/protocols.md
       - Virtual Network: apps/virtualnetwork.md
       - Interfaces: apps/interfaces.md
+      - InfluxDB Exporter: apps/influxdb-exporter.md
       - Notifier: apps/notifier.md
       - NATS Exporter: apps/nats-exporter.md
       - ServiceNow: apps/service-now.md
