@@ -482,6 +482,7 @@ plugins:
   - privacy:
       assets_exclude:
         - giscus.app/*
+        - test.draw.io/*
 
 # Customization
 extra:

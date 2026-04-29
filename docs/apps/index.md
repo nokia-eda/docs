@@ -1,6 +1,13 @@
-# Apps
+# Applications
 
-Almost everything in Nokia Event-Driven Automation (EDA) is considered an Application, including all the Apps that were installed during the [Getting Started - Install step](../getting-started/installation-process.md#apps). Apps extend the functionality of Nokia EDA by exposing custom resources to the Nokia EDA API and MicroPython code that will be executed by Nokia EDA whenever such a custom resource is manipulated either by a user or another App. Some apps deploy controller pods into the Nokia EDA Kubernetes cluster for integrating with other systems.
+In Nokia Event-Driven Automation (EDA), **applications are the packaging and delivery mechanism** for everything that extends the platform beyond the core release. Each app is a versioned unit - described by a manifest, distributed as a single OCI image, and published through catalogs and registries.  
+The application package bundles custom resource definitions (CRDs), OpenAPI schemas, UI metadata, and the actual application code - so you can install, upgrade, and depend on features the same way you manage other software.
+
+Installing an app extends the platform with the new resources, workflows, dashboards, and other features. The core EDA platform provides common services such as transaction model, device integration, EDA Store, and so on; apps, on the other hand, register additional resources that can be managed by EDA so you can declare intent for domains such as services, fabrics, timing, and so on. Those new resources brought by the apps appear in the API and UI where the app exposes them.
+
+When a resource from an app is created, updated, or deleted - by a user, automation, or another app - the platform runs the application code shipped with that app to drive configuration and state handling. Some apps also deploy operator-based apps into the Nokia EDA Kubernetes cluster to integrate with external systems or run longer-lived reconciliation.
+
+This plugin-based architecture allows for easy extensibility and customization of the platform without the need for a full platform upgrade.
 
 ## Nokia EDA Store
 
@@ -172,18 +179,22 @@ Use this procedure to install an app or execute a dry run of the app installatio
 
 You can also install an app using `kubectl` command, using `AppInstaller` custom resource. The following example shows to install the Cloud Connect app:
 
-=== "YAML Resource"
-    ```yaml
-    --8<-- "docs/apps/store/install-example.yaml"
-    ```
+/// tab | YAML Resource
 
-=== "`kubectl apply` command"
-    ```bash
-    kubectl apply -f - <<EOF
-    --8<-- "docs/apps/store/install-example.yaml"
-    EOF
-    ```
+```yaml
+--8<-- "docs/apps/store/install-example.yaml"
+```
 
+///
+/// tab | `kubectl apply` command
+
+```bash
+kubectl apply -f - <<EOF
+--8<-- "docs/apps/store/install-example.yaml"
+EOF
+```
+
+///
 The status of the workflow shows the progress of the installation. This `Workflow` resource initiates an app installer job. Once installed, a `Manifest` resource will be created and the Workflow is done (and the object may be deleted). To see the installed apps using `kubectl`, you can check their manifests:
 
 ```bash
@@ -212,17 +223,22 @@ kubectl get manifests -n eda-system
 
 You can also uninstall an app using `kubectl` command, using `AppInstaller` custom resource with a `delete` operation. The following example shows how to delete the previously created Cloud Connect app.
 
-=== "YAML Resource"
-    ```yaml
-    --8<-- "docs/apps/store/delete-example.yaml"
-    ```
+/// tab | YAML Resource
 
-=== "`kubectl apply` command"
-    ```bash
-    kubectl apply -f - <<EOF
-    --8<-- "docs/apps/store/delete-example.yaml"
-    EOF
-    ```
+```yaml
+--8<-- "docs/apps/store/delete-example.yaml"
+```
+
+///
+/// tab | `kubectl apply` command
+
+```bash
+kubectl apply -f - <<EOF
+--8<-- "docs/apps/store/delete-example.yaml"
+EOF
+```
+
+///
 
 #### Upgrading apps
 
@@ -321,34 +337,38 @@ The **Catalogs** page displays all the catalogs available in EDA. You can double
 
 To create a catalog credentials secret, apply the following `Secret` in the Kubernetes cluster:
 
-=== "YAML Resource"
-    ```yaml
-    apiVersion: v1
-    kind: Secret
-    type: Opaque
-    metadata:
-      name: your-creds # A unique name
-      namespace: eda-system # The Kubernetes namespace where EDA is deployed
-    data:
-      username: <base64(username)> # Base64 encoded username
-      password: <base64(password/token)> # Base64 encoded password/token
-    ```
+/// tab | YAML Resource
 
-=== "`kubectl apply` command"
-    ```bash
-    kubectl apply -f - <<EOF
-    apiVersion: v1
-    kind: Secret
-    type: Opaque
-    metadata:
-      name: your-creds # A unique name
-      namespace: eda-system # The Kubernetes namespace where EDA is deployed
-    data:
-      username: <base64(username)> # Base64 encoded username
-      password: <base64(password/token)> # Base64 encoded password/token
+```yaml
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: your-creds # A unique name
+    namespace: eda-system # The Kubernetes namespace where EDA is deployed
+data:
+    username: <base64(username)> # Base64 encoded username
+    password: <base64(password/token)> # Base64 encoded password/token
+```
 
-    EOF
-    ```
+///
+/// tab | `kubectl apply` command
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: your-creds # A unique name
+    namespace: eda-system # The Kubernetes namespace where EDA is deployed
+data:
+    username: <base64(username)> # Base64 encoded username
+    password: <base64(password/token)> # Base64 encoded password/token
+EOF
+```
+
+///
 
 - Provide a unique name in the `name` field. This should match the **Authentication Secret Reference** in the catalog resource.
 - Provide the `namespace` where EDA is deployed
@@ -380,34 +400,39 @@ In the Nokia EDA UI, you can manage registries from the **System Administration*
 
 To create a registry credentials secret, apply the following `Secret` in the Kubernetes cluster:
 
-=== "YAML Resource"
-    ```yaml
-    apiVersion: v1
-    kind: Secret
-    type: Opaque
-    metadata:
-      name: your-creds # A unique secret name
-      namespace: eda-system # The Kubernetes namespace where EDA is deployed
-    data:
-      username: <base64(username)> # Base64 encoded username
-      password: <base64(password or token)> # Base64 encoded password/token
-    ```
+/// tab | YAML Resource
 
-=== "`kubectl apply` command"
-    ```bash
-    kubectl apply -f - <<EOF
-    apiVersion: v1
-    kind: Secret
-    type: Opaque
-    metadata:
-      name: your-creds # A unique name
-      namespace: eda-system # The Kubernetes namespace where EDA is deployed
-    data:
-      username: <base64(username)> # Base64 encoded username
-      password: <base64(password/token)> # Base64 encoded password/token
+```yaml
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: your-creds # A unique secret name
+    namespace: eda-system # The Kubernetes namespace where EDA is deployed
+data:
+    username: <base64(username)> # Base64 encoded username
+    password: <base64(password or token)> # Base64 encoded password/token
+```
 
-    EOF
-    ```
+///
+/// tab | `kubectl apply` command
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: your-creds # A unique name
+    namespace: eda-system # The Kubernetes namespace where EDA is deployed
+data:
+    username: <base64(username)> # Base64 encoded username
+    password: <base64(password/token)> # Base64 encoded password/token
+
+EOF
+```
+
+///
 
 - Provide a unique name in the `name` field. This should match the **Authentication Secret Reference** in the registry resource.
 - Provide the `namespace` where Nokia EDA is deployed
