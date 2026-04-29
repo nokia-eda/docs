@@ -14,8 +14,8 @@ It provides the following advantages and capabilities:
 * The use of the common ML2 plugins used by enterprise applications and VNFs like OVS, OVS-DPDK and SR-IOV.
 * Support for multiple operational modes, (See also [Operational Modes](#operational-modes)).
   * OpenStack-managed: Automatic provisioning of the fabric based on where the virtual machines need the connectivity.
-  * EDA-managed: Support advanced workflows directly through EDA, including for VNF use cases with features like QoS, ACLs, and BGP PE-CE.
-* Interconnectivity between different cloud environments, allowing for flexible network configurations.
+  * EDA-managed: Support advanced use cases directly through EDA, including for VNF use cases with features like QoS, ACLs, and BGP PE-CE.
+* Interconnectivity between different cloud environments, allowing for flexible network configurations through EDA-managed mode.
 
 ## Supported Versions
 
@@ -73,9 +73,22 @@ network type as part of network creation.
 
 ///
 
-In Openstack managed mode only layer 2 `BridgeDomains` are defined in EDA. Layer 3 connectivity such as routing and floating ips
+/// details | Layer 3 suport
+    type: warning
+
+/// tab | RHOSP 17.1 (OVS)
+In Openstack managed mode only layer 2 `BridgeDomains` are defined in EDA. Layer 3 connectivity with OVS as the backing driver,such as routing and floating ips
 is however supported through the usual OpenStack routing implementation. These layer 3 capabilities are then not supported by the fabric, but purely
 software defined.
+
+///
+/// tab | RHOSO 18.0 (OVN)
+Layer 3 OVN functionality is not supported together with the EDA Connect OpenStack driver. For layer 3 functionality use the EDA-managed mode, together with routing in the fabric.
+
+///
+
+///
+
 
 #### EDA managed networks
 

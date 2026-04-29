@@ -16,11 +16,12 @@ This plugin focuses on automating fabric configuration for overlay and VLAN segm
 * Automatic provisioning of the fabric based on the configured NSX VLAN segments.
 * Automatic provisioning of the fabric based on NSX Host Transport Node and Host Switch Profile. The plugin will facilitate the communication between the hypervisors on these overlay segments. EDA will not be involved in the actual overlay traffic in this case.
 * Automatic provisioning of the fabric based on NSX Edge Node Transport VLANs.
-* CMS-managed and EDA-managed integration modes (See also [Operational Modes](#operational-modes))
+* CMS-managed and EDA-managed integration modes (See also [Operational Modes](#operational-modes)).
 
 ### Supported Versions
 
 * VMware NSX 4.2
+* VMware NSX 9.0
 
 ## Architecture
 
@@ -124,7 +125,7 @@ The plugin supports the following operational modes:
 
 ### Heartbeat
 
-The plugin implements a heartbeat mechanism, polling Connect at a regular interval (configured by `heartbeatInterval`). This ensures the plugin's health and timely processing of actionable events from Connect.
+The plugin implements a heartbeat mechanism, polling Connect at a regular interval (configured by `heartbeatIntervalSeconds`). This ensures the plugin's health and timely processing of actionable events from Connect.
 
 ### Operator Initiated Audit
 

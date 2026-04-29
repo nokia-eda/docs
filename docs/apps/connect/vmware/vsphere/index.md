@@ -11,14 +11,15 @@ It provides the following capabilities:
 * The use of the common distributed vSwitches and port groups for both regular virtual machine NICs as well as SR-IOV use cases.
 * Support for both untagged and single vlan port groups.
 * Automatic provisioning of the fabric based on where the virtual machines need the connectivity.
-* Support advanced workflows through EDA, including for VNF use cases with features like QoS, ACLs, and BGP PE-CE ([EDA Managed](#operational-modes))
+* Support advanced use cases through EDA, including for VNF use cases with features like QoS, ACLs, and BGP PE-CE ([EDA Managed](#operational-modes)).
 * Interconnectivity between different cloud environments, allowing for flexible network configurations.
-* LAG/LACP interfaces
-* Audits
+* LAG/LACP interfaces.
+* Audits.
 
 ### Supported Versions
 
 * VMware vSphere 8
+* VMWARE vSphere 9.0
 
 
 ## Architecture
@@ -102,7 +103,7 @@ You can switch between EDA-managed and VMware-managed mode at any time. You can 
 When switching between the two available modes, connectivity will be temporarily disrupted while the plugin reconfigures the resources in EDA.
 ///
 
-#### Using the `VmwareEDAManagedBridgeDomain` custom resource
+#### Using the VmwareEDAManagedBridgeDomain custom resource
 
 To use the EDA-managed mode through the `VmwareEDAManagedBridgeDomain` custom resource follow these steps:
 
@@ -161,7 +162,7 @@ When the plugin is started, the following actions are taken by the plugin:
 
 ### Heartbeat
 
-The plugin implements a heartbeat mechanism, polling Connect at a regular interval (configured by `heartbeatInterval`). This ensures the plugin's health and timely processing of actionable events from Connect.
+The plugin implements a heartbeat mechanism, polling Connect at a regular interval (configured by `heartbeatIntervalSeconds`). This ensures the plugin's health and timely processing of actionable events from Connect.
 
 ### Operator Initiated Audit
 

@@ -198,3 +198,16 @@ After successful installation and verification, proceed to:
 * Configure Connect Network Definitions (CNDs) if needed
 * Review the [Kubernetes Plugin documentation](../index.md) for usage and operational modes
 
+## Upgrade
+
+During an EDA upgrade, take the following into account:
+
+Before upgrading, bring down the EDA Connect Kubernetes plugin to avoid any changes during the upgrade.
+
+```bash
+kubectl scale deployment/<connect-k8s-deloyment-name> --replicas=0 -n <k8s-plugin-controller-namesapce>
+```
+
+Follow the instructions in the [Nokia EDA Upgrade Guide](../../../../software-install/upgrades/index.md) to upgrade EDA. 
+
+To make sure all changes to the Kubernetes environment are applied, run an Audit from EDA on the Kubernetes plugin (See [Audit](../../audit.md) for more information).

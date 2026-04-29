@@ -13,7 +13,7 @@ Key capabilities include:
 * Support for VLAN Basic and Advanced Networking subnets
 * Support for VPC breakout subnets (VLAN-based)
 * Basic workflows managed completely through Prism Central ([Prism Managed Mode](#operational-modes))
-* Advanced workflows managed through EDA ([EDA Managed Mode](#operational-modes))
+* Advanced use cases managed through EDA ([EDA Managed Mode](#operational-modes))
 * Interconnectivity between different cloud environments through EDA
 
 Currently not supported:
