@@ -10,15 +10,15 @@ Clone the playground repository to your tools-system.
 git clone https://github.com/nokia-eda/playground && cd playground 
 ```
 
-### Installing additional tools
+### Installing tools
 
-Download additional tools that can be used during the installation.
+Download the CLI tools that the installation process relies on.
 
 ```bash
 make download-tools
 ```
 
-As a result of this command, the `kind`, `kubectl`, `kpt`, and `yq` utilities will be installed in the `./tools` directory.
+As a result of this command, the `kind`, `edactl`, `kubectl`, `k9s`, `kpt`, and `yq` utilities will be installed in the `./tools` directory.
 
 ### Obtaining the Nokia EDA packages
 
