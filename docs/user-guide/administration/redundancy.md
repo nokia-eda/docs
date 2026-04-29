@@ -42,6 +42,7 @@ Git redundancy
     The Git servers are defined in the `.spec.git.servers` context of the `EngineConfig` CR. Whenever a change occurs in the system, the active ConfigEngine asynchronously pushes changes to all Git servers, and from there, any other ConfigEngine can start with the same content via the same Git servers.
 
 Cluster redundancy
+
 :   In a true geo-redundant environment, multiple Nokia EDA deployments are running in different locations, where one deployment is designated the active, and the other deployment is designated as standby. Both deployments must have the same Git servers configured so they have access to the same data.
 
     An operator must define the members of a geo-redundant cluster, where each member is a standalone Nokia EDA deployment configured to be part of a cluster. It takes two members to form a cluster, with manual intervention currently required for switchovers to occur. For details, see [Switching the active deployment](redundancy.md#).
@@ -220,6 +221,7 @@ To update the configuration so there is only a standalone member, `us-west-1`, t
 ### Migrating to the new Git server in the active cluster in standalone mode <span id="migrate-new-git-server-active-cluster-standalone_mode"></span>
 
 - Nokia recommends that you use the southbound interface for georedundancy configuration (port 51201).
+
 - If the deployment has multiple active systems, that is, separate standalone systems, each system should point to a different set of Git servers.
 
 #### Procedure

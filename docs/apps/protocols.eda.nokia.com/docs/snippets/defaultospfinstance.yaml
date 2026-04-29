@@ -1,0 +1,10 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: DefaultOSPFInstance
+metadata:
+  name: fabric-ospfv3-ipv4
+  namespace: eda
+spec:
+  addressFamily: IPv4Unicast
+  enabled: true
+  maxECMP: 64
+  version: OSPFv3

@@ -1,0 +1,109 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: dnsclients.siteinfo.eda.nokia.com
+spec:
+  group: siteinfo.eda.nokia.com
+  names:
+    kind: DNSClient
+    listKind: DNSClientList
+    plural: dnsclients
+    singular: dnsclient
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: DNSClient is the Schema for the dnsclients API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DNSClientSpec allows for configuring DNS clients.
+            properties:
+              routerKind:
+                description: the Kind of the router used to reach the DNS servers.
+                enum:
+                - ManagementRouter
+                - DefaultRouter
+                - Router
+                type: string
+              routerSelectors:
+                description: Selects router resources based on the specified Kind.
+                items:
+                  type: string
+                type: array
+              routers:
+                description: Router(s) to deploy the DNS client on and to reach the
+                  DNS servers.
+                items:
+                  type: string
+                type: array
+              searchList:
+                description: A list of domains to use as the search list.
+                items:
+                  type: string
+                maxItems: 1
+                type: array
+              servers:
+                description: A list of DNS servers, each entry in the list can either
+                  be an IP address or an FQDN.
+                items:
+                  type: string
+                maxItems: 3
+                minItems: 1
+                type: array
+            required:
+            - routerKind
+            - servers
+            type: object
+          status:
+            description: DNSClientStatus defines the observed state of DNSClient
+            properties:
+              health:
+                description: Indicates the health score of the DNSClient.
+                format: int32
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              nodes:
+                description: List of nodes this resource has been applied to.
+                items:
+                  type: string
+                type: array
+              operationalState:
+                description: Operational state of the DNSClient.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

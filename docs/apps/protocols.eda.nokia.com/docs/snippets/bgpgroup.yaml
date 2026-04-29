@@ -1,0 +1,14 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: BGPGroup
+metadata:
+  name: my-bgp-group
+  namespace: eda
+spec:
+  ipv4Unicast:
+    enabled: true
+  ipv6Unicast:
+    enabled: true
+  localAS:
+    autonomousSystem: 100
+  peerAS:
+    autonomousSystem: 100

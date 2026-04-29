@@ -1,0 +1,136 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: mpls
+spec:
+  appInfo:
+    categories:
+      - "networking"
+    documentation: mpls/docs
+  author: nokia
+  dependencies:
+    - file:
+        path: utils
+    - file:
+        path: common
+    - file:
+        path: routing/api/v1alpha1/pysrc
+    - file:
+        path: routing/api/v1/pysrc
+    - file:
+        path: routingpolicies/api/v1/pysrc
+    - file:
+        path: mpls/api
+    - file:
+        path: mpls/intents
+    - file:
+        path: mpls/alarms/pysrc
+    - file:
+        path: mpls/api/v1alpha1/pysrc
+  description: MPLS
+  group: mpls.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/mpls:v6.999.0
+  supportedCoreVersions:
+    - "v5.0"
+  title: MPLS
+  version: v1alpha1
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        path: mpls/crds/mpls.eda.nokia.com_defaultldprouters.yaml
+        schema: mpls/openapiv3/eda_oas_mpls.eda.nokia.com_defaultldprouters.json
+        ui:
+          category: MPLS
+          name: Default LDP Routers
+          icon: Router
+    - crd:
+        path: mpls/crds/mpls.eda.nokia.com_ldprouterstates.yaml
+        schema: mpls/openapiv3/eda_oas_mpls.eda.nokia.com_ldprouterstates.json
+        api:
+          expose: none
+    - crd:
+        api:
+          expose: none
+        path: mpls/crds/mpls.eda.nokia.com_defaultldprouterdeployments.yaml
+        schema: mpls/openapiv3/eda_oas_mpls.eda.nokia.com_defaultldprouterdeployments.json
+    - crd:
+        api:
+          expose: readWrite
+        path: mpls/crds/mpls.eda.nokia.com_defaultldpinterfaces.yaml
+        schema: mpls/openapiv3/eda_oas_mpls.eda.nokia.com_defaultldpinterfaces.json
+        ui:
+          category: MPLS
+          name: Default LDP Interfaces
+          icon: Interface
+    - crd:
+        path: mpls/crds/mpls.eda.nokia.com_ldpinterfacestates.yaml
+        schema: mpls/openapiv3/eda_oas_mpls.eda.nokia.com_ldpinterfacestates.json
+        api:
+          expose: none
+    - crd:
+        api:
+          expose: readWrite
+        path: mpls/crds/mpls.eda.nokia.com_labelblocks.yaml
+        schema: mpls/openapiv3/eda_oas_mpls.eda.nokia.com_labelblocks.json
+        ui:
+          category: MPLS
+          name: Label Blocks
+          icon: Label
+    - crd:
+        api:
+          expose: none
+        path: mpls/crds/mpls.eda.nokia.com_labelblockdeployments.yaml
+        schema: mpls/openapiv3/eda_oas_mpls.eda.nokia.com_labelblockdeployments.json
+    - cr:
+        path: mpls/resources/edalabelblock.yaml
+    - script:
+        path: mpls/intents/defaultldpinterface/defaultldpinterface_intent.py
+        type: config
+        trigger:
+          kind: DefaultLDPInterface
+    - script:
+        path: mpls/intents/ldpinterfacestate/ldpinterfacestate_intent.py
+        type: state
+        trigger:
+          kind: LDPInterfaceState
+    - script:
+        path: mpls/intents/defaultldprouter/defaultldprouter_intent.py
+        type: config
+        trigger:
+          kind: DefaultLDPRouter
+    - script:
+        path: mpls/intents/ldprouterstate/ldprouterstate_intent.py
+        type: state
+        trigger:
+          kind: LDPRouterState
+    - script:
+        path: mpls/intents/defaultldprouterdeployment/defaultldprouterdeployment_intent.py
+        type: config
+        trigger:
+          kind: DefaultLDPRouterDeployment
+    - script:
+        path: mpls/intents/labelblock/labelblock_intent.py
+        type: config
+        trigger:
+          kind: LabelBlock
+    - script:
+        path: mpls/intents/labelblockdeployment/labelblockdeployment_intent.py
+        type: config
+        trigger:
+          kind: LabelBlockDeployment
+    - cr:
+        path: mpls/alarms/alarms.yaml
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"

@@ -1,0 +1,8 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: CheckDefaultBgpPeers
+metadata:
+  name: checkdefaultbgppeers-workflow
+  namespace: eda
+spec:
+  nodeSelectors:
+    - eda.nokia.com/role = leaf

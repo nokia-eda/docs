@@ -1,0 +1,169 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: volumeoverlays.components.eda.nokia.com
+spec:
+  group: components.eda.nokia.com
+  names:
+    kind: VolumeOverlay
+    listKind: VolumeOverlayList
+    plural: volumeoverlays
+    singular: volumeoverlay
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: VolumeOverlay is the Schema for volumeoverlays
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VolumeOverlaySpec defines the desired state of VolumeOverlay
+            properties:
+              enabled:
+                description: Enable or disable the generation of the status of this
+                  overlay
+                type: boolean
+              topology:
+                description: Reference to the topology that this overlay is extending.
+                properties:
+                  group:
+                    description: The group of the application which published the
+                      topology this overlay is extending.
+                    type: string
+                  name:
+                    description: The name of the resource which published the topology
+                      this overlay is extending.
+                    type: string
+                  version:
+                    description: The version of the application which published the
+                      topology this overlay is extending.
+                    type: string
+                required:
+                - group
+                - name
+                - version
+                type: object
+              uiDescription:
+                description: A description of the overlay to expose in the UI
+                type: string
+              uiDescriptionKey:
+                description: The translation key for the description of the overlay
+                  to expose in the UI
+                type: string
+              uiName:
+                description: The name of the overlay to expose in the UI
+                type: string
+              uiNameKey:
+                description: The translation key for the name of the overlay to expose
+                  in the UI
+                type: string
+            required:
+            - enabled
+            - topology
+            type: object
+          status:
+            description: VolumeOverlayStatus defines the observed state of VolumeOverlay
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: VolumeOverlay is the Schema for volumeoverlays
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VolumeOverlaySpec defines the desired state of VolumeOverlay
+            properties:
+              enabled:
+                description: Enable or disable the generation of the status of this
+                  overlay
+                type: boolean
+              topology:
+                description: Reference to the topology that this overlay is extending.
+                properties:
+                  group:
+                    description: The group of the application which published the
+                      topology this overlay is extending.
+                    type: string
+                  name:
+                    description: The name of the resource which published the topology
+                      this overlay is extending.
+                    type: string
+                  version:
+                    description: The version of the application which published the
+                      topology this overlay is extending.
+                    type: string
+                required:
+                - group
+                - name
+                - version
+                type: object
+              uiDescription:
+                description: A description of the overlay to expose in the UI
+                type: string
+              uiDescriptionKey:
+                description: The translation key for the description of the overlay
+                  to expose in the UI
+                type: string
+              uiName:
+                description: The name of the overlay to expose in the UI
+                type: string
+              uiNameKey:
+                description: The translation key for the name of the overlay to expose
+                  in the UI
+                type: string
+            required:
+            - enabled
+            - topology
+            type: object
+          status:
+            description: VolumeOverlayStatus defines the observed state of VolumeOverlay
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

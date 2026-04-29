@@ -1,8 +1,6 @@
 # Apps
 
-## Overview
-
-Almost everything in Nokia Event-Driven Automation (EDA) is considered an Application (App), including all the Apps that were installed during the [Getting Started - Install step](../getting-started/installation-process.md#apps). Apps extend the functionality of Nokia EDA by exposing custom resources to the Nokia EDA API and MicroPython code that will be executed by Nokia EDA whenever such a custom resource is manipulated either by a user or another App. Some apps deploy controller pods into the Nokia EDA Kubernetes cluster for integrating with other systems.
+Almost everything in Nokia Event-Driven Automation (EDA) is considered an Application, including all the Apps that were installed during the [Getting Started - Install step](../getting-started/installation-process.md#apps). Apps extend the functionality of Nokia EDA by exposing custom resources to the Nokia EDA API and MicroPython code that will be executed by Nokia EDA whenever such a custom resource is manipulated either by a user or another App. Some apps deploy controller pods into the Nokia EDA Kubernetes cluster for integrating with other systems.
 
 ## Nokia EDA Store
 

@@ -1,0 +1,151 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultospfareas.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: DefaultOSPFArea
+    listKind: DefaultOSPFAreaList
+    plural: defaultospfareas
+    singular: defaultospfarea
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: DefaultOSPFArea is the Schema for the defaultospfareas API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultOSPFAreaSpec defines the desired state of DefaultOSPFArea
+            properties:
+              areaId:
+                default: 0.0.0.0
+                description: Area ID. 32-bit in the dotted-quad notation (e.g., "0.0.0.0").
+                format: ipv4
+                pattern: ^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$
+                type: string
+              areaType:
+                default: Normal
+                description: Area type. Normal is assumed if not specified.
+                enum:
+                - Normal
+                - Stub
+                - NSSA
+                type: string
+            required:
+            - areaId
+            type: object
+          status:
+            description: DefaultOSPFAreaStatus defines the observed state of DefaultOSPFArea
+            properties:
+              health:
+                description: Indicates the health score of the OSPF area.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              numActiveInterfaces:
+                description: The number of active interfaces in the OSPF area.
+                type: integer
+              numNeighbors:
+                description: The number of discovered neighbors in the OSPF area.
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: DefaultOSPFArea is the Schema for the defaultospfareas API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultOSPFAreaSpec defines the desired state of DefaultOSPFArea
+            properties:
+              areaID:
+                default: 0.0.0.0
+                description: Area ID. 32-bit in the dotted-quad notation (e.g., "0.0.0.0").
+                format: ipv4
+                pattern: ^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$
+                type: string
+              areaType:
+                default: Normal
+                description: Area type. Normal is assumed if not specified.
+                enum:
+                - Normal
+                - Stub
+                - NSSA
+                type: string
+            required:
+            - areaID
+            type: object
+          status:
+            description: DefaultOSPFAreaStatus defines the observed state of DefaultOSPFArea
+            properties:
+              health:
+                description: Indicates the health score of the OSPF area.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              numActiveInterfaces:
+                description: The number of active interfaces in the OSPF area.
+                type: integer
+              numNeighbors:
+                description: The number of discovered neighbors in the OSPF area.
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

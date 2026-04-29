@@ -88,7 +88,7 @@ The following agents currently exist:
 | Alarms | Root-cause analysis for alarms.| "Diagnose alarm InterfaceDown-leaf-1" or "What just happened ?"|
 | Query | Executes NQL → EQL translations. | “Can you show the subinterface names and their corresponding operational down reasons on `leaf-1`?” |
 | Resources | Looks up network resources and their attributes. | “Is my fabric healthy ?” |
-| NetOps | Runs network related operations | "Ping leaf-1 from leaf-2 | 
+| NetOps | Runs network related operations | "Ping leaf-1 from leaf-2 |
 | Charts | Converts data queries into dashlets. | “Build a donut chart showing active alarms by severity.” |
 
 ### Model selection options

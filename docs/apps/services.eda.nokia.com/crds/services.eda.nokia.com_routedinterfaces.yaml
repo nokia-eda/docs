@@ -1,0 +1,931 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: routedinterfaces.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: RoutedInterface
+    listKind: RoutedInterfaceList
+    plural: routedinterfaces
+    singular: routedinterface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.ipMtu
+      name: MTU
+      type: string
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChange
+      name: LastChange
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: RoutedInterface is the Schema for the routedinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The RoutedInterface enables the configuration and management
+              of Layer 3 interfaces for routing traffic between different networks.
+              This resource allows for specifying an underlying Interface and Router,
+              configuring VLAN IDs, and setting the IP MTU. It also supports the learning
+              of unsolicited ARPs, defining both IPv4 and IPv6 addresses, and enabling
+              unnumbered interfaces. Advanced features such as BFD configuration,
+              Proxy ARP/ND, and ARP timeout settings are included to ensure robust
+              and efficient routing.
+            properties:
+              arpTimeout:
+                default: 14400
+                description: Duration of time that dynamic ARP entries remain in the
+                  ARP cache before they expire.
+                format: int32
+                type: integer
+              bfd:
+                description: Enables BFD on the RoutedInterface.
+                properties:
+                  desiredMinTransmitInt:
+                    default: 1000000
+                    description: The minimum interval in microseconds between transmission
+                      of BFD control packets.
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down.
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables Biforward Detection.
+                    type: boolean
+                  minEchoReceiveInterval:
+                    default: 0
+                    description: The minimum interval between echo packets the local
+                      node can receive.
+                    maximum: 100000000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceive:
+                    default: 1000000
+                    description: The minimum interval in microseconds between received
+                      BFD control packets that this system should support.
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - enabled
+                type: object
+              description:
+                description: The description of the RoutedInterface.
+                type: string
+              egress:
+                description: Manages actions on traffic at Egress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicy:
+                    description: List of QoS Egress policy references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              hostRoutePopulate:
+                description: Configures host route population based on ARP/ND entries.
+                properties:
+                  dynamic:
+                    description: Create host routes out of dynamic ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                  evpn:
+                    description: Create host routes out of EVPN learned ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                  static:
+                    description: Create host routes out of static ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                type: object
+              ingress:
+                description: Manages actions on traffic at Ingress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicy:
+                    description: List of QoS Ingress policy references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              interface:
+                description: Reference to an Interface to use for attachment.
+                type: string
+              ipMTU:
+                default: 1500
+                description: IP MTU for the RoutedInterface.
+                maximum: 9486
+                minimum: 1280
+                type: integer
+              ipv4Addresses:
+                description: List of IPv4 addresses in IP/mask form, e.g., 192.168.0.1/24.
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              ipv4Parameters:
+                description: Configures parameters specific to IPv4 address family
+                  on the interface.
+                properties:
+                  directedBroadcast:
+                    description: Allow receiving and forwarding of directed broadcast
+                      packets. Enabled when set to true.
+                    type: boolean
+                type: object
+              ipv6Addresses:
+                description: List of IPv6 addresses in IP/mask form, e.g., fc00::1/120.
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              ipv6RouterAdvertisement:
+                description: Manages IPV6 Router Advertisement parameters.
+                properties:
+                  currentHopLimit:
+                    default: 64
+                    description: The current hop limit to advertise in the router
+                      advertisement messages.
+                    format: int32
+                    maximum: 255
+                    minimum: 0
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enable or disable IPv6 router advertisements.
+                    type: boolean
+                  ipMTU:
+                    description: The IP MTU to advertise in the router advertisement
+                      messages.
+                    format: int32
+                    maximum: 9486
+                    minimum: 1280
+                    type: integer
+                  managedConfigurationFlag:
+                    default: false
+                    description: Enable DHCPv6 for address configuration (M-bit).
+                    type: boolean
+                  maxAdvertisementInterval:
+                    default: 600
+                    description: Maximum time between router advertisements (in seconds).
+                    format: int32
+                    maximum: 1800
+                    minimum: 4
+                    type: integer
+                  minAdvertisementInterval:
+                    default: 200
+                    description: Minimum time between router advertisements (in seconds).
+                    format: int32
+                    maximum: 1350
+                    minimum: 3
+                    type: integer
+                  otherConfigurationFlag:
+                    default: false
+                    description: Enable DHCPv6 for other configuration (O-bit).
+                    type: boolean
+                  prefixes:
+                    description: IPv6 prefixes to advertise in router advertisements.
+                    items:
+                      description: IPv6Prefix defines the configuration for an IPv6
+                        prefix advertisement.
+                      properties:
+                        autonomousFlag:
+                          default: true
+                          description: When this is set in the prefix information
+                            option hosts can use the prefix for stateless address
+                            autoconfiguration (SLAAC).
+                          type: boolean
+                        onLinkFlag:
+                          default: true
+                          description: When this is set in the prefix information
+                            option hosts can use the prefix for on-link determination.
+                          type: boolean
+                        preferredLifetime:
+                          default: 604800
+                          description: The length of time in seconds (relative to
+                            the time the packet is sent) that addresses generated
+                            from the prefix via stateless address autoconfiguration
+                            remain preferred.
+                          format: int32
+                          maximum: 4294967295
+                          minimum: 0
+                          type: integer
+                        prefix:
+                          description: An IPv6 global unicast address prefix.
+                          type: string
+                        validLifetime:
+                          default: 2592000
+                          description: The length of time in seconds (relative to
+                            the time the packet is sent) that the prefix is valid
+                            for the purpose of on-link determination.
+                          format: int32
+                          maximum: 4294967295
+                          minimum: 0
+                          type: integer
+                      required:
+                      - prefix
+                      type: object
+                    type: array
+                  reachableTime:
+                    default: 0
+                    description: Time in milliseconds for Neighbor Unreachability
+                      Detection.
+                    format: int32
+                    maximum: 3600000
+                    minimum: 0
+                    type: integer
+                  retransmitTime:
+                    default: 0
+                    description: Time in milliseconds between retransmitted NS messages.
+                    format: int32
+                    maximum: 1800000
+                    minimum: 0
+                    type: integer
+                  routerLifetime:
+                    default: 1800
+                    description: Router lifetime in seconds for default gateway.
+                    format: int32
+                    maximum: 9000
+                    minimum: 0
+                    type: integer
+                required:
+                - currentHopLimit
+                - enabled
+                - managedConfigurationFlag
+                - maxAdvertisementInterval
+                - minAdvertisementInterval
+                - otherConfigurationFlag
+                - retransmitTime
+                - routerLifetime
+                type: object
+              l3ProxyARPND:
+                description: L3 Proxy ARP and ND configuration.
+                properties:
+                  proxyARP:
+                    default: false
+                    description: Select whether Proxy ARP should be enabled.
+                    type: boolean
+                  proxyND:
+                    default: false
+                    description: Select whether Proxy ND should be enabled.
+                    type: boolean
+                type: object
+              learnUnsolicited:
+                default: NONE
+                description: Enable or disable learning of unsolicited ARPs.
+                enum:
+                - BOTH
+                - GLOBAL
+                - LINK-LOCAL
+                - NONE
+                type: string
+              router:
+                description: Reference to a Router.
+                type: string
+              unnumbered:
+                description: Enables the use of unnumbered interfaces on the IRBInterface.  If
+                  IPv6 is specified, no IP address are configured on the sub-interface
+                  and only the link local address will be used.  If any IP addresses
+                  are specified for either IPv4 or IPv6 that will take precedence
+                  and IPs will be assigned to the interfaces. (Deprecated, Use IPv6RouterAdvertisement)
+                enum:
+                - IPV6
+                type: string
+              vlanID:
+                default: pool
+                description: Single value between 1-4094 support, ranges supported
+                  in the format x-y,x-y, or the special keyword null, any, untagged
+                  or pool for auto allocation.
+                type: string
+              vlanPool:
+                default: vlan-pool
+                description: Reference to a VLAN pool to use for allocations.
+                type: string
+            required:
+            - interface
+            - router
+            type: object
+          status:
+            description: RoutedInterfaceStatus defines the observed state of RoutedInterface
+            properties:
+              health:
+                description: Indicates the health score of the RoutedInterface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              interfaces:
+                description: Sub-interface status within the RoutedInterface.
+                items:
+                  properties:
+                    enabled:
+                      description: The administrative status of the SubInterface.
+                      type: boolean
+                    interface:
+                      description: Normalized interface name.
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource.
+                      type: string
+                    lastChange:
+                      description: Indicates when this SubInterface last changed state.
+                      type: string
+                    node:
+                      description: Reference to Node object.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name.
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node.
+                      type: string
+                    operationalState:
+                      description: Indicates the current operational state of the
+                        SubInterface.
+                      type: string
+                    subInterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN.
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface.
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the RoutedInterface.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .spec.ipMtu
+      name: MTU
+      type: string
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChangeTime
+      name: LastChangeTime
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: RoutedInterface is the Schema for the routedinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The RoutedInterface enables the configuration and management
+              of Layer 3 interfaces for routing traffic between different networks.
+              This resource allows for specifying an underlying Interface and Router,
+              configuring VLAN IDs, and setting the IP MTU. It also supports the learning
+              of unsolicited ARPs, defining both IPv4 and IPv6 addresses, and enabling
+              unnumbered interfaces. Advanced features such as BFD configuration,
+              Proxy ARP/ND, and ARP timeout settings are included to ensure robust
+              and efficient routing.
+            properties:
+              bfd:
+                description: Enables BFD on the RoutedInterface.
+                properties:
+                  desiredMinTransmitIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between transmission
+                      of BFD control packets.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down.
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables Biforward Detection.
+                    type: boolean
+                  requiredMinEchoReceiveIntMs:
+                    default: 0
+                    description: The minimum interval between echo packets the local
+                      node can receive.
+                    maximum: 100000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceiveIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between received
+                      BFD control packets that this system should support.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - enabled
+                type: object
+              description:
+                description: The description of the RoutedInterface.
+                type: string
+              egress:
+                description: Manages actions on traffic at Egress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicies:
+                    description: List of QoS Egress policy references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              hostRoutePopulate:
+                description: Configures host route population based on ARP/ND entries.
+                properties:
+                  dynamic:
+                    description: Create host routes out of dynamic ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                  evpn:
+                    description: Create host routes out of EVPN learned ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                  static:
+                    description: Create host routes out of static ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                type: object
+              ingress:
+                description: Manages actions on traffic at Ingress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicies:
+                    description: List of QoS Ingress policy references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              interface:
+                description: Reference to an Interface to use for attachment.
+                type: string
+              ipMTU:
+                default: 1500
+                description: IP MTU for the RoutedInterface.
+                maximum: 9486
+                minimum: 1280
+                type: integer
+              ipv4:
+                description: IPv4 parameters that are not applicable to IPv6.
+                properties:
+                  arpTimeoutSeconds:
+                    default: 14400
+                    description: Duration of time that dynamic ARP entries remain
+                      in the ARP cache before they expire.
+                    format: int32
+                    minimum: 0
+                    type: integer
+                  directedBroadcast:
+                    description: Allow receiving and forwarding of directed broadcast
+                      packets. Enabled when set to true.
+                    type: boolean
+                  learnUnsolicitedARP:
+                    default: Disabled
+                    description: Enable or disable learning of unsolicited ARPs.
+                    enum:
+                    - Enabled
+                    - Disabled
+                    type: string
+                type: object
+              ipv4Addresses:
+                description: List of IPv4 addresses in IP/mask form, e.g., 192.168.0.1/24.
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              ipv6:
+                description: IPv6 parameters that are not applicable to IPv4.
+                properties:
+                  learnUnsolicitedNA:
+                    default: Disabled
+                    description: Enable or disable learning of unsolicited Neighbor
+                      Advertisements.
+                    enum:
+                    - All
+                    - Global
+                    - LinkLocal
+                    - Disabled
+                    type: string
+                  routerAdvertisement:
+                    description: Manages IPv6 Router Advertisement parameters.
+                    properties:
+                      currentHopLimit:
+                        default: 64
+                        description: The current hop limit to advertise in the router
+                          advertisement messages.
+                        format: int32
+                        maximum: 255
+                        minimum: 0
+                        type: integer
+                      enabled:
+                        default: false
+                        description: Enable or disable IPv6 router advertisements.
+                        type: boolean
+                      ipMTU:
+                        description: The IP MTU to advertise in the router advertisement
+                          messages.
+                        format: int32
+                        maximum: 9486
+                        minimum: 1280
+                        type: integer
+                      managedConfigurationFlag:
+                        default: false
+                        description: Enable DHCPv6 for address configuration (M-bit).
+                        type: boolean
+                      maxAdvertisementIntervalSeconds:
+                        default: 600
+                        description: Maximum time between router advertisements (in
+                          seconds).
+                        format: int32
+                        maximum: 1800
+                        minimum: 4
+                        type: integer
+                      minAdvertisementIntervalSeconds:
+                        default: 200
+                        description: Minimum time between router advertisements (in
+                          seconds).
+                        format: int32
+                        maximum: 1350
+                        minimum: 3
+                        type: integer
+                      otherConfigurationFlag:
+                        default: false
+                        description: Enable DHCPv6 for other configuration (O-bit).
+                        type: boolean
+                      prefixes:
+                        description: IPv6 prefixes to advertise in router advertisements.
+                        items:
+                          description: IPv6Prefix defines the configuration for an
+                            IPv6 prefix advertisement.
+                          properties:
+                            autonomousFlag:
+                              default: true
+                              description: When this is set in the prefix information
+                                option hosts can use the prefix for stateless address
+                                autoconfiguration (SLAAC).
+                              type: boolean
+                            onLinkFlag:
+                              default: true
+                              description: When this is set in the prefix information
+                                option hosts can use the prefix for on-link determination.
+                              type: boolean
+                            preferredLifetimeSeconds:
+                              default: 604800
+                              description: The length of time in seconds (relative
+                                to the time the packet is sent) that addresses generated
+                                from the prefix via stateless address autoconfiguration
+                                remain preferred.
+                              format: int32
+                              maximum: 4294967295
+                              minimum: 0
+                              type: integer
+                            prefix:
+                              description: An IPv6 global unicast address prefix.
+                              type: string
+                            validLifetimeSeconds:
+                              default: 2592000
+                              description: The length of time in seconds (relative
+                                to the time the packet is sent) that the prefix is
+                                valid for the purpose of on-link determination.
+                              format: int32
+                              maximum: 4294967295
+                              minimum: 0
+                              type: integer
+                          required:
+                          - prefix
+                          type: object
+                        type: array
+                      reachableTimeMs:
+                        default: 0
+                        description: Time in milliseconds for Neighbor Unreachability
+                          Detection.
+                        format: int32
+                        maximum: 3600000
+                        minimum: 0
+                        type: integer
+                      retransmitTimeMs:
+                        default: 0
+                        description: Time in milliseconds between retransmitted NS
+                          messages.
+                        format: int32
+                        maximum: 1800000
+                        minimum: 0
+                        type: integer
+                      routerLifetimeSeconds:
+                        default: 1800
+                        description: Router lifetime in seconds for default gateway.
+                        format: int32
+                        maximum: 9000
+                        minimum: 0
+                        type: integer
+                    required:
+                    - currentHopLimit
+                    - enabled
+                    - managedConfigurationFlag
+                    - maxAdvertisementIntervalSeconds
+                    - minAdvertisementIntervalSeconds
+                    - otherConfigurationFlag
+                    - retransmitTimeMs
+                    - routerLifetimeSeconds
+                    type: object
+                type: object
+              ipv6Addresses:
+                description: List of IPv6 addresses in IP/mask form, e.g., fc00::1/120.
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              l3ProxyARPND:
+                description: L3 Proxy ARP and ND configuration.
+                properties:
+                  proxyARP:
+                    default: false
+                    description: Select whether Proxy ARP should be enabled.
+                    type: boolean
+                  proxyND:
+                    default: false
+                    description: Select whether Proxy ND should be enabled.
+                    type: boolean
+                type: object
+              router:
+                description: Reference to a Router.
+                type: string
+              vlanID:
+                default: pool
+                description: Single value between 1-4094 support, ranges supported
+                  in the format x-y,x-y, or the special keyword null, any, untagged
+                  or pool for auto allocation.
+                type: string
+              vlanPool:
+                default: vlan-pool
+                description: Reference to a VLAN pool to use for allocations.
+                type: string
+            required:
+            - interface
+            - router
+            type: object
+          status:
+            description: RoutedInterfaceStatus defines the observed state of RoutedInterface
+            properties:
+              health:
+                description: Indicates the health score of the RoutedInterface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the RoutedInterface.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              subinterfaces:
+                description: Sub-interface status within the RoutedInterface.
+                items:
+                  properties:
+                    enabled:
+                      description: The administrative status of the SubInterface.
+                      type: boolean
+                    interface:
+                      description: Normalized interface name.
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource.
+                      type: string
+                    lastChangeTime:
+                      description: Indicates when this SubInterface last changed state.
+                      type: string
+                    node:
+                      description: Reference to Node object.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name.
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node.
+                      type: string
+                    operationalState:
+                      description: Indicates the current operational state of the
+                        SubInterface.
+                      enum:
+                      - Up
+                      - Down
+                      - Degraded
+                      - Unknown
+                      type: string
+                    subinterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN.
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface.
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

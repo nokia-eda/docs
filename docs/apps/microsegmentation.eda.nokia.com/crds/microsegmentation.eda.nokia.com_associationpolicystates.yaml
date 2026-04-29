@@ -1,0 +1,220 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: associationpolicystates.microsegmentation.eda.nokia.com
+spec:
+  group: microsegmentation.eda.nokia.com
+  names:
+    kind: AssociationPolicyState
+    listKind: AssociationPolicyStateList
+    plural: associationpolicystates
+    singular: associationpolicystate
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AssociationPolicyState is the Schema for the associationpolicystates
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              AssociationPolicyStateSpec defines the resolved state of an AssociationPolicy:
+              for each GroupTag, per scope, the assigned tag ID, nodes, and resolved router/bridgeDomain
+              with interface details (node, nodeInterfaceName).
+            properties:
+              groupTags:
+                description: GroupTags holds the resolved association state per GroupTag.
+                items:
+                  description: AssociationPolicyGroupTagStateEntry is the resolved
+                    state for one GroupTag across scopes.
+                  properties:
+                    name:
+                      description: Name is the GroupTag name.
+                      type: string
+                    scopes:
+                      description: Scopes holds the resolved state per scope (e.g.
+                        vnet name).
+                      items:
+                        description: AssociationPolicyGroupTagScopeState is the resolved
+                          state for one GroupTag in one scope.
+                        properties:
+                          nodes:
+                            description: Nodes holds per-node resolved state (routers
+                              and bridge domains).
+                            items:
+                              description: 'AssociationPolicyNodeStateEntry is the
+                                resolved state for one node: nodeName, routers, bridgeDomains.'
+                              properties:
+                                bridgeDomains:
+                                  description: BridgeDomains holds the resolved bridge
+                                    domain(s) on this node with bridge interfaces
+                                    and VLANs.
+                                  items:
+                                    description: AssociationPolicyBridgeDomainStateEntry
+                                      is the resolved bridge domain state with interface
+                                      details.
+                                    properties:
+                                      bridgeDomainName:
+                                        description: BridgeDomainName is the bridge
+                                          domain name.
+                                        type: string
+                                      bridgeInterfaces:
+                                        description: BridgeInterfaces lists bridge
+                                          interfaces with node and nodeInterfaceName.
+                                        items:
+                                          description: GroupTagInterfaceRef references
+                                            an interface by interface name and resource
+                                            name (status only).
+                                          properties:
+                                            interface:
+                                              type: string
+                                            resource:
+                                              type: string
+                                          required:
+                                          - interface
+                                          - resource
+                                          type: object
+                                        type: array
+                                      vlans:
+                                        description: VLANs lists VLANs with node and
+                                          nodeInterfaceName.
+                                        items:
+                                          description: GroupTagInterfaceRef references
+                                            an interface by interface name and resource
+                                            name (status only).
+                                          properties:
+                                            interface:
+                                              type: string
+                                            resource:
+                                              type: string
+                                          required:
+                                          - interface
+                                          - resource
+                                          type: object
+                                        type: array
+                                    required:
+                                    - bridgeDomainName
+                                    type: object
+                                  type: array
+                                nodeName:
+                                  description: NodeName is the node name.
+                                  type: string
+                                routers:
+                                  description: Routers holds the resolved router(s)
+                                    on this node with routed/IRB interfaces and static
+                                    routes.
+                                  items:
+                                    description: AssociationPolicyRouterStateEntry
+                                      is the resolved router state with interface
+                                      details.
+                                    properties:
+                                      irbInterfaces:
+                                        description: IRBInterfaces lists IRB interfaces
+                                          with node and nodeInterfaceName.
+                                        items:
+                                          description: GroupTagInterfaceRef references
+                                            an interface by interface name and resource
+                                            name (status only).
+                                          properties:
+                                            interface:
+                                              type: string
+                                            resource:
+                                              type: string
+                                          required:
+                                          - interface
+                                          - resource
+                                          type: object
+                                        type: array
+                                      routedInterfaces:
+                                        description: RoutedInterfaces lists routed
+                                          interfaces with node and nodeInterfaceName.
+                                        items:
+                                          description: GroupTagInterfaceRef references
+                                            an interface by interface name and resource
+                                            name (status only).
+                                          properties:
+                                            interface:
+                                              type: string
+                                            resource:
+                                              type: string
+                                          required:
+                                          - interface
+                                          - resource
+                                          type: object
+                                        type: array
+                                      routerName:
+                                        description: RouterName is the router name.
+                                        type: string
+                                      staticRoutes:
+                                        description: StaticRoutes lists static routes
+                                          with node and prefix.
+                                        items:
+                                          description: GroupTagStaticRouteRef references
+                                            a static route by prefixes and resource
+                                            name (status only).
+                                          properties:
+                                            prefixes:
+                                              items:
+                                                type: string
+                                              type: array
+                                            resource:
+                                              type: string
+                                          required:
+                                          - resource
+                                          type: object
+                                        type: array
+                                    required:
+                                    - routerName
+                                    type: object
+                                  type: array
+                              required:
+                              - nodeName
+                              type: object
+                            type: array
+                          scopeName:
+                            description: ScopeName identifies the service scope (e.g.
+                              vnet1, vnet2).
+                            type: string
+                          tag:
+                            description: Tag is the GroupTagID assigned for this scope.
+                            type: integer
+                        required:
+                        - scopeName
+                        - tag
+                        type: object
+                      type: array
+                  required:
+                  - name
+                  type: object
+                type: array
+            type: object
+          status:
+            description: AssociationPolicyStateStatus defines the observed state of
+              AssociationPolicyState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

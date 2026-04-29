@@ -1,0 +1,518 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: protocols
+spec:
+  group: protocols.eda.nokia.com
+  version: v2
+  title: Protocols
+  description: |
+    This application provides resources related to routing protocols for various Network Operating Systems.
+  image: ghcr.io/nokia-eda/apps/protocols:v6.999.0
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  gitPathPrefix: /
+  author: Nokia
+  appInfo:
+    documentation: protocols/docs
+    categories:
+      - "networking"
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  supportedCoreVersions:
+    - "v5.0"
+  components:
+    - view:
+        path: protocols/ui/defaultbgppeer_dashboard.json
+        ui:
+          category: Underlay Routing
+          name: Default BGP Peers
+    - view:
+        path: protocols/ui/defaultbgpgroup_dashboard.json
+        ui:
+          category: Underlay Routing
+          name: Default BGP Groups
+    - view:
+        path: protocols/ui/defaultroutereflector_dashboard.json
+        ui:
+          category: Underlay Routing
+          name: Default Route Reflectors
+    - view:
+        path: protocols/ui/defaultroutereflectorclient_dashboard.json
+        ui:
+          category: Underlay Routing
+          name: Default Route Reflector Clients
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_defaultbgpgroups.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultbgpgroups.json
+        ui:
+          category: Underlay Routing
+          name: Default BGP Groups
+          icon: LogicalObjectGroup
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/defaultbgpgroup/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_defaultbgpgroupdeployments.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultbgpgroupdeployments.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/defaultbgpgroupdeployment/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_defaultbgppeers.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultbgppeers.json
+        ui:
+          category: Underlay Routing
+          name: Default BGP Peers
+          icon: Protocol
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/defaultbgppeer/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_defaultstaticroutes.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultstaticroutes.json
+        ui:
+          category: Underlay Routing
+          name: Default Static Routes
+          icon: RoutesManaged
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/defaultstaticroute/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_defaultaggregateroutes.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultaggregateroutes.json
+        ui:
+          category: Underlay Routing
+          name: Default Aggregate Routes
+          icon: GroupCircle
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/defaultaggregateroute/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_defaultroutereflectors.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultroutereflectors.json
+        ui:
+          category: Underlay Routing
+          name: Default Route Reflectors
+          icon: PathSingleVirtual
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/defaultroutereflector/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_defaultroutereflectorclients.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultroutereflectorclients.json
+        ui:
+          category: Underlay Routing
+          name: Default Route Reflector Clients
+          icon: Protocol
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/defaultroutereflectorclient/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_bgpgroups.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_bgpgroups.json
+        ui:
+          category: Virtual Networks
+          name: BGP Groups
+          icon: LogicalObjectGroup
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/bgpgroup/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_bgpgroupdeployments.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_bgpgroupdeployments.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/bgpgroupdeployment/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_bgpgroupstates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_bgpgroupstates.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/bgpgroupstate/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_bgppeers.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_bgppeers.json
+        ui:
+          category: Virtual Networks
+          name: BGP Peers
+          icon: Protocol
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/bgppeer/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_staticroutes.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_staticroutes.json
+        ui:
+          category: Virtual Networks
+          name: Static Routes
+          icon: RoutesManaged
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/staticroute/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_aggregateroutes.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_aggregateroutes.json
+        ui:
+          category: Virtual Networks
+          name: Aggregate Routes
+          icon: GroupCircle
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/aggregateroute/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_bgppeerstates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_bgppeerstates.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/bgppeerstate/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_routereflectors.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_routereflectors.json
+        ui:
+          category: Virtual Networks
+          name: Route Reflectors
+          icon: PathSingleVirtual
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/routereflector/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_routereflectorclients.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_routereflectorclients.json
+        ui:
+          category: Virtual Networks
+          name: Route Reflector Clients
+          icon: Protocol
+        api:
+          expose: readWrite
+        conversionScript: protocols/intents/routereflectorclient/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_routereflectorstates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_routereflectorstates.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/routereflectorstate/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_routereflectorclientstates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_routereflectorclientstates.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/routereflectorclientstate/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_defaultospfinstances.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultospfinstances.json
+        ui:
+          category: Underlay Routing
+          name: Default OSPF Instances
+          icon: Path
+        conversionScript: protocols/intents/defaultospfinstance/conversion_v2.py
+    - crd:
+        api:
+          expose: none
+        path: protocols/crds/protocols.eda.nokia.com_defaultospfinstancedeployments.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultospfinstancedeployments.json
+        conversionScript: protocols/intents/defaultospfinstancedeployment/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_defaultospfareas.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultospfareas.json
+        ui:
+          category: Underlay Routing
+          name: Default OSPF Areas
+          icon: Network
+        conversionScript: protocols/intents/defaultospfarea/conversion_v2.py
+    - crd:
+        api:
+          expose: none
+        path: protocols/crds/protocols.eda.nokia.com_defaultospfareadeployments.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultospfareadeployments.json
+        conversionScript: protocols/intents/defaultospfareadeployment/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_defaultospfinterfaces.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultospfinterfaces.json
+        ui:
+          category: Underlay Routing
+          name: Default OSPF Interfaces
+          icon: Interface
+        conversionScript: protocols/intents/defaultospfinterface/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_ospfinstances.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_ospfinstances.json
+        ui:
+          category: Virtual Networks
+          name: OSPF Instances
+          icon: Path
+        conversionScript: protocols/intents/ospfinstance/conversion_v2.py
+    - crd:
+        api:
+          expose: none
+        path: protocols/crds/protocols.eda.nokia.com_ospfinstancedeployments.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_ospfinstancedeployments.json
+        conversionScript: protocols/intents/ospfinstancedeployment/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_ospfareas.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_ospfareas.json
+        ui:
+          category: Virtual Networks
+          name: OSPF Areas
+          icon: Network
+        conversionScript: protocols/intents/ospfarea/conversion_v2.py
+    - crd:
+        api:
+          expose: none
+        path: protocols/crds/protocols.eda.nokia.com_ospfareadeployments.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_ospfareadeployments.json
+        conversionScript: protocols/intents/ospfareadeployment/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_ospfinterfaces.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_ospfinterfaces.json
+        ui:
+          category: Virtual Networks
+          name: OSPF Interfaces
+          icon: Interface
+        conversionScript: protocols/intents/ospfinterface/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_ospfareastates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_ospfareastates.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/ospfareastate/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_ospfinstancestates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_ospfinstancestates.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/ospfinstancestate/conversion_v2.py
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_ospfinterfacestates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_ospfinterfacestates.json
+        api:
+          expose: none
+        conversionScript: protocols/intents/ospfinterfacestate/conversion_v2.py
+    - script:
+        path: protocols/intents/defaultbgpgroup/defaultbgpgroup_intent.py
+        type: config
+        trigger:
+          kind: DefaultBGPGroup
+    - script:
+        path: protocols/intents/defaultbgpgroupdeployment/defaultbgpgroupdeployment_intent.py
+        type: config
+        trigger:
+          kind: DefaultBGPGroupDeployment
+    - script:
+        path: protocols/intents/defaultbgppeer/defaultbgppeer_intent.py
+        type: config
+        trigger:
+          kind: DefaultBGPPeer
+    - script:
+        path: protocols/intents/defaultstaticroute/defaultstaticroute_intent.py
+        type: config
+        trigger:
+          kind: DefaultStaticRoute
+    - script:
+        path: protocols/intents/defaultaggregateroute/defaultaggregateroute_intent.py
+        type: config
+        trigger:
+          kind: DefaultAggregateRoute
+    - script:
+        path: protocols/intents/defaultroutereflector/defaultroutereflector_intent.py
+        type: config
+        trigger:
+          kind: DefaultRouteReflector
+    - script:
+        path: protocols/intents/defaultroutereflectorclient/defaultroutereflectorclient_intent.py
+        type: config
+        trigger:
+          kind: DefaultRouteReflectorClient
+    - script:
+        path: protocols/intents/bgpgroup/bgpgroup_intent.py
+        type: config
+        trigger:
+          kind: BGPGroup
+    - script:
+        path: protocols/intents/bgpgroupdeployment/bgpgroupdeployment_intent.py
+        type: config
+        trigger:
+          kind: BGPGroupDeployment
+    - script:
+        path: protocols/intents/bgpgroupstate/bgpgroupstate_intent.py
+        type: state
+        trigger:
+          kind: BGPGroupState
+    - script:
+        path: protocols/intents/bgppeer/bgppeer_intent.py
+        type: config
+        trigger:
+          kind: BGPPeer
+    - script:
+        path: protocols/intents/bgppeerstate/bgppeerstate_intent.py
+        type: state
+        trigger:
+          kind: BGPPeerState
+    - script:
+        path: protocols/intents/staticroute/staticroute_intent.py
+        type: config
+        trigger:
+          kind: StaticRoute
+    - script:
+        path: protocols/intents/aggregateroute/aggregateroute_intent.py
+        type: config
+        trigger:
+          kind: AggregateRoute
+    - script:
+        path: protocols/intents/routereflector/routereflector_intent.py
+        type: config
+        trigger:
+          kind: RouteReflector
+    - script:
+        path: protocols/intents/routereflectorclient/routereflectorclient_intent.py
+        type: config
+        trigger:
+          kind: RouteReflectorClient
+    - script:
+        path: protocols/intents/routereflectorstate/routereflectorstate_intent.py
+        type: state
+        trigger:
+          kind: RouteReflectorState
+    - script:
+        path: protocols/intents/routereflectorclientstate/routereflectorclientstate_intent.py
+        type: state
+        trigger:
+          kind: RouteReflectorClientState
+    - script:
+        path: protocols/intents/defaultospfarea/defaultospfarea_intent.py
+        type: config
+        trigger:
+          kind: DefaultOSPFArea
+    - script:
+        path: protocols/intents/defaultospfareadeployment/defaultospfareadeployment_intent.py
+        type: config
+        trigger:
+          kind: DefaultOSPFAreaDeployment
+    - script:
+        path: protocols/intents/defaultospfinstance/defaultospfinstance_intent.py
+        type: config
+        trigger:
+          kind: DefaultOSPFInstance
+    - script:
+        path: protocols/intents/defaultospfinstancedeployment/defaultospfinstancedeployment_intent.py
+        type: config
+        trigger:
+          kind: DefaultOSPFInstanceDeployment
+    - script:
+        path: protocols/intents/defaultospfinterface/defaultospfinterface_intent.py
+        type: config
+        trigger:
+          kind: DefaultOSPFInterface
+    - script:
+        path: protocols/intents/ospfarea/ospfarea_intent.py
+        type: config
+        trigger:
+          kind: OSPFArea
+    - script:
+        path: protocols/intents/ospfareadeployment/ospfareadeployment_intent.py
+        type: config
+        trigger:
+          kind: OSPFAreaDeployment
+    - script:
+        path: protocols/intents/ospfinstance/ospfinstance_intent.py
+        type: config
+        trigger:
+          kind: OSPFInstance
+    - script:
+        path: protocols/intents/ospfinstancedeployment/ospfinstancedeployment_intent.py
+        type: config
+        trigger:
+          kind: OSPFInstanceDeployment
+    - script:
+        path: protocols/intents/ospfinterface/ospfinterface_intent.py
+        type: config
+        trigger:
+          kind: OSPFInterface
+    - script:
+        path: protocols/intents/ospfareastate/ospfareastate_intent.py
+        type: state
+        trigger:
+          kind: OSPFAreaState
+    - script:
+        path: protocols/intents/ospfinstancestate/ospfinstancestate_intent.py
+        type: state
+        trigger:
+          kind: OSPFInstanceState
+    - script:
+        path: protocols/intents/ospfinterfacestate/ospfinterfacestate_intent.py
+        type: state
+        trigger:
+          kind: OSPFInterfaceState
+    - cr:
+        path: protocols/workflows/analyzealarm/core_v1_flowdefinition.yaml
+    - crd:
+        namespaced: true
+        path: protocols/crds/protocols.eda.nokia.com_analyzealarms.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_analyzealarms.json
+        workflow: true
+    - cr:
+        path: protocols/workflows/checkdefaultbgppeers/core_v1_flowdefinition.yaml
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: protocols/crds/protocols.eda.nokia.com_checkdefaultbgppeerss.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_checkdefaultbgppeerss.json
+        workflow: true
+        conversionScript: protocols/intents/checkdefaultbgppeers/conversion_v2.py
+        ui:
+          name: Check BGP
+    - cr:
+        path: protocols/alarms/alarms.yaml
+  dependencies:
+    - file:
+        path: protocols/intents
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: interfaces/
+    - file:
+        path: routing/
+    - file:
+        path: routingpolicies/
+    - file:
+        path: services/
+    - file:
+        path: security/
+    - file:
+        path: protocols/api
+    - file:
+        path: protocols/alarms/pysrc
+    - file:
+        path: protocols/api/v2/pysrc
+  requirements:
+    - appId: interfaces.eda.nokia.com
+      version: v6.999.0
+    - appId: routing.eda.nokia.com
+      version: v6.999.0
+    - appId: security.eda.nokia.com
+      version: v6.999.0

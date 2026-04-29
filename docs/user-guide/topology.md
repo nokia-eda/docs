@@ -31,10 +31,9 @@ Table: Elements of the topology diagram
 |7|Overlay badges|Used to indicate status based on current selections in the Overlay Badge(s) drop-down.|
 |8|Edge link icon|Indicates the presence of edge links (links with no remote endpoint). When selected, the information panel lists the specific endpoints for that node.|
 
-
 ## Overlays
 
-Information can be overlaid on a topology as either a state or as a badge. States shade the nodes, and links of a topology with a color corresponding to the information. For example, The Physical topology Operational Status overlay shades nodes and link green for operationally up, and red for operationally down. 
+Information can be overlaid on a topology as either a state or as a badge. States shade the nodes, and links of a topology with a color corresponding to the information. For example, The Physical topology Operational Status overlay shades nodes and link green for operationally up, and red for operationally down.
 
 More details about the significance of overlay shading are available in the **Information** panel for each node.
 
@@ -114,7 +113,7 @@ Tiers are displayed in the diagram, lowest to highest, either left-to-right or t
 
 For each grouping you can also define groups based on the presence of certain labels.
 
-For each group, you define one or more label selectors to define the group memebers. 
+For each group, you define one or more label selectors to define the group memebers.
 
 The following example groups spine nodes and leaf nodes within their tier based on the presence of the labels `eda.nokia.com/pod=topo1` and `eda.nokia.com/pod=topo2`.
 

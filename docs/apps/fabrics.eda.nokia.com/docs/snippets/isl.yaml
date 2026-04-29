@@ -1,0 +1,25 @@
+apiVersion: fabrics.eda.nokia.com/v1
+kind: ISL
+metadata:
+  name: isl-leaf1-spine2
+  namespace: eda
+spec:
+  bfd:
+    desiredMinTransmitIntMs: 1000
+    detectionMultiplier: 3
+    enabled: true
+    requiredMinEchoReceiveIntMs: 1000
+    requiredMinReceiveIntMs: 1000
+  bgp:
+    afiSAFIs:
+      - ipv4unicast
+      - l2vpnevpn
+    bgpGroup: bgpgroup-ebgp-fabric
+    enabled: true
+    localInterfaceAS: 100
+    remoteInterfaceAS: 101
+  localDefaultRouter: router-leaf1
+  localInterface: leaf1-ethernet-1-2
+  poolIPv4: ipv4-pool
+  remoteDefaultRouter: router-spine2
+  remoteInterface: spine2-ethernet-1-1

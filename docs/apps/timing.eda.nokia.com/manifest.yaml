@@ -1,0 +1,88 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: timing
+spec:
+  group: timing.eda.nokia.com
+  version: v1
+  title: Timing
+  description: |
+    This application provides underlay timing resources for various Network Operating Systems.
+  image: ghcr.io/nokia-eda/apps/timing:v6.999.0
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  gitPathPrefix: /
+  author: Nokia
+  appInfo:
+    documentation: timing/docs
+    categories:
+      - "system"
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  supportedCoreVersions:
+    - "v5.0"
+  components:
+    - crd:
+        path: timing/crds/timing.eda.nokia.com_ntpclients.yaml
+        schema: timing/openapiv3/eda_oas_timing.eda.nokia.com_ntpclients.json
+        ui:
+          category: Management
+          name: NTP Clients
+          icon: TimeLtr
+        api:
+          expose: readWrite
+        conversionScript: timing/intents/ntpclient/conversion_v1.py
+    - crd:
+        path: timing/crds/timing.eda.nokia.com_ntpclientstates.yaml
+        schema: timing/openapiv3/eda_oas_timing.eda.nokia.com_ntpclientstates.json
+        api:
+          expose: none
+        conversionScript: timing/intents/ntpclientstate/conversion_v1.py
+    - script:
+        path: timing/intents/ntpclient/ntpclient_intent.py
+        type: config
+        trigger:
+          kind: NTPClient
+    - script:
+        path: timing/intents/ntpclientstate/ntpclientstate_intent.py
+        type: state
+        trigger:
+          kind: NTPClientState
+  dependencies:
+    - file:
+        path: timing/intents
+    - file:
+        path: timing/api
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: interfaces/
+    - file:
+        path: routing/
+    - file:
+        path: services/
+    - file:
+        path: bootstrap/
+    - file:
+        path: timing/api/v1/pysrc
+  requirements:
+    - appId: interfaces.eda.nokia.com
+      version: v6.999.0
+    - appId: routing.eda.nokia.com
+      version: v6.999.0
+    - appId: services.eda.nokia.com
+      version: v6.999.0
+    - appId: bootstrap.eda.nokia.com
+      version: v6.999.0

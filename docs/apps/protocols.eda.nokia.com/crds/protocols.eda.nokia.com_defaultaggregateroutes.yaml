@@ -1,0 +1,159 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultaggregateroutes.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: DefaultAggregateRoute
+    listKind: DefaultAggregateRouteList
+    plural: defaultaggregateroutes
+    singular: defaultaggregateroute
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: DefaultAggregateRoute is the Schema for the defaultaggregateroutes
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultAggregateRoute allows the configuration of aggregate
+              routes on a DefaultRouter. It includes specifying destination prefixes,
+              the DefaultRouter, and settings for generating ICMP unreachable messages
+              or blocking route advertisement. Additionally, it configures the aggregator’s
+              IP address and ASN for efficient route management.
+            properties:
+              aggregatorASN:
+                description: Specifies the aggregator's ASN.
+                format: int32
+                type: integer
+              aggregatorIP:
+                description: Specifies the aggregator's IP address.
+                type: string
+              defaultRouter:
+                description: Reference to a Default Router on which to configure the
+                  aggregate routes.  If no Nodes are provided then the aggregate routes
+                  will be provisioned on all Nodes on which the Router is provisioned.
+                type: string
+              generateICMP:
+                description: When set to true the router generares ICMP unreachable
+                  messages for packets matching the aggregate route (and not a more
+                  specific route).
+                type: boolean
+              prefixes:
+                description: List of destination prefixes for the aggregate routes.
+                items:
+                  type: string
+                type: array
+              summaryOnly:
+                description: When set to true the router blocks the advertisement
+                  of all contributing routes of this aggregate route in dynamic protocols
+                  such as BGP.
+                type: boolean
+            required:
+            - defaultRouter
+            - prefixes
+            type: object
+          status:
+            description: DefaultAggregateRouteStatus defines the observed state of
+              DefaultAggregateRoute
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: DefaultAggregateRoute is the Schema for the defaultaggregateroutes
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultAggregateRoute allows the configuration of aggregate
+              routes on a DefaultRouter. It includes specifying destination prefixes,
+              the DefaultRouter, and settings for generating ICMP unreachable messages
+              or blocking route advertisement. Additionally, it configures the aggregator’s
+              IP address and ASN for efficient route management.
+            properties:
+              aggregatorASN:
+                description: Specifies the aggregator's ASN.
+                format: int32
+                type: integer
+              aggregatorIP:
+                description: Specifies the aggregator's IP address.
+                type: string
+              defaultRouter:
+                description: Reference to a Default Router on which to configure the
+                  aggregate routes.  If no Nodes are provided then the aggregate routes
+                  will be provisioned on all Nodes on which the Router is provisioned.
+                type: string
+              generateICMP:
+                description: When set to true the router generares ICMP unreachable
+                  messages for packets matching the aggregate route (and not a more
+                  specific route).
+                type: boolean
+              prefixes:
+                description: List of destination prefixes for the aggregate routes.
+                items:
+                  type: string
+                type: array
+              summaryOnly:
+                description: When set to true the router blocks the advertisement
+                  of all contributing routes of this aggregate route in dynamic protocols
+                  such as BGP.
+                type: boolean
+            required:
+            - defaultRouter
+            - prefixes
+            type: object
+          status:
+            description: DefaultAggregateRouteStatus defines the observed state of
+              DefaultAggregateRoute
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

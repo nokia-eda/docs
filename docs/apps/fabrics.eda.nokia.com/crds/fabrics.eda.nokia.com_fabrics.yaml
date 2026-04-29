@@ -1,0 +1,1414 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: fabrics.fabrics.eda.nokia.com
+spec:
+  group: fabrics.eda.nokia.com
+  names:
+    kind: Fabric
+    listKind: FabricList
+    plural: fabrics
+    singular: fabric
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: Fabric is the Schema for the fabrics API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The Fabric defines the desired state of a Fabric resource,
+              enabling the automation and management of data center network fabrics.
+              It includes configurations for IP address allocation pools, network
+              topology roles (Leafs, Spines, SuperSpines, BorderLeafs), inter-switch
+              links, and network protocols (underlay and overlay). The specification
+              allows for detailed control over routing strategies, including ASN allocations
+              for BGP-based protocols, and supports advanced features like BFD.
+            properties:
+              borderLeafs:
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.  Used when eBGP is configured
+                      as an underlay protocol. This reference will take precedence
+                      over the spec.underlayProtocol.asnPool.
+                    type: string
+                  borderLeafNodeSelectors:
+                    description: Label selector used to select Toponodes to configure
+                      as Borderleaf nodes.
+                    items:
+                      type: string
+                    type: array
+                  routeLeaking:
+                    description: Route leaking controlled by routing policies in and
+                      out of the DefaultRouters on each node.  If specified under
+                      the Leafs, Spines, SuperSpines, or BorderLeafs those will take
+                      precedence.
+                    properties:
+                      exportPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter.
+                        type: string
+                      importPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter.
+                        type: string
+                    required:
+                    - exportPolicy
+                    - importPolicy
+                    type: object
+                  systemPoolIPv4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV4.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                  systemPoolIPv6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV6.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                type: object
+              fabricSelectors:
+                description: Selects Fabric resources when connecting multiple Fabrics
+                  together. Only one Fabric needs the selector, typically the upper
+                  layer (e.g., Superspine) selecting the lower layer (e.g., a pod
+                  fabric of leafs and spines). This helps build complete Fabrics in
+                  smaller instances of the Fabric resource. This instance selecting
+                  other fabrics must also select the InterSwitchLinks connecting itself
+                  to the selected Fabrics.
+                items:
+                  type: string
+                type: array
+              interSwitchLinks:
+                properties:
+                  ipMTU:
+                    description: Sets the IP MTU for the DefaultInterface.
+                    maximum: 9486
+                    minimum: 1280
+                    type: integer
+                  linkSelectors:
+                    description: Selects TopoLinks to include in this Fabric, creating
+                      an ISL resource if both Nodes in the TopoLink are part of this
+                      Fabric or a selected Fabric.
+                    items:
+                      type: string
+                    type: array
+                  poolIPv4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to DefaultInterfaces which are members
+                      of the ISLs.  Both IPv4 and IPv6 pools can be configured simultaneously
+                      for dual-stack DefaultInterfaces.
+                    type: string
+                  poolIPv6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to DefaultInterfaces which are members
+                      of the ISLs.  Both IPv4 and IPv6 pools can be configured simultaneously
+                      for dual-stack DefaultInterfaces.
+                    type: string
+                  qos:
+                    properties:
+                      egressPolicy:
+                        type: string
+                      ingressPolicy:
+                        type: string
+                    type: object
+                  unnumbered:
+                    description: Enables unnumbered interfaces on the ISL; for IPv6,
+                      only link-local addresses are used unless a PoolIPV6 is also
+                      specified.  DefaultInterfaces in the ISL are added to the DefaultBGPPeer
+                      dynamic neighbor list when using an eBGP underlay.
+                    enum:
+                    - IPv6
+                    type: string
+                  vlanID:
+                    description: Configures the provided VLAN on the DefaultInterfaces
+                      which are members of the ISLs.
+                    maximum: 4094
+                    minimum: 1
+                    type: integer
+                type: object
+              leafs:
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.  Used when eBGP is configured
+                      as an underlay protocol. This reference will take precedence
+                      over the spec.underlayProtocol.asnPool.
+                    type: string
+                  leafNodeSelectors:
+                    description: Label selector used to select Toponodes to configure
+                      as Leaf nodes.
+                    items:
+                      type: string
+                    type: array
+                  routeLeaking:
+                    description: Route leaking controlled by routing policies in and
+                      out of the DefaultRouters on each node.  If specified under
+                      the Leafs, Spines, SuperSpines, or BorderLeafs those will take
+                      precedence.
+                    properties:
+                      exportPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter.
+                        type: string
+                      importPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter.
+                        type: string
+                    required:
+                    - exportPolicy
+                    - importPolicy
+                    type: object
+                  systemPoolIPv4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV4.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                  systemPoolIPv6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV6.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                type: object
+              overlayProtocol:
+                description: Set the overlay protocol used
+                properties:
+                  bfd:
+                    description: Enable BFD on overlay protocol
+                    properties:
+                      desiredMinTransmitIntMs:
+                        default: 1000
+                        description: The minimum interval in milliseconds between
+                          transmission of BFD control packets.
+                        maximum: 100000
+                        minimum: 10
+                        type: integer
+                      detectionMultiplier:
+                        default: 3
+                        description: The number of packets that must be missed to
+                          declare this session as down.
+                        maximum: 20
+                        minimum: 3
+                        type: integer
+                      enabled:
+                        default: false
+                        description: Enables Biforward Detection.
+                        type: boolean
+                      requiredMinEchoReceiveIntMs:
+                        default: 1000
+                        description: The minimum interval between echo packets the
+                          local node can receive.
+                        maximum: 100000
+                        minimum: 0
+                        type: integer
+                      requiredMinReceiveIntMs:
+                        default: 1000
+                        description: The minimum interval in milliseconds between
+                          received BFD control packets that this system should support.
+                        maximum: 100000
+                        minimum: 10
+                        type: integer
+                      ttl:
+                        description: Sets custom IP TTL or Hop Limit for multi-hop
+                          BFD sessions packets. Not applicable to single-hop BFD sessions.
+                        maximum: 255
+                        minimum: 2
+                        type: integer
+                    required:
+                    - enabled
+                    type: object
+                  bgp:
+                    description: Overlay specific BGP properties.
+                    properties:
+                      autonomousSystem:
+                        description: Autonomous System used for iBGP peering session,
+                          when protocol is set to IBGP providing an autonomousSystem
+                          is required.
+                        format: int32
+                        type: integer
+                      clusterID:
+                        description: Sets the cluster ID used by DefaultRouteReflectors,
+                          when protocol is set to IBGP providing a clusterID is required.
+                        type: string
+                      exportPolicies:
+                        description: Reference to a Policy, when left empty or not
+                          specified the Fabric will automatically generate a policy
+                          for the specified protocols.
+                        items:
+                          type: string
+                        type: array
+                      importPolicies:
+                        description: Reference to a Policy, when left empty or not
+                          specified the Fabric will automatically generate a policy
+                          for the specified protocols.
+                        items:
+                          type: string
+                        type: array
+                      keychain:
+                        description: Keychain to be used for authentication when overlay
+                          protocol is IBGP, ignored otherwise
+                        type: string
+                      rrClientNodeSelectors:
+                        description: Label selector used to select Toponodes to configure
+                          as DefaultRouteReflectorClients, these are typically Leaf
+                          or Borderleaf nodes.  Used on conjunction with rrNodeSelector
+                          in order to configure the DefaultBGPPeers for both the DefaultRouteReflectors
+                          and DefaultRouteReflectorClients.
+                        items:
+                          type: string
+                        type: array
+                      rrIpAddresses:
+                        description: List of route reflector IP addresses not provisioned
+                          by this instance of a Fabric resource.  Used with rrClientNodeSelector
+                          to configure the DefaultBGPPeers on the selected nodes to
+                          peer the list of external route reflector IPs.
+                        items:
+                          type: string
+                        type: array
+                      rrNodeSelectors:
+                        description: Label selector used to select Toponodes to configure
+                          as DefaultRouteReflectors, these are typically Spine, Superspine
+                          or Borderleaf nodes. Used on conjunction with rrClientNodeSelector
+                          in order to configure the DefaultBGPPeers for both the DefaultRouteReflectors
+                          and DefaultRouteReflectorClients.
+                        items:
+                          type: string
+                        type: array
+                      timers:
+                        description: Timer configurations
+                        properties:
+                          connectRetrySeconds:
+                            description: The time interval in seconds between successive
+                              attempts to establish a session with a peer.
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
+                          holdTimeSeconds:
+                            description: The hold-time interval in seconds that the
+                              router proposes to the peer in its OPEN message.
+                            maximum: 65535
+                            minimum: 0
+                            type: integer
+                          keepAliveSeconds:
+                            description: The interval in seconds between successive
+                              keepalive messages sent to the peer.
+                            maximum: 21845
+                            minimum: 0
+                            type: integer
+                          minimumAdvertisementIntervalSeconds:
+                            description: The value assigned to the MinRouteAdvertisementIntervalTimer
+                              of RFC 4271, for both EBGP and IBGP sessions.
+                            maximum: 255
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                  protocol:
+                    description: List of routing protocols to used to advertise EVPN
+                      routes for overlay services.  When EBGP is used, the BGP properties
+                      configured under the spec.underlayProtocol will be used.
+                    enum:
+                    - IBGP
+                    - EBGP
+                    type: string
+                required:
+                - protocol
+                type: object
+              routeLeaking:
+                description: Route leaking controlled by routing policies in and out
+                  of the DefaultRouters on each node.  If specified under the Leafs,
+                  Spines, SuperSpines, or BorderLeafs those will take precedence.
+                properties:
+                  exportPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route exports from the DefaultRouter.
+                    type: string
+                  importPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route imports into the DefaultRouter.
+                    type: string
+                required:
+                - exportPolicy
+                - importPolicy
+                type: object
+              spines:
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.  Used when eBGP is configured
+                      as an underlay protocol. This reference will take precedence
+                      over the spec.underlayProtocol.asnPool.
+                    type: string
+                  routeLeaking:
+                    description: Route leaking controlled by routing policies in and
+                      out of the DefaultRouters on each node.  If specified under
+                      the Leafs, Spines, SuperSpines, or BorderLeafs those will take
+                      precedence.
+                    properties:
+                      exportPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter.
+                        type: string
+                      importPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter.
+                        type: string
+                    required:
+                    - exportPolicy
+                    - importPolicy
+                    type: object
+                  spineNodeSelectors:
+                    description: Label selector used to select Toponodes to configure
+                      as Spine nodes.
+                    items:
+                      type: string
+                    type: array
+                  systemPoolIPv4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV4.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                  systemPoolIPv6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV6.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                type: object
+              superSpines:
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.  Used when eBGP is configured
+                      as an underlay protocol. This reference will take precedence
+                      over the spec.underlayProtocol.asnPool.
+                    type: string
+                  routeLeaking:
+                    description: Route leaking controlled by routing policies in and
+                      out of the DefaultRouters on each node.  If specified under
+                      the Leafs, Spines, SuperSpines, or BorderLeafs those will take
+                      precedence.
+                    properties:
+                      exportPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter.
+                        type: string
+                      importPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter.
+                        type: string
+                    required:
+                    - exportPolicy
+                    - importPolicy
+                    type: object
+                  superSpineNodeSelectors:
+                    description: Label selector used to select Toponodes to configure
+                      as Superspine nodes.
+                    items:
+                      type: string
+                    type: array
+                  systemPoolIPv4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV4.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                  systemPoolIPv6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV6.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                type: object
+              systemPoolIPv4:
+                description: Reference to an IPAllocationPool used to dynamically
+                  allocate an IPv4 address to system/lo0 interfaces.  If specified
+                  under the Leaf/Spine/Superspine/Borderleaf those will take precedence.  Both
+                  IPv4 and IPv6 pools can be configured simultaneously for dual-stack
+                  system/lo0 interfaces.
+                type: string
+              systemPoolIPv6:
+                description: Reference to an IPAllocationPool used to dynamically
+                  allocate an IPv6 address to system/lo0 interfaces.  If specified
+                  under the Leaf/Spine/Superspine/Borderleaf those will take precedence.  Both
+                  IPv4 and IPv6 pools can be configured simultaneously for dual-stack
+                  system/lo0 interfaces.
+                type: string
+              underlayProtocol:
+                description: Set the underlay protocol used
+                properties:
+                  bfd:
+                    description: Enable BFD on underlay protocol
+                    properties:
+                      desiredMinTransmitIntMs:
+                        default: 1000
+                        description: The minimum interval in milliseconds between
+                          transmission of BFD control packets.
+                        maximum: 100000
+                        minimum: 10
+                        type: integer
+                      detectionMultiplier:
+                        default: 3
+                        description: The number of packets that must be missed to
+                          declare this session as down.
+                        maximum: 20
+                        minimum: 3
+                        type: integer
+                      enabled:
+                        default: false
+                        description: Enables Biforward Detection.
+                        type: boolean
+                      requiredMinEchoReceiveIntMs:
+                        default: 1000
+                        description: The minimum interval between echo packets the
+                          local node can receive.
+                        maximum: 100000
+                        minimum: 0
+                        type: integer
+                      requiredMinReceiveIntMs:
+                        default: 1000
+                        description: The minimum interval in milliseconds between
+                          received BFD control packets that this system should support.
+                        maximum: 100000
+                        minimum: 10
+                        type: integer
+                      ttl:
+                        description: Sets custom IP TTL or Hop Limit for multi-hop
+                          BFD sessions packets. Not applicable to single-hop BFD sessions.
+                        maximum: 255
+                        minimum: 2
+                        type: integer
+                    required:
+                    - enabled
+                    type: object
+                  bgp:
+                    description: Underlay specific BGP properties.
+                    properties:
+                      asnPool:
+                        description: Reference to an IndexAllocationPool pool to use
+                          for Autonomous System Number allocations.  Used when eBGP
+                          is configured as an underlay protocol. If specified under
+                          the Leaf/Spine/Superspine/Borderleaf those will take precedence.
+                        type: string
+                      exportPolicies:
+                        description: Reference to a Policy, when left empty or not
+                          specified the Fabric will automatically generate a policy
+                          for the specified protocols.
+                        items:
+                          type: string
+                        type: array
+                      importPolicies:
+                        description: Reference to a Policy, when left empty or not
+                          specified the Fabric will automatically generate a policy
+                          for the specified protocols.
+                        items:
+                          type: string
+                        type: array
+                      keychain:
+                        description: Keychain to be used for authentication
+                        type: string
+                      timers:
+                        description: Timer configurations
+                        properties:
+                          connectRetrySeconds:
+                            description: The time interval in seconds between successive
+                              attempts to establish a session with a peer.
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
+                          holdTimeSeconds:
+                            description: The hold-time interval in seconds that the
+                              router proposes to the peer in its OPEN message.
+                            maximum: 65535
+                            minimum: 0
+                            type: integer
+                          keepAliveSeconds:
+                            description: The interval in seconds between successive
+                              keepalive messages sent to the peer.
+                            maximum: 21845
+                            minimum: 0
+                            type: integer
+                          minimumAdvertisementIntervalSeconds:
+                            description: The value assigned to the MinRouteAdvertisementIntervalTimer
+                              of RFC 4271, for both EBGP and IBGP sessions.
+                            maximum: 255
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                  ospf:
+                    description: OSPF underlay properties.
+                    properties:
+                      addressFamilies:
+                        description: Selects enabled address families for OSPFv3.
+                          If not specified, both address families will be enabled
+                          by default when OSPFv3 underlay is configured.
+                        items:
+                          enum:
+                          - IPv4Unicast
+                          - IPv6Unicast
+                          type: string
+                        type: array
+                    type: object
+                  protocols:
+                    description: List of routing protocols to used between peers of
+                      an ISL.  Multiple protocols may be listed, if so multiple protocols
+                      will be used.
+                    items:
+                      enum:
+                      - EBGP
+                      - OSPFv2
+                      - OSPFv3
+                      type: string
+                    type: array
+                required:
+                - protocols
+                type: object
+            type: object
+          status:
+            description: FabricStatus defines the observed state of Fabric
+            properties:
+              borderLeafNodes:
+                description: List of border leaf nodes in the Fabric.
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              health:
+                description: Indicates the health score of the Fabric.  The health
+                  score of the Fabric is determined by the aggregate health score
+                  of the resources emitted by the Fabric such as ISL, DefaultRouteReflectors
+                  etc.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              leafNodes:
+                description: List of leaf nodes in the Fabric.
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              operationalState:
+                description: 'Operational state of the Fabric.  The operational state
+                  of the fabric is determined by monitoring the operational state
+                  of the following resources (if applicable): DefaultRouters, ISLs.'
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              spineNodes:
+                description: List of spine nodes in the Fabric.
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              superSpineNodes:
+                description: List of super spine nodes in the Fabric.
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Fabric is the Schema for the fabrics API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The Fabric defines the desired state of a Fabric resource,
+              enabling the automation and management of data center network fabrics.
+              It includes configurations for IP address allocation pools, network
+              topology roles (Leafs, Spines, SuperSpines, BorderLeafs), inter-switch
+              links, and network protocols (underlay and overlay). The specification
+              allows for detailed control over routing strategies, including ASN allocations
+              for BGP-based protocols, and supports advanced features like BFD.
+            properties:
+              borderLeafs:
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.  Used when eBGP is configured
+                      as an underlay protocol. This reference will take precedence
+                      over the spec.underlayProtocol.asnPool.
+                    type: string
+                  borderLeafNodeSelector:
+                    description: Label selector used to select Toponodes to configure
+                      as Borderleaf nodes.
+                    items:
+                      type: string
+                    type: array
+                  routeLeaking:
+                    description: Route leaking controlled by routing policies in and
+                      out of the DefaultRouters on each node.  If specified under
+                      the Leafs, Spines, SuperSpines, or BorderLeafs those will take
+                      precedence.
+                    properties:
+                      exportPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter.
+                        type: string
+                      importPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter.
+                        type: string
+                    required:
+                    - exportPolicy
+                    - importPolicy
+                    type: object
+                  systemPoolIPV4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV4.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                  systemPoolIPV6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV6.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                type: object
+              fabricSelector:
+                description: Selects Fabric resources when connecting multiple Fabrics
+                  together. Only one Fabric needs the selector, typically the upper
+                  layer (e.g., Superspine) selecting the lower layer (e.g., a pod
+                  fabric of leafs and spines). This helps build complete Fabrics in
+                  smaller instances of the Fabric resource. This instance selecting
+                  other fabrics must also select the InterSwitchLinks connecting itself
+                  to the selected Fabrics.
+                items:
+                  type: string
+                type: array
+              interSwitchLinks:
+                properties:
+                  ipMTU:
+                    description: Sets the IP MTU for the DefaultInterface.
+                    maximum: 9486
+                    minimum: 1280
+                    type: integer
+                  linkSelector:
+                    description: Selects TopoLinks to include in this Fabric, creating
+                      an ISL resource if both Nodes in the TopoLink are part of this
+                      Fabric or a selected Fabric.
+                    items:
+                      type: string
+                    type: array
+                  poolIPV4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to DefaultInterfaces which are members
+                      of the ISLs.  Both IPv4 and IPv6 pools can be configured simultaneously
+                      for dual-stack DefaultInterfaces.
+                    type: string
+                  poolIPV6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to DefaultInterfaces which are members
+                      of the ISLs.  Both IPv4 and IPv6 pools can be configured simultaneously
+                      for dual-stack DefaultInterfaces.
+                    type: string
+                  qos:
+                    properties:
+                      egressPolicy:
+                        type: string
+                      ingressPolicy:
+                        type: string
+                    type: object
+                  unnumbered:
+                    description: Enables unnumbered interfaces on the ISL; for IPv6,
+                      only link-local addresses are used unless a PoolIPV6 is also
+                      specified.  DefaultInterfaces in the ISL are added to the DefaultBGPPeer
+                      dynamic neighbor list when using an eBGP underlay.
+                    enum:
+                    - IPV6
+                    type: string
+                  vlanID:
+                    description: Configures the provided VLAN on the DefaultInterfaces
+                      which are members of the ISLs.
+                    maximum: 4094
+                    minimum: 1
+                    type: integer
+                type: object
+              leafs:
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.  Used when eBGP is configured
+                      as an underlay protocol. This reference will take precedence
+                      over the spec.underlayProtocol.asnPool.
+                    type: string
+                  leafNodeSelector:
+                    description: Label selector used to select Toponodes to configure
+                      as Leaf nodes.
+                    items:
+                      type: string
+                    type: array
+                  routeLeaking:
+                    description: Route leaking controlled by routing policies in and
+                      out of the DefaultRouters on each node.  If specified under
+                      the Leafs, Spines, SuperSpines, or BorderLeafs those will take
+                      precedence.
+                    properties:
+                      exportPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter.
+                        type: string
+                      importPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter.
+                        type: string
+                    required:
+                    - exportPolicy
+                    - importPolicy
+                    type: object
+                  systemPoolIPV4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV4.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                  systemPoolIPV6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV6.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                type: object
+              overlayProtocol:
+                description: Set the overlay protocol used
+                properties:
+                  bfd:
+                    description: Enable BFD on overlay protocol
+                    properties:
+                      desiredMinTransmitInt:
+                        default: 1000000
+                        description: The minimum interval in microseconds between
+                          transmission of BFD control packets.
+                        maximum: 100000000
+                        minimum: 10000
+                        type: integer
+                      detectionMultiplier:
+                        default: 3
+                        description: The number of packets that must be missed to
+                          declare this session as down.
+                        maximum: 20
+                        minimum: 3
+                        type: integer
+                      enabled:
+                        default: false
+                        description: Enable Biforward Detection.
+                        type: boolean
+                      minEchoReceiveInterval:
+                        default: 1000000
+                        description: The minimum interval between echo packets the
+                          local node can receive in microseconds.
+                        maximum: 100000000
+                        minimum: 0
+                        type: integer
+                      requiredMinReceive:
+                        default: 1000000
+                        description: The minimum interval in microseconds between
+                          received BFD control packets that this system should support.
+                        maximum: 100000000
+                        minimum: 10000
+                        type: integer
+                      ttl:
+                        description: Sets custom IP TTL or Hop Limit for multi-hop
+                          BFD sessions packets. Not applicable to single-hop BFD sessions.
+                        maximum: 255
+                        minimum: 2
+                        type: integer
+                    type: object
+                  bgp:
+                    description: Overlay specific BGP properties.
+                    properties:
+                      autonomousSystem:
+                        description: Autonomous System used for iBGP peering session,
+                          when protocol is set to IBGP providing an autonomousSystem
+                          is required.
+                        format: int32
+                        type: integer
+                      clusterID:
+                        description: Sets the cluster ID used by DefaultRouteReflectors,
+                          when protocol is set to IBGP providing a clusterID is required.
+                        type: string
+                      exportPolicy:
+                        description: Reference to a Policy, when left empty or not
+                          specified the Fabric will automatically generate a policy
+                          for the specified protocols.
+                        items:
+                          type: string
+                        type: array
+                      importPolicy:
+                        description: Reference to a Policy, when left empty or not
+                          specified the Fabric will automatically generate a policy
+                          for the specified protocols.
+                        items:
+                          type: string
+                        type: array
+                      keychain:
+                        description: Keychain to be used for authentication when overlay
+                          protocol is IBGP, ignored otherwise
+                        type: string
+                      rrClientNodeSelector:
+                        description: Label selector used to select Toponodes to configure
+                          as DefaultRouteReflectorClients, these are typically Leaf
+                          or Borderleaf nodes.  Used on conjunction with rrNodeSelector
+                          in order to configure the DefaultBGPPeers for both the DefaultRouteReflectors
+                          and DefaultRouteReflectorClients.
+                        items:
+                          type: string
+                        type: array
+                      rrIPAddresses:
+                        description: List of route reflector IP addresses not provisioned
+                          by this instance of a Fabric resource.  Used with rrClientNodeSelector
+                          to configure the DefaultBGPPeers on the selected nodes to
+                          peer the list of external route reflector IPs.
+                        items:
+                          type: string
+                        type: array
+                      rrNodeSelector:
+                        description: Label selector used to select Toponodes to configure
+                          as DefaultRouteReflectors, these are typically Spine, Superspine
+                          or Borderleaf nodes. Used on conjunction with rrClientNodeSelector
+                          in order to configure the DefaultBGPPeers for both the DefaultRouteReflectors
+                          and DefaultRouteReflectorClients.
+                        items:
+                          type: string
+                        type: array
+                      timers:
+                        description: Timer configurations
+                        properties:
+                          connectRetry:
+                            description: The time interval in seconds between successive
+                              attempts to establish a session with a peer.
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
+                          holdTime:
+                            description: The hold-time interval in seconds that the
+                              router proposes to the peer in its OPEN message.
+                            maximum: 65535
+                            minimum: 0
+                            type: integer
+                          keepAlive:
+                            description: The interval in seconds between successive
+                              keepalive messages sent to the peer.
+                            maximum: 21845
+                            minimum: 0
+                            type: integer
+                          minimumAdvertisementInterval:
+                            description: The value assigned to the MinRouteAdvertisementIntervalTimer
+                              of RFC 4271, for both EBGP and IBGP sessions.
+                            maximum: 255
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                  protocol:
+                    description: List of routing protocols to used to advertise EVPN
+                      routes for overlay services.  When EBGP is used, the BGP properties
+                      configured under the spec.underlayProtocol will be used.
+                    enum:
+                    - IBGP
+                    - EBGP
+                    type: string
+                required:
+                - protocol
+                type: object
+              routeLeaking:
+                description: Route leaking controlled by routing policies in and out
+                  of the DefaultRouters on each node.  If specified under the Leafs,
+                  Spines, SuperSpines, or BorderLeafs those will take precedence.
+                properties:
+                  exportPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route exports from the DefaultRouter.
+                    type: string
+                  importPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route imports into the DefaultRouter.
+                    type: string
+                required:
+                - exportPolicy
+                - importPolicy
+                type: object
+              spines:
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.  Used when eBGP is configured
+                      as an underlay protocol. This reference will take precedence
+                      over the spec.underlayProtocol.asnPool.
+                    type: string
+                  routeLeaking:
+                    description: Route leaking controlled by routing policies in and
+                      out of the DefaultRouters on each node.  If specified under
+                      the Leafs, Spines, SuperSpines, or BorderLeafs those will take
+                      precedence.
+                    properties:
+                      exportPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter.
+                        type: string
+                      importPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter.
+                        type: string
+                    required:
+                    - exportPolicy
+                    - importPolicy
+                    type: object
+                  spineNodeSelector:
+                    description: Label selector used to select Toponodes to configure
+                      as Spine nodes.
+                    items:
+                      type: string
+                    type: array
+                  systemPoolIPV4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV4.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                  systemPoolIPV6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV6.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                type: object
+              superSpines:
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.  Used when eBGP is configured
+                      as an underlay protocol. This reference will take precedence
+                      over the spec.underlayProtocol.asnPool.
+                    type: string
+                  routeLeaking:
+                    description: Route leaking controlled by routing policies in and
+                      out of the DefaultRouters on each node.  If specified under
+                      the Leafs, Spines, SuperSpines, or BorderLeafs those will take
+                      precedence.
+                    properties:
+                      exportPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter.
+                        type: string
+                      importPolicy:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter.
+                        type: string
+                    required:
+                    - exportPolicy
+                    - importPolicy
+                    type: object
+                  superSpineNodeSelector:
+                    description: Label selector used to select Toponodes to configure
+                      as Superspine nodes.
+                    items:
+                      type: string
+                    type: array
+                  systemPoolIPV4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV4.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                  systemPoolIPV6:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv6 address to system/lo0 interfaces.  This reference
+                      will take precedence over the spec.systemPoolIPV6.  Both IPv4
+                      and IPv6 pools can be configured simultaneously for dual-stack
+                      system/lo0 interfaces.
+                    type: string
+                type: object
+              systemPoolIPV4:
+                description: Reference to an IPAllocationPool used to dynamically
+                  allocate an IPv4 address to system/lo0 interfaces.  If specified
+                  under the Leaf/Spine/Superspine/Borderleaf those will take precedence.  Both
+                  IPv4 and IPv6 pools can be configured simultaneously for dual-stack
+                  system/lo0 interfaces.
+                type: string
+              systemPoolIPV6:
+                description: Reference to an IPAllocationPool used to dynamically
+                  allocate an IPv6 address to system/lo0 interfaces.  If specified
+                  under the Leaf/Spine/Superspine/Borderleaf those will take precedence.  Both
+                  IPv4 and IPv6 pools can be configured simultaneously for dual-stack
+                  system/lo0 interfaces.
+                type: string
+              underlayProtocol:
+                description: Set the underlay protocol used
+                properties:
+                  bfd:
+                    description: Enable BFD on underlay protocol
+                    properties:
+                      desiredMinTransmitInt:
+                        default: 1000000
+                        description: The minimum interval in microseconds between
+                          transmission of BFD control packets.
+                        maximum: 100000000
+                        minimum: 10000
+                        type: integer
+                      detectionMultiplier:
+                        default: 3
+                        description: The number of packets that must be missed to
+                          declare this session as down.
+                        maximum: 20
+                        minimum: 3
+                        type: integer
+                      enabled:
+                        default: false
+                        description: Enable Biforward Detection.
+                        type: boolean
+                      minEchoReceiveInterval:
+                        default: 1000000
+                        description: The minimum interval between echo packets the
+                          local node can receive in microseconds.
+                        maximum: 100000000
+                        minimum: 0
+                        type: integer
+                      requiredMinReceive:
+                        default: 1000000
+                        description: The minimum interval in microseconds between
+                          received BFD control packets that this system should support.
+                        maximum: 100000000
+                        minimum: 10000
+                        type: integer
+                      ttl:
+                        description: Sets custom IP TTL or Hop Limit for multi-hop
+                          BFD sessions packets. Not applicable to single-hop BFD sessions.
+                        maximum: 255
+                        minimum: 2
+                        type: integer
+                    type: object
+                  bgp:
+                    description: Underlay specific BGP properties.
+                    properties:
+                      asnPool:
+                        description: Reference to an IndexAllocationPool pool to use
+                          for Autonomous System Number allocations.  Used when eBGP
+                          is configured as an underlay protocol. If specified under
+                          the Leaf/Spine/Superspine/Borderleaf those will take precedence.
+                        type: string
+                      exportPolicy:
+                        description: Reference to a Policy, when left empty or not
+                          specified the Fabric will automatically generate a policy
+                          for the specified protocols.
+                        items:
+                          type: string
+                        type: array
+                      importPolicy:
+                        description: Reference to a Policy, when left empty or not
+                          specified the Fabric will automatically generate a policy
+                          for the specified protocols.
+                        items:
+                          type: string
+                        type: array
+                      keychain:
+                        description: Keychain to be used for authentication
+                        type: string
+                      timers:
+                        description: Timer configurations
+                        properties:
+                          connectRetry:
+                            description: The time interval in seconds between successive
+                              attempts to establish a session with a peer.
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
+                          holdTime:
+                            description: The hold-time interval in seconds that the
+                              router proposes to the peer in its OPEN message.
+                            maximum: 65535
+                            minimum: 0
+                            type: integer
+                          keepAlive:
+                            description: The interval in seconds between successive
+                              keepalive messages sent to the peer.
+                            maximum: 21845
+                            minimum: 0
+                            type: integer
+                          minimumAdvertisementInterval:
+                            description: The value assigned to the MinRouteAdvertisementIntervalTimer
+                              of RFC 4271, for both EBGP and IBGP sessions.
+                            maximum: 255
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                  ospf:
+                    description: OSPF underlay properties.
+                    properties:
+                      addressFamily:
+                        description: Selects enabled address families for OSPFv3.
+                          If not specified, both address families will be enabled
+                          by default when OSPFv3 underlay is configured.
+                        items:
+                          enum:
+                          - IPV4-UNICAST
+                          - IPV6-UNICAST
+                          type: string
+                        type: array
+                    type: object
+                  protocol:
+                    description: List of routing protocols to used between peers of
+                      an ISL.  Multiple protocols may be listed, if so multiple protocols
+                      will be used.
+                    items:
+                      enum:
+                      - EBGP
+                      - OSPFv2
+                      - OSPFv3
+                      type: string
+                    type: array
+                required:
+                - protocol
+                type: object
+            type: object
+          status:
+            description: FabricStatus defines the observed state of Fabric
+            properties:
+              borderLeafNodes:
+                description: List of border leaf nodes in the Fabric.
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              health:
+                description: Indicates the health score of the Fabric.  The health
+                  score of the Fabric is determined by the aggregate health score
+                  of the resources emitted by the Fabric such as ISL, DefaultRouteReflectors
+                  etc.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              leafNodes:
+                description: List of leaf nodes in the Fabric.
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              operationalState:
+                description: 'Operational state of the Fabric.  The operational state
+                  of the fabric is determined by monitoring the operational state
+                  of the following resources (if applicable): DefaultRouters, ISLs.'
+                type: string
+              spineNodes:
+                description: List of spine nodes in the Fabric.
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              superSpineNodes:
+                description: List of super spine nodes in the Fabric.
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

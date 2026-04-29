@@ -1,0 +1,509 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: deployimages.os.eda.nokia.com
+spec:
+  group: os.eda.nokia.com
+  names:
+    kind: DeployImage
+    listKind: DeployImageList
+    plural: deployimages
+    singular: deployimage
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: DeployImage is the Schema for the deployimages API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              Upgrade / downgrade images on targets.
+              This workflow can be used directly on a target or list of targets, or with selectors to select targets through labels.
+              It also supports tranches, which are groups of targets that can be upgraded together.
+              By default a set of checks are run before and after the image change, but this can be controlled via the checks field.
+              It also supports canaries, which are upgraded before any other targets.
+            properties:
+              canaries:
+                description: |-
+                  List of node selectors to use to match canary nodes.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                  Canary nodes are upgraded before any other nodes, and are used to test images before broader roll out.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=canary"].
+                items:
+                  type: string
+                type: array
+              checks:
+                description: Configure pre and post checks.
+                properties:
+                  checks:
+                    description: |-
+                      Checks to run before (pre) and after (post) any image changes.
+                      If none are specified, a default set of checks will be run.
+                    items:
+                      enum:
+                      - Interface
+                      - DefaultBGP
+                      - PingISL
+                      - PingSystem
+                      type: string
+                    type: array
+                  force:
+                    description: Ignore result of pre and post checks, do not prompt
+                      on failure.
+                    type: boolean
+                  skip:
+                    description: Do not run any checks pre or post image change.
+                    type: boolean
+                type: object
+              drains:
+                description: Configure drains to gracefully drain traffic away from
+                  nodes before imaging.
+                properties:
+                  minimumWaitTimeSeconds:
+                    default: 60
+                    description: |-
+                      Seconds to wait before rebooting a node after it has been drained.
+                      This is used to allow time for any traffic to drain away from the node before reboot.
+                    type: integer
+                  skip:
+                    description: Do not run any drain operations. Nodes will be rebooted
+                      without attempting to gracefully drain them.
+                    type: boolean
+                type: object
+              nodeProfile:
+                description: |-
+                  Destination profile to use for imaging.
+                  This profile contains the image to deploy, and other configuration for the node.
+                type: string
+              nodeSelectors:
+                description: |-
+                  List of node selectors to select nodes to deploy images on.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes to deploy images on.
+                items:
+                  type: string
+                type: array
+              prompts:
+                description: |-
+                  Control when to prompt the user for input.
+                  If any pre or post checks fail, the user will be prompted for input, but this may be used to prompt even if they're successful.
+                items:
+                  enum:
+                  - AfterPreChecks
+                  - AfterPostChecks
+                  type: string
+                type: array
+              reconnectionTimeoutSeconds:
+                default: 600
+                description: Seconds to wait for node to come back online after reboot.
+                type: integer
+              tranches:
+                description: |-
+                  List of tranches to use for imaging.
+                  A tranche is a list of node selectors, and a name.
+                  Tranches are upgraded in order, sequentially.
+                items:
+                  properties:
+                    name:
+                      description: |-
+                        Name of the tranche.
+                        This is used to identify the tranche in the UI and in logs.
+                      type: string
+                    nodeSelectors:
+                      description: |-
+                        Node Selectors is a list of node selectors to select nodes to deploy images on in this tranche.
+                        This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                        This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+            required:
+            - nodeProfile
+            type: object
+          status:
+            description: Status of the imaging operation.
+            properties:
+              details:
+                description: Per-node image deployment details.
+                items:
+                  properties:
+                    drainedTime:
+                      description: |-
+                        The time when the node was drained.
+                        This is the time when the node was drained before the imaging operation.
+                      format: date-time
+                      type: string
+                    newNodeProfile:
+                      description: The new profile of the node.
+                      type: string
+                    newVersion:
+                      description: The new version of the node.
+                      type: string
+                    node:
+                      description: The name of the node this result is for.
+                      type: string
+                    postCheckSuccessful:
+                      description: |-
+                        Indicates if post checks were successful for this node.
+                        This is true if all post checks passed, false if any post checks failed.
+                      type: boolean
+                    preCheckSuccessful:
+                      description: |-
+                        Indicates if pre checks were successful for this node.
+                        This is true if all pre checks passed, false if any pre checks failed.
+                      type: boolean
+                    previousNodeProfile:
+                      description: |-
+                        The previous profile of the node.
+                        This is the node profile that was running before the imaging operation.
+                      type: string
+                    previousVersion:
+                      description: |-
+                        The previous version of the node.
+                        This is the version of the image that was running before the imaging operation.
+                      type: string
+                    rebootRecoveryTime:
+                      description: |-
+                        The time when the node was recovered after reboot.
+                        This is the time when the node was recovered after the imaging operation.
+                      format: date-time
+                      type: string
+                    rebootTime:
+                      description: |-
+                        The time when the node was rebooted.
+                        This is the time when the node was rebooted during the imaging operation.
+                      format: date-time
+                      type: string
+                    success:
+                      description: |-
+                        Indicates if the imaging operation was successful for this node.
+                        This is true if the imaging operation was successful, false if it failed.
+                      type: boolean
+                    undrainedTime:
+                      description: |-
+                        The time when the node was undrained.
+                        This is the time when the node was undrained after the imaging operation.
+                      format: date-time
+                      type: string
+                  type: object
+                type: array
+              firstNodeDrainedTime:
+                description: The time when the first node was drained.
+                format: date-time
+                type: string
+              firstNodeRebootedTime:
+                description: The time when the first node was rebooted.
+                format: date-time
+                type: string
+              lastNodeRebootRecoveredTime:
+                description: The time when the last node recovered post reboot.
+                format: date-time
+                type: string
+              lastNodeUndrainedTime:
+                description: The time when the last node was undrained.
+                format: date-time
+                type: string
+              result:
+                description: |-
+                  Result is the overall result of the image operation.
+                  It can be one of the following values:
+                  - "Success": All images were successfully deployed.
+                  - "Failed": No images were successfully deployed.
+                  - "PartialSuccess": Some images were successfully deployed, but not all.
+                enum:
+                - Success
+                - Failed
+                - PartialSuccess
+                type: string
+            required:
+            - result
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DeployImage is the Schema for the deployimages API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              Upgrade / downgrade images on targets.
+              This workflow can be used directly on a target or list of targets, or with selectors to select targets through labels.
+              It also supports tranches, which are groups of targets that can be upgraded together.
+              By default a set of checks are run before and after the image change, but this can be controlled via the checks field.
+              It also supports canaries, which are upgraded before any other targets.
+            properties:
+              canaries:
+                description: |-
+                  List of node selectors to use to match canary nodes.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                  Canary nodes are upgraded before any other nodes, and are used to test images before broader roll out.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=canary"].
+                items:
+                  type: string
+                type: array
+              checks:
+                description: Configure pre and post checks.
+                properties:
+                  checks:
+                    description: |-
+                      Checks to run before (pre) and after (post) any image changes.
+                      If none are specified, a default set of checks will be run.
+                    items:
+                      enum:
+                      - Interface
+                      - DefaultBGP
+                      - PingISL
+                      - PingSystem
+                      type: string
+                    type: array
+                  force:
+                    description: Ignore result of pre and post checks, do not prompt
+                      on failure.
+                    type: boolean
+                  skip:
+                    description: Do not run any checks pre or post image change.
+                    type: boolean
+                type: object
+              drains:
+                description: Configure drains to gracefully drain traffic away from
+                  nodes before imaging.
+                properties:
+                  minimumWaitTimeSeconds:
+                    default: 60
+                    description: |-
+                      Seconds to wait before rebooting a node after it has been drained.
+                      This is used to allow time for any traffic to drain away from the node before reboot.
+                    type: integer
+                  skip:
+                    description: Do not run any drain operations. Nodes will be rebooted
+                      without attempting to gracefully drain them.
+                    type: boolean
+                type: object
+              nodeProfile:
+                description: |-
+                  Destination profile to use for imaging.
+                  This profile contains the image to deploy, and other configuration for the node.
+                type: string
+              nodeSelectors:
+                description: |-
+                  List of node selectors to select nodes to deploy images on.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes to deploy images on.
+                items:
+                  type: string
+                type: array
+              prompt:
+                description: |-
+                  Control when to prompt the user for input.
+                  If any pre or post checks fail, the user will be prompted for input, but this may be used to prompt even if they're successful.
+                items:
+                  enum:
+                  - AfterPreChecks
+                  - AfterPostChecks
+                  type: string
+                type: array
+              reconnectionTimeoutSeconds:
+                default: 600
+                description: Seconds to wait for node to come back online after reboot.
+                type: integer
+              tranches:
+                description: |-
+                  List of tranches to use for imaging.
+                  A tranche is a list of node selectors, and a name.
+                  Tranches are upgraded in order, sequentially.
+                items:
+                  properties:
+                    name:
+                      description: |-
+                        Name of the tranche.
+                        This is used to identify the tranche in the UI and in logs.
+                      type: string
+                    nodeSelectors:
+                      description: |-
+                        Node Selectors is a list of node selectors to select nodes to deploy images on in this tranche.
+                        This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                        This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+            required:
+            - nodeProfile
+            type: object
+          status:
+            description: Status of the imaging operation.
+            properties:
+              details:
+                description: Per-node image deployment details.
+                items:
+                  properties:
+                    drainedTime:
+                      description: |-
+                        The time when the node was drained.
+                        This is the time when the node was drained before the imaging operation.
+                      format: date-time
+                      type: string
+                    newNodeProfile:
+                      description: The new profile of the node.
+                      type: string
+                    newVersion:
+                      description: The new version of the node.
+                      type: string
+                    node:
+                      description: The name of the node this result is for.
+                      type: string
+                    postCheckSuccessful:
+                      description: |-
+                        Indicates if post checks were successful for this node.
+                        This is true if all post checks passed, false if any post checks failed.
+                      type: boolean
+                    preCheckSuccessful:
+                      description: |-
+                        Indicates if pre checks were successful for this node.
+                        This is true if all pre checks passed, false if any pre checks failed.
+                      type: boolean
+                    previousNodeProfile:
+                      description: |-
+                        The previous profile of the node.
+                        This is the node profile that was running before the imaging operation.
+                      type: string
+                    previousVersion:
+                      description: |-
+                        The previous version of the node.
+                        This is the version of the image that was running before the imaging operation.
+                      type: string
+                    rebootRecoveryTime:
+                      description: |-
+                        The time when the node was recovered after reboot.
+                        This is the time when the node was recovered after the imaging operation.
+                      format: date-time
+                      type: string
+                    rebootTime:
+                      description: |-
+                        The time when the node was rebooted.
+                        This is the time when the node was rebooted during the imaging operation.
+                      format: date-time
+                      type: string
+                    success:
+                      description: |-
+                        Indicates if the imaging operation was successful for this node.
+                        This is true if the imaging operation was successful, false if it failed.
+                      type: boolean
+                    undrainedTime:
+                      description: |-
+                        The time when the node was undrained.
+                        This is the time when the node was undrained after the imaging operation.
+                      format: date-time
+                      type: string
+                  type: object
+                type: array
+              firstNodeDrained:
+                description: The time when the first node was drained.
+                format: date-time
+                type: string
+              firstNodeRebooted:
+                description: The time when the first node was rebooted.
+                format: date-time
+                type: string
+              lastNodeRebootRecovered:
+                description: The time when the last node recovered post reboot.
+                format: date-time
+                type: string
+              lastNodeUndrained:
+                description: The time when the last node was undrained.
+                format: date-time
+                type: string
+              result:
+                description: |-
+                  Result is the overall result of the image operation.
+                  It can be one of the following values:
+                  - "Success": All images were successfully deployed.
+                  - "Failed": No images were successfully deployed.
+                  - "PartialSuccess": Some images were successfully deployed, but not all.
+                enum:
+                - Success
+                - Failed
+                - PartialSuccess
+                type: string
+            required:
+            - result
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

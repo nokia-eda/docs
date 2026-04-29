@@ -1,0 +1,194 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: ftpservers.management.eda.nokia.com
+spec:
+  group: management.eda.nokia.com
+  names:
+    kind: FTPServer
+    listKind: FTPServerList
+    plural: ftpservers
+    singular: ftpserver
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: FTPServer is the Schema for the ftpservers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FTPServerSpec defines the desired state of FTPServer
+            properties:
+              enabled:
+                description: Enable the FTP server.
+                type: boolean
+              router:
+                description: Router to associate the server with.
+                type: string
+              routerKind:
+                description: The Kind of the router for the server.
+                enum:
+                - ManagementRouter
+                - Router
+                - DefaultRouter
+                type: string
+              routerSelectors:
+                description: Selects router resources based on the defined Kind.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+            required:
+            - enabled
+            type: object
+          status:
+            description: FTPServerStatus defines the observed state of FTPServer
+            properties:
+              downServers:
+                description: List of down FTP servers.
+                items:
+                  properties:
+                    nodes:
+                      items:
+                        properties:
+                          nodeName:
+                            type: string
+                          operatingSystem:
+                            type: string
+                        type: object
+                      type: array
+                    router:
+                      type: string
+                  type: object
+                type: array
+              health:
+                description: Health score of the FTP server.
+                type: integer
+              healthScoreReason:
+                description: Reason for the health score.
+                type: string
+              lastChangeTime:
+                description: Indicates when the FTP server last changed state.
+                type: string
+              operationalState:
+                description: Operational state of the FTP server.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: FTPServer is the Schema for the ftpservers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FTPServerSpec defines the desired state of FTPServer
+            properties:
+              enabled:
+                description: Enable the FTP server.
+                type: boolean
+              router:
+                description: Router to associate the server with.
+                type: string
+              routerKind:
+                description: The Kind of the router for the server.
+                enum:
+                - MANAGEMENTROUTER
+                - ROUTER
+                - DEFAULTROUTER
+                type: string
+              routerSelector:
+                description: Selects router resources based on the defined Kind.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+            required:
+            - enabled
+            type: object
+          status:
+            description: FTPServerStatus defines the observed state of FTPServer
+            properties:
+              downServers:
+                description: List of down FTP servers.
+                items:
+                  properties:
+                    nodes:
+                      items:
+                        properties:
+                          nodeName:
+                            type: string
+                          operatingSystem:
+                            type: string
+                        type: object
+                      type: array
+                    router:
+                      type: string
+                  type: object
+                type: array
+              health:
+                description: Health score of the FTP server.
+                type: integer
+              healthScoreReason:
+                description: Reason for the health score.
+                type: string
+              lastChange:
+                description: Indicates when the FTP server last changed state.
+                type: string
+              operationalState:
+                description: Operational state of the FTP server.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

@@ -7,6 +7,10 @@ Mkdocs-macros module
 """
 
 import posixpath
+from dataclasses import dataclass, field
+from pathlib import Path
+
+import yaml
 
 
 def _scale_to_width_percent(scale):
@@ -209,3 +213,118 @@ def define_env(env):
             image_tmpl = f'<div class="polka" style="{div_style}">{img_src}</div>'
 
         return image_tmpl
+
+    @dataclass
+    class OSVersions:
+        """Collect supported OS/vendor versions from a manifest for HTML output."""
+
+        versions: dict[str, list[str]] = field(default_factory=dict)
+
+        def add_version(self, vendor: str, version: str):
+            """Record one version string under a display vendor name."""
+            if vendor not in self.versions:
+                self.versions[vendor] = []
+            self.versions[vendor].append(version)
+
+        def format_versions(self) -> str:
+            """Return a small HTML blurb of vendors and versions, or ``N/A`` if empty."""
+            result = ""
+            for vendor, vers in self.versions.items():
+                result += f"<strong>{vendor}:</strong> {', '.join(vers)} <br/>"
+            if result == "":
+                return "N/A"
+            return result
+
+    def _get_app_file(rel_path: str) -> Path:
+        """Resolve ``rel_path`` against the current app package root (parent of ``docs/``)."""
+        base = Path(env.page.file.abs_src_path)
+
+        app_path = base.parent.parent
+        if base.parent.name == "resources":
+            # If the markdown is in the resources directory,
+            # we need to go one directory up.
+            app_path = app_path.parent
+
+        return (app_path / rel_path).resolve()
+
+    @env.macro
+    def supported_os_versions(_: str = None, manifest: str = "manifest.yaml") -> str:
+        """Return the string with the supported OSes extracted from the manifest.
+
+        Provided by its path.
+        """
+        # TODO(vanassch): remove first argument after scripts apps have adapted
+        vendor_map = {
+            "srl": "Nokia SR Linux",
+            "sros": "Nokia SR OS",
+            "eos": "Arista EOS",
+            "nxos": "Cisco NX-OS",
+        }
+        os_versions = OSVersions()
+
+        p = _get_app_file(manifest)
+        if not p.exists():
+            return f"file does not exist: {p.absolute()}"
+
+        with open(p.absolute()) as f:
+            manifest_data = yaml.safe_load(f)
+
+        endpoints = manifest_data.get("spec", {}).get("supportedEndpoints", [])
+        for entry in endpoints:
+            # entry format: "vendor:version[:extra]"
+            parts = entry.split(":")
+            if len(parts) >= 2:
+                vendor_key = parts[0]
+                version_str = ":".join(parts[1:])
+                vendor_name = vendor_map.get(vendor_key)
+                if vendor_name:
+                    os_versions.add_version(
+                        # replace * in version_str with \* to escape it in markdown
+                        # else it is interpreted as an italic symbol
+                        vendor_name,
+                        version_str.replace("*", r"\*"),
+                    )
+
+        return os_versions.format_versions()
+
+    @env.macro
+    def category(resource_plural: str, manifest: str = "manifest.yaml") -> str:
+        """Returns the UI category of an app's CRD by looking it up in its corresponding manifest file."""
+        p = _get_app_file(manifest)
+        if not p.exists():
+            return f"file does not exist: {p.absolute()}"
+
+        with open(p.absolute()) as f:
+            manifest_data = yaml.safe_load(f)
+
+        app_id = manifest_data.get("spec", {}).get("group", "")
+        components = manifest_data.get("spec", {}).get("components", [])
+
+        for c in components:
+            crd = c.get("crd", {})
+            if not crd:
+                continue
+
+            if f"{app_id}_{resource_plural}.yaml" not in crd.get("path"):
+                continue
+
+            if crd.get("workflow", False):
+                return "Workflows"
+
+            return crd.get("ui", {}).get("category", "")
+
+        return ""
+
+    @env.macro
+    def include_yaml(relative_path: str):
+        """Insert the raw text of a file under the app directory (e.g. a YAML spec)."""
+        p = _get_app_file(relative_path)
+        if not p.exists():
+            return f"file does not exist: {p.absolute()}"
+
+        return p.read_text(encoding="utf-8")
+
+    @env.macro
+    def include_snippet(file_path: str):
+        """Insert ``docs/snippets/<file_path>.yaml`` from the app (path segment lowercased)."""
+        return include_yaml(f"docs/snippets/{file_path.lower()}.yaml")

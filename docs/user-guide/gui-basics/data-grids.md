@@ -129,7 +129,7 @@ From the column menu, you can select from the following options:
 
 By default, the Nokia EDA UI displays user-friendly versions of the field names and values.
 
-For EQL-based data grids such as alarms and resources, you can switch to the raw API field names and values. This is useful when using the UI as reference for API calls and EQL queries. 
+For EQL-based data grids such as alarms and resources, you can switch to the raw API field names and values. This is useful when using the UI as reference for API calls and EQL queries.
 
 To switch to raw values, select **Show raw values** from the **Table settings &amp; actions** menu.
 

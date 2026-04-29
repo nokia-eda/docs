@@ -1,0 +1,90 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: filters.logging.eda.nokia.com
+spec:
+  group: logging.eda.nokia.com
+  names:
+    kind: Filter
+    listKind: FilterList
+    plural: filters
+    singular: filter
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Filter is the Schema for the filters API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FilterSpec defines the desired state of Filter
+            properties:
+              contains:
+                description: Text to find in the MSG property of messages to capture
+                  from the stream
+                type: string
+              facilities:
+                description: List of facilities to source messages from
+                items:
+                  properties:
+                    facility:
+                      description: Facility to source message from
+                      type: string
+                    matchAbove:
+                      description: Match the given severity and above
+                      type: string
+                    matchExact:
+                      description: Match the individually specified severity
+                      items:
+                        type: string
+                      type: array
+                  required:
+                  - facility
+                  type: object
+                type: array
+              name:
+                description: Describes a set of critieria that captured messages are
+                  required to fulfill
+                type: string
+              prefix:
+                description: Text to be present at the beginning of the MSG property
+                  of a message
+                type: string
+              regex:
+                description: Extended regular expression to search in the MSG property
+                  of messages
+                type: string
+              tag:
+                description: Text to be searched in the SYSLOGTAG property of messages
+                type: string
+            required:
+            - name
+            type: object
+          status:
+            description: FilterStatus defines the observed state of Filter
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

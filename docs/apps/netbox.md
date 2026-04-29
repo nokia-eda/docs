@@ -370,7 +370,7 @@ EOF
 
 <h5>Prefixes and Tags</h5>
 
-As per the task of this example we need to create two prefixes in NetBox, one for the System IPs and one for the subnets used by our [Fabric](./fabric.md) app to assign addresses on the point-to-point interswitch links.
+As per the task of this example we need to create two prefixes in NetBox, one for the System IPs and one for the subnets used by our [Fabric](./fabrics.eda.nokia.com/docs/index.md) app to assign addresses on the point-to-point interswitch links.
 
 We will also create a tag for each of the prefixes, such that we can use the tags to identify each prefix in EDA's Allocation resource.
 

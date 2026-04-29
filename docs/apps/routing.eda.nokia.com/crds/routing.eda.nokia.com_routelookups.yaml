@@ -1,0 +1,297 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: routelookups.routing.eda.nokia.com
+spec:
+  group: routing.eda.nokia.com
+  names:
+    kind: RouteLookup
+    listKind: RouteLookupList
+    plural: routelookups
+    singular: routelookup
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: RouteLookup is the Schema for the routelookups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              This workflow is used to look up routes on a set of nodes.
+              It takes an address, and an optional list of nodes (or node selectors - a list of label expressions) to perform the lookup on,
+              and returns the matching route, and the set of egress interfaces that would be used to reach it.
+            properties:
+              address:
+                description: |-
+                  Address to perform a lookup for.
+                  This is a standard IPv4 or IPv6 address, excluding mask or prefix length, e.g. 12.0.0.1.
+                type: string
+              networkInstance:
+                description: |-
+                  Network Instance is the locally named network instance to use for the lookup.
+                  Can be omitted if the default network instance is to be used.
+                type: string
+              nodeSelectors:
+                description: |-
+                  Node Selectors is a list of node label selectors to execute lookups on.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf", "eda.nokia.com/region=us-west"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: Nodes is a list of node names to execute lookups on.
+                items:
+                  type: string
+                type: array
+              resolve:
+                default: true
+                description: Resolve indicates whether indirect next hops should be
+                  resolved.
+                type: boolean
+            required:
+            - address
+            - resolve
+            type: object
+          status:
+            description: RouteLookupStatus defines the observed state of RouteLookup
+            properties:
+              found:
+                type: boolean
+              nodesWithRoute:
+                type: integer
+              results:
+                items:
+                  properties:
+                    error:
+                      type: string
+                    found:
+                      type: boolean
+                    networkInstance:
+                      type: string
+                    nextHopGroupID:
+                      format: int64
+                      type: integer
+                    nextHops:
+                      items:
+                        properties:
+                          indirect:
+                            properties:
+                              ipPrefix:
+                                type: string
+                              nextHopGroupID:
+                                format: int64
+                                type: integer
+                              resolved:
+                                type: boolean
+                              type:
+                                type: string
+                            type: object
+                          interfaces:
+                            items:
+                              properties:
+                                localAddress:
+                                  description: Local IP address of the egress interface
+                                  type: string
+                                name:
+                                  description: Name of the egress interface.
+                                  type: string
+                                peerNode:
+                                  description: The node this interface is connected
+                                    to.
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            type: array
+                          ipAddress:
+                            type: string
+                          nextHopID:
+                            format: int64
+                            type: integer
+                          type:
+                            type: string
+                        type: object
+                      type: array
+                    node:
+                      type: string
+                    rawOutput:
+                      type: string
+                    route:
+                      type: string
+                  required:
+                  - found
+                  type: object
+                type: array
+              totalNodes:
+                type: integer
+            required:
+            - found
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: RouteLookup is the Schema for the routelookups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              This workflow is used to look up routes on a set of nodes.
+              It takes an address, and an optional list of nodes (or node selectors - a list of label expressions) to perform the lookup on,
+              and returns the matching route, and the set of egress interfaces that would be used to reach it.
+            properties:
+              address:
+                description: |-
+                  Address to perform a lookup for.
+                  This is a standard IPv4 or IPv6 address, excluding mask or prefix length, e.g. 12.0.0.1.
+                type: string
+              networkInstance:
+                description: |-
+                  Network Instance is the locally named network instance to use for the lookup.
+                  Can be omitted if the default network instance is to be used.
+                type: string
+              nodeSelectors:
+                description: |-
+                  Node Selectors is a list of node label selectors to execute lookups on.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf", "eda.nokia.com/region=us-west"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: Nodes is a list of node names to execute lookups on.
+                items:
+                  type: string
+                type: array
+              resolve:
+                default: true
+                description: Resolve indicates whether indirect next hops should be
+                  resolved.
+                type: boolean
+            required:
+            - address
+            - resolve
+            type: object
+          status:
+            description: RouteLookupStatus defines the observed state of RouteLookup
+            properties:
+              found:
+                type: boolean
+              nodesWithRoute:
+                type: integer
+              results:
+                items:
+                  properties:
+                    error:
+                      type: string
+                    found:
+                      type: boolean
+                    networkInstance:
+                      type: string
+                    nextHopGroupId:
+                      format: int64
+                      type: integer
+                    nextHops:
+                      items:
+                        properties:
+                          indirect:
+                            properties:
+                              ipPrefix:
+                                type: string
+                              nextHopGroupId:
+                                format: int64
+                                type: integer
+                              resolved:
+                                type: boolean
+                              type:
+                                type: string
+                            type: object
+                          interfaces:
+                            items:
+                              properties:
+                                localAddress:
+                                  description: Local IP address of the egress interface
+                                  type: string
+                                name:
+                                  description: Name of the egress interface.
+                                  type: string
+                                peerNode:
+                                  description: The node this interface is connected
+                                    to.
+                                  type: string
+                              required:
+                              - name
+                              type: object
+                            type: array
+                          ipAddress:
+                            type: string
+                          nextHopId:
+                            format: int64
+                            type: integer
+                          type:
+                            type: string
+                        type: object
+                      type: array
+                    node:
+                      type: string
+                    rawOutput:
+                      type: string
+                    route:
+                      type: string
+                  required:
+                  - found
+                  type: object
+                type: array
+              totalNodes:
+                type: integer
+            required:
+            - found
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

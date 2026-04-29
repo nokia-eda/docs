@@ -1,0 +1,749 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: policys.routingpolicies.eda.nokia.com
+spec:
+  group: routingpolicies.eda.nokia.com
+  names:
+    kind: Policy
+    listKind: PolicyList
+    plural: policys
+    singular: policy
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Policy is the Schema for the policys API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Policy defines a set of rules and actions to manage network
+              traffic or routing behavior, with statements that include matching conditions
+              and actions, such as accepting or rejecting routes, or modifying route
+              attributes like BGP parameters.
+            properties:
+              configuredName:
+                description: The name of the policy to configure on the device.
+                type: string
+              defaultAction:
+                description: The default action to apply if no other actions are defined.
+                properties:
+                  bgp:
+                    description: Actions related to the BGP protocol.
+                    properties:
+                      asPathPrepend:
+                        description: AS number to prepend to the AS Path attributes.
+                        properties:
+                          asn:
+                            description: AS number to prepend to the AS Path attributes.
+                              Can be an integer value or the keyword `Auto`.
+                            pattern: ^Auto$|^\d+$
+                            type: string
+                          count:
+                            description: Number of times to prepend the AS number.
+                            format: int32
+                            maximum: 50
+                            minimum: 1
+                            type: integer
+                        required:
+                        - asn
+                        type: object
+                      asPathRemove:
+                        description: Clear the AS path to make it empty.
+                        type: boolean
+                      asPathReplace:
+                        description: Replace the existing AS path with a new AS_SEQUENCE
+                          containing the listed AS numbers.
+                        items:
+                          format: int32
+                          type: integer
+                        type: array
+                      communities:
+                        description: Modify BGP communities associated with the route
+                          using hybrid Community Sets.
+                        properties:
+                          addSets:
+                            description: List of community sets to add to the route.
+                            items:
+                              type: string
+                            maxItems: 1
+                            type: array
+                          removeSets:
+                            description: List of community sets to remove from the
+                              route.
+                            items:
+                              type: string
+                            maxItems: 1
+                            type: array
+                          replaceSets:
+                            description: List of community sets to replace the existing
+                              communities with. Cannot be combined with Add or Remove.
+                            items:
+                              type: string
+                            maxItems: 1
+                            type: array
+                        type: object
+                      med:
+                        description: Set a new MED value.
+                        properties:
+                          numericalValue:
+                            description: Fixed numerical value to set or add/subtract.
+                            maximum: 4294967295
+                            minimum: 0
+                            type: integer
+                          operation:
+                            description: The operation to perform on the MED value.
+                            enum:
+                            - Set
+                            - Add
+                            - Subtract
+                            type: string
+                          valueType:
+                            description: Use a fixed value or an IGP metric to adjust
+                              the MED.
+                            enum:
+                            - Fixed
+                            - IGP
+                            type: string
+                        type: object
+                      nextHop:
+                        description: Override the BGP next-hop attribute.
+                        properties:
+                          address:
+                            description: IP Address of the next hop. Only valid when
+                              NextHopType is set to FixedIP.
+                            type: string
+                          type:
+                            description: Set next-hop to either a fixed IP address
+                              or to a local IP address of the device using a `Self`
+                              or `PeerIP` keyword.
+                            enum:
+                            - FixedIP
+                            - Self
+                            - PeerIP
+                            type: string
+                        type: object
+                      setLocalPreference:
+                        description: Set a new LOCAL_PREF value for matching BGP routes.
+                        format: int32
+                        maximum: 4294967295
+                        minimum: 0
+                        type: integer
+                      setOrigin:
+                        description: Set a new ORIGIN attribute for matching BGP routes.
+                        enum:
+                        - egp
+                        - igp
+                        - incomplete
+                        type: string
+                    type: object
+                  policyResult:
+                    description: Final disposition for the route.
+                    enum:
+                    - Accept
+                    - Reject
+                    - NextPolicy
+                    - NextStatement
+                    type: string
+                  tags:
+                    description: Manipulate internal route tags associated with the
+                      route.
+                    properties:
+                      applyTagSet:
+                        description: Add tags to the route from the referenced Tag
+                          Set.
+                        type: string
+                    type: object
+                type: object
+              statements:
+                description: List of policy statements.
+                items:
+                  properties:
+                    action:
+                      description: Actions for routes that match the policy statement.
+                      properties:
+                        bgp:
+                          description: Actions related to the BGP protocol.
+                          properties:
+                            asPathPrepend:
+                              description: AS number to prepend to the AS Path attributes.
+                              properties:
+                                asn:
+                                  description: AS number to prepend to the AS Path
+                                    attributes. Can be an integer value or the keyword
+                                    `Auto`.
+                                  pattern: ^Auto$|^\d+$
+                                  type: string
+                                count:
+                                  description: Number of times to prepend the AS number.
+                                  format: int32
+                                  maximum: 50
+                                  minimum: 1
+                                  type: integer
+                              required:
+                              - asn
+                              type: object
+                            asPathRemove:
+                              description: Clear the AS path to make it empty.
+                              type: boolean
+                            asPathReplace:
+                              description: Replace the existing AS path with a new
+                                AS_SEQUENCE containing the listed AS numbers.
+                              items:
+                                format: int32
+                                type: integer
+                              type: array
+                            communities:
+                              description: Modify BGP communities associated with
+                                the route using hybrid Community Sets.
+                              properties:
+                                addSets:
+                                  description: List of community sets to add to the
+                                    route.
+                                  items:
+                                    type: string
+                                  maxItems: 1
+                                  type: array
+                                removeSets:
+                                  description: List of community sets to remove from
+                                    the route.
+                                  items:
+                                    type: string
+                                  maxItems: 1
+                                  type: array
+                                replaceSets:
+                                  description: List of community sets to replace the
+                                    existing communities with. Cannot be combined
+                                    with Add or Remove.
+                                  items:
+                                    type: string
+                                  maxItems: 1
+                                  type: array
+                              type: object
+                            med:
+                              description: Set a new MED value.
+                              properties:
+                                numericalValue:
+                                  description: Fixed numerical value to set or add/subtract.
+                                  maximum: 4294967295
+                                  minimum: 0
+                                  type: integer
+                                operation:
+                                  description: The operation to perform on the MED
+                                    value.
+                                  enum:
+                                  - Set
+                                  - Add
+                                  - Subtract
+                                  type: string
+                                valueType:
+                                  description: Use a fixed value or an IGP metric
+                                    to adjust the MED.
+                                  enum:
+                                  - Fixed
+                                  - IGP
+                                  type: string
+                              type: object
+                            nextHop:
+                              description: Override the BGP next-hop attribute.
+                              properties:
+                                address:
+                                  description: IP Address of the next hop. Only valid
+                                    when NextHopType is set to FixedIP.
+                                  type: string
+                                type:
+                                  description: Set next-hop to either a fixed IP address
+                                    or to a local IP address of the device using a
+                                    `Self` or `PeerIP` keyword.
+                                  enum:
+                                  - FixedIP
+                                  - Self
+                                  - PeerIP
+                                  type: string
+                              type: object
+                            setLocalPreference:
+                              description: Set a new LOCAL_PREF value for matching
+                                BGP routes.
+                              format: int32
+                              maximum: 4294967295
+                              minimum: 0
+                              type: integer
+                            setOrigin:
+                              description: Set a new ORIGIN attribute for matching
+                                BGP routes.
+                              enum:
+                              - egp
+                              - igp
+                              - incomplete
+                              type: string
+                          type: object
+                        policyResult:
+                          description: Final disposition for the route.
+                          enum:
+                          - Accept
+                          - Reject
+                          - NextPolicy
+                          - NextStatement
+                          type: string
+                        tags:
+                          description: Manipulate internal route tags associated with
+                            the route.
+                          properties:
+                            applyTagSet:
+                              description: Add tags to the route from the referenced
+                                Tag Set.
+                              type: string
+                          type: object
+                      type: object
+                    match:
+                      description: Match conditions of the policy statement.
+                      properties:
+                        bgp:
+                          description: Configuration for BGP-specific policy match
+                            criteria.
+                          properties:
+                            asPathMatch:
+                              description: AS Path match criteria.
+                              properties:
+                                asPathExpression:
+                                  description: A singular regular expression string
+                                    to match against AS_PATH objects. Mutually exclusive
+                                    with the ASPathSet reference.
+                                  type: string
+                                asPathSet:
+                                  description: Reference to an ASPathSet resource.
+                                    Mutually exclusive with the ASPathExpression.
+                                  type: string
+                                matchSetOptions:
+                                  description: The matching criteria that applies
+                                    to the members in the referenced set.
+                                  enum:
+                                  - Any
+                                  - All
+                                  - Invert
+                                  type: string
+                              type: object
+                            communitySet:
+                              description: Match conditions for BGP communities.
+                              type: string
+                            evpnRouteTypes:
+                              description: Match conditions for EVPN route types.
+                              items:
+                                type: integer
+                              type: array
+                          type: object
+                        families:
+                          description: Address families that the route belongs to.
+                          items:
+                            enum:
+                            - IPv4
+                            - IPv6
+                            - EVPN
+                            - RTC
+                            type: string
+                          type: array
+                        prefixSet:
+                          description: Reference to a PrefixSet resource.
+                          type: string
+                        protocol:
+                          description: The route protocol type to match.
+                          enum:
+                          - Aggregate
+                          - ARP_ND
+                          - BGP
+                          - BGP_EVPN
+                          - BGP_IPVPN
+                          - BGP_VPN
+                          - BGP_EVPN_IFF
+                          - BGP_EVPN_IFL_Host
+                          - DHCP
+                          - Host
+                          - ISIS
+                          - Local
+                          - OSPFv2
+                          - OSPFv3
+                          - Static
+                          type: string
+                        tags:
+                          description: Match based on the internal route tags associated
+                            with the route.
+                          properties:
+                            tagSet:
+                              description: Reference to a TagSet resource.
+                              type: string
+                          type: object
+                      type: object
+                    name:
+                      description: Name of the policy statement.
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+            type: object
+          status:
+            description: PolicyStatus defines the observed state of Policy.
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Policy is the Schema for the policys API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Policy defines a set of rules and actions to manage network
+              traffic or routing behavior, with statements that include matching conditions
+              and actions, such as accepting or rejecting routes, or modifying route
+              attributes like BGP parameters.
+            properties:
+              configuredName:
+                description: The name of the policy to configure on the device.
+                type: string
+              defaultAction:
+                description: The default action to apply if no other actions are defined.
+                properties:
+                  bgp:
+                    description: Actions related to the BGP protocol.
+                    properties:
+                      asPathPrepend:
+                        description: AS number to prepend to the AS Path attributes.
+                        format: int32
+                        maximum: 4294967295
+                        minimum: 1
+                        type: integer
+                      asPathRemove:
+                        description: Clear the AS path to make it empty.
+                        type: boolean
+                      asPathReplace:
+                        description: Replace the existing AS path with a new AS_SEQUENCE
+                          containing the listed AS numbers.
+                        items:
+                          format: int32
+                          type: integer
+                        type: array
+                      communitySet:
+                        description: Modify BGP communities associated with the route
+                          using hybrid Community Sets.
+                        properties:
+                          add:
+                            description: List of community sets to add to the route.
+                            items:
+                              type: string
+                            maxItems: 1
+                            type: array
+                          remove:
+                            description: List of community sets to remove from the
+                              route.
+                            items:
+                              type: string
+                            maxItems: 1
+                            type: array
+                          replace:
+                            description: List of community sets to replace the existing
+                              communities with. Cannot be combined with Add or Remove.
+                            items:
+                              type: string
+                            maxItems: 1
+                            type: array
+                        type: object
+                      localPreference:
+                        description: Set a new LOCAL_PREF value for matching BGP routes.
+                        format: int32
+                        maximum: 4294967295
+                        minimum: 0
+                        type: integer
+                      med:
+                        description: Set a new MED value.
+                        properties:
+                          numericalValue:
+                            description: Fixed numerical value to set or add/subtract.
+                            maximum: 4294967295
+                            minimum: 0
+                            type: integer
+                          operation:
+                            description: The operation to perform on the MED value.
+                            enum:
+                            - Set
+                            - Add
+                            - Subtract
+                            type: string
+                          valueType:
+                            description: Use a fixed value or an IGP metric to adjust
+                              the MED.
+                            enum:
+                            - Fixed
+                            - IGP
+                            type: string
+                        type: object
+                      setOrigin:
+                        description: Set a new ORIGIN attribute for matching BGP routes.
+                        enum:
+                        - egp
+                        - igp
+                        - incomplete
+                        type: string
+                    type: object
+                  policyResult:
+                    description: Final disposition for the route.
+                    enum:
+                    - accept
+                    - reject
+                    - NextPolicy
+                    - NextStatement
+                    type: string
+                  tags:
+                    description: Manipulate internal route tags associated with the
+                      route.
+                    properties:
+                      tagSet:
+                        description: Add tags to the route from the referenced Tag
+                          Set.
+                        type: string
+                    type: object
+                type: object
+              statement:
+                description: List of policy statements.
+                items:
+                  properties:
+                    action:
+                      description: Actions for routes that match the policy statement.
+                      properties:
+                        bgp:
+                          description: Actions related to the BGP protocol.
+                          properties:
+                            asPathPrepend:
+                              description: AS number to prepend to the AS Path attributes.
+                              format: int32
+                              maximum: 4294967295
+                              minimum: 1
+                              type: integer
+                            asPathRemove:
+                              description: Clear the AS path to make it empty.
+                              type: boolean
+                            asPathReplace:
+                              description: Replace the existing AS path with a new
+                                AS_SEQUENCE containing the listed AS numbers.
+                              items:
+                                format: int32
+                                type: integer
+                              type: array
+                            communitySet:
+                              description: Modify BGP communities associated with
+                                the route using hybrid Community Sets.
+                              properties:
+                                add:
+                                  description: List of community sets to add to the
+                                    route.
+                                  items:
+                                    type: string
+                                  maxItems: 1
+                                  type: array
+                                remove:
+                                  description: List of community sets to remove from
+                                    the route.
+                                  items:
+                                    type: string
+                                  maxItems: 1
+                                  type: array
+                                replace:
+                                  description: List of community sets to replace the
+                                    existing communities with. Cannot be combined
+                                    with Add or Remove.
+                                  items:
+                                    type: string
+                                  maxItems: 1
+                                  type: array
+                              type: object
+                            localPreference:
+                              description: Set a new LOCAL_PREF value for matching
+                                BGP routes.
+                              format: int32
+                              maximum: 4294967295
+                              minimum: 0
+                              type: integer
+                            med:
+                              description: Set a new MED value.
+                              properties:
+                                numericalValue:
+                                  description: Fixed numerical value to set or add/subtract.
+                                  maximum: 4294967295
+                                  minimum: 0
+                                  type: integer
+                                operation:
+                                  description: The operation to perform on the MED
+                                    value.
+                                  enum:
+                                  - Set
+                                  - Add
+                                  - Subtract
+                                  type: string
+                                valueType:
+                                  description: Use a fixed value or an IGP metric
+                                    to adjust the MED.
+                                  enum:
+                                  - Fixed
+                                  - IGP
+                                  type: string
+                              type: object
+                            setOrigin:
+                              description: Set a new ORIGIN attribute for matching
+                                BGP routes.
+                              enum:
+                              - egp
+                              - igp
+                              - incomplete
+                              type: string
+                          type: object
+                        policyResult:
+                          description: Final disposition for the route.
+                          enum:
+                          - accept
+                          - reject
+                          - NextPolicy
+                          - NextStatement
+                          type: string
+                        tags:
+                          description: Manipulate internal route tags associated with
+                            the route.
+                          properties:
+                            tagSet:
+                              description: Add tags to the route from the referenced
+                                Tag Set.
+                              type: string
+                          type: object
+                      type: object
+                    match:
+                      description: Match conditions of the policy statement.
+                      properties:
+                        bgp:
+                          description: Configuration for BGP-specific policy match
+                            criteria.
+                          properties:
+                            asPathMatch:
+                              description: AS Path match criteria.
+                              properties:
+                                asPathExpression:
+                                  description: A singular regular expression string
+                                    to match against AS_PATH objects. Mutually exclusive
+                                    with the ASPathSet reference.
+                                  type: string
+                                asPathSet:
+                                  description: Reference to an ASPathSet resource.
+                                    Mutually exclusive with the ASPathExpression.
+                                  type: string
+                                matchSetOptions:
+                                  description: The matching criteria that applies
+                                    to the members in the referenced set.
+                                  enum:
+                                  - Any
+                                  - All
+                                  - Invert
+                                  type: string
+                              type: object
+                            communitySet:
+                              description: Match conditions for BGP communities.
+                              type: string
+                            evpnRouteType:
+                              description: Match conditions for EVPN route types.
+                              items:
+                                type: integer
+                              type: array
+                          type: object
+                        family:
+                          description: Address families that the route belongs to.
+                          items:
+                            type: string
+                          type: array
+                        prefixSet:
+                          description: Reference to a PrefixSet resource.
+                          type: string
+                        protocol:
+                          description: The route protocol type to match.
+                          enum:
+                          - AGGREGATE
+                          - ARP_ND
+                          - BGP
+                          - BGP_EVPN
+                          - BGP_EVPN_IFF
+                          - BGP_EVPN_IFL_HOST
+                          - DHCP
+                          - GRIBI
+                          - HOST
+                          - ISIS
+                          - LOCAL
+                          - LINUX
+                          - NDK1
+                          - NDK2
+                          - OSPFV2
+                          - OSPFV3
+                          - STATIC
+                          type: string
+                        tags:
+                          description: Match based on the internal route tags associated
+                            with the route.
+                          properties:
+                            tagSet:
+                              description: Reference to a TagSet resource.
+                              type: string
+                          type: object
+                      type: object
+                    name:
+                      description: Name of the policy statement.
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+            type: object
+          status:
+            description: PolicyStatus defines the observed state of Policy.
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
