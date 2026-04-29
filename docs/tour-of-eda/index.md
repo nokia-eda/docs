@@ -37,7 +37,7 @@ As you progress through the tour exercises, you will modify the original three-n
 
 /// admonition | Tour of EDA in Codespaces
     type: example
-Don't have your own compute to run the Try EDA environment? No worries, you can run it for free in GitHub Codespaces! Check out our [EDA in Codespaces](../getting-started/codespaces.md) guide to learn how to get started. Or simply click the button:
+Don't have your own compute to run the Try EDA environment? No worries, you can run it for free in GitHub Codespaces! Check out our [EDA in Codespaces](../getting-started/try-eda.md#try-nokia-eda-in-codespaces) guide to learn how to get started. Or simply click the button:
 
 <div align=center markdown>
 <a href="https://github.com/codespaces/new?repo=1129099670&ref=main">
