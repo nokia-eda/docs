@@ -54,7 +54,7 @@ Every serious explorer needs a set of tools to help them navigate the unknown. A
 * `kubectl` - to interact with the underlying Kubernetes cluster
 * `edactl` - to use EDA's specific APIs and commands
 
-These tools have already been downloaded as part of the Try EDA environment setup and you will be able to copy[^3] them from the `playground` repository using the commands outlined in the [Using the CLIs](../user-guide/using-the-clis.md) document.
+These tools have already been downloaded as part of the Try EDA environment setup and you will be able to copy[^3] them from the `playground` repository using the commands outlined in the [Command Line Tools](../user-guide/command-line-tools.md) document.
 
 ## Checklist
 

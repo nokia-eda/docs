@@ -22,7 +22,7 @@ edaadm bootstrap-k8s -c eda-input-6-node.yaml #(1)!
 
 Wait for several minutes for the Kubernetes cluster to come up and for all the nodes join the cluster. The process should take less than 15 minutes.
 
-## Obtaining the Kubernetes config file for kubectl
+## Obtaining the Kubernetes config file
 
 Use the talosctl command to obtain the Kubernetes configuration file for use with kubectl.
 
