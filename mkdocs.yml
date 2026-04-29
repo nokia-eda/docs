@@ -79,11 +79,11 @@ nav:
       - AAA:
           - apps/aaa.eda.nokia.com/docs/index.md
           - Authentication Policies: apps/aaa.eda.nokia.com/docs/resources/authenticationpolicy.md
-          - Authentication Policy State: apps/aaa.eda.nokia.com/docs/resources/authenticationpolicystate.md
+          #   - Authentication Policy State: apps/aaa.eda.nokia.com/docs/resources/authenticationpolicystate.md
           - Node Group Deployment: apps/aaa.eda.nokia.com/docs/resources/nodegroupdeployment.md
           - Node User Groups: apps/aaa.eda.nokia.com/docs/resources/nodegroup.md
-          - Node User State: apps/aaa.eda.nokia.com/docs/resources/nodeuserstate.md
-          - Server Group State: apps/aaa.eda.nokia.com/docs/resources/servergroupstate.md
+          #   - Node User State: apps/aaa.eda.nokia.com/docs/resources/nodeuserstate.md
+          #   - Server Group State: apps/aaa.eda.nokia.com/docs/resources/servergroupstate.md
           - Server Groups: apps/aaa.eda.nokia.com/docs/resources/servergroup.md
       - AIFabrics:
           - apps/aifabrics.eda.nokia.com/docs/index.md
@@ -145,14 +145,14 @@ nav:
       - Core Extensions:
           - apps/coreext.eda.nokia.com/docs/index.md
           - Platform Backups: apps/coreext.eda.nokia.com/docs/resources/platformbackup.md
-      - Demo:
-          - apps/demo.eda.nokia.com/docs/index.md
-          - GVK Ping: apps/demo.eda.nokia.com/docs/resources/gvkping.md
-          - Kubernetes: apps/demo.eda.nokia.com/docs/resources/k8stypes.md
-          - Labels: apps/demo.eda.nokia.com/docs/resources/label.md
-          - OAS Extension: apps/demo.eda.nokia.com/docs/resources/oasextension.md
-          - Overlay: apps/demo.eda.nokia.com/docs/resources/overlay.md
-          - Simple VRFs: apps/demo.eda.nokia.com/docs/resources/simplevrf.md
+      # - Demo:
+      #     - apps/demo.eda.nokia.com/docs/index.md
+      #     - GVK Ping: apps/demo.eda.nokia.com/docs/resources/gvkping.md
+      #     - Kubernetes: apps/demo.eda.nokia.com/docs/resources/k8stypes.md
+      #     - Labels: apps/demo.eda.nokia.com/docs/resources/label.md
+      #     - OAS Extension: apps/demo.eda.nokia.com/docs/resources/oasextension.md
+      #     - Overlay: apps/demo.eda.nokia.com/docs/resources/overlay.md
+      #     - Simple VRFs: apps/demo.eda.nokia.com/docs/resources/simplevrf.md
       - Environment:
           - apps/environment.eda.nokia.com/docs/index.md
           - Push CLI Plugin: apps/environment.eda.nokia.com/docs/resources/cliplugin.md
@@ -168,7 +168,7 @@ nav:
           - apps/filters.eda.nokia.com/docs/index.md
           - Control Plane Filters: apps/filters.eda.nokia.com/docs/resources/controlplanefilter.md
           - Filters: apps/filters.eda.nokia.com/docs/resources/filter.md
-          - Prefix Set Deployment: apps/filters.eda.nokia.com/docs/resources/prefixsetdeployment.md
+          #   - Prefix Set Deployment: apps/filters.eda.nokia.com/docs/resources/prefixsetdeployment.md
           - Prefix Sets: apps/filters.eda.nokia.com/docs/resources/prefixset.md
       - Flow Sampling:
           - apps/flowsampling.eda.nokia.com/docs/index.md
@@ -212,7 +212,7 @@ nav:
           - apps/oam.eda.nokia.com/docs/index.md
           - Resources:
               - Mirror: apps/oam.eda.nokia.com/docs/resources/mirror.md
-              - Mirror State: apps/oam.eda.nokia.com/docs/resources/mirrorstate.md
+              # - Mirror State: apps/oam.eda.nokia.com/docs/resources/mirrorstate.md
               - Thresholds: apps/oam.eda.nokia.com/docs/resources/threshold.md
           - Workflows:
               - Ping: apps/oam.eda.nokia.com/docs/resources/ping.md
@@ -309,8 +309,8 @@ nav:
           - Site Profiles:
               - Default MTU: apps/siteinfo.eda.nokia.com/docs/resources/defaultmtu.md
               - Load Balancing: apps/siteinfo.eda.nokia.com/docs/resources/systemloadbalancer.md
-          - Banner State: apps/siteinfo.eda.nokia.com/docs/resources/bannerstate.md
-          - DNS Client State: apps/siteinfo.eda.nokia.com/docs/resources/dnsclientstate.md
+          # - Banner State: apps/siteinfo.eda.nokia.com/docs/resources/bannerstate.md
+          # - DNS Client State: apps/siteinfo.eda.nokia.com/docs/resources/dnsclientstate.md
       - Support:
           - apps/support.eda.nokia.com/docs/index.md
           - Locator: apps/support.eda.nokia.com/docs/resources/locator.md
