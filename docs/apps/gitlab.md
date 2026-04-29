@@ -25,7 +25,7 @@ The app provides these resource groups:
 
 ## Installation
 
-You can install the GitLab app via [EDA Store](../apps/index.md#eda-store) or by running an `AppInstaller` workflow with `kubectl` or `edactl`:
+You can install the GitLab app via [EDA Store](../apps/index.md#nokia-eda-store) or by running an `AppInstaller` workflow with `kubectl` or `edactl`:
 
 /// tab | YAML
 

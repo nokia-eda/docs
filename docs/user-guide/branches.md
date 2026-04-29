@@ -248,10 +248,10 @@ When you have a branch open other than main, follow these steps to perform actio
 
 1. Choose one of the following:
 
-    - To update your branch with changes made to main since you first created the branch (or since your last rebase), go to step [4](#mbr-step-4).
-    - To update your branch to match the current state of main, go to step [5](#mbr-step-2).
-    - To view the differences between your current branch and main, go to step [6](#mbr-step-3).
-    - To create a merge request that will merge the changes in your current branch into main, go to step [7](#mbr-step-4).
+    - To update your branch with changes made to main since you first created the branch (or since your last rebase), go to step 4.
+    - To update your branch to match the current state of main, go to step 5.
+    - To view the differences between your current branch and main, go to step 6.
+    - To create a merge request that will merge the changes in your current branch into main, go to step 7.
 
 1. <span id="mbr-step-4"></span>To rebase your branch, do the following:
 
@@ -294,7 +294,7 @@ When you have a branch open other than main, follow these steps to perform actio
 
         EDA creates a new merge request for this transaction. A new tab opens showing the Merge Requests details page in the main branch.
 
-        From here, depending on the state of the merge request, you might be able to proceed immediately with the merge; or you might need to resolve merge conflicts before proceeding. For information about working with merge requests in EDA, see [Merge requests](#merge-requests.md).
+        From here, depending on the state of the merge request, you might be able to proceed immediately with the merge; or you might need to resolve merge conflicts before proceeding. For information about working with merge requests in EDA, see [Merge requests](../user-guide/merge-requests.md).
 
 ///
 

@@ -151,7 +151,7 @@ EOF
 
 ### Installation
 
-Install the NetBox app from the [EDA Store](index.md#eda-store) or with `kubectl`:
+Install the NetBox app from the [EDA Store](../apps/index.md#nokia-eda-store) or with `kubectl`:
 
 /// tab | YAML
 
@@ -269,7 +269,7 @@ It indicates that the incoming via Webhook NetBox prefix `192.168.10.0/24` tagge
 In this example, we will demonstrate how EDA/NetBox integration works by creating two Prefix objects in NetBox for System IPs and inter-switch link subnets that will be synchronized to EDA and result in two Allocation pools in EDA.  
 The two pools will then be used to instantiate a Fabric in EDA and through that we will
 
-We will install a demo NetBox instance[^1] in the same cluster that runs EDA using [helm](../user-guide/using-the-clis.md#helm) and the [netbox chart v6.0.33][artifacthub_chart]:
+We will install a demo NetBox instance[^1] in the same cluster that runs EDA using [helm](../user-guide/command-line-tools.md#helm) and the [netbox chart v6.0.33][artifacthub_chart]:
 
 ```bash
 helm install netbox-server oci://ghcr.io/netbox-community/netbox-chart/netbox \

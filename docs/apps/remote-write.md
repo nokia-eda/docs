@@ -37,7 +37,7 @@ Application components:
 
 ## Installation
 
-Notifier app can be installed using [EDA Store](index.md#eda-store) or by running the app-installer workflow with `kubectl`:
+Notifier app can be installed using [EDA Store](../apps/index.md#nokia-eda-store) or by running the app-installer workflow with `kubectl`:
 
 /// tab | YAML
 

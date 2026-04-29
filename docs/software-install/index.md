@@ -39,7 +39,7 @@ These tasks must be completed for both Internet based installations and air-gapp
 
 /// html | div.steps
 
-1. [Downloading the Nokia EDA Installation playground](preparing-for-installation.md#download-the-eda-installation-playground)  
+1. [Downloading the Nokia EDA Installation playground](preparing-for-installation.md#download-the-nokia-eda-installation-playground)  
     This task describes how to access the NokiaEDA installation playground for use during the installation. It also covers how to configure the playground.
 
 2. [Downloading the edaadm tools](preparing-for-installation.md#download-edaadm-tools)  

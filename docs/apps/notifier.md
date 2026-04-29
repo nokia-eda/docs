@@ -13,7 +13,7 @@
 
 ## Installation
 
-Notifier app can be installed using [EDA Store](index.md#eda-store) or by running the app-installer workflow with `kubectl`:
+Notifier app can be installed using [EDA Store](../apps/index.md#nokia-eda-store) or by running the app-installer workflow with `kubectl`:
 
 /// tab | YAML
 
@@ -45,7 +45,7 @@ In contrast, the regular **Notifier** and **Provider** CRs are namespace-scoped 
 
 #### Alarm
 
-To configure the source of the notifications, you need to create a **Notifier** or **ClusterNotifier** CR. 
+To configure the source of the notifications, you need to create a **Notifier** or **ClusterNotifier** CR.
 
 The example below shows a **ClusterNotifier** CR that genrates notifications based on any alarm across all namespaces and sends them to the referenced `discord` provider.
 
@@ -153,7 +153,6 @@ Each notification includes detailed information about the resource, its state, a
   <figcaption>Discord alarm notifications</figcaption>
 </figure>
 
-
 #### Teams
 
 The `teams` provider allows users to send **MS Teams** notifications when events occur in the network or within EDA.
@@ -228,10 +227,10 @@ The SMTP address must start with `smtp://`.
 If a username and password are required, they must be part of the URI authority field `smtp://$user:$password@host`
 Additional query parameters can be added to the URI:
 
-* `from`     : The sender email address
-* `to`       : The recipient email address
-* `startTLS` : `yes | no`, if set to `yes` the connection to the SMTP server must use TLS.
-* `useHTML`  : `yes | no`, if set to `yes` the email content type will be set to "text/html; charset=UTF-8" otherwise "text/plain; charset=UTF-8"
+- `from`     : The sender email address
+- `to`       : The recipient email address
+- `startTLS` : `yes | no`, if set to `yes` the connection to the SMTP server must use TLS.
+- `useHTML`  : `yes | no`, if set to `yes` the email content type will be set to "text/html; charset=UTF-8" otherwise "text/plain; charset=UTF-8"
 
 Example `email` ClusterProvider CR:
 

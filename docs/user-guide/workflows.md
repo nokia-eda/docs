@@ -40,11 +40,12 @@ To avoid excessive memory use by FlowEngine, Nokia EDA enforces the following:
 ///
 
 ## Workflows in the Nokia EDA UI
+
 ### Workflow Definition List <span id="workflows-definition-list-page"></span>
 
 The Workflow Definition List page shows all available workflow definitions provided from Nokia EDA apps. From the **Main** navigation panel, click **Workflows** under the **SYSTEM** group. Then, select Workflow Definition List from the drop-down list.
 
--{{image(url="graphics/sc0272.png", title="Figure: Workflow Definition List page", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0272.png", title="Workflow Definition List page", shadow=true, padding=20)}}-
 
 The following table summarizes some of the workflow definitions shipped with the Nokia EDA apps.
 
@@ -77,9 +78,7 @@ From the **Main** navigation panel, click **Workflows** under the **SYSTEM** gro
 
 ​​Any workflow waiting for user input is highlighted in yellow.
 
-<figcaption>Figure: The Workflow Executions page</figcaption></figure>
-
--{{image(url="graphics/sc0273.png", title="Figure: The Workflow Executions page", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0273.png", title="The Workflow Executions page", shadow=true, padding=20)}}-
 
 From **Workflow Executions** page, you can:
 
@@ -94,11 +93,11 @@ Double-click a row to display the Summary page for the workflow.
 
 By default, only top-level workflows are displayed. To display subflows, click the **Table settings &amp; actions** icon and select **Show Subflows**.
 
--{{image(url="graphics/sc0274.png", title="Figure: Subflows", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0274.png", title="Subflows", shadow=true, padding=20)}}-
 
 The system displays only the workflows with subflows. For example:
 
--{{image(url="graphics/sc0275.png", title="Figure: Workflow executions with subflows", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0275.png", title="Workflow executions with subflows", shadow=true, padding=20)}}-
 
 ### Workflow Summary page <span id="workflow-summary-page"></span>
 
@@ -106,7 +105,7 @@ The **Summary** page provides details about a workflow execution. Click any work
 
 The following example is for a `DeployImage` workflow.
 
--{{image(url="graphics/sc0276.png", title="Figure: Workflow Summary page", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0276.png", title="Workflow Summary page", shadow=true, padding=20)}}-
 
 The **Workflow Summary** panel provides the status of the workflow, name, namespace, category, and type of workflow.
 
@@ -126,7 +125,7 @@ The **Workflows Results** panel provides details of the workflow results, includ
 
 The **Workflow Logs** view display logs from the workflow container. From the **Summary** drop-down list, select **Workflow Log**. The logs are used for troubleshooting and debugging purposes.
 
--{{image(url="graphics/sc0277.png", title="Figure: Sample workflow log", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0277.png", title="Sample workflow log", shadow=true, padding=20)}}-
 
 #### Workflow artifacts
 
@@ -191,7 +190,7 @@ You can run a workflow from the **Row action menu** of target resources.
 
 Workflow definitions define some types of resources as subjects. These workflows are listed in the action menu of the relevant resources. For example, the Ping workflow accepts a node as subject and can be triggered from the node action menu:
 
--{{image(url="graphics/sc0278.png", title="Figure: Multiple resources", shadow=true, padding=20)}}-
+-{{image(url="graphics/sc0278.png", title="Multiple resources", shadow=true, padding=20)}}-
 
 Some workflows allow you to select multiple resources in the same workflow. For example, for the Image workflow, you can identify multiple Node resources. You cannot include resources from multiple namespaces in the same workflow input. The bulk workflow actions function is disabled when the UI page is in set to **All Namespaces**.
 
@@ -258,7 +257,6 @@ Use the following `edactl` commands to get a workflow's status:
     ↓ Applying 
     ↓ Installed
     ```
-
 
 ### Workflow logs
 

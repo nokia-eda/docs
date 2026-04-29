@@ -111,7 +111,7 @@ Several elements within the Nokia EDA GUI support the creation and management of
 
 - Any resource that is in the Basket will display a basket icon beside its name in a corresponding resource list.  If a resource has been un-selected in the basket in order to exclude it from the transaction, this icon is not displayed beside the resource.
 
-    -{{image(url="sc0465.png", title="A resource list showing the basket icon", shadow=true, padding=20, scale=0.8)}}-
+    -{{image(url="graphics/sc0465.png", title="A resource list showing the basket icon", shadow=true, padding=20, scale=0.4)}}-
 
 - The **Transaction Log** displays a record of past transactions.
 

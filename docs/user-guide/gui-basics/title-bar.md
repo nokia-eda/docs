@@ -40,7 +40,7 @@ When you click the **Workflows** button, the 10 most recent workflows that you e
 **Related information**  
 
 - [Workflows](../workflows.md)
-- [Workflow Executions page](../workflows.md#workflow-executions-page)
+- [Workflow Executions page](../workflows.md#workflow-executions-list)
 - [Workflow Summary page](../workflows.md#workflow-summary-page)
 
 ## Ask EDA

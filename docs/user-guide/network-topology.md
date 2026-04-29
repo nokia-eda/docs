@@ -939,7 +939,7 @@ To demonstrate the behavior of each operation, create a `net-topo-test` namespac
 edactl namespace bootstrap create --from-namespace eda net-topo-test #(1)!
 ```
 
-1. If you don't have `edactl` installed, [install it with a single command](using-the-clis.md#edactl).
+1. If you don't have `edactl` installed, [install it with a single command](command-line-tools.md#edactl).
 
 ### Create
 

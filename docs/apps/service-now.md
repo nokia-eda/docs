@@ -23,7 +23,7 @@ It exposes four resources:
 
 ## Installation
 
-Install the app from [EDA Store](../apps/index.md#eda-store) or with `kubectl`:
+Install the app from [EDA Store](../apps/index.md#nokia-eda-store) or with `kubectl`:
 
 /// tab | YAML
 

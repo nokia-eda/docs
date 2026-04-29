@@ -13,7 +13,7 @@
 
 ## Installation
 
-The Kafka Exporter app can be installed using [EDA Store](index.md#eda-store) or by running the `app-install` workflow with `kubectl`:
+The Kafka Exporter app can be installed using [EDA Store](../apps/index.md#nokia-eda-store) or by running the `app-install` workflow with `kubectl`:
 
 /// tab | YAML
 
@@ -47,7 +47,7 @@ Define the data to be exported.
 - **Export Paths**: `.spec.exports[].path`
 
     Specifies the paths in the state DB to export, e.g., `.namespace.node.srl.interface`.
-    
+
     For a `Producer` CR the `.namespace` prefix **can** be omitted.
 
 - **Fields**: `.spec.exports[].fields`
