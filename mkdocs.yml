@@ -1,13 +1,11 @@
-site_name: Event Driven Automation
+site_name: Event-Driven Automation
 nav:
   - Home: index.md
   - Getting started:
-      - Try EDA: getting-started/try-eda.md
-      - EDA in Codespaces: getting-started/codespaces.md
-      # - Units of automation: getting-started/units-of-automation.md
-      - The Tour of EDA:
+      - Try Nokia EDA: getting-started/try-eda.md
+      - The tour of Nokia EDA:
           - tour-of-eda/index.md
-          - EDA UI: tour-of-eda/ui.md
+          - UI: tour-of-eda/ui.md
           - Nodes: tour-of-eda/nodes.md
           - Resource Model: tour-of-eda/resource-model.md
           - Transactions: tour-of-eda/transactions.md
