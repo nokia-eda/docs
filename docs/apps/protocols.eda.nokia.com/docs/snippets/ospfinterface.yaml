@@ -1,0 +1,11 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: OSPFInterface
+metadata:
+  name: ospf-interface-leaf1
+  namespace: eda
+spec:
+  interface: ospf-leaf1-spine1-intf
+  interfaceKind: RoutedInterface
+  ospfArea: ospf-area-0
+  ospfInstance: ospf-instance-v3
+  type: PointToPoint

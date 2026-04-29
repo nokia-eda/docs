@@ -344,7 +344,7 @@ The low-level resources that result in concrete configuration changes on the tar
 
 ### Higher-level resources
 
-A popular example of resource composition in EDA is the [Fabric resource](../apps/fabric.md) that we mentioned earlier. The Fabric is a high-level abstraction that represents a Clos-based EVPN VXLAN fabric of an arbitrary size. When a user creates a Fabric resource, EDA configures on the target devices multiple entities, such as:
+A popular example of resource composition in EDA is the [Fabric resource](../apps/fabrics.eda.nokia.com/docs/resources/fabric.md) that we mentioned earlier. The Fabric is a high-level abstraction that represents a Clos-based EVPN VXLAN fabric of an arbitrary size. When a user creates a Fabric resource, EDA configures on the target devices multiple entities, such as:
 
 - the IP underlay network including routing protocols, addressing, and policies
 - the overlay protocol
@@ -353,7 +353,7 @@ In other words, it builds the L3 fabric that is ready to be configured with the 
 
 The [Fabric resource documentation][fabric-app-docs] provides a detailed description of the resource, its attributes and behavior. To not repeat ourselves, proceed with creating a Fabric resource and leave the exploration of its attributes to a reader.
 
-[fabric-app-docs]: ../apps/fabric.md
+[fabric-app-docs]: ../apps/fabrics.eda.nokia.com/docs/index.md
 
 Recall, that you can create EDA resources using the Kubernetes API, the EDA API or through a Web User Interface (UI). This time let's use the Kubernetes API. Paste the below command in your terminal to create a Fabric resource named `myfabric-1` in the `eda` namespace.
 

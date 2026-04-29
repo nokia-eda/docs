@@ -1,0 +1,218 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: routerinterconnects.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: RouterInterconnect
+    listKind: RouterInterconnectList
+    plural: routerinterconnects
+    singular: routerinterconnect
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChangeTime
+      name: LastChangeTime
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: RouterInterconnect is the Schema for the routerinterconnects
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RouterInterconnectSpec allows to configure a RouterInterconnect
+              instance.
+            properties:
+              interconnectBGPInstance:
+                description: BGP Service Instance parameters for the Interconnect.
+                properties:
+                  controlPlane:
+                    description: Control plane protocol used for the service instance.
+                    enum:
+                    - EVPN
+                    - IPVPN
+                    type: string
+                  domainId:
+                    description: D-PATH Domain ID used for the service instance.
+                    type: string
+                  encapsulation:
+                    description: Encapsulation type used for the service instance.
+                    enum:
+                    - VXLAN
+                    - MPLS
+                    type: string
+                  evi:
+                    description: Optional for IPVPN (can be used to auto-derive RTs),
+                      required for EVPN control plane on SRLinux.
+                    format: int32
+                    type: integer
+                  exportPolicy:
+                    description: Reference to a Policy CR that will be used to export
+                      routes.
+                    type: string
+                  exportTarget:
+                    description: Export route target in 'target:N:N' format. One of
+                      ExportTarget or ExportPolicy must be specified.
+                    pattern: ^target.*$
+                    type: string
+                  importPolicy:
+                    description: Reference to a Policy CR that will be used to import
+                      routes.
+                    type: string
+                  importTarget:
+                    description: Import route target in 'target:N:N' format. One of
+                      ImportTarget or ImportPolicy must be specified.
+                    pattern: ^target.*$
+                    type: string
+                  mpls:
+                    description: MPLS encapsulation options. Only applicable if MPLS
+                      encapsulation is used.
+                    properties:
+                      allowedTunnelTypes:
+                        description: Allowed tunnel types for MPLS transport.
+                        items:
+                          enum:
+                          - LDP
+                          - RSVP
+                          - BGP
+                          - SR-ISIS
+                          - SR-OSPFv2
+                          - SR-OSPFv3
+                          type: string
+                        type: array
+                    type: object
+                  routeDistinguisher:
+                    description: Route Distinguisher for the service instance.
+                    properties:
+                      assignedNumber:
+                        description: |-
+                          // Administrator part of the route distinguisher (2- or 4-byte integer for Type 0 or Type 2 RDs, 4-byte dotted quad notation for Type 1 RDs). `SystemIP` keyword can be used to auto-assign with Type 1 RD.`
+                          // +eda:ui:title="Administrator"
+                          // +kubebuilder:validation:Optional
+                          Administrator string `json:"administrator,omitempty"`
+                          Assigned number part of the route distinguisher, or a `Pool` keyword to allocate from a pool.
+                        type: string
+                      rdPool:
+                        description: Reference to a pool to use for Route Distinguisher
+                          allocation.
+                        type: string
+                      type:
+                        description: Route distinguisher type.
+                        enum:
+                        - Type 0
+                        - Type 1
+                        - Type 2
+                        type: string
+                    type: object
+                  vxlan:
+                    description: VXLAN encapsulation options. Only applicable if VXLAN
+                      encapsulation is used.
+                    properties:
+                      tunnelIndexPool:
+                        default: tunnel-index-pool
+                        description: Reference to tunnel index allocation pool.
+                        type: string
+                      vni:
+                        description: VNI for the service instance.
+                        format: int32
+                        maximum: 16777215
+                        minimum: 1
+                        type: integer
+                    type: object
+                required:
+                - controlPlane
+                - encapsulation
+                - routeDistinguisher
+                type: object
+              nodeSelectors:
+                description: Label selector to select nodes on which to configure
+                  the RouterInterconnect.
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes (gateways) on which to configure the RouterInterconnect.
+                items:
+                  type: string
+                type: array
+              primaryBGPInstance:
+                description: Additional BGP Service Instance parameters related to
+                  the primary service instance (configured in the referenced Router).
+                properties:
+                  domainId:
+                    description: D-PATH Domain ID used for the service instance.
+                    type: string
+                type: object
+              routerRef:
+                description: Reference to the Router instance to interconnect.
+                properties:
+                  name:
+                    description: Name of the Router instance.
+                    type: string
+                  namespace:
+                    description: Namespace of the Router instance, if different from
+                      the referencing RouterInterconnect namespace.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - interconnectBGPInstance
+            - routerRef
+            type: object
+          status:
+            description: RouterInterconnectStatus defines the observed state of RouterInterconnect
+            properties:
+              health:
+                description: Indicates the health score of the RouterInterconnect.
+                type: integer
+              healthScoreReason:
+                description: Explains the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: Timestamp of the last state change.
+                type: string
+              nodes:
+                description: List of nodes on which the RouterInterconnect is deployed.
+                items:
+                  type: string
+                type: array
+              operationalState:
+                description: Operational state of the RouterInterconnect.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,413 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: monitorstates.components.eda.nokia.com
+spec:
+  group: components.eda.nokia.com
+  names:
+    kind: MonitorState
+    listKind: MonitorStateList
+    plural: monitorstates
+    singular: monitorstate
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: MonitorState is the Schema for the monitorstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MonitorStateSpec defines the desired state of MonitorState
+            properties:
+              monitorSpec:
+                description: The spec of the input Monitor
+                properties:
+                  cpu:
+                    description: CPU monitoring for targets matching this Monitor.
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enable or disable CPU monitoring.
+                        type: boolean
+                      utilization:
+                        description: Parameters relating to CPU utilization monitoring.
+                        properties:
+                          criticalThreshold:
+                            default: 95
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a critical alarm.
+                              This value must be greater than the majorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          fallingDelta:
+                            default: 5
+                            description: |-
+                              The delta in which a triggered threshold must drop below to clear an alarm.
+                              For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            maximum: 25
+                            minimum: 1
+                            type: integer
+                          majorThreshold:
+                            default: 90
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a major alarm.
+                              This value must be greater than the minorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          minorThreshold:
+                            default: 80
+                            description: The minimum average utilization over the
+                              last 1 minute to trigger a minor alarm.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    required:
+                    - enabled
+                    type: object
+                  memory:
+                    description: Memory monitoring for targets matching this Monitor.
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enable or disable memory monitoring.
+                        type: boolean
+                      utilization:
+                        description: Parameters relating to memory utilization monitoring.
+                        properties:
+                          criticalThreshold:
+                            default: 95
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a critical alarm.
+                              This value must be greater than the majorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          fallingDelta:
+                            default: 5
+                            description: |-
+                              The delta in which a triggered threshold must drop below to clear an alarm.
+                              For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            maximum: 25
+                            minimum: 1
+                            type: integer
+                          majorThreshold:
+                            default: 90
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a major alarm.
+                              This value must be greater than the minorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          minorThreshold:
+                            default: 80
+                            description: The minimum average utilization over the
+                              last 1 minute to trigger a minor alarm.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    required:
+                    - enabled
+                    type: object
+                  targetSelector:
+                    description: Selector to use when including targets to monitor.
+                    items:
+                      type: string
+                    type: array
+                  targets:
+                    description: References to targets to monitor.
+                    items:
+                      type: string
+                    type: array
+                  volume:
+                    description: Volume monitoring for targets matching this Monitor.
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enable or disable volume monitoring.
+                        type: boolean
+                      utilization:
+                        description: Parameters relating to volume utilization monitoring.
+                        properties:
+                          criticalThreshold:
+                            default: 95
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a critical alarm.
+                              This value must be greater than the majorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          fallingDelta:
+                            default: 5
+                            description: |-
+                              The delta in which a triggered threshold must drop below to clear an alarm.
+                              For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            maximum: 25
+                            minimum: 1
+                            type: integer
+                          majorThreshold:
+                            default: 90
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a major alarm.
+                              This value must be greater than the minorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          minorThreshold:
+                            default: 80
+                            description: The minimum average utilization over the
+                              last 1 minute to trigger a minor alarm.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    required:
+                    - enabled
+                    type: object
+                type: object
+              operatingSystem:
+                description: The operating system of the target being monitored
+                type: string
+              target:
+                description: Reference to the target being monitored
+                type: string
+              version:
+                description: The version of the target being monitored
+                type: string
+            required:
+            - monitorSpec
+            - operatingSystem
+            - target
+            - version
+            type: object
+          status:
+            description: MonitorStateStatus defines the observed state of MonitorState
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: MonitorState is the Schema for the monitorstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MonitorStateSpec defines the desired state of MonitorState
+            properties:
+              monitorSpec:
+                description: The spec of the input Monitor
+                properties:
+                  cpu:
+                    description: CPU monitoring for targets matching this Monitor.
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enable or disable CPU monitoring.
+                        type: boolean
+                      utilization:
+                        description: Parameters relating to CPU utilization monitoring.
+                        properties:
+                          criticalThreshold:
+                            default: 95
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a critical alarm.
+                              This value must be greater than the majorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          fallingDelta:
+                            default: 5
+                            description: |-
+                              The delta in which a triggered threshold must drop below to clear an alarm.
+                              For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            maximum: 25
+                            minimum: 1
+                            type: integer
+                          majorThreshold:
+                            default: 90
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a major alarm.
+                              This value must be greater than the minorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          minorThreshold:
+                            default: 80
+                            description: The minimum average utilization over the
+                              last 1 minute to trigger a minor alarm.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    required:
+                    - enabled
+                    type: object
+                  memory:
+                    description: Memory monitoring for targets matching this Monitor.
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enable or disable memory monitoring.
+                        type: boolean
+                      utilization:
+                        description: Parameters relating to memory utilization monitoring.
+                        properties:
+                          criticalThreshold:
+                            default: 95
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a critical alarm.
+                              This value must be greater than the majorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          fallingDelta:
+                            default: 5
+                            description: |-
+                              The delta in which a triggered threshold must drop below to clear an alarm.
+                              For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            maximum: 25
+                            minimum: 1
+                            type: integer
+                          majorThreshold:
+                            default: 90
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a major alarm.
+                              This value must be greater than the minorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          minorThreshold:
+                            default: 80
+                            description: The minimum average utilization over the
+                              last 1 minute to trigger a minor alarm.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    required:
+                    - enabled
+                    type: object
+                  targetSelectors:
+                    description: Selector to use when including targets to monitor.
+                    items:
+                      type: string
+                    type: array
+                  targets:
+                    description: References to targets to monitor.
+                    items:
+                      type: string
+                    type: array
+                  volume:
+                    description: Volume monitoring for targets matching this Monitor.
+                    properties:
+                      enabled:
+                        default: true
+                        description: Enable or disable volume monitoring.
+                        type: boolean
+                      utilization:
+                        description: Parameters relating to volume utilization monitoring.
+                        properties:
+                          criticalThreshold:
+                            default: 95
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a critical alarm.
+                              This value must be greater than the majorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          fallingDelta:
+                            default: 5
+                            description: |-
+                              The delta in which a triggered threshold must drop below to clear an alarm.
+                              For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            maximum: 25
+                            minimum: 1
+                            type: integer
+                          majorThreshold:
+                            default: 90
+                            description: |-
+                              The minimum average utilization over the last 1 minute to trigger a major alarm.
+                              This value must be greater than the minorThreshold.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          minorThreshold:
+                            default: 80
+                            description: The minimum average utilization over the
+                              last 1 minute to trigger a minor alarm.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    required:
+                    - enabled
+                    type: object
+                type: object
+              operatingSystem:
+                description: The operating system of the target being monitored
+                type: string
+              target:
+                description: Reference to the target being monitored
+                type: string
+              version:
+                description: The version of the target being monitored
+                type: string
+            required:
+            - monitorSpec
+            - operatingSystem
+            - target
+            - version
+            type: object
+          status:
+            description: MonitorStateStatus defines the observed state of MonitorState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

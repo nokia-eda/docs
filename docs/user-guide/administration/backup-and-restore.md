@@ -13,6 +13,7 @@ Nokia Event-Driven Automation (EDA) implementation for backup and restore includ
 - You can restore into a clean/freshly installed cluster.
 
 ## Backups
+
 In Nokia EDA, a backup is simply the copy of all Git repositories in use at the time of the backup and an `EngineConfig` resource file from the source that can be optionally restored.
 
 The `edactl platform backup` command is used to create a backup. At a high-level, this command does the following:

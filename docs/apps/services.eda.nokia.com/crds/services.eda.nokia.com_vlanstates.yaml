@@ -1,0 +1,257 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: vlanstates.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: VLANState
+    listKind: VLANStateList
+    plural: vlanstates
+    singular: vlanstate
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: VLANState is the Schema for the vlanstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VLANStateSpec defines the desired state of VLANState
+            properties:
+              bridgeDomain:
+                description: Node BridgeDomain name
+                type: string
+              bridgeDomainConfiguredName:
+                type: string
+              subInterfaces:
+                items:
+                  properties:
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource
+                      type: string
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name
+                      type: string
+                    nodeSubInterface:
+                      description: Node specific subinterface name
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    subInterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              uplinks:
+                items:
+                  properties:
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource
+                      type: string
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name
+                      type: string
+                    nodeSubInterface:
+                      description: Node specific subinterface name
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    subInterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              vlanID:
+                description: Single value between 0-4094 support, ranges supported
+                  in the format x-y,x-y, or the special keyword any or untagged or
+                  pool for auto allocation
+                type: string
+            required:
+            - bridgeDomain
+            - bridgeDomainConfiguredName
+            - subInterfaces
+            - vlanID
+            type: object
+          status:
+            description: VLANStateStatus defines the observed state of VLANState
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: VLANState is the Schema for the vlanstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VLANStateSpec defines the desired state of VLANState
+            properties:
+              bridgeDomain:
+                description: Node BridgeDomain name
+                type: string
+              bridgeDomainConfiguredName:
+                type: string
+              subinterfaces:
+                items:
+                  properties:
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource
+                      type: string
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name
+                      type: string
+                    nodeSubinterface:
+                      description: Node specific subinterface name
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    subinterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              uplinks:
+                items:
+                  properties:
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource
+                      type: string
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name
+                      type: string
+                    nodeSubinterface:
+                      description: Node specific subinterface name
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    subinterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              vlanID:
+                description: Single value between 0-4094 support, ranges supported
+                  in the format x-y,x-y, or the special keyword any or untagged or
+                  pool for auto allocation
+                type: string
+            required:
+            - bridgeDomain
+            - bridgeDomainConfiguredName
+            - subinterfaces
+            - vlanID
+            type: object
+          status:
+            description: VLANStateStatus defines the observed state of VLANState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

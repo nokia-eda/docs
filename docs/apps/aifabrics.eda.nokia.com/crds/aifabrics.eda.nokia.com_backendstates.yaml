@@ -1,0 +1,207 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: backendstates.aifabrics.eda.nokia.com
+spec:
+  group: aifabrics.eda.nokia.com
+  names:
+    kind: BackendState
+    listKind: BackendStateList
+    plural: backendstates
+    singular: backendstate
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: BackendState is the Schema for the backendstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BackendStateSpec defines the desired state of BackendState
+            properties:
+              gpuIsolationGroups:
+                description: IsolationGroups in the Backend.
+                items:
+                  properties:
+                    interfaces:
+                      description: List of interfaces mapped to the IsolationGroup.
+                      items:
+                        type: string
+                      type: array
+                    name:
+                      description: The name of the IsolationGroup.
+                      type: string
+                  type: object
+                type: array
+              stripeConnector:
+                description: Stripe connector in the Backend.
+                properties:
+                  name:
+                    description: The name of the Stripe Connector.
+                    type: string
+                  stripeConnectorNodes:
+                    description: List of stripe connector nodes in the Stripe.
+                    items:
+                      properties:
+                        node:
+                          description: Name of the TopoNode.
+                          type: string
+                        operatingSystem:
+                          description: Operating system running on the node.
+                          type: string
+                        operatingSystemVersion:
+                          description: Operating system version running on the node.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              stripes:
+                description: List of stripes in the Backend.
+                items:
+                  properties:
+                    leafNodes:
+                      description: List of leaf nodes in the Stripe.
+                      items:
+                        properties:
+                          node:
+                            description: Name of the TopoNode.
+                            type: string
+                          operatingSystem:
+                            description: Operating system running on the node.
+                            type: string
+                          operatingSystemVersion:
+                            description: Operating system version running on the node.
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      description: The name of the Stripe.
+                      type: string
+                  type: object
+                type: array
+            type: object
+          status:
+            description: BackendStateStatus defines the observed state of BackendState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: BackendState is the Schema for the backendstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BackendStateSpec defines the desired state of BackendState
+            properties:
+              gpuIsolationGroups:
+                description: IsolationGroups in the Backend.
+                items:
+                  properties:
+                    interfaces:
+                      description: List of interfaces mapped to the IsolationGroup.
+                      items:
+                        type: string
+                      type: array
+                    name:
+                      description: The name of the IsolationGroup.
+                      type: string
+                  type: object
+                type: array
+              stripeConnector:
+                description: Stripe connector in the Backend.
+                properties:
+                  name:
+                    description: The name of the Stripe Connector.
+                    type: string
+                  stripeConnectorNodes:
+                    description: List of stripe connector nodes in the Stripe.
+                    items:
+                      properties:
+                        node:
+                          description: Name of the TopoNode.
+                          type: string
+                        operatingSystem:
+                          description: Operating system running on the node.
+                          type: string
+                        operatingSystemVersion:
+                          description: Operating system version running on the node.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              stripes:
+                description: List of stripes in the Backend.
+                items:
+                  properties:
+                    leafNodes:
+                      description: List of leaf nodes in the Stripe.
+                      items:
+                        properties:
+                          node:
+                            description: Name of the TopoNode.
+                            type: string
+                          operatingSystem:
+                            description: Operating system running on the node.
+                            type: string
+                          operatingSystemVersion:
+                            description: Operating system version running on the node.
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      description: The name of the Stripe.
+                      type: string
+                  type: object
+                type: array
+            type: object
+          status:
+            description: BackendStateStatus defines the observed state of BackendState
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

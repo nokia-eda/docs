@@ -1,0 +1,1022 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: interfaces.interfaces.eda.nokia.com
+spec:
+  group: interfaces.eda.nokia.com
+  names:
+    kind: Interface
+    listKind: InterfaceList
+    plural: interfaces
+    singular: interface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.enabled
+      name: Enabled
+      type: boolean
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    - jsonPath: .status.speed
+      name: Speed
+      type: string
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: Interface is the Schema for the interfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Interface allows for the configuration of various interface
+              properties such as enabling/disabling the interface, setting descriptions,
+              specifying interface types (e.g., LAG, interface, loopback), configuring
+              VLAN encapsulation, and setting Ethernet or LAG-specific options.
+            properties:
+              ddm:
+                description: Enables reporting of DDM events.
+                type: boolean
+              description:
+                description: Description of the interface.
+                type: string
+              enabled:
+                default: true
+                description: Enable or disable the interface.
+                type: boolean
+              encapType:
+                default: "Null"
+                description: Enable or disable VLAN tagging on this interface. [default="Null"]
+                enum:
+                - "Null"
+                - Dot1q
+                type: string
+              ethernet:
+                description: Ethernet configuration options.
+                properties:
+                  crcMonitor:
+                    description: Configuration of CRC monitoring on the interface.
+                    properties:
+                      enabled:
+                        description: Enables CRC monitoring on the interface.
+                        type: boolean
+                      signalDegrade:
+                        description: |-
+                          Signal degrade threshold configuration.
+                          eda:ui:title="Signal Degrade"
+                        properties:
+                          exponent:
+                            description: Threshold exponent for the signal degrade
+                              condition.
+                            maximum: 9
+                            minimum: 1
+                            type: integer
+                          multiplier:
+                            description: Threshold multiplier for the signal degrade
+                              condition.
+                            maximum: 9
+                            minimum: 1
+                            type: integer
+                        required:
+                        - exponent
+                        - multiplier
+                        type: object
+                      signalFailure:
+                        description: |-
+                          Signal failure threshold configuration.
+                          eda:ui:title="Signal Failure"
+                        properties:
+                          exponent:
+                            description: Threshold exponent for the signal failure
+                              condition.
+                            maximum: 9
+                            minimum: 1
+                            type: integer
+                          multiplier:
+                            description: Threshold multiplier for the signal failure
+                              condition.
+                            maximum: 9
+                            minimum: 1
+                            type: integer
+                        required:
+                        - exponent
+                        - multiplier
+                        type: object
+                      windowSizeSeconds:
+                        description: Sliding window size over which CRC errors are
+                          measured, in number of seconds.
+                        minimum: 1
+                        type: integer
+                    type: object
+                  fec:
+                    description: Sets the Forward Error Correction (FEC) on the members
+                      of the interface.
+                    enum:
+                    - Disabled
+                    - RS528
+                    - RS544
+                    - BASER
+                    - RS108
+                    type: string
+                  holdDownTimerMs:
+                    description: The hold-time down behavior is triggered with events
+                      that try to bring the ethernet interface down and can change
+                      quickly. It is not triggered with an admin-state disable event
+                      or interface disable due to other internal reasons.  Units in
+                      milliseconds.
+                    format: int32
+                    maximum: 86400000
+                    minimum: 100
+                    type: integer
+                  holdUpTimerMs:
+                    description: The hold-time up behavior is triggered with any event
+                      that tries to bring up the ethernet interface.  While the hold-time
+                      up is running, the transceiver laser will be enabled, however
+                      the higher layers will not be notified that the interface is
+                      operationally up until the timer expires.  Units in milliseconds.
+                    format: int32
+                    maximum: 86400000
+                    minimum: 100
+                    type: integer
+                  loopbackMode:
+                    description: Enable dataplane loopback on the interface.
+                    enum:
+                    - None
+                    - Facility
+                    - Terminal
+                    type: string
+                  reloadDelayTimerSeconds:
+                    description: After the system boots, the reload-delay timer in
+                      seconds keeps an interface shut down with the laser off for
+                      a configured amount of time until connectivity with the rest
+                      of network is established.
+                    maximum: 86400
+                    minimum: 1
+                    type: integer
+                  speed:
+                    description: The speed of this interface, in human-readable format
+                      - e.g. 25G, 100G.
+                    enum:
+                    - 100G
+                    - 10G
+                    - 1G
+                    - 25G
+                    - 40G
+                    - 50G
+                    - 400G
+                    type: string
+                  standbySignaling:
+                    description: Indicates the standby-signaling used in the interface.
+                    enum:
+                    - LACP
+                    - PowerOff
+                    type: string
+                  stormControl:
+                    description: Enables storm control.
+                    properties:
+                      broadcastRate:
+                        description: Sets the maximum rate allowed for ingress broadcast
+                          frames on the interface.
+                        format: int32
+                        maximum: 100000000
+                        minimum: 0
+                        type: integer
+                      enabled:
+                        description: Enables storm control.
+                        type: boolean
+                      multicastRate:
+                        description: Sets the maximum rate allowed for ingress multicast
+                          frames on the interface.
+                        format: int32
+                        maximum: 100000000
+                        minimum: 0
+                        type: integer
+                      unit:
+                        description: Set the unit of measurement for the storm control
+                          rates.
+                        enum:
+                        - Kbps
+                        - BandwidthPercentage
+                        type: string
+                      unknownUnicastRate:
+                        description: Sets the maximum rate allowed for ingress unknown
+                          unicast frames on the interface.
+                        maximum: 100000000
+                        minimum: 0
+                        type: integer
+                    type: object
+                  transparentL2CPProtocols:
+                    description: 'A list of L2CP protocols to tunnel. Options: LLDP,
+                      LACP, xSTP, Dot1x, PTP, All.'
+                    items:
+                      enum:
+                      - LLDP
+                      - LACP
+                      - xSTP
+                      - Dot1x
+                      - PTP
+                      - All
+                      type: string
+                    type: array
+                type: object
+              lag:
+                description: LAG configuration options.
+                properties:
+                  lacp:
+                    description: LACP properties. This section is only applicable
+                      if the LAG type is set to LACP.
+                    properties:
+                      adminKey:
+                        description: Configure the LACP admin-key to be advertised
+                          by the local system.
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      interval:
+                        default: Fast
+                        description: Set the period between LACP messages, uses the
+                          lacp-period-type enumeration. [default="Fast"]
+                        enum:
+                        - Fast
+                        - Slow
+                        type: string
+                      lacpFallback:
+                        description: LACP fallback allows one or more designated links
+                          of an LACP controlled LAG to go into forwarding mode if
+                          LACP is not yet operational after a configured timeout period.
+                          [default=disabled]
+                        properties:
+                          mode:
+                            default: Static
+                            description: Specifies lacp-fallback mode if enabled.
+                            enum:
+                            - Static
+                            type: string
+                          timeoutSeconds:
+                            default: 60
+                            description: Specifies the LACP-fallback timeout interval
+                              in seconds. [default=60]
+                            maximum: 3600
+                            minimum: 4
+                            type: integer
+                        type: object
+                      mode:
+                        default: Active
+                        description: Active is to initiate the transmission of LACP
+                          PDUs. Passive is to wait for peer to initiate the transmission
+                          of LACP PDUs.[default="Active"]
+                        enum:
+                        - Active
+                        - Passive
+                        type: string
+                      systemMAC:
+                        description: The MAC address portion of the Node's System
+                          ID. This is combined with the system priority to construct
+                          the 8-octet system-id.
+                        type: string
+                      systemPriority:
+                        default: 32768
+                        description: System priority used by the Node on this LAG
+                          interface. Lower value is higher priority for determining
+                          which Node is the controlling system.[default=32768]
+                        maximum: 65535
+                        minimum: 0
+                        type: integer
+                    type: object
+                  minLinks:
+                    default: 1
+                    description: The min-link threshold specifies the minimum number
+                      of member links that must be active in order for the LAG to
+                      be operationally up. If the number of active links falls below
+                      this threshold, the entire LAG is brought operationally down.[default=1]
+                    maximum: 64
+                    minimum: 1
+                    type: integer
+                  multihoming:
+                    description: Multi-homing properties.
+                    properties:
+                      dfElection:
+                        description: Selects the DF election algorithm. If not specified,
+                          `default` is used with `AllActive` multi-homing and `HighestPreference`
+                          is used with `SingleActive` and `PortActive` multi-homing
+                          modes.
+                        enum:
+                        - Default
+                        - HighestPreference
+                        type: string
+                      esi:
+                        default: auto
+                        description: 10 byte Ethernet Segment Identifier, if not set
+                          a type 0 ESI is generated. [default=auto]
+                        type: string
+                      mode:
+                        default: AllActive
+                        description: '"AllActive": All interfaces are active. "SingleActive":
+                          In a single active MH LAG, the active and standby function
+                          is handled at the sub-interface layer within a network-instance.  That
+                          is, the physical interfaces within the same LAG all remain
+                          operationally up, however each sub-interface associated
+                          with a network-instance has its operational state up or
+                          down based on whether it is selected to be the active or
+                          standby sub-interface. "PortActive": When port active MH
+                          LAG is enabled, the active and standby function is handled
+                          at the interface level.'
+                        enum:
+                        - AllActive
+                        - SingleActive
+                        - PortActive
+                        type: string
+                      preferredActiveNode:
+                        description: When configured with a reference to the Node
+                          object and the Highest-Preference DF election algorightm
+                          is used, the selected Node is set with a higher preference
+                          value.  All other Nodes have a lower value configured.
+                        type: string
+                      reloadDelayTimerSeconds:
+                        default: 100
+                        description: After the system boots, the reload-delay timer
+                          in seconds keeps an interface shut down with the laser off
+                          for a configured amount of time until connectivity with
+                          the rest of network is established. [default=100]
+                        maximum: 86400
+                        minimum: 1
+                        type: integer
+                      revertive:
+                        default: false
+                        description: Enables revertive DF election behavior with Preference-Based
+                          Election mode. [default=false]
+                        type: boolean
+                    type: object
+                  type:
+                    default: LACP
+                    description: This type defines whether whether it is a static
+                      or LACP LAG. [default=LACP]
+                    enum:
+                    - LACP
+                    - Static
+                    type: string
+                type: object
+              lldp:
+                default: true
+                description: Enable or disable LLDP on the members of the interface.
+                type: boolean
+              members:
+                description: List of members on which to apply properties, for single
+                  interface this would be a list of 1.
+                items:
+                  properties:
+                    aggregateID:
+                      description: |-
+                        When using a LAG, the aggregateId can be specified per set of interfaces on a node.
+                        LAG interface with which this interface is associated.
+                      type: string
+                    description:
+                      description: Description of the member, inherited from the interface
+                        if not provided.
+                      type: string
+                    enabled:
+                      default: true
+                      description: Enable or disable this member.
+                      type: boolean
+                    interface:
+                      description: 'Reference to an interface in the normalized format.
+                        Ex: SRL ethernet-1/1 would be ethernet-1-1. SROS port 2/1/1
+                        would be ethernet-2-1.'
+                      type: string
+                    lacpPortPriority:
+                      default: 32768
+                      description: Configure the port priority for LACP. This value
+                        is used to determine which port should be activated with LACP
+                        fallback mode. Lower values are more preferred.[default=32768]
+                      maximum: 65535
+                      minimum: 0
+                      type: integer
+                    node:
+                      description: Node name.
+                      type: string
+                  required:
+                  - interface
+                  - node
+                  type: object
+                type: array
+              mode:
+                description: Set interface mode for platforms that support explicit
+                  configuration of access or network mode. [SROS only]
+                enum:
+                - Access
+                - Network
+                - Hybrid
+                type: string
+              mtu:
+                description: MTU to apply on the interface(s).
+                maximum: 9500
+                minimum: 1450
+                type: integer
+              type:
+                default: Interface
+                description: Type defines whether the interface is a LAG or a regular
+                  Interface.
+                enum:
+                - LAG
+                - Interface
+                - Loopback
+                type: string
+            required:
+            - members
+            type: object
+          status:
+            properties:
+              enabled:
+                description: The administrative status of the Interface.
+                type: boolean
+              lag:
+                properties:
+                  adminKey:
+                    description: LACP Admin Key.
+                    type: integer
+                  systemMAC:
+                    description: LACP System ID MAC address.
+                    type: string
+                type: object
+              lastChange:
+                description: Indicates when this Interface last changed state.
+                type: string
+              members:
+                description: List of members in this Interface.
+                items:
+                  properties:
+                    enabled:
+                      description: The administrative status of this member.
+                      type: boolean
+                    interface:
+                      description: The name of the interface in normalized format.
+                      type: string
+                    lastChange:
+                      description: Indicates when this member last changed state.
+                      type: string
+                    neighbors:
+                      description: List of discovered neighbors on this member.
+                      items:
+                        properties:
+                          interface:
+                            description: The name of a neighbor interface of this
+                              member in node specific format.
+                            type: string
+                          node:
+                            description: The name of a neighbor node of this member
+                              in node specific format.
+                            type: string
+                        type: object
+                      type: array
+                    node:
+                      description: The node on which the interface is configured.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name, for example "ethernet-1/1",
+                        "1/1/c1/1".
+                      type: string
+                    operationalState:
+                      description: Indicates the current operational state of this
+                        member.
+                      enum:
+                      - Up
+                      - Down
+                      - Degraded
+                      - Unknown
+                      - N/A
+                      type: string
+                    speed:
+                      description: Indicates the operational speed of the member.
+                      type: string
+                  required:
+                  - nodeInterface
+                  type: object
+                type: array
+              operationalState:
+                description: Indicates the current operational state of the Interface.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                - N/A
+                type: string
+              speed:
+                description: Indicates the operational speed of the Interface in aggregate.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.enabled
+      name: Enabled
+      type: boolean
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    - jsonPath: .status.speed
+      name: Speed
+      type: string
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Interface is the Schema for the interfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Interface allows for the configuration of various interface
+              properties such as enabling/disabling the interface, setting descriptions,
+              specifying interface types (e.g., LAG, interface, loopback), configuring
+              VLAN encapsulation, and setting Ethernet or LAG-specific options.
+            properties:
+              ddm:
+                description: Enables reporting of DDM events.
+                type: boolean
+              description:
+                description: Description of the interface.
+                type: string
+              enabled:
+                default: true
+                description: Enable or disable the interface.
+                type: boolean
+              encapType:
+                default: "null"
+                description: Enable or disable VLAN tagging on this interface. [default="null"]
+                enum:
+                - "null"
+                - dot1q
+                type: string
+              ethernet:
+                description: Ethernet configuration options.
+                properties:
+                  crcMonitor:
+                    description: Configuration of CRC monitoring on the interface.
+                    properties:
+                      enabled:
+                        description: Enables CRC monitoring on the interface.
+                        type: boolean
+                      signalDegrade:
+                        description: |-
+                          Signal degrade threshold configuration.
+                          eda:ui:title="Signal Degrade"
+                        properties:
+                          exponent:
+                            description: Threshold exponent for the signal degrade
+                              condition.
+                            maximum: 9
+                            minimum: 1
+                            type: integer
+                          multiplier:
+                            description: Threshold multiplier for the signal degrade
+                              condition.
+                            maximum: 9
+                            minimum: 1
+                            type: integer
+                        required:
+                        - exponent
+                        - multiplier
+                        type: object
+                      signalFailure:
+                        description: |-
+                          Signal failure threshold configuration.
+                          eda:ui:title="Signal Failure"
+                        properties:
+                          exponent:
+                            description: Threshold exponent for the signal failure
+                              condition.
+                            maximum: 9
+                            minimum: 1
+                            type: integer
+                          multiplier:
+                            description: Threshold multiplier for the signal failure
+                              condition.
+                            maximum: 9
+                            minimum: 1
+                            type: integer
+                        required:
+                        - exponent
+                        - multiplier
+                        type: object
+                      windowSizeSec:
+                        description: Sliding window size over which CRC errors are
+                          measured, in number of seconds.
+                        minimum: 1
+                        type: integer
+                    type: object
+                  fec:
+                    description: Sets the Forward Error Correction (FEC) on the members
+                      of the interface.
+                    enum:
+                    - disabled
+                    - rs528
+                    - rs544
+                    - baser
+                    - rs108
+                    type: string
+                  holdDownTimer:
+                    description: The hold-time down behavior is triggered with events
+                      that try to bring the ethernet interface down and can change
+                      quickly. It is not triggered with an admin-state disable event
+                      or interface disable due to other internal reasons.  Units in
+                      milliseconds.
+                    format: int32
+                    maximum: 86400000
+                    minimum: 100
+                    type: integer
+                  holdUpTimer:
+                    description: The hold-time up behavior is triggered with any event
+                      that tries to bring up the ethernet interface.  While the hold-time
+                      up is running, the transceiver laser will be enabled, however
+                      the higher layers will not be notified that the interface is
+                      operationally up until the timer expires.  Units in milliseconds.
+                    format: int32
+                    maximum: 86400000
+                    minimum: 100
+                    type: integer
+                  loopbackMode:
+                    description: Enable dataplane loopback on the interface.
+                    enum:
+                    - none
+                    - facility
+                    - terminal
+                    type: string
+                  reloadDelayTimer:
+                    description: After the system boots, the reload-delay timer in
+                      seconds keeps an interface shut down with the laser off for
+                      a configured amount of time until connectivity with the rest
+                      of network is established.
+                    maximum: 86400
+                    minimum: 1
+                    type: integer
+                  speed:
+                    description: The speed of this interface, in human-readable format
+                      - e.g. 25G, 100G.
+                    enum:
+                    - 100G
+                    - 10G
+                    - 1G
+                    - 25G
+                    - 40G
+                    - 50G
+                    - 400G
+                    type: string
+                  standbySignaling:
+                    description: Indicates the standby-signaling used in the interface.
+                    enum:
+                    - lacp
+                    - power-off
+                    type: string
+                  stormControl:
+                    description: Enables storm control.
+                    properties:
+                      broadcastRate:
+                        description: Sets the maximum rate allowed for ingress broadcast
+                          frames on the interface.
+                        format: int32
+                        maximum: 100000000
+                        minimum: 0
+                        type: integer
+                      enabled:
+                        description: Enables storm control.
+                        type: boolean
+                      multicastRate:
+                        description: Sets the maximum rate allowed for ingress multicast
+                          frames on the interface.
+                        format: int32
+                        maximum: 100000000
+                        minimum: 0
+                        type: integer
+                      units:
+                        description: Set the units to be used for measurement.
+                        enum:
+                        - kbps
+                        - percentage
+                        type: string
+                      unknownUnicastRate:
+                        description: Sets the maximum rate allowed for ingress unknown
+                          unicast frames on the interface.
+                        maximum: 100000000
+                        minimum: 0
+                        type: integer
+                    type: object
+                  transparentL2CPProtocols:
+                    description: 'A list of L2CP protocols to tunnel. Options: LLDP,
+                      LACP, xSTP, Dot1x, PTP, All.'
+                    items:
+                      enum:
+                      - LLDP
+                      - LACP
+                      - xSTP
+                      - Dot1x
+                      - PTP
+                      - All
+                      type: string
+                    type: array
+                type: object
+              lag:
+                description: LAG configuration options.
+                properties:
+                  lacp:
+                    description: LACP properties. This section is only applicable
+                      if the LAG type is set to LACP.
+                    properties:
+                      adminKey:
+                        description: Configure the LACP admin-key to be advertised
+                          by the local system.
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      interval:
+                        default: fast
+                        description: Set the period between LACP messages, uses the
+                          lacp-period-type enumeration. [default="fast"]
+                        enum:
+                        - fast
+                        - slow
+                        type: string
+                      lacpFallback:
+                        description: LACP fallback allows one or more designated links
+                          of an LACP controlled LAG to go into forwarding mode if
+                          LACP is not yet operational after a configured timeout period.
+                          [default=disabled]
+                        properties:
+                          mode:
+                            default: static
+                            description: Specifies lacp-fallback mode if enabled.
+                            enum:
+                            - static
+                            type: string
+                          timeout:
+                            default: 60
+                            description: Specifies the LACP-fallback timeout interval
+                              in seconds. [default=60]
+                            maximum: 3600
+                            minimum: 4
+                            type: integer
+                        type: object
+                      mode:
+                        default: active
+                        description: Active is to initiate the transmission of LACP
+                          PDUs. Passive is to wait for peer to initiate the transmission
+                          of LACP PDUs.[default="active"]
+                        enum:
+                        - active
+                        - passive
+                        type: string
+                      systemIdMac:
+                        description: The MAC address portion of the Node's System
+                          ID. This is combined with the system priority to construct
+                          the 8-octet system-id.
+                        type: string
+                      systemPriority:
+                        default: 32768
+                        description: System priority used by the Node on this LAG
+                          interface. Lower value is higher priority for determining
+                          which Node is the controlling system.[default=32768]
+                        maximum: 65535
+                        minimum: 0
+                        type: integer
+                    type: object
+                  minLinks:
+                    default: 1
+                    description: The min-link threshold specifies the minimum number
+                      of member links that must be active in order for the LAG to
+                      be operationally up. If the number of active links falls below
+                      this threshold, the entire LAG is brought operationally down.[default=1]
+                    maximum: 64
+                    minimum: 1
+                    type: integer
+                  multihoming:
+                    description: Multi-homing properties.
+                    properties:
+                      esi:
+                        default: auto
+                        description: 10 byte Ethernet Segment Identifier, if not set
+                          a type 0 ESI is generated. [default=auto]
+                        type: string
+                      mode:
+                        default: all-active
+                        description: |-
+                          "all-active": All interfaces are active.
+                          "single-active": In a single active MH LAG, the active and standby function is handled at the sub-interface layer within a network-instance.  That is, the physical interfaces within the same LAG all remain operationally up, however each sub-interface associated with a network-instance has its operational state up or down based on whether it is selected to be the active or standby sub-interface.
+                          "port-active": When port active MH LAG is enabled, the active and standby function is handled at the interface level.
+                        enum:
+                        - all-active
+                        - single-active
+                        - port-active
+                        type: string
+                      preferredActiveNode:
+                        description: When configured with a reference to the Node
+                          object and the Highest-Preference DF election algorightm
+                          is used, the selected Node is set with a higher preference
+                          value.  All other Nodes have a lower value configured.
+                        type: string
+                      reloadDelayTimer:
+                        default: 100
+                        description: After the system boots, the reload-delay timer
+                          in seconds keeps an interface shut down with the laser off
+                          for a configured amount of time until connectivity with
+                          the rest of network is established. [default=100]
+                        maximum: 86400
+                        minimum: 1
+                        type: integer
+                      revertive:
+                        default: false
+                        description: Enables revertive DF election behavior with Preference-Based
+                          Election mode. [default=false]
+                        type: boolean
+                    type: object
+                  type:
+                    default: lacp
+                    description: This type defines whether whether it is a static
+                      or LACP LAG. [default=lacp]
+                    enum:
+                    - lacp
+                    - static
+                    type: string
+                type: object
+              lldp:
+                default: true
+                description: Enable or disable LLDP on the members of the interface.
+                type: boolean
+              members:
+                description: List of members on which to apply properties, for single
+                  interface this would be a list of 1.
+                items:
+                  properties:
+                    aggregateId:
+                      description: |-
+                        When using a LAG, the aggregateId can be specified per set of interfaces on a node.
+                        LAG interface with which this interface is associated.
+                      type: string
+                    description:
+                      description: Description of the member, inherited from the interface
+                        if not provided.
+                      type: string
+                    enabled:
+                      default: true
+                      description: Enable or disable this member.
+                      type: boolean
+                    interface:
+                      description: 'Reference to an interface in the normalized format.
+                        Ex: SRL ethernet-1/1 would be ethernet-1-1. SROS port 2/1/1
+                        would be ethernet-2-1.'
+                      type: string
+                    lacpPortPriority:
+                      default: 32768
+                      description: Configure the port priority for LACP. This value
+                        is used to determine which port should be activated with LACP
+                        fallback mode. Lower values are more preferred.[default=32768]
+                      maximum: 65535
+                      minimum: 0
+                      type: integer
+                    node:
+                      description: Node name.
+                      type: string
+                  required:
+                  - interface
+                  - node
+                  type: object
+                type: array
+              mtu:
+                description: MTU to apply on the interface(s).
+                maximum: 9500
+                minimum: 1450
+                type: integer
+              type:
+                default: interface
+                description: Type defines whether the interface is a Lag or Interface.
+                enum:
+                - lag
+                - interface
+                - loopback
+                type: string
+            required:
+            - members
+            type: object
+          status:
+            properties:
+              enabled:
+                description: The administrative status of the Interface.
+                type: boolean
+              lag:
+                properties:
+                  adminKey:
+                    description: LACP Admin Key.
+                    type: integer
+                  systemIdMac:
+                    description: LACP System ID MAC address.
+                    type: string
+                type: object
+              lastChange:
+                description: Indicates when this Interface last changed state.
+                type: string
+              members:
+                description: List of members in this Interface.
+                items:
+                  properties:
+                    enabled:
+                      description: The administrative status of this member.
+                      type: boolean
+                    interface:
+                      description: The name of the interface in normalized format.
+                      type: string
+                    lastChange:
+                      description: Indicates when this member last changed state.
+                      type: string
+                    neighbors:
+                      description: List of discovered neighbors on this member.
+                      items:
+                        properties:
+                          interface:
+                            description: The name of a neighbor interface of this
+                              member in node specific format.
+                            type: string
+                          node:
+                            description: The name of a neighbor node of this member
+                              in node specific format.
+                            type: string
+                        type: object
+                      type: array
+                    node:
+                      description: The node on which the interface is configured.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name, for example "ethernet-1/1",
+                        "1/1/c1/1".
+                      type: string
+                    operationalState:
+                      description: Indicates the current operational state of this
+                        member.
+                      type: string
+                    speed:
+                      description: Indicates the operational speed of the member.
+                      type: string
+                  required:
+                  - nodeInterface
+                  type: object
+                type: array
+              operationalState:
+                description: Indicates the current operational state of the Interface.
+                type: string
+              speed:
+                description: Indicates the operational speed of the Interface in aggregate.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

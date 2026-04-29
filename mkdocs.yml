@@ -77,22 +77,29 @@ nav:
           - Draining traffic: user-guide/administration/drain-traffic.md
           - Platform logging: user-guide/administration/log-forwarding.md
   - Apps:
-      - apps/index.md
-      - Fabric: apps/fabric.md
-      - Protocols: apps/protocols.md
-      - Virtual Network: apps/virtualnetwork.md
-      - Interfaces: apps/interfaces.md
-      - InfluxDB Exporter: apps/influxdb-exporter.md
-      - Notifier: apps/notifier.md
-      - NATS Exporter: apps/nats-exporter.md
-      - ServiceNow: apps/service-now.md
-      - OTLP Exporter: apps/otlp-exporter.md
-      - Prometheus Exporter: apps/prometheus-exporter.md
-      - Remote Write: apps/remote-write.md
-      - Kafka Exporter: apps/kafka-exporter.md
-      - NetBox: apps/netbox.md
-      - GitHub: apps/github.md
-      - GitLab: apps/gitlab.md
+      - Overview: apps/index.md
+      - AAA:
+          - apps/aaa.eda.nokia.com/docs/index.md
+          - Authentication Policies: apps/aaa.eda.nokia.com/docs/resources/authenticationpolicy.md
+          - Authentication Policy State: apps/aaa.eda.nokia.com/docs/resources/authenticationpolicystate.md
+          - Node Group Deployment: apps/aaa.eda.nokia.com/docs/resources/nodegroupdeployment.md
+          - Node User Groups: apps/aaa.eda.nokia.com/docs/resources/nodegroup.md
+          - Node User State: apps/aaa.eda.nokia.com/docs/resources/nodeuserstate.md
+          - Server Group State: apps/aaa.eda.nokia.com/docs/resources/servergroupstate.md
+          - Server Groups: apps/aaa.eda.nokia.com/docs/resources/servergroup.md
+      - AIFabrics:
+          - apps/aifabrics.eda.nokia.com/docs/index.md
+          - AI Backends: apps/aifabrics.eda.nokia.com/docs/resources/backend.md
+      - Anomalies:
+          - apps/anomalies.eda.nokia.com/docs/index.md
+      - Bootstrap:
+          - apps/bootstrap.eda.nokia.com/docs/index.md
+          - Resources:
+              - Bootstrap: apps/bootstrap.eda.nokia.com/docs/resources/init.md
+              - Management Routers: apps/bootstrap.eda.nokia.com/docs/resources/managementrouter.md
+              - Satellites: apps/bootstrap.eda.nokia.com/docs/resources/satellite.md
+          - Workflows:
+              - Rotate Certificates: apps/bootstrap.eda.nokia.com/docs/resources/rotatecertificate.md
       - Cloud Connect:
           - apps/connect/index.md
           - Installation: apps/connect/cloud-connect-installation.md
@@ -120,6 +127,214 @@ nav:
               - NSX:
                   - apps/connect/vmware/nsx/index.md
                   - Installation: apps/connect/vmware/nsx/installation.md
+      - Components:
+          - apps/components.eda.nokia.com/docs/index.md
+          - CPU Overlay: apps/components.eda.nokia.com/docs/resources/cpuoverlay.md
+          - Chassis: apps/components.eda.nokia.com/docs/resources/chassis.md
+          - Cluster Discovery: apps/components.eda.nokia.com/docs/resources/clusterdiscovery.md
+          - Components: apps/components.eda.nokia.com/docs/resources/component.md
+          - Control Modules: apps/components.eda.nokia.com/docs/resources/controlmodule.md
+          - Fabric Modules: apps/components.eda.nokia.com/docs/resources/fabricmodule.md
+          - Fans: apps/components.eda.nokia.com/docs/resources/fan.md
+          - Interface Modules: apps/components.eda.nokia.com/docs/resources/interfacemodule.md
+          - Memory Overlay: apps/components.eda.nokia.com/docs/resources/memoryoverlay.md
+          - Monitoring: apps/components.eda.nokia.com/docs/resources/monitor.md
+          - Power Supplies: apps/components.eda.nokia.com/docs/resources/powersupply.md
+          - Volume Overlay: apps/components.eda.nokia.com/docs/resources/volumeoverlay.md
+      - Configuration:
+          - apps/config.eda.nokia.com/docs/index.md
+          - Configlets: apps/config.eda.nokia.com/docs/resources/configlet.md
+      - Core Extensions:
+          - apps/coreext.eda.nokia.com/docs/index.md
+          - Platform Backups: apps/coreext.eda.nokia.com/docs/resources/platformbackup.md
+      - Demo:
+          - apps/demo.eda.nokia.com/docs/index.md
+          - GVK Ping: apps/demo.eda.nokia.com/docs/resources/gvkping.md
+          - Kubernetes: apps/demo.eda.nokia.com/docs/resources/k8stypes.md
+          - Labels: apps/demo.eda.nokia.com/docs/resources/label.md
+          - OAS Extension: apps/demo.eda.nokia.com/docs/resources/oasextension.md
+          - Overlay: apps/demo.eda.nokia.com/docs/resources/overlay.md
+          - Simple VRFs: apps/demo.eda.nokia.com/docs/resources/simplevrf.md
+      - Environment:
+          - apps/environment.eda.nokia.com/docs/index.md
+          - Push CLI Plugin: apps/environment.eda.nokia.com/docs/resources/cliplugin.md
+          - Push Environment: apps/environment.eda.nokia.com/docs/resources/setupenv.md
+      - Fabrics:
+          - apps/fabrics.eda.nokia.com/docs/index.md
+          - Resources:
+              - Fabrics: apps/fabrics.eda.nokia.com/docs/resources/fabric.md
+              - ISLs: apps/fabrics.eda.nokia.com/docs/resources/isl.md
+          - Workflows:
+              - ISL Ping: apps/fabrics.eda.nokia.com/docs/resources/islping.md
+      - Filters:
+          - apps/filters.eda.nokia.com/docs/index.md
+          - Control Plane Filters: apps/filters.eda.nokia.com/docs/resources/controlplanefilter.md
+          - Filters: apps/filters.eda.nokia.com/docs/resources/filter.md
+          - Prefix Set Deployment: apps/filters.eda.nokia.com/docs/resources/prefixsetdeployment.md
+          - Prefix Sets: apps/filters.eda.nokia.com/docs/resources/prefixset.md
+      - Flow Sampling:
+          - apps/flowsampling.eda.nokia.com/docs/index.md
+          - sFlow: apps/flowsampling.eda.nokia.com/docs/resources/sflow.md
+      - Gemini:
+          - apps/gemini.eda.nokia.com/docs/index.md
+      - GitHub: apps/github.md
+      - GitLab: apps/gitlab.md
+      - Interface:
+          - apps/interfaces.eda.nokia.com/docs/index.md
+          - Resources:
+              - Breakouts: apps/interfaces.eda.nokia.com/docs/resources/breakout.md
+              - Interfaces: apps/interfaces.eda.nokia.com/docs/resources/interface.md
+          - Workflows:
+              - Analyze Alarm: apps/interfaces.eda.nokia.com/docs/resources/analyzealarm.md
+              - Check Interfaces: apps/interfaces.eda.nokia.com/docs/resources/checkinterfaces.md
+      - InfluxDB Exporter: apps/influxdb-exporter.md
+      - Kafka Exporter: apps/kafka-exporter.md
+      - Logs:
+          - apps/logs.eda.nokia.com/docs/index.md
+      - Management:
+          - apps/management.eda.nokia.com/docs/index.md
+          - FTP Servers: apps/management.eda.nokia.com/docs/resources/ftpserver.md
+          - HTTP Servers: apps/management.eda.nokia.com/docs/resources/httpserver.md
+          - SSH Servers: apps/management.eda.nokia.com/docs/resources/sshserver.md
+          - gRPC Servers: apps/management.eda.nokia.com/docs/resources/grpcserver.md
+      - Micro Segmentation:
+          - apps/microsegmentation.eda.nokia.com/docs/index.md
+          - Group Tag Association Policies: apps/microsegmentation.eda.nokia.com/docs/resources/associationpolicy.md
+          - Group Tags: apps/microsegmentation.eda.nokia.com/docs/resources/grouptag.md
+          - Micro Segmentation Policies: apps/microsegmentation.eda.nokia.com/docs/resources/microsegmentationpolicy.md
+      - MPLS:
+          - apps/mpls.eda.nokia.com/docs/index.md
+          - Default LDP Interfaces: apps/mpls.eda.nokia.com/docs/resources/defaultldpinterface.md
+          - Default LDP Routers: apps/mpls.eda.nokia.com/docs/resources/defaultldprouter.md
+          - Label Blocks: apps/mpls.eda.nokia.com/docs/resources/labelblock.md
+      - NATS Exporter: apps/nats-exporter.md
+      - NetBox: apps/netbox.md
+      - Notifier: apps/notifier.md
+      - OAM:
+          - apps/oam.eda.nokia.com/docs/index.md
+          - Resources:
+              - Mirror: apps/oam.eda.nokia.com/docs/resources/mirror.md
+              - Mirror State: apps/oam.eda.nokia.com/docs/resources/mirrorstate.md
+              - Thresholds: apps/oam.eda.nokia.com/docs/resources/threshold.md
+          - Workflows:
+              - Ping: apps/oam.eda.nokia.com/docs/resources/ping.md
+              - Tech Support: apps/oam.eda.nokia.com/docs/resources/techsupport.md
+      - OpenAI:
+          - apps/openai.eda.nokia.com/docs/index.md
+      - Operating System:
+          - apps/os.eda.nokia.com/docs/index.md
+          - Deploy Image: apps/os.eda.nokia.com/docs/resources/deployimage.md
+      - OTLP Exporter: apps/otlp-exporter.md
+      - Prometheus Exporter: apps/prometheus-exporter.md
+      - Protocols:
+          - apps/protocols.eda.nokia.com/docs/index.md
+          - Resources:
+              - Underlay Routing:
+                  - Default Aggregate Routes: apps/protocols.eda.nokia.com/docs/resources/defaultaggregateroute.md
+                  - Default BGP Groups: apps/protocols.eda.nokia.com/docs/resources/defaultbgpgroup.md
+                  - Default BGP Peers: apps/protocols.eda.nokia.com/docs/resources/defaultbgppeer.md
+                  - Default OSPF Areas: apps/protocols.eda.nokia.com/docs/resources/defaultospfarea.md
+                  - Default OSPF Instances: apps/protocols.eda.nokia.com/docs/resources/defaultospfinstance.md
+                  - Default OSPF Interfaces: apps/protocols.eda.nokia.com/docs/resources/defaultospfinterface.md
+                  - Default Route Reflector Clients: apps/protocols.eda.nokia.com/docs/resources/defaultroutereflectorclient.md
+                  - Default Route Reflectors: apps/protocols.eda.nokia.com/docs/resources/defaultroutereflector.md
+                  - Default Static Routes: apps/protocols.eda.nokia.com/docs/resources/defaultstaticroute.md
+              - Virtual Networks:
+                  - Aggregate Routes: apps/protocols.eda.nokia.com/docs/resources/aggregateroute.md
+                  - BGP Groups: apps/protocols.eda.nokia.com/docs/resources/bgpgroup.md
+                  - BGP Peers: apps/protocols.eda.nokia.com/docs/resources/bgppeer.md
+                  - OSPF Areas: apps/protocols.eda.nokia.com/docs/resources/ospfarea.md
+                  - OSPF Instances: apps/protocols.eda.nokia.com/docs/resources/ospfinstance.md
+                  - OSPF Interfaces: apps/protocols.eda.nokia.com/docs/resources/ospfinterface.md
+                  - Route Reflector Clients: apps/protocols.eda.nokia.com/docs/resources/routereflectorclient.md
+                  - Route Reflectors: apps/protocols.eda.nokia.com/docs/resources/routereflector.md
+                  - Static Routes: apps/protocols.eda.nokia.com/docs/resources/staticroute.md
+          - Workflows:
+              - Analyze Alarm: apps/protocols.eda.nokia.com/docs/resources/analyzealarm.md
+              - Check BGP: apps/protocols.eda.nokia.com/docs/resources/checkdefaultbgppeers.md
+      - QoS:
+          - apps/qos.eda.nokia.com/docs/index.md
+          - Egress Policies: apps/qos.eda.nokia.com/docs/resources/egresspolicy.md
+          - Forwarding Class: apps/qos.eda.nokia.com/docs/resources/forwardingclass.md
+          - Ingress Policies: apps/qos.eda.nokia.com/docs/resources/ingresspolicy.md
+          - Policy Attachment: apps/qos.eda.nokia.com/docs/resources/policyattachment.md
+          - Policy Deployment: apps/qos.eda.nokia.com/docs/resources/policydeployment.md
+          - Queue: apps/qos.eda.nokia.com/docs/resources/queue.md
+      - Remote Write: apps/remote-write.md
+      - Routing:
+          - apps/routing.eda.nokia.com/docs/index.md
+          - Resources:
+              - Default Interfaces: apps/routing.eda.nokia.com/docs/resources/defaultinterface.md
+              - Default Routers: apps/routing.eda.nokia.com/docs/resources/defaultrouter.md
+              - Drains: apps/routing.eda.nokia.com/docs/resources/drain.md
+              - System Interfaces: apps/routing.eda.nokia.com/docs/resources/systeminterface.md
+          - Workflows:
+              - Attachment Lookup: apps/routing.eda.nokia.com/docs/resources/attachmentlookup.md
+              - Route Lookup: apps/routing.eda.nokia.com/docs/resources/routelookup.md
+              - Route Trace: apps/routing.eda.nokia.com/docs/resources/routetrace.md
+              - System Ping: apps/routing.eda.nokia.com/docs/resources/systemping.md
+      - Routing Policies:
+          - apps/routingpolicies.eda.nokia.com/docs/index.md
+          - AS Path Sets: apps/routingpolicies.eda.nokia.com/docs/resources/aspathset.md
+          - Community Sets: apps/routingpolicies.eda.nokia.com/docs/resources/communityset.md
+          - Policies: apps/routingpolicies.eda.nokia.com/docs/resources/policy.md
+          - Prefix Sets: apps/routingpolicies.eda.nokia.com/docs/resources/prefixset.md
+          - Tag Set Deployment: apps/routingpolicies.eda.nokia.com/docs/resources/tagsetdeployment.md
+          - Tag Sets: apps/routingpolicies.eda.nokia.com/docs/resources/tagset.md
+      - Security:
+          - apps/security.eda.nokia.com/docs/index.md
+          - Keychain Deployments: apps/security.eda.nokia.com/docs/resources/keychaindeployment.md
+          - Keychains: apps/security.eda.nokia.com/docs/resources/keychain.md
+      - ServiceNow: apps/service-now.md
+      - Services:
+          - apps/services.eda.nokia.com/docs/index.md
+          - Resources:
+              - DHCP:
+                  - DHCP Relay: apps/services.eda.nokia.com/docs/resources/dhcprelay.md
+              - Virtual Networks:
+                  - Bridge Domain Interconnect: apps/services.eda.nokia.com/docs/resources/bridgedomaininterconnect.md
+                  - Bridge Domains: apps/services.eda.nokia.com/docs/resources/bridgedomain.md
+                  - Bridge Interfaces: apps/services.eda.nokia.com/docs/resources/bridgeinterface.md
+                  - IRB Interfaces: apps/services.eda.nokia.com/docs/resources/irbinterface.md
+                  - Routed Interfaces: apps/services.eda.nokia.com/docs/resources/routedinterface.md
+                  - Router Interconnect: apps/services.eda.nokia.com/docs/resources/routerinterconnect.md
+                  - Routers: apps/services.eda.nokia.com/docs/resources/router.md
+                  - VLANs: apps/services.eda.nokia.com/docs/resources/vlan.md
+                  - Virtual Networks: apps/services.eda.nokia.com/docs/resources/virtualnetwork.md
+          - Workflows:
+              - Edge Ping: apps/services.eda.nokia.com/docs/resources/edgeping.md
+      - Site Information:
+          - apps/siteinfo.eda.nokia.com/docs/index.md
+          - Management:
+              - Banners: apps/siteinfo.eda.nokia.com/docs/resources/banner.md
+              - DNS Clients: apps/siteinfo.eda.nokia.com/docs/resources/dnsclient.md
+          - Site Profiles:
+              - Default MTU: apps/siteinfo.eda.nokia.com/docs/resources/defaultmtu.md
+              - Load Balancing: apps/siteinfo.eda.nokia.com/docs/resources/systemloadbalancer.md
+          - Banner State: apps/siteinfo.eda.nokia.com/docs/resources/bannerstate.md
+          - DNS Client State: apps/siteinfo.eda.nokia.com/docs/resources/dnsclientstate.md
+      - Support:
+          - apps/support.eda.nokia.com/docs/index.md
+          - Locator: apps/support.eda.nokia.com/docs/resources/locator.md
+      - System:
+          - apps/system.eda.nokia.com/docs/index.md
+      - Timing:
+          - apps/timing.eda.nokia.com/docs/index.md
+          - NTP Clients: apps/timing.eda.nokia.com/docs/resources/ntpclient.md
+      - Topologies:
+          - apps/topologies.eda.nokia.com/docs/index.md
+          - Resources:
+              - Alarm Overlay: apps/topologies.eda.nokia.com/docs/resources/alarmoverlay.md
+              - Deviation Overlay: apps/topologies.eda.nokia.com/docs/resources/deviationoverlay.md
+              - Lldp Overlay: apps/topologies.eda.nokia.com/docs/resources/lldpoverlay.md
+              - Topology: apps/topologies.eda.nokia.com/docs/resources/topology.md
+              - Topology Grouping: apps/topologies.eda.nokia.com/docs/resources/topologygrouping.md
+              - Traffic Rate Overlay: apps/topologies.eda.nokia.com/docs/resources/trafficrateoverlay.md
+          - Workflows:
+              - Network Topology: apps/topologies.eda.nokia.com/docs/resources/networktopology.md
+      - Virtual Network: apps/virtualnetwork.md
+      - xAI:
+          - apps/xai.eda.nokia.com/docs/index.md
   - Development:
       - Applications:
           - There's an app for that: development/apps/index.md
@@ -159,7 +374,7 @@ site_description: >-
 repo_name: docs
 repo_url: https://github.com/nokia-eda/docs
 edit_uri: edit/{versioned_branch}/docs/
-site_url: "https://docs.eda.dev/"
+site_url: https://docs.eda.dev/
 # copyright date is set in the hooks/hooks.py automatically to the current year
 # https://github.com/squidfunk/mkdocs-material/discussions/4969#discussioncomment-7290363
 copyright: Copyright © 2023-{current_year} Nokia
@@ -210,14 +425,16 @@ theme:
 
 # Plugins
 plugins:
-  - meta
+  # App docs use docs/vars.yaml per app; meta plugin defaults to .meta.yml only.
+  - meta:
+      meta_file: vars.yaml
   - search
   - glightbox
   - crd-viewer
   - macros:
-      j2_block_start_string: "-{{%"
+      j2_block_start_string: -{{%
       j2_block_end_string: "%}}-"
-      j2_variable_start_string: "-{{"
+      j2_variable_start_string: -{{
       j2_variable_end_string: "}}-"
       # include_yaml:
       #   - macros/vars.yml
@@ -268,10 +485,10 @@ plugins:
 
 # Customization
 extra:
-  eda_version: "26.4.1" # current EDA version (provided without the v prefix)
-  srl_version: "26.3.1" # latest SRL version for the current EDA version
-  rook_ceph_version: "v1.18.7"
-  talos_version: "v1.11" # current talos maj.min version
+  eda_version: 26.4.1 # current EDA version (provided without the v prefix)
+  srl_version: 26.3.1 # latest SRL version for the current EDA version
+  rook_ceph_version: v1.18.7
+  talos_version: v1.11 # current talos maj.min version
   social:
     - icon: nokia/N-white
       link: https://www.nokia.com/data-center-networks/data-center-fabric/event-driven-automation/
@@ -362,6 +579,9 @@ hooks:
   - hooks/hooks.py
 
 extra_javascript:
+  # Privacy + mike: theme-injected mermaid URL is absolute to site_url root;
+  # versioned deploys need this explicit entry for correct relative script paths.
+  - javascripts/mermaid.min.js
   # https://github.com/srl-labs/learn-srlinux/pull/133
   - javascripts/sh-annotation.js
   - javascripts/expandable-blocks.js

@@ -1,0 +1,17 @@
+apiVersion: aaa.eda.nokia.com/v1
+kind: ServerGroup
+metadata:
+  name: my-radius-servers
+  namespace: eda
+spec:
+  aaaServers:
+    - address: 214.1.1.2
+      secret: testing123
+  nodeGroups:
+    - cli-access
+    - sudo
+  radius:
+    accountingPort: 1813
+    authenticationPort: 1812
+  routerKind: ManagementRouter
+  type: RADIUS

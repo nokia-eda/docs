@@ -1,0 +1,237 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: topolinkstates.topologies.eda.nokia.com
+spec:
+  group: topologies.eda.nokia.com
+  names:
+    kind: TopoLinkState
+    listKind: TopoLinkStateList
+    plural: topolinkstates
+    singular: topolinkstate
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: TopoLinkState is the Schema for the topolinkstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              TopoLinkStateSpec represents a logical link between two TopoNodes. It may include more than one physical link, being used to represent a LAG or multihomed link.
+              To create a point to point link with a single interface on both sides use a single link property.
+              To create a point to point link with a LAG configured on both side, use two links with matching nodes.
+              A multihomed LAG is created by using two or more links where the A side and/or B side can be different.
+              Creating a link with only A specified will create an edge interface.
+            properties:
+              topoLinks:
+                description: Define the set of physical links making up this TopoLink.
+                items:
+                  properties:
+                    local:
+                      description: Local, or "A" endpoint of the link.
+                      properties:
+                        interface:
+                          description: Normalized name of the interface/port, e.g.
+                            ethernet-1-1.
+                          type: string
+                        interfaceResource:
+                          description: Reference to a Interface.
+                          type: string
+                        node:
+                          description: Reference to a TopoNode.
+                          type: string
+                      required:
+                      - interfaceResource
+                      - node
+                      type: object
+                    remote:
+                      description: Remote, or "B" endpoint of the link.
+                      properties:
+                        interface:
+                          description: Normalized name of the interface/port, e.g.
+                            ethernet-1-1.
+                          type: string
+                        interfaceResource:
+                          description: Reference to a Interface.
+                          type: string
+                        node:
+                          description: Reference to a TopoNode.
+                          type: string
+                      required:
+                      - interfaceResource
+                      - node
+                      type: object
+                    speed:
+                      description: Speed of the link.
+                      enum:
+                      - 800G
+                      - 400G
+                      - 200G
+                      - 100G
+                      - 50G
+                      - 40G
+                      - 25G
+                      - 10G
+                      - 2.5G
+                      - 1G
+                      - 100M
+                      type: string
+                    type:
+                      description: |-
+                        Specify the type of link.
+                        If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
+                      enum:
+                      - Edge
+                      - InterSwitch
+                      - Loopback
+                      type: string
+                  required:
+                  - local
+                  - type
+                  type: object
+                minItems: 1
+                type: array
+            required:
+            - topoLinks
+            type: object
+          status:
+            description: TopoLinkStatus defines the observed state of TopoLink
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: TopoLinkState is the Schema for the topolinkstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              TopoLinkStateSpec represents a logical link between two TopoNodes. It may include more than one physical link, being used to represent a LAG or multihomed link.
+              To create a point to point link with a single interface on both sides use a single link property.
+              To create a point to point link with a LAG configured on both side, use two links with matching nodes.
+              A multihomed LAG is created by using two or more links where the A side and/or B side can be different.
+              Creating a link with only A specified will create an edge interface.
+            properties:
+              links:
+                description: Define the set of physical links making up this TopoLink.
+                items:
+                  properties:
+                    local:
+                      description: Local, or "A" endpoint of the link.
+                      properties:
+                        interface:
+                          description: Normalized name of the interface/port, e.g.
+                            ethernet-1-1.
+                          type: string
+                        interfaceResource:
+                          description: Reference to a Interface.
+                          type: string
+                        node:
+                          description: Reference to a TopoNode.
+                          type: string
+                      required:
+                      - interfaceResource
+                      - node
+                      type: object
+                    remote:
+                      description: Remote, or "B" endpoint of the link.
+                      properties:
+                        interface:
+                          description: Normalized name of the interface/port, e.g.
+                            ethernet-1-1.
+                          type: string
+                        interfaceResource:
+                          description: Reference to a Interface.
+                          type: string
+                        node:
+                          description: Reference to a TopoNode.
+                          type: string
+                      required:
+                      - interfaceResource
+                      - node
+                      type: object
+                    speed:
+                      description: Speed of the link.
+                      enum:
+                      - 800G
+                      - 400G
+                      - 200G
+                      - 100G
+                      - 50G
+                      - 40G
+                      - 25G
+                      - 10G
+                      - 2.5G
+                      - 1G
+                      - 100M
+                      type: string
+                    type:
+                      description: |-
+                        Specify the type of link.
+                        If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
+                      enum:
+                      - edge
+                      - interSwitch
+                      - loopback
+                      type: string
+                  required:
+                  - local
+                  - type
+                  type: object
+                minItems: 1
+                type: array
+            required:
+            - links
+            type: object
+          status:
+            description: TopoLinkStatus defines the observed state of TopoLink
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

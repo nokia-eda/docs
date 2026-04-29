@@ -36,6 +36,15 @@
   --md-tooltip-width: 600px;
 }
 
+/* set colors for the crd-viewer component */
+.md-typeset .crd-viewer {
+  --crd-primary: #005AFF;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .crd-viewer {
+  --crd-primary: #ffffff;
+}
+
 [data-md-color-scheme="slate"][data-md-color-primary="indigo"] {
   --md-primary-fg-color: #0C1017;
   --md-primary-fg-color--light: #141a22;

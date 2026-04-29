@@ -1,0 +1,2052 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: networktopologies.topologies.eda.nokia.com
+spec:
+  group: topologies.eda.nokia.com
+  names:
+    kind: NetworkTopology
+    listKind: NetworkTopologyList
+    plural: networktopologies
+    singular: networktopology
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: NetworkTopology is the Schema for the topology API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              checks:
+                description: Configure dry run mode and prompts for topology operations.
+                properties:
+                  dryRun:
+                    default: false
+                    description: Enabling the Dry Run will run the transaction with
+                      the calculated changes to the topology resources in the dry
+                      run mode and pause the workflow awaiting users confirmation.
+                    type: boolean
+                  prompts:
+                    description: |-
+                      Prompts can be configured to request user confirmation before creating, replacing, or deleting topology resources, regardless if Dry Run is enabled or not.
+                      This can be configured per operation type (BeforeCreate, BeforeReplace, BeforeDelete).
+                    items:
+                      enum:
+                      - BeforeCreate
+                      - BeforeDelete
+                      - BeforeReplace
+                      type: string
+                    type: array
+                type: object
+              linkTemplates:
+                description: Define the link parameters that are meant to be inherited
+                  by the topology links referencing the template. These parameters
+                  can be overridden at the link level.
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the TopoLink.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    breakouts:
+                      description: Breakout endpoints propertiesfor the link
+                      items:
+                        properties:
+                          local:
+                            description: Local breakout endpoint properties
+                            properties:
+                              channels:
+                                description: The number of breakout channels to create
+                                maximum: 8
+                                minimum: 1
+                                type: integer
+                              speed:
+                                description: Speed of each breakout channel
+                                enum:
+                                - 800G
+                                - 400G
+                                - 200G
+                                - 100G
+                                - 50G
+                                - 40G
+                                - 25G
+                                - 10G
+                                - 2.5G
+                                - 1G
+                                - 100M
+                                type: string
+                            type: object
+                          remote:
+                            description: Remote breakout endpoint properties
+                            properties:
+                              channels:
+                                description: The number of breakout channels to create
+                                maximum: 8
+                                minimum: 1
+                                type: integer
+                              speed:
+                                description: Speed of each breakout channel
+                                enum:
+                                - 800G
+                                - 400G
+                                - 200G
+                                - 100G
+                                - 50G
+                                - 40G
+                                - 25G
+                                - 10G
+                                - 2.5G
+                                - 1G
+                                - 100M
+                                type: string
+                            type: object
+                        type: object
+                      type: array
+                    encapType:
+                      default: "Null"
+                      description: Enable or disable VLAN tagging on Interfaces created
+                        by the TopoLink.
+                      enum:
+                      - "Null"
+                      - Dot1q
+                      type: string
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoLink.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    name:
+                      description: The name of the TopoLinkTemplate.
+                      type: string
+                    speed:
+                      description: Speed of the link.
+                      enum:
+                      - 800G
+                      - 400G
+                      - 200G
+                      - 100G
+                      - 50G
+                      - 40G
+                      - 25G
+                      - 10G
+                      - 2.5G
+                      - 1G
+                      - 100M
+                      type: string
+                    type:
+                      description: |-
+                        Specify the type of link.
+                        If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
+                      enum:
+                      - Edge
+                      - InterSwitch
+                      - Loopback
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              links:
+                description: Define the set of topology links to be created/replaced/deleted.
+                  A link can reference a link template to inherit its parameters.
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the TopoLink.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    encapType:
+                      description: Enable or disable VLAN tagging on Interfaces created
+                        by the TopoLink
+                      enum:
+                      - "Null"
+                      - Dot1q
+                      type: string
+                    endpoints:
+                      description: Define the set of physical links making up this
+                        TopoLink.
+                      items:
+                        properties:
+                          local:
+                            description: Local, or "A" endpoint of the link.
+                            properties:
+                              interface:
+                                description: Normalized name of the interface/port,
+                                  e.g. ethernet-1-1.
+                                type: string
+                              interfaceResource:
+                                description: Reference to a Interface.
+                                type: string
+                              node:
+                                description: Reference to a TopoNode.
+                                type: string
+                            required:
+                            - node
+                            type: object
+                          remote:
+                            description: Remote, or "B" endpoint of the link.
+                            properties:
+                              interface:
+                                description: Normalized name of the interface/port,
+                                  e.g. ethernet-1-1.
+                                type: string
+                              interfaceResource:
+                                description: Reference to a Interface.
+                                type: string
+                              node:
+                                description: Reference to a TopoNode.
+                                type: string
+                            required:
+                            - node
+                            type: object
+                          sim:
+                            description: Sim endpoint of the link.
+                            properties:
+                              simNode:
+                                description: The SimNode to which the interface will
+                                  be mapped. This is the name of the SimNode as it
+                                  is defined in the SimTopology.
+                                type: string
+                              simNodeInterface:
+                                description: |-
+                                  The name of the interface to present to the SimNode to which the interface will be mapped. If not provided the interface name will be generated starting with "eth1", "eth2", ... .
+                                  This is the interface name as it will appear in the SimNode.
+                                type: string
+                            type: object
+                          speed:
+                            description: Speed of the link.
+                            enum:
+                            - 800G
+                            - 400G
+                            - 200G
+                            - 100G
+                            - 50G
+                            - 40G
+                            - 25G
+                            - 10G
+                            - 2.5G
+                            - 1G
+                            - 100M
+                            type: string
+                          type:
+                            description: |-
+                              Specify the type of link.
+                              If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
+                            enum:
+                            - Edge
+                            - InterSwitch
+                            - Loopback
+                            type: string
+                        required:
+                        - local
+                        type: object
+                      minItems: 1
+                      type: array
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoLink
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    name:
+                      description: The name of the TopoLink
+                      type: string
+                    template:
+                      description: Reference to a template to use for this TopoLink.
+                      type: string
+                  required:
+                  - endpoints
+                  - name
+                  type: object
+                type: array
+              nodeTemplates:
+                description: Define the node parameters that are meant to be inherited
+                  by the topology nodes referencing the template. These parameters
+                  can be overridden at the node level.
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the TopoNode.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    components:
+                      description: |-
+                        List of components within the TopoNode.
+                        Used to define the type and location of linecards, fabrics (SFM), media adapter cards (MDA) and control cards (CPM).
+                      items:
+                        properties:
+                          kind:
+                            description: The kind of Component, e.g. lineCard.
+                            enum:
+                            - controlCard
+                            - lineCard
+                            - fabric
+                            - mda
+                            - connector
+                            - xiom
+                            - powerShelf
+                            - powerModule
+                            type: string
+                          slot:
+                            description: |-
+                              The slot this Component resides in, unset for Components that do not have a slot or ID.
+                              e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                            type: string
+                          type:
+                            description: Denotes the type of hardware being provisioned,
+                              e.g. xcm-x20.
+                            type: string
+                        required:
+                        - kind
+                        - type
+                        type: object
+                      type: array
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoNode.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    license:
+                      description: Reference to a ConfigMap containing a license for
+                        the TopoNode. Overrides the license set in the referenced
+                        NodeProfile, if present.
+                      type: string
+                    name:
+                      description: The name of the TopoNodeTemplate.
+                      type: string
+                    nodeProfile:
+                      description: Reference to a NodeProfile to use with this TopoNode.
+                      type: string
+                    platform:
+                      description: Platform type of this TopoNode, e.g. 7220 IXR-D3L.
+                      type: string
+                    satelliteNodes:
+                      description: List of satellite nodes to be inherited by nodes
+                        using this template.
+                      items:
+                        properties:
+                          components:
+                            description: Components for the satellite node.
+                            items:
+                              properties:
+                                kind:
+                                  description: The kind of Component, e.g. lineCard.
+                                  enum:
+                                  - controlCard
+                                  - lineCard
+                                  - fabric
+                                  - mda
+                                  - connector
+                                  - xiom
+                                  - powerShelf
+                                  - powerModule
+                                  type: string
+                                slot:
+                                  description: |-
+                                    The slot this Component resides in, unset for Components that do not have a slot or ID.
+                                    e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                                  type: string
+                                type:
+                                  description: Denotes the type of hardware being
+                                    provisioned, e.g. xcm-x20.
+                                  type: string
+                              required:
+                              - kind
+                              - type
+                              type: object
+                            type: array
+                          id:
+                            description: ID of the satellite node.
+                            type: string
+                          macAddress:
+                            description: ' MAC Address of the satellite node.'
+                            type: string
+                          platform:
+                            description: Platform of the satellite node.
+                            type: string
+                          portTemplate:
+                            description: Port template to be used for the satellite
+                              node.
+                            type: string
+                          satelliteProfile:
+                            description: Satellite profile to be used for the satellite
+                              node.
+                            type: string
+                          type:
+                            description: Type of the satellite node.
+                            type: string
+                          uplinkInterfaces:
+                            description: Uplink interfaces to be created for the satellite
+                              node.
+                            items:
+                              properties:
+                                hostPort:
+                                  description: HostPort interface of the satellite
+                                    uplink.
+                                  type: string
+                                satellite:
+                                  description: Satellite interface of the satellite
+                                    uplink.
+                                  type: string
+                              required:
+                              - hostPort
+                              - satellite
+                              type: object
+                            type: array
+                        required:
+                        - id
+                        - type
+                        type: object
+                      type: array
+                  required:
+                  - name
+                  type: object
+                type: array
+              nodes:
+                description: Define the set of topology nodes to be created/replaced/deleted.
+                  A node can reference a node template to inherit its parameters.
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the TopoNode.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    components:
+                      description: |-
+                        List of components within the TopoNode.
+                        Used to define the type and location of linecards, fabrics (SFM), media adapter cards (MDA) and control cards (CPM).
+                      items:
+                        properties:
+                          kind:
+                            description: The kind of Component, e.g. lineCard.
+                            enum:
+                            - controlCard
+                            - lineCard
+                            - fabric
+                            - mda
+                            - connector
+                            - xiom
+                            - powerShelf
+                            - powerModule
+                            type: string
+                          slot:
+                            description: |-
+                              The slot this Component resides in, unset for Components that do not have a slot or ID.
+                              e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                            type: string
+                          type:
+                            description: Denotes the type of hardware being provisioned,
+                              e.g. xcm-x20.
+                            type: string
+                        required:
+                        - kind
+                        - type
+                        type: object
+                      type: array
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoNode
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    license:
+                      description: Reference to a ConfigMap containing a license for
+                        the TopoNode. Overrides the license set in the referenced
+                        NodeProfile, if present.
+                      type: string
+                    macAddress:
+                      description: |-
+                        MAC address to associate with this TopoNode.
+                        Typically the chassis MAC address, optionally sent by a node in DHCP requests.
+                        Not required when a TopoNode is not being bootstrapped by EDA, or is simulated through CX.
+                      type: string
+                    name:
+                      description: The name of the TopoNode
+                      type: string
+                    nodeProfile:
+                      description: Reference to a NodeProfile to use with this TopoNode.
+                      type: string
+                    npp:
+                      description: Options relating to NPP interactions with the node.
+                      properties:
+                        mode:
+                          default: normal
+                          description: "The mode in which this TopoNode is functioning.\n\"normal\"
+                            (the default)\n   indicates that NPP is expecting an endpoint
+                            to exist, and will accept and confirm changes only if
+                            the endpoint\n   accepts them.\n\"maintenance\"\n   indicates
+                            that no changes will be accepted for the TopoNode, irrespective
+                            if the endpoint is up and reachable.\n   The exception
+                            is if an upgrade is occuring, in which case changes will
+                            be accepted.\n\"null\"\n\t  indicates that changes will
+                            be accepted from CRs and no NPP will be spun up. NPP validation
+                            will not occur.\n   This may be useful in playground mode
+                            to avoid spinning up of 1000s of NPPs.\n\"emulate\"\n
+                            \  indicates that changes will be accepted at the NPP
+                            level, without pushing them to a endpoint. NPP validation\n
+                            \  still occurs.  If no IP address is present, we also
+                            run in emulate mode.\n\"monitor\"\n   indicates that state
+                            will be collectd but config will not be pushed to a endpoint.
+                            NPP validation still occurs."
+                          enum:
+                          - normal
+                          - maintenance
+                          - "null"
+                          - emulate
+                          - monitor
+                          type: string
+                      type: object
+                    onboarded:
+                      default: false
+                      description: |-
+                        Indicates if this TopoNode has been bootstrapped or is reachable via configured credentials. Set by BootstrapServer when it completes onboarding functions for a given TopoNode.
+                        Most applications ignore TopoNodes that have not been onboarded yet.
+                      type: boolean
+                    operatingSystem:
+                      description: Operating system running on this TopoNode, e.g.
+                        srl.
+                      enum:
+                      - srl
+                      - sros
+                      - eos
+                      - sonic
+                      - ios-xr
+                      - nxos
+                      type: string
+                    platform:
+                      description: Platform type of this TopoNode, e.g. 7220 IXR-D3L.
+                      type: string
+                    productionAddress:
+                      description: |-
+                        Production address of this TopoNode - this is the address the real, production instance of this TopoNode uses.
+                        If left blank, an address will be allocated from the management IP pool specified in the referenced NodeProfile.
+                        If this TopoNode is not bootstrapped by EDA this field must be provided.
+                      properties:
+                        ipv4:
+                          description: The IPv4 production address
+                          type: string
+                        ipv6:
+                          description: The IPv6 production address
+                          type: string
+                      type: object
+                    satelliteNodes:
+                      description: List of satellite nodes to be inherited by this
+                        TopoNode.
+                      items:
+                        properties:
+                          components:
+                            description: Components for the satellite node.
+                            items:
+                              properties:
+                                kind:
+                                  description: The kind of Component, e.g. lineCard.
+                                  enum:
+                                  - controlCard
+                                  - lineCard
+                                  - fabric
+                                  - mda
+                                  - connector
+                                  - xiom
+                                  - powerShelf
+                                  - powerModule
+                                  type: string
+                                slot:
+                                  description: |-
+                                    The slot this Component resides in, unset for Components that do not have a slot or ID.
+                                    e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                                  type: string
+                                type:
+                                  description: Denotes the type of hardware being
+                                    provisioned, e.g. xcm-x20.
+                                  type: string
+                              required:
+                              - kind
+                              - type
+                              type: object
+                            type: array
+                          id:
+                            description: ID of the satellite node.
+                            type: string
+                          macAddress:
+                            description: ' MAC Address of the satellite node.'
+                            type: string
+                          platform:
+                            description: Platform of the satellite node.
+                            type: string
+                          portTemplate:
+                            description: Port template to be used for the satellite
+                              node.
+                            type: string
+                          satelliteProfile:
+                            description: Satellite profile to be used for the satellite
+                              node.
+                            type: string
+                          type:
+                            description: Type of the satellite node.
+                            type: string
+                          uplinkInterfaces:
+                            description: Uplink interfaces to be created for the satellite
+                              node.
+                            items:
+                              properties:
+                                hostPort:
+                                  description: HostPort interface of the satellite
+                                    uplink.
+                                  type: string
+                                satellite:
+                                  description: Satellite interface of the satellite
+                                    uplink.
+                                  type: string
+                              required:
+                              - hostPort
+                              - satellite
+                              type: object
+                            type: array
+                        required:
+                        - id
+                        - type
+                        type: object
+                      type: array
+                    serialNumber:
+                      description: |-
+                        Serial number of this TopoNode, optionally sent by a node in DHCP requests.
+                        Not required when a TopoNode is not being bootstrapped by EDA, or is simulated through CX.
+                      type: string
+                    systemInterface:
+                      description: 'Deprecated: Name of the Interface resource representing
+                        the primary loopback on the TopoNode, this field will be removed
+                        in the future version.'
+                      type: string
+                    template:
+                      description: Reference to a template to use for this TopoNode.
+                      type: string
+                    version:
+                      description: Sets the software version of this TopoNode, e.g.
+                        24.7.1 (for srl), or 24.7.r1 (for sros).
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              operation:
+                default: Reconcile
+                description: |-
+                  Operation to be performed on the Topology.
+                  Create - creates the topology resources based on the provided specifications.
+                  Replace - replaces the resources matched by name with the provided specifications.
+                  ReplaceAll - first removes all existing topology resources and then creates new ones based on the provided specifications.
+                  Delete - deletes the resources matched by name.
+                  DeleteAll - deletes all topology resources found in the namespace.
+                  Reconcile - reconciles the topology resources based on the provided specifications.
+                  One of Create, Replace, ReplaceAll, Delete, DeleteAll, Reconcile.
+                enum:
+                - Create
+                - Replace
+                - ReplaceAll
+                - Delete
+                - DeleteAll
+                - Reconcile
+                type: string
+              remoteLocation:
+                description: http(s) location of the topology input in YAML format
+                  to deploy. Providing the remote location will discard any topology
+                  resources provided in the spec of the workflow.
+                type: string
+              satellitePortTemplates:
+                description: Define the satellite port templates that are meant to
+                  be inherited by the satellite nodes referencing the template. These
+                  parameters can be overridden at the satellite node level.
+                items:
+                  description: Satellite Port Templates
+                  properties:
+                    connectors:
+                      description: |-
+                        List of connector components within the SatellitePortTemplate.
+                        Used to define the type and location of connectors.
+                      items:
+                        properties:
+                          kind:
+                            description: The kind of Component, e.g. lineCard.
+                            enum:
+                            - controlCard
+                            - lineCard
+                            - fabric
+                            - mda
+                            - connector
+                            - xiom
+                            - powerShelf
+                            - powerModule
+                            type: string
+                          slot:
+                            description: |-
+                              The slot this Component resides in, unset for Components that do not have a slot or ID.
+                              e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                            type: string
+                          type:
+                            description: Denotes the type of hardware being provisioned,
+                              e.g. xcm-x20.
+                            type: string
+                        required:
+                        - kind
+                        - type
+                        type: object
+                      type: array
+                    name:
+                      description: The name of the SatellitePortTemplate.
+                      type: string
+                    uplinks:
+                      description: Uplinks for the SatellitePortTemplate.
+                      items:
+                        properties:
+                          downlinks:
+                            description: Downlinks for the SatelliteUplink.
+                            items:
+                              type: string
+                            type: array
+                          name:
+                            description: The name of the SatelliteUplink.
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      type: array
+                  required:
+                  - name
+                  type: object
+                type: array
+              simulation:
+                description: Specify simulation topology configuration.
+                properties:
+                  simNodeTemplates:
+                    description: Define the simulation node (sim node) parameters
+                      that are meant to be inherited by the simulation nodes referencing
+                      the template. These parameters can be overridden at the sim
+                      node level.
+                    items:
+                      properties:
+                        annotations:
+                          additionalProperties:
+                            type: string
+                          description: Annotations to assign to the SimNode.
+                          type: object
+                          x-kubernetes-preserve-unknown-fields: true
+                        image:
+                          description: The image to use for this SimNode. This is
+                            the full path to the image as it would be provided to
+                            the container runtime.
+                          type: string
+                        imagePullSecret:
+                          description: Reference to a Secret to use when pulling the
+                            image for this simNode.
+                          type: string
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Labels to assign to the SimNode.
+                          type: object
+                          x-kubernetes-preserve-unknown-fields: true
+                        name:
+                          description: The name of the template.
+                          type: string
+                        type:
+                          description: Type defines what is type of this SimNode.
+                          enum:
+                          - Linux
+                          - TestMan
+                          - SrlTest
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  simNodes:
+                    description: Define the sim node to be created/replaced/deleted.
+                      A sim node can reference a sim node template to inherit its
+                      parameters.
+                    items:
+                      properties:
+                        annotations:
+                          additionalProperties:
+                            type: string
+                          description: Annotations to assign to the SimNode.
+                          type: object
+                          x-kubernetes-preserve-unknown-fields: true
+                        image:
+                          description: The image to use for this SimNode. This is
+                            the full path to the image as it would be provided to
+                            the container runtime.
+                          type: string
+                        imagePullSecret:
+                          description: Reference to a Secret to use when pulling the
+                            image for this simNode
+                          type: string
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Labels to assign to the SimNode.
+                          type: object
+                          x-kubernetes-preserve-unknown-fields: true
+                        name:
+                          description: The name of the SimNode. This is the name that
+                            will be used to reference the SimNode in the SimTopology.
+                          type: string
+                        template:
+                          description: Reference to a template to use for this SimNode.
+                          type: string
+                        type:
+                          description: Type defines what is type of this SimNode
+                          enum:
+                          - Linux
+                          - TestMan
+                          - SrlTest
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    minItems: 0
+                    type: array
+                  topologies:
+                    description: Define the simulation topology to be created/replaced/deleted
+                      by providing the list of nodes/interfaces and their corresponding
+                      sim nodes/sim node interfaces.
+                    items:
+                      properties:
+                        interface:
+                          description: |-
+                            Normalized name of an interface/port. This is the normalized name of the interface in the TopoNode, for example 'ethernet-1-1'.
+                            The value of "*" indicates all interfaces on the TopoNode/s.
+                          type: string
+                        node:
+                          description: The TopoNode on which interfaces will be mapped
+                            to a SimNode. You may use the value "*" to indicate all
+                            TopoNodes.
+                          type: string
+                        simNode:
+                          description: The SimNode to which the interface will be
+                            mapped. This is the name of the SimNode as it is defined
+                            in the SimTopology.
+                          type: string
+                        simNodeInterface:
+                          description: |-
+                            The name of the interface to present to the SimNode to which the interface will be mapped. If not provided the interface name will be generated starting with "eth1", "eth2",...
+                            This is the interface name as it will appear in the SimNode.
+                          type: string
+                      required:
+                      - interface
+                      - node
+                      - simNode
+                      type: object
+                    minItems: 0
+                    type: array
+                type: object
+            type: object
+          status:
+            description: NetworkTopologyStatus defines the observed state of NetworkTopology
+            properties:
+              message:
+                description: Human-readable message providing additional context about
+                  the operation result
+                type: string
+              processed:
+                description: Detailed breakdown of resources processed during the
+                  operation
+                properties:
+                  breakouts:
+                    description: Summary of breakout operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  interfaces:
+                    description: Summary of interface operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  links:
+                    description: Summary of link operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  nodes:
+                    description: Summary of node operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  simLinks:
+                    description: Summary of simulation link operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  simNodes:
+                    description: Summary of simulation node operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  totalDuration:
+                    description: Total duration of the topology operation
+                    type: string
+                  totalResources:
+                    description: Total number of resources processed across all types
+                    type: integer
+                type: object
+              result:
+                description: Overall result of the topology operation
+                enum:
+                - Success
+                - Failed
+                type: string
+            required:
+            - result
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NetworkTopology is the Schema for the topology API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              breakoutTemplates:
+                description: 'Deprecated: Define the breakout parameters that are
+                  meant to be inherited by the breakouts referencing the template.
+                  These parameters can be overridden at the breakout level.'
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the Breakout.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    channels:
+                      description: The number of breakout channels to create
+                      maximum: 8
+                      minimum: 1
+                      type: integer
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the Breakout
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    name:
+                      description: The name of the BreakoutTemplate.
+                      type: string
+                    speed:
+                      description: The speed of each breakout channel
+                      enum:
+                      - 800G
+                      - 400G
+                      - 200G
+                      - 100G
+                      - 50G
+                      - 40G
+                      - 25G
+                      - 10G
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              breakouts:
+                description: 'Deprecated: Define the set of breakouts to be created/replaced/deleted.
+                  A breakout can reference a breakout template to inherit its parameters.'
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the Breakouts.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    channels:
+                      description: The number of breakout channels to create
+                      maximum: 8
+                      minimum: 1
+                      type: integer
+                    interface:
+                      description: A list of normalized parent interface/port
+                      items:
+                        type: string
+                      type: array
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoBreakout
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    name:
+                      description: The name of the TopoBreakout
+                      type: string
+                    node:
+                      description: Reference to a list of TopoNodes where the parent
+                        interfaces are to be broken out
+                      items:
+                        type: string
+                      type: array
+                    speed:
+                      description: The speed of each breakout channel
+                      enum:
+                      - 800G
+                      - 400G
+                      - 200G
+                      - 100G
+                      - 50G
+                      - 40G
+                      - 25G
+                      - 10G
+                      type: string
+                    template:
+                      description: Reference to a template to use for this TopoBreakout.
+                      type: string
+                  required:
+                  - interface
+                  - name
+                  - node
+                  type: object
+                type: array
+              checks:
+                description: Configure dry run mode and prompts for topology operations.
+                properties:
+                  dryRun:
+                    default: false
+                    description: Enabling the Dry Run will run the transaction with
+                      the calculated changes to the topology resources in the dry
+                      run mode and pause the workflow awaiting users confirmation.
+                    type: boolean
+                  prompt:
+                    description: |-
+                      Prompts can be configured to request user confirmation before creating, replacing, or deleting topology resources, regardless if Dry Run is enabled or not.
+                      This can be configured per operation type (BeforeCreate, BeforeReplace, BeforeDelete).
+                    items:
+                      enum:
+                      - BeforeCreate
+                      - BeforeDelete
+                      - BeforeReplace
+                      type: string
+                    type: array
+                type: object
+              linkTemplates:
+                description: Define the link parameters that are meant to be inherited
+                  by the topology links referencing the template. These parameters
+                  can be overridden at the link level.
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the TopoLink.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    breakouts:
+                      description: Breakout endpoints propertiesfor the link
+                      items:
+                        properties:
+                          local:
+                            description: Local breakout endpoint properties
+                            properties:
+                              channels:
+                                description: The number of breakout channels to create
+                                maximum: 8
+                                minimum: 1
+                                type: integer
+                              speed:
+                                description: Speed of each breakout channel
+                                enum:
+                                - 800G
+                                - 400G
+                                - 200G
+                                - 100G
+                                - 50G
+                                - 40G
+                                - 25G
+                                - 10G
+                                - 2.5G
+                                - 1G
+                                - 100M
+                                type: string
+                            type: object
+                          remote:
+                            description: Remote breakout endpoint properties
+                            properties:
+                              channels:
+                                description: The number of breakout channels to create
+                                maximum: 8
+                                minimum: 1
+                                type: integer
+                              speed:
+                                description: Speed of each breakout channel
+                                enum:
+                                - 800G
+                                - 400G
+                                - 200G
+                                - 100G
+                                - 50G
+                                - 40G
+                                - 25G
+                                - 10G
+                                - 2.5G
+                                - 1G
+                                - 100M
+                                type: string
+                            type: object
+                        type: object
+                      type: array
+                    encapType:
+                      default: "null"
+                      description: Enable or disable VLAN tagging on Interfaces created
+                        by the TopoLink.
+                      enum:
+                      - "null"
+                      - dot1q
+                      type: string
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoLink.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    name:
+                      description: The name of the TopoLinkTemplate.
+                      type: string
+                    speed:
+                      description: Speed of the link.
+                      enum:
+                      - 800G
+                      - 400G
+                      - 200G
+                      - 100G
+                      - 50G
+                      - 40G
+                      - 25G
+                      - 10G
+                      - 2.5G
+                      - 1G
+                      - 100M
+                      type: string
+                    type:
+                      description: |-
+                        Specify the type of link.
+                        If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
+                      enum:
+                      - edge
+                      - interSwitch
+                      - loopback
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              links:
+                description: Define the set of topology links to be created/replaced/deleted.
+                  A link can reference a link template to inherit its parameters.
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the TopoLink.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    encapType:
+                      description: Enable or disable VLAN tagging on Interfaces created
+                        by the TopoLink
+                      enum:
+                      - "null"
+                      - dot1q
+                      type: string
+                    endpoints:
+                      description: Define the set of physical links making up this
+                        TopoLink.
+                      items:
+                        properties:
+                          local:
+                            description: Local, or "A" endpoint of the link.
+                            properties:
+                              interface:
+                                description: Normalized name of the interface/port,
+                                  e.g. ethernet-1-1.
+                                type: string
+                              interfaceResource:
+                                description: Reference to a Interface.
+                                type: string
+                              node:
+                                description: Reference to a TopoNode.
+                                type: string
+                            required:
+                            - node
+                            type: object
+                          remote:
+                            description: Remote, or "B" endpoint of the link.
+                            properties:
+                              interface:
+                                description: Normalized name of the interface/port,
+                                  e.g. ethernet-1-1.
+                                type: string
+                              interfaceResource:
+                                description: Reference to a Interface.
+                                type: string
+                              node:
+                                description: Reference to a TopoNode.
+                                type: string
+                            required:
+                            - node
+                            type: object
+                          sim:
+                            description: Sim endpoint of the link.
+                            properties:
+                              simNode:
+                                description: The SimNode to which the interface will
+                                  be mapped. This is the name of the SimNode as it
+                                  is defined in the SimTopology.
+                                type: string
+                              simNodeInterface:
+                                description: |-
+                                  The name of the interface to present to the SimNode to which the interface will be mapped. If not provided the interface name will be generated starting with "eth1", "eth2", ... .
+                                  This is the interface name as it will appear in the SimNode.
+                                type: string
+                            type: object
+                          speed:
+                            description: Speed of the link.
+                            enum:
+                            - 800G
+                            - 400G
+                            - 200G
+                            - 100G
+                            - 50G
+                            - 40G
+                            - 25G
+                            - 10G
+                            - 2.5G
+                            - 1G
+                            - 100M
+                            type: string
+                          type:
+                            description: |-
+                              Specify the type of link.
+                              If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
+                            enum:
+                            - edge
+                            - interSwitch
+                            - loopback
+                            type: string
+                        required:
+                        - local
+                        type: object
+                      minItems: 1
+                      type: array
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoLink
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    name:
+                      description: The name of the TopoLink
+                      type: string
+                    template:
+                      description: Reference to a template to use for this TopoLink.
+                      type: string
+                  required:
+                  - endpoints
+                  - name
+                  type: object
+                type: array
+              nodeTemplates:
+                description: Define the node parameters that are meant to be inherited
+                  by the topology nodes referencing the template. These parameters
+                  can be overridden at the node level.
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the TopoNode.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    component:
+                      description: |-
+                        List of components within the TopoNode.
+                        Used to define the type and location of linecards, fabrics (SFM), media adapter cards (MDA) and control cards (CPM).
+                      items:
+                        properties:
+                          kind:
+                            description: The kind of Component, e.g. lineCard.
+                            enum:
+                            - controlCard
+                            - lineCard
+                            - fabric
+                            - mda
+                            - connector
+                            - xiom
+                            - powerShelf
+                            - powerModule
+                            type: string
+                          slot:
+                            description: |-
+                              The slot this Component resides in, unset for Components that do not have a slot or ID.
+                              e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                            type: string
+                          type:
+                            description: Denotes the type of hardware being provisioned,
+                              e.g. xcm-x20.
+                            type: string
+                        required:
+                        - kind
+                        - type
+                        type: object
+                      type: array
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoNode.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    license:
+                      description: Reference to a ConfigMap containing a license for
+                        the TopoNode. Overrides the license set in the referenced
+                        NodeProfile, if present.
+                      type: string
+                    name:
+                      description: The name of the TopoNodeTemplate.
+                      type: string
+                    nodeProfile:
+                      description: Reference to a NodeProfile to use with this TopoNode.
+                      type: string
+                    platform:
+                      description: Platform type of this TopoNode, e.g. 7220 IXR-D3L.
+                      type: string
+                    satelliteNodes:
+                      description: List of satellite nodes to be inherited by nodes
+                        using this template.
+                      items:
+                        properties:
+                          components:
+                            description: Components for the satellite node.
+                            items:
+                              properties:
+                                kind:
+                                  description: The kind of Component, e.g. lineCard.
+                                  enum:
+                                  - controlCard
+                                  - lineCard
+                                  - fabric
+                                  - mda
+                                  - connector
+                                  - xiom
+                                  - powerShelf
+                                  - powerModule
+                                  type: string
+                                slot:
+                                  description: |-
+                                    The slot this Component resides in, unset for Components that do not have a slot or ID.
+                                    e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                                  type: string
+                                type:
+                                  description: Denotes the type of hardware being
+                                    provisioned, e.g. xcm-x20.
+                                  type: string
+                              required:
+                              - kind
+                              - type
+                              type: object
+                            type: array
+                          id:
+                            description: ID of the satellite node.
+                            type: string
+                          macAddress:
+                            description: ' MAC Address of the satellite node.'
+                            type: string
+                          platform:
+                            description: Platform of the satellite node.
+                            type: string
+                          portTemplate:
+                            description: Port template to be used for the satellite
+                              node.
+                            type: string
+                          satelliteProfile:
+                            description: Satellite node profile to be used for the
+                              satellite node.
+                            type: string
+                          type:
+                            description: Type of the satellite node.
+                            type: string
+                          uplinkInterfaces:
+                            description: Uplink interfaces to be created for the satellite
+                              node.
+                            items:
+                              properties:
+                                hostPort:
+                                  description: HostPort interface of the satellite
+                                    uplink.
+                                  type: string
+                                satellite:
+                                  description: Satellite interface of the satellite
+                                    uplink.
+                                  type: string
+                              required:
+                              - hostPort
+                              - satellite
+                              type: object
+                            type: array
+                        required:
+                        - id
+                        - type
+                        type: object
+                      type: array
+                  required:
+                  - name
+                  type: object
+                type: array
+              nodes:
+                description: Define the set of topology nodes to be created/replaced/deleted.
+                  A node can reference a node template to inherit its parameters.
+                items:
+                  properties:
+                    annotations:
+                      additionalProperties:
+                        type: string
+                      description: Annotations to assign to the TopoNode.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    component:
+                      description: |-
+                        List of components within the TopoNode.
+                        Used to define the type and location of linecards, fabrics (SFM), media adapter cards (MDA) and control cards (CPM).
+                      items:
+                        properties:
+                          kind:
+                            description: The kind of Component, e.g. lineCard.
+                            enum:
+                            - controlCard
+                            - lineCard
+                            - fabric
+                            - mda
+                            - connector
+                            - xiom
+                            - powerShelf
+                            - powerModule
+                            type: string
+                          slot:
+                            description: |-
+                              The slot this Component resides in, unset for Components that do not have a slot or ID.
+                              e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                            type: string
+                          type:
+                            description: Denotes the type of hardware being provisioned,
+                              e.g. xcm-x20.
+                            type: string
+                        required:
+                        - kind
+                        - type
+                        type: object
+                      type: array
+                    labels:
+                      additionalProperties:
+                        type: string
+                      description: Labels to assign to the TopoNode
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+                    license:
+                      description: Reference to a ConfigMap containing a license for
+                        the TopoNode. Overrides the license set in the referenced
+                        NodeProfile, if present.
+                      type: string
+                    macAddress:
+                      description: |-
+                        MAC address to associate with this TopoNode.
+                        Typically the chassis MAC address, optionally sent by a node in DHCP requests.
+                        Not required when a TopoNode is not being bootstrapped by EDA, or is simulated through CX.
+                      type: string
+                    name:
+                      description: The name of the TopoNode
+                      type: string
+                    nodeProfile:
+                      description: Reference to a NodeProfile to use with this TopoNode.
+                      type: string
+                    npp:
+                      description: Options relating to NPP interactions with the node.
+                      properties:
+                        mode:
+                          default: normal
+                          description: "The mode in which this TopoNode is functioning.\n\"normal\"
+                            (the default)\n   indicates that NPP is expecting an endpoint
+                            to exist, and will accept and confirm changes only if
+                            the endpoint\n   accepts them.\n\"maintenance\"\n   indicates
+                            that no changes will be accepted for the TopoNode, irrespective
+                            if the endpoint is up and reachable.\n   The exception
+                            is if an upgrade is occuring, in which case changes will
+                            be accepted.\n\"null\"\n\t  indicates that changes will
+                            be accepted from CRs and no NPP will be spun up. NPP validation
+                            will not occur.\n   This may be useful in playground mode
+                            to avoid spinning up of 1000s of NPPs.\n\"emulate\"\n
+                            \  indicates that changes will be accepted at the NPP
+                            level, without pushing them to a endpoint. NPP validation\n
+                            \  still occurs.  If no IP address is present, we also
+                            run in emulate mode.\n\"monitor\"\n   indicates that state
+                            will be collectd but config will not be pushed to a endpoint.
+                            NPP validation still occurs."
+                          enum:
+                          - normal
+                          - maintenance
+                          - "null"
+                          - emulate
+                          - monitor
+                          type: string
+                      type: object
+                    onBoarded:
+                      default: false
+                      description: |-
+                        Indicates if this TopoNode has been bootstrapped or is reachable via configured credentials. Set by BootstrapServer when it completes onboarding functions for a given TopoNode.
+                        Most applications ignore TopoNodes that have not been onboarded yet.
+                      type: boolean
+                    operatingSystem:
+                      description: Operating system running on this TopoNode, e.g.
+                        srl.
+                      enum:
+                      - srl
+                      - sros
+                      - eos
+                      - sonic
+                      - ios-xr
+                      - nxos
+                      type: string
+                    platform:
+                      description: Platform type of this TopoNode, e.g. 7220 IXR-D3L.
+                      type: string
+                    productionAddress:
+                      description: |-
+                        Production address of this TopoNode - this is the address the real, production instance of this TopoNode uses.
+                        If left blank, an address will be allocated from the management IP pool specified in the referenced NodeProfile.
+                        If this TopoNode is not bootstrapped by EDA this field must be provided.
+                      properties:
+                        ipv4:
+                          description: The IPv4 production address
+                          type: string
+                        ipv6:
+                          description: The IPv6 production address
+                          type: string
+                      type: object
+                    satelliteNodes:
+                      description: List of satellite nodes to be inherited by this
+                        TopoNode.
+                      items:
+                        properties:
+                          components:
+                            description: Components for the satellite node.
+                            items:
+                              properties:
+                                kind:
+                                  description: The kind of Component, e.g. lineCard.
+                                  enum:
+                                  - controlCard
+                                  - lineCard
+                                  - fabric
+                                  - mda
+                                  - connector
+                                  - xiom
+                                  - powerShelf
+                                  - powerModule
+                                  type: string
+                                slot:
+                                  description: |-
+                                    The slot this Component resides in, unset for Components that do not have a slot or ID.
+                                    e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                                  type: string
+                                type:
+                                  description: Denotes the type of hardware being
+                                    provisioned, e.g. xcm-x20.
+                                  type: string
+                              required:
+                              - kind
+                              - type
+                              type: object
+                            type: array
+                          id:
+                            description: ID of the satellite node.
+                            type: string
+                          macAddress:
+                            description: ' MAC Address of the satellite node.'
+                            type: string
+                          platform:
+                            description: Platform of the satellite node.
+                            type: string
+                          portTemplate:
+                            description: Port template to be used for the satellite
+                              node.
+                            type: string
+                          satelliteProfile:
+                            description: Satellite node profile to be used for the
+                              satellite node.
+                            type: string
+                          type:
+                            description: Type of the satellite node.
+                            type: string
+                          uplinkInterfaces:
+                            description: Uplink interfaces to be created for the satellite
+                              node.
+                            items:
+                              properties:
+                                hostPort:
+                                  description: HostPort interface of the satellite
+                                    uplink.
+                                  type: string
+                                satellite:
+                                  description: Satellite interface of the satellite
+                                    uplink.
+                                  type: string
+                              required:
+                              - hostPort
+                              - satellite
+                              type: object
+                            type: array
+                        required:
+                        - id
+                        - type
+                        type: object
+                      type: array
+                    serialNumber:
+                      description: |-
+                        Serial number of this TopoNode, optionally sent by a node in DHCP requests.
+                        Not required when a TopoNode is not being bootstrapped by EDA, or is simulated through CX.
+                      type: string
+                    systemInterface:
+                      description: 'Deprecated: Name of the Interface resource representing
+                        the primary loopback on the TopoNode, this field will be removed
+                        in the future version.'
+                      type: string
+                    template:
+                      description: Reference to a template to use for this TopoNode.
+                      type: string
+                    version:
+                      description: Sets the software version of this TopoNode, e.g.
+                        24.7.1 (for srl), or 24.7.r1 (for sros).
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              operation:
+                default: create
+                description: |-
+                  Operation to be performed on the Topology.
+                  Create - creates the topology resources based on the provided specifications.
+                  Replace - replaces the resources matched by name with the provided specifications.
+                  ReplaceAll - first removes all existing topology resources and then creates new ones based on the provided specifications.
+                  Delete - deletes the resources matched by name.
+                  DeleteAll - deletes all topology resources found in the namespace.
+                  Reconcile - reconciles the topology resources based on the provided specifications.
+                  One of create, replace, replaceAll, delete, deleteAll, reconcile.
+                enum:
+                - create
+                - replace
+                - replaceAll
+                - delete
+                - deleteAll
+                - reconcile
+                type: string
+              remoteLocation:
+                description: http(s) location of the topology input in YAML format
+                  to deploy. Providing the remote location will discard any topology
+                  resources provided in the spec of the workflow.
+                type: string
+              satellitePortTemplates:
+                description: Define the satellite port templates that are meant to
+                  be inherited by the satellite nodes referencing the template. These
+                  parameters can be overridden at the satellite node level.
+                items:
+                  description: Satellite Port Templates
+                  properties:
+                    connectors:
+                      description: |-
+                        List of connector components within the SatellitePortTemplate.
+                        Used to define the type and location of connectors.
+                      items:
+                        properties:
+                          kind:
+                            description: The kind of Component, e.g. lineCard.
+                            enum:
+                            - controlCard
+                            - lineCard
+                            - fabric
+                            - mda
+                            - connector
+                            - xiom
+                            - powerShelf
+                            - powerModule
+                            type: string
+                          slot:
+                            description: |-
+                              The slot this Component resides in, unset for Components that do not have a slot or ID.
+                              e.g. 1 would denote the linecard slot 1, 1/1 would denote linecard slot 1 mda slot 1.
+                            type: string
+                          type:
+                            description: Denotes the type of hardware being provisioned,
+                              e.g. xcm-x20.
+                            type: string
+                        required:
+                        - kind
+                        - type
+                        type: object
+                      type: array
+                    name:
+                      description: The name of the SatellitePortTemplate.
+                      type: string
+                    uplinks:
+                      description: Uplinks for the SatellitePortTemplate.
+                      items:
+                        properties:
+                          downlinks:
+                            description: Downlinks for the SatelliteUplink.
+                            items:
+                              type: string
+                            type: array
+                          name:
+                            description: The name of the SatelliteUplink.
+                            type: string
+                        required:
+                        - name
+                        type: object
+                      type: array
+                  required:
+                  - name
+                  type: object
+                type: array
+              simulation:
+                description: Specify simulation topology configuration.
+                properties:
+                  simNodeTemplates:
+                    description: Define the simulation node (sim node) parameters
+                      that are meant to be inherited by the simulation nodes referencing
+                      the template. These parameters can be overridden at the sim
+                      node level.
+                    items:
+                      properties:
+                        annotations:
+                          additionalProperties:
+                            type: string
+                          description: Annotations to assign to the SimNode.
+                          type: object
+                          x-kubernetes-preserve-unknown-fields: true
+                        image:
+                          description: The image to use for this SimNode. This is
+                            the full path to the image as it would be provided to
+                            the container runtime.
+                          type: string
+                        imagePullSecret:
+                          description: Reference to a Secret to use when pulling the
+                            image for this simNode.
+                          type: string
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Labels to assign to the SimNode.
+                          type: object
+                          x-kubernetes-preserve-unknown-fields: true
+                        name:
+                          description: The name of the template.
+                          type: string
+                        type:
+                          description: Type defines what is type of this SimNode.
+                          enum:
+                          - Linux
+                          - TestMan
+                          - SrlTest
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  simNodes:
+                    description: Define the sim node to be created/replaced/deleted.
+                      A sim node can reference a sim node template to inherit its
+                      parameters.
+                    items:
+                      properties:
+                        annotations:
+                          additionalProperties:
+                            type: string
+                          description: Annotations to assign to the SimNode.
+                          type: object
+                          x-kubernetes-preserve-unknown-fields: true
+                        image:
+                          description: The image to use for this SimNode. This is
+                            the full path to the image as it would be provided to
+                            the container runtime.
+                          type: string
+                        imagePullSecret:
+                          description: Reference to a Secret to use when pulling the
+                            image for this simNode
+                          type: string
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Labels to assign to the SimNode.
+                          type: object
+                          x-kubernetes-preserve-unknown-fields: true
+                        name:
+                          description: The name of the SimNode. This is the name that
+                            will be used to reference the SimNode in the SimTopology.
+                          type: string
+                        template:
+                          description: Reference to a template to use for this SimNode.
+                          type: string
+                        type:
+                          description: Type defines what is type of this SimNode
+                          enum:
+                          - Linux
+                          - TestMan
+                          - SrlTest
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    minItems: 0
+                    type: array
+                  topology:
+                    description: Define the simulation topology to be created/replaced/deleted
+                      by providing the list of nodes/interfaces and their corresponding
+                      sim nodes/sim node interfaces.
+                    items:
+                      properties:
+                        interface:
+                          description: |-
+                            Normalized name of an interface/port. This is the normalized name of the interface in the TopoNode, for example 'ethernet-1-1'.
+                            The value of "*" indicates all interfaces on the TopoNode/s.
+                          type: string
+                        node:
+                          description: The TopoNode on which interfaces will be mapped
+                            to a SimNode. You may use the value "*" to indicate all
+                            TopoNodes.
+                          type: string
+                        simNode:
+                          description: The SimNode to which the interface will be
+                            mapped. This is the name of the SimNode as it is defined
+                            in the SimTopology.
+                          type: string
+                        simNodeInterface:
+                          description: |-
+                            The name of the interface to present to the SimNode to which the interface will be mapped. If not provided the interface name will be generated starting with "eth1", "eth2",...
+                            This is the interface name as it will appear in the SimNode.
+                          type: string
+                      required:
+                      - interface
+                      - node
+                      - simNode
+                      type: object
+                    minItems: 0
+                    type: array
+                type: object
+            type: object
+          status:
+            description: NetworkTopologyStatus defines the observed state of NetworkTopology
+            properties:
+              message:
+                description: Human-readable message providing additional context about
+                  the operation result
+                type: string
+              processed:
+                description: Detailed breakdown of resources processed during the
+                  operation
+                properties:
+                  breakouts:
+                    description: Summary of breakout operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  interfaces:
+                    description: Summary of interface operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  links:
+                    description: Summary of link operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  nodes:
+                    description: Summary of node operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  simLinks:
+                    description: Summary of simulation link operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  simNodes:
+                    description: Summary of simulation node operations
+                    properties:
+                      created:
+                        description: Number of resources created
+                        type: integer
+                      deleted:
+                        description: Number of resources deleted
+                        type: integer
+                      updated:
+                        description: Number of resources updated
+                        type: integer
+                    type: object
+                  totalDuration:
+                    description: Total duration of the topology operation
+                    type: string
+                  totalResources:
+                    description: Total number of resources processed across all types
+                    type: integer
+                type: object
+              result:
+                description: Overall result of the topology operation
+                enum:
+                - Success
+                - Failed
+                type: string
+            required:
+            - result
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

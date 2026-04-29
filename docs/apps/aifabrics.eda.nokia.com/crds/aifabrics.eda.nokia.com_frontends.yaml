@@ -1,0 +1,153 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: frontends.aifabrics.eda.nokia.com
+spec:
+  group: aifabrics.eda.nokia.com
+  names:
+    kind: Frontend
+    listKind: FrontendList
+    plural: frontends
+    singular: frontend
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Frontend is the Schema for the frontends API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FrontendSpec defines the desired state of Frontend
+            properties:
+              subnets:
+                items:
+                  properties:
+                    gateway:
+                      description: Gateway (optional) for the subnet, if not specified,
+                        the first IP (e.g. 10.0.0.1) in the subnet is used as the
+                        gateway.
+                      type: string
+                    interfaceSelector:
+                      description: Interface label selector.
+                      type: string
+                    isolated:
+                      default: false
+                      description: Isolated is the flag to enable isolated mode for
+                        the subnet which means no access to and from the other subnets
+                        within the VPC.
+                      type: boolean
+                    subnet:
+                      description: Subnet is the subnet CIDR block, such as "10.0.0.0/24",
+                        should belong to the IPv4Namespace and be unique within the
+                        namespace.
+                      type: string
+                    vlan:
+                      description: Single value between 1-4094 support, ranges supported
+                        in the format x-y,x-y, or the special keyword null, untagged
+                        or pool for auto allocation.
+                      type: string
+                  required:
+                  - isolated
+                  - subnet
+                  - vlan
+                  type: object
+                type: array
+            type: object
+          status:
+            description: FrontendStatus defines the observed state of Frontend
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Frontend is the Schema for the frontends API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FrontendSpec defines the desired state of Frontend
+            properties:
+              subnets:
+                items:
+                  properties:
+                    gateway:
+                      description: Gateway (optional) for the subnet, if not specified,
+                        the first IP (e.g. 10.0.0.1) in the subnet is used as the
+                        gateway.
+                      type: string
+                    interfaceSelector:
+                      description: Interface label selector.
+                      type: string
+                    isolated:
+                      default: false
+                      description: Isolated is the flag to enable isolated mode for
+                        the subnet which means no access to and from the other subnets
+                        within the VPC.
+                      type: boolean
+                    subnet:
+                      description: Subnet is the subnet CIDR block, such as "10.0.0.0/24",
+                        should belong to the IPv4Namespace and be unique within the
+                        namespace.
+                      type: string
+                    vlan:
+                      description: Single value between 1-4094 support, ranges supported
+                        in the format x-y,x-y, or the special keyword null, untagged
+                        or pool for auto allocation.
+                      type: string
+                  required:
+                  - isolated
+                  - subnet
+                  - vlan
+                  type: object
+                type: array
+            type: object
+          status:
+            description: FrontendStatus defines the observed state of Frontend
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

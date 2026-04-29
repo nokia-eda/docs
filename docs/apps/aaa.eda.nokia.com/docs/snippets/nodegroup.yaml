@@ -1,0 +1,17 @@
+apiVersion: aaa.eda.nokia.com/v1
+kind: NodeGroup
+metadata:
+  name: cli-access
+  namespace: eda
+spec:
+  rules:
+    - action: ReadWrite
+      match: show version
+      operatingSystem: sros
+  services:
+    - CLI
+    - FTP
+    - GNMI
+    - JSONRPC
+    - NETCONF
+  superuser: false

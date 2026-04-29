@@ -1,0 +1,12 @@
+apiVersion: routing.eda.nokia.com/v1
+kind: AttachmentLookup
+metadata:
+  name: attachmentlookup-19021ffa-c19a-4798-b80b-f39cb21a8b77
+  namespace: eda
+spec:
+  address: 11.0.0.4
+  nodes:
+    - leaf-1
+    - leaf-2
+    - spine-1
+    - spine-2

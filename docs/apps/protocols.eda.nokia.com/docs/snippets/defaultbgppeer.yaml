@@ -1,0 +1,12 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: DefaultBGPPeer
+metadata:
+  name: example-bgp-peer-leaf1-spine1
+  namespace: eda
+spec:
+  dynamicNeighbor: false
+  group: example-default-group
+  interface: leaf-1-loopback
+  interfaceKind: DefaultInterface
+  peerInterface: spine-1-loopback
+  peerInterfaceKind: DefaultInterface

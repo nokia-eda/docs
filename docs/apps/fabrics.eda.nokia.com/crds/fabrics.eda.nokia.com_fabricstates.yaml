@@ -1,0 +1,267 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: fabricstates.fabrics.eda.nokia.com
+spec:
+  group: fabrics.eda.nokia.com
+  names:
+    kind: FabricState
+    listKind: FabricStateList
+    plural: fabricstates
+    singular: fabricstate
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: FabricState is the Schema for the fabricstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FabricStateSpec defines the desired state of FabricState
+            properties:
+              borderLeafNodes:
+                description: List of borderleaf nodes in the fabric
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              defaultRouters:
+                description: List of DefaultRouters used within the fabric
+                items:
+                  type: string
+                type: array
+              isls:
+                description: List of ISL used in the Fabric
+                items:
+                  type: string
+                type: array
+              leafNodes:
+                description: List of leaf nodes in the fabric
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              spineNodes:
+                description: List of spine nodes in the fabric
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              superSpineNodes:
+                description: List of super spine nodes in the fabric
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+            type: object
+          status:
+            description: FabricStateStatus defines the observed state of FabricState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: FabricState is the Schema for the fabricstates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FabricStateSpec defines the desired state of FabricState
+            properties:
+              borderLeafNodes:
+                description: List of borderleaf nodes in the fabric
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              defaultRouters:
+                description: List of DefaultRouters used within the fabric
+                items:
+                  type: string
+                type: array
+              isls:
+                description: List of ISL used in the Fabric
+                items:
+                  type: string
+                type: array
+              leafNodes:
+                description: List of leaf nodes in the fabric
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              spineNodes:
+                description: List of spine nodes in the fabric
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              superSpineNodes:
+                description: List of super spine nodes in the fabric
+                items:
+                  properties:
+                    node:
+                      description: Name of the TopoNode.
+                      type: string
+                    operatingSystem:
+                      description: Operating system running on the node.
+                      type: string
+                    operatingSystemVersion:
+                      description: Operating system version running on the node.
+                      type: string
+                    underlayAutonomousSystem:
+                      description: Underlay Autonomous System used for eBGP peering
+                        session, when protocol is set to eBGP this is required.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+            type: object
+          status:
+            description: FabricStateStatus defines the observed state of FabricState
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

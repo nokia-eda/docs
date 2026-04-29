@@ -1,0 +1,51 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: coreext
+spec:
+  appInfo:
+    categories:
+      - uncategorised
+    documentation: coreext/docs
+  author: nokia
+  dependencies:
+    - file:
+        path: utils
+    - file:
+        path: common
+    - file:
+        path: coreext/api
+    - file:
+        path: coreext/api/v1alpha1/pysrc
+  description: This application contains extensions to EDA core
+  group: coreext.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/coreext:v6.999.0
+  supportedCoreVersions:
+    - "v5.0"
+  title: Core Extensions
+  version: v1alpha1
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: false
+        path: coreext/crds/coreext.eda.nokia.com_platformbackups.yaml
+        schema: coreext/openapiv3/eda_oas_coreext.eda.nokia.com_platformbackups.json
+        ui:
+          name: Platform Backups
+        workflow: true
+    - cr:
+        path: coreext/workflows/platformbackup/core_v1_flowdefinition.yaml
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"

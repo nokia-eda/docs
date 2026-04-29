@@ -1,0 +1,16 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: DefaultRouteReflector
+metadata:
+  labels:
+    rr-label: rr
+  name: example-route-reflector
+  namespace: eda
+spec:
+  clientSelectors:
+    - rr-label=client
+  clusterID: 10.100.0.1
+  defaultBGPRRGroup: example-default-group
+  interface: spine-1-loopback
+  interfaceKind: DefaultInterface
+  ipv4Unicast:
+    enabled: true

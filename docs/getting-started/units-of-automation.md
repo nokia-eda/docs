@@ -353,7 +353,7 @@ Congratulations, your fabric is now using iBGP as its overlay protocol :partying
 From a tiny change in the Fabric' declarative abstraction through the transformation to sub-resources and eventually to the node-level configurations, that are reliably transacted and pushed to the constituent nodes. How cool is that?
 
 [CR-k8s-doc]: https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
-[fabric-app-docs]: ../apps/fabric.md
+[fabric-app-docs]: ../apps/fabrics.eda.nokia.com/docs/index.md
 [vnet-app-docs]: ../apps/virtualnetwork.md
 
 [^1]: Like the [Fabric resource][fabric-app-docs] documented in the Apps section.

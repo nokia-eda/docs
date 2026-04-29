@@ -1,0 +1,8 @@
+apiVersion: qos.eda.nokia.com/v2
+kind: ForwardingClass
+metadata:
+  labels:
+    eda.nokia.com/bootstrap: 'true'
+  name: fc4
+  namespace: eda
+spec: {}

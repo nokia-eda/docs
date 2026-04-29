@@ -1,0 +1,212 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: sshservers.management.eda.nokia.com
+spec:
+  group: management.eda.nokia.com
+  names:
+    kind: SSHServer
+    listKind: SSHServerList
+    plural: sshservers
+    singular: sshserver
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: SSHServer is the Schema for the sshservers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SSHServerSpec defines the desired state of SSHServer
+            properties:
+              enablePasswordAuthentication:
+                description: Enable password authentication for the SSH server. If
+                  disabled, only key-based authentication will be allowed.
+                type: boolean
+              enabled:
+                description: Enable the SSH server.
+                type: boolean
+              port:
+                description: Port for the SSH server to listen on.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              router:
+                description: Router to associate the server with.
+                type: string
+              routerKind:
+                description: The Kind of the router for the server.
+                enum:
+                - ManagementRouter
+                - Router
+                - DefaultRouter
+                type: string
+              routerSelectors:
+                description: Selects router resources based on the defined Kind.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+            required:
+            - enabled
+            type: object
+          status:
+            description: SSHServerStatus defines the observed state of SSHServer
+            properties:
+              downServers:
+                description: List of down SSH servers.
+                items:
+                  properties:
+                    nodes:
+                      items:
+                        properties:
+                          nodeName:
+                            type: string
+                          operatingSystem:
+                            type: string
+                        type: object
+                      type: array
+                    router:
+                      type: string
+                  type: object
+                type: array
+              health:
+                description: Health score of the SSH server.
+                type: integer
+              healthScoreReason:
+                description: Reason for the health score.
+                type: string
+              lastChangeTime:
+                description: Indicates when the SSH server last changed state.
+                type: string
+              operationalState:
+                description: Operational state of the SSH server.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SSHServer is the Schema for the sshservers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SSHServerSpec defines the desired state of SSHServer
+            properties:
+              enabled:
+                description: Enable the SSH server.
+                type: boolean
+              passwordAuth:
+                description: Enable password authentication for the SSH server. If
+                  disabled, only key-based authentication will be allowed.
+                type: boolean
+              port:
+                description: Port for the SSH server to listen on.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              router:
+                description: Router to associate the server with.
+                type: string
+              routerKind:
+                description: The Kind of the router for the server.
+                enum:
+                - MANAGEMENTROUTER
+                - ROUTER
+                - DEFAULTROUTER
+                type: string
+              routerSelector:
+                description: Selects router resources based on the defined Kind.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+            required:
+            - enabled
+            type: object
+          status:
+            description: SSHServerStatus defines the observed state of SSHServer
+            properties:
+              downServers:
+                description: List of down SSH servers.
+                items:
+                  properties:
+                    nodes:
+                      items:
+                        properties:
+                          nodeName:
+                            type: string
+                          operatingSystem:
+                            type: string
+                        type: object
+                      type: array
+                    router:
+                      type: string
+                  type: object
+                type: array
+              health:
+                description: Health score of the SSH server.
+                type: integer
+              healthScoreReason:
+                description: Reason for the health score.
+                type: string
+              lastChange:
+                description: Indicates when the SSH server last changed state.
+                type: string
+              operationalState:
+                description: Operational state of the SSH server.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

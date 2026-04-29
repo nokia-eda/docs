@@ -1,0 +1,139 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: siteinfo
+spec:
+  group: siteinfo.eda.nokia.com
+  version: v1
+  title: Site Information
+  description: "This application provides resources describing the environment at a given site. \n\nThis includes managing DNS, host and domain names, banners and MOTD messages, and other site-specific information.\n"
+  image: ghcr.io/nokia-eda/apps/siteinfo:v6.999.0
+  author: Nokia
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  gitPathPrefix: /
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  supportedCoreVersions:
+    - "v5.0"
+  appInfo:
+    documentation: siteinfo/docs
+    categories:
+      - "system"
+  components:
+    - crd:
+        path: siteinfo/crds/siteinfo.eda.nokia.com_banners.yaml
+        schema: siteinfo/openapiv3/eda_oas_siteinfo.eda.nokia.com_banners.json
+        api:
+          expose: readWrite
+        ui:
+          category: Management
+          name: Banners
+          icon: TextOutline
+        conversionScript: siteinfo/intents/banner/conversion_v1.py
+    - crd:
+        path: siteinfo/crds/siteinfo.eda.nokia.com_bannerstates.yaml
+        schema: siteinfo/openapiv3/eda_oas_siteinfo.eda.nokia.com_bannerstates.json
+        conversionScript: siteinfo/intents/bannerstate/conversion_v1.py
+    - script:
+        path: siteinfo/intents/banner/banner_intent.py
+        type: config
+        trigger:
+          kind: Banner
+    - script:
+        path: siteinfo/intents/bannerstate/bannerstate_intent.py
+        type: state
+        trigger:
+          kind: BannerState
+    - crd:
+        api:
+          expose: readWrite
+        path: siteinfo/crds/siteinfo.eda.nokia.com_defaultmtus.yaml
+        schema: siteinfo/openapiv3/eda_oas_siteinfo.eda.nokia.com_defaultmtus.json
+        ui:
+          category: Site Profiles
+          name: Default MTU
+          icon: Port
+        conversionScript: siteinfo/intents/defaultmtu/conversion_v1.py
+    - script:
+        path: siteinfo/intents/defaultmtu/defaultmtu_intent.py
+        type: config
+        trigger:
+          kind: DefaultMTU
+    - crd:
+        api:
+          expose: readWrite
+        path: siteinfo/crds/siteinfo.eda.nokia.com_systemloadbalancers.yaml
+        schema: siteinfo/openapiv3/eda_oas_siteinfo.eda.nokia.com_systemloadbalancers.json
+        ui:
+          category: Site Profiles
+          name: Load Balancing
+          icon: Traffic
+        conversionScript: siteinfo/intents/systemloadbalancer/conversion_v1.py
+    - crd:
+        path: siteinfo/crds/siteinfo.eda.nokia.com_systemloadbalancerstates.yaml
+        schema: siteinfo/openapiv3/eda_oas_siteinfo.eda.nokia.com_systemloadbalancerstates.json
+        api:
+          expose: none
+        conversionScript: siteinfo/intents/systemloadbalancerstate/conversion_v1.py
+    - script:
+        path: siteinfo/intents/systemloadbalancer/systemloadbalancer_intent.py
+        type: config
+        trigger:
+          kind: SystemLoadBalancer
+    - script:
+        path: siteinfo/intents/systemloadbalancerstate/systemloadbalancerstate_intent.py
+        type: state
+        trigger:
+          kind: SystemLoadBalancerState
+    - crd:
+        api:
+          expose: readWrite
+        path: siteinfo/crds/siteinfo.eda.nokia.com_dnsclients.yaml
+        schema: siteinfo/openapiv3/eda_oas_siteinfo.eda.nokia.com_dnsclients.json
+        ui:
+          category: Management
+          name: DNS Clients
+          icon: FindCircle
+    - script:
+        path: siteinfo/intents/dnsclient/dnsclient_intent.py
+        trigger:
+          kind: DNSClient
+        type: config
+    - crd:
+        api:
+          expose: readWrite
+        path: siteinfo/crds/siteinfo.eda.nokia.com_dnsclientstates.yaml
+        schema: siteinfo/openapiv3/eda_oas_siteinfo.eda.nokia.com_dnsclientstates.json
+    - script:
+        path: siteinfo/intents/dnsclientstate/dnsclientstate_intent.py
+        trigger:
+          kind: DNSClientState
+        type: state
+  dependencies:
+    - file:
+        path: siteinfo/intents
+    - file:
+        path: siteinfo/api
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: routing/
+    - file:
+        path: services/
+    - file:
+        path: bootstrap/
+    - file:
+        path: siteinfo/api/v1/pysrc

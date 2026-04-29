@@ -1,0 +1,39 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: logs
+spec:
+  appInfo:
+    categories:
+      - networking
+    documentation: logs/docs
+  author: nokia
+  dependencies:
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: logs/intents/
+    - file:
+        path: logs/api
+    - file:
+        path: logs/api/v1alpha1/pysrc
+  description: Configuration of syslog clients on targets
+  group: logs.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/logs:v999.9.0
+  supportedCoreVersions:
+    - "v3.0"
+  supportedEndpoints:
+    - "srl:0.0.0"
+    - "sros:0.0.0"
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  title: Logs
+  version: v1alpha1

@@ -1,0 +1,1177 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultbgppeers.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: DefaultBGPPeer
+    listKind: DefaultBGPPeerList
+    plural: defaultbgppeers
+    singular: defaultbgppeer
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.sessionState
+      name: Session State
+      type: string
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.enabled
+      name: Enabled
+      type: boolean
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    - jsonPath: .status.peerAS
+      name: PeerAS
+      type: integer
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: DefaultBGPPeer is the Schema for the defaultbgppeers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultBGPPeer enables the configuration of BGP sessions
+              within a DefaultRouter. It allows specifying a description, a DefaultInterface
+              reference, and the peer IP address. The resource also supports dynamic
+              neighbors, common BGP settings, and peer-specific configurations.
+            properties:
+              asPathOptions:
+                description: AS Path Options
+                properties:
+                  allowOwnAS:
+                    default: 0
+                    description: The maximum number of times the global AS number
+                      or a local AS number of the BGP instance can appear in any received
+                      AS_PATH before it is considered a loop and considered invalid.
+                    maximum: 255
+                    minimum: 0
+                    type: integer
+                  removePrivateAS:
+                    description: Options for removing private AS numbers (2-byte and
+                      4-byte) from the advertised AS path towards all peers.
+                    properties:
+                      ignorePeerAS:
+                        default: false
+                        description: If set to true then do not delete or replace
+                          a private AS number that is the same as the peer AS number.
+                        type: boolean
+                      leadingOnly:
+                        default: false
+                        description: If set to true then only delete or replace private
+                          AS numbers that appear before the first occurrence of a
+                          non-private ASN in the sequence of most recent ASNs in the
+                          AS path.
+                        type: boolean
+                      removePrivateASMode:
+                        default: DISABLED
+                        description: The method by which private AS numbers are removed
+                          from the advertised AS_PATH attribute.
+                        enum:
+                        - DISABLED
+                        - REPLACE
+                        - DELETE
+                        type: string
+                    required:
+                    - ignorePeerAS
+                    - leadingOnly
+                    - removePrivateASMode
+                    type: object
+                required:
+                - allowOwnAS
+                type: object
+              bfd:
+                description: Enable or disable Bi-forward Forwarding Detection (BFD)
+                  with fast failover.
+                type: boolean
+              client:
+                description: When set to true, all configured and dynamic BGP peers
+                  are considered RR clients.
+                type: boolean
+              clusterID:
+                description: Enables route reflect client and sets the cluster ID.
+                type: string
+              description:
+                description: Sets the description on the BGP peer.
+                type: string
+              dynamicNeighbor:
+                default: false
+                description: When set to true the DefaultInterface is added to the
+                  dynamic-neighbor list for dynamic peering.
+                type: boolean
+              dynamicNeighborAllowedPeerAS:
+                description: The autonomous system numbers allowed from peers if dynamic
+                  peering is enabled.
+                items:
+                  type: integer
+                type: array
+              exportPolicy:
+                description: Reference to a Policy CR that will be used to filter
+                  routes advertised to peers.
+                items:
+                  type: string
+                type: array
+              grStaleRouteTime:
+                description: Enables Graceful Restart on the peer and sets the stale
+                  route time.
+                maximum: 3600
+                minimum: 1
+                type: integer
+              group:
+                description: Reference to a DefaultBGPGroup.
+                type: string
+              importPolicy:
+                description: Reference to a Policy CR that will be used to filter
+                  routes received from peers.
+                items:
+                  type: string
+                type: array
+              interface:
+                description: Reference to either a DefaultInterface or SystemInterface
+                  whose IP will be used as a source IP for the BGP session.
+                type: string
+              interfaceKind:
+                description: Reference to a the Kind of interface whose IP will be
+                  used as a source IP for the BGP session.
+                enum:
+                - DEFAULTINTERFACE
+                - SYSTEMINTERFACE
+                type: string
+              ipv4Unicast:
+                description: Parameters relating to the IPv4 unicast AFI/SAFI.
+                properties:
+                  advertiseIPV6NextHops:
+                    description: Enables advertisement of IPv4 Unicast routes with
+                      IPv6 next-hops to peers.
+                    type: boolean
+                  enabled:
+                    description: Enables the IPv4 unicast AFISAFI.
+                    type: boolean
+                  prefixLimit:
+                    properties:
+                      prefixLimitAccepted:
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting only accepted routes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThreshold:
+                            description: A percentage of the maximum number of prefixes
+                              that can be accepted before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                      prefixLimitReceived:
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting all routes (accepted
+                              and rejected by import policies).
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThreshold:
+                            description: A percentage of the maximum number of prefixes
+                              that can be received before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                  receiveIPV6NextHops:
+                    description: Enables the advertisement of the RFC 5549 capability
+                      to receive IPv4 routes with IPv6 next-hops.
+                    type: boolean
+                type: object
+              ipv6Unicast:
+                description: Parameters relating to the IPv6 unicast AFI/SAFI.
+                properties:
+                  enabled:
+                    description: Enables the IPv6 unicast AFISAFI
+                    type: boolean
+                  prefixLimit:
+                    properties:
+                      prefixLimitAccepted:
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting only accepted routes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThreshold:
+                            description: A percentage of the maximum number of prefixes
+                              that can be accepted before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                      prefixLimitReceived:
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting all routes (accepted
+                              and rejected by import policies).
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThreshold:
+                            description: A percentage of the maximum number of prefixes
+                              that can be received before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                type: object
+              keychain:
+                description: Reference to a Keychain resource that will be used for
+                  authentication with the BGP peer.
+                type: string
+              l2VPNEVPN:
+                description: Parameters relating to the EVPN AFI/SAFI.
+                properties:
+                  advertiseIPV6NextHops:
+                    description: Enables advertisement of EVPN routes with IPv6 next-hops
+                      to peers.
+                    type: boolean
+                  enabled:
+                    description: Enables the L2VPN EVPN AFISAFI.
+                    type: boolean
+                  prefixLimit:
+                    properties:
+                      prefixLimitAccepted:
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting only accepted routes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThreshold:
+                            description: A percentage of the maximum number of prefixes
+                              that can be accepted before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                      prefixLimitReceived:
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting all routes (accepted
+                              and rejected by import policies).
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThreshold:
+                            description: A percentage of the maximum number of prefixes
+                              that can be received before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                type: object
+              localAS:
+                description: The local autonomous system number advertised to peers.
+                properties:
+                  autonomousSystem:
+                    description: Local Autonomous System number.
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                  prependGlobalAS:
+                    description: When set to true, the global ASN value is prepended
+                      to the AS path in outbound routes towards each BGP peer.
+                    type: boolean
+                  prependLocalAS:
+                    description: When set to true, the local AS value is prepended
+                      to the AS path of inbound routes from each EBGP peer.
+                    type: boolean
+                required:
+                - autonomousSystem
+                type: object
+              localPreference:
+                description: Local Preference attribute added to received routes from
+                  the BGP peers, also sets local preference for generated routes.
+                maximum: 4294967295
+                minimum: 0
+                type: integer
+              multiHopMaxHop:
+                description: Enable multihop for eBGP peers and sets the maximum number
+                  of hops allowed.
+                maximum: 255
+                minimum: 1
+                type: integer
+              nextHopSelf:
+                description: When set to true, the next-hop in all IPv4-unicast, IPv6-unicast
+                  and EVPN BGP routes advertised to the peer is set to the local-address.
+                type: boolean
+              peerAS:
+                description: The autonomous system number expected from peers.
+                properties:
+                  autonomousSystem:
+                    description: Local Autonomous System number.
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                required:
+                - autonomousSystem
+                type: object
+              peerIP:
+                description: Peer IP to which the peering session will be established.
+                  There cannot be both a PeerIp and PeerDefaultInterface property
+                  set.
+                type: string
+              peerInterface:
+                description: Reference to a DefaultInterface or SystemInterface resource
+                  to which the peering session will be established. There cannot be
+                  both a PeerIp and PeerDefaultInterface property set.
+                type: string
+              peerInterfaceKind:
+                description: Reference to a the Kind of interface to which to peer
+                  to.
+                enum:
+                - DEFAULTINTERFACE
+                - SYSTEMINTERFACE
+                type: string
+              rtc:
+                description: Parameters relating to the RTC SAFI.
+                properties:
+                  advertiseDefaultRoute:
+                    description: Enables advertisement of a Default RTC Route to the
+                      BGP peers to receive all VPN routes.
+                    type: boolean
+                  enabled:
+                    description: Enables the Route Target Constraints SAFI.
+                    type: boolean
+                type: object
+              sendCommunityLarge:
+                description: When false, all large (12 byte) BGP communities from
+                  all outbound routes advertised to the peer are stripped.
+                type: boolean
+              sendCommunityStandard:
+                description: When false, all standard (4 byte) communities from all
+                  outbound routes advertised to the peer are stripped.
+                type: boolean
+              sendDefaultRoute:
+                description: Options for controlling the generation of default routes
+                  towards BGP peers.
+                properties:
+                  addressFamily:
+                    description: Enables the sending of a synthetically generated
+                      default IPv4 or IPV6 route to each peer.
+                    items:
+                      enum:
+                      - IPV4-UNICAST
+                      - IPV6-UNICAST
+                      type: string
+                    type: array
+                  exportPolicy:
+                    description: Reference to a Policy that should be applied to the
+                      advertised default routes, in order to set their attributes
+                      to non-default values.
+                    type: string
+                required:
+                - addressFamily
+                type: object
+              timers:
+                description: Timer configurations
+                properties:
+                  connectRetry:
+                    description: The time interval in seconds between successive attempts
+                      to establish a session with a peer.
+                    maximum: 65535
+                    minimum: 1
+                    type: integer
+                  holdTime:
+                    description: The hold-time interval in seconds that the router
+                      proposes to the peer in its OPEN message.
+                    maximum: 65535
+                    minimum: 0
+                    type: integer
+                  keepAlive:
+                    description: The interval in seconds between successive keepalive
+                      messages sent to the peer.
+                    maximum: 21845
+                    minimum: 0
+                    type: integer
+                  minimumAdvertisementInterval:
+                    description: The value assigned to the MinRouteAdvertisementIntervalTimer
+                      of RFC 4271, for both EBGP and IBGP sessions.
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                type: object
+            required:
+            - group
+            - interface
+            - interfaceKind
+            type: object
+          status:
+            description: DefaultBGPPeerStatus defines the observed state of DefaultBGPPeer
+            properties:
+              enabled:
+                description: Indicated whether the BGP Peer is administratively enabled.
+                type: boolean
+              health:
+                description: Indicates the health score of the BGP peer.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              lastEvent:
+                description: Last event of the BGP peer.
+                type: string
+              lastState:
+                description: Last state of the BGP peer.
+                type: string
+              negotiatedHoldTime:
+                description: Hold time negotiated with the BGP peer.
+                type: integer
+              negotiatedKeepaliveInterval:
+                description: Keepalive interval negotiated with the BGP peer.
+                type: integer
+              operationalState:
+                description: Operational state of the BGP peer
+                type: string
+              peerAS:
+                description: Peer AS of the BGP peer.
+                type: integer
+              sessionState:
+                description: The state of the BGP session.
+                type: string
+              underMaintenance:
+                description: Indicates if the BGP peer is under maintenance.
+                type: boolean
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.sessionState
+      name: Session State
+      type: string
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.enabled
+      name: Enabled
+      type: boolean
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    - jsonPath: .status.peerAS
+      name: PeerAS
+      type: integer
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: DefaultBGPPeer is the Schema for the defaultbgppeers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultBGPPeer enables the configuration of BGP sessions
+              within a DefaultRouter. It allows specifying a description, a DefaultInterface
+              reference, and the peer IP address. The resource also supports dynamic
+              neighbors, common BGP settings, and peer-specific configurations.
+            properties:
+              asPathOptions:
+                description: AS Path Options
+                properties:
+                  allowOwnAS:
+                    default: 0
+                    description: The maximum number of times the global AS number
+                      or a local AS number of the BGP instance can appear in any received
+                      AS_PATH before it is considered a loop and considered invalid.
+                    maximum: 255
+                    minimum: 0
+                    type: integer
+                  removePrivateAS:
+                    description: Options for removing private AS numbers (2-byte and
+                      4-byte) from the advertised AS path towards all peers.
+                    properties:
+                      ignorePeerAS:
+                        default: false
+                        description: If set to true then do not delete or replace
+                          a private AS number that is the same as the peer AS number.
+                        type: boolean
+                      leadingOnly:
+                        default: false
+                        description: If set to true then only delete or replace private
+                          AS numbers that appear before the first occurrence of a
+                          non-private ASN in the sequence of most recent ASNs in the
+                          AS path.
+                        type: boolean
+                      removePrivateASMode:
+                        default: Disabled
+                        description: The method by which private AS numbers are removed
+                          from the advertised AS_PATH attribute.
+                        enum:
+                        - Disabled
+                        - Replace
+                        - Delete
+                        type: string
+                    required:
+                    - ignorePeerAS
+                    - leadingOnly
+                    - removePrivateASMode
+                    type: object
+                required:
+                - allowOwnAS
+                type: object
+              bfd:
+                description: Enable or disable Bi-forward Forwarding Detection (BFD)
+                  with fast failover.
+                type: boolean
+              client:
+                description: When set to true, all configured and dynamic BGP peers
+                  are considered RR clients.
+                type: boolean
+              clusterID:
+                description: Enables route reflect client and sets the cluster ID.
+                type: string
+              description:
+                description: Sets the description on the BGP peer.
+                type: string
+              dynamicNeighbor:
+                default: false
+                description: When set to true the DefaultInterface is added to the
+                  dynamic-neighbor list for dynamic peering.
+                type: boolean
+              dynamicNeighborAllowedPeerASs:
+                description: The autonomous system numbers allowed from peers if dynamic
+                  peering is enabled.
+                items:
+                  type: integer
+                type: array
+              exportPolicies:
+                description: Reference to a Policy CR that will be used to filter
+                  routes advertised to peers.
+                items:
+                  type: string
+                type: array
+              grStaleRouteTimeSeconds:
+                description: Enables Graceful Restart on the peer and sets the stale
+                  route time in seconds.
+                maximum: 3600
+                minimum: 1
+                type: integer
+              group:
+                description: Reference to a DefaultBGPGroup.
+                type: string
+              importPolicies:
+                description: Reference to a Policy CR that will be used to filter
+                  routes received from peers.
+                items:
+                  type: string
+                type: array
+              interface:
+                description: Reference to either a DefaultInterface or SystemInterface
+                  whose IP will be used as a source IP for the BGP session.
+                type: string
+              interfaceKind:
+                description: Reference to a the Kind of interface whose IP will be
+                  used as a source IP for the BGP session.
+                enum:
+                - DefaultInterface
+                - SystemInterface
+                type: string
+              ipv4Unicast:
+                description: Parameters relating to the IPv4 unicast AFI/SAFI.
+                properties:
+                  advertiseIPv6NextHops:
+                    description: Enables advertisement of IPv4 Unicast routes with
+                      IPv6 next-hops to peers.
+                    type: boolean
+                  enabled:
+                    description: Enables the IPv4 unicast AFISAFI.
+                    type: boolean
+                  prefixLimit:
+                    description: Configures the maximum number of IPv4 unicast prefixes
+                      that can be received from a BGP peer.
+                    properties:
+                      prefixLimitAccepted:
+                        description: Configuration of the maximum number of prefixes
+                          that can be accepted from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting only accepted routes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be accepted before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                      prefixLimitReceived:
+                        description: Configuration of the maximum number of prefixes
+                          that can be received from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting all routes (accepted
+                              and rejected by import policies).
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be received before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                  receiveIPv6NextHops:
+                    description: Enables the advertisement of the RFC 5549 capability
+                      to receive IPv4 routes with IPv6 next-hops.
+                    type: boolean
+                type: object
+              ipv6Unicast:
+                description: Parameters relating to the IPv6 unicast AFI/SAFI.
+                properties:
+                  enabled:
+                    description: Enables the IPv6 unicast AFISAFI
+                    type: boolean
+                  prefixLimit:
+                    description: Enables advertisement of IPv6 Unicast routes with
+                      IPv4 next-hops to peers.
+                    properties:
+                      prefixLimitAccepted:
+                        description: Configuration of the maximum number of prefixes
+                          that can be accepted from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting only accepted routes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be accepted before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                      prefixLimitReceived:
+                        description: Configuration of the maximum number of prefixes
+                          that can be received from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting all routes (accepted
+                              and rejected by import policies).
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be received before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                type: object
+              keychain:
+                description: Reference to a Keychain resource that will be used for
+                  authentication with the BGP peer.
+                type: string
+              l2VPNEVPN:
+                description: Parameters relating to the EVPN AFI/SAFI.
+                properties:
+                  advertiseIPv6NextHops:
+                    description: Enables advertisement of EVPN routes with IPv6 next-hops
+                      to peers.
+                    type: boolean
+                  enabled:
+                    description: Enables the L2VPN EVPN AFISAFI.
+                    type: boolean
+                  prefixLimit:
+                    description: Configures the maximum number of EVPN prefixes that
+                      can be received from a BGP peer.
+                    properties:
+                      prefixLimitAccepted:
+                        description: Configuration of the maximum number of prefixes
+                          that can be accepted from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting only accepted routes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be accepted before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                      prefixLimitReceived:
+                        description: Configuration of the maximum number of prefixes
+                          that can be received from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting all routes (accepted
+                              and rejected by import policies).
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be received before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                type: object
+              localAS:
+                description: The local autonomous system number advertised to peers.
+                properties:
+                  autonomousSystem:
+                    description: Local Autonomous System number.
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                  prependGlobalAS:
+                    description: When set to true, the global ASN value is prepended
+                      to the AS path in outbound routes towards each BGP peer.
+                    type: boolean
+                  prependLocalAS:
+                    description: When set to true, the local AS value is prepended
+                      to the AS path of inbound routes from each EBGP peer.
+                    type: boolean
+                required:
+                - autonomousSystem
+                type: object
+              localPreference:
+                description: Local Preference attribute added to received routes from
+                  the BGP peers, also sets local preference for generated routes.
+                maximum: 4294967295
+                minimum: 0
+                type: integer
+              multiHopMaxHop:
+                description: Enable multihop for eBGP peers and sets the maximum number
+                  of hops allowed.
+                maximum: 255
+                minimum: 1
+                type: integer
+              nextHopSelf:
+                description: When set to true, the next-hop in all IPv4-unicast, IPv6-unicast
+                  and EVPN BGP routes advertised to the peer is set to the local-address.
+                type: boolean
+              peerAS:
+                description: The autonomous system number expected from peers.
+                properties:
+                  autonomousSystem:
+                    description: Local Autonomous System number.
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                required:
+                - autonomousSystem
+                type: object
+              peerIP:
+                description: Peer IP to which the peering session will be established.
+                  There cannot be both a PeerIp and PeerDefaultInterface property
+                  set.
+                type: string
+              peerInterface:
+                description: Reference to a DefaultInterface or SystemInterface resource
+                  to which the peering session will be established. There cannot be
+                  both a PeerIp and PeerDefaultInterface property set.
+                type: string
+              peerInterfaceKind:
+                description: Reference to a the Kind of interface to which to peer
+                  to.
+                enum:
+                - DefaultInterface
+                - SystemInterface
+                type: string
+              rtc:
+                description: Parameters related to the RTC SAFI.
+                properties:
+                  advertiseDefaultRoute:
+                    description: Enables advertisement of a Default RTC Route to the
+                      BGP peers to receive all VPN routes.
+                    type: boolean
+                  enabled:
+                    description: Enables the Route Target Constraints SAFI.
+                    type: boolean
+                type: object
+              sendCommunityLarge:
+                description: When false, all large (12 byte) BGP communities from
+                  all outbound routes advertised to the peer are stripped.
+                type: boolean
+              sendCommunityStandard:
+                description: When false, all standard (4 byte) communities from all
+                  outbound routes advertised to the peer are stripped.
+                type: boolean
+              sendDefaultRoute:
+                description: Options for controlling the generation of default routes
+                  towards BGP peers.
+                properties:
+                  addressFamilies:
+                    description: Enables the sending of a synthetically generated
+                      default IPv4 or IPV6 route to each peer.
+                    items:
+                      enum:
+                      - IPv4Unicast
+                      - IPv6Unicast
+                      type: string
+                    type: array
+                  exportPolicy:
+                    description: Reference to a Policy that should be applied to the
+                      advertised default routes, in order to set their attributes
+                      to non-default values.
+                    type: string
+                required:
+                - addressFamilies
+                type: object
+              timers:
+                description: Timer configurations
+                properties:
+                  connectRetrySeconds:
+                    description: The time interval in seconds between successive attempts
+                      to establish a session with a peer.
+                    maximum: 65535
+                    minimum: 1
+                    type: integer
+                  holdTimeSeconds:
+                    description: The hold-time interval in seconds that the router
+                      proposes to the peer in its OPEN message.
+                    maximum: 65535
+                    minimum: 0
+                    type: integer
+                  keepAliveSeconds:
+                    description: The interval in seconds between successive keepalive
+                      messages sent to the peer.
+                    maximum: 21845
+                    minimum: 0
+                    type: integer
+                  minimumAdvertisementIntervalSeconds:
+                    description: The value assigned to the MinRouteAdvertisementIntervalTimer
+                      of RFC 4271, for both EBGP and IBGP sessions, in seconds.
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                type: object
+              vpnIPv4Unicast:
+                description: Parameters related to the VPN IPv4 Unicast AFI/SAFI.
+                properties:
+                  advertiseIPv6NextHops:
+                    description: Enables advertisement of VPN IPv4 routes with IPv6
+                      next-hops to peers.
+                    type: boolean
+                  enabled:
+                    description: Enables the VPN IPv4 Unicast AFI/SAFI.
+                    type: boolean
+                  prefixLimit:
+                    description: Prefix Limit parameters for the VPN IPv4 Unicast
+                      AFI/SAFI.
+                    properties:
+                      prefixLimitAccepted:
+                        description: Configuration of the maximum number of prefixes
+                          that can be accepted from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting only accepted routes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be accepted before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                      prefixLimitReceived:
+                        description: Configuration of the maximum number of prefixes
+                          that can be received from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting all routes (accepted
+                              and rejected by import policies).
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be received before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                  receiveIPv6NextHops:
+                    description: Enables advertisement of the Extended Next Hop Encoding
+                      Capability (RFC 8950) to peers.
+                    type: boolean
+                required:
+                - enabled
+                type: object
+              vpnIPv6Unicast:
+                description: Parameters related to the VPN IPv6 Unicast AFI/SAFI.
+                properties:
+                  enabled:
+                    description: Enables the VPN IPv6 Unicast AFI/SAFI.
+                    type: boolean
+                  prefixLimit:
+                    description: Prefix Limit parameters for the VPN IPv6 Unicast
+                      AFI/SAFI.
+                    properties:
+                      prefixLimitAccepted:
+                        description: Configuration of the maximum number of prefixes
+                          that can be accepted from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting only accepted routes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be accepted before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                      prefixLimitReceived:
+                        description: Configuration of the maximum number of prefixes
+                          that can be received from a BGP peer.
+                        properties:
+                          logOnly:
+                            description: Defines the action to take when the maximum
+                              number of prefixes is exceeded. Session is reset if
+                              set to false, otherwise only a warning is logged.
+                            type: boolean
+                          maxReceivedRoutes:
+                            description: Maximum number of prefixes allowed to be
+                              received from the neighbor, counting all routes (accepted
+                              and rejected by import policies).
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                          warningThresholdPercent:
+                            description: A percentage of the maximum number of prefixes
+                              that can be received before a warning is logged.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                        type: object
+                    type: object
+                required:
+                - enabled
+                type: object
+            required:
+            - group
+            - interface
+            - interfaceKind
+            type: object
+          status:
+            description: DefaultBGPPeerStatus defines the observed state of DefaultBGPPeer
+            properties:
+              enabled:
+                description: Indicated whether the BGP Peer is administratively enabled.
+                type: boolean
+              health:
+                description: Indicates the health score of the BGP peer.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              lastEvent:
+                description: Last event of the BGP peer.
+                type: string
+              lastState:
+                description: Last state of the BGP peer.
+                type: string
+              negotiatedHoldTimeSeconds:
+                description: Hold time negotiated with the BGP peer, in seconds.
+                type: integer
+              negotiatedKeepaliveIntervalSeconds:
+                description: Keepalive interval negotiated with the BGP peer, in seconds.
+                type: integer
+              operationalState:
+                description: Operational state of the BGP peer
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              peerAS:
+                description: Peer AS of the BGP peer.
+                type: integer
+              sessionState:
+                description: The state of the BGP session.
+                enum:
+                - Established
+                - NotEstablished
+                type: string
+              underMaintenance:
+                description: Indicates if the BGP peer is under maintenance.
+                type: boolean
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
