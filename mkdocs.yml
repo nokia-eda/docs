@@ -24,7 +24,7 @@ nav:
           - Setting up the EDA nodes: software-install/deploying-eda/setting-up-the-eda-virtual-machine-nodes.md
           - Bootstrap the Talos cluster: software-install/deploying-eda/bootstrap-the-talos-kubernetes-cluster.md
           - Installing the EDA application: software-install/deploying-eda/installing-the-eda-application.md
-      - Software Upgrade:
+      - Software upgrade:
           - software-install/upgrades/index.md
       - Non-production installations:
           - software-install/non-production/index.md

@@ -1,30 +1,30 @@
-# EDA In Codespaces
+# Nokia EDA in Codespaces
 
-Even though all it takes to [Try EDA on your own compute](../../getting-started/try-eda.md) is a couple of commands, nothing beats an environment that one can run without fronting the hardware, anytime, with a single click and {==for free==}.
+Even though all it takes to [Try Nokia EDA on your own compute](../../getting-started/try-eda.md) is a couple of commands, nothing beats an environment that one can run without fronting the hardware, anytime, with a single click and {==for free==}.
 
-EDA in Codespaces is exactly that - the real "Try EDA" installation in a free[^1], cloud-based VM, available to everyone with a single-click spin up. All you need is a GitHub account and a web browser.
+Nokia EDA in Codespaces is exactly that - the real "Try EDA" installation in a free[^1], cloud-based VM, available to everyone with a single-click spin up. All you need is a GitHub account and a web browser.
 
-Here is how it works. When you see the "Run in Codespaces" button somewhere in our docs or in one of the repositories it invites you to spin up the EDA environment in the Github Codespaces.
+Here is how it works. When you see the "Run in Codespaces" button somewhere in our docs or in one of the repositories it invites you to spin up the Nokia EDA environment in the Github Codespaces.
 
 <div align=center markdown>
 <a href="https://github.com/codespaces/new?repo=1129099670&ref=main">
 <img src="https://gitlab.com/-/project/7617705/uploads/3f69f403e1371b3b578ee930df8930e8/codespaces-btn-4vcpu-export.svg"/></a>
 
-**Run EDA in Codespaces for free**.  
+**Run Nokia EDA in Codespaces for free**.  
 <small>Machine type: 4 vCPU · 16 GB RAM</small>
 </div>
 
-Clicking on a button will open up a GitHub web page asking you to confirm the creation of a Codespaces environment. Once you confirm, a VS Code window will open in your browser, and the EDA installation will kick off. Depending on the performance of the Codespaces VM, it may take anywhere between 10 to 20 minutes to have the full EDA environment up and running.
+Clicking on a button will open up a GitHub web page asking you to confirm the creation of a Codespaces environment. Once you confirm, a VS Code window will open in your browser, and the Nokia EDA installation will kick off. Depending on the performance of the Codespaces VM, it may take anywhere between 10 to 20 minutes to have the full Nokia EDA environment up and running.
 
-When the installation is complete, you will see the EDA welcome message in the terminal window, and the EDA GUI URL will be printed out for you to open in a separate browser tab. Now everything is ready, and you can start using EDA in your browser.
+When the installation is complete, you will see the Nokia EDA welcome message in the terminal window, and the Nokia EDA GUI URL will be printed out for you to open in a separate browser tab. Now everything is ready, and you can start using Nokia EDA in your browser.
 
 -{{video(url="https://gitlab.com/-/project/7617705/uploads/5a1460fb3e94efc4f557b632ad5c0ab3/eda-cs-demo.mp4", title="EDA in Codespaces demo")}}-
 
-In the VS Code window in your browser you have the full access to the terminal where we preinstalled some EDA tools like `edactl`, `kubectl`, `k9s` and you can install other tools as you see fit. The Codespaces environment is a Debian Linux VM in the cloud, so you can use it as you would use any other Linux machine.
+In the VS Code window in your browser, you have the full access to the terminal where we preinstalled some Nokia EDA tools like `edactl`, `kubectl`, `k9s` and you can install other tools as you see fit. The Codespaces environment is a Debian Linux VM in the cloud, so you can use it as you would use any other Linux machine.
 
-## Is It Free?
+## Is it free?
 
-The best part about the [Github Codespaces][codespaces-doc] is that it offers a generous free tier - **120 cpu-hours for free each month**[^2] to all GitHub users. The "EDA in Codespaces" uses the 4vcpu/16GB RAM machine type, which means that you can run the EDA environment for 30 hours each month. For free.
+The best part about the [Github Codespaces][codespaces-doc] is that it offers a generous free tier - **120 cpu-hours for free each month**[^2] to all GitHub users. The "Nokia EDA in Codespaces" uses the 4vcpu/16GB RAM machine type, which means that you can run the Nokia EDA environment for 30 hours each month. For free.
 
 The cpu-hours counter is reset at the beginning of each calendar month, so you can use the free plan every month.
 
@@ -38,9 +38,9 @@ Whenever you need to check what Codespaces environments you have running or crea
 
 The panel shows you all your existing Codespaces environments and their status. In the screenshot above there is one environment created from the `eda-labs/codespaces` repository, which is currently active (running).
 
-Via the Control Panel users can manage their environments, including starting, stopping, and deleting them. For example, stopping an environment that is currently not in use will help save the cpu-hours quota. Users can start a stopped environment when they need it again.
+Via the Control Panel, users can manage their environments, including starting, stopping, and deleting them. For example, stopping an environment that is currently not in use will help save the cpu-hours quota. Users can start a stopped environment when they need it again.
 
-> When the EDA environment in Codespaces is started from a previously stopped state, it will take around 5 minutes for the Kubernetes cluster and EDA applications to be fully operational.
+> When the Nokia EDA environment in Codespaces is started from a previously stopped state, it will take around 5 minutes for the Kubernetes cluster and Nokia EDA applications to be fully operational.
 
 -{{image(url="graphics/CleanShot_2026-01-20_at_11.37.42.webp", padding=20, title="Environment actions")}}-
 

@@ -1,10 +1,10 @@
-# Installing the EDA application
+# Installing the Nokia EDA application
 
-After setting up EDA nodes and bootstrapping the Talos Kubernetes cluster, you can now install Nokia EDA applications using the playground repository [cloned during the preparation phase](../preparing-for-installation.md#download-the-eda-installation-playground).
+After setting up Nokia EDA nodes and bootstrapping the Talos Kubernetes cluster, you can now install Nokia EDA applications using the playground repository [cloned during the preparation phase](../preparing-for-installation.md#download-the-eda-installation-playground).
 
 ## Customizing the installation
 
-The [Kpt][kpt-home] Kubernetes package manager is used to configure and install EDA components. As any other package manager, kpt packages can be customized to allow users to customize EDA installation according to their needs.
+The [Kpt][kpt-home] Kubernetes package manager is used to configure and install Nokia EDA components. As any other package manager, kpt packages can be customized to allow users to customize the installation according to their needs.
 
 [kpt-home]: https://kpt.dev
 
@@ -14,7 +14,7 @@ The most common customization options are provided in the [`prefs.mk`][prefs-fil
 
 [prefs-file]: https://github.com/nokia-eda/playground/blob/main/prefs.mk
 
-This file contains customization parameters that you can set to adjust the essential installation parameters, such as the EDA version to install, the installation components to include, the Kubernetes namespace where EDA components are installed, proxy settings, the reachability settings for the EDA cluster, and so on.  
+This file contains customization parameters that you can set to adjust the essential installation parameters, such as the Nokia EDA version to install, the installation components to include, the Kubernetes namespace where Nokia EDA components are installed, proxy settings, the reachability settings for the Nokia EDA cluster, and so on.  
 You will find the list of all the available parameters in the section below.
 
 /// details | Customizable parameters in the `prefs.mk` file:
@@ -39,7 +39,7 @@ Description
 `EDA_CORE_NAMESPACE`
 /////
 ///// html | td
-Sets the kubernetes namespace where the EDA core components are installed.
+Sets the kubernetes namespace where the Nokia EDA core components are installed.
 
 Default: `eda-system`
 /////
@@ -50,7 +50,7 @@ Default: `eda-system`
 `EDA_USER_NAMESPACE`
 /////
 ///// html | td
-Sets the kubernetes and EDA namespace where the user components are installed.
+Sets the kubernetes and Nokia EDA namespace where the user components are installed.
 
 Default: `eda`
 /////
@@ -58,7 +58,7 @@ Default: `eda`
 
 //// html | tr
 ///// html | td[colspan="2"]
-<h4>Version selection for EDA packages</h4>
+<h4>Version selection for Nokia EDA packages</h4>
 /////
 ////
 
@@ -67,7 +67,7 @@ Default: `eda`
 `EDA_CORE_VERSION`
 /////
 ///// html | td
-Version of the EDA core components to install.
+Version of the Nokia EDA core components to install.
 
 Defaults to the latest stable version.
 /////
@@ -78,7 +78,7 @@ Defaults to the latest stable version.
 `EDA_APPS_VERSION`
 /////
 ///// html | td
-Version of the EDA applications to install.
+Version of the Nokia EDA applications to install.
 
 Defaults to the latest stable version.
 /////
@@ -138,7 +138,7 @@ Default: `127.0.0.1`.
 `NO_HOST_PORT_MAPPINGS`
 /////
 ///// html | td
-When set to `yes` will not create the extra port mappings in the KinD cluster and will not create the nodePort service to expose the EDA UI/API.
+When set to `yes` will not create the extra port mappings in the KinD cluster and will not create the nodePort service to expose the Nokia EDA UI/API.
 
 Default: variable is not set. Results in port mappings and nodePort service being created.
 /////
@@ -155,7 +155,7 @@ Default: variable is not set. Results in port mappings and nodePort service bein
 `METALLB_VIP`
 /////
 ///// html | td
-Specifies the VIP address of your EDA deployment. Make sure to use a CIDR format, preferably as a /32 (or /128 for an IPv6 VIP).
+Specifies the VIP address of your Nokia EDA deployment. Make sure to use a CIDR format, preferably as a /32 (or /128 for an IPv6 VIP).
 
 If you use two networks, this VIP address must be the one used on the fabric management network. ​​If you use a single network, this setting must match the VIP address used for `​EXT_DOMAIN_NAME​` FQDN or IP.​
 
@@ -168,7 +168,7 @@ Example: `203.0.113.10/32`
 `EXT_DOMAIN_NAME`
 /////
 ///// html | td
-The FQDN that resolves to the EDA VIP or the VIP itself.
+The FQDN that resolves to the Nokia EDA VIP or the VIP itself.
 
 This value must be the FQDN or VIP address that is used to access the UI. If you use two networks, this value must be the FQDN or IP address of the OAM network.
 /////
@@ -179,7 +179,7 @@ This value must be the FQDN or VIP address that is used to access the UI. If you
 `EXT_HTTP_PORT`
 /////
 ///// html | td
-The HTTP port that the EDA UI/API should use to redirect to HTTPS.  
+The HTTP port that the Nokia EDA UI/API should use to redirect to HTTPS.  
 Set to 80.
 /////
 ////
@@ -189,7 +189,7 @@ Set to 80.
 `EXT_HTTPS_PORT`
 /////
 ///// html | td
-The HTTPS port on which the EDA UI/API listens.  
+The HTTPS port on which the Nokia EDA UI/API listens.  
 Set to 443.
 /////
 ////
@@ -382,9 +382,9 @@ Default: unset - the Cert Manager CSI driver package is installed.
 `NO_EDA_ISSUER_API_INSTALL`
 /////
 ///// html | td
-Set to `yes` to skip the installation of the certificate issuers for EDA.
+Set to `yes` to skip the installation of the certificate issuers for Nokia EDA.
 
-Default: unset - the EDA certificate issuers are installed.
+Default: unset - the Nokia EDA certificate issuers are installed.
 /////
 ////
 
@@ -399,7 +399,7 @@ Default: unset - the EDA certificate issuers are installed.
 `LLM_API_KEY`
 /////
 ///// html | td
-Optional: The OpenAI API key for the EDA Natural Language Query functionality.
+Optional: The OpenAI API key for the Nokia EDA Natural Language Query functionality.
 /////
 ////
 
@@ -418,12 +418,12 @@ Boolean.
 `SIMULATE`
 /////
 ///// html | td
-Specifies if the EDA deployment is to manage simulated workloads (Digital Sandbox) or real hardware.
+Specifies if the Nokia EDA deployment is to manage simulated workloads (Digital Sandbox) or real hardware.
 
 Values:
 
-- `true` - EDA installation will manage only simulated nodes (Digital Sandbox)
-- `false` - EDA installation will manage only real hardware nodes.
+- `true` - Nokia EDA installation will manage only simulated nodes (Digital Sandbox)
+- `false` - Nokia EDA installation will manage only real hardware nodes.
 
 By default, this parameter is set to `true` if the parameter is not provided in the file.
 
@@ -482,15 +482,15 @@ spec:
 
 The `# kpt-set: ${APP_CATALOG}` annotation indicates that the `.spec.remoteURL` value of the manifest can be overwritten using the `APP_CATALOG` Kpt setter.
 
-When you use the `prefs.mk` file and set the values for the variables exposed there you essentially provide the Kpt setters values, that will be used to customize the Kpt packages during the installation. However, the `prefs.mk` file exposes only a limited set of variables, while there are many more Kpt setters available in the EDA Kpt packages.
+When you use the `prefs.mk` file and set the values for the variables exposed there you essentially provide the Kpt setters values, that will be used to customize the Kpt packages during the installation. However, the `prefs.mk` file exposes only a limited set of variables, while there are many more Kpt setters available in the Nokia EDA Kpt packages.
 
-EDA uses three Kpt packages published in the [`nokia-eda/kpt`][kpt-repo] repository:
+Nokia EDA uses three Kpt packages published in the [`nokia-eda/kpt`][kpt-repo] repository:
 
 [kpt-repo]: https://github.com/nokia-eda/kpt
 
 - `eda-external-packages` - the package that contains the external packages used by EDA, such as Fluentd and Cert Manager.
-- `eda-kpt-base` - the core package that contains the EDA components, such as the Config Engine, the necessary secrets and configmaps.
-- `eda-kpt-playground` - the package that contains the EDA resources that bootstrap your EDA cluster with the node profiles, allocation pools and node users.
+- `eda-kpt-base` - the core package that contains the Nokia EDA components, such as the Config Engine, the necessary secrets and configmaps.
+- `eda-kpt-playground` - the package that contains the Nokia EDA resources that bootstrap your Nokia EDA cluster with the node profiles, allocation pools and node users.
 
 Each package has its own set of Kpt setters that you can choose to use to overwrite the default values in the manifests. You will find the complete list of setters and the default values in the block below.
 
@@ -563,13 +563,13 @@ In case the value of `GOGS_ADMIN_USER`/`CE_GIT_USERNAME` was changed, make sure 
 | Credentials repo  | `/eda/credentials.git` | `GIT_REPO_SECURITY` |  |
 | Identity repo  | `/eda/identity.git` | `GIT_REPO_IDENTITY` |  |
 
-#### EDA user
+#### Nokia EDA user
 
-EDA users are managed by the Keycloak identity provider and by default an admin user is created during the installation process. Using the following setter it is possible to change the default admin user password[^1].
+Nokia EDA users are managed by the Keycloak identity provider and by default an admin user is created during the installation process. Using the following setter it is possible to change the default admin user password[^1].
 
 | Component | Default value | Kpt Setter | Notes
 |-----------|------------|------------| -- |
-| EDA admin password  | `admin` | `SECRET_EDA_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
+| Nokia EDA admin password  | `admin` | `SECRET_EDA_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
 
 #### Keycloak
 
@@ -590,7 +590,7 @@ Lastly, there is a postgres database used by the Keycloak. The database password
 
 ## Installing Nokia EDA
 
-When the necessary parameters are set, follow these steps to install EDA.
+When the necessary parameters are set, follow these steps to install Nokia EDA.
 
 /// admonition | Note
     type: subtle-note
@@ -607,7 +607,7 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
 
 2. Set the desired EDA version. <small>(optional)</small>
 
-    To install a specific version of EDA instead of the latest version, set the `EDA_CORE_VERSION` and `EDA_APPS_VERSION` variables in the [preferences file](#preferences-file). For example, to choose the -{{eda_version}}- version of EDA, add the following lines to the `prefs.mk` file:
+    To install a specific version of Nokia EDA instead of the latest version, set the `EDA_CORE_VERSION` and `EDA_APPS_VERSION` variables in the [preferences file](#preferences-file). For example, to choose the -{{eda_version}}- version of EDA, add the following lines to the `prefs.mk` file:
 
     ```text
     EDA_CORE_VERSION=-{{eda_version}}-
@@ -616,7 +616,7 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
 
     In the current release, both variables must be set to the same version.
 
-3. Download EDA packages.
+3. Download Nokia EDA packages.
 
     ```bash
     make download-pkgs
@@ -645,13 +645,13 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     kubectl -n eda-system patch service eda-git -p '{"spec": {"type": "ClusterIP"}}'
     ```
 
-7. Generate the EDA core configuration.
+7. Generate the Nokia EDA core configuration.
 
     ```bash
     make eda-configure-core
     ```
 
-8. Install EDA core components.
+8. Install Nokia EDA core components.
 
     ```bash
     make eda-install-core
@@ -662,13 +662,13 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     If the command hangs for a long time (>5 minutes) on "reconcile pending" for a workflow definition, cancel the command and try again; KPT is designed to handle these cases. This can happen occasionally depending on the Kubernetes cluster.
     ///
 
-9. Verify that the EDA Config Engine is up and running.
+9. Verify that the Config Engine is up and running.
 
     ```bash
     make eda-is-core-ready
     ```
 
-10. Install all the standard EDA apps.
+10. Install all the standard Nokia EDA apps.
 
     This step can take approximate 5 to 15 minutes, depending on your connectivity.
 
@@ -676,9 +676,9 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
     make eda-install-apps
     ```
 
-11. Bootstrap EDA.
+11. Bootstrap Nokia EDA.
 
-    Bootstrapping will create base resources into the EDA cluster, such as IP pools.
+    Bootstrapping will create base resources into the Nokia EDA cluster, such as IP pools.
 
     ```bash
     make eda-bootstrap
@@ -700,7 +700,7 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
 
 13. Optional: Deploy an example topology.
 
-    If you configured EDA to manage the simulated network (Digital Sandbox), you can load an example topology that will be instantiated as virtual simulators in the same EDA cluster by running:
+    If you configured Nokia EDA to manage the simulated network (Digital Sandbox), you can load an example topology that will be instantiated as virtual simulators in the same Nokia EDA cluster by running:
 
     ```bash
     make topology-load
@@ -708,9 +708,9 @@ Steps 1 and 2 can be skipped if these have already been executed during the [pre
 
 ////
 
-## Accessing the EDA deployment
+## Accessing the Nokia EDA deployment
 
-You can now access the new EDA deployment using the following methods:
+You can now access the new Nokia EDA deployment using the following methods:
 
 - use `https://OAM-VIP` if Virtual IP (VIP) was provided as `EXT_DOMAIN_NAME` in the preferences file used during the installation.
 - if an FQDN is configured for the `EXT_DOMAIN_NAME` field, use `https://FQDN`

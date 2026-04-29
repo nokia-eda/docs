@@ -50,7 +50,7 @@ When all the nodes are up and Kubernetes is stable, continue with [Setting up th
 
 ## Setting up the Rook Ceph storage cluster
 
-EDA uses Rook Ceph as a secure, distributed, and redundant data store for all the data it stores. Using Ceph guarantees redundancy and high availability of all data by providing multiple copies of all data. The following steps guide you through the configuration and deployment of Rook Ceph.
+Nokia EDA uses Rook Ceph as a secure, distributed, and redundant data store for all the data it stores. Using Ceph guarantees redundancy and high availability of all data by providing multiple copies of all data. The following steps guide you through the configuration and deployment of Rook Ceph.
 
 /// html | div.steps
 
@@ -123,7 +123,7 @@ EDA uses Rook Ceph as a secure, distributed, and redundant data store for all th
 
     The output from this command can report missing CRDs; wait until the Rook Ceph Operator is running in the Kubernetes cluster.
 
-4. Using `kubectl` commands, verify that the operator is deployed and the necessary pods are deployed before installing the EDA application.
+4. Using `kubectl` commands, verify that the operator is deployed and the necessary pods are deployed before installing the Nokia EDA application.
     This example is for a six-node cluster, with six storage nodes.
 
     ```
