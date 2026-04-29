@@ -13,7 +13,7 @@ Typically, the management and automation platforms of Nokia EDA' caliber require
 -{{youtube(url='https://www.youtube.com/embed/QV8PwaSsNo8')}}-
 ///
 
-This guide will talk you through installing the Nokia EDA Playground which consists of a [simulated network topology](../../getting-started/virtual-network.md) and full Nokia EDA platform installation. No Nokia EDA licenses are required to run the Playground.
+This guide will talk you through installing the [Nokia EDA Playground](../../getting-started/try-eda.md) which consists of a simulated network topology and full Nokia EDA platform installation. No Nokia EDA licenses are required to run the Playground.
 
 ## Playground repository
 
@@ -21,11 +21,13 @@ We will need the playground repository on our machine to run Nokia EDA installat
 
 --8<-- "docs/getting-started/try-eda.md:pull-playground"
 
-When the playground repo is cloned (you will need to install `git` to clone it), let's install the CLI tools that we will need to run Nokia EDA installation steps.
+Install the CLI tools required for the installation process by running the following command in the playground repository:
 
---8<-- "docs/getting-started/installation-process.md:tools-install"
+```
+make download-tools
+```
 
-The installer is smart enough to download the tools for the right OS/architecture.
+Add the tools to your PATH as explained in the [Command Line Tools](../../user-guide/command-line-tools.md) section.
 
 ## macOS prerequisites
 

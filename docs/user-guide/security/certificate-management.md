@@ -1,6 +1,6 @@
 # Certificate Management
 
-<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js" async></script>
+<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
 
 Nokia Event-Driven Automation (EDA) integrates with [Cert-Manager](https://cert-manager.io/) to provide Kubernetes-native certificate lifecycle management, including generation, signing, rotation, and distribution.
 During installation, a local PKI is bootstrapped using Cert-Manager Issuer and Certificate resources, with configurable options to adapt certificate authorities and trust distribution to the various trust domains used by Nokia EDA.
@@ -677,6 +677,7 @@ Unlike the API Issuer (which is a single issuer for all API certificates), node 
 ///
 
 ##### Using multiple Issuers for different node groups
+
     You can create multiple `NodeSecurityProfile` resources with different issuers to segment your network by trust domain. For example:
 
     | Profile | Node Selector | Issuer |

@@ -1,7 +1,7 @@
-# Try EDA
+# Try Nokia EDA
 
-We believe that EDA embodies what a network automation of the modern age should look like - declarative and programmable abstractions for both configuration and state, streaming-based engine, equipped with network-wide queries, extensible and multivendor-capable.  
-And we don't want you to blindly take our word for it, instead we made EDA easily accessible[^1] so that both network engineers and cloud practitioners could be the judge.  
+We believe that Nokia Event-Driven Automation (EDA) embodies what a network automation of the modern age should look like - declarative and programmable abstractions for both configuration and state, streaming-based engine, equipped with network-wide queries, extensible and multivendor-capable.  
+And we don't want you to blindly take our word for it, instead we made Nokia EDA easily accessible[^1] so that both network engineers and cloud practitioners could be the judge.  
 With no license and no registration required, you are mere couple commands away from having the full EDA experience wherever you are - with your laptop, in the cloud or logged in the VM.
 
 To deliver the "Try EDA" experience, we have created an [EDA playground][playground-repo] - a repository that contains everything you need to install and provision a demo EDA instance with the virtual network on the side. Let us guide you through the installation process.
@@ -180,22 +180,32 @@ With Try EDA up and running, you are all set to embark on your EDA journey by fo
 
     [:octicons-arrow-right-24: Software Installation](../software-install/index.md)
 
-<!-- * :octicons-question-16:{ .middle } **How does our playground installer work?**
-
-    ---
-
-    If you want to understand how EDA playground installer works and what makes up the EDA installation, have a look at the Installation Process page.
-
-    [:octicons-arrow-right-24: Learn more about installation process](installation-process.md) -->
-
 </div>
+
+<h2> Resetting the Playground</h2>
+
+To start afresh, or to shut down your playground, run the following command:
+
+```shell
+make teardown-cluster
+```
+
+This will remove the KinD cluster and all the resources created by the EDA Playground.
+
+Next remove the existing `kpt` packages and build artifacts:
+
+```shell
+rm -rf eda-kpt build
+```
+
+And you are ready to start over!
 
 [playground-repo]: https://github.com/nokia-eda/playground
 
 [makefile]: https://github.com/nokia-eda/playground/blob/main/Makefile
 
 [^1]: As no other framework of comparable scale.
-[^2]: This as well accounts for the [playground network topology](virtual-network.md). Running a bigger topology or changing the node types may require more resources.
+[^2]: This as well accounts for the [virtual network topology that comes with the Playground](../tour-of-eda/nodes.md). Running a bigger topology or changing the node types may require more resources.
 [^3]: Many distributions come with `git` preinstalled, but if not you should install it via your package manager.  
     For instance with `apt`-enabled systems:
 
