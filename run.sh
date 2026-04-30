@@ -27,7 +27,7 @@ fi
 # set the branch name for versioned docs
 MIKE_BRANCH_NAME="__versioned-docs__"
 
-MKDOCS_VERSION=${MKDOCS_VERSION:-v9.7.5-1}
+MKDOCS_VERSION=${MKDOCS_VERSION:-v9.7.5-3}
 
 MKDOCS_INET_IMAGE=ghcr.io/eda-labs/mkdocs-material:${MKDOCS_VERSION}
 MKDOCS_NOKIA_IMAGE=registry.srlinux.dev/pub/mkdocs-material-insiders:${MKDOCS_VERSION}
