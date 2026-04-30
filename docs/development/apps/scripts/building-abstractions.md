@@ -1,6 +1,6 @@
 # Building Abstractions
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 One of the key pillars of EDA is the notion of abstractions. Abstractions allow users to express a higher-level intent in a way that is decoupled from the underlying implementation details and/or vendor specific knowledge.  
 In EDA, every application is typically made up of one or more abstracted resources.

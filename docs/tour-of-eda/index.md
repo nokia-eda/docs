@@ -1,6 +1,6 @@
 # The Tour of EDA
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 Event Driven Automation (EDA) is the state-of-the-art automation platform that completes Nokia's Data Center portfolio:
 

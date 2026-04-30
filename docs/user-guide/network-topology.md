@@ -1207,4 +1207,4 @@ node-ssh spine1
 
 [^1]: Edge devices are not shown in the diagram because they are not (currently) managed by EDA and hence are not part of the topology. However, the links from the nodes to the edge devices must be modelled with `TopoLink` resources of type `edge` to allow EDA to manage these interfaces.
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-

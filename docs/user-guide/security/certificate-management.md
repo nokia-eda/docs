@@ -1,6 +1,6 @@
 # Certificate Management
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 Nokia Event-Driven Automation (EDA) integrates with [Cert-Manager](https://cert-manager.io/) to provide Kubernetes-native certificate lifecycle management, including generation, signing, rotation, and distribution.
 During installation, a local PKI is bootstrapped using Cert-Manager Issuer and Certificate resources, with configurable options to adapt certificate authorities and trust distribution to the various trust domains used by Nokia EDA.

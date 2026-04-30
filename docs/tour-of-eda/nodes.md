@@ -1,6 +1,6 @@
 # Node Management
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 -{{% import 'icons.html' as icons %}}-
 

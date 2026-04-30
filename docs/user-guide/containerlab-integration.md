@@ -1,6 +1,6 @@
 # Containerlab Integration
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 To facilitate end-to-end testing and validation of configuration changes, EDA comes equipped with its own multi vendor network emulation engine abbreviated as **CX**. CX is a highly scalable network emulation platform that powers EDA's Digital Twin capabilities.
 

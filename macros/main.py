@@ -44,15 +44,19 @@ def _normalize_path(path, env):
     ``section/index.md`` stays ``section/index.html``.  Raw HTML in macros is not
     rewritten like Markdown image URLs, so the correct relative URL must be derived
     from ``File.dest_path`` for the page and the asset.
+
+    A single leading ``/`` is treated as docs-root (``src_path`` under the docs dir),
+    so ``/javascripts/foo.js`` resolves like a relative URL for versioned ``site_url``
+    deploys. Protocol-relative URLs (``//host/...``) are left unchanged.
     """
     if not path:
         return path
-    if path.startswith(("http://", "https://", "/", "#")):
+    if path.startswith(("http://", "https://", "#")):
+        return path
+    if path.startswith("//"):
         return path
 
     page_file = env.page.file
-    page_src_dir = posixpath.dirname(page_file.src_path)
-    resolved_src = posixpath.normpath(posixpath.join(page_src_dir, path))
     # mkdocs-macros attaches MkDocs' Files collection in on_nav (see plugin on_nav).
     try:
         files = env.variables["files"]
@@ -60,6 +64,15 @@ def _normalize_path(path, env):
         files = None
     if files is None:
         return path
+
+    if path.startswith("/"):
+        resolved_src = posixpath.normpath(path[1:])
+        if not resolved_src or resolved_src == ".":
+            return path
+    else:
+        page_src_dir = posixpath.dirname(page_file.src_path)
+        resolved_src = posixpath.normpath(posixpath.join(page_src_dir, path))
+
     asset = files.get_file_from_path(resolved_src)
     if asset is None:
         return path
@@ -136,6 +149,12 @@ def define_env(env):
 """
 
         return video_tmpl
+
+    @env.macro
+    def js_script(src: str) -> str:
+        """Emit a script tag with ``src`` rewritten for the built page (supports docs-root ``/…`` paths)."""
+        url = _normalize_path(src, env)
+        return f'<script type="text/javascript" src="{url}" async></script>'
 
     @env.macro
     def image(

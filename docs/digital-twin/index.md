@@ -1,6 +1,6 @@
 # Digital Twin
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 The key ingredient in a recipe for a reliable infrastructure automation is the rigorous testing of the changes before they are applied to the production environment. And when networks are concerned, the testing is better done in a controlled environment that resembles the production as closely as possible. This is where the Digital Twin feature of Nokia EDA comes into play.
 
