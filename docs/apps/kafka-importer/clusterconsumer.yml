@@ -1,0 +1,12 @@
+apiVersion: kafkaimporter.eda.nokia.com/v1alpha1
+kind: ClusterConsumer
+metadata:
+  name: central-alert-import
+  namespace: eda-system
+spec:
+  brokers:
+    - kafka.kafka.svc.cluster.local:9092
+  topic: alerts
+  condition: 'msg.value.severity >= 3 && !msg.is_tombstone'
+  path: '.namespace{.name=="eda"}.alerts[id="{{ .msg.key.alert_id }}"]'
+  data: '{{ .msg.value }}'

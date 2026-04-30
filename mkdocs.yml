@@ -187,6 +187,7 @@ nav:
               - Check Interfaces: apps/interfaces.eda.nokia.com/docs/resources/checkinterfaces.md
       - InfluxDB Exporter: apps/influxdb-exporter.md
       - Kafka Exporter: apps/kafka-exporter.md
+      - Kafka Importer: apps/kafka-importer.md
       - Logs:
           - apps/logs.eda.nokia.com/docs/index.md
       - Management:
@@ -206,6 +207,7 @@ nav:
           - Default LDP Routers: apps/mpls.eda.nokia.com/docs/resources/defaultldprouter.md
           - Label Blocks: apps/mpls.eda.nokia.com/docs/resources/labelblock.md
       - NATS Exporter: apps/nats-exporter.md
+      - NATS Importer: apps/nats-importer.md
       - NetBox: apps/netbox.md
       - Notifier: apps/notifier.md
       - OAM:
