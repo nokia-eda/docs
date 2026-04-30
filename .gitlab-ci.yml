@@ -1,6 +1,6 @@
 variables:
   GIT_DEPTH: 0
-  MKDOCS_IMAGE: ghcr.io/eda-labs/mkdocs-material:v9.7.5-1
+  MKDOCS_IMAGE: ghcr.io/eda-labs/mkdocs-material:v9.7.5-3
 
 default:
   tags:
