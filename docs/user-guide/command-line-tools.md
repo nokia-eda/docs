@@ -170,7 +170,7 @@ Ensure that bash-completion is installed on your system.
 To load completions for the current session:
 
 ```bash
-source <(containerlab completion bash)
+source <(edactl completion bash)
 ```
 
 To load completions for each session:
