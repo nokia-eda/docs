@@ -26,14 +26,14 @@ terraform {
   }
 }
 
-provider "interfaces-v1alpha1" {
+provider "interfaces-v1" {
   base_url          = var.base_url
   eda_client_secret = var.eda_client_secret
   eda_username      = var.eda_username
   eda_password      = var.eda_password
 }
 
-provider "fabrics-v1alpha1" {
+provider "fabrics-v1" {
   base_url          = var.base_url
   eda_client_secret = var.eda_client_secret
   eda_username      = var.eda_username
