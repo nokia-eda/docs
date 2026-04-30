@@ -1,0 +1,212 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: qos
+spec:
+  appInfo:
+    categories:
+      - networking
+    documentation: qos/docs
+  author: nokia
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: qos/crds/qos.eda.nokia.com_ingresspolicys.yaml
+        schema: qos/openapiv3/eda_oas_qos.eda.nokia.com_ingresspolicys.json
+        ui:
+          category: QoS
+          name: Ingress Policies
+          icon: TrafficQos
+        conversionScript: qos/intents/ingresspolicy/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: qos/crds/qos.eda.nokia.com_egresspolicys.yaml
+        schema: qos/openapiv3/eda_oas_qos.eda.nokia.com_egresspolicys.json
+        ui:
+          category: QoS
+          name: Egress Policies
+          icon: TrafficQos
+        conversionScript: qos/intents/egresspolicy/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: qos/crds/qos.eda.nokia.com_policydeployments.yaml
+        schema: qos/openapiv3/eda_oas_qos.eda.nokia.com_policydeployments.json
+        ui:
+          category: QoS
+          name: Policy Deployment
+          icon: PolicyCheck
+        conversionScript: qos/intents/policydeployment/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: qos/crds/qos.eda.nokia.com_policyattachments.yaml
+        schema: qos/openapiv3/eda_oas_qos.eda.nokia.com_policyattachments.json
+        ui:
+          category: QoS
+          name: Policy Attachment
+          icon: Attachment
+        conversionScript: qos/intents/policyattachment/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        kubernetes:
+          importPolicy: all
+        namespaced: true
+        path: qos/crds/qos.eda.nokia.com_forwardingclasss.yaml
+        schema: qos/openapiv3/eda_oas_qos.eda.nokia.com_forwardingclasss.json
+        ui:
+          category: QoS
+          name: Forwarding Class
+          icon: TrafficCircle
+        conversionScript: qos/intents/forwardingclass/conversion_v2.py
+    - crd:
+        api:
+          expose: readWrite
+        kubernetes:
+          importPolicy: all
+        namespaced: true
+        path: qos/crds/qos.eda.nokia.com_queues.yaml
+        schema: qos/openapiv3/eda_oas_qos.eda.nokia.com_queues.json
+        ui:
+          category: QoS
+          name: Queue
+          icon: Traffic
+        conversionScript: qos/intents/queue/conversion_v2.py
+    - cr:
+        path: qos/resources/fc/af.yaml
+    - cr:
+        path: qos/resources/fc/ef.yaml
+    - cr:
+        path: qos/resources/fc/fc0.yaml
+    - cr:
+        path: qos/resources/fc/fc1.yaml
+    - cr:
+        path: qos/resources/fc/fc2.yaml
+    - cr:
+        path: qos/resources/fc/fc3.yaml
+    - cr:
+        path: qos/resources/fc/fc4.yaml
+    - cr:
+        path: qos/resources/fc/fc5.yaml
+    - cr:
+        path: qos/resources/fc/fc6.yaml
+    - cr:
+        path: qos/resources/fc/fc7.yaml
+    - cr:
+        path: qos/resources/fc/h1.yaml
+    - cr:
+        path: qos/resources/fc/h2.yaml
+    - cr:
+        path: qos/resources/fc/l1.yaml
+    - cr:
+        path: qos/resources/fc/l2.yaml
+    - cr:
+        path: qos/resources/fc/nc.yaml
+    - cr:
+        path: qos/resources/fc/be.yaml
+    - cr:
+        path: qos/resources/queues/pfc-0.yaml
+    - cr:
+        path: qos/resources/queues/pfc-1.yaml
+    - cr:
+        path: qos/resources/queues/pfc-2.yaml
+    - cr:
+        path: qos/resources/queues/pfc-3.yaml
+    - cr:
+        path: qos/resources/queues/pfc-4.yaml
+    - cr:
+        path: qos/resources/queues/pfc-5.yaml
+    - cr:
+        path: qos/resources/queues/pfc-6.yaml
+    - cr:
+        path: qos/resources/queues/pfc-7.yaml
+    - cr:
+        path: qos/resources/queues/pfc-8.yaml
+    - cr:
+        path: qos/resources/queues/unicast-0.yaml
+    - cr:
+        path: qos/resources/queues/unicast-1.yaml
+    - cr:
+        path: qos/resources/queues/unicast-2.yaml
+    - cr:
+        path: qos/resources/queues/unicast-3.yaml
+    - cr:
+        path: qos/resources/queues/unicast-4.yaml
+    - cr:
+        path: qos/resources/queues/unicast-5.yaml
+    - cr:
+        path: qos/resources/queues/unicast-6.yaml
+    - cr:
+        path: qos/resources/queues/unicast-7.yaml
+    - cr:
+        path: qos/resources/queues/unicast-8.yaml
+    - script:
+        path: qos/intents/ingresspolicy/ingresspolicy_intent.py
+        trigger:
+          kind: IngressPolicy
+        type: config
+    - script:
+        path: qos/intents/egresspolicy/egresspolicy_intent.py
+        trigger:
+          kind: EgressPolicy
+        type: config
+    - script:
+        path: qos/intents/policydeployment/policydeployment_intent.py
+        trigger:
+          kind: PolicyDeployment
+        type: config
+    - script:
+        path: qos/intents/policyattachment/policyattachment_intent.py
+        trigger:
+          kind: PolicyAttachment
+        type: config
+  dependencies:
+    - file:
+        path: qos/intents
+    - file:
+        path: qos/api
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: filters/
+    - file:
+        path: interfaces/
+    - file:
+        path: qos/api/v2/pysrc
+  description: |
+    This application provides resources relating to QOS for various Network Operating Systems.
+  image: ghcr.io/nokia-eda/apps/qos:v6.999.0
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  gitPathPrefix: /
+  group: qos.eda.nokia.com
+  supportedCoreVersions:
+    - "v5.0"
+  title: QoS
+  version: v2
+  requirements:
+    - appId: interfaces.eda.nokia.com
+      version: v6.999.0
+    - appId: filters.eda.nokia.com
+      version: v6.999.0
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"

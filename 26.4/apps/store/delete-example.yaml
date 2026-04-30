@@ -1,0 +1,14 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
+metadata:
+  name: delete-connect-nokia
+  namespace: eda-system
+spec:
+  operation: delete
+  autoProcessRequirements:
+    - strict
+  apps:
+    - appId: connect.eda.nokia.com
+      catalog: eda-catalog-builtin-apps
+      version:
+        value: v3.0.0

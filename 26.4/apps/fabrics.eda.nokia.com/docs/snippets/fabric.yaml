@@ -1,0 +1,40 @@
+apiVersion: fabrics.eda.nokia.com/v1
+kind: Fabric
+metadata:
+  name: fabric
+  namespace: eda
+spec:
+  interSwitchLinks:
+    ipMTU: 8922
+    linkSelectors:
+      - eda.nokia.com/role = interSwitch
+    poolIPv4: ipv4-pool
+  leafs:
+    asnPool: asn-pool
+    leafNodeSelectors:
+      - eda.nokia.com/role = leaf
+  overlayProtocol:
+    bgp:
+      autonomousSystem: 65500
+      clusterID: 10.0.0.1
+      rrClientNodeSelectors:
+        - eda.nokia.com/role=leaf
+      rrNodeSelectors:
+        - eda.nokia.com/role=spine
+    protocol: IBGP
+  spines:
+    asnPool: asn-pool
+    spineNodeSelectors:
+      - eda.nokia.com/role = spine
+  systemPoolIPv4: systemipv4-pool
+  underlayProtocol:
+    bfd:
+      desiredMinTransmitIntMs: 1000
+      detectionMultiplier: 3
+      enabled: true
+      requiredMinEchoReceiveIntMs: 1000
+      requiredMinReceiveIntMs: 1000
+    bgp:
+      asnPool: asn-pool
+    protocols:
+      - OSPFv2

@@ -1,0 +1,10 @@
+parameter_defaults:
+  # Map containing the CA certs and information needed for deploying them.
+  # Type: json
+  CAMap:
+    eda.crt:
+      content: |
+        -----BEGIN CERTIFICATE-----
+        <EDA_CA_CERTIFICATE_CONTENT>
+        -----END CERTIFICATE-----
+

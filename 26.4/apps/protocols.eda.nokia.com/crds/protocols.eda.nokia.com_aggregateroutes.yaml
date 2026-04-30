@@ -1,0 +1,175 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: aggregateroutes.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: AggregateRoute
+    listKind: AggregateRouteList
+    plural: aggregateroutes
+    singular: aggregateroute
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: AggregateRoute is the Schema for the aggregateroutes API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The AggregateRoute enables the configuration of aggregated
+              routes on a specified Router. This resource allows for the definition
+              of destination prefixes, the selection of a router, and optionally,
+              specific nodes where the aggregate routes should be configured. Advanced
+              options include the ability to generate ICMP unreachable messages for
+              packets matching the aggregate route, and the ability to block the advertisement
+              of all contributing routes in dynamic protocols like BGP.
+            properties:
+              aggregatorASN:
+                description: Specifies the aggregator's ASN.
+                format: int32
+                type: integer
+              aggregatorIP:
+                description: Specifies the aggregator's IP address.
+                type: string
+              generateICMP:
+                description: When set to true the router generares ICMP unreachable
+                  messages for packets matching the aggregate route (and not a more
+                  specific route).
+                type: boolean
+              nodes:
+                description: List of nodes on which to configure the aggregate routes.
+                  An AND operation is executed against the nodes in this list and
+                  the nodes on which the Router is configured to determine the Nodes
+                  on which to configure the aggregate routes.
+                items:
+                  type: string
+                type: array
+              prefixes:
+                description: List of destination prefixes for the aggregate routes.
+                items:
+                  type: string
+                type: array
+              router:
+                description: Reference to a Router on which to configure the aggregate
+                  routes.  If no Nodes are provided then the aggregate routes will
+                  be provisioned on all Nodes on which the Router is provisioned.
+                type: string
+              summaryOnly:
+                description: When set to true the router blocks the advertisement
+                  of all contributing routes of this aggregate route in dynamic protocols
+                  such as BGP.
+                type: boolean
+            required:
+            - prefixes
+            - router
+            type: object
+          status:
+            description: AggregateRouteStatus defines the observed state of AggregateRoute
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: AggregateRoute is the Schema for the aggregateroutes API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The AggregateRoute enables the configuration of aggregated
+              routes on a specified Router. This resource allows for the definition
+              of destination prefixes, the selection of a router, and optionally,
+              specific nodes where the aggregate routes should be configured. Advanced
+              options include the ability to generate ICMP unreachable messages for
+              packets matching the aggregate route, and the ability to block the advertisement
+              of all contributing routes in dynamic protocols like BGP.
+            properties:
+              aggregatorASN:
+                description: Specifies the aggregator's ASN.
+                format: int32
+                type: integer
+              aggregatorIP:
+                description: Specifies the aggregator's IP address.
+                type: string
+              generateICMP:
+                description: When set to true the router generares ICMP unreachable
+                  messages for packets matching the aggregate route (and not a more
+                  specific route).
+                type: boolean
+              nodes:
+                description: List of nodes on which to configure the aggregate routes.
+                  An AND operation is executed against the nodes in this list and
+                  the nodes on which the Router is configured to determine the Nodes
+                  on which to configure the aggregate routes.
+                items:
+                  type: string
+                type: array
+              prefixes:
+                description: List of destination prefixes for the aggregate routes.
+                items:
+                  type: string
+                type: array
+              router:
+                description: Reference to a Router on which to configure the aggregate
+                  routes.  If no Nodes are provided then the aggregate routes will
+                  be provisioned on all Nodes on which the Router is provisioned.
+                type: string
+              summaryOnly:
+                description: When set to true the router blocks the advertisement
+                  of all contributing routes of this aggregate route in dynamic protocols
+                  such as BGP.
+                type: boolean
+            required:
+            - prefixes
+            - router
+            type: object
+          status:
+            description: AggregateRouteStatus defines the observed state of AggregateRoute
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

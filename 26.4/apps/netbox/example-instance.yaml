@@ -1,0 +1,9 @@
+apiVersion: netbox.eda.nokia.com/v1alpha1
+kind: Instance
+metadata:
+  name: netbox
+  namespace: eda
+spec:
+  url: http://netbox-server.netbox.svc.cluster.local
+  apiToken: netbox-api-token
+  signatureKey: netbox-webhook-signature

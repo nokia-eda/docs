@@ -1,0 +1,12 @@
+apiVersion: remotewrite.eda.nokia.com/v1alpha1
+kind: Destination
+metadata:
+  name: dest1
+  namespace: eda
+spec:
+  url: 'http://prw.example.com:9090/api/v1/write'
+  writeOptions:
+    bufferSize: 100           # Number of metrics before sending
+    flushInterval: 60s        # Time interval for sending buffered data
+    maxRetries: 3             # Retry attempts on failure
+    timeout: 10s              # Client write timeout

@@ -1,0 +1,111 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: aspathsets.routingpolicies.eda.nokia.com
+spec:
+  group: routingpolicies.eda.nokia.com
+  names:
+    kind: ASPathSet
+    listKind: ASPathSetList
+    plural: aspathsets
+    singular: aspathset
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: ASPathSet is the Schema for the aspathsets API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ASPathSetSpec defines the desired state of ASPathSet
+            properties:
+              members:
+                description: Members is a list of AS path regular expressions.
+                items:
+                  type: string
+                type: array
+              regexMode:
+                description: Defines how AS_PATH attribute is converted into a string
+                  for regex matching.
+                enum:
+                - ASN
+                - Character
+                type: string
+            type: object
+          status:
+            description: ASPathSetStatus defines the observed state of ASPathSet
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ASPathSet is the Schema for the aspathsets API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ASPathSetSpec defines the desired state of ASPathSet
+            properties:
+              members:
+                description: Members is a list of AS path regular expressions.
+                items:
+                  type: string
+                type: array
+              regexMode:
+                description: Defines how AS_PATH attribute is converted into a string
+                  for regex matching.
+                enum:
+                - ASN
+                - Character
+                type: string
+            type: object
+          status:
+            description: ASPathSetStatus defines the observed state of ASPathSet
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

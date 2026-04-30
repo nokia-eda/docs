@@ -1,0 +1,12 @@
+apiVersion: nats.eda.nokia.com/v1
+kind: ClusterPublisher
+metadata:
+  name: jetstream-central
+  namespace: eda-system
+spec:
+  address: jetstream.example.svc.cluster.local:4222
+  type: Jetstream
+  clientName: eda-jetstream-client
+  credentialsSecretName: jetstream-credentials
+  maxPendingAcks: 4000
+  maxWait: 5

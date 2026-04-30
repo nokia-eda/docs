@@ -1,0 +1,306 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultospfinterfaces.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: DefaultOSPFInterface
+    listKind: DefaultOSPFInterfaceList
+    plural: defaultospfinterfaces
+    singular: defaultospfinterface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: DefaultOSPFInterface is the Schema for the defaultospfinterfaces
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultOSPFInterfaceSpec defines the desired state of DefaultOSPFInterface
+            properties:
+              deadIntervalSec:
+                description: Dead Interval in seconds.
+                maximum: 65535
+                minimum: 3
+                type: integer
+              defaultOSPFArea:
+                description: Reference to a DefaultOSPFArea.
+                type: string
+              defaultOSPFInstance:
+                description: Reference to a Default OSPF Instance on which the Default
+                  OSPF area is configured.
+                type: string
+              helloIntervalSec:
+                description: Hello Interval in seconds.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              interface:
+                description: Reference to either a DefaultInterface or SystemInterface.
+                type: string
+              interfaceKind:
+                default: DEFAULTINTERFACE
+                description: Reference to the Kind of interface to enable OSPF on.
+                enum:
+                - DEFAULTINTERFACE
+                - SYSTEMINTERFACE
+                type: string
+              metric:
+                description: Interface metric.
+                minimum: 0
+                type: integer
+              mtu:
+                description: OSPF interface MTU
+                maximum: 10240
+                minimum: 512
+                type: integer
+              ospfBFD:
+                description: Configure BFD on the OSPF interface.
+                properties:
+                  enabled:
+                    default: false
+                    description: Enables BFD on the OSPF interface.
+                    type: boolean
+                  strictMode:
+                    description: Enables BFD Strict Mode on the OSPF interface.
+                    type: boolean
+                  strictModeHoldDownSec:
+                    description: Enables Hold Down Timer for BFD Strict Mode, in seconds.
+                    maximum: 3600
+                    minimum: 512
+                    type: integer
+                required:
+                - enabled
+                type: object
+              passive:
+                description: Configure the OSPF interface as passive.
+                type: boolean
+              type:
+                default: PointToPoint
+                description: OSPF interface type.
+                enum:
+                - PointToPoint
+                - Broadcast
+                type: string
+            required:
+            - defaultOSPFArea
+            - defaultOSPFInstance
+            - interface
+            - interfaceKind
+            - type
+            type: object
+          status:
+            description: DefaultOSPFInterfaceStatus defines the observed state of
+              DefaultOSPFInterface
+            properties:
+              health:
+                description: Indicates the health score of the OSPF interface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              neighbors:
+                description: Neighbor status within the OSPF interface.
+                items:
+                  properties:
+                    adjacencyState:
+                      description: Adjacency state of the OSPF neighbor.
+                      type: string
+                    neighborId:
+                      description: Router ID of the OSPF neighbor.
+                      type: string
+                  type: object
+                type: array
+              numNeighbors:
+                description: The number of discovered neighbors.
+                type: integer
+              operationalState:
+                description: Operational state of the OSPF interface.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: DefaultOSPFInterface is the Schema for the defaultospfinterfaces
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultOSPFInterfaceSpec defines the desired state of DefaultOSPFInterface
+            properties:
+              bfd:
+                description: Configure BFD on the OSPF interface.
+                properties:
+                  enabled:
+                    default: false
+                    description: Enables BFD on the OSPF interface.
+                    type: boolean
+                  strictMode:
+                    description: Enables BFD Strict Mode on the OSPF interface.
+                    type: boolean
+                  strictModeHoldDownSeconds:
+                    description: Enables Hold Down Timer for BFD Strict Mode, in seconds.
+                    maximum: 3600
+                    minimum: 512
+                    type: integer
+                required:
+                - enabled
+                type: object
+              deadIntervalSeconds:
+                description: Dead Interval in seconds.
+                maximum: 65535
+                minimum: 3
+                type: integer
+              defaultOSPFArea:
+                description: Reference to a DefaultOSPFArea.
+                type: string
+              defaultOSPFInstance:
+                description: Reference to a Default OSPF Instance on which the Default
+                  OSPF area is configured.
+                type: string
+              helloIntervalSeconds:
+                description: Hello Interval in seconds.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              interface:
+                description: Reference to either a DefaultInterface or SystemInterface.
+                type: string
+              interfaceKind:
+                default: DefaultInterface
+                description: Reference to the Kind of interface to enable OSPF on.
+                enum:
+                - DefaultInterface
+                - SystemInterface
+                type: string
+              metric:
+                description: Interface metric.
+                minimum: 0
+                type: integer
+              mtu:
+                description: OSPF interface MTU
+                maximum: 10240
+                minimum: 512
+                type: integer
+              passive:
+                description: Configure the OSPF interface as passive.
+                type: boolean
+              type:
+                default: PointToPoint
+                description: OSPF interface type.
+                enum:
+                - PointToPoint
+                - Broadcast
+                type: string
+            required:
+            - defaultOSPFArea
+            - defaultOSPFInstance
+            - interface
+            - interfaceKind
+            - type
+            type: object
+          status:
+            description: DefaultOSPFInterfaceStatus defines the observed state of
+              DefaultOSPFInterface
+            properties:
+              health:
+                description: Indicates the health score of the OSPF interface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              neighbors:
+                description: Neighbor status within the OSPF interface.
+                items:
+                  properties:
+                    adjacencyState:
+                      description: Adjacency state of the OSPF neighbor.
+                      type: string
+                    neighborRouterID:
+                      description: Router ID of the OSPF neighbor.
+                      type: string
+                  type: object
+                type: array
+              numNeighbors:
+                description: The number of discovered neighbors.
+                type: integer
+              operationalState:
+                description: Operational state of the OSPF interface.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

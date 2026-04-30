@@ -1,0 +1,245 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: bridgeinterfacestates.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: BridgeInterfaceState
+    listKind: BridgeInterfaceStateList
+    plural: bridgeinterfacestates
+    singular: bridgeinterfacestate
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: BridgeInterfaceState is the Schema for the bridgeinterfacestates
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BridgeInterfaceStateSpec defines the desired state of BridgeInterfaceState
+            properties:
+              bridgeDomain:
+                description: Node BridgeDomain name
+                type: string
+              bridgeDomainConfiguredName:
+                type: string
+              subInterfaces:
+                items:
+                  properties:
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource
+                      type: string
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name
+                      type: string
+                    nodeSubInterface:
+                      description: Node specific subinterface name
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    subInterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              uplinks:
+                items:
+                  properties:
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource
+                      type: string
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name
+                      type: string
+                    nodeSubInterface:
+                      description: Node specific subinterface name
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    subInterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+            required:
+            - bridgeDomain
+            - bridgeDomainConfiguredName
+            - subInterfaces
+            type: object
+          status:
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: BridgeInterfaceState is the Schema for the bridgeinterfacestates
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BridgeInterfaceStateSpec defines the desired state of BridgeInterfaceState
+            properties:
+              bridgeDomain:
+                description: Node BridgeDomain name
+                type: string
+              bridgeDomainConfiguredName:
+                type: string
+              subinterfaces:
+                items:
+                  properties:
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource
+                      type: string
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name
+                      type: string
+                    nodeSubinterface:
+                      description: Node specific subinterface name
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    subinterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              uplinks:
+                items:
+                  properties:
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource
+                      type: string
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name
+                      type: string
+                    nodeSubinterface:
+                      description: Node specific subinterface name
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    subinterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+            required:
+            - bridgeDomain
+            - bridgeDomainConfiguredName
+            - subinterfaces
+            type: object
+          status:
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

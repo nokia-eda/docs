@@ -1,0 +1,1439 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: controlplanefilters.filters.eda.nokia.com
+spec:
+  group: filters.eda.nokia.com
+  names:
+    kind: ControlPlaneFilter
+    listKind: ControlPlaneFilterList
+    plural: controlplanefilters
+    singular: controlplanefilter
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: ControlPlaneFilter is the Schema for the controlplanefilters
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ControlPlaneFilter allows for specifying a list of Nodes
+              or Node selectors where the filter should be applied and managing filter
+              entries in order.
+            properties:
+              entries:
+                description: Specifies the list of filter entries, in order.
+                items:
+                  properties:
+                    description:
+                      description: Description of the FilterEntry.
+                      type: string
+                    ipEntry:
+                      description: IP Entry criteria and actions.
+                      properties:
+                        action:
+                          description: An action to take, either 'Accept','Drop',
+                            or 'RateLimit'.
+                          enum:
+                          - Drop
+                          - Accept
+                          - RateLimit
+                          type: string
+                        destinationPortName:
+                          description: Destination port to match by name.
+                          enum:
+                          - ACAP
+                          - AFP-TCP
+                          - ARNS
+                          - ASF-RMCP
+                          - ASHARE
+                          - ATALK-RM
+                          - AURP
+                          - AUTH
+                          - BFD
+                          - BFD-ECHO
+                          - BFTP
+                          - BGMP
+                          - BGP
+                          - BOOTPC
+                          - BOOTPS
+                          - CCSO-NS
+                          - CHARGEN
+                          - CISCO-TDP
+                          - CITADEL
+                          - CLEARCASE
+                          - COMMERCE
+                          - COURIER
+                          - DAYTIME
+                          - DHCP-FAILOVER
+                          - DHCPV6-CLIENT
+                          - DHCPV6-SERVER
+                          - DICOM
+                          - DISCARD
+                          - DNSIX
+                          - DOMAIN
+                          - DSP
+                          - ECHO
+                          - EPP
+                          - ESRO
+                          - EXEC
+                          - FINGER
+                          - FTP
+                          - FTP-DATA
+                          - FTPS
+                          - FTPS-DATA
+                          - GODI
+                          - GOPHER
+                          - GTP-C
+                          - GTP-PRIME
+                          - GTP-U
+                          - HA-CLUSTER
+                          - HOSTNAME
+                          - HP-ALARM-MGR
+                          - HTTP
+                          - HTTP-ALT
+                          - HTTP-MGMT
+                          - HTTP-RPC
+                          - HTTPS
+                          - IEEE-MMS-SSL
+                          - IMAP
+                          - IMAP3
+                          - IMAPS
+                          - IPP
+                          - IPSEC
+                          - IPX
+                          - IRC
+                          - IRIS-BEEP
+                          - ISAKMP
+                          - ISAKMP-NAT
+                          - ISCSI
+                          - ISO-TSAP
+                          - KERBEROS
+                          - KERBEROS-ADM
+                          - KLOGIN
+                          - KPASSWD
+                          - KSHELL
+                          - L2TP
+                          - LDAP
+                          - LDAPS
+                          - LDP
+                          - LMP
+                          - LOGIN
+                          - LPD
+                          - LSP-PING
+                          - MAC-SERVER-ADM
+                          - MATIP-A
+                          - MATIP-B
+                          - MICRO-BFD
+                          - MICROSOFT-DS
+                          - MOBILE-IP
+                          - MONITOR
+                          - MPP
+                          - MS-EXCHANGE
+                          - MSDP
+                          - MSP
+                          - MSSQL-M
+                          - MSSQL-S
+                          - MULTIHOP-BFD
+                          - NAS
+                          - NCP
+                          - NETBIOS-DATA
+                          - NETBIOS-NS
+                          - NETBIOS-SS
+                          - NETNEWS
+                          - NETRJS-1
+                          - NETRJS-2
+                          - NETRJS-3
+                          - NETRJS-4
+                          - NETWALL
+                          - NEW-RWHO
+                          - NFS
+                          - NNTP
+                          - NNTPS
+                          - NTP
+                          - ODMR
+                          - OLSR
+                          - OPENVPN
+                          - PIM-AUTO-RP
+                          - PKIX-TIMESTAMP
+                          - POP2
+                          - POP3
+                          - POP3S
+                          - PPTP
+                          - PRINT-SRV
+                          - PTP-EVENT
+                          - PTP-GENERAL
+                          - QMTP
+                          - QOTD
+                          - RADIUS
+                          - RADIUS-ACCT
+                          - REMOTE-MAIL
+                          - REMOTEFS
+                          - REMOTECMD
+                          - RIP
+                          - RJE
+                          - RLP
+                          - RLZDB
+                          - RMC
+                          - RMONITOR
+                          - RPC2PORTMAP
+                          - RSYNC
+                          - RTELNET
+                          - RTSP
+                          - SGMP
+                          - SILC
+                          - SMUX
+                          - SNA-GW
+                          - SNMP
+                          - SNMP-TRAP
+                          - SNPP
+                          - SMTP
+                          - SQL-SVCS
+                          - SQL
+                          - SSH
+                          - SUBMISSION
+                          - SUNRPC
+                          - SVCLOC
+                          - SYSLOG
+                          - SYSTAT
+                          - TACACS
+                          - TALK
+                          - TCPMUX
+                          - TCPNETHASPSRV
+                          - TFTP
+                          - TIME
+                          - TIMED
+                          - UPS
+                          - XDMCP
+                          - XNS-CH
+                          - XNS-MAIL
+                          - XNS-TIME
+                          - Z3950
+                          type: string
+                        destinationPortNumber:
+                          description: Destination port to match by numerical value.
+                          maximum: 65535
+                          minimum: 0
+                          type: integer
+                        destinationPortOperator:
+                          description: Operator to use when matching destinationPort,
+                            either Equals, GreaterOrEquals, or LessOrEquals.
+                          enum:
+                          - Equals
+                          - GreaterOrEquals
+                          - LessOrEquals
+                          type: string
+                        destinationPortRange:
+                          description: Range of destination ports to match, in the
+                            format n-m, e.g. 100-200,  The start and end of the range
+                            must be port numbers.
+                          type: string
+                        destinationPrefix:
+                          description: Destination prefix to match.
+                          type: string
+                        destinationPrefixSets:
+                          description: Destination prefix set to match. Mutually exclusive
+                            with the Destination Prefix field.
+                          items:
+                            type: string
+                          maxItems: 1
+                          type: array
+                        dscpValues:
+                          description: Match DSCP values.
+                          items:
+                            maximum: 63
+                            minimum: 0
+                            type: integer
+                          maxItems: 64
+                          minItems: 0
+                          type: array
+                        firstFragment:
+                          description: Match the first fragment only.
+                          type: boolean
+                        fragment:
+                          description: Match any fragment.
+                          type: boolean
+                        icmpCodes:
+                          description: Match a specific ICMP code, as a number between
+                            0-255, e.g. 0.
+                          items:
+                            type: integer
+                          maxItems: 255
+                          minItems: 0
+                          type: array
+                        icmpTypeName:
+                          description: Match a specific ICMP type by name, e.g. dest-unreachable.
+                          enum:
+                          - DestUnreachable
+                          - Echo
+                          - EchoReply
+                          - EchoRequest
+                          - McastRtrAdv
+                          - McastRtrSolicit
+                          - McastRtrTerm
+                          - MldDone
+                          - MldQuery
+                          - MldReport
+                          - MldV2
+                          - NeighborAdvertise
+                          - NeighborSolicit
+                          - NodeInfoQuery
+                          - NodeInfoResponse
+                          - PacketTooBig
+                          - ParamProblem
+                          - Redirect
+                          - RouterAdvertise
+                          - RouterRenumber
+                          - RouterSolicit
+                          - SourceQuench
+                          - TimeExceeded
+                          - Timestamp
+                          - TimestampReply
+                          type: string
+                        icmpTypeNumber:
+                          description: Match a specific ICMP type by number.
+                          maximum: 255
+                          minimum: 0
+                          type: integer
+                        log:
+                          description: Log the matches for this entry.
+                          type: boolean
+                        protocolName:
+                          description: Match a specific IP protocol name (specified
+                            in the type field of the IP header).
+                          enum:
+                          - AH
+                          - EGP
+                          - EIGRP
+                          - ESP
+                          - GGP
+                          - GRE
+                          - ICMP
+                          - ICMP6
+                          - IDRP
+                          - IGMP
+                          - IGP
+                          - IPV4
+                          - IPV6
+                          - IPV6-DEST-OPTS
+                          - IPV6-HOP
+                          - L2TP
+                          - MPLS-IN-IP
+                          - NO-NEXT-HDR
+                          - OSPF
+                          - PIM
+                          - ROHC
+                          - RSVP
+                          - SCTP
+                          - ST
+                          - TCP
+                          - UDP
+                          - VRRP
+                          type: string
+                        protocolNumber:
+                          description: Match a specific IP protocol number (specified
+                            in the type field of the IP header).
+                          maximum: 255
+                          minimum: 0
+                          type: integer
+                        rateLimit:
+                          description: Rate limit to apply when the action is 'RateLimit'.
+                          properties:
+                            burstSizeBytes:
+                              description: The maximum burst size in bytes.
+                              format: int32
+                              type: integer
+                            entrySpecificPolicer:
+                              default: false
+                              description: 'Controls policer instantiation: false
+                                for shared instance, true for per-entry instances'
+                              type: boolean
+                            peakRateKbps:
+                              description: The peak rate in kilobytes per second.
+                              format: int32
+                              type: integer
+                            scope:
+                              default: Global
+                              description: Determines how the policer is applied across
+                                subinterfaces. Global applies the policer across all
+                                subinterfaces, while Subinterface applies it individually
+                                to each subinterface.
+                              enum:
+                              - Global
+                              - Subinterface
+                              type: string
+                          type: object
+                        sourcePortName:
+                          description: Source port to match by name.
+                          enum:
+                          - ACAP
+                          - AFP-TCP
+                          - ARNS
+                          - ASF-RMCP
+                          - ASHARE
+                          - ATALK-RM
+                          - AURP
+                          - AUTH
+                          - BFD
+                          - BFD-ECHO
+                          - BFTP
+                          - BGMP
+                          - BGP
+                          - BOOTPC
+                          - BOOTPS
+                          - CCSO-NS
+                          - CHARGEN
+                          - CISCO-TDP
+                          - CITADEL
+                          - CLEARCASE
+                          - COMMERCE
+                          - COURIER
+                          - DAYTIME
+                          - DHCP-FAILOVER
+                          - DHCPV6-CLIENT
+                          - DHCPV6-SERVER
+                          - DICOM
+                          - DISCARD
+                          - DNSIX
+                          - DOMAIN
+                          - DSP
+                          - ECHO
+                          - EPP
+                          - ESRO
+                          - EXEC
+                          - FINGER
+                          - FTP
+                          - FTP-DATA
+                          - FTPS
+                          - FTPS-DATA
+                          - GODI
+                          - GOPHER
+                          - GTP-C
+                          - GTP-PRIME
+                          - GTP-U
+                          - HA-CLUSTER
+                          - HOSTNAME
+                          - HP-ALARM-MGR
+                          - HTTP
+                          - HTTP-ALT
+                          - HTTP-MGMT
+                          - HTTP-RPC
+                          - HTTPS
+                          - IEEE-MMS-SSL
+                          - IMAP
+                          - IMAP3
+                          - IMAPS
+                          - IPP
+                          - IPSEC
+                          - IPX
+                          - IRC
+                          - IRIS-BEEP
+                          - ISAKMP
+                          - ISAKMP-NAT
+                          - ISCSI
+                          - ISO-TSAP
+                          - KERBEROS
+                          - KERBEROS-ADM
+                          - KLOGIN
+                          - KPASSWD
+                          - KSHELL
+                          - L2TP
+                          - LDAP
+                          - LDAPS
+                          - LDP
+                          - LMP
+                          - LOGIN
+                          - LPD
+                          - LSP-PING
+                          - MAC-SERVER-ADM
+                          - MATIP-A
+                          - MATIP-B
+                          - MICRO-BFD
+                          - MICROSOFT-DS
+                          - MOBILE-IP
+                          - MONITOR
+                          - MPP
+                          - MS-EXCHANGE
+                          - MSDP
+                          - MSP
+                          - MSSQL-M
+                          - MSSQL-S
+                          - MULTIHOP-BFD
+                          - NAS
+                          - NCP
+                          - NETBIOS-DATA
+                          - NETBIOS-NS
+                          - NETBIOS-SS
+                          - NETNEWS
+                          - NETRJS-1
+                          - NETRJS-2
+                          - NETRJS-3
+                          - NETRJS-4
+                          - NETWALL
+                          - NEW-RWHO
+                          - NFS
+                          - NNTP
+                          - NNTPS
+                          - NTP
+                          - ODMR
+                          - OLSR
+                          - OPENVPN
+                          - PIM-AUTO-RP
+                          - PKIX-TIMESTAMP
+                          - POP2
+                          - POP3
+                          - POP3S
+                          - PPTP
+                          - PRINT-SRV
+                          - PTP-EVENT
+                          - PTP-GENERAL
+                          - QMTP
+                          - QOTD
+                          - RADIUS
+                          - RADIUS-ACCT
+                          - REMOTE-MAIL
+                          - REMOTEFS
+                          - REMOTECMD
+                          - RIP
+                          - RJE
+                          - RLP
+                          - RLZDB
+                          - RMC
+                          - RMONITOR
+                          - RPC2PORTMAP
+                          - RSYNC
+                          - RTELNET
+                          - RTSP
+                          - SGMP
+                          - SILC
+                          - SMUX
+                          - SNA-GW
+                          - SNMP
+                          - SNMP-TRAP
+                          - SNPP
+                          - SMTP
+                          - SQL-SVCS
+                          - SQL
+                          - SSH
+                          - SUBMISSION
+                          - SUNRPC
+                          - SVCLOC
+                          - SYSLOG
+                          - SYSTAT
+                          - TACACS
+                          - TALK
+                          - TCPMUX
+                          - TCPNETHASPSRV
+                          - TFTP
+                          - TIME
+                          - TIMED
+                          - UPS
+                          - XDMCP
+                          - XNS-CH
+                          - XNS-MAIL
+                          - XNS-TIME
+                          - Z3950
+                          type: string
+                        sourcePortNumber:
+                          description: Source port to match by numerical value.
+                          maximum: 65535
+                          minimum: 0
+                          type: integer
+                        sourcePortOperator:
+                          description: Operator to use when matching sourcePort, either
+                            Equals, GreaterOrEquals, or LessOrEquals.
+                          enum:
+                          - Equals
+                          - GreaterOrEquals
+                          - LessOrEquals
+                          type: string
+                        sourcePortRange:
+                          description: Range of source ports to match, in the format
+                            n-m, e.g. 100-200.  The start and end of the range must
+                            be port numbers.
+                          type: string
+                        sourcePrefix:
+                          description: Source prefix to match.
+                          type: string
+                        sourcePrefixSets:
+                          description: Source prefix set to match. Mutually exclusive
+                            with the Source Prefix field.
+                          items:
+                            type: string
+                          maxItems: 1
+                          type: array
+                        tcpFlags:
+                          description: Match TCP flags, usable with !, &, | and the
+                            flags RST, SYN, and ACK.
+                          type: string
+                      type: object
+                    macEntry:
+                      description: MAC Entry criteria and actions.
+                      properties:
+                        action:
+                          description: An action to take, either 'Accept','Drop',
+                            or 'RateLimit'.
+                          enum:
+                          - Drop
+                          - Accept
+                          - RateLimit
+                          type: string
+                        destinationMAC:
+                          description: Match an Ethernet frame if its destination
+                            MAC address logically anded with the mask equals this
+                            MAC address.
+                          type: string
+                        destinationMACMask:
+                          description: Match an Ethernet frame if its destination
+                            MAC address logically anded with the mask equals the configured
+                            MAC address.
+                          type: string
+                        ethertype:
+                          description: An Ethernet frame matches this condition if
+                            its ethertype value (after 802.1Q VLAN tags) matches the
+                            specified value.
+                          enum:
+                          - ARP
+                          - AUTHENTICATION8021X
+                          - ETHOAM
+                          - FCOE
+                          - FCOEINITIALIZATION
+                          - FLOWCONTROL
+                          - IPV4
+                          - IPV6
+                          - LACP
+                          - LLDP
+                          - MACSEC
+                          - MPLSMULTICAST
+                          - MPLSUNICAST
+                          - PBB
+                          - PPPOEDISCOVERY
+                          - PPPOESESSION
+                          - PTP
+                          - ROCE
+                          type: string
+                        log:
+                          description: Log the matches for this entry.
+                          type: boolean
+                        outerVLANIDOperator:
+                          description: Operator to use when matching OuterVlanIdValue,
+                            either Equals, GreaterOrEquals, or LessOrEquals.
+                          enum:
+                          - Equals
+                          - GreaterOrEquals
+                          - LessOrEquals
+                          type: string
+                        outerVLANIDRange:
+                          description: Range of Outer vlan IDs to match, in the format
+                            n-m, e.g. 100-200
+                          type: string
+                        outerVLANIDValue:
+                          description: Ethernet frame matching criteria based on the
+                            outermost VLAN ID found before the subinterface-defining
+                            VLAN tag (if any) is removed. A value of 'none' will match
+                            only untagged frames.
+                          type: string
+                        rateLimit:
+                          description: Rate limit to apply when the action is 'RateLimit'.
+                          properties:
+                            burstSizeBytes:
+                              description: The maximum burst size in bytes.
+                              format: int32
+                              type: integer
+                            entrySpecificPolicer:
+                              default: false
+                              description: 'Controls policer instantiation: false
+                                for shared instance, true for per-entry instances'
+                              type: boolean
+                            peakRateKbps:
+                              description: The peak rate in kilobytes per second.
+                              format: int32
+                              type: integer
+                            scope:
+                              default: Global
+                              description: Determines how the policer is applied across
+                                subinterfaces. Global applies the policer across all
+                                subinterfaces, while Subinterface applies it individually
+                                to each subinterface.
+                              enum:
+                              - Global
+                              - Subinterface
+                              type: string
+                          type: object
+                        sourceMAC:
+                          description: Match an Ethernet frame if its source MAC address
+                            logically anded with the mask equals this MAC address.
+                          type: string
+                        sourceMACMask:
+                          description: Match an Ethernet frame if its source MAC address
+                            logically anded with the mask equals the configured MAC
+                            address.
+                          type: string
+                      type: object
+                    type:
+                      default: Auto
+                      description: Type of the entry which can be IPv4, IPv6, MAC
+                        or Auto.
+                      enum:
+                      - IPv4
+                      - IPv6
+                      - MAC
+                      - Auto
+                      type: string
+                  required:
+                  - type
+                  type: object
+                type: array
+              nodeSelectors:
+                description: Label selector used to select Toponodes on which to deploy
+                  the CPM filter.
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: Reference to a list of TopoNodes on which to deploy the
+                  CPM filter.
+                items:
+                  type: string
+                type: array
+              statisticsPerEntry:
+                description: Enable or disable per-entry counters.
+                type: boolean
+            required:
+            - entries
+            type: object
+          status:
+            description: ControlPlaneFilterStatus defines the observed state of ControlPlaneFilter
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ControlPlaneFilter is the Schema for the controlplanefilters
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ControlPlaneFilter allows for specifying a list of Nodes
+              or Node selectors where the filter should be applied and managing filter
+              entries in order.
+            properties:
+              entries:
+                description: Specifies the list of filter entries, in order.
+                items:
+                  properties:
+                    description:
+                      description: Description of the FilterEntry.
+                      type: string
+                    ipEntry:
+                      description: IP Entry criteria and actions.
+                      properties:
+                        action:
+                          description: An action to take, either 'Accept','Drop',
+                            or 'RateLimit'.
+                          enum:
+                          - Drop
+                          - Accept
+                          - RateLimit
+                          type: string
+                        destinationPortName:
+                          description: Destination port to match by name.
+                          enum:
+                          - ACAP
+                          - AFP-TCP
+                          - ARNS
+                          - ASF-RMCP
+                          - ASHARE
+                          - ATALK-RM
+                          - AURP
+                          - AUTH
+                          - BFD
+                          - BFD-ECHO
+                          - BFTP
+                          - BGMP
+                          - BGP
+                          - BOOTPC
+                          - BOOTPS
+                          - CCSO-NS
+                          - CHARGEN
+                          - CISCO-TDP
+                          - CITADEL
+                          - CLEARCASE
+                          - COMMERCE
+                          - COURIER
+                          - DAYTIME
+                          - DHCP-FAILOVER
+                          - DHCPV6-CLIENT
+                          - DHCPV6-SERVER
+                          - DICOM
+                          - DISCARD
+                          - DNSIX
+                          - DOMAIN
+                          - DSP
+                          - ECHO
+                          - EPP
+                          - ESRO
+                          - EXEC
+                          - FINGER
+                          - FTP
+                          - FTP-DATA
+                          - FTPS
+                          - FTPS-DATA
+                          - GODI
+                          - GOPHER
+                          - GTP-C
+                          - GTP-PRIME
+                          - GTP-U
+                          - HA-CLUSTER
+                          - HOSTNAME
+                          - HP-ALARM-MGR
+                          - HTTP
+                          - HTTP-ALT
+                          - HTTP-MGMT
+                          - HTTP-RPC
+                          - HTTPS
+                          - IEEE-MMS-SSL
+                          - IMAP
+                          - IMAP3
+                          - IMAPS
+                          - IPP
+                          - IPSEC
+                          - IPX
+                          - IRC
+                          - IRIS-BEEP
+                          - ISAKMP
+                          - ISAKMP-NAT
+                          - ISCSI
+                          - ISO-TSAP
+                          - KERBEROS
+                          - KERBEROS-ADM
+                          - KLOGIN
+                          - KPASSWD
+                          - KSHELL
+                          - L2TP
+                          - LDAP
+                          - LDAPS
+                          - LDP
+                          - LMP
+                          - LOGIN
+                          - LPD
+                          - LSP-PING
+                          - MAC-SERVER-ADM
+                          - MATIP-A
+                          - MATIP-B
+                          - MICRO-BFD
+                          - MICROSOFT-DS
+                          - MOBILE-IP
+                          - MONITOR
+                          - MPP
+                          - MS-EXCHANGE
+                          - MSDP
+                          - MSP
+                          - MSSQL-M
+                          - MSSQL-S
+                          - MULTIHOP-BFD
+                          - NAS
+                          - NCP
+                          - NETBIOS-DATA
+                          - NETBIOS-NS
+                          - NETBIOS-SS
+                          - NETNEWS
+                          - NETRJS-1
+                          - NETRJS-2
+                          - NETRJS-3
+                          - NETRJS-4
+                          - NETWALL
+                          - NEW-RWHO
+                          - NFS
+                          - NNTP
+                          - NNTPS
+                          - NTP
+                          - ODMR
+                          - OLSR
+                          - OPENVPN
+                          - PIM-AUTO-RP
+                          - PKIX-TIMESTAMP
+                          - POP2
+                          - POP3
+                          - POP3S
+                          - PPTP
+                          - PRINT-SRV
+                          - PTP-EVENT
+                          - PTP-GENERAL
+                          - QMTP
+                          - QOTD
+                          - RADIUS
+                          - RADIUS-ACCT
+                          - REMOTE-MAIL
+                          - REMOTEFS
+                          - REMOTECMD
+                          - RIP
+                          - RJE
+                          - RLP
+                          - RLZDB
+                          - RMC
+                          - RMONITOR
+                          - RPC2PORTMAP
+                          - RSYNC
+                          - RTELNET
+                          - RTSP
+                          - SGMP
+                          - SILC
+                          - SMUX
+                          - SNA-GW
+                          - SNMP
+                          - SNMP-TRAP
+                          - SNPP
+                          - SMTP
+                          - SQL-SVCS
+                          - SQL
+                          - SSH
+                          - SUBMISSION
+                          - SUNRPC
+                          - SVCLOC
+                          - SYSLOG
+                          - SYSTAT
+                          - TACACS
+                          - TALK
+                          - TCPMUX
+                          - TCPNETHASPSRV
+                          - TFTP
+                          - TIME
+                          - TIMED
+                          - UPS
+                          - XDMCP
+                          - XNS-CH
+                          - XNS-MAIL
+                          - XNS-TIME
+                          - Z3950
+                          type: string
+                        destinationPortNumber:
+                          description: Destination port to match by numerical value.
+                          maximum: 65535
+                          minimum: 0
+                          type: integer
+                        destinationPortOperator:
+                          description: Operator to use when matching destinationPort,
+                            either Equals, GreaterOrEquals, or LessOrEquals.
+                          enum:
+                          - Equals
+                          - GreaterOrEquals
+                          - LessOrEquals
+                          type: string
+                        destinationPortRange:
+                          description: Range of destination ports to match, in the
+                            format n-m, e.g. 100-200,  The start and end of the range
+                            must be port numbers.
+                          type: string
+                        destinationPrefix:
+                          description: Destination prefix to match.
+                          type: string
+                        dscp:
+                          description: Match DSCP values.
+                          items:
+                            maximum: 63
+                            minimum: 0
+                            type: integer
+                          maxItems: 64
+                          minItems: 0
+                          type: array
+                        firstFragment:
+                          description: Match the first fragment only.
+                          type: boolean
+                        fragment:
+                          description: Match any fragment.
+                          type: boolean
+                        icmpCode:
+                          description: Match a specific ICMP code, as a number between
+                            0-255, e.g. 0.
+                          items:
+                            type: integer
+                          maxItems: 255
+                          minItems: 0
+                          type: array
+                        icmpTypeName:
+                          description: Match a specific ICMP type by name, e.g. dest-unreachable.
+                          enum:
+                          - DestUnreachable
+                          - Echo
+                          - EchoReply
+                          - EchoRequest
+                          - McastRtrAdv
+                          - McastRtrSolicit
+                          - McastRtrTerm
+                          - MldDone
+                          - MldQuery
+                          - MldReport
+                          - MldV2
+                          - NeighborAdvertise
+                          - NeighborSolicit
+                          - NodeInfoQuery
+                          - NodeInfoResponse
+                          - PacketTooBig
+                          - ParamProblem
+                          - Redirect
+                          - RouterAdvertise
+                          - RouterRenumber
+                          - RouterSolicit
+                          - SourceQuench
+                          - TimeExceeded
+                          - Timestamp
+                          - TimestampReply
+                          type: string
+                        icmpTypeNumber:
+                          description: Match a specific ICMP type by number.
+                          maximum: 255
+                          minimum: 0
+                          type: integer
+                        log:
+                          description: Log the matches for this entry.
+                          type: boolean
+                        protocolName:
+                          description: Match a specific IP protocol name (specified
+                            in the type field of the IP header).
+                          enum:
+                          - AH
+                          - EGP
+                          - EIGRP
+                          - ESP
+                          - GGP
+                          - GRE
+                          - ICMP
+                          - ICMP6
+                          - IDRP
+                          - IGMP
+                          - IGP
+                          - IPV4
+                          - IPV6
+                          - IPV6-DEST-OPTS
+                          - IPV6-HOP
+                          - L2TP
+                          - MPLS-IN-IP
+                          - NO-NEXT-HDR
+                          - OSPF
+                          - PIM
+                          - ROHC
+                          - RSVP
+                          - SCTP
+                          - ST
+                          - TCP
+                          - UDP
+                          - VRRP
+                          type: string
+                        protocolNumber:
+                          description: Match a specific IP protocol number (specified
+                            in the type field of the IP header).
+                          maximum: 255
+                          minimum: 0
+                          type: integer
+                        rateLimit:
+                          description: Rate limit to apply when the action is 'RateLimit'.
+                          properties:
+                            burstSize:
+                              description: The maximum burst size in bytes.
+                              format: int32
+                              type: integer
+                            entrySpecificPolicer:
+                              default: false
+                              description: 'Controls policer instantiation: false
+                                for shared instance, true for per-entry instances'
+                              type: boolean
+                            peakRate:
+                              description: The peak rate in kilobytes per second.
+                              format: int32
+                              type: integer
+                            scope:
+                              default: Global
+                              description: Determines how the policer is applied across
+                                subinterfaces. Global applies the policer across all
+                                subinterfaces, while Subinterface applies it individually
+                                to each subinterface.
+                              enum:
+                              - Global
+                              - Subinterface
+                              type: string
+                          type: object
+                        sourcePortName:
+                          description: Source port to match by name.
+                          enum:
+                          - ACAP
+                          - AFP-TCP
+                          - ARNS
+                          - ASF-RMCP
+                          - ASHARE
+                          - ATALK-RM
+                          - AURP
+                          - AUTH
+                          - BFD
+                          - BFD-ECHO
+                          - BFTP
+                          - BGMP
+                          - BGP
+                          - BOOTPC
+                          - BOOTPS
+                          - CCSO-NS
+                          - CHARGEN
+                          - CISCO-TDP
+                          - CITADEL
+                          - CLEARCASE
+                          - COMMERCE
+                          - COURIER
+                          - DAYTIME
+                          - DHCP-FAILOVER
+                          - DHCPV6-CLIENT
+                          - DHCPV6-SERVER
+                          - DICOM
+                          - DISCARD
+                          - DNSIX
+                          - DOMAIN
+                          - DSP
+                          - ECHO
+                          - EPP
+                          - ESRO
+                          - EXEC
+                          - FINGER
+                          - FTP
+                          - FTP-DATA
+                          - FTPS
+                          - FTPS-DATA
+                          - GODI
+                          - GOPHER
+                          - GTP-C
+                          - GTP-PRIME
+                          - GTP-U
+                          - HA-CLUSTER
+                          - HOSTNAME
+                          - HP-ALARM-MGR
+                          - HTTP
+                          - HTTP-ALT
+                          - HTTP-MGMT
+                          - HTTP-RPC
+                          - HTTPS
+                          - IEEE-MMS-SSL
+                          - IMAP
+                          - IMAP3
+                          - IMAPS
+                          - IPP
+                          - IPSEC
+                          - IPX
+                          - IRC
+                          - IRIS-BEEP
+                          - ISAKMP
+                          - ISAKMP-NAT
+                          - ISCSI
+                          - ISO-TSAP
+                          - KERBEROS
+                          - KERBEROS-ADM
+                          - KLOGIN
+                          - KPASSWD
+                          - KSHELL
+                          - L2TP
+                          - LDAP
+                          - LDAPS
+                          - LDP
+                          - LMP
+                          - LOGIN
+                          - LPD
+                          - LSP-PING
+                          - MAC-SERVER-ADM
+                          - MATIP-A
+                          - MATIP-B
+                          - MICRO-BFD
+                          - MICROSOFT-DS
+                          - MOBILE-IP
+                          - MONITOR
+                          - MPP
+                          - MS-EXCHANGE
+                          - MSDP
+                          - MSP
+                          - MSSQL-M
+                          - MSSQL-S
+                          - MULTIHOP-BFD
+                          - NAS
+                          - NCP
+                          - NETBIOS-DATA
+                          - NETBIOS-NS
+                          - NETBIOS-SS
+                          - NETNEWS
+                          - NETRJS-1
+                          - NETRJS-2
+                          - NETRJS-3
+                          - NETRJS-4
+                          - NETWALL
+                          - NEW-RWHO
+                          - NFS
+                          - NNTP
+                          - NNTPS
+                          - NTP
+                          - ODMR
+                          - OLSR
+                          - OPENVPN
+                          - PIM-AUTO-RP
+                          - PKIX-TIMESTAMP
+                          - POP2
+                          - POP3
+                          - POP3S
+                          - PPTP
+                          - PRINT-SRV
+                          - PTP-EVENT
+                          - PTP-GENERAL
+                          - QMTP
+                          - QOTD
+                          - RADIUS
+                          - RADIUS-ACCT
+                          - REMOTE-MAIL
+                          - REMOTEFS
+                          - REMOTECMD
+                          - RIP
+                          - RJE
+                          - RLP
+                          - RLZDB
+                          - RMC
+                          - RMONITOR
+                          - RPC2PORTMAP
+                          - RSYNC
+                          - RTELNET
+                          - RTSP
+                          - SGMP
+                          - SILC
+                          - SMUX
+                          - SNA-GW
+                          - SNMP
+                          - SNMP-TRAP
+                          - SNPP
+                          - SMTP
+                          - SQL-SVCS
+                          - SQL
+                          - SSH
+                          - SUBMISSION
+                          - SUNRPC
+                          - SVCLOC
+                          - SYSLOG
+                          - SYSTAT
+                          - TACACS
+                          - TALK
+                          - TCPMUX
+                          - TCPNETHASPSRV
+                          - TFTP
+                          - TIME
+                          - TIMED
+                          - UPS
+                          - XDMCP
+                          - XNS-CH
+                          - XNS-MAIL
+                          - XNS-TIME
+                          - Z3950
+                          type: string
+                        sourcePortNumber:
+                          description: Source port to match by numerical value.
+                          maximum: 65535
+                          minimum: 0
+                          type: integer
+                        sourcePortOperator:
+                          description: Operator to use when matching sourcePort, either
+                            Equals, GreaterOrEquals, or LessOrEquals.
+                          enum:
+                          - Equals
+                          - GreaterOrEquals
+                          - LessOrEquals
+                          type: string
+                        sourcePortRange:
+                          description: Range of source ports to match, in the format
+                            n-m, e.g. 100-200.  The start and end of the range must
+                            be port numbers.
+                          type: string
+                        sourcePrefix:
+                          description: Source prefix to match.
+                          type: string
+                        tcpFlags:
+                          description: Match TCP flags, usable with !, &, | and the
+                            flags RST, SYN, and ACK.
+                          type: string
+                      type: object
+                    macEntry:
+                      description: MAC Entry criteria and actions.
+                      properties:
+                        action:
+                          description: An action to take, either 'Accept','Drop',
+                            or 'RateLimit'.
+                          enum:
+                          - Drop
+                          - Accept
+                          - RateLimit
+                          type: string
+                        destinationMAC:
+                          description: Match an Ethernet frame if its destination
+                            MAC address logically anded with the mask equals this
+                            MAC address.
+                          type: string
+                        destinationMACMask:
+                          description: Match an Ethernet frame if its destination
+                            MAC address logically anded with the mask equals the configured
+                            MAC address.
+                          type: string
+                        ethertype:
+                          description: An Ethernet frame matches this condition if
+                            its ethertype value (after 802.1Q VLAN tags) matches the
+                            specified value.
+                          enum:
+                          - ARP
+                          - AUTHENTICATION8021X
+                          - ETHOAM
+                          - FCOE
+                          - FCOEINITIALIZATION
+                          - FLOWCONTROL
+                          - IPV4
+                          - IPV6
+                          - LACP
+                          - LLDP
+                          - MACSEC
+                          - MPLSMULTICAST
+                          - MPLSUNICAST
+                          - PBB
+                          - PPPOEDISCOVERY
+                          - PPPOESESSION
+                          - PTP
+                          - ROCE
+                          type: string
+                        log:
+                          description: Log the matches for this entry.
+                          type: boolean
+                        outerVLANIDOperator:
+                          description: Operator to use when matching OuterVlanIdValue,
+                            either Equals, GreaterOrEquals, or LessOrEquals.
+                          enum:
+                          - Equals
+                          - GreaterOrEquals
+                          - LessOrEquals
+                          type: string
+                        outerVLANIDRange:
+                          description: Range of Outer vlan IDs to match, in the format
+                            n-m, e.g. 100-200
+                          type: string
+                        outerVLANIDValue:
+                          description: Ethernet frame matching criteria based on the
+                            outermost VLAN ID found before the subinterface-defining
+                            VLAN tag (if any) is removed. A value of 'none' will match
+                            only untagged frames.
+                          type: string
+                        rateLimit:
+                          description: Rate limit to apply when the action is 'RateLimit'.
+                          properties:
+                            burstSize:
+                              description: The maximum burst size in bytes.
+                              format: int32
+                              type: integer
+                            entrySpecificPolicer:
+                              default: false
+                              description: 'Controls policer instantiation: false
+                                for shared instance, true for per-entry instances'
+                              type: boolean
+                            peakRate:
+                              description: The peak rate in kilobytes per second.
+                              format: int32
+                              type: integer
+                            scope:
+                              default: Global
+                              description: Determines how the policer is applied across
+                                subinterfaces. Global applies the policer across all
+                                subinterfaces, while Subinterface applies it individually
+                                to each subinterface.
+                              enum:
+                              - Global
+                              - Subinterface
+                              type: string
+                          type: object
+                        sourceMAC:
+                          description: Match an Ethernet frame if its source MAC address
+                            logically anded with the mask equals this MAC address.
+                          type: string
+                        sourceMACMask:
+                          description: Match an Ethernet frame if its source MAC address
+                            logically anded with the mask equals the configured MAC
+                            address.
+                          type: string
+                      type: object
+                    type:
+                      default: Auto
+                      description: Type of the entry which can be IPV4, IPV6, MAC
+                        or Auto.
+                      enum:
+                      - IPV4
+                      - IPV6
+                      - MAC
+                      - Auto
+                      type: string
+                  required:
+                  - type
+                  type: object
+                type: array
+              nodeSelector:
+                description: Label selector used to select Toponodes on which to deploy
+                  the CPM filter.
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: Reference to a list of TopoNodes on which to deploy the
+                  CPM filter.
+                items:
+                  type: string
+                type: array
+              statisticsPerEntry:
+                description: Enable or disable per-entry counters.
+                type: boolean
+            required:
+            - entries
+            type: object
+          status:
+            description: ControlPlaneFilterStatus defines the observed state of ControlPlaneFilter
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

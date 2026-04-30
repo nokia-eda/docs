@@ -1,0 +1,12 @@
+apiVersion: connect.eda.nokia.com/v1
+kind: ConnectNetworkDefinition
+metadata:
+  name: cnd4
+spec:
+  subnets:
+    - name: "subnet-1"
+      networkAttachmentDefinitions:
+        - name: ipvlan-ns1/ipvlan-nad1
+          preProvisionHostGroupSelector: 'net-group-1'
+        - name: macvlan-ns1/macvlan-nad1
+          preProvisionHostGroupSelector: 'net-group-2'

@@ -1,0 +1,17 @@
+apiVersion: gitlab.eda.nokia.com/v1alpha1
+kind: RunGitlabPipeline
+metadata:
+  name: run-gitlab-pipeline-now
+  namespace: eda
+spec:
+  instance: gitlab-server
+  repo: network-operations/eda-automation
+  pipeline: ci.yml
+  ref: main
+  parameters:
+    - name: trigger_source
+      value:
+        staticValue: EDA
+    - name: requested_by
+      value:
+        staticValue: workflow-cr

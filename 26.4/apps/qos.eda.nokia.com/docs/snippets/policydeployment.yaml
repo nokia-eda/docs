@@ -1,0 +1,12 @@
+apiVersion: qos.eda.nokia.com/v2
+kind: PolicyDeployment
+metadata:
+  name: edgesubinterface-my-datacenter
+  namespace: scale-across
+spec:
+  ingressPolicy: edgesubinterface-ingress-my-datacenter
+  interfaces:
+    - dc1-leaf-1-ethernet-1-6
+    - dc1-leaf-1-ethernet-1-7
+    - dc1-leaf-2-ethernet-1-1
+    - dc1-leaf-2-ethernet-1-2

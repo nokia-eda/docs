@@ -1,0 +1,14 @@
+- type: linux_bond
+  name: bond1
+  bonding_options: "mode=active-backup miimon=100"
+  use_dhcp: false
+  mtu: 9000
+  members:
+    - type: interface
+      name: nic2
+      primary: true
+      mtu: 9000
+    - type: interface
+      name: nic3
+      mtu: 9000
+

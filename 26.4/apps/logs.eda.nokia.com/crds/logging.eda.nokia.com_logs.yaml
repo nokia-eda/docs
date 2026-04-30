@@ -1,0 +1,207 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: logs.logging.eda.nokia.com
+spec:
+  group: logging.eda.nokia.com
+  names:
+    kind: Log
+    listKind: LogList
+    plural: logs
+    singular: log
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Log is the Schema for the logs API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: LogSpec defines the desired state of Log
+            properties:
+              destination:
+                description: List of destinations to send captured messages to
+                properties:
+                  buffers:
+                    description: List of buffer objects to send messages to
+                    items:
+                      properties:
+                        format:
+                          description: Text format of the output syslog messages
+                          type: string
+                        name:
+                          description: Name of the buffer object
+                          type: string
+                        persist:
+                          description: Time in seconds to shadow the buffer to persistent
+                            storage
+                          type: integer
+                        rotate:
+                          description: Number of files to keep in rotation when a
+                            maximum file size is reached
+                          type: integer
+                        size:
+                          description: Number of bytes an individual output file cannot
+                            exceed
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  consoles:
+                    description: List of console objects to send messages to
+                    items:
+                      properties:
+                        format:
+                          description: Text format of the output syslog messages,
+                            in legacy syslog $template style
+                          type: string
+                        name:
+                          description: Name of the console object
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  files:
+                    description: List of file objects to send messages to
+                    items:
+                      properties:
+                        directory:
+                          description: Fully qualified path of a directory where the
+                            log file(s) shall be maintained
+                          type: string
+                        format:
+                          description: Text format of the output syslog messages,
+                            in legacy syslog $template style
+                          type: string
+                        name:
+                          description: Name of the file object
+                          type: string
+                        rotate:
+                          description: Number of files to keep in rotation when a
+                            maximum file size is reached
+                          type: integer
+                        size:
+                          description: Number of bytes an individual output file cannot
+                            exceed
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    type: array
+                  servers:
+                    description: List of remote syslog servers to send messages to
+                    items:
+                      properties:
+                        port:
+                          description: Port for syslog to use for messages sent to
+                            a remote server
+                          maximum: 65535
+                          minimum: 1
+                          type: integer
+                        protocol:
+                          description: Transport protocol for syslog to use for messages
+                            sent to a remote server
+                          enum:
+                          - udp
+                          - tcp
+                          type: string
+                        server:
+                          description: The remote syslog server IP Address or Hostname
+                          type: string
+                        sourceAddress:
+                          description: Source address for syslog to use for messages
+                            sent to a remote server
+                          type: string
+                      required:
+                      - port
+                      - protocol
+                      - server
+                      type: object
+                    type: array
+                type: object
+              name:
+                description: Name of the log
+                type: string
+              source:
+                description: List of sources with messages to be captured
+                properties:
+                  facilities:
+                    description: List of facilities to source messages from
+                    items:
+                      properties:
+                        facility:
+                          description: Facility to source message from
+                          type: string
+                        matchAbove:
+                          description: Match the given severity and above
+                          type: string
+                        matchExact:
+                          description: Match the individually specified severity
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - facility
+                      type: object
+                    type: array
+                  filters:
+                    description: A set of all-matching criteria that messages must
+                      fulfill in order to be captured
+                    items:
+                      type: string
+                    type: array
+                  subsystems:
+                    description: List of subsystems that may produce messages to be
+                      captured
+                    items:
+                      properties:
+                        matchAbove:
+                          description: Match the given severity and above
+                          type: string
+                        matchExact:
+                          description: Match the individually specified severity
+                          items:
+                            type: string
+                          type: array
+                        subsystem:
+                          description: Entity that may produce messages to be captured
+                          type: string
+                      required:
+                      - subsystem
+                      type: object
+                    type: array
+                type: object
+            required:
+            - destination
+            - source
+            type: object
+          status:
+            description: LogStatus defines the observed state of Log
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

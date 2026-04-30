@@ -1,0 +1,231 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: nodegroups.aaa.eda.nokia.com
+spec:
+  group: aaa.eda.nokia.com
+  names:
+    kind: NodeGroup
+    listKind: NodeGroupList
+    plural: nodegroups
+    singular: nodegroup
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: NodeGroup is the Schema for the nodegroups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              NodeGroup is a representation of a group on a node, including the services it has access to, any RBAC, and TACACS configuration.
+              NodeGroups are deployed to nodes by NodeUser or other permission-consuming resources.
+            properties:
+              groupName:
+                description: Set the local name for this group. If not provided, the
+                  resource name will be used.
+                type: string
+              rules:
+                description: Rules for this group.
+                items:
+                  properties:
+                    action:
+                      default: ReadWrite
+                      description: Set the action for this entry.
+                      enum:
+                      - Deny
+                      - ReadWrite
+                      - Read
+                      type: string
+                    match:
+                      description: |-
+                        Set the match for this entry. This is a string to match input against - for example "interface" for srl or "configure port" for sros.
+                        Rules here should be specified in the target specific format.
+                      type: string
+                    operatingSystem:
+                      default: srl
+                      description: |-
+                        Operating system to match against for this rule.
+                        Operating system to deploy this rule to.
+                      enum:
+                      - srl
+                      - sros
+                      type: string
+                  required:
+                  - action
+                  - operatingSystem
+                  type: object
+                type: array
+              services:
+                description: Enabled services for this group
+                items:
+                  enum:
+                  - CLI
+                  - FTP
+                  - GNMI
+                  - GNOI
+                  - GNSI
+                  - GRIBI
+                  - Reflection
+                  - JSONRPC
+                  - NETCONF
+                  type: string
+                type: array
+              superuser:
+                description: Make members of this group superusers.
+                type: boolean
+              tacacs:
+                description: TACACS configuration.
+                properties:
+                  privilegeLevel:
+                    description: Set the privilege level for this group.
+                    maximum: 15
+                    minimum: 0
+                    type: integer
+                type: object
+            required:
+            - services
+            type: object
+          status:
+            description: Deployment status of this NodeGroup.
+            properties:
+              nodes:
+                description: List of TopoNodes group has been deployed to.
+                items:
+                  type: string
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NodeGroup is the Schema for the nodegroups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              NodeGroup is a representation of a group on a node, including the services it has access to, any RBAC, and TACACS configuration.
+              NodeGroups are deployed to nodes by NodeUser or other permission-consuming resources.
+            properties:
+              groupName:
+                description: Set the local name for this group. If not provided, the
+                  resource name will be used.
+                type: string
+              rules:
+                description: Rules for this group.
+                items:
+                  properties:
+                    action:
+                      default: ReadWrite
+                      description: Set the action for this entry.
+                      enum:
+                      - Deny
+                      - ReadWrite
+                      - Read
+                      type: string
+                    match:
+                      description: |-
+                        Set the match for this entry. This is a string to match input against - for example "interface" for srl or "configure port" for sros.
+                        Rules here should be specified in the target specific format.
+                      type: string
+                    operatingSystem:
+                      default: srl
+                      description: |-
+                        Operating system to match against for this rule.
+                        Operating system to deploy this rule to.
+                      enum:
+                      - srl
+                      - sros
+                      type: string
+                  required:
+                  - action
+                  - operatingSystem
+                  type: object
+                type: array
+              services:
+                description: Enabled services for this group
+                items:
+                  enum:
+                  - CLI
+                  - FTP
+                  - GNMI
+                  - GNOI
+                  - GNSI
+                  - GRIBI
+                  - Reflection
+                  - JSON-RPC
+                  - NETCONF
+                  type: string
+                type: array
+              superuser:
+                description: Make members of this group superusers.
+                type: boolean
+              tacacs:
+                description: TACACS configuration.
+                properties:
+                  privilegeLevel:
+                    description: Set the privilege level for this group.
+                    maximum: 15
+                    minimum: 0
+                    type: integer
+                type: object
+            required:
+            - services
+            type: object
+          status:
+            description: Deployment status of this NodeGroup.
+            properties:
+              nodes:
+                description: List of TopoNodes group has been deployed to.
+                items:
+                  type: string
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

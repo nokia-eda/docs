@@ -1,0 +1,634 @@
+{% extends "main.html" %}
+
+<!-- Render hero under tabs -->
+{% block tabs %}
+{{ super() }}
+
+<!-- Additional styles for landing page -->
+<style>
+    /* rdodin additions */
+    /* Hide main content for now */
+    /* .md-container {
+        background-color: #124191;
+    } */
+
+    /* .md-header {
+        background-color: #124191;
+    } */
+
+    /* Hide palette switcher */
+    /* .md-header__option {
+        display: none;
+    } */
+
+    /* Apply box shadow on smaller screens that don't display tabs */
+    @media only screen and (max-width: 1220px) {
+        .md-header {
+            box-shadow: 0 0 .2rem rgba(0, 0, 0, .1), 0 .2rem .4rem rgba(0, 0, 0, .2);
+            transition: color 250ms, background-color 250ms, box-shadow 250ms;
+        }
+    }
+
+    /* Hide main content for now */
+    .md-content {
+        display: none;
+    }
+
+    /* Hide table of contents */
+    @media screen and (min-width: 60em) {
+        .md-sidebar--secondary {
+            display: none;
+        }
+    }
+
+    /* Hide navigation */
+    @media screen and (min-width: 76.25em) {
+        .md-sidebar--primary {
+            display: none;
+        }
+    }
+
+    /* Hero banner */
+    .hero-banner {
+        position: relative;
+        width: 100%;
+        background: url('images/banner.webp') center / cover no-repeat;
+        aspect-ratio: 7 / 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Match `.md-tabs__inner.md-grid`: same max-width + horizontal padding at every breakpoint */
+    .hero-banner__inner.md-grid {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /*
+     * Inset hero copy/CTAs to match first tab label: mkdocs-material `_tabs.scss` adds
+     * `.md-tabs__list { margin-inline-start: 4px }` + `.md-tabs__item { padding-inline: 12px }`.
+     * Theme `px2rem()` uses a 20px base → 0.2rem + 0.6rem (not 16px-based rems).
+     * Same inset on both inline edges so mobile CTAs are not flush right while indented left.
+     */
+    .hero-banner__body {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+        padding-inline: calc(0.2rem + 0.6rem);
+    }
+
+    .hero-banner__text {
+        padding: 2.5rem 0 0;
+    }
+
+    /* Fluid type scale: hero h1 > tagline > section h3 > h4/card h5 > body/card p */
+    .hero-banner__text h1 {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-weight: 700;
+        font-size: clamp(1.375rem, 2.5vw + 0.65rem, 2.25rem);
+        line-height: 1.2;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    .hero-banner__text p {
+        font-family: NokiaPureHeadlineUltraLight, sans-serif;
+        font-weight: 300;
+        font-size: clamp(0.9375rem, 1.25vw + 0.65rem, 1.375rem);
+        line-height: 1.35;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    .hero-banner__buttons {
+        display: flex;
+        gap: 0.5rem;
+        padding: 1.5rem 0;
+    }
+
+    .hero-banner__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: #ffffff;
+        color: #005AFF;
+        font-family: var(--md-text-font), sans-serif;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.25rem;
+        letter-spacing: 0.16px;
+        padding: 0.25rem 1rem;
+        border-radius: 4px;
+        text-decoration: none !important;
+        white-space: nowrap;
+        transition: background-color 200ms, box-shadow 200ms;
+    }
+
+    .hero-banner__btn:hover {
+        background-color: #e8f0ff;
+        color: #005AFF;
+    }
+
+    .hero-banner__btn .twemoji {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    /* Hero height follows content on narrow/tablet viewports (fixed aspect-ratio clips CTAs) */
+    @media screen and (max-width: 48rem) {
+        .hero-banner {
+            aspect-ratio: unset;
+        }
+    }
+
+    @media screen and (max-width: 30rem) {
+        .hero-banner {
+            justify-content: flex-start;
+            gap: 1rem;
+        }
+
+        .hero-banner__text {
+            padding: 1rem 0 0;
+        }
+
+        .hero-banner__buttons {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 1rem 0;
+        }
+
+        .hero-banner__btn {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.75rem;
+            justify-content: center;
+        }
+    }
+
+    /* ── Secondary section layout ─────────────────────────────────── */
+    .secondary-section {
+        border: 0;
+    }
+
+    .home-section {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 40px 40px;
+    }
+
+    .home-row {
+        display: flex;
+        gap: 80px;
+        align-items: center;
+    }
+
+    .home-row--reverse {
+        flex-direction: row-reverse;
+    }
+
+    .home-row--top {
+        align-items: flex-start;
+    }
+
+    .home-col {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .home-col h3,
+    .home-features__inner h3 {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-size: clamp(1.25rem, 1.35vw + 0.95rem, 1.75rem);
+        font-weight: 300;
+        line-height: 1.28;
+        color: var(--md-default-fg-color);
+        margin: 0 0 1rem;
+    }
+
+    .home-features__inner h3 {
+        margin: 0 0 2.5rem;
+    }
+
+    .home-col h4 {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-size: clamp(1.0625rem, 0.9vw + 0.85rem, 1.3125rem);
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--md-default-fg-color);
+        margin: 2rem 0 0.75rem;
+    }
+
+    .home-col h4:first-child {
+        margin-top: 0;
+    }
+
+    .home-col p {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-size: clamp(0.875rem, 0.25vw + 0.82rem, 0.9375rem);
+        line-height: 1.6;
+        color: var(--md-default-fg-color);
+        margin: 0 0 0.75rem;
+    }
+
+    .home-screenshot {
+        width: 100%;
+        max-width: 700px;
+        border-radius: 16px;
+        display: block;
+    }
+
+    /* Home only: Key Features band color continues through .md-main to footer */
+    .md-container:has(> .hero-banner) {
+        --home-features-band-bg: #ECF3FF;
+    }
+
+    [data-md-color-scheme="slate"] .md-container:has(> .hero-banner) {
+        --home-features-band-bg: #0f1620;
+    }
+
+    .md-container:has(> .hero-banner)>.md-main {
+        background-color: var(--home-features-band-bg);
+    }
+
+    /* ── Key Features band ─────────────────────────────────────────── */
+    .home-features {
+        background: var(--home-features-band-bg);
+        padding: 60px 40px 80px;
+    }
+
+    .home-features__inner {
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    @media screen and (min-width: 40rem) {
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media screen and (min-width: 64rem) {
+        .features-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .feature-card {
+        background: #ffffff;
+        border: 1px solid #ABB4C2;
+        border-radius: 24px;
+        padding: 2rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .feature-card__header {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6875rem;
+        min-width: 0;
+    }
+
+    .feature-card__icon {
+        flex-shrink: 0;
+        width: 1.375rem;
+        height: 1.375rem;
+        margin-top: 0.15em;
+        color: var(--nokia-heading-font-color);
+    }
+
+    .feature-card__icon .twemoji {
+        width: 100%;
+        height: 100%;
+    }
+
+    .feature-card h5 {
+        font-family: var(--md-text-font), sans-serif;
+        font-size: clamp(1rem, 0.4vw + 0.9rem, 1.125rem);
+        font-weight: 500;
+        line-height: 1.3;
+        color: var(--md-default-fg-color);
+        margin: 0;
+        min-width: 0;
+    }
+
+    .feature-card p {
+        font-family: NokiaPureHeadlineLight, sans-serif;
+        font-size: clamp(0.875rem, 0.2vw + 0.84rem, 0.9375rem);
+        line-height: 1.45;
+        color: var(--md-default-fg-color--light);
+        margin: 0.5rem 0 0;
+    }
+
+    /*
+     * Inline links in home columns and feature cards live outside `.md-typeset`, so they
+     * do not inherit `.md-typeset a` rules from nokia.css — mirror palette + underline here.
+     */
+    .secondary-section .home-col a,
+    .secondary-section .feature-card a {
+        color: var(--md-typeset-a-color);
+        text-decoration: underline;
+        text-decoration-thickness: 0.5px;
+        text-underline-offset: 0.2rem;
+        text-decoration-color: var(--md-typeset-a-color);
+        transition: color 0.15s ease, text-decoration-color 0.15s ease;
+    }
+
+    .secondary-section .home-col a:hover,
+    .secondary-section .feature-card a:hover {
+        color: #0049B4;
+        text-decoration-color: #0049B4;
+    }
+
+    [data-md-color-scheme="slate"] .secondary-section .home-col a:hover,
+    [data-md-color-scheme="slate"] .secondary-section .feature-card a:hover {
+        color: #8EC2FF;
+        text-decoration-color: #8EC2FF;
+    }
+
+    /* ── Responsive: stack on smaller screens ──────────────────────── */
+    @media screen and (max-width: 1012px) {
+
+        .home-row,
+        .home-row--reverse {
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .home-section {
+            padding: 40px 24px;
+        }
+
+        .home-features {
+            padding: 40px 24px 60px;
+        }
+    }
+
+    @media screen and (max-width: 30rem) {
+        .home-section {
+            padding: 24px 16px;
+        }
+
+        .home-features {
+            padding: 24px 16px 40px;
+        }
+
+        .feature-card {
+            padding: 1.5rem;
+        }
+    }
+
+    /* ── Dark mode overrides ───────────────────────────────────────── */
+    [data-md-color-scheme="slate"] .feature-card {
+        background: var(--md-primary-fg-color--light);
+        border-color: rgba(171, 180, 194, 0.3);
+    }
+
+    .twemoji {
+        fill: currentColor;
+    }
+</style>
+
+<!-- Hero banner -->
+<div class="hero-banner">
+    <div class="hero-banner__inner md-grid">
+        <div class="hero-banner__body">
+            <div class="hero-banner__text">
+                <h1>Nokia Event-Driven Automation</h1>
+                <!-- <p><i>the</i> automation platform</p> -->
+                <p>Human error zero</p>
+            </div>
+            <div class="hero-banner__buttons">
+                <a href="blog/the-beginning-of-an-era-eda/" title="What is Nokia EDA?" class="hero-banner__btn">
+                    <span class="twemoji">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path
+                                d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.02 3.02 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.02 3.02 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.02 3.02 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814M9.545 15.568V8.432L15.818 12z" />
+                        </svg>
+                    </span>
+                    What is Nokia EDA?
+                </a>
+                <a href="getting-started/try-eda/" title="Try Nokia EDA" class="hero-banner__btn">
+                    <span class="twemoji">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path
+                                d="M10 16.5v-9l6 4.5M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2" />
+                        </svg>
+                    </span>
+                    Try Nokia EDA
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="md-container secondary-section">
+    <!-- Section A: Positioning and declarative configuration -->
+    <div class="home-section">
+        <div class="home-row">
+            <div class="home-col">
+                <h3>The automation platform</h3>
+                <p>
+                    Nokia Event-Driven Automation (EDA) completes Nokia's data center portfolio: infrastructure
+                    automation that moves past imperative, box-by-box work to declarative intent. You describe the
+                    services and components you want in terms that abstract vendor-specific details; Nokia EDA
+                    translates
+                    that intent into device configuration and orchestrates rollout across the network.
+                </p>
+                <p>
+                    The configuration engine is built for performance and safety - validate changes before deployment,
+                    and roll back across the entire network when something goes wrong.
+                </p>
+            </div>
+            <div class="home-col">
+                <img src="images/eda-ui-1.png"
+                    alt="Nokia EDA web UI: operational dashboard with service and device status" class="home-screenshot"
+                    draggable="false">
+            </div>
+        </div>
+    </div>
+
+    <!-- Section B: Abstraction and multivendor (image left, text right) -->
+    <div class="home-section">
+        <div class="home-row home-row--reverse">
+            <div class="home-col">
+                <h3>One model, many implementations</h3>
+                <p>
+                    Like a Kubernetes Pod that looks like a Pod no matter the container runtime, Nokia EDA offers
+                    consistent
+                    resource
+                    semantics for interfaces, fabrics, and services regardless of OS or vendor. The platform is
+                    multivendor by design, so your automation is not tied to a single hardware line.
+                </p>
+                <p>
+                    Nokia EDA is built for extensibility: install applications to add resources and capabilities on the
+                    fly, or
+                    build your own Kubernetes-style operators tuned for your infrastructure needs and integrations.
+                </p>
+            </div>
+            <div class="home-col">
+                <img src="images/eda-ui-2.png" alt="Nokia EDA web UI: network topology view with nodes and links"
+                    class="home-screenshot" draggable="false">
+            </div>
+        </div>
+    </div>
+
+    <!-- Section C: Configuration engine vs state and operations -->
+    <div class="home-section">
+        <div class="home-row home-row--top">
+            <div class="home-col">
+                <h4>From intent to configuration</h4>
+                <p>
+                    You automate by declaring desired state. Resources - units of automation expressed as Kubernetes
+                    custom resources or via the APIs - can represent fabrics, interfaces, VPNs, and more. Nokia EDA
+                    reconciles that intent and drives configuration across devices in a controlled, concurrent, and safe
+                    way.
+                </p>
+                <p>
+                    The goal is predictable change at scale: less hand-tuning per box, more confidence that the
+                    network matches what you asked for.
+                </p>
+            </div>
+            <div class="home-col">
+                <h4>State and operations, first-class</h4>
+                <p>
+                    Nokia EDA also owns runtime state for what it deploys, so you are not stitching together separate
+                    configuration and observability stories. Operational views and EQL give you fast, network-wide
+                    insight for auditing and troubleshooting - fed by streaming telemetry instead of constant polling.
+                </p>
+                <p>
+                    Use the APIs, CLI, Ansible, and Terraform integrations that fit your toolchain. Get hands-on with
+                    <a href="getting-started/try-eda/">Try Nokia EDA</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section D: Key Features -->
+    <div class="home-features">
+        <div class="home-features__inner">
+            <h3>Key Features</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
+                            <span class="twemoji">
+                                {% include ".icons/octicons/globe-24.svg" %}
+                            </span>
+                        </div>
+                        <h5>Declarative abstractions</h5>
+                    </div>
+                    <p>
+                        Define the <a href="tour-of-eda/resource-model/">end state</a> of your infrastructure in
+                        abstract terms, and
+                        let the platform take care of
+                        the rest. Nokia EDA will ensure that your infrastructure is always in the desired state.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
+                            <span class="twemoji">
+                                {% include ".icons/octicons/git-merge-queue-24.svg" %}
+                            </span>
+                        </div>
+                        <h5>Streaming drift control</h5>
+                    </div>
+                    <p>
+                        Leveraging streaming telemetry for deviation management, Nokia EDA can detect and correct
+                        deviations from the desired state in real-time.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
+                            <span class="twemoji">
+                                {% include ".icons/octicons/rocket-24.svg" %}
+                            </span>
+                        </div>
+                        <h5>Event-driven at the core</h5>
+                    </div>
+                    <p>
+                        Achieve massive scalability and real-time insights with event-driven automation.
+                        Do work only when it needs to done, no more churn via polling. A platform truly built
+                        around streaming telemetry.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
+                            <span class="twemoji">
+                                {% include ".icons/octicons/copy-24.svg" %}
+                            </span>
+                        </div>
+                        <h5>Digital twin</h5>
+                    </div>
+                    <p> Nokia EDA's <a href="digital-twin/">Digital Twin</a> turns your
+                        declarative topology into a scalable virtual replica running on Kubernetes - so you can validate
+                        designs,
+                        test automation workflows, and catch issues before they ever touch production. The multivendor
+                        simulation engine will wire the replica the same way as the real network.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
+                            <span class="twemoji">
+                                {% include ".icons/octicons/unlock-24.svg" %}
+                            </span>
+                        </div>
+                        <h5>Extensible by nature</h5>
+                    </div>
+                    <p>
+                        Inheriting the best principles of Kubernetes, with nuance for infrastructure automation.
+                        Nokia EDA is designed to be extensible and flexible, allowing you to <a
+                            href="development/apps/">build</a> on top of it</a>.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-card__header">
+                        <div class="feature-card__icon">
+                            <span class="twemoji">
+                                {% include ".icons/octicons/light-bulb-24.svg" %}
+                            </span>
+                        </div>
+                        <h5>Operations as code</h5>
+                    </div>
+                    <p>
+                        Automation for state and operations without afterthought. Make the most complex
+                        tasks repeatable and reliable with workflows, dry runs, and automated pre and post
+                        checks.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Content -->
+{% block content %}{% endblock %}
+
+<!-- Application footer -->
+{% block footer %}
+{{ super() }}
+<link rel="stylesheet" href="{{ 'stylesheets/rebel.css' | url }}" />
+<script defer src="{{ 'javascripts/rebel.js' | url }}"></script>
+{% endblock %}

@@ -1,0 +1,8 @@
+apiVersion: routing.eda.nokia.com/v1
+kind: RouteTrace
+metadata:
+  name: routetrace-83baa037-937d-4acf-bcb2-03981a3820c6
+  namespace: eda
+spec:
+  address: 10.46.99.33
+  node: leaf11

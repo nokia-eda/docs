@@ -1,0 +1,310 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: grpcservers.management.eda.nokia.com
+spec:
+  group: management.eda.nokia.com
+  names:
+    kind: GRPCServer
+    listKind: GRPCServerList
+    plural: grpcservers
+    singular: grpcserver
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: GRPCServer is the Schema for the grpcservers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: GRPCServerSpec defines the desired state of GRPCServer
+            properties:
+              enabled:
+                description: Enable the gRPC server.
+                type: boolean
+              gnmiServer:
+                description: gNMI server specific configuration.
+                properties:
+                  autoSave:
+                    description: Enable auto-save of configuration changes made via
+                      gNMI.
+                    type: boolean
+                type: object
+              insecure:
+                description: Allow insecure (non-TLS) connections to the gRPC server.
+                type: boolean
+              maxConcurrentStreams:
+                description: Maximum number of concurrent streams for the gRPC server.
+                maximum: 2147483647
+                minimum: 0
+                type: integer
+              metadataAuthentication:
+                description: Enable metadata authentication for the gRPC server.
+                type: boolean
+              port:
+                description: Port for the gRPC server to listen on.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              rateLimitCallsPerMinute:
+                description: Rate limit for the gRPC server, in calls per minute.
+                maximum: 65535
+                minimum: 0
+                type: integer
+              router:
+                description: Router to associate the server with.
+                type: string
+              routerKind:
+                description: The Kind of the router for the server.
+                enum:
+                - ManagementRouter
+                - Router
+                - DefaultRouter
+                type: string
+              routerSelectors:
+                description: Selects router resources based on the defined Kind.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+              services:
+                description: Enabled gRPC services.
+                items:
+                  enum:
+                  - GNMI
+                  - GNOI
+                  - GNSI
+                  - P4RT
+                  - GRIBI
+                  - NDK
+                  type: string
+                minItems: 1
+                type: array
+              sessionLimit:
+                description: Maximum number of gRPC sessions.
+                maximum: 65535
+                minimum: 0
+                type: integer
+              tlsProfile:
+                description: TLS profile name.
+                type: string
+              yangModels:
+                description: YANG models to be used by the gRPC server.
+                type: string
+            required:
+            - enabled
+            type: object
+          status:
+            description: GRPCServerStatus defines the observed state of GRPCServer
+            properties:
+              downServers:
+                description: List of down GRPC servers.
+                items:
+                  properties:
+                    nodes:
+                      items:
+                        properties:
+                          nodeName:
+                            type: string
+                          operatingSystem:
+                            type: string
+                        type: object
+                      type: array
+                    router:
+                      type: string
+                  type: object
+                type: array
+              health:
+                description: Health score of the gRPC server.
+                type: integer
+              healthScoreReason:
+                description: Reason for the health score.
+                type: string
+              lastChangeTime:
+                description: Indicates when the gRPC server last changed state.
+                type: string
+              operationalState:
+                description: Operational state of the gRPC server.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              services:
+                description: Enabled services on the gRPC server.
+                items:
+                  type: string
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GRPCServer is the Schema for the grpcservers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: GRPCServerSpec defines the desired state of GRPCServer
+            properties:
+              enabled:
+                description: Enable the gRPC server.
+                type: boolean
+              gnmiServer:
+                description: gNMI server specific configuration.
+                properties:
+                  autoSave:
+                    description: Enable auto-save of configuration changes made via
+                      gNMI.
+                    type: boolean
+                type: object
+              insecure:
+                description: Allow insecure (non-TLS) connections to the gRPC server.
+                type: boolean
+              maxConcurrentStreams:
+                description: Maximum number of concurrent streams for the gRPC server.
+                maximum: 2147483647
+                minimum: 0
+                type: integer
+              metadataAuthentication:
+                description: Enable metadata authentication for the gRPC server.
+                type: boolean
+              port:
+                description: Port for the gRPC server to listen on.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              rateLimit:
+                description: Rate limit for the gRPC server.
+                maximum: 65535
+                minimum: 0
+                type: integer
+              router:
+                description: Router to associate the server with.
+                type: string
+              routerKind:
+                description: The Kind of the router for the server.
+                enum:
+                - MANAGEMENTROUTER
+                - ROUTER
+                - DEFAULTROUTER
+                type: string
+              routerSelector:
+                description: Selects router resources based on the defined Kind.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+              services:
+                description: Enabled gRPC services.
+                items:
+                  enum:
+                  - gNMI
+                  - gNOI
+                  - gNSI
+                  - P4RT
+                  - gRIBI
+                  - NDK
+                  type: string
+                minItems: 1
+                type: array
+              sessionLimit:
+                description: Maximum number of gRPC sessions.
+                maximum: 65535
+                minimum: 0
+                type: integer
+              tlsProfile:
+                description: TLS profile name.
+                type: string
+              yangModels:
+                description: YANG models to be used by the gRPC server.
+                type: string
+            required:
+            - enabled
+            type: object
+          status:
+            description: GRPCServerStatus defines the observed state of GRPCServer
+            properties:
+              downServers:
+                description: List of down GRPC servers.
+                items:
+                  properties:
+                    nodes:
+                      items:
+                        properties:
+                          nodeName:
+                            type: string
+                          operatingSystem:
+                            type: string
+                        type: object
+                      type: array
+                    router:
+                      type: string
+                  type: object
+                type: array
+              health:
+                description: Health score of the gRPC server.
+                type: integer
+              healthScoreReason:
+                description: Reason for the health score.
+                type: string
+              lastChange:
+                description: Indicates when the gRPC server last changed state.
+                type: string
+              operationalState:
+                description: Operational state of the gRPC server.
+                type: string
+              services:
+                description: Enabled services on the gRPC server.
+                items:
+                  type: string
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

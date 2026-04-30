@@ -1,0 +1,872 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: routers.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: Router
+    listKind: RouterList
+    plural: routers
+    singular: router
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.vni
+      name: VNI
+      type: string
+    - jsonPath: .status.evi
+      name: EVI
+      type: string
+    - jsonPath: .status.importTarget
+      name: Import Target
+      type: string
+    - jsonPath: .status.exportTarget
+      name: Export Target
+      type: string
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChange
+      name: LastChange
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: Router is the Schema for the routers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The Router enables the configuration and management of routing
+              functions within a network. This resource allows for setting a unique
+              Router ID, configuring VNIs and EVIs with options for automatic allocation,
+              and defining import and export route targets. It also includes advanced
+              configuration options such as BGP settings, including autonomous system
+              numbers, AFI/SAFI options, and route advertisement preferences. Node
+              selectors can be used to constrain the deployment of the router to specific
+              nodes within the network.
+            properties:
+              bgp:
+                description: BGP configuration.
+                properties:
+                  autonomousSystem:
+                    description: Autonomous System number for BGP.
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                  ebgpPreference:
+                    default: 170
+                    description: Preference to be set for eBGP [default=170].
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enable or disable BGP.
+                    type: boolean
+                  exportPolicy:
+                    description: Reference to a Policy CR that will be used to filter
+                      routes advertised to peers.
+                    items:
+                      type: string
+                    type: array
+                  ibgpPreference:
+                    default: 170
+                    description: Preference to be set for iBGP [default=170].
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                  importPolicy:
+                    description: Reference to a Policy CR that will be used to filter
+                      routes received from peers.
+                    items:
+                      type: string
+                    type: array
+                  ipAliasNexthops:
+                    description: IP aliasing configuration.
+                    items:
+                      properties:
+                        esi:
+                          default: auto
+                          description: 10 byte Ethernet Segment Identifier, if not
+                            set a type 0 ESI is generated.
+                          type: string
+                        nextHop:
+                          description: The nexthop IP address to track for the IP
+                            alias.
+                          type: string
+                        preferredActiveNode:
+                          description: When not set the ES is used in an all active
+                            mode. This references the TopoNode object and when set,
+                            the DF algorithm is configured to type preference and
+                            the selected Node is set with a higher preference value.
+                            All other Nodes have a lower value configured.
+                          type: string
+                      required:
+                      - nextHop
+                      type: object
+                    type: array
+                  ipv4Unicast:
+                    description: Parameters relating to the IPv4 unicast AFI/SAFI.
+                    properties:
+                      advertiseIPV6NextHops:
+                        description: Enables advertisement of IPv4 Unicast routes
+                          with IPv6 next-hops to peers.
+                        type: boolean
+                      enabled:
+                        default: false
+                        description: Enables the IPv4 unicast AFISAFI.
+                        type: boolean
+                      multipath:
+                        description: Enable multipath.
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                      receiveIPV6NextHops:
+                        description: Enables the advertisement of the RFC 5549 capability
+                          to receive IPv4 routes with IPv6 next-hops.
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
+                  ipv6Unicast:
+                    description: Parameters relating to the IPv6 unicast AFI/SAFI.
+                    properties:
+                      enabled:
+                        default: false
+                        description: Enables the IPv6 unicast AFISAFI
+                        type: boolean
+                      multipath:
+                        description: Enable multipath
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                    required:
+                    - enabled
+                    type: object
+                  keychain:
+                    description: Keychain to be used for authentication
+                    type: string
+                  minWaitToAdvertise:
+                    default: 0
+                    description: Minimum wait time before advertising routes post
+                      BGP restart.
+                    maximum: 3600
+                    minimum: 0
+                    type: integer
+                  rapidWithdrawl:
+                    default: true
+                    description: Enable rapid withdrawal in BGP.
+                    type: boolean
+                  waitForFIBInstall:
+                    default: false
+                    description: Wait for FIB installation before advertising routes.
+                    type: boolean
+                type: object
+              configuredName:
+                description: The name of the Router to configure on the device.
+                type: string
+              description:
+                description: The description of the Router.
+                type: string
+              ecmp:
+                description: Set the maximum number of ECMP paths for the Router.
+                  This is supported only by some platforms, and will be ignored for
+                  others.
+                maximum: 256
+                minimum: 1
+                type: integer
+              evi:
+                description: EVI for the Router; leave blank for auto-allocation from
+                  EVI pool. Optional for IPVPN (can be used to auto-derive RTs), required
+                  for EVPN.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              eviPool:
+                default: evi-pool
+                description: Reference to EVI pool for auto-allocation.
+                type: string
+              exportTarget:
+                description: Export route target in 'target:N:N' format, if not specified,
+                  the default value taken as "target:1:<evi>".
+                pattern: ^target.*$
+                type: string
+              importTarget:
+                description: Import route target in 'target:N:N' format, if not specified,
+                  the default value taken as "target:1:<evi>".
+                pattern: ^target.*$
+                type: string
+              ipLoadBalancing:
+                description: Resilient Hashing configuration.
+                properties:
+                  prefix:
+                    description: IPv4 or IPv6 prefix. Active routes in the FIB that
+                      exactly match this prefix or that are longer matches of this
+                      prefix are provided with resilient-hash programming.
+                    items:
+                      properties:
+                        hashBucketsPerPath:
+                          default: 1
+                          description: The number of times each next-hop is repeated
+                            in the fill pattern if there are max-paths ECMP next-hops.
+                          maximum: 32
+                          minimum: 1
+                          type: integer
+                        maxECMP:
+                          default: 1
+                          description: The maximum number of ECMP next-hops per route
+                            associated with the resilient-hash prefix.
+                          maximum: 64
+                          minimum: 1
+                          type: integer
+                        prefix:
+                          description: IPv4 or IPv6 prefix. Active routes in the FIB
+                            that exactly match this prefix or that are longer matches
+                            of this prefix are provided with resilient-hash programming.
+                          type: string
+                      required:
+                      - hashBucketsPerPath
+                      - maxECMP
+                      - prefix
+                      type: object
+                    type: array
+                type: object
+              nodeSelector:
+                description: Node selectors for deployment constraints.  If Nodes
+                  are selected, the Router will only be deployed on the Nodes selected,
+                  if left blank it will be deployed on all Nodes for which there are
+                  IRB or RoutedInterfaces referencing this Router.
+                items:
+                  type: string
+                type: array
+              routeLeaking:
+                description: Route leaking controlled by routing policies in and out
+                  of the DefaultRouter.
+                properties:
+                  exportPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route exports from the DefaultRouter.
+                    type: string
+                  importPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route imports into the DefaultRouter.
+                    type: string
+                type: object
+              routerID:
+                description: Router ID.
+                type: string
+              tunnelIndexPool:
+                default: tunnel-index-pool
+                description: Reference to tunnel index allocation pool. Only applicable
+                  to VXLAN encapsulation.
+                type: string
+              type:
+                default: EVPNVXLAN
+                description: Select the type of Router. Simple doesn't include any
+                  overlay control plane or dataplane properties (such as EVPN/VXLAN).
+                  EVPNVXLAN includes the properties needed to provision this Router
+                  over an IP Fabric.
+                enum:
+                - SIMPLE
+                - EVPNVXLAN
+                type: string
+              vni:
+                description: VNI for the Router; leave blank for auto-allocation from
+                  VNI pool. Only applicable to VXLAN encapsulation.
+                maximum: 16777215
+                minimum: 1
+                type: integer
+              vniPool:
+                default: vni-pool
+                description: Reference to VNI pool for auto-allocation. Only applicable
+                  to VXLAN encapsulation.
+                type: string
+            type: object
+          status:
+            description: RouterStatus defines the observed state of Router
+            properties:
+              bgpPeers:
+                description: List of BGPPeers attached to the router.
+                items:
+                  type: string
+                type: array
+              evi:
+                description: EVI in use for this Router.
+                type: integer
+              exportTarget:
+                description: Export route target for this Router.
+                type: string
+              health:
+                description: Indicates the health score of the Router.
+                type: integer
+              healthScoreReason:
+                description: Explains the reason for the health score.
+                type: string
+              importTarget:
+                description: Import route target for this Router.
+                type: string
+              irbInterfaces:
+                description: List of IRBInterfaces attached to the router.
+                items:
+                  type: string
+                type: array
+              lastChange:
+                description: Timestamp of the last state change.
+                type: string
+              nodes:
+                description: List of nodes on which the Router is deployed.
+                items:
+                  type: string
+                type: array
+              numNodes:
+                description: Number of nodes on which the Router is configured.
+                type: integer
+              operationalState:
+                description: Operational state of the Router.
+                type: string
+              ospfInstances:
+                description: List of OSPFInstances configured on the router.
+                items:
+                  properties:
+                    areas:
+                      items:
+                        properties:
+                          id:
+                            type: string
+                          interfaces:
+                            items:
+                              type: string
+                            type: array
+                        required:
+                        - id
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              routedInterfaces:
+                description: List of RoutedInterfaces attached to the router.
+                items:
+                  type: string
+                type: array
+              tunnelIndex:
+                description: Vxlan tunnel index in use.
+                type: integer
+              vni:
+                description: VNI in use for this Router.
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.vni
+      name: VNI
+      type: string
+    - jsonPath: .status.evi
+      name: EVI
+      type: string
+    - jsonPath: .status.importTarget
+      name: Import Target
+      type: string
+    - jsonPath: .status.exportTarget
+      name: Export Target
+      type: string
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChangeTime
+      name: LastChangeTime
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: Router is the Schema for the routers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The Router enables the configuration and management of routing
+              functions within a network. This resource allows for setting a unique
+              Router ID, configuring VNIs and EVIs with options for automatic allocation,
+              and defining import and export route targets. It also includes advanced
+              configuration options such as BGP settings, including autonomous system
+              numbers, AFI/SAFI options, and route advertisement preferences. Node
+              selectors can be used to constrain the deployment of the router to specific
+              nodes within the network.
+            properties:
+              bgp:
+                description: BGP configuration.
+                properties:
+                  autonomousSystem:
+                    description: Autonomous System number for BGP.
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                  ebgpPreference:
+                    default: 170
+                    description: Preference to be set for eBGP [default=170].
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enable or disable BGP.
+                    type: boolean
+                  exportPolicies:
+                    description: Reference to a Policy CR that will be used to filter
+                      routes advertised to peers.
+                    items:
+                      type: string
+                    type: array
+                  ibgpPreference:
+                    default: 170
+                    description: Preference to be set for iBGP [default=170].
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                  importPolicies:
+                    description: Reference to a Policy CR that will be used to filter
+                      routes received from peers.
+                    items:
+                      type: string
+                    type: array
+                  ipAliasNexthops:
+                    description: IP aliasing configuration.
+                    items:
+                      properties:
+                        esi:
+                          default: auto
+                          description: 10 byte Ethernet Segment Identifier, if not
+                            set a type 0 ESI is generated.
+                          type: string
+                        nextHop:
+                          description: The nexthop IP address to track for the IP
+                            alias.
+                          type: string
+                        preferredActiveNode:
+                          description: When not set the ES is used in an all active
+                            mode. This references the TopoNode object and when set,
+                            the DF algorithm is configured to type preference and
+                            the selected Node is set with a higher preference value.
+                            All other Nodes have a lower value configured.
+                          type: string
+                      required:
+                      - nextHop
+                      type: object
+                    type: array
+                  ipv4Unicast:
+                    description: Parameters relating to the IPv4 unicast AFI/SAFI.
+                    properties:
+                      advertiseIPv6NextHops:
+                        description: Enables advertisement of IPv4 Unicast routes
+                          with IPv6 next-hops to peers.
+                        type: boolean
+                      enabled:
+                        default: false
+                        description: Enables the IPv4 unicast AFISAFI.
+                        type: boolean
+                      multipath:
+                        description: Enable multipath.
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                      receiveIPv6NextHops:
+                        description: Enables the advertisement of the RFC 5549 capability
+                          to receive IPv4 routes with IPv6 next-hops.
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
+                  ipv6Unicast:
+                    description: Parameters relating to the IPv6 unicast AFI/SAFI.
+                    properties:
+                      enabled:
+                        default: false
+                        description: Enables the IPv6 unicast AFISAFI
+                        type: boolean
+                      multipath:
+                        description: Enable multipath
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                    required:
+                    - enabled
+                    type: object
+                  keychain:
+                    description: Keychain to be used for authentication
+                    type: string
+                  minWaitToAdvertiseSeconds:
+                    default: 0
+                    description: Minimum wait time before advertising routes post
+                      BGP restart.
+                    maximum: 3600
+                    minimum: 0
+                    type: integer
+                  rapidWithdrawl:
+                    default: true
+                    description: Enable rapid withdrawal in BGP.
+                    type: boolean
+                  waitForFIBInstall:
+                    default: false
+                    description: Wait for FIB installation before advertising routes.
+                    type: boolean
+                type: object
+              configuredName:
+                description: The name of the Router to configure on the device.
+                type: string
+              description:
+                description: The description of the Router.
+                type: string
+              ecmp:
+                description: Set the maximum number of ECMP paths for the Router.
+                  This is supported only by some platforms, and will be ignored for
+                  others.
+                maximum: 256
+                minimum: 1
+                type: integer
+              encapOptions:
+                default:
+                  vxlan:
+                    tunnelIndexPool: tunnel-index-pool
+                    vniPool: vni-pool
+                description: Encapsulation-specific options (such as MPLS tunneling
+                  options).
+                properties:
+                  mpls:
+                    description: MPLS encapsulation optionss. Only applicable if MPLS
+                      encapsulation is used (Type=EVPNMPLS or Type=IPVPN).
+                    properties:
+                      allowedTunnelTypes:
+                        description: Allowed tunnel types for MPLS transport.
+                        items:
+                          enum:
+                          - LDP
+                          - RSVP
+                          - BGP
+                          - SR-ISIS
+                          - SR-OSPFv2
+                          - SR-OSPFv3
+                          type: string
+                        type: array
+                    type: object
+                  vxlan:
+                    description: VXLAN encapsulation options. Only applicable if VXLAN
+                      encapsulation is used (Type=EVPNVXLAN).
+                    properties:
+                      tunnelIndexPool:
+                        default: tunnel-index-pool
+                        description: Reference to tunnel index allocation pool.
+                        type: string
+                      vni:
+                        description: VNI for the Router; leave blank for auto-allocation
+                          from VNI pool. Only applicable to VXLAN encapsulation.
+                        maximum: 16777215
+                        minimum: 1
+                        type: integer
+                      vniPool:
+                        default: vni-pool
+                        description: Reference to VNI pool for auto-allocation. Only
+                          applicable to VXLAN encapsulation.
+                        type: string
+                    type: object
+                type: object
+              evi:
+                description: EVI for the Router; leave blank for auto-allocation from
+                  EVI pool. Optional for IPVPN (can be used to auto-derive RTs), required
+                  for EVPN.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              eviPool:
+                default: evi-pool
+                description: Reference to EVI pool for auto-allocation.
+                type: string
+              exportTarget:
+                description: Export route target in 'target:N:N' format, if not specified,
+                  the default value taken as "target:1:<evi>".
+                pattern: ^target.*$
+                type: string
+              importTarget:
+                description: Import route target in 'target:N:N' format, if not specified,
+                  the default value taken as "target:1:<evi>".
+                pattern: ^target.*$
+                type: string
+              nodeSelectors:
+                description: Node selectors for deployment constraints.  If Nodes
+                  are selected, the Router will only be deployed on the Nodes selected,
+                  if left blank it will be deployed on all Nodes for which there are
+                  IRB or RoutedInterfaces referencing this Router.
+                items:
+                  type: string
+                type: array
+              resilientHashing:
+                description: Resilient Hashing configuration.
+                properties:
+                  prefixes:
+                    description: IPv4 or IPv6 prefix. Active routes in the FIB that
+                      exactly match this prefix or that are longer matches of this
+                      prefix are provided with resilient-hash programming.
+                    items:
+                      properties:
+                        hashBucketsPerPath:
+                          default: 1
+                          description: The number of times each next-hop is repeated
+                            in the fill pattern if there are max-paths ECMP next-hops.
+                          maximum: 32
+                          minimum: 1
+                          type: integer
+                        maxECMP:
+                          default: 1
+                          description: The maximum number of ECMP next-hops per route
+                            associated with the resilient-hash prefix.
+                          maximum: 64
+                          minimum: 1
+                          type: integer
+                        prefix:
+                          description: IPv4 or IPv6 prefix. Active routes in the FIB
+                            that exactly match this prefix or that are longer matches
+                            of this prefix are provided with resilient-hash programming.
+                          type: string
+                      required:
+                      - hashBucketsPerPath
+                      - maxECMP
+                      - prefix
+                      type: object
+                    type: array
+                type: object
+              routeLeaking:
+                description: Route leaking controlled by routing policies in and out
+                  of the DefaultRouter.
+                properties:
+                  exportPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route exports from the DefaultRouter.
+                    type: string
+                  importPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route imports into the DefaultRouter.
+                    type: string
+                type: object
+              routerID:
+                description: Router ID.
+                type: string
+              type:
+                default: EVPNVXLAN
+                description: Select the type of Router. Simple doesn't include any
+                  overlay control plane or dataplane properties (such as EVPN/VXLAN).
+                  EVPNVXLAN includes the properties needed to provision this Router
+                  over an IP Fabric.
+                enum:
+                - Simple
+                - EVPNVXLAN
+                - EVPNMPLS
+                - IPVPN
+                type: string
+            type: object
+          status:
+            description: RouterStatus defines the observed state of Router
+            properties:
+              bgpPeers:
+                description: List of BGPPeers attached to the router.
+                items:
+                  type: string
+                type: array
+              evi:
+                description: EVI in use for this Router.
+                type: integer
+              exportTarget:
+                description: Export route target for this Router.
+                type: string
+              health:
+                description: Indicates the health score of the Router.
+                type: integer
+              healthScoreReason:
+                description: Explains the reason for the health score.
+                type: string
+              importTarget:
+                description: Import route target for this Router.
+                type: string
+              irbInterfaces:
+                description: List of IRBInterfaces attached to the router.
+                items:
+                  type: string
+                type: array
+              lastChangeTime:
+                description: Timestamp of the last state change.
+                type: string
+              nodes:
+                description: List of nodes on which the Router is deployed.
+                items:
+                  type: string
+                type: array
+              numNodes:
+                description: Number of nodes on which the Router is configured.
+                type: integer
+              operationalState:
+                description: Operational state of the Router.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              ospfInstances:
+                description: List of OSPFInstances configured on the router.
+                items:
+                  properties:
+                    areas:
+                      items:
+                        properties:
+                          id:
+                            type: string
+                          interfaces:
+                            items:
+                              type: string
+                            type: array
+                        required:
+                        - id
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              routedInterfaces:
+                description: List of RoutedInterfaces attached to the router.
+                items:
+                  type: string
+                type: array
+              tunnelIndex:
+                description: Vxlan tunnel index in use.
+                type: integer
+              vni:
+                description: VNI in use for this Router.
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

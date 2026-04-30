@@ -1,0 +1,155 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: techsupports.oam.eda.nokia.com
+spec:
+  group: oam.eda.nokia.com
+  names:
+    kind: TechSupport
+    listKind: TechSupportList
+    plural: techsupports
+    singular: techsupport
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: TechSupport is the Schema for the techsupports API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Generate technical support packages for a node or set of
+              nodes - should only do this if explicitly requested by the user.
+            properties:
+              nodeSelectors:
+                description: |-
+                  List of node selectors to select nodes generate technical support packages for.
+                  This matches labels on TopoNode resources.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes to generate and collect technical support
+                  packages for.
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: Result of the technical support package generation.
+            properties:
+              failedNodes:
+                description: |-
+                  List of nodes failed to produce tech-support, it is populated in case of PartialSuccess
+                  Items in the list should be the names of the nodes, where tech-support failed
+                items:
+                  type: string
+                type: array
+              result:
+                description: Result
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: TechSupport is the Schema for the techsupports API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Generate technical support packages for a node or set of
+              nodes - should only do this if explicitly requested by the user.
+            properties:
+              nodeSelectors:
+                description: |-
+                  List of node selectors to select nodes generate technical support packages for.
+                  This matches labels on TopoNode resources.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes to generate and collect technical support
+                  packages for.
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: Result of the technical support package generation.
+            properties:
+              failedNodes:
+                description: |-
+                  List of nodes failed to produce tech-support, it is populated in case of PartialSuccess
+                  Items in the list should be the names of the nodes, where tech-support failed
+                items:
+                  type: string
+                type: array
+              result:
+                description: Result
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

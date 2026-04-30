@@ -1,0 +1,8 @@
+apiVersion: notifiers.eda.nokia.com/v1
+kind: ClusterProvider
+metadata:
+  name: teams
+  namespace: eda-system
+spec:
+  enabled: true
+  uri: teams://<company>.webhook.office.com/webhookb2/XXXXX

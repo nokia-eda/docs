@@ -1,0 +1,10 @@
+apiVersion: routing.eda.nokia.com/v1
+kind: Drain
+metadata:
+  namespace: eda
+  name: my-drain
+spec:
+  enabled: true
+  defaultRouters:
+    - router-leaf-1
+    - router-spine-2

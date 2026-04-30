@@ -1,0 +1,34 @@
+apiVersion: snow.eda.nokia.com/v1alpha1
+kind: Incident
+metadata:
+  name: incident-sample
+  namespace: eda
+spec:
+  description: Interface incident sample
+  enabled: true
+  instance:
+    - instance-sample
+  sources:
+    query:
+      table: .namespace.node.srl.interface
+      fields:
+        - oper-state
+        - admin-state
+      where: 'name = "ethernet-1/1" AND admin-state = "disable"'
+      autoResolve: true
+      shortDescription: '{{ index . "node.name" }}-{{ index . "interface.name" }}-{{ index . "oper-state" }}'
+      description: 'Interface {{ index . "interface.name" }} has oper-state {{ index . "oper-state" }} and admin-state {{ index . "admin-state" }} on node {{ index . "node.name" }}'
+      callerId: admin
+      assignedTo: Incident.Manager
+      assignmentGroup: Incident Management
+      state: "1"
+      priority: "1"
+      urgency: "1"
+      impact: "1"
+      category: Network
+      location: Sunnyvale, CA
+      customFields:
+        - name: field1
+          value: value1
+        - name: field2
+          value: value2

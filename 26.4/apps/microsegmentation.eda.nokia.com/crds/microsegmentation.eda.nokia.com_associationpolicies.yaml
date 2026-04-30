@@ -1,0 +1,137 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: associationpolicies.microsegmentation.eda.nokia.com
+spec:
+  group: microsegmentation.eda.nokia.com
+  names:
+    kind: AssociationPolicy
+    listKind: AssociationPolicyList
+    plural: associationpolicies
+    singular: associationpolicy
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AssociationPolicy is the Schema for the associationpolicies API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: An Association Policy is used to apply Group Tags to interfaces
+              or static routes.
+            properties:
+              associationPolicyEntries:
+                items:
+                  description: An Association Policy Entry defines the association
+                    of a Group Tag to a set of Routed or Bridged interfaces, or static
+                    routes.
+                  properties:
+                    associationTargets:
+                      description: The interfaces and static routes to which the Group
+                        Tag gets associated.
+                      properties:
+                        bridgeInterfaceSelectors:
+                          description: Label selector to select BridgeInterfaces on
+                            which to assign the Group Tag.
+                          items:
+                            type: string
+                          type: array
+                        bridgeInterfaces:
+                          description: The Bridge Interfaces on which to assign the
+                            Group Tag.
+                          items:
+                            type: string
+                          type: array
+                        irbInterfaceSelectors:
+                          description: Label selector used to select IRB Interfaces
+                            on which to assign the Group Tag.
+                          items:
+                            type: string
+                          type: array
+                        irbInterfaces:
+                          description: The IRB Interfaces on which to assign the Group
+                            Tag.
+                          items:
+                            type: string
+                          type: array
+                        routedInterfaceSelectors:
+                          description: Label selector to select Routed Interfaces
+                            on which to assign the Group Tag.
+                          items:
+                            type: string
+                          type: array
+                        routedInterfaces:
+                          description: The Routed Interfaces on which to assign the
+                            Group Tag.
+                          items:
+                            type: string
+                          type: array
+                        staticRouteSelectors:
+                          description: Label selector to select Static Routes on which
+                            to assign the Group Tag. Static routes only get enforced
+                            in L3 services.
+                          items:
+                            type: string
+                          type: array
+                        staticRoutes:
+                          description: "The StaticRoutes on which to assign the Group
+                            Tag.\tStatic routes only get enforced in L3 services."
+                          items:
+                            type: string
+                          type: array
+                        vlanSelectors:
+                          description: Label selector to select VLANs on which to
+                            assign the Group Tag.
+                          items:
+                            type: string
+                          type: array
+                        vlans:
+                          description: The VLANs on which to assign the Group Tag.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    groupTagNames:
+                      description: The Group Tag to be associated with the below interfaces
+                        or static routes.
+                      items:
+                        type: string
+                      maxItems: 1
+                      type: array
+                  required:
+                  - associationTargets
+                  - groupTagNames
+                  type: object
+                minItems: 1
+                type: array
+            required:
+            - associationPolicyEntries
+            type: object
+          status:
+            description: AssociationPolicyStatus defines the observed state of AssociationPolicy
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

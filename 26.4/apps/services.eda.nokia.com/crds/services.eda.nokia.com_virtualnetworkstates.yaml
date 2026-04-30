@@ -1,0 +1,209 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: virtualnetworkstates.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: VirtualNetworkState
+    listKind: VirtualNetworkStateList
+    plural: virtualnetworkstates
+    singular: virtualnetworkstate
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: VirtualNetworkState is the Schema for the virtualnetworkstates
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VirtualNetworkStateSpec defines the desired state of VirtualNetworkState
+            properties:
+              bgpPeers:
+                description: List of BGPPeers created by the VNET
+                items:
+                  type: string
+                type: array
+              bridgeDomains:
+                description: List of BridgeDomains created by the VNET
+                items:
+                  type: string
+                type: array
+              bridgeInterfaces:
+                description: List of Bridgeinterfaces created by the VNET
+                items:
+                  type: string
+                type: array
+              irbInterfaces:
+                description: List of IRBInterfaces created by the VNET
+                items:
+                  type: string
+                type: array
+              ospfInstances:
+                description: List of OSPFInstances created by the VNET
+                items:
+                  properties:
+                    areas:
+                      items:
+                        properties:
+                          id:
+                            type: string
+                          interfaces:
+                            items:
+                              type: string
+                            type: array
+                        required:
+                        - id
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              routedInterfaces:
+                description: List of RoutedInterface created by the VNET
+                items:
+                  type: string
+                type: array
+              routers:
+                description: List of Routers created by the VNET
+                items:
+                  type: string
+                type: array
+              vlans:
+                description: List of VLANs created by the VNET
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: VirtualNetworkStateStatus defines the observed state of VirtualNetworkState
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: VirtualNetworkState is the Schema for the virtualnetworkstates
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VirtualNetworkStateSpec defines the desired state of VirtualNetworkState
+            properties:
+              bgpPeers:
+                description: List of BGPPeers created by the VNET
+                items:
+                  type: string
+                type: array
+              bridgeDomains:
+                description: List of BridgeDomains created by the VNET
+                items:
+                  type: string
+                type: array
+              bridgeInterfaces:
+                description: List of Bridgeinterfaces created by the VNET
+                items:
+                  type: string
+                type: array
+              irbInterfaces:
+                description: List of IRBInterfaces created by the VNET
+                items:
+                  type: string
+                type: array
+              ospfInstances:
+                description: List of OSPFInstances created by the VNET
+                items:
+                  properties:
+                    areas:
+                      items:
+                        properties:
+                          id:
+                            type: string
+                          interfaces:
+                            items:
+                              type: string
+                            type: array
+                        required:
+                        - id
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              routedInterfaces:
+                description: List of RoutedInterface created by the VNET
+                items:
+                  type: string
+                type: array
+              routers:
+                description: List of Routers created by the VNET
+                items:
+                  type: string
+                type: array
+              vlans:
+                description: List of VLANs created by the VNET
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: VirtualNetworkStateStatus defines the observed state of VirtualNetworkState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

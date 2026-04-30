@@ -1,0 +1,75 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: grouptagpoolsetupworkflows.microsegmentation.eda.nokia.com
+spec:
+  group: microsegmentation.eda.nokia.com
+  names:
+    kind: GroupTagPoolSetupWorkflow
+    listKind: GroupTagPoolSetupWorkflowList
+    plural: grouptagpoolsetupworkflows
+    singular: grouptagpoolsetupworkflow
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GroupTagPoolSetupWorkflow is the Schema for the grouptagpoolsetupworkflows
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: GroupTagPoolSetupWorkflowSpec defines the desired state of
+              GroupTagPoolSetupWorkflow
+            properties:
+              globalGroupTagPoolName:
+                description: GlobalGroupTagPoolName is the name of the global GroupTag
+                  pool for which the range will be resized.
+                type: string
+              hasTD3:
+                type: boolean
+              splitPercentage:
+                description: SplitPercentage is the percentage of the pool to be split
+                  into Global versus local GroupTag id
+                maximum: 100
+                minimum: 0
+                type: integer
+            required:
+            - splitPercentage
+            type: object
+          status:
+            description: GroupTagPoolSetupWorkflowStatus defines the observed state
+              of GroupTagPoolSetupWorkflow
+            properties:
+              result:
+                description: |-
+                  INSERT ADDITIONAL STATUS FIELDS - define observed state of cluster
+                  Important: Run "edabuilder generate" to regenerate code after modifying this file
+                type: string
+            required:
+            - result
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

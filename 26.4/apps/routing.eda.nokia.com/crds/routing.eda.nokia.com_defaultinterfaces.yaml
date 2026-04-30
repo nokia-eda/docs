@@ -1,0 +1,360 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultinterfaces.routing.eda.nokia.com
+spec:
+  group: routing.eda.nokia.com
+  names:
+    kind: DefaultInterface
+    listKind: DefaultInterfaceList
+    plural: defaultinterfaces
+    singular: defaultinterface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: DefaultInterface is the Schema for the defaultinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultInterface enables the configuration of default interfaces,
+              including Interface references, DefaultRouter, VLAN IDs, IP MTU settings,
+              and options for IPv4 and IPv6 addresses. It also supports unnumbered
+              interfaces and BFD (Bidirectional Forwarding Detection) configuration.
+            properties:
+              bfd:
+                description: Enable or disable BFD on this DefaultInterface.
+                properties:
+                  desiredMinTransmitIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between transmission
+                      of BFD control packets.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down.
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables Biforward Detection.
+                    type: boolean
+                  requiredMinEchoReceiveIntMs:
+                    default: 1000
+                    description: The minimum interval between echo packets the local
+                      node can receive.
+                    maximum: 100000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceiveIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between received
+                      BFD control packets that this system should support.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - enabled
+                type: object
+              defaultRouter:
+                description: Reference to a DefaultRouter.
+                type: string
+              description:
+                description: The description of the DefaultInterface.
+                type: string
+              interface:
+                description: Reference to an Interface to use for attachment.
+                type: string
+              ipMTU:
+                description: Set the IP MTU for the DefaultInterface.
+                maximum: 9486
+                minimum: 1280
+                type: integer
+              ipv4Addresses:
+                description: List of IPv4 addresses in ip/mask form, e.g., 192.168.0.1/24.
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              ipv6Addresses:
+                description: List of IPv6 addresses in ip/mask form, e.g., fc00::1/120.
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              subinterfaceIndex:
+                description: Subinterface index to use with this DefaultInterface.
+                  Ignored for platforms that do not support subinterface index
+                type: integer
+              unnumbered:
+                description: Enables the use of unnumbered interfaces on the ISL.
+                  For IPv6, no IP address are configured on the sub-interface and
+                  only the link local address will be used. If any allocation pool
+                  is specified for IPv6 that will take precedence and IPs will be
+                  assigned to the interfaces.  When using eBGP for an underlay protocol,
+                  the DefaultInterfaces which are a part of the ISL will be added
+                  to the BGP dynamic neighbor list.
+                enum:
+                - IPv6
+                type: string
+              vlanID:
+                description: VLAN to use with this DefaultInterface.
+                maximum: 4094
+                minimum: 1
+                type: integer
+            required:
+            - defaultRouter
+            - interface
+            type: object
+          status:
+            description: DefaultInterfaceStatus defines the observed state of DefaultInterface
+            properties:
+              health:
+                description: Indicates the health score of the DefaultInterface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: Indicates when this Interface last changed state.
+                type: string
+              operationalState:
+                description: Indicates the current operational state of the DefaultInterface.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DefaultInterface is the Schema for the defaultinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultInterface enables the configuration of default interfaces,
+              including Interface references, DefaultRouter, VLAN IDs, IP MTU settings,
+              and options for IPv4 and IPv6 addresses. It also supports unnumbered
+              interfaces and BFD (Bidirectional Forwarding Detection) configuration.
+            properties:
+              bfd:
+                description: Enable or disable BFD on this DefaultInterface.
+                properties:
+                  desiredMinTransmitInt:
+                    default: 1000000
+                    description: The minimum interval in microseconds between transmission
+                      of BFD control packets[default=1000000].
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down. [default=3]
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enable Biforward Detection[default=false].
+                    type: boolean
+                  minEchoReceiveInterval:
+                    default: 1000000
+                    description: The minimum interval between echo packets the local
+                      node can receive in microseconds
+                    maximum: 100000000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceive:
+                    default: 1000000
+                    description: The minimum interval in microseconds between received
+                      BFD control packets that this system should support.[default=1000000].
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - desiredMinTransmitInt
+                - detectionMultiplier
+                - enabled
+                - minEchoReceiveInterval
+                - requiredMinReceive
+                type: object
+              defaultRouter:
+                description: Reference to a DefaultRouter.
+                type: string
+              description:
+                description: The description of the DefaultInterface.
+                type: string
+              interface:
+                description: Reference to an Interface to use for attachment.
+                type: string
+              ipMTU:
+                description: Set the IP MTU for the DefaultInterface.
+                maximum: 9486
+                minimum: 1280
+                type: integer
+              ipv4Addresses:
+                description: List of IPv4 addresses in ip/mask form, e.g., 192.168.0.1/24.
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              ipv6Addresses:
+                description: List of IPv6 addresses in ip/mask form, e.g., fc00::1/120.
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              subinterfaceIndex:
+                description: Subinterface index to use with this DefaultInterface.
+                  Ignored for platforms that do not support subinterface index
+                type: integer
+              unnumbered:
+                description: Enables the use of unnumbered interfaces on the ISL.
+                  For IPv6, no IP address are configured on the sub-interface and
+                  only the link local address will be used. If any allocation pool
+                  is specified for IPv6 that will take precedence and IPs will be
+                  assigned to the interfaces.  When using eBGP for an underlay protocol,
+                  the DefaultInterfaces which are a part of the ISL will be added
+                  to the BGP dynamic neighbor list.
+                enum:
+                - IPV6
+                type: string
+              vlanID:
+                description: VLAN to use with this DefaultInterface.
+                maximum: 4094
+                minimum: 1
+                type: integer
+            required:
+            - defaultRouter
+            - interface
+            type: object
+          status:
+            description: DefaultInterfaceStatus defines the observed state of DefaultInterface
+            properties:
+              health:
+                description: Indicates the health score of the DefaultInterface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: Indicates when this Interface last changed state.
+                type: string
+              operationalState:
+                description: Indicates the current operational state of the DefaultInterface.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

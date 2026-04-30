@@ -1,0 +1,8 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: Registry
+metadata:
+  name: your-registry # name of your registry
+spec:
+  remoteURL: <url-to-your-registry.com> # link to your registry
+  authSecretRef: your-registry-creds # reference to valid credentials for your registry
+  skipTLSVerify: {true|false}

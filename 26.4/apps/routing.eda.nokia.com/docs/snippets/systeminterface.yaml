@@ -1,0 +1,11 @@
+apiVersion: routing.eda.nokia.com/v1
+kind: SystemInterface
+metadata:
+  labels:
+    eda.nokia.com/source: derived
+    fabric: my-fabric
+  name: spine-1-system0
+  namespace: eda
+spec:
+  defaultRouter: router-spine-1
+  ipv4Address: 11.0.0.3/32

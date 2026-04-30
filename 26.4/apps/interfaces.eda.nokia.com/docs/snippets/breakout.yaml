@@ -1,0 +1,16 @@
+apiVersion: interfaces.eda.nokia.com/v1
+kind: Breakout
+metadata:
+  name: my-breakout
+  namespace: eda
+spec:
+  channels: 4
+  interfaces:
+    - ethernet-1-21
+    - ethernet-1-22
+    - ethernet-1-23
+    - ethernet-1-24
+    - ethernet-1-25
+  nodeSelectors:
+    - eda.nokia.com/role = leaf
+  speed: 25G

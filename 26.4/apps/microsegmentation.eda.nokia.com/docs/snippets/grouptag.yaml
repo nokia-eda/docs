@@ -1,0 +1,7 @@
+apiVersion: microsegmentation.eda.nokia.com/v1alpha1
+kind: GroupTag
+metadata:
+  namespace: eda
+  name: quarantine
+spec:
+  scope: Local

@@ -1,0 +1,21 @@
+# https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/NodeProfile/v1@v24.12.1
+---
+apiVersion: core.eda.nokia.com/v1
+kind: NodeProfile
+metadata:
+  name: srlinux-clab-24.10.1
+  namespace: eda
+spec:
+  operatingSystem: srl
+  version: 24.10.1
+  versionPath: .system.information.version
+  versionMatch: v24\.10\.1.*
+  images:
+    - image: fake.bin
+      imageMd5: fake.bin.md5
+  port: 57410
+  yang: https://eda-asvr.eda-system.svc/eda-system/schemaprofiles/srlinux-ghcr-24.10.1/srlinux-24.10.1.zip
+  onboardingUsername: admin
+  onboardingPassword: NokiaSrl1!
+  nodeUser: admin
+  annotate: true

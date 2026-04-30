@@ -1,0 +1,77 @@
+#########################
+#### srl1 Interface #####
+#########################
+---
+apiVersion: interfaces.eda.nokia.com/v1alpha1
+kind: Interface
+metadata:
+  labels:
+    role: access
+  name: clab-vlan-srl1-ethernet-1-1
+  namespace: eda
+spec:
+  enabled: true
+  encapType: "null"
+  lldp: true
+  members:
+    - enabled: true
+      interface: ethernet-1-1
+      node: clab-vlan-srl1
+  type: interface
+
+---
+apiVersion: interfaces.eda.nokia.com/v1alpha1
+kind: Interface
+metadata:
+  labels:
+    role: interSwitch
+  name: clab-vlan-srl1-ethernet-1-10
+  namespace: eda
+spec:
+  enabled: true
+  encapType: "null"
+  lldp: true
+  members:
+    - enabled: true
+      interface: ethernet-1-10
+      node: clab-vlan-srl1
+  type: interface
+
+#########################
+#### srl2 Interface #####
+#########################
+---
+apiVersion: interfaces.eda.nokia.com/v1alpha1
+kind: Interface
+metadata:
+  labels:
+    role: access
+  name: clab-vlan-srl2-ethernet-1-1
+  namespace: eda
+spec:
+  enabled: true
+  encapType: "null"
+  lldp: true
+  members:
+    - enabled: true
+      interface: ethernet-1-1
+      node: clab-vlan-srl2
+  type: interface
+
+---
+apiVersion: interfaces.eda.nokia.com/v1alpha1
+kind: Interface
+metadata:
+  labels:
+    role: interSwitch
+  name: clab-vlan-srl2-ethernet-1-10
+  namespace: eda
+spec:
+  enabled: true
+  encapType: "null"
+  lldp: true
+  members:
+    - enabled: true
+      interface: ethernet-1-10
+      node: clab-vlan-srl2
+  type: interface

@@ -1,0 +1,155 @@
+version: 25.4.1
+clusterName: eda-compute-cluster
+machines:
+  - name: eda-node01
+    endpoint: "192.0.2.11"
+    interfaces:
+      - name: eth0
+        dhcp: false
+        interface: eth0
+        addresses:
+          - 192.0.2.11/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.0.2.1
+        mtu: 9000
+      - name: eth1
+        dhcp: false
+        interface: eth1
+        addresses:
+          - 203.0.113.11/24
+        mtu: 9000
+    disks:
+      os: /dev/vda
+      storage: /dev/vdb
+  - name: eda-node02
+    endpoint: "192.0.2.12"
+    interfaces:
+      - name: eth0
+        dhcp: false
+        interface: eth0
+        addresses:
+          - 192.0.2.12/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.0.2.1
+        mtu: 9000
+      - name: eth1
+        dhcp: false
+        interface: eth1
+        addresses:
+          - 203.0.113.12/24
+        mtu: 9000
+    disks:
+      os: /dev/vda
+      storage: /dev/vdb
+  - name: eda-node03
+    endpoint: "192.0.2.13"
+    interfaces:
+      - name: eth0
+        dhcp: false
+        interface: eth0
+        addresses:
+          - 192.0.2.13/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.0.2.1
+        mtu: 9000
+      - name: eth1
+        dhcp: false
+        interface: eth1
+        addresses:
+          - 203.0.113.13/24
+        mtu: 9000
+    disks:
+      os: /dev/vda
+      storage: /dev/vdb
+  - name: eda-node04
+    endpoint: "192.0.2.14"
+    interfaces:
+      - name: eth0
+        dhcp: false
+        interface: eth0
+        addresses:
+          - 192.0.2.14/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.0.2.1
+        mtu: 9000
+      - name: eth1
+        dhcp: false
+        interface: eth1
+        addresses:
+          - 203.0.113.14/24
+        mtu: 9000
+    disks:
+      os: /dev/vda
+  - name: eda-node05
+    endpoint: "192.0.2.15"
+    interfaces:
+      - name: eth0
+        dhcp: false
+        interface: eth0
+        addresses:
+          - 192.0.2.15/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.0.2.1
+        mtu: 9000
+      - name: eth1
+        dhcp: false
+        interface: eth1
+        addresses:
+          - 203.0.113.15/24
+        mtu: 9000
+    disks:
+      os: /dev/vda
+  - name: eda-node06
+    endpoint: "192.0.2.16"
+    interfaces:
+      - name: eth0
+        dhcp: false
+        interface: eth0
+        addresses:
+          - 192.0.2.16/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 192.0.2.1
+        mtu: 9000
+      - name: eth1
+        dhcp: false
+        interface: eth1
+        addresses:
+          - 203.0.113.16/24
+        mtu: 9000
+    disks:
+      os: /dev/vda
+k8s:
+  stack: ipv4
+  primaryNode: eda-node01
+  endpointUrl: https://192.0.2.5:6443
+  allowSchedulingOnControlPlanes: true
+  control-plane:
+    - eda-node01
+    - eda-node02
+    - eda-node03
+  worker:
+    - eda-node04
+    - eda-node05
+    - eda-node06
+  vip:
+    ipv4: 192.0.2.5
+    interface: eth0
+  env:
+    http_proxy: http://192.0.2.254:8080
+    https_proxy: http://192.0.2.254:8080
+    no_proxy: 192.0.2.0/24,203.0.113.0/24,.domain.tld,172.22.0.0/16,localhost,127.0.0.1,10.0.1.0/24,0.0.0.0,169.254.116.108
+  time:
+    disabled: false
+    servers:
+      - 192.0.2.253
+      - 192.0.2.254
+  nameservers:
+    servers:
+      - 192.0.2.253
+      - 192.0.2.254

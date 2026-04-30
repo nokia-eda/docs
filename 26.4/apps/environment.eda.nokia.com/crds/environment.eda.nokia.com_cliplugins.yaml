@@ -1,0 +1,122 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: cliplugins.environment.eda.nokia.com
+spec:
+  group: environment.eda.nokia.com
+  names:
+    kind: CliPlugin
+    listKind: CliPluginList
+    plural: cliplugins
+    singular: cliplugin
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: CliPlugin is the Schema for the cliplugins API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: This workflow is used to push a CLI plugin to a node.
+            properties:
+              pluginContent:
+                description: Content of the plugin to push.
+                type: string
+              pluginName:
+                description: |-
+                  Name of the plugin to push. For SR Linux this should include the .py extension, without leading slashes.
+                  e.g. "myplugin.py".
+                type: string
+            type: object
+          status:
+            description: CliPluginStatus defines the observed state of CliPlugin
+            properties:
+              result:
+                description: Aggregate result of the Flow
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CliPlugin is the Schema for the cliplugins API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: This workflow is used to push a CLI plugin to a node.
+            properties:
+              content:
+                description: Content of the plugin to push.
+                type: string
+              fileName:
+                description: |-
+                  Name of the plugin to push. For SR Linux this should include the .py extension, without leading slashes.
+                  e.g. "myplugin.py".
+                type: string
+            type: object
+          status:
+            description: CliPluginStatus defines the observed state of CliPlugin
+            properties:
+              result:
+                description: Aggregate result of the Flow
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
