@@ -312,5 +312,15 @@ To access `edactl` commands for branches, you must be targeting the branch clust
 
 /// admonition | Note
 To generate an `EDACONFIG` to interact with a branch you may use `edactl config generate` as per normal, with your current Kubernetes context set to the branch cluster. This will generate an `EDACONFIG` with the correct API server address and credentials to interact with the branch cluster. If the branch cluster is exposed using a different address, you may need to use the `--address` flag to specify the correct address for the API server.
+///
+
+## Branches in "Try EDA"
+
+Even the KinD-based [Try EDA](../getting-started/try-eda.md) environment supports locally-spawned branches. The KinD Kubernetes cluster is capable of hosting a nested vCluster-powered branch environment for demonstration and development purposes. The following considerations apply:
+
+- `EXT_DOMAIN_NAME` should be set to a valid domain or IP address as this will be used to configure the proxy to the branch cluster.
+- upon branch creation, the `make expose-try-eda-branch BRANCH_NAME=<branch-name>` target must be run to enable UI/API access to the branch cluster.  
+    This target needs to be called only once per the named branch.
+- Up to three branches are supported in the "Try EDA" environment.
 
 [vcluster-repo]: https://github.com/loft-sh/vcluster
