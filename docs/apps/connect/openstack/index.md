@@ -1,6 +1,6 @@
 # OpenStack Plugin
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 ## Overview
 
@@ -88,7 +88,6 @@ Layer 3 OVN functionality is not supported together with the EDA Connect OpenSta
 ///
 
 ///
-
 
 #### EDA managed networks
 

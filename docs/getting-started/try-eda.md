@@ -156,7 +156,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
 
 And that's it! You now have a fully functional EDA instance suitable for learning, development, and demonstration that comes preloaded with a small, but functional Digital Twin network topology.
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 -{{ diagram(path='./diagrams/digital-twin.drawio', title='', page=0, zoom=1.2) }}-
 

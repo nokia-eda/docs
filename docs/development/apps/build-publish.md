@@ -1,6 +1,6 @@
 # Build and Publish
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 We take pride in EDA's extensibility through applications, and one of the key aspects of this extensibility is the ease of build, publish, share and install workflows.  
 EDA uses standard, well-known and established toolchains for this purpose:

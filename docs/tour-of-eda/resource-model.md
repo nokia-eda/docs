@@ -2,7 +2,7 @@
 
 -{{% import 'icons.html' as icons %}}-
 
-<script type="text/javascript" src="/javascripts/viewer-static.min.js" async></script>
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
 
 EDA is an automation framework that is based on the principles of declarative configuration management with abstractions. An operator's input to the system declares the desired state of the resources and EDA takes care of the deployment process of the resources in a network-wide, consistent and transactional manner.  
 In other words, you tell EDA what state you want your infra to be in, and the system carries out the "how" for you in a reliable and most efficient way.
