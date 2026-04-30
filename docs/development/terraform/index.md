@@ -27,7 +27,7 @@ Providers include two types of versioning information:
 
 <h4> API Version </h4>
 
-This refers to the specific application API version for which the provider is built. In EDA, applications may have several API versions (e.g., `v1alpha1`, `v1`, `v2`, and so on). The provider's name will include the API version; for example, the **interfaces-v1alpha1** provider is designed to be used with the **Interfaces v1alpha1** API version.
+This refers to the specific application API version for which the provider is built. In EDA, applications may have several API versions (e.g., `v1alpha1`, `v1`, `v2`, and so on). The provider's name will include the API version; for example, the **interfaces-v1** provider is designed to be used with the **Interfaces v1** API version.
 
 This means automation users should focus on the API version supported, rather than the installed application version.
 
@@ -35,10 +35,10 @@ This means automation users should focus on the API version supported, rather th
 
 This is the version of the Terraform provider itself, which is independent of the Application API version. It follows [Semantic Versioning](https://semver.org/) principles and indicates changes to the provider's functionality, compatibility, documentation, and more. The provider version is visible in the registry UI and in the Git repository where the provider's code is stored.
 
-> In summary, for the provider with the name `interfaces-v1alpha1` and version `1.0.0`:
+> In summary, for the provider with the name [`interfaces-v1`](https://registry.terraform.io/providers/nokia-eda/interfaces-v1/latest) and version `1.0.0`:
 >
 > * the application this provider is built for is `Interfaces`
-> * the Interfaces API version is `v1alpha1`
+> * the Interfaces API version is `v1`
 > * and the provider version is `1.0.0`.
 
 ## Installation
@@ -48,8 +48,8 @@ To install the Terraform providers for Nokia EDA, add the required provider bloc
 ```hcl title="providers.tf"
 terraform {
   required_providers {
-    interfaces-v1alpha1 = {
-      source  = "nokia-eda/interfaces-v1alpha1"
+    interfaces-v1 = {
+      source  = "nokia-eda/interfaces-v1"
       version = "1.0.0"
     }
   }
@@ -105,14 +105,14 @@ The provider needs to be configured with the proper credential information befor
 ```hcl title="providers.tf" hl_lines="10-12"
 terraform {
   required_providers {
-    interfaces-v1alpha1 = {
-      source  = "nokia-eda/interfaces-v1alpha1"
+    interfaces-v1 = {
+      source  = "nokia-eda/interfaces-v1"
       version = "1.0.0"
     }
   }
 }
 
-provider "interfaces-v1alpha1" {
+provider "interfaces-v1" {
   # Configuration options
 }
 ```
@@ -160,12 +160,13 @@ Default value: `false` (means validate certificate)
 With the mandatory options set, the provider configuration takes the following form:
 
 ```hcl title="snippet from providers.tf"
-provider "interfaces-v1alpha1" {
-  base_url      = "https://eda-demo.test.io:9443"
-  client_id     = "eda" # default value, can be omitted if not changed
-  client_secret = "your_client_secret"
-  username      = "your_username"
-  password      = "your_password"
+provider "interfaces-v1" {
+  base_url        = "https://eda-demo.test.io:9443"
+  client_id       = "eda" # default value, can be omitted if not changed
+  client_secret   = "your_client_secret"
+  username        = "your_username"
+  password        = "your_password"
+  tls_skip_verify = false
 }
 ```
 
@@ -217,32 +218,29 @@ Resources are the most important element in the Terraform language. Each resourc
 
 Each provider exposes its own set of resources and they are documented in the provider's documentation on Terraform [registry][tf-registry-namespace], for example, here is a link to the list of resources provided by the [Interfaces][interfaces-tf-doc] provider.
 
-[interfaces-tf-doc]: https://registry.terraform.io/providers/nokia-eda/interfaces-v1alpha1/latest/docs
+[interfaces-tf-doc]: https://registry.terraform.io/providers/nokia-eda/interfaces-v1/latest/docs
 
 The most obvious resource in the Interfaces app is the [interface][interface-resource-tf-doc] itself which, as the name suggests, allows users to manage Interface resources in EDA. The Terraform resources are modelled after the EDA resources, therefore it is very easy to map between the two, they are essentially the same.
 
-[interface-resource-tf-doc]: https://registry.terraform.io/providers/nokia-eda/interfaces-v1alpha1/latest/docs/resources/interface
+[interface-resource-tf-doc]: https://registry.terraform.io/providers/nokia-eda/interfaces-v1/latest/docs/resources/interface
 
-For example, let's compare what it takes to define an interface `ethernet-1/14` on `leaf1` using the [Try EDA Playground](../../getting-started/try-eda.md) from the Getting Started guide using EDA UI and Terraform:
+For example, let's see what it takes to define an interface `ethernet-1/14` on `leaf1` from the [Try EDA topology](../../getting-started/try-eda.md) using EDA UI and Terraform:
 
 /// tab | EDA UI
-Navigating to the **Topology → Interfaces** in the left sidebar and creating a new interface with the following parameters:
+To create an interface navigate to the **Topology → Interfaces** in the left sidebar and create a new interface with the following parameters:
 
-* name: leaf1-ethernet-1-14
-* namespace: eda
-* enabled: true
-* description: "set via UI"
-* lldp: true
-* encapType: 'null'
+* name: `leaf1-ethernet-1-14`
+* namespace: `eda`
+* description: `"set via UI"`
 * members:
-    * interface: ethernet-1-14
-    * node: leaf1
+    * interface: `ethernet-1-14`
+    * node: `leaf1`
 
-Would be represented like this in the UI:
+The web form would look like this:
 
--{{image(url='graphics/CleanShot_2025-08-20_at_19.55.36.webp', padding=10)}}-
+-{{image(url='graphics/iface-in-ui.webp', shadow=True, padding=10)}}-
 
-Now look what would be the equivalent Terraform configuration in the next tab.
+Now switch the tab to see the equivalent Terraform configuration that would create the same interface.
 
 ///
 /// tab | Terraform
@@ -251,15 +249,15 @@ With terraform, the resources contain the same fields[^4] and take in the same v
 Here is the definition of the same interface in the Hashicorp Configuration Language that Terraform uses:
 
 ```hcl
-resource "interfaces-v1alpha1_interface" "leaf1-ethernet-1-14" {
+resource "interfaces-v1_interface" "leaf1-ethernet-1-14" {
   metadata = {
     name      = "leaf1-ethernet-1-14"
     namespace = "eda"
   }
   spec = {
     enabled     = true
-    encap_type  = "null"
-    type        = "interface"
+    encap_type  = "Null"
+    type        = "Interface"
     lldp        = true
     description = "set via Terraform"
     members = [{
@@ -289,18 +287,18 @@ You will notice that the data-sources follow a particular pattern: a data-source
 
 ```hcl
 # Get all interfaces.
-data "interfaces-v1alpha1_interface_list" "all" {
+data "interfaces-v1_interface_list" "all" {
   namespace = "eda"
 }
 
 # Get all interfaces with label selector
-data "interfaces-v1alpha1_interface_list" "interswitch" {
+data "interfaces-v1_interface_list" "interswitch" {
   namespace     = "eda"
   labelselector = "eda.nokia.com/role=interSwitch"
 }
 
 # Get a single interface by name
-data "interfaces-v1alpha1_interface" "leaf1_ethernet_1_1" {
+data "interfaces-v1_interface" "leaf1_ethernet_1_1" {
   namespace = "eda"
   name      = "leaf1-ethernet-1-1"
 }
@@ -314,12 +312,12 @@ The [import documentation](https://developer.hashicorp.com/terraform/language/im
 
 ```hcl
 import {
-  to = interfaces-v1alpha1_interface.leaf1-ethernet-1-1
+  to = interfaces-v1_interface.leaf1-ethernet-1-1
   id = "eda/leaf1-ethernet-1-1"
 }
 
 import {
-  to = interfaces-v1alpha1_interface.leaf2-ethernet-1-1
+  to = interfaces-v1_interface.leaf2-ethernet-1-1
   id = "eda/leaf2-ethernet-1-1"
 }
 ```
@@ -339,7 +337,7 @@ After the successful import, you can remove the `import` blocks.
 1. Transaction-based operations are not supported yet. These operations, where resources are jointly committed via the Transaction API, are instead managed via REST API calls to the respective application endpoints, not through the Transaction API.
 
 [^1]: Such as interfaces, fabrics, virtual networks and so on.
-[^2]: Often the providers configuration goes into the `providers.tf` file as per the [style guide](https://developer.hashicorp.com/terraform/language/style#file-names).
+[^2]: Often the providers configuration goes into the `providers.tf` file in your project repository as per the [style guide](https://developer.hashicorp.com/terraform/language/style#file-names).
 [^3]: Full list of options you can find in the providers documentation hosted on Terraform registry.
 [^4]: But represented with `snake_case` instead of `camelCase`.
 [^5]: The file must not exist before the `terraform plan` command is run.
