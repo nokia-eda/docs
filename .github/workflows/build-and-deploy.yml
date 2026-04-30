@@ -51,7 +51,7 @@ jobs:
 
       - name: Setup Git-LFS
         run: |
-          apt-get update && apt-get install -y git-lfs
+          sudo apt-get update && sudo apt-get install -y git-lfs
           git lfs install
 
       - name: Build docs version
