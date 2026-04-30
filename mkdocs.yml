@@ -465,10 +465,10 @@ plugins:
   - git-revision-date-localized:
       enable_creation_date: true
       enabled: !ENV [ CI, false ]
-  - git-committers:
-      repository: nokia-eda/docs
-      branch: main
-      enabled: !ENV [ GIT_COMMITTERS, false ]
+#   - git-committers:
+#       repository: nokia-eda/docs
+#       branch: main
+#       enabled: !ENV [ GIT_COMMITTERS, false ]
   - social:
       enabled: !ENV [ CI, false ]
       # enabled: true
