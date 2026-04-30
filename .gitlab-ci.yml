@@ -14,20 +14,22 @@ htmltest:
   image:
     name: cr.srlinux.dev/pub/debian:bookworm-slim
   script:
-    - apt update && apt install -y --no-install-recommends curl file ca-certificates findutils
+    - apt update && apt install -y --no-install-recommends curl file
+      ca-certificates findutils
     - curl https://htmltest.wjdp.uk | bash
     # Match run.sh test-docs: neutralize mike/version-picker href="../…" before link check
-    - find ./site -type f -name "*.html" -exec sed -i 's|href=\.\./[\.\/ ]*>|href="#">|g' {} +
+    - find ./site -type f -name "*.html" -exec sed -i 's|href=\.\./[\.\/
+      ]*>|href="#">|g' {} +
     - ./bin/htmltest -c docs/htmltest.yml
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
 
 build:
-  stage: test
+  stage: build
   image:
     name: $MKDOCS_IMAGE
-    entrypoint: [""]
+    entrypoint: [ "" ]
   cache:
     key: mkdocs-cache
     paths:
@@ -43,23 +45,26 @@ build:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 upload_preview:
-  stage: test
+  stage: build
   needs:
     - job: build
       artifacts: true
   image:
     name: $MKDOCS_IMAGE
-    entrypoint: [""]
+    entrypoint: [ "" ]
   before_script:
     - apk add --no-cache nodejs npm curl
     - npm install -g wrangler
   script:
-    - wrangler pages deploy site --project-name=eda-docs --branch=$CI_COMMIT_REF_NAME | tee /tmp/wrangler.log
-    - DEPLOY_URL=$(grep -oE 'https?://[^[:space:]]+' /tmp/wrangler.log | sed -n '1p')
-    - ALIAS_URL=$(grep -oE 'https?://[^[:space:]]+' /tmp/wrangler.log | sed -n '2p')
+    - wrangler pages deploy site --project-name=eda-docs
+      --branch=$CI_COMMIT_REF_NAME | tee /tmp/wrangler.log
+    - DEPLOY_URL=$(grep -oE 'https?://[^[:space:]]+' /tmp/wrangler.log | sed -n
+      '1p')
+    - ALIAS_URL=$(grep -oE 'https?://[^[:space:]]+' /tmp/wrangler.log | sed -n
+      '2p')
     - |
       if [ -n "$DEPLOY_URL" ] && [ -n "$ALIAS_URL" ] && [ -n "$CI_MERGE_REQUEST_IID" ]; then
-        BODY=$(printf "Preview deploy: %s\nPreview alias: %s" "$DEPLOY_URL" "$ALIAS_URL")
+        BODY=$(printf "Preview deploy: %s\n\nPreview alias: %s" "$DEPLOY_URL" "$ALIAS_URL")
         curl --request POST \
           --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
           --data-urlencode "body=$BODY" \
@@ -76,7 +81,7 @@ pages:
   stage: deploy
   image:
     name: $MKDOCS_IMAGE
-    entrypoint: [""]
+    entrypoint: [ "" ]
   script:
     - mkdocs build --site-dir public
   artifacts:

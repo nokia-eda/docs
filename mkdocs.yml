@@ -7,16 +7,16 @@ nav:
           - tour-of-eda/index.md
           - UI: tour-of-eda/ui.md
           - Nodes: tour-of-eda/nodes.md
-          - Resource Model: tour-of-eda/resource-model.md
+          - Resource model: tour-of-eda/resource-model.md
           - Transactions: tour-of-eda/transactions.md
   - Installation:
       - software-install/index.md
       - Preparing for installation: software-install/preparing-for-installation.md
       - Air-gapped setup:
           - software-install/air-gapped/index.md
-          - Downloading the Assets: software-install/air-gapped/downloading-the-assets.md
-          - Deploying the Assets VM: software-install/air-gapped/deploying-the-assets-vm.md
-          - Uploading the Assets: software-install/air-gapped/uploading-assets.md
+          - Downloading the assets: software-install/air-gapped/downloading-the-assets.md
+          - Deploying the assets VM: software-install/air-gapped/deploying-the-assets-vm.md
+          - Uploading the assets: software-install/air-gapped/uploading-assets.md
       - Deploying EDA:
           - software-install/deploying-eda/index.md
           - Setting up the EDA nodes: software-install/deploying-eda/setting-up-the-eda-virtual-machine-nodes.md
@@ -34,7 +34,7 @@ nav:
           - software-install/exposing-ui-api.md
   - User guide:
       - user-guide/index.md
-      - EDA UI basics:
+      - UI basics:
           - Signing in: user-guide/gui-basics/sign-in.md
           - Signing out: user-guide/gui-basics/sign-out.md
           - Home page: user-guide/gui-basics/home-page.md
@@ -54,7 +54,7 @@ nav:
       - Branches: user-guide/branches.md
       - Transactions: user-guide/transactions.md
       - Merge requests: user-guide/merge-requests.md
-      - Allocation Pools: user-guide/allocation-pools.md
+      - Allocation pools: user-guide/allocation-pools.md
       - Network topology: user-guide/network-topology.md
       - Node management: user-guide/node-management.md
       - Security:
@@ -62,8 +62,8 @@ nav:
           - Certificate management: user-guide/security/certificate-management.md
           - Platform security: user-guide/security/platform-security.md
           - Node RBAC: user-guide/security/node-rbac.md
-      - Command Line Tools: user-guide/command-line-tools.md
-      - Digital Twin:
+      - Command line tools: user-guide/command-line-tools.md
+      - Digital twin:
           - digital-twin/index.md
           - user-guide/containerlab-integration.md
       - Administration:
@@ -338,23 +338,23 @@ nav:
           - There's an app for that: development/apps/index.md
           - Environment setup: development/apps/setup-env.md
           - Quick start: development/apps/quick-start.md
-          - Project Layout: development/apps/project-layout.md
+          - Project layout: development/apps/project-layout.md
           - Components: development/apps/components.md
-          - Script Apps:
+          - Script apps:
               - development/apps/scripts/index.md
               - Config: development/apps/scripts/config.md
               - State: development/apps/scripts/state.md
               - Debugging: development/apps/scripts/debugging.md
-              - Basic App Walkthrough: development/apps/scripts/banner-script.md
-              - Building Abstractions: development/apps/scripts/building-abstractions.md
-          - Build and Publish: development/apps/build-publish.md
+              - Basic app walkthrough: development/apps/scripts/banner-script.md
+              - Building abstractions: development/apps/scripts/building-abstractions.md
+          - Build and publish: development/apps/build-publish.md
           - EDABuilder: development/apps/edabuilder.md
           # - Workflows: development/apps/workflows.md
           # - Handling versions: development/apps/versions.md
       - API:
           - development/api/index.md
-      - Custom App Catalog: development/custom-catalog.md
-      - Custom App Registry: development/custom-registry.md
+      - Custom app catalog: development/custom-catalog.md
+      - Custom app registry: development/custom-registry.md
       - Ansible:
           - development/ansible/index.md
       - Terraform:
