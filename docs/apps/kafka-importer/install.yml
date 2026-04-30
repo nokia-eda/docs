@@ -1,0 +1,12 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
+metadata:
+  name: kafka-importer-install
+  namespace: eda-system
+spec:
+  operation: install
+  apps:
+    - appId: kafkaimporter.eda.nokia.com
+      catalog: qa-eda-catalog
+      version:
+        value: v1.0.0
