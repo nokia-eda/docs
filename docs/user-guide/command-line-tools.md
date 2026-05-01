@@ -255,7 +255,7 @@ alias e9s='kubectl -n eda-system exec -it $(kubectl -n eda-system get pods \
 
 And behold the power of `e9s`!
 /// tab | e9s main screen
-![e9s](https://gitlab.com/rdodin/pics/-/wikis/uploads/f716432aa9db2dca2928faaf65bdb620/image.png)
+-{{image(url="graphics/e9s.webp", padding=0, title="e9s main screen")}}-
 ///
 /// tab | e9s query screen
 Here is a quick demonstration on how to use the powerful [EDA Query Language (EQL)](eda-query-language.md) to run queries in `e9s`:

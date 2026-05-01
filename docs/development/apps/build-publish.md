@@ -108,7 +108,7 @@ Successfully published Apps
 
 Now you should see the application manifest published in your Git repository following the `vendors/<vendor-name>/apps/<app-name>` path:
 
-![img](https://gitlab.com/rdodin/pics/-/wikis/uploads/8e2d9d36232338bb3eb18a22065a7671/CleanShot_2025-03-29_at_14.14.59_2x.png)
+-{{image(url="graphics/CleanShot_2025-03-29_at_14.14.59_2x.webp", shadow=true, padding=20, title="Application manifest published in Git repository")}}-
 
 The app version will be matching the version from the image tag found in the manifest, unless the version is provided inline with the `--app` argument.
 

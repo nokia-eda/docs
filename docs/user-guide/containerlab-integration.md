@@ -403,7 +403,7 @@ The NodeUser resource references the NodeGroup resource that contains the AAA pa
 
 If we were to apply the TopoNode resource right now, we would end up getting the following topology diagram in EDA UI:
 
-![topoNode-only](https://gitlab.com/rdodin/pics/-/wikis/uploads/1beaf38e89e64dd19716aee05cd94e45/topo.webp)
+-{{image(url="graphics/topo.webp", shadow=true, padding=0, title="Topology diagram with TopoNode resources only", scale=0.6)}}-
 
 There is obviously a piece missing - the topology doesn't have any links! And the reason is simple - we haven't defined any topology link resources.
 

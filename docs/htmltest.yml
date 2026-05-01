@@ -8,6 +8,7 @@ IgnoreURLs:
   - https://brand.nokia.com/ # requires login
   - https://github.com/settings/billing/usage # requires login
   - https://knowledge.broadcom.com/external/article/344761/enabling-and-disabling-native-drivers-in.html # typical bcom
+  - https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks # gives 403
 IgnoreDirectoryMissingTrailingSlash: true
 IgnoreAltMissing: true
 IgnoreSSLVerify: true

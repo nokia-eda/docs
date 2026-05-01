@@ -109,7 +109,7 @@ make try-eda
 
 Right, the same target that would otherwise install Nokia EDA on a local development KinD cluster can be used to install Nokia EDA on an existing cluster, like the one we have in this guide. After the installation process completes, you can go through the [short checklist](../../tour-of-eda/index.md#checklist) to make sure everything is up and running.
 
-![final-pods](https://gitlab.com/rdodin/pics/-/wikis/uploads/55b10f7ea1b74501ee2434641e17edc4/piceda1.webp){.img-shadow}
+-{{image(url="graphics/piceda1.webp", shadow=true, padding=20, title="Pods after installation")}}-
 
 Now you have a fully functional Nokia EDA installation running in a real Kubernetes cluster. Congratulations!
 

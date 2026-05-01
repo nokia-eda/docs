@@ -60,7 +60,7 @@ If you are installing Orbstack for the first time, you will see a dialog that as
 
 When OrbStack is installed, you can check the app settings to ensure that you have the sufficient resources allocated to an internal VM that runs docker daemon:
 
-![resources](https://gitlab.com/rdodin/pics/-/wikis/uploads/ea34fdb13d588225aa3f718d5c1b4467/image.png)
+-{{image(url="graphics/ea34fdb1_image.webp", scale=0.8, padding=0)}}-
 
 Check the minimum requirements on the [Try EDA](../../getting-started/try-eda.md) page, but it is best to have more CPU and Memory available to the OrbStack VM. On the screenshot above 24GB and all CPUs are allocated to the OrbStack VM, and this has no negative/noticable impact on the overall system performance.
 
@@ -131,7 +131,7 @@ The first option might be the easiest way to get started, since it offers more t
 
 /// tab | OrbStack
 If you're running OrbStack, you can spin up an embedded, one-node, lightweight cluster by checking the <kbd>Enable Kubernetes cluster</kbd> box in the settings (if unchecked):
-![k8s-settings](https://gitlab.com/rdodin/pics/-/wikis/uploads/ef79bf6e405dfad44deeca5000adbfe3/image.png)
+-{{image(url="graphics/ef79bf6e_image.webp",padding=0, scale=0.8)}}-
 
 When OrbStack is done with creating a k8s cluster for you, you will be able to use regular cluster management tools like `kubectl`/`k9s`/etc to manage your cluster.
 
@@ -210,10 +210,12 @@ In OrbStack, the k8s services are already exposed to your by the software, makin
 This integration, though, will make our generic installer bark about the port being already in use when we try to setup the port-forward for the UI access at the very end of the `make try-eda` command. Please ignore this error, as OrbStack already took care of the UI access for you.
 
 //// warning | macOS 15+
-If your browser can not resolve the `eda-api.k8s.orb.local` domain, you need to add enable Local Network access policy for the browser of your choice since `.local` domain is resolved via mDNS. Check the Apple's [documentation](https://support.apple.com/guide/mac-help/control-access-to-your-local-network-on-mac-mchla4f49138/mac) and this [screenshot](https://gitlab.com/rdodin/pics/-/wikis/uploads/b91bbb7b7e6da5963736d24f43f64ce6/image.png) showing where the settings are located.
+If your browser can not resolve the `eda-api.k8s.orb.local` domain, you need to add enable Local Network access policy for the browser of your choice since `.local` domain is resolved via mDNS. Check the Apple's [documentation](https://support.apple.com/guide/mac-help/control-access-to-your-local-network-on-mac-mchla4f49138/mac). The screenshot below shows where those settings are located.
+
+-{{image(url="graphics/b91bbb7b_image.webp", shadow=true, padding=20, title="Local Network access for the browser on macOS", scale=0.5)}}-
 ////
 
-![ui](https://gitlab.com/rdodin/pics/-/wikis/uploads/1180ab27c1aa9017c1db3339ccae5f74/image.png)
+-{{image(url="graphics/1180ab27_image.webp", padding=0, scale=0.8)}}-
 
 The default Nokia EDA credentials are `admin:admin`.
 ///
