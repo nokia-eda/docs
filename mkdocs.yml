@@ -481,7 +481,8 @@ plugins:
         user-guide/topologies.md: user-guide/network-topology.md
   - privacy:
       assets_exclude:
-        - giscus.app/*
+        - "giscus.app/*"
+        - "*.kapa.ai/*"
         - test.draw.io/*
 
 # Customization
@@ -575,6 +576,7 @@ extra_css:
   - stylesheets/expandable-blocks.css
   - stylesheets/theme-toggle.css
   - stylesheets/footer.css
+  - stylesheets/recaptcha.css
 
 hooks:
   - hooks/hooks.py
@@ -588,3 +590,4 @@ extra_javascript:
   - javascripts/expandable-blocks.js
   - javascripts/diagrams-in-tabs.js
   - javascripts/theme-toggle.js
+  - javascripts/kapa_widget.js

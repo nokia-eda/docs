@@ -1017,11 +1017,44 @@ figure.polka {
    full-screen overlay uses its own sizing) ──────────────────────────────── */
 @media screen and (min-width: 60em) {
   .md-search__form {
+    position: relative;
     border-radius: 8px;
     border: 1px solid rgba(104, 114, 130, 0.3);
     height: 1.625rem;
     align-items: center;
     background-color: var(--md-default-bg-color);
+  }
+
+  .md-search__form::after {
+    content: "/";
+    position: absolute;
+    top: 50%;
+    right: 0.375rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.125rem;
+    height: 1.125rem;
+    padding-inline: 0.25rem;
+    border: 1px solid rgba(104, 114, 130, 0.45);
+    border-radius: 0.25rem;
+    background-color: var(--md-default-bg-color);
+    color: rgba(43, 43, 43, 0.6);
+    font-size: 0.625rem;
+    font-weight: 600;
+    line-height: 1;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.15s ease;
+  }
+
+  .md-search__form:focus-within::after {
+    opacity: 0;
+  }
+
+  [data-md-toggle="search"]:checked~.md-header .md-search__form::after {
+    opacity: 0;
   }
 
   .md-search__input {
@@ -1030,7 +1063,7 @@ figure.polka {
     height: 100%;
     min-height: 0;
     padding-block: 0.125rem;
-    padding-inline: 0.125rem 0.5rem;
+    padding-inline: 0.125rem 2rem;
   }
 
   .md-search__input::placeholder {
@@ -1057,6 +1090,12 @@ figure.polka {
     background-color: var(--md-default-bg-color);
   }
 
+  [data-md-color-scheme="slate"] .md-search__form::after {
+    border-color: rgba(171, 180, 194, 0.45);
+    color: rgba(255, 255, 255, 0.65);
+    background-color: var(--md-default-bg-color);
+  }
+
   [data-md-color-scheme="slate"] .md-search__input::placeholder {
     color: rgba(255, 255, 255, 0.5);
   }
@@ -1071,12 +1110,53 @@ figure.polka {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
-/* ── Drawer sidebar: GitHub + Discord icons side-by-side ────────────────── */
+/* ── Search empty-state AI hint keycap (dot trigger) ────────────────────── */
+.md-search-result__meta .md-search__ai-keycap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  margin-inline: 0.2rem;
+  padding-inline: 0.25rem;
+  border: 1px solid rgba(104, 114, 130, 0.45);
+  border-radius: 0.25rem;
+  background-color: var(--md-default-bg-color);
+  color: rgba(43, 43, 43, 0.65);
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+[data-md-color-scheme="slate"] .md-search-result__meta .md-search__ai-keycap {
+  border-color: rgba(171, 180, 194, 0.45);
+  color: rgba(255, 255, 255, 0.7);
+  background-color: var(--md-default-bg-color);
+}
+
+/* Hide the mobile-only AI source trigger outside drawer context */
+.md-source--ai-mobile {
+  display: none;
+}
+
+/* ── Drawer sidebar: GitHub + Discord + AI search side-by-side ───────────── */
 @media screen and (max-width: 76.1875em) {
   .md-nav__source {
     display: flex;
     align-items: center;
     gap: var(--header-icon-cluster-gap);
+  }
+
+  .md-header__source .md-source--ai-mobile .md-source__icon svg,
+  .md-nav__source .md-source--ai-mobile .md-source__icon svg {
+    fill: currentColor;
+  }
+
+  .md-header__source .md-source--ai-mobile .md-source__icon path,
+  .md-nav__source .md-source--ai-mobile .md-source__icon path {
+    fill: currentColor;
+    stroke: none;
   }
 }
 
