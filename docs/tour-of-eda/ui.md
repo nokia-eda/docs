@@ -150,7 +150,7 @@ A namespace is a logical partition within a cluster that provides a mechanism fo
 
 When you first login to EDA as administrator, you have access to all available EDA namespaces and can switch between them using the namespace selector in the top toolbar:
 
-![ns-select](https://gitlab.com/rdodin/pics/-/wikis/uploads/10f8c7779ea629e14214fb88c1280edb/CleanShot_2025-05-14_at_23.27.05_2x.png)
+-{{image(url="graphics/CleanShot_2025-05-14_at_23.27.05_2x.webp", shadow=true, padding=20, title="Namespace selector")}}-
 
 By switching from "All Namespaces" to a particular namespace (e.g. `eda` namespace) the UI will only show the resources from this namespace and new resources will automatically be created in this namespace. This is done by setting the namespace field name for you in the [Resource Edit View](#edit-mode) when you create a new EDA resource.
 
