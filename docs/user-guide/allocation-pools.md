@@ -11,6 +11,12 @@ Behind the scenes EDA ConfigEngine works to ensure:
 
 All of that while supporting the resizing of allocation pools, whether you need to grow or shrink them!
 
+/// admonition | Note
+The maximum size of any allocation pool is 16.7M (24 bits).  A pool can be configured to be larger (e.g. 1:1/64), but only the bottom 16.7M indexes/addresses will be available.
+
+Reservations made in the bottom 16.7M index/address space will not be available for use and will consume a portion of that 16.7M (for example, if you create a pool with 4B indexes and reserve the bottom 17M, there will be no available indexes).
+///
+
 ## Allocation Pool Types
 
 EDA offers four types of allocation pools:
