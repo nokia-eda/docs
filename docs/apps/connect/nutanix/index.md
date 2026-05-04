@@ -120,7 +120,7 @@ EDA will correctly manage the connectivity for the transport subnets, used to ca
 A Nutanix virtual switch can operate in several modes:
 
 * __Active-Backup__: Each uplink is represented as a separate `ConnectInterface`.
-* __Active-Active with MAC pinning__: A single `ConnectInterface` is created for all uplinks, mapped to a static LAG interface in EDA.
+* __Active-Active with MAC pinning__: This bonding type is not supported by the EDA plugin.
 * __Active-Active with LACP__: A single `ConnectInterface` is created for all uplinks, mapped to an LACP interface in EDA.
 
 The plugin provisions the correct `ConnectInterface` objects based on the virtual switch mode. The corresponding Interface objects in EDA must be
