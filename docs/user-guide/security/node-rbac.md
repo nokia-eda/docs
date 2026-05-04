@@ -157,8 +157,7 @@ The `NodeUser` resource defines a node user using the following parameters:
 
 #### `NodeUser` resource
 
-```
----
+```yaml title="Example: NodeUser resource"
 apiVersion: core.eda.nokia.com/v1
 kind: NodeUser
 metadata:
@@ -220,67 +219,56 @@ When Nokia EDA is responsible for managing node certificates, the `tls` context 
 
 The following is an example of a `nodeSecurityProfile` CR where Nokia EDA manages certificates:
 
-```
-apiVersion: v1
-items:
-  - apiVersion: core.eda.nokia.com/v1
-    kind: NodeSecurityProfile
-    metadata:
-      annotations:
-        config.k8s.io/owning-inventory: 8c2644abc6befe73d5ad0cfc386ec155f31bc07d-1729769165484669347
-        kubectl.kubernetes.io/last-applied-configuration: >
-          {"apiVersion":"core.eda.nokia.com/v1","kind":"NodeSecurityProfile","metadata":{"annotations":{"config.k8s.io/owning-inventory":"8c2644abc6befe73d5ad0cfc386ec155f31bc07d-1729769165484669347"},"name":"insecure","namespace":"default"},"spec":{"nodeSelector":["eda.nokia.com/security-profile=insecure"]}}
-      name: insecure
-      namespace: eda
-    spec:
-      nodeSelector:
-        - eda.nokia.com/security-profile=insecure
-  - apiVersion: core.eda.nokia.com/v1
-    kind: NodeSecurityProfile
-    metadata:
-      annotations:
-        config.k8s.io/owning-inventory: 8c2644abc6befe73d5ad0cfc386ec155f31bc07d-1729769165484669347
-        kubectl.kubernetes.io/last-applied-configuration: >
-          {"apiVersion":"core.eda.nokia.com/v1","kind":"NodeSecurityProfile","metadata":{"annotations":{"config.k8s.io/owning-inventory":"8c2644abc6befe73d5ad0cfc386ec155f31bc07d-1729769165484669347"},"name":"managed-tls","namespace":"default"},"spec":{"nodeSelector":["eda.nokia.com/security-profile=managed"],"tls":{"csrParams":{"certificateValidity":"2160h","city":"Sunnyvale","country":"US","csrSuite":"CSRSUITE_X509_KEY_TYPE_RSA_2048_SIGNATURE_ALGORITHM_SHA_2_256","org":"NI","orgUnit":"EDA","state":"California"},"issuerRef":"eda-node-issuer"}}}
-      name: managed-tls
-      namespace: eda
-    spec:
-      nodeSelector:
-        - eda.nokia.com/security-profile=managed
-      tls:
-        csrParams:
-          certificateValidity: 2160h
-          city: Sunnyvale
-          country: US
-          csrSuite: CSRSUITE_X509_KEY_TYPE_RSA_2048_SIGNATURE_ALGORITHM_SHA_2_256
-          org: NI
-          orgUnit: EDA
-          state: California
-        issuerRef: eda-node-issuer
-  - apiVersion: core.eda.nokia.com/v1
-    kind: NodeSecurityProfile
-    metadata:
-      annotations:
-        config.k8s.io/owning-inventory: 8c2644abc6befe73d5ad0cfc386ec155f31bc07d-1729769165484669347
-        kubectl.kubernetes.io/last-applied-configuration: >
-          {"apiVersion":"core.eda.nokia.com/v1","kind":"NodeSecurityProfile","metadata":{"annotations":{"config.k8s.io/owning-inventory":"8c2644abc6befe73d5ad0cfc386ec155f31bc07d-1729769165484669347"},"name":"unmanaged-tls","namespace":"default"},"spec":{"nodeSelector":["eda.nokia.com/security-profile=unmanaged"],"tls":{"trustBundle":"eda-node-trust-bundle"}}}
-      name: unmanaged-tls
-      namespace: eda
-    spec:
-      nodeSelector:
-        - eda.nokia.com/security-profile=unmanaged
-      tls:
-        trustBundle: eda-node-trust-bundle
-kind: List
+```yaml  title="Connect to the Node without TLS"
+apiVersion: core.eda.nokia.com/v1
+kind: NodeSecurityProfile
 metadata:
-  resourceVersion: ""
+  name: insecure
+  namespace: eda
+spec:
+  nodeSelector:
+    - eda.nokia.com/security-profile=insecure
+```
+
+```yaml title="Connect to the Node with a TLS profile managed by Nokia EDA"
+apiVersion: core.eda.nokia.com/v1
+kind: NodeSecurityProfile
+metadata:
+  name: managed-tls
+  namespace: eda
+spec:
+  nodeSelector:
+    - eda.nokia.com/security-profile=managed
+  tls:
+    csrParams:
+      certificateValidity: 2160h
+      city: Sunnyvale
+      country: US
+      csrSuite: CSRSUITE_X509_KEY_TYPE_RSA_2048_SIGNATURE_ALGORITHM_SHA_2_256
+      org: NI
+      orgUnit: EDA
+      state: California
+    issuerRef: eda-node-issuer
+```
+
+```yaml title="Connect to the Node with a TLS profile managed outside of Nokia EDA"
+apiVersion: core.eda.nokia.com/v1
+kind: NodeSecurityProfile
+metadata:
+  name: unmanaged-tls
+  namespace: eda
+spec:
+  nodeSelector:
+    - eda.nokia.com/security-profile=unmanaged
+  tls:
+    trustBundle: eda-node-trust-bundle
 ```
 
 ### External certificate management
 
 If certificates are managed outside of Nokia EDA, the `tls` section must reference an external trust bundle. The `trustBundle` field contains a reference to a ConfigMap that holds a CA certificate. Nokia EDA uses this CA certificate to verify the node’s certificate whenever it establishes a connection. The trust bundle must be provided if node certificate management is performed outside of Nokia EDA, allowing the node to validate certificates through an external authority.
 
-```
+```yaml title="Connect to the Node with a TLS profile managed outside of Nokia EDA"
 apiVersion: core.eda.nokia.com/v1
 kind: NodeSecurityProfile
 metadata:
