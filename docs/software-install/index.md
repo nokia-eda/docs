@@ -56,14 +56,14 @@ In case the installation will be air-gapped, this section provides steps on how 
 
 /// html | div.steps
 
-1. [Downloading the Assets](air-gapped/downloading-the-assets.md)  
+1. [Downloading the assets](air-gapped/downloading-the-assets.md)  
     This task describes how to download all the necessary assets using a system with Internet access, so they can be used to deploy EDA in the air-gapped environment.
 
 2. [Deploying the Assets VM](air-gapped/deploying-the-assets-vm.md) <small>optional</small>  
-    Deploys the Assets VM in the air-gapped environment, bootstraps it and uploads all the Assets to the it.
+    Deploys the Assets VM in the air-gapped environment, bootstraps it and uploads all the assets to it.
 
-3. [Uploading the Assets](air-gapped/uploading-assets.md)  
-    Uploads all the Assets to the Assets VM.
+3. [Uploading the assets](air-gapped/uploading-assets.md)  
+    Uploads all the assets to the Assets VM.
 
 ///
 
@@ -108,7 +108,7 @@ Several key concepts are used throughout the documentation; following is an over
 *`edaadm` git repository*
 : A [publicly available](https://github.com/nokia-eda/edaadm) git repository that contains details and definitions for:
 
-    * Assets bundles for air-gapped installations: Nokia EDA Assets are defined in different bundles, based on their purpose. The repository provides the bundles and the means to download the content of the bundles from the internet and then upload them to the deployed Assets VM.
+    * Assets bundles for air-gapped installations: Nokia EDA assets are defined in different bundles, based on their purpose. The repository provides the bundles and the means to download the content of the bundles from the Internet and then upload them to the deployed Assets VM.
     * A KPT package to initiate the Assets VM.
 
 *Air-gapped Assets VM*

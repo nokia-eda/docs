@@ -12,7 +12,7 @@ Two environments will be discussed and used in an air-gapped installation:
 *Air-gapped Environment*
 : This environment does not have Internet access. It is the environment in which Nokia EDA platform is deployed.
 
-In each environment, you must have a system from which you can execute the steps. You can use a system to first connect to the internet, execute the steps for the public environment and then move the same system to the air-gapped environment to continue. Or, you can have two systems, and you would copy the data from the public system to the air-gapped system. More details on the requirements for these systems are included later in this document.
+In each environment, you must have a system from which you can execute the steps. You can use a system to first connect to the Internet, execute the steps for the public environment and then move the same system to the air-gapped environment to continue. Or, you can have two systems, and you would copy the data from the public system to the air-gapped system. More details on the requirements for these systems are included later in this document.
 
 For each section, there will be a note in which environment the section applies.
 
@@ -22,7 +22,7 @@ Nokia EDA platform relies on three services to be available during the installat
 
 * Container registry - to store the container images for the EDA platform and its applications.
 * Git server - to host Git repositories containing EDA application catalogs.
-* Web server - to serve the file artifacts used by various EDA components (schema profiles, llm-embeddings, etc.).
+* Web server - to serve the file artifacts used by various EDA components (schema profiles, LLM-embeddings, and so forth).
 
 In an air-gapped environment, these components can be provided in two ways:
 
@@ -36,7 +36,7 @@ In an air-gapped environment, these components can be provided in two ways:
 
 The goal of the air-gapped solution design is to allow users to choose which applications, resources and artifacts (colloquially referred to as "assets") to include in the air-gapped environment. This flexibility is provided by the air-gap bundles.
 
-An air-gap bundle is a yaml file that defines a group of related assets. For instance, a bundle for the core components of EDA for a specific version, or a bundle of the standard applications for a specific version.
+An air-gap bundle is a YAML file that defines a group of related assets. For instance, a bundle for the core components of EDA for a specific version, or a bundle of the standard applications for a specific version.
 
 ```yaml title="Example air-gap bundle for EDA core components version 25.12.4"
 version: 1.0.0
@@ -64,7 +64,7 @@ assets:
       name: catalog
 ```
 
-Bundles are downloaded using the [`edaadm`](../preparing-for-installation.md#download-edaadm-tools) CLI tool from the internet, and then uploaded using `edaadm` to the Assets Host[^2].  
+You can download the bundles using the [`edaadm`](../preparing-for-installation.md#download-edaadm-tools) CLI tool from the Internet, and then upload them to the Assets Host[^2] using the `edaadm` tool.  
 The product comes with a [set of standard bundles](https://github.com/nokia-eda/edaadm/tree/main/bundles) and custom bundles can be created by the user.
 
 Regardless of the approach used to host the services, your first step is to download the assets that will be used to deploy the EDA platform in the air-gapped environment.

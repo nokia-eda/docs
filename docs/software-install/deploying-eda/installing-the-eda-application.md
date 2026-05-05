@@ -263,7 +263,7 @@ Optional: The list of IP addresses, IP ranges and hostnames that should not be p
 `USE_ASSET_HOST`
 /////
 ///// html | td
-Must be set to `1` for an air-gapped Installation and set to `0` for an Internet based installation. `0` is the default value if not set.
+Must be set to `1` for an air-gapped installation and set to `0` for an Internet-based installation. `0` is the default value if not set.
 /////
 ////
 
@@ -437,9 +437,9 @@ The simulation mode can't be changed post-install.
 
 ///
 
-You can find examples of the `prefs.mk` file contents for Internet based and air-gapped installations for your reference:
+You can find examples of the `prefs.mk` file contents for Internet-based and air-gapped installations for your reference:
 
-/// tab | Internet based installation
+/// tab | Internet-based installation
 
 ```makefile
 --8<-- "docs/software-install/resources/prefs-example.mk"
