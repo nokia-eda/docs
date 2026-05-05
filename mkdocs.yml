@@ -46,6 +46,7 @@ nav:
           - Hotkeys: user-guide/gui-basics/hotkeys.md
       - Dashboards: user-guide/dashboards.md
       - Ask EDA: user-guide/ask-eda.md
+      - MCP server: user-guide/mcp-server.md
       - Namespaces: user-guide/namespaces.md
       - Resources: user-guide/resources.md
       - Workflows: user-guide/workflows.md
