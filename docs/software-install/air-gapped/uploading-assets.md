@@ -1,4 +1,4 @@
-# Uploading the Assets
+# Uploading the assets
 
 /// admonition | Caution
     type: note
