@@ -1,4 +1,4 @@
-# Downloading the Assets
+# Downloading the assets
 
 /// admonition | Caution
     type: note
@@ -8,7 +8,7 @@ These steps are meant to be executed in the public environment with Internet acc
 There are two types of assets that need to be downloaded:
 
 * Assets Bundles - The bundles that contain all the resources needed to run Nokia EDA. This includes container images, repositories, tools and more.
-* Base Talos VM Image - The base images for the Nokia EDA Kubernetes nodes (VMs) that will run the Nokia EDA application.
+* Base Talos VM image - The base images for the Nokia EDA Kubernetes nodes (VMs) that will run the Nokia EDA application.
 
 ## Downloading the Assets Bundles
 

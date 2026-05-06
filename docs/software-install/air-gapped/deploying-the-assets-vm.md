@@ -11,9 +11,9 @@ These steps help create the Assets VM from a base Talos VM image and populate it
 These steps are meant to be executed in the public environment with Internet access.
 ///
 
-### Creating Assets VM Image Cache
+### Creating Assets VM image cache
 
-Before creating the Assets VM Image for a specific environment, an image cache must be created that will contain the necessary bootstrap images used by the Assets VM.
+Before creating the Assets VM image for a specific environment, an image cache must be created that will contain the necessary bootstrap images used by the Assets VM.
 
 Change into the cloned `edaadm` repository root directory.
 
@@ -27,14 +27,14 @@ And run the following command to create the image cache:
 make -C bundles/ create-assets-host-bootstrap-image-cache
 ```
 
-### Creating the KVM Assets VM Image
+### Creating the KVM Assets VM image
 
 /// admonition | Note
     type: subtle-note
 This is only needed if you plan to deploy the Assets VM on KVM.
 ///
 
-Follow these steps to create the Assets VM Image for KVM. This will generate an ISO file based on the Talos VM base image containing a local cache. This image is different from the base Talos image ISO file that you will use for the EDA Kubernetes VMs, but is based on it.
+Follow these steps to create the Assets VM image for KVM. This will generate an ISO file based on the Talos VM base image containing a local cache. This image is different from the base Talos image ISO file that you will use for the EDA Kubernetes VMs, but is based on it.
 
 /// html | div.steps
 
@@ -100,7 +100,7 @@ Follow these steps to create the Assets VM Image for KVM. This will generate an 
 
 ///
 
-### Creating the VMware Assets VM Image
+### Creating the VMware Assets VM image
 
 /// admonition | Note
     type: subtle-note
@@ -110,7 +110,7 @@ This is only needed if you plan to deploy the Assets VM on VMware vSphere.
 /// warning | This command requires Linux kernel version 6 or higher[^1]
 ///
 
-Follow these steps to create the Assets VM Image for VMware vSphere. This will generate an ISO file based on the Talos VM base image containing a local cache. This image is different from the base Talos image ISO file that you will use for the EDA Kubernetes VMs, but is based on it.
+Follow these steps to create the Assets VM image for VMware vSphere. This will generate an ISO file based on the Talos VM base image containing a local cache. This image is different from the base Talos image ISO file that you will use for the EDA Kubernetes VMs, but is based on it.
 
 /// html | div.steps
 
@@ -297,7 +297,7 @@ k8s:
 
 Assuming you are in the `edaadm` repository root, save the configuration file as `eda-assets-deployment.yaml`.
 
-### Generating the Talos Machine Configuration Files
+### Generating the Talos machine configuration files
 
 After creating the Assets VM EDAADM configuration file, the next step is to generate all the configuration files that are necessary to deploy the Kubernetes environment for the Assets VM.
 
@@ -362,7 +362,7 @@ This procedure is executed on the KVM Hypervisor which will host the Assets VM.
 
 2. Verify that the Assets VM ISO image is available.
 
-    The Assets VM ISO image was generated in the [Creating the KVM Assets VM Image](#creating-the-kvm-assets-vm-image) and should be available in the air-gapped environment when you [copied the assets](#preparing-the-air-gapped-environment) from the public environment.
+    The Assets VM ISO image was generated in the [Creating the KVM Assets VM image](#creating-the-kvm-assets-vm-image) and should be available in the air-gapped environment when you [copied the assets](#preparing-the-air-gapped-environment) from the public environment.
 
     ```bash title="executing the <code>ls</code> command from the edaadm repository root"
     ls -lh ./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso

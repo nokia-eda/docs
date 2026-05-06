@@ -434,7 +434,7 @@ A list of logging destinations to which the Talos logs should be sent. Consult t
 
 ### Example EDAADM configuration file
 
-The following examples show an EDAADM configuration file for a 6-node Kubernetes cluster. For a standard Internet based installation, as well as for an air-gapped installation. These are the same two files, with only the `mirror` addition on the second tab/file.
+The following examples show an EDAADM configuration file for a 6-node Kubernetes cluster for a standard Internet-based installation, as well as for an air-gapped installation. These are the same two files, with only the `mirror` addition on the second tab/file.
 
 /// tab | Internet based installation
 

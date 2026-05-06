@@ -1,13 +1,13 @@
 # Ask EDA
 
-**Ask EDA** is the conversational (chat) interface built into the Nokia Event-Driven Automation (EDA) platform. It  allows you to interact with Nokia EDA using natural-language chat, enabling quick queries, AIOps assistance, dashboard creation, and context-specific help.
+**Ask EDA** is the conversational (chat) interface built into the Nokia Event-Driven Automation (EDA) platform. It allows you to interact with Nokia EDA using natural-language chat, enabling quick queries, AIOps assistance, dashboard creation, and context-specific help.
 
 ## Overview
 
 The AIOps implementation for Nokia EDA is built around a conversational chat interface, **Ask EDA**, that lets you interact with the platform using natural-language dialogue. **Ask EDA** provides the following high-level features:
 
 - Chat interface with history: you can ask follow-up questions without re-entering the full context, and the conversation history is displayed inline.
-- Multiple persistent conversations per user: you can create, delete, or rename a conversation. Persistence is maintained during a session; a restart of Nokia EDA may clear the data (transient persistence).
+- Multiple persistent conversations per user: you can create, delete, or rename a conversation. There is a per-user cap of 50 conversations, and the oldest conversations are removed automatically once the cap is reached.
 - Chart generation: The chat can produce and display charts such as line charts, pie charts, bar charts, counters, and tables. You can link directly to the query view from a generated table.
 - Resource linking: Agents can embed links to referenced resources, allowing you to navigate to those resources easily.
 - Workflow triggering: you can start workflows from the chat, receive links to generated artifacts, and see a summary of the results.
@@ -18,63 +18,76 @@ The AIOps implementation for Nokia EDA is built around a conversational chat int
 
 - Agentic AI: the main agent that orchestrates interactions with lower-level agents for task-specific purposes. Agents combine prompt engineering with additional resources such as workflows, APIs, and other agents.
 
-- Tool: functionality that can be added to an agent through the common  `Manifest` resource; the tools can be as workflows.
+- Tool: functionality exposed to an agent. Any `WorkflowDefinition` tagged for that agent (for example, workflows tagged `main` are exposed as tools to the Main agent, `netops` to the NetOps agent, and so forth) is automatically exposed as a tool to the agent. 
 
-- LLM provider: a configuration object that registers an external large-language-model service (for example, OpenAI, Google) with endpoint, API key, and model metadata. Nokia EDA supports LLM providers that expose an OpenAI-compatible API endpoint (`chat`/`completions` or `responses` APIs)
+
+- LLM provider: a configuration object that registers an external large-language-model service (for example, OpenAI, Google) with endpoint, API key, and model metadata. Nokia EDA supports LLM providers that expose an OpenAI-compatible API endpoint (`Chat/Completions`, `Responses`, or `Embeddings`).
 
 Nokia EDA follows an extensible, agent-centric model. A main agent is always present, alongside a number of other agents with task-specific purposes. The list of agents is outlined in [Agents](#agents).
 
-**Ask EDA** extends the functionality provided in native query language (NQL) to be more context aware, and to allow follow up or iterative questions to refine information. The chat interface is equivalent to **show** commands on the CLI, where you can easily look back at previous results. It supports a alarm root cause and transaction detail analysis.
+**Ask EDA** extends the functionality provided in natural query language (NQL) to be more context aware, and to allow follow-up or iterative questions to refine information. The chat interface is equivalent to **show** commands on the CLI, where you can easily look back at previous results. It supports alarm root-cause and transaction detail analysis.
 
 ### LLM providers
 
-The `Provider` resource adds OpenAI-style API LLM providers to Nokia EDA. This resource defines:
+The `Provider` resource adds OpenAI-style API LLM providers to Nokia EDA. Both `endpoint` and `models` are required. The resource defines:
 
-- The endpoint URL where the provider is can be reached; this can be the model's host or an LLM gateway.
-- The API Key
-- A list of models:
-  
-      - The model name, as defined by the LLM host
-      - An optional description of the model
-      - The API type (chat/completions, responses or embeddings )
-      - The intended use of the model: chat, routing, or reasoning 
-      - Various model behavior tuning, such as priority and temperature 
-  
+- `endpoint` — how to reach the provider:
+    - `url`: the endpoint URL; this can be the model's host or an LLM gateway.
+    - `apiKey`: the provider API key (required).
+    - `description`: optional human-readable description.
+    - `headers`: optional list of additional HTTP headers to include on every request (useful for gateway routing or custom auth).
+- `models` — a list of one or more models. Each entry has:
+    - `name`: the model name, as defined by the LLM host (required).
+    - `description`: optional description of the model.
+    - `type`: the API type. One of `Chat/Completions`, `Responses`, or `Embeddings` (required, defaults to `Responses`).
+    - `usage`: a list of intended uses. Valid values are `Chat`, `Routing`, and `Reasoning`.
+    - `priority`: request scheduling priority (OpenAI-only; maps to the `service_tier` API field). One of `Auto`, `Default`, `Flex`, or `Priority`.
+    - `temperature`: controls how random vs. deterministic the output is.
+    - `reasoningLevel`: the list of reasoning levels the model supports. Each entry is one of `None`, `Minimal`, `Low`, `Medium`, `High`, `XHigh`. Required for models that should be selectable when the user picks **Reasoning**.
+    - `supportNestedResponses`: whether the model's output supports nested responses.
+
+The `Provider` status reports the result of a periodic connectivity check:
+
+- `connected`: whether the provider responded successfully on the last check.
+- `error`: error message from the last failed check, if any.
+- `lastChecked`: timestamp of the last check.
+- `supportedModels`: the list of model names the provider reports as supported.
+
 /// details | Example of a `Provider` resource
-      type: code-example
+    type: code-example
 
-    ```yaml
-    apiVersion: ai.core.eda.nokia.com/v1
-    kind: Provider
-    metadata:
-    name: openai
-    namespace: eda-system
-    spec:
-    endpoint:
-        url: https://api.openai.com/v1/responses
-        apiKey: <your-openai-api-key>
-    models:
-        - name: gpt-4.1
-        description: Balanced GPT-4.1 for chat and tool calls
-        type: Responses
-        usage: [Chat]
-        priority: Priority
-        temperature: "0"
-        supportNestedResponses: true
-        - name: gpt-5-mini
-        description: Fast lightweight model for routing/classification
-        type: Responses
-        usage: [Routing]
-        priority: Priority
-        supportNestedResponses: true
-        - name: gpt-5.1
-        description: Flagship reasoning model
-        type: Responses
-        usage: [Reasoning]
-        priority: Priority
-        reasoningLevel: [Low, Medium, High]
-        supportNestedResponses: true
-    ```
+```yaml
+apiVersion: ai.core.eda.nokia.com/v1
+kind: Provider
+metadata:
+  name: openai
+  namespace: eda-system
+spec:
+  endpoint:
+    url: https://api.openai.com/v1/responses
+    apiKey: <your-openai-api-key>
+  models:
+    - name: gpt-4.1
+      description: Balanced GPT-4.1 for chat and tool calls
+      type: Responses
+      usage: [Chat]
+      priority: Priority
+      temperature: "0"
+      supportNestedResponses: true
+    - name: gpt-5-mini
+      description: Fast lightweight model for routing/classification
+      type: Responses
+      usage: [Routing]
+      priority: Priority
+      supportNestedResponses: true
+    - name: gpt-5.1
+      description: Flagship reasoning model
+      type: Responses
+      usage: [Reasoning]
+      priority: Priority
+      reasoningLevel: [Low, Medium, High]
+      supportNestedResponses: true
+```
 
 ///
 
@@ -85,11 +98,32 @@ The following agents currently exist:
 | Agent | Primary function | Typical invocation |
 | --- | --- | --- |
 | Main | Orchestrates all user-initiated flows. | Default entry point for most queries. |
-| Alarms | Root-cause analysis for alarms.| "Diagnose alarm InterfaceDown-leaf-1" or "What just happened ?"|
+| Alarms | Root-cause analysis for alarms. | "Diagnose alarm InterfaceDown-leaf-1" or "What just happened?" |
 | Query | Executes NQL → EQL translations. | “Can you show the subinterface names and their corresponding operational down reasons on `leaf-1`?” |
-| Resources | Looks up network resources and their attributes. | “Is my fabric healthy ?” |
-| NetOps | Runs network related operations | "Ping leaf-1 from leaf-2 |
+| Resources | Looks up network resources and their attributes. | “Is my fabric healthy?” |
+| NetOps | Runs network-related operations. | "Ping leaf-1 from leaf-2" |
 | Charts | Converts data queries into dashlets. | “Build a donut chart showing active alarms by severity.” |
+
+Agents have access to their own tools, plus any tools tagged for them. For example the `routing` manifest contains a `RouteLookup` CRD that is tagged for the `main` and `netops` agents. This means that the `RouteLookup` workflow is exposed as a tool to the Main and NetOps agents.
+
+```yaml
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: routing
+spec:
+   # redacted for brevity
+  components:
+    - crd:
+        path: routing/crds/routing.eda.nokia.com_routelookups.yaml
+        workflow: true
+        ui:
+          name: Route Lookup
+        ai:
+          matchTags:
+            - main
+            - netops
+```
 
 ### Model selection options
 
@@ -114,7 +148,7 @@ Table: Elements of the Ask EDA window
 |\#|Name|Function|
 |:---:|----|--------|
 |1|Input bar|Enter queries here and press **Enter** on your keyboard.|
-|2|**Start new conversation** icon|Click to start an new conversation.|
+|2|**Start new conversation** icon|Click to start a new conversation.|
 |3|Model type drop-down list|Select from **Auto**, **Reasoning**, or **Standard**.|
 |4|**Full screen** toggle|When the panel is docked, the **Full screen** icon is a left arrow. Click it to make the chat overlay the main view. In this mode, the **Full screen** icon is a right arrow; click it to dock the ASK EDA window.|
 |5|**X**|Click to close the chat window.|
@@ -134,7 +168,7 @@ All active and completed conversations appear in the side-bar, ordered by most r
 
  -{{image(url="graphics/conversation-list.png", title="Conversation list", shadow=true, padding=20)}}-
 
-Conversations persist for the duration of the Nokia EDA session. If Nokia EDA is restarted, transient conversations are cleared unless the administrator has enabled permanent storage.
+Conversations are stored as JSON files on disk in the AI engine pod. Each user is capped at 50 conversations, and the oldest conversation is evicted automatically when a new one would exceed the cap.
 
 You can rename a conversation or delete it entirely.
 
@@ -159,11 +193,12 @@ Currently, **Ask EDA** provides contextual help for transactions and alarms.
 
 **Ask EDA** can help create dashboards by generating individual dashlets based on prompts that you provide; it can create the following types of dashlets:
 
-- Pie chart
+- Donut/pie chart
+- Bar chart
 - Line chart
 - Table
 - Counter
 
-**Ask EDA** can generate multiple types of dashlets from your prompt. If you do not provide a dashlet type, **Ask EDA** infers the most appropriate type of dashlet based based on your requested data. If it cannot infer the dashlet type, it asks you to select one.
+**Ask EDA** can generate multiple types of dashlets from your prompt. If you do not provide a dashlet type, **Ask EDA** infers the most appropriate type of dashlet based on your requested data. If it cannot infer the dashlet type, it asks you to select one.
 
 Once the dashlet is generated, you can drag and drop it in an opened dashboard designer view. For more information about how to build dashboards, see [Dashboards](dashboards.md).
