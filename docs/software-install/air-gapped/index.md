@@ -30,7 +30,12 @@ In an air-gapped environment, these components can be provided in two ways:
     We call the host serving the required services the *Assets Host*.
 2. By providing the addresses and credentials to one or more of the existing services operated by the user.
 
-> It is possible to use any combination of the two approaches, for instance to deploy the EDA Assets VM to provide the container registry and git server, and to use the existing web server for the file artifacts.
+It is possible to use any combination of the two approaches, for instance to deploy the EDA Assets VM to provide the container registry and git server, and to use the existing web server for the file artifacts.
+
+/// danger | Geo-redundant clusters
+A **single** assets host should be used for the active and standby members of the geo-redundant cluster.
+It is not possible to use different assets hosts for the active and standby members.
+///
 
 ## Asset bundles
 
