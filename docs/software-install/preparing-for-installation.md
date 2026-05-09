@@ -45,10 +45,11 @@ Clone the EDAADM repository:
 git clone https://github.com/nokia-eda/edaadm && cd edaadm
 ```
 
-The CLI tool that orchestrates the configuration and installation of the Nokia EDA platform in a production environment is called `edaadm`. To download `edaadm` run the following command from the root of the `edaadm` repository:
+The CLI tool that orchestrates the configuration and installation of the Nokia EDA platform in a production environment is called `edaadm`. To download `edaadm` and the tools it relies on, run the following commands from the root of the `edaadm` repository:
 
 ```bash
 make -C bundles/ download-tools
+make -C kpt/ download-tools
 ```
 
 This step downloads[^2] the `edaadm` CLI tool for your architecture in the `./bundles/tools` directory. You can copy the `edaadm` binary from the `./bundles/tools` directory to a location in your `$PATH` to make it available in your shell for future use, for example:
