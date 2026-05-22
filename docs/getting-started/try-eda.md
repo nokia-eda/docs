@@ -112,13 +112,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
 
 5. **Install the EDA Playground**
 
-    A single command separates you from the EDA Playground installation. But before you run it, if you want to enable the Natural Language support for the [EDA Query](../user-guide/eda-query-language.md) functionality, provide the LLM key (OpenAI) with an environment variable[^4]:
-
-    ```shell
-    export LLM_API_KEY=<your-OpenAI-API-key>
-    ```
-
-    Now, run the EDA [installer][makefile]:
+    Run the [`try-eda` target][makefile] to start the installation process:
 
     ```bash
     make try-eda
@@ -131,7 +125,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
     As you may have noticed, the EDA Playground installation does not require a license. We wanted to ensure that automation with EDA is accessible to everyone, anytime.  
     The EDA system can perfectly run without a license with the following caveats:
 
-    * Only the nodes inside the EDA's Digital Twin can be used. These include the SR Linux nodes that will be deployed for you by the time `make try-eda` step finishes as well as any 3rd party vendors supported by EDA's Digital Twin. No hardware nodes can be used in an unlicensed EDA mode[^5].
+    * Only the nodes inside the EDA's Digital Twin can be used. These include the SR Linux nodes that will be deployed for you by the time `make try-eda` step finishes as well as any 3rd party vendors supported by EDA's Digital Twin. No hardware nodes can be used in an unlicensed EDA mode[^4].
     * No [integration](../apps/connect/index.md) with the cloud systems such as OpenShift, VMware, etc.
     ///
 
@@ -204,7 +198,7 @@ And you are ready to start over!
 
 Even though all it takes to Try EDA on your own compute is a couple of commands, nothing beats an environment that one can run without fronting the hardware, anytime, with a single click and {==for free==}.
 
-EDA in Codespaces is exactly that - the real "Try EDA" installation in a free[^5], cloud-based VM, available to everyone with a single-click spin up. All you need is a GitHub account and a web browser.
+EDA in Codespaces is exactly that - the real "Try EDA" installation in a free[^4], cloud-based VM, available to everyone with a single-click spin up. All you need is a GitHub account and a web browser.
 
 Here is how it works. When you see the "Run in Codespaces" button somewhere in our docs or in one of the repositories it invites you to spin up the EDA environment in the Github Codespaces.
 
@@ -226,7 +220,7 @@ In the VS Code window in your browser you have the full access to the terminal w
 
 ### Is It Free?
 
-The best part about the [Github Codespaces][codespaces-doc] is that it offers a generous free tier - **120 cpu-hours for free each month**[^6] to all GitHub users. The "EDA in Codespaces" uses the 4vcpu/16GB RAM machine type, which means that you can run the EDA environment for 30 hours each month. For free.
+The best part about the [Github Codespaces][codespaces-doc] is that it offers a generous free tier - **120 cpu-hours for free each month**[^5] to all GitHub users. The "EDA in Codespaces" uses the 4vcpu/16GB RAM machine type, which means that you can run the EDA environment for 30 hours each month. For free.
 
 The cpu-hours counter is reset at the beginning of each calendar month, so you can use the free plan every month.
 
@@ -249,7 +243,5 @@ The cpu-hours counter is reset at the beginning of each calendar month, so you c
     sudo apt install -y git
     ```
 
-[^4]: You can provide the LLM key after the installation as well.
-[^5]: Containerlab-deployed SR Linux nodes are planned to be supported in the unlicensed mode in the future.
-[^5]: Limited by the free tier offered by GitHub Codespaces.
-[^6]: The terms of the free plan may be subject to change, consult with the [official documentation](https://docs.github.com/en/billing/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#monthly-included-storage-and-core-hours-for-personal-accounts) for the current terms and conditions.
+[^4]: Limited by the free tier offered by GitHub Codespaces.
+[^5]: The terms of the free plan may be subject to change, consult with the [official documentation](https://docs.github.com/en/billing/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#monthly-included-storage-and-core-hours-for-personal-accounts) for the current terms and conditions.

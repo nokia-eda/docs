@@ -236,7 +236,7 @@ To include "state" in the same query:
 
 ## Natural-language queries
 
-When creating a query in EDA, you also have the option of writing the query in natural language. With a natural-language query, you can ask questions of EDA such as:
+When creating a query in EDA, you also have the option of writing the query in natural language (NQL). With a natural-language query, you can ask questions of EDA such as:
 
 - List all up interfaces
 - List all interfaces that have an MTU of 9232, sorted by interface name
@@ -248,12 +248,32 @@ When creating a query in EDA, you also have the option of writing the query in n
 - Show me the total numbers of packets sent on all interfaces
 - Show me the number of MAC addresses on subinterfaces on "leaf-1-1", include the interface name
 
-/// admonition | Note
+/// details | Natural-language query requirements
     type: subtle-note
+Natural-language support requires the [LLM Provider resource](ask-eda.md#llm-providers) to be provisioned in the cluster. If you are creating the `Provider` resources manually, you must create a `Provider` resource for OpenAI with the following embeddings model:
 
-1. Natural-language support requires the LLM API key to be provided in the `.spec.llm.apiKey` of your `EngineConfig` resource.
-2. Currently, natural-language queries are resolved only against the `.node.srl` table.
+```yaml
+apiVersion: ai.core.eda.nokia.com/v1
+kind: Provider
+metadata:
+  name: openai-embeddings
+  namespace: eda-system
+spec:
+  endpoint:
+    apiKey: <your-openai-api-key>
+    description: OpenAI Embeddings API for OpenAI Provider
+    url: https://api.openai.com/v1/embeddings
+  models:
+    - name: text-embedding-ada-002
+      type: Embeddings
+```
+
 ///
+
+Natural-language queries are often resolved against the node-agnostic `.namespace.resources.cr` tables, which may not contain all the data required to fullfil the query request. To be able to query the node tables, prepend the query with the Network OS name. For example:
+
+- for Nokia SR Linux: `srl: show me all bgp peers in established state`
+- for Nokia SR OS: `sros: list all ports with mtu greater than 1500`
 
 ## Creating a query with EQL
 
