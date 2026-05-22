@@ -399,6 +399,7 @@ Default: unset - the Nokia EDA certificate issuers are installed.
 `LLM_API_KEY`
 /////
 ///// html | td
+**Deprecated:** Use the [LLM Provider resource](../../user-guide/ask-eda.md#llm-providers) instead.
 Optional: The OpenAI API key for the Nokia EDA Natural Language Query functionality.
 /////
 ////
