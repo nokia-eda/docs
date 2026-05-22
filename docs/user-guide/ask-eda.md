@@ -18,8 +18,7 @@ The AIOps implementation for Nokia EDA is built around a conversational chat int
 
 - Agentic AI: the main agent that orchestrates interactions with lower-level agents for task-specific purposes. Agents combine prompt engineering with additional resources such as workflows, APIs, and other agents.
 
-- Tool: functionality exposed to an agent. Any `WorkflowDefinition` tagged for that agent (for example, workflows tagged `main` are exposed as tools to the Main agent, `netops` to the NetOps agent, and so forth) is automatically exposed as a tool to the agent. 
-
+- Tool: functionality exposed to an agent. Any `WorkflowDefinition` tagged for that agent (for example, workflows tagged `main` are exposed as tools to the Main agent, `netops` to the NetOps agent, and so forth) is automatically exposed as a tool to the agent.
 
 - LLM provider: a configuration object that registers an external large-language-model service (for example, OpenAI, Google) with endpoint, API key, and model metadata. Nokia EDA supports LLM providers that expose an OpenAI-compatible API endpoint (`Chat/Completions`, `Responses`, or `Embeddings`).
 
@@ -53,7 +52,7 @@ The `Provider` status reports the result of a periodic connectivity check:
 - `lastChecked`: timestamp of the last check.
 - `supportedModels`: the list of model names the provider reports as supported.
 
-/// details | Example of a `Provider` resource
+/// details | Example: OpenAI `Provider` resource
     type: code-example
 
 ```yaml
@@ -67,29 +66,56 @@ spec:
     url: https://api.openai.com/v1/responses
     apiKey: <your-openai-api-key>
   models:
-    - name: gpt-4.1
-      description: Balanced GPT-4.1 for chat and tool calls
-      type: Responses
-      usage: [Chat]
-      priority: Priority
-      temperature: "0"
-      supportNestedResponses: true
-    - name: gpt-5-mini
-      description: Fast lightweight model for routing/classification
-      type: Responses
-      usage: [Routing]
+    - description: Balanced GPT-4.1 for chat and tool calls
+      name: gpt-4.1
       priority: Priority
       supportNestedResponses: true
-    - name: gpt-5.1
-      description: Flagship reasoning model
+      temperature: '0'
       type: Responses
-      usage: [Reasoning]
+      usage:
+        - Chat
+    - description: Fast lightweight model for routing/classification
+      name: gpt-5.4-mini
       priority: Priority
-      reasoningLevel: [Low, Medium, High]
       supportNestedResponses: true
+      type: Responses
+      usage:
+        - Routing
+    - description: Flagship reasoning model
+      name: gpt-5.4
+      priority: Priority
+      reasoningLevel:
+        - Low
+        - Medium
+        - High
+        - XHigh
+      supportNestedResponses: true
+      type: Responses
+      usage:
+        - Reasoning
+    - name: text-embedding-ada-002
+      description: Embedding model for text-based tools
+      type: Embeddings
 ```
 
 ///
+
+#### Installing LLM providers via EDA Store
+
+Creating the `Provider` resources manually gives you full control over the LLM provider configuration, however it requires knowledge of the particular LLM provider's configuration details.
+
+To simplify the process of installing LLM providers, Nokia EDA provides a set of applications that can be installed from the [EDA Store](../apps/index.md#nokia-eda-store) for the respective LLM providers:
+
+- OpenAI
+- Gemini
+- xAI
+
+When you install the application via EDA Store UI, you will be prompted to provide the necessary inputs (such as API keys) for the LLM provider you are installing. They will be used to create the `Provider` resources with the necessary configuration.
+
+-{{image(url="graphics/llm-providers-in-ui.webp", title="Installed LLM providers via OpenAI EDA application", shadow=true, padding=20)}}-
+
+> 1. You must have an OpenAI API key even when installing non-OpenAI LLM providers. This is required to support the embeddings model (`openai-embeddings` from the screenshot above), that is only available for the OpenAI provider.
+> 2. In the current release, only one LLM application can be installed at a time.
 
 ### Agents
 
