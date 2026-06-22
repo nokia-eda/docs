@@ -2,8 +2,13 @@ from datetime import datetime
 from pathlib import Path
 
 import yaml
+from mkdocs.plugins import event_priority
 
 
+# Priority 100 makes this run before the macros plugin's on_config, so the
+# version values added to config.extra below are copied into the macro
+# variables and become usable in markdown (e.g. -{{ eda_major_version }}-).
+@event_priority(100)
 def on_config(config, **kwargs):
     # set current_year in the copyright
     current_year = datetime.now().year
@@ -17,6 +22,12 @@ def on_config(config, **kwargs):
     config.edit_uri = config.edit_uri.format(
         versioned_branch="release-" + eda_major_minor_version
     )
+
+    # expose the derived versions as macro variables via config.extra
+    config.extra["eda_major_version"] = eda_major_version
+    config.extra["eda_minor_version"] = eda_minor_version
+    config.extra["eda_major_minor_version"] = eda_major_minor_version
+    config.extra["eda_year"] = 2000 + int(eda_major_version)  # e.g. 24 -> 2024
 
 
 def _compute_crd_icon(manifest_file: Path, resource_plural: str) -> str:
