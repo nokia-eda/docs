@@ -1,5 +1,7 @@
 # Software Installation Guide
 
+-{{ js_script("/javascripts/viewer-static.min.js") }}-
+
 This document describes the installation procedure in a production environment; to install Nokia Event-Driven Automation (EDA) in a lab, development or test environment, see [Getting Started](../getting-started/try-eda.md).  
 It includes procedures for preparing the nodes that host the application, installing the application, upgrading and uninstalling.
 
@@ -125,6 +127,41 @@ Several key concepts are used throughout the documentation; following is an over
 : A name used to describe the combination of the container registry, git server and web server running on the Assets VM.
 
 ## Version information
+
+### Release numbering
+
+Nokia EDA software uses the following release numbering scheme:
+
+* **Major release number**: The last two digits of the year in which the release is made. For example, releases made in -{{ eda_year }}- use the major release number `-{{ eda_major_version }}-`, as in `-{{ eda_major_version }}-.x`.
+* **Minor release number**: The number of the month in which the feature release first becomes available. For example, a feature release made available in April of -{{ eda_year }}- has the release number `-{{ eda_major_version }}-.4`, where `4` indicates the fourth month. The minor release number remains fixed even if the release is delayed past the end of the intended month.
+* **Maintenance release number**: The final number appended to the release number. The first iteration of a release is appended with `.1`, as in `-{{ eda_major_version }}-.4.1`; the second with `.2`, as in `-{{ eda_major_version }}-.4.2`; and so on.
+
+The following diagram shows how these components combine into a complete release number:
+
+-{{ diagram(path='./diagrams/release-numbering.drawio', title='Release numbering scheme', page=0, zoom=1.2) }}-
+
+/// admonition | Long-term release
+    type: subtle-note
+The last minor release of the year happens in December (e.g., `-{{ eda_major_version }}-.12`) and is the **long-term release**. It receives security and bug fixes for longer than the other minor releases in the same major release.
+///
+
+### Core and applications
+
+EDA software consists of the EDA core and the pluggable applications. The core is versioned using the semantic versioning scheme and the following table lists the matching EDA core versions for each release:
+
+| EDA release version | EDA core version |
+|-------------|------------------|
+| 26.4 | v5.0.0 |
+| 25.12 | v4.0.0 |
+| 25.8 | v3.0.0 |
+| 25.4 | v2.0.0 |
+| 24.12 | v2.0.0 |
+
+EDA applications declare the supported EDA core versions in their manifest file using the `.spec.supportedCoreVersions` field.
+
+The applications themselves are versioned individually using the semantic versioning scheme and do not have a direct relationship to the EDA core version. Individual application versions can be viewed in the EDA Store UI or as git tags in the application's catalog.
+
+### Talos Kubernetes
 
 The Talos Kubernetes version Nokia EDA is deployed on is set by the [`edaadm`](preparing-for-installation.md#download-edaadm-tools) CLI tool. Edaadm downloads the respective Talos images and generates the machine configurations and bootstraps the Kubernetes cluster.
 
