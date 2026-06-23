@@ -14,24 +14,23 @@ During installation, a local PKI is bootstrapped using Cert-Manager Issuer and C
 
 Cert-Manager handles certificate signing through a resource called [`Issuer`][cm-issuer-concept-doc].
 
-Nokia EDA uses six different Cert-Manager issuers:
+Nokia EDA uses the following Cert-Manager issuers:
 
 - **Root issuer**: This is a [SelfSigned Issuer](https://cert-manager.io/docs/configuration/selfsigned/) used to bootstrap the remaining Nokia EDA `CA` Issuers.
-- **API issuer**: A [CA Issuer][cm-ca-issuer-doc] that signs certificates for the Nokia EDA API server and Keycloak.
+- **API issuer**: A [CA Issuer][cm-ca-issuer-doc] that signs the Nokia EDA API server certificate exposed to northbound clients.
 - **Node issuer**:  A [CA Issuer][cm-ca-issuer-doc] that signs certificates installed on network nodes after discovery (depending on `NodeSecurityProfile` settings).
-- **Internal issuer**: A [CA Issuer][cm-ca-issuer-doc] that signs certificates for Nokia EDA's internal pods.
+- **Internal issuer**: A [CA Issuer][cm-ca-issuer-doc] that signs certificates used for inter-pod communication, including the in-cluster TLS served by the Nokia EDA API and Keycloak pods.
 - **Webhook issuer**: A [CA Issuer][cm-ca-issuer-doc] that signs certificates for Mutating/Validating webhooks used by controller-based apps.
-- **Bootstrap issuer**: A [CA Issuer][cm-ca-issuer-doc] that signs SR OS nodes bootstrap certificate.
-These certificates are downloaded during ZTP and later replaced by certificates signed by the Node issuer using gNOI CertificateManagement.
+- **Bootstrap issuer**: A [CA Issuer][cm-ca-issuer-doc] that signs the bootstrap certificate for SR OS nodes. These certificates are downloaded during ZTP and later replaced by certificates signed by the Node issuer using gNOI CertificateManagement.
+- **Integration issuer**: A [CA Issuer][cm-ca-issuer-doc] (with an associated intermediate issuer `eda-integration-intermediate-issuer`) that signs certificates for Nokia EDA's external integration components, such as the log-output Fluent Bit collector used to forward logs to external systems.
 
-To be able to sign certificates, each Issuer requires its own CA certificate and private key that are generated at Nokia EDA install time using a Cert-Manager `Certificate` Custom Resource. The `Certificate` for an Issuer is signed by the Nokia EDA root issuer (a `selfSigned` Cert-Manager issuer).
+To be able to sign certificates, each issuer requires its own CA certificate and private key which are generated during Nokia EDA installation using a Cert-Manager `Certificate` custom resource. The `Certificate` for an issuer is signed by the Nokia EDA root issuer (a `selfSigned` Cert-Manager issuer).
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='', page=0, zoom=1.1) }}-
+-{{ diagram(path='diagrams/eda-tls-issuers.drawio', title='', page=0, zoom=1.1) }}-
 
-The signed Issuer CA certificate and the corresponding private key are stored in a Kubernetes Secret and is referenced by the Issuer resource.
+The signed Issuer CA certificate and the corresponding private key are stored in a Kubernetes Secret which is referenced by the Issuer resource.
 
 ```yaml title="Example: EDA API CA certificate and Issuer resources"
-
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -92,15 +91,15 @@ Nokia EDA is composed of multiple trust domains:
 
 ### Northbound
 
-The API Issuer signs certificates that secure Nokia EDA's **API and Keycloak server pods**. It has a fixed name[^1], `eda-api-issuer`, is of type `CA`, and is backed by a secret called `eda-api-ca`.
+The API issuer signs the certificate served by the **Nokia EDA API pod** to northbound clients. It has a fixed name[^1], `eda-api-issuer`, is of type `CA`, and is backed by a secret called `eda-api-ca`.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='Northbound trust domain', page=1, zoom=1.0) }}-
+-{{ diagram(path='diagrams/eda-tls-issuers.drawio', title='Northbound trust domain', page=1, zoom=1.0) }}-
 
 > See the [Bring your own API Certificate](#bring-your-own-api-certificate) section for options for modifying this Issuer.
 
 #### Certificate generation and distribution
 
-Nokia EDA API certificates are generated and distributed to the API and Keycloak pods using [Cert-Manager CSI driver](https://cert-manager.io/docs/usage/csi-driver/) - a daemon set that facilitates the generation, signing and mounting of TLS certificate keypair to Kubernetes pods.
+Nokia EDA API certificates are generated and distributed to the API pod using [Cert-Manager CSI driver](https://cert-manager.io/docs/usage/csi-driver/) - a daemon set that facilitates the generation, signing and mounting of TLS certificate keypair to Kubernetes pods.
 
 Using the CSI driver for certificate distribution offers several advantages:
 
@@ -109,7 +108,7 @@ Using the CSI driver for certificate distribution offers several advantages:
 - **Dynamic configuration**: Certificate parameters are defined declaratively in the pod spec.
 - **Simplified operations**: No need to manually create or manage Certificate resources.
 
-The API server and Keycloak pods have Kubernetes volumes of type `csi` with `csi.cert-manager.io` attributes to request certificates from the `eda-api-issuer`:
+The API pod has a Kubernetes volume of type `csi` with `csi.cert-manager.io` attributes to request a certificate from the `eda-api-issuer`:
 
 ```yaml title="Snippet from the pod spec showing Cert-Manager CSI driver volume for API certificates"
 spec:
@@ -119,7 +118,7 @@ spec:
       driver: csi.cert-manager.io
       readOnly: true
       volumeAttributes:
-        csi.cert-manager.io/dns-names: ${EDA_API_HOSTNAME},eda-api,eda-api.${POD_NAMESPACE}.svc.cluster,eda-keycloak.${POD_NAMESPACE}.svc,eda-keycloak.${POD_NAMESPACE}.svc.cluster,eda-keycloak.${POD_NAMESPACE}.svc.cluster.local,eda-api.${POD_NAMESPACE},eda-api.${POD_NAMESPACE}.svc,eda-api.${POD_NAMESPACE}.svc.cluster.local,eda-keycloak,eda-keycloak.${POD_NAMESPACE}
+        csi.cert-manager.io/dns-names: ${EDA_API_HOSTNAME},eda-api.${POD_NAMESPACE}.svc,eda-api.${POD_NAMESPACE}.svc.cluster.local
         csi.cert-manager.io/duration: 720h0m0s
         csi.cert-manager.io/ip-sans: ${EDA_IPV4_ADDR},${EDA_IPV6_ADDR} #(1)!
         csi.cert-manager.io/issuer-name: eda-api-issuer
@@ -134,27 +133,57 @@ The CSI driver volume attributes configure certificate generation with the follo
 | Attribute | Description |
 |-----------|-------------|
 | `dns-names` | DNS Subject Alternative Names (SANs) to include in the certificate. These cover all service names and their fully qualified variants. |
-| `duration` | Certificate validity period (30 days in this example). |
+| `duration` | Certificate validity period (30 days in this example). Sourced from `spec.api.certDuration` of the `EngineConfig` resource. |
 | `ip-sans` | IP addresses to include as SANs, allowing direct IP-based access. |
 | `issuer-name` | The Cert-Manager Issuer used to sign the certificate. |
 | `key-algorithm` | Cryptographic algorithm for key generation (ECDSA provides strong security with smaller keys). |
-| `renew-before` | Time before expiration when Cert-Manager automatically renews the certificate (10 days in this example). |
+| `renew-before` | Time before expiration when Cert-Manager automatically renews the certificate (10 days in this example). Sourced from `spec.api.certRenewBefore` of the `EngineConfig` resource. |
 
 > See [CSI driver docs](https://cert-manager.io/docs/usage/csi-driver/#supported-volume-attributes) for all supported volume attributes.
 
+##### Tuning the API certificate duration
+
+The lifetime of the certificate signed by `eda-api-issuer` and the time at which Cert-Manager renews it are configurable via the cluster-wide `EngineConfig` resource (`engine-config` in the Nokia EDA base namespace):
+
+```yaml title="Snippet from EngineConfig spec"
+apiVersion: core.eda.nokia.com/v1
+kind: EngineConfig
+metadata:
+  name: engine-config
+  namespace: eda-system
+spec:
+  api:
+    certDuration: 720h     #(1)!
+    certRenewBefore: 240h  #(2)!
+```
+
+1. Validity of the API server certificate. Defaults to `720h` (30 days). Invalid or non-positive values fall back to the default.
+2. How long before expiry Cert-Manager renews the certificate. Defaults to `240h` (10 days). If left empty, invalid, or set to a value greater than or equal to `certDuration`, it falls back to `certDuration / 3`.
+
+To inspect the current values:
+
+```bash
+kubectl get engineconfig engine-config -n eda-system \
+  -o jsonpath='{.spec.api.certDuration}{"\t"}{.spec.api.certRenewBefore}{"\n"}'
+```
+
+Changes to these fields are picked up the next time the API pod is reconciled (for example, after `edactl platform stop && edactl platform start`); they update the `csi.cert-manager.io/duration` and `csi.cert-manager.io/renew-before` volume attributes on the API pod.
+
 #### Bring your own API certificate
 
-Nokia EDA API certificates can be customized to integrate with your organization's PKI infrastructure. There are two approaches: modify the API Issuer to chain Nokia EDA certificates to your CA, or providing pre-generated certificates directly.
+Nokia EDA API certificates can be customized to integrate with your organization's PKI infrastructure. There are two approaches: modify the API issuer to chain Nokia EDA certificates to your CA, or provide pre-generated certificates directly.
 
 ##### Option 1: Modify the API Issuer
 
 This approach integrates Nokia EDA into your organization's trust domain by modifying the default `eda-api-issuer` to chain to your enterprise CA. The CSI driver continues to handle certificate generation and automatic renewal, but certificates are now signed by your CA hierarchy.
+/// tab | EDA API User CA Issuer
+-{{ diagram(path='diagrams/eda-tls-issuers.drawio', title='EDA API User CA Issuer', page=3, zoom=1.0) }}-
+///
+/// tab | EDA API Vault Issuer
+-{{ diagram(path='diagrams/eda-tls-issuers.drawio', title='EDA API Vault Issuer', page=4, zoom=1.0) }}-
+///
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='EDA API User CA Issuer', page=3, zoom=1.0) }}-
-
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='EDA API Vault Issuer', page=4, zoom=1.0) }}-
-
-> You can use any Cert-Manager Issuer type. Refer to the Cert-Manager documentation to choose and configure the Issuer that best fits your needs.
+> You can use any Cert-Manager issuer type. Refer to the Cert-Manager documentation to choose and configure the Issuer that best fits your needs.
 
 The procedure to modify the API Issuer to use your own (intermediate) CA includes the following steps:
 
@@ -168,6 +197,8 @@ The procedure to modify the API Issuer to use your own (intermediate) CA include
     apiVersion: v1
     kind: Secret
     metadata:
+      labels:
+        eda.nokia.com/ca: api      
       name: enterprise-api-ca
       namespace: eda-system
     type: kubernetes.io/tls
@@ -215,7 +246,7 @@ The procedure to modify the API Issuer to use your own (intermediate) CA include
 
 3. **Restart the platform**
 
-    If the Issuer has been modified after the initial Nokia EDA installation, restart the platform to ensure that the API and Keycloak pods request new certificates signed by your CA:
+    If the issuer has been modified after the initial Nokia EDA installation, restart the platform to ensure that the API pod requests a new certificate signed by your CA:
 
     ```bash
     edactl platform stop
@@ -232,9 +263,9 @@ The procedure to modify the API Issuer to use your own (intermediate) CA include
 
 ##### Option 2: Provide your own certificates
 
-This approach bypasses Cert-Manager entirely for the API certificates. You supply via a Kubernetes Secret the pre-generated certificates that Nokia EDA serves directly. Nokia EDA will mount them to the right pods.
+This approach bypasses Cert-Manager entirely for the API certificates. You supply via a Kubernetes secret the pre-generated certificates that Nokia EDA serves directly. Nokia EDA will mount them to the right pods.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='API User Certificates', page=2, zoom=1.5) }}-
+-{{ diagram(path='diagrams/eda-tls-issuers.drawio', title='API User Certificates', page=2, zoom=1.5) }}-
 
 The procedure to provide your own API certificates includes the following steps:
 
@@ -272,28 +303,19 @@ The procedure to provide your own API certificates includes the following steps:
 
 /// warning | Custom certificates considerations
 
-1. It is a user's responsibility to monitor certificate expiration and rotating certificates before they expire.
+1. Users are responsible for monitoring certificate expiration and rotating certificates before they expire.
 
 2. All required SANs (DNS names and IP addresses) must be present in the certificate:
 
-    - **DNS Names:**  
+    - **DNS Names:**
 
         ```
         ${EDA_API_HOSTNAME}
-        eda-api
-        eda-api.${EDA_BASE_NAMESPACE}.svc.cluster
-        eda-keycloak.${EDA_BASE_NAMESPACE}.svc
-        eda-keycloak.${EDA_BASE_NAMESPACE}.svc.cluster
-        eda-keycloak.${EDA_BASE_NAMESPACE}.svc.cluster.local
-        eda-api.${EDA_BASE_NAMESPACE}
         eda-api.${EDA_BASE_NAMESPACE}.svc
         eda-api.${EDA_BASE_NAMESPACE}.svc.cluster.local
-        eda-keycloak
-        eda-keycloak.${EDA_BASE_NAMESPACE}
         ```
 
-    - **IP Addresses:**  
-    Nokia EDA IPv4 and/or IPv6 addresses, if IP access is allowed.
+    - **IP Addresses:** Nokia EDA IPv4 and/or IPv6 addresses, if IP access is allowed.
 ///
 
 **When to use this approach:**
@@ -306,7 +328,7 @@ The procedure to provide your own API certificates includes the following steps:
 
 Clients that connect to the servers that use certificates signed by the Nokia EDA API Issuer must trust the Nokia EDA API CA certificate. The distribution of this CA certificate is handled using Cert-Manager's [**TrustManager Bundle**](https://cert-manager.io/docs/trust/trust-manager/#usage).
 
-The Nokia EDA API CA certificate is needed by a handful of pods: Keycloak, Toolbox and CertChecker.  
+The Nokia EDA API CA certificate is needed by a handful of pods, including the API server itself, Toolbox, Cert Checker, and the CX controller.
 Nokia EDA API CA is distributed using `eda-api-trust-bundle` Bundle resource:
 
 ```yaml
@@ -387,6 +409,11 @@ spec:
       selector:
         matchLabels:
           eda.nokia.com/shadow-ca: internal
+  - configMap: #(1)!
+      key: ca.crt
+      selector:
+        matchLabels:
+          eda.nokia.com/ca: cx-internal
   target:
     configMap:
       key: trust-bundle.pem
@@ -395,7 +422,34 @@ spec:
         kubernetes.io/metadata.name: eda-system
 ```
 
-This Bundle aggregates the current internal CA certificate (`ca.crt`) along with any previous CAs stored under the key `shadow-trust-bundle.pem` in ConfigMaps labeled `eda.nokia.com/shadow-ca: internal`. The combined trust bundle is written to a ConfigMap called `eda-internal-trust-bundle` in Nokia EDA's base namespace, which all internal pods mount to access the internal CA trust bundle.
+1. Additional source that pulls in CA certificates published by Nokia EDA's CX (vCluster) integration so that pods in the base namespace also trust workloads running inside CX vClusters.
+
+This Bundle aggregates the current internal CA certificate (`ca.crt`) along with any previous CAs stored under the key `shadow-trust-bundle.pem` in ConfigMaps labeled `eda.nokia.com/shadow-ca: internal`, and any `cx-internal` CA certificates contributed by the CX integration. The combined trust bundle is written to a ConfigMap called `eda-internal-trust-bundle` in Nokia EDA's base namespace, which all internal pods mount to access the internal CA trust bundle.
+
+##### Tuning the internal certificate duration
+
+The lifetime of the certificates signed by `eda-internal-issuer` and the time at which Cert-Manager renews them are configurable via the same `EngineConfig` resource:
+
+```yaml title="Snippet from EngineConfig spec"
+apiVersion: core.eda.nokia.com/v1
+kind: EngineConfig
+metadata:
+  name: engine-config
+  namespace: eda-system
+spec:
+  internalCertDuration: 720h      #(1)!
+  internalCertRenewBefore: 240h   #(2)!
+```
+
+1. Validity of every internal pod certificate. Defaults to `720h` (30 days). Invalid or non-positive values fall back to the default.
+2. How long before expiry Cert-Manager renews each internal certificate. Defaults to `240h` (10 days). If left empty, invalid, or set to a value greater than or equal to `internalCertDuration`, it falls back to `internalCertDuration / 3`.
+
+These values flow into the `csi.cert-manager.io/duration` and `csi.cert-manager.io/renew-before` volume attributes on every pod that mounts an `eda-internal-issuer` CSI volume (API, Keycloak, CE, Toolbox, NPP, FE, PE, and so on). To inspect the current values:
+
+```bash
+kubectl get engineconfig engine-config -n eda-system \
+  -o jsonpath='{.spec.internalCertDuration}{"\t"}{.spec.internalCertRenewBefore}{"\n"}'
+```
 
 #### Kubernetes webhooks
 
@@ -444,7 +498,7 @@ webhooks:
 
 The Nokia EDA southbound interface connects Nokia EDA to managed network nodes. Nokia EDA can manage the installation and rotation of node certificates used during the onboarding process (if required) and by the gRPC servers that Nokia EDA communicates with.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='EDA Node Certificate lifecycle', page=5, zoom=1.0) }}-
+-{{ diagram(path='diagrams/eda-tls-issuers.drawio', title='EDA Node Certificate lifecycle', page=5, zoom=1.0) }}-
 
 #### NodeSecurityProfile
 
@@ -458,7 +512,7 @@ Nokia EDA supports multiple TLS management modes, each selected and configured t
 | **Managed TLS** | Node certificates are generated and rotated by Nokia EDA. |
 | **Unmanaged TLS** | Node certificates are installed out-of-band. Users must provide a trust bundle for Nokia EDA services communicating with nodes to verify the certificates. |
 | **Unmanaged TLS (without verify)** | Node certificates are installed out-of-band. Nokia EDA skips server certificate verification. |
-| **Insecure** | Communication with nodes uses plaintext. Not recommended beyond preliminary tests, labs, or troubleshooting. |
+| **Insecure** | Communication with nodes uses plaintext. Selected by omitting the `tls` field on the `NodeSecurityProfile`. Not recommended beyond preliminary tests, labs, or troubleshooting. |
 
 The recommended mode is **Managed TLS**.
 
@@ -582,7 +636,7 @@ The bootstrap server then:
 
 #### Certificate Rotation
 
-Bootstrap server maintains a continuous loop that monitors and rotates the nodes certificates. The certificates are rotated when their lifetime reaches the `RotationThreshold` (50% of total certificate validity).
+Bootstrap server maintains a continuous loop that monitors and rotates the nodes' certificates. The certificates are rotated when their lifetime reaches the `RotationThreshold` (50% of the total certificate validity).
 
 If a node certificate rotation fails, the bootstrap server generates a `NodeCertificateRotationThresholdReached` alarm:
 
@@ -591,7 +645,7 @@ If a node certificate rotation fails, the bootstrap server generates a `NodeCert
 
 The alarm is cleared once the certificate is successfully rotated.
 
-If any of this alarm is generated, it is advised to check the status of Nokia EDA's Cert-Manager, related CertificateRequest custom resources, bootstrap server logs and ensure the node is reachable so that its certificate keypair can be rotated.
+If this alarm is generated, check the status of Nokia EDA cert-manager, related CertificateRequest custom resources, and bootstrap server logs, and ensure the node is reachable so that its certificate key pair can be rotated.
 
 #### Bring your own Node Issuer
 
@@ -599,7 +653,7 @@ You can replace the default `eda-node-issuer` with a custom Cert-Manager Issuer 
 
 Unlike the API Issuer (which is a single issuer for all API certificates), node issuers are referenced per `NodeSecurityProfile`. This enables different groups of nodes to use different issuers based on their security requirements or organizational boundaries.
 
--{{ diagram(url='nokia-eda/docs/diagrams/eda-tls-issuers.drawio', title='EDA Node Certificate lifecycle', page=6, zoom=1.0) }}-
+-{{ diagram(path='diagrams/eda-tls-issuers.drawio', title='EDA Node Certificate lifecycle', page=6, zoom=1.0) }}-
 
 /// html | div.steps
 
@@ -678,20 +732,20 @@ Unlike the API Issuer (which is a single issuer for all API certificates), node 
 
 ##### Using multiple Issuers for different node groups
 
-    You can create multiple `NodeSecurityProfile` resources with different issuers to segment your network by trust domain. For example:
+You can create multiple `NodeSecurityProfile` resources with different issuers to segment your network by trust domain. For example:
 
-    | Profile | Node Selector | Issuer |
-    |---------|---------------|--------|
-    | `us-west-tls` | `eda.nokia.com/security-profile=us-west` | `us-west-issuer` |
-    | `eu-west-tls` | `eda.nokia.com/security-profile=eu-west` | `eu-west-issuer` |
-    | `ap-east-tls` | `eda.nokia.com/security-profile=ap-east` | `ap-east-issuer` |
+| Profile | Node Selector | Issuer |
+|---------|---------------|--------|
+| `us-west-tls` | `eda.nokia.com/security-profile=us-west` | `us-west-issuer` |
+| `eu-west-tls` | `eda.nokia.com/security-profile=eu-west` | `eu-west-issuer` |
+| `ap-east-tls` | `eda.nokia.com/security-profile=ap-east` | `ap-east-issuer` |
 
-    Each node can only be associated with one `NodeSecurityProfile` at a time. If multiple profiles match a node's labels, the first profile (sorted by name) is used.
+Each node can only be associated with one `NodeSecurityProfile` at a time. If multiple profiles match a node's labels, the first profile (sorted by name) is used.
 
 #### Distributing trust
 
 For Nokia EDA services to establish secure connections with managed nodes, the appropriate trust bundles must be distributed to the pods that communicate directly with the nodes.
-Only a subset of Nokia EDA pods interface directly with network nodes: **NPP**, **FE**, **ToolBox**.
+Only a subset of Nokia EDA pods interface directly with network nodes: **NPP**, **FE**, **PE**, **ToolBox**.
 
 ##### Automatic trust distribution (Managed TLS)
 
@@ -706,7 +760,6 @@ metadata:
   labels:
     eda.nokia.com/backup: "true"
   name: eda-node-trust-bundle
-  namespace: eda-system
 spec:
   sources:
   - secret:
@@ -772,6 +825,6 @@ spec:
     trustBundle: eda-node-unmanaged # must include a trust bundle under the key `ca.crt`
 ```
 
-The referenced configMap must be labeled with `eda.nokia.com/ca: node` so that the trustbundle is distributed to Nokia EDA pods.
+The referenced ConfigMap must be labeled with `eda.nokia.com/ca: node` so that the trust bundle is distributed to Nokia EDA pods.
 
 [^1]: By default, Nokia EDA system components are installed in the `eda-system` namespace.
