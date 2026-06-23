@@ -9,4 +9,5 @@ spec:
     - appId: netbox.eda.nokia.com
       catalog: eda-catalog-builtin-apps
       version:
-        value: v2.0.0
+        type: alias
+        value: latest
