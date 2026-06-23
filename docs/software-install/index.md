@@ -169,11 +169,13 @@ The following table lists the default Talos and the corresponding Kubernetes ver
 
 | edaadm version | Talos version | Kubernetes version |
 |----------------|---------------|--------------------|
+| [3.2.0][edaadm-gh-3.2.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
 | [3.1.0][edaadm-gh-3.1.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
 | [3.0.0][edaadm-gh-3.0.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
 | [2.0.0][edaadm-gh-2.0.0] | [1.9.2][talos-rel-1.9.2] | 1.32.1 |
 | [1.0.0][edaadm-gh-1.0.0] | [1.8.3][talos-rel-1.8.3] | 1.31.2 |
 
+[edaadm-gh-3.2.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.2.0
 [edaadm-gh-3.1.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.1.0
 
 [edaadm-gh-3.0.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.0.0
