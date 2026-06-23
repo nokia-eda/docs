@@ -226,6 +226,7 @@ nav:
           - apps/os.eda.nokia.com/docs/index.md
           - Deploy Image: apps/os.eda.nokia.com/docs/resources/deployimage.md
       - OTLP Exporter: apps/otlp-exporter.md
+      - PagerDuty: apps/pager-duty.md
       - Prometheus Exporter: apps/prometheus-exporter.md
       - Protocols:
           - apps/protocols.eda.nokia.com/docs/index.md
