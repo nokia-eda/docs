@@ -1,0 +1,7 @@
+apiVersion: netbox.eda.nokia.com/v1alpha1
+kind: ApplyAllocation
+metadata:
+  name: reapply-systemip-v4
+  namespace: eda
+spec:
+  allocation: nb-systemip-v4   # <-- Reference to an existing Allocation in the same namespace
