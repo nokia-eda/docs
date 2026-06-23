@@ -1,0 +1,16 @@
+apiVersion: pagers.eda.nokia.com/v1alpha1
+kind: ClusterPager
+metadata:
+  name: pagerduty-alarms
+  namespace: eda-system
+spec:
+  description: Raise incidents for interface-related alarms
+  routingKeySecret: eda-pd-rkey
+  sources:
+    alarms:
+      autoResolve: true
+      include:
+        - InterfaceDown
+        - TopoLinkDown
+      exclude:
+        - InterfaceMemberDown
