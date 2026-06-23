@@ -20,6 +20,28 @@ function relocateMikeVersion() {
   }
 }
 
+var mikeVersionObserver;
+var mikeVersionObserverTarget;
+
+// Material creates the mike version picker after loading versions.json; on
+// refreshes with a hash, this can happen after our page init, so watch for it.
+function watchMikeVersion() {
+  var header = document.querySelector(".md-header");
+  if (!header) return;
+
+  if (mikeVersionObserver && mikeVersionObserverTarget === header) {
+    return;
+  }
+
+  if (mikeVersionObserver) {
+    mikeVersionObserver.disconnect();
+  }
+
+  mikeVersionObserverTarget = header;
+  mikeVersionObserver = new MutationObserver(relocateMikeVersion);
+  mikeVersionObserver.observe(header, { childList: true, subtree: true });
+}
+
 function bindThemeToggle() {
   var toggle = document.getElementById("theme-toggle");
   if (!toggle || toggle.getAttribute("data-nokia-theme-toggle-bound") === "1") {
@@ -49,6 +71,7 @@ function bindThemeToggle() {
 
 function initThemeTogglePage() {
   syncDataTheme();
+  watchMikeVersion();
   relocateMikeVersion();
   bindThemeToggle();
 }
