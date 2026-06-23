@@ -1,0 +1,23 @@
+apiVersion: pagers.eda.nokia.com/v1alpha1
+kind: Pager
+metadata:
+  name: pagerduty-interface-down
+  namespace: eda
+spec:
+  description: Raise incidents for down interfaces in the eda namespace
+  routingKeySecret: eda-pd-rkey
+  sources:
+    query:
+      autoResolve: true
+      table: .namespace.node.srl.interface
+      fields:
+        - oper-state
+        - admin-state
+      where: oper-state = "down" AND admin-state = "enable"
+      summary: 'Interface {{ index . "interface.name" }} is down on node {{ index . "node.name" }}'
+      source: '{{ index . "node.name" }}'
+      severity: "critical"
+      component: '{{ index . "namespace.name" }}/{{ index . "node.name" }}'
+      group: "interfaces"
+      class: "state-change"
+      includeDetails: true
