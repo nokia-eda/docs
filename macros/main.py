@@ -1,7 +1,6 @@
 # Copyright 2025 Nokia
 # Licensed under the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-
 """
 Mkdocs-macros module
 """
@@ -84,7 +83,7 @@ def _normalize_path(path, env):
 
 def define_env(env):
     """
-    Macroses used in SR Linux documentation
+    Macros used in Nokia EDA documentation
     """
 
     @env.macro
@@ -106,14 +105,14 @@ def define_env(env):
             _location = _normalize_path(path, env)
 
         diagram_tmpl = f"""
-<figure>
-    <div class='mxgraph'
-            style='max-width:100%;border:1px solid transparent;margin:0 auto; display:block; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); border-radius: 0.25rem;'
-            data-mxgraph='{{"url":"{_location}","page":{page},"zoom":{zoom},"highlight":"#0000ff","nav":true,"resize":true,"edit":"_blank","dark-mode":false}}'>
-    </div>
-    {f"<figcaption>{title}</figcaption>" if title else ""}
-</figure>
-"""
+    <figure>
+        <div class='mxgraph'
+                style='max-width:100%;border:1px solid transparent;margin:0 auto; display:block; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); border-radius: 0.25rem;'
+                data-mxgraph='{{"url":"{_location}","page":{page},"zoom":{zoom},"highlight":"#0000ff","nav":true,"resize":true,"edit":"_blank","dark-mode":false}}'>
+        </div>
+        {f"<figcaption>{title}</figcaption>" if title else ""}
+    </figure>
+    """
 
         return diagram_tmpl
 
@@ -254,25 +253,12 @@ def define_env(env):
                 return "N/A"
             return result
 
-    def _get_app_file(rel_path: str) -> Path:
-        """Resolve ``rel_path`` against the current app package root (parent of ``docs/``)."""
-        base = Path(env.page.file.abs_src_path)
-
-        app_path = base.parent.parent
-        if base.parent.name == "resources":
-            # If the markdown is in the resources directory,
-            # we need to go one directory up.
-            app_path = app_path.parent
-
-        return (app_path / rel_path).resolve()
-
     @env.macro
     def supported_os_versions(_: str = None, manifest: str = "manifest.yaml") -> str:
         """Return the string with the supported OSes extracted from the manifest.
 
         Provided by its path.
         """
-        # TODO(vanassch): remove first argument after scripts apps have adapted
         vendor_map = {
             "srl": "Nokia SR Linux",
             "sros": "Nokia SR OS",
@@ -335,6 +321,25 @@ def define_env(env):
         return ""
 
     @env.macro
+    def include_snippet(file_path: str):
+        """Insert ``docs/snippets/<file_path>.yaml`` from the app (path segment lowercased)."""
+        return include_yaml(f"docs/snippets/{file_path.lower()}.yaml")
+
+    @env.macro
+    def include_crd(crd_plural: str, manifest: str = "manifest.yaml"):
+        """DEPRECATED: Use the crd-viewer plugin instead"""
+        p = _get_app_file(manifest)
+        if not p.exists():
+            return f"file does not exist: {p.absolute()}"
+
+        with open(p.absolute()) as f:
+            manifest_data = yaml.safe_load(f)
+
+        app_id = manifest_data.get("spec", {}).get("group", "")
+
+        return include_yaml(f"crds/{app_id}_{crd_plural}.yaml")
+
+    @env.macro
     def include_yaml(relative_path: str):
         """Insert the raw text of a file under the app directory (e.g. a YAML spec)."""
         p = _get_app_file(relative_path)
@@ -344,6 +349,118 @@ def define_env(env):
         return p.read_text(encoding="utf-8")
 
     @env.macro
-    def include_snippet(file_path: str):
-        """Insert ``docs/snippets/<file_path>.yaml`` from the app (path segment lowercased)."""
-        return include_yaml(f"docs/snippets/{file_path.lower()}.yaml")
+    def ref_app_doc(app_id: str, rel_path: str = "index.md"):
+        # Either fully qualified app_id or the app name
+        # If plainly using app_name, rel_path will be prefixed with 'resources/' if not empty
+        # Examples:
+        # ref_app_doc('fabrics', 'isl') # references isl.md page of fabrics app (we prefix with 'resources/')
+        # ref_app_doc('fabrics', 'resources/isl') # identical as above
+        # ref_app_doc('fabrics.eda.nokia', 'resources/isl') # identical as above, most verbose
+        # ref_app_doc('fabrics', '') # references the index.md of fabrics app
+        src = Path(env.page.file.abs_src_path)
+        if "index.md" in src.parts:
+            # index.md sits one level higher than the resources
+            base = Path("../")
+        else:
+            base = Path("../..")
+
+        # add .md suffix if no extension was provided
+        if Path(rel_path).suffix == "":
+            rel_path += ".md"
+
+        ref_file = (Path(base) / app_id / rel_path).resolve()
+        if ref_file.exists():
+            return str(ref_file)
+
+        # Not found, input must be an app name instead of app id, parsing manifest to match app name to app id
+        docs_dir = Path(env.project_dir) / env.conf.get("extra", {}).get(
+            "apps_path", "docs"
+        )
+        if not docs_dir.exists() or not docs_dir.is_dir():
+            # fallback to original/default constructed path
+            return str(ref_file)
+
+        for app_docs_dir in docs_dir.iterdir():
+            if not app_docs_dir.is_dir():
+                continue
+
+            m_file = app_docs_dir / "manifest.yaml"
+            if not m_file.exists():
+                continue
+
+            with open(m_file) as f:
+                manifest_data = yaml.safe_load(f)
+
+            if not manifest_data:
+                continue
+
+            app_name = manifest_data.get("metadata", {}).get("name")
+            if app_name != app_id:
+                continue
+
+            app_id = app_docs_dir.name
+
+            # prefix 'resources' dir if rel_path is not empty
+            if rel_path != "index.md" and "resources" not in rel_path:
+                rel_path = "resources/" + rel_path
+            break
+
+        return str(Path(base) / app_id / rel_path)
+
+    def _get_app_file(rel_path: str) -> Path:
+        base = Path(env.page.file.abs_src_path)
+
+        app_path = base.parent
+        if base.parent.name == "resources":
+            # If the markdown is in the resources directory,
+            # we need to go one directory up.
+            app_path = app_path.parent
+
+        file = (app_path / rel_path).resolve()
+        if file.exists():
+            return file
+        # check if the file path is relative to 'docs',
+        # in that case we should omit the 'docs' directory
+        rel = Path(rel_path)
+        if not rel.is_relative_to("docs"):
+            return file
+        return (app_path / (rel.relative_to("docs"))).resolve()
+
+
+def on_post_page_macros(env):
+    """
+    Actions to be done after macro interpretation,
+    when the macros have been rendered
+    """
+    if not env.conf.get("extra", {}).get("custom_docs_engine", False):
+        return
+
+    output_dir = (Path(env.project_dir) / "output").resolve()
+
+    if not getattr(env.page, "url", None):
+        return
+
+    page_url = Path(str(env.page.url))
+    if len(page_url.parts) == 0:
+        return
+    elif len(page_url.parts) == 1:
+        # this is the root index markdown, so just replace with 'index' as it should be the index.md file
+        page_url = page_url / "docs" / "index"
+    else:
+        # insert 'docs' directory to keep the output structure aligned to the catalog docs structure
+        parts = page_url.parts
+        page_url = Path(parts[0], "docs", *parts[1:])
+
+    fp = (output_dir / page_url).resolve()
+
+    parent = fp.parent
+    if not parent.exists():
+        parent.mkdir(parents=True, exist_ok=True)
+
+    with open(str(fp) + ".md", "w+") as f:
+        if hasattr(env, "markdown"):
+            f.write(env.markdown)
+        elif hasattr(env, "raw_markdown"):
+            # backwards compatibility for older versions of the macros plugin;
+            # mainly due to the fact that the edabuilder mkdocs image is using the older version.
+            f.write(env.raw_markdown)
