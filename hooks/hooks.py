@@ -1,6 +1,5 @@
 from datetime import datetime
 from pathlib import Path
-
 import yaml
 from mkdocs.plugins import event_priority
 
@@ -12,22 +11,24 @@ from mkdocs.plugins import event_priority
 def on_config(config, **kwargs):
     # set current_year in the copyright
     current_year = datetime.now().year
-    config.copyright = config.copyright.format(current_year=current_year)
+    if config.copyright:
+        config.copyright = config.copyright.format(current_year=current_year)
 
-    # set the versioned docs branch
-    eda_version = config.extra["eda_version"]
-    eda_major_version = f"{eda_version.split('.')[0]}"
-    eda_minor_version = f"{eda_version.split('.')[1]}"
-    eda_major_minor_version = f"{eda_major_version}.{eda_minor_version}"
-    config.edit_uri = config.edit_uri.format(
-        versioned_branch="release-" + eda_major_minor_version
-    )
+    # Note: only present in the docs.eda.dev site
+    eda_version = config.extra.get("eda_version")
+    if eda_version:
+        eda_major_version = f"{eda_version.split('.')[0]}"
+        eda_minor_version = f"{eda_version.split('.')[1]}"
+        eda_major_minor_version = f"{eda_major_version}.{eda_minor_version}"
+        config.edit_uri = config.edit_uri.format(
+            versioned_branch="release-" + eda_major_minor_version
+        )
 
-    # expose the derived versions as macro variables via config.extra
-    config.extra["eda_major_version"] = eda_major_version
-    config.extra["eda_minor_version"] = eda_minor_version
-    config.extra["eda_major_minor_version"] = eda_major_minor_version
-    config.extra["eda_year"] = 2000 + int(eda_major_version)  # e.g. 24 -> 2024
+        # expose the derived versions as macro variables via config.extra
+        config.extra["eda_major_version"] = eda_major_version
+        config.extra["eda_minor_version"] = eda_minor_version
+        config.extra["eda_major_minor_version"] = eda_major_minor_version
+        config.extra["eda_year"] = 2000 + int(eda_major_version)  # e.g. 24 -> 2024
 
 
 def _compute_crd_icon(manifest_file: Path, resource_plural: str) -> str:
@@ -68,15 +69,22 @@ def on_page_markdown(markdown, page, config, files):
     if not resource_plural:
         return markdown
 
-    cfg = Path(config.config_file_path).resolve()
+    cfg_path = Path(config.config_file_path).resolve()
 
-    url = Path(str(page.url))
-    if len(url.parts) == 0:
+    url_parts = Path(str(page.url)).parts
+    if len(url_parts) == 0:
         return markdown
 
-    app_id = Path(str(page.url)).parts[1]
+    apps_path = config.get("extra", {}).get("apps_path")
 
-    manifest_path = (cfg.parent / "docs" / "apps" / app_id / "manifest.yaml").resolve()
+    if "resources" in url_parts:
+        idx = url_parts.index("resources")
+        app_id = url_parts[idx - 2]
+    else:
+        app_id = url_parts[len(url_parts) - 2]
+
+    # docs.eda.dev uses 'apps' before app_id
+    manifest_path = (cfg_path.parent / apps_path / app_id / "manifest.yaml").resolve()
 
     icon = _compute_crd_icon(manifest_path, resource_plural)
     meta["icon"] = icon

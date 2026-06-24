@@ -1,0 +1,38 @@
+/* JetBrains Mono - locally hosted */
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../fonts/jetbrains-mono/JetBrainsMono-Regular.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-weight: 400;
+    font-style: italic;
+    src: url('../fonts/jetbrains-mono/JetBrainsMono-Italic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-weight: 700;
+    font-style: normal;
+    src: url('../fonts/jetbrains-mono/JetBrainsMono-Bold.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-weight: 700;
+    font-style: italic;
+    src: url('../fonts/jetbrains-mono/JetBrainsMono-BoldItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+/* Apply JetBrains Mono as the code font (replaces theme.font.code since we set font: false) */
+:root {
+    --md-code-font: "JetBrains Mono", monospace;
+}
+

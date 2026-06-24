@@ -16,7 +16,7 @@ icon: auto-crd
 
 The `Fabric` is an abstracted representation of a datacenter that is using the Clos architecture. It manages the nodes in their different roles (leafs, spines, borderleafs, ...), the links that interconnect them, and the protocols that facilitate the exchange of routing information. 
 
-Upon deployment, the `Fabric` resource initiates several supporting resources including [`ISLs`](./isl.md) (Inter-Switch Links), [`DefaultRouters`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md), [`DefaultInterfaces`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md), and [`DefaultBGPPeers`](../../../protocols.eda.nokia.com/docs/resources/defaultbgppeer.md), among others. These resources, in turn, generate node configurations. The operational state of the `Fabric` is determined by the collective status of these underlying resources.
+Upon deployment, the `Fabric` resource initiates several supporting resources including [`ISLs`](./isl.md) (Inter-Switch Links), [`DefaultRouters`](-{{ref_app_doc('routing', 'defaultrouter')}}-), [`DefaultInterfaces`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md), and [`DefaultBGPPeers`](../../../protocols.eda.nokia.com/docs/resources/defaultbgppeer.md), among others. These resources, in turn, generate node configurations. The operational state of the `Fabric` is determined by the collective status of these underlying resources.
 
 ## Fabric nodes
 
