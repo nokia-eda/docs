@@ -73,6 +73,13 @@ Prior to taking a backup of your cluster, place all `TopoNode` resources into `e
 
 In this mode, Nokia EDA does not interact with target devices, effectively pausing the cluster's interaction with your infrastructure. You can still interact with Nokia EDA and the `TopoNode` resources; changes are pushed upon switching back to `normal` mode.
 
+/// admonition | Operational state of the network during upgrade
+    type: info
+Upgrading Nokia EDA does not stop or restart your target devices. Network services remain available throughout the procedure.
+
+While Nokia EDA is stopped during the upgrade, it does not receive telemetry from target devices, and you cannot perform operational actions or push configuration changes through Nokia EDA. After the upgrade completes and you [resume NPP interactions](#resuming-npp-interactions), Nokia EDA reconnects to target devices and normal operations resume.
+///
+
 To set `emulate` mode in bulk, run the script from the [playground](https://github.com/nokia-eda/playground) repo directory on a machine where you have [`kubectl`](../../user-guide/command-line-tools.md#kubectl) configured with the access to your cluster:
 
 ```{.shell .no-select}
@@ -333,7 +340,7 @@ To stop Nokia EDA components, enter the following command:
 make eda-stop-core
 ```
 
-This command returns no output but stops all pods that are packaged as part of `eda-kpt-base` and removes them from the cluster.
+This command returns no output but stops all pods that are packaged as part of `eda-kpt-base` and removes them from the cluster. Target devices continue to run and provide services while Nokia EDA is unavailable.
 
 /// details | Nuances for geo-redundant clusters
     type: info
