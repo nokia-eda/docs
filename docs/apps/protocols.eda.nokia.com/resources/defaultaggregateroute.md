@@ -46,17 +46,17 @@ All three routes are advertised to other BGP peers, unless the property `summary
 
 To configure this resource, the following resources must exist or be created alongside the `DefaultAggregateRoute`
 
-* The [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md) in which the static route will be configured
+* The [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) in which the static route will be configured
 
 ## Referenced resources
 
-### [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md)
+### [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md)
 
-Aggregate route prefixes configured in the `DefaultAggregateRoute` resource are only configured in the VRF of the linked [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md) resource. Note that the aggregate route is only installed and becomes active if at least one more specific route is installed in the default routing table. 
+Aggregate route prefixes configured in the `DefaultAggregateRoute` resource are only configured in the VRF of the linked [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) resource. Note that the aggregate route is only installed and becomes active if at least one more specific route is installed in the default routing table. 
 
 ### `TopoNode`
 
-Optionally, a list of nodes can be provided on which the aggregate route is configured. If no nodes are specified, EDA will deploy the aggregate route on **ALL** nodes that the [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md) is configured on.
+Optionally, a list of nodes can be provided on which the aggregate route is configured. If no nodes are specified, EDA will deploy the aggregate route on **ALL** nodes that the [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) is configured on.
 
 ## Examples
 

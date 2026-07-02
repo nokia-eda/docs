@@ -18,7 +18,7 @@ To minimize impact, we provide a feature to automatically convert your old resou
 
 We don't enjoy breaking your automation scripts, nor do we plan on making this a habit of ours. Instead, we will follow our own rules for all the new features we still plan on bringing you in the coming years.
 
-An example of a resource that was changed is the [`Interface`](../../../apps/interfaces.eda.nokia.com/docs/resources/interface.md). Take a look at the differences between versions `v1alpha1` and `v1` of an `Interface` CR:
+An example of a resource that was changed is the [`Interface`](../../../apps/interfaces.eda.nokia.com/resources/interface.md). Take a look at the differences between versions `v1alpha1` and `v1` of an `Interface` CR:
 
 /// tab | Interface version `v1alpha1`
 

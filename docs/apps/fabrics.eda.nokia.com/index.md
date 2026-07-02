@@ -56,7 +56,7 @@ Clos fabrics are designed to scale with deployment size, ranging from very small
 
 This topology focuses on small to medium deployments with a couple of racks, where leaf[^1] switches are interconnected through spines[^2]. Leaf switches are often chosen for their port capabilities in terms of speed and connector types, while spine switches are optimized for forwarding capacity.
 
-Typically, computes are attached to [Bridge Domains](../../services.eda.nokia.com/docs/resources/bridgedomain.md) or [Routers](../../services.eda.nokia.com/docs/resources/router.md). To facilitate external connectivity to and from these computes, the reachability information for the IP subnets that are available within the fabric is exchanged with Datacenter Gateway[^3] (DCGW) routers, using one of two methods:
+Typically, computes are attached to [Bridge Domains](../services.eda.nokia.com/resources/bridgedomain.md) or [Routers](../services.eda.nokia.com/resources/router.md). To facilitate external connectivity to and from these computes, the reachability information for the IP subnets that are available within the fabric is exchanged with Datacenter Gateway[^3] (DCGW) routers, using one of two methods:
 
 - PE-CE connection type A: exchange **IP-only** routes using a routing protocol like OSPF or BGP
     - Requires strict separation of IP subnets between datacenter fabrics

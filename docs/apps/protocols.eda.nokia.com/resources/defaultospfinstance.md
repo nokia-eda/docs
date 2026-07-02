@@ -21,7 +21,7 @@ Open Shortest Path First, or OSPF, is a routing protocol to exchange IP routes. 
 
 !!! note "Consider using a Fabric"
 
-    This resource is typically created as a derived resource by the [`Fabric`](../../../fabrics.eda.nokia.com/docs/resources/fabric.md) resource, which takes care of building your entire datacenter fabric, and includes an option to use OSPF in the underlay. Whenever possible, use the [`Fabric`](../../../fabrics.eda.nokia.com/docs/resources/fabric.md) resource instead of manually creating a `DefaultOSPFInstance`.
+    This resource is typically created as a derived resource by the [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md) resource, which takes care of building your entire datacenter fabric, and includes an option to use OSPF in the underlay. Whenever possible, use the [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md) resource instead of manually creating a `DefaultOSPFInstance`.
 
 OSPF sessions in the default VRF are always established between [`DefaultOSPFInterfaces`](defaultospfinterface.md) in a [`DefaultOSPFArea`](defaultospfarea.md), and never operate inter-area. To connect two OSPF areas to each other, an area border router (ABR) configures both areas in the same `DefaultOSPFInstance`. A `DefaultOSPFInstance` is an isolated process with its own Link State Database (LSDB).
 

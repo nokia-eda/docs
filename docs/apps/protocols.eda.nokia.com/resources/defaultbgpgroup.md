@@ -24,8 +24,8 @@ As the Default BGP Group is not configured on the node before a [`DefaultBGPPeer
 
 ## Referenced resources
 
-- [`Policy`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md): specification of BGP import and export policies
-- [`Keychain`](../../../security.eda.nokia.com/docs/resources/keychain.md): authentication parameters for the BGP session
+- [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md): specification of BGP import and export policies
+- [`Keychain`](../../security.eda.nokia.com/resources/keychain.md): authentication parameters for the BGP session
 
 ## Examples
 

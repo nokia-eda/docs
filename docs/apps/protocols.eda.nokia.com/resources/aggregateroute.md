@@ -46,17 +46,17 @@ All three routes are advertised to other BGP peers, unless the property `summary
 
 To configure this resource, the following resources must exist or be created alongside the `AggregateRoute`
 
-* The [`Router`](../../../services.eda.nokia.com/docs/resources/router.md) in which the static route will be configured
+* The [`Router`](../../services.eda.nokia.com/resources/router.md) in which the static route will be configured
 
 ## Referenced resources
 
-### [`Router`](../../../services.eda.nokia.com/docs/resources/router.md)
+### [`Router`](../../services.eda.nokia.com/resources/router.md)
 
-Aggregate route prefixes configured in the `AggregateRoute` resource are only configured in the VRF of the linked [`Router`](../../../services.eda.nokia.com/docs/resources/router.md) resource. Note that the aggregate route is only installed and becomes active if at least one more specific route installed in the VRF routing table. 
+Aggregate route prefixes configured in the `AggregateRoute` resource are only configured in the VRF of the linked [`Router`](../../services.eda.nokia.com/resources/router.md) resource. Note that the aggregate route is only installed and becomes active if at least one more specific route installed in the VRF routing table. 
 
 ### `TopoNode`
 
-Optionally, a list of nodes can be provided on which the aggregate route is configured. If no nodes are specified, EDA will deploy the aggregate route on **ALL** nodes that the [`Router`](../../../services.eda.nokia.com/docs/resources/router.md) is configured on.
+Optionally, a list of nodes can be provided on which the aggregate route is configured. If no nodes are specified, EDA will deploy the aggregate route on **ALL** nodes that the [`Router`](../../services.eda.nokia.com/resources/router.md) is configured on.
 
 ## Examples
 
