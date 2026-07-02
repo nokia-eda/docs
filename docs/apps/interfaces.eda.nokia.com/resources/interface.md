@@ -65,7 +65,7 @@ Some use cases for loopback interfaces:
 
 !!! warning "Loopback interfaces must not be used as system IP address"
 
-    In EDA, the system interface (also known as the router ID or router IP) is created through a dedicated resource: the [`SystemInterface`](../../../routing.eda.nokia.com/docs/resources/systeminterface.md).
+    In EDA, the system interface (also known as the router ID or router IP) is created through a dedicated resource: the [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md).
 
 ## Interface Naming and Normalization
 

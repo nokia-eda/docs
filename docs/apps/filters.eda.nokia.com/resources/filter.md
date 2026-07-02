@@ -21,7 +21,7 @@ A `Filter` is an ordered list of filter entries that **match** certain packets a
 
 !!! note
 
-    A `Filter` resource is deployed through resources like [`RoutedInterface`](../../../services.eda.nokia.com/docs/resources/routedinterface.md) or [`IRBInterface`](../../../services.eda.nokia.com/docs/resources/irbinterface.md) that determine which sub-interface the `Filter` applies to. For system-wide control plane filters, check out the [`ControlPlaneFilter`](controlplanefilter.md) resource.
+    A `Filter` resource is deployed through resources like [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md) or [`IRBInterface`](../../services.eda.nokia.com/resources/irbinterface.md) that determine which sub-interface the `Filter` applies to. For system-wide control plane filters, check out the [`ControlPlaneFilter`](controlplanefilter.md) resource.
 
 The packet is filtered through all filter entries in-order. If there is no match, the packet is evaluated against the next entry and so on. Once a packet matches a particular entry, evaluation of the chain ends and the action specified in the entry is performed on the packet. 
 

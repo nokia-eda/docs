@@ -14,7 +14,7 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-A `BGPPeer` resource is required when setting up a BGP session between two [`Routers`](../../../services.eda.nokia.com/docs/resources/router.md). It represents a single participant in the BGP session, so if both sides of the BGP session are managed by EDA, two of these resources will need to be created. 
+A `BGPPeer` resource is required when setting up a BGP session between two [`Routers`](../../services.eda.nokia.com/resources/router.md). It represents a single participant in the BGP session, so if both sides of the BGP session are managed by EDA, two of these resources will need to be created. 
 
 > To set up BGP peers in the default VRF, use [`DefaultBGPPeer`](defaultbgppeer.md) instead.
 
@@ -41,15 +41,15 @@ graph LR
     C[Router resource]
 ```
 
-### [`RoutedInterface`](../../../services.eda.nokia.com/docs/resources/routedinterface.md)
+### [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md)
 
-To know which IP address the router uses to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`RoutedInterface`](../../../services.eda.nokia.com/docs/resources/routedinterface.md) attached directly to an [`Interface`](../../../interfaces.eda.nokia.com/docs/resources/interface.md), a reference to this resource needs to be provided when creating the `BGPPeer`.
+To know which IP address the router uses to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md) attached directly to an [`Interface`](../../interfaces.eda.nokia.com/resources/interface.md), a reference to this resource needs to be provided when creating the `BGPPeer`.
 
-### [`IRBInterface`](../../../services.eda.nokia.com/docs/resources/irbinterface.md)
+### [`IRBInterface`](../../services.eda.nokia.com/resources/irbinterface.md)
 
-To know which IP address the router uses to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`IRBInterface`](../../../services.eda.nokia.com/docs/resources/irbinterface.md) attached to a [`BridgeDomain`](../../../services.eda.nokia.com/docs/resources/bridgedomain.md), a reference to this resource needs to be provided when creating the `BGPPeer`.
+To know which IP address the router uses to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`IRBInterface`](../../services.eda.nokia.com/resources/irbinterface.md) attached to a [`BridgeDomain`](../../services.eda.nokia.com/resources/bridgedomain.md), a reference to this resource needs to be provided when creating the `BGPPeer`.
 
-### [`Policy`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md)
+### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
 
 Routing policies can be specified in various locations of the `BGPPeer` resource. These policies are used to filter or modify BGP routes sent/received by this `BGPPeer`. If no policies are configured, the default behavior for the router on which the `BGPPeer` is configured is followed, which may be different depending on the operating system.
 

@@ -14,19 +14,19 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-The `Drain` resource is used to divert traffic away from a certain node. It accomplishes this by installing a routing [`Policy`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md) that artificially extends the AS path of outgoing BGP routes, causing peers to uninstall those routes as they are no longer the most optimal.
+The `Drain` resource is used to divert traffic away from a certain node. It accomplishes this by installing a routing [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md) that artificially extends the AS path of outgoing BGP routes, causing peers to uninstall those routes as they are no longer the most optimal.
 
 !!! warning
 
     Installing a `Drain` resource on a [`DefaultRouter`](./defaultrouter.md) does not stop the advertisement of any routes, and therefore does not drop traffic: if the **only** route to a particular IP-prefix goes through the drained [`DefaultRouter`](./defaultrouter.md), it will still go through that node!
 
-This resource is usually created as part of a workflow, like the [`DeployImage`](../../../os.eda.nokia.com/docs/resources/deployimage.md) workflow.
+This resource is usually created as part of a workflow, like the [`DeployImage`](../../os.eda.nokia.com/resources/deployimage.md) workflow.
 
 ## Dependencies
 
 ### [`DefaultRouter`](./defaultrouter.md)
 
-The `Drain` resource creates and installs a BGP routing [`Policy`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md) which is installed in any selected [`DefaultRouter`](./defaultrouter.md). If these [`DefaultRouter`](./defaultrouter.md) resources are selected using the `defaultRouters` property, they must exist before the `Drain` resource is created.
+The `Drain` resource creates and installs a BGP routing [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md) which is installed in any selected [`DefaultRouter`](./defaultrouter.md). If these [`DefaultRouter`](./defaultrouter.md) resources are selected using the `defaultRouters` property, they must exist before the `Drain` resource is created.
 
 ## Referenced resources
 

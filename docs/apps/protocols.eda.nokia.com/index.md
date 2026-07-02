@@ -11,7 +11,7 @@
 
 [manifest]: https://github.com/nokia-eda/catalog/blob/main/vendors/nokia/apps/protocols/manifest.yaml
 
-To facilitate distributed [routing and switching services](../../services.eda.nokia.com/docs/index.md), network elements need to exchange forwarding and routing information. The Protocols application enables users to create and manage various routing protocols and contains resources that are split between the [Overlay Routing](../../routing.eda.nokia.com/docs/index.md#overlay-routing) and [Default Routing](../../routing.eda.nokia.com/docs/index.md#underlay-routing) categories.
+To facilitate distributed [routing and switching services](../services.eda.nokia.com/index.md), network elements need to exchange forwarding and routing information. The Protocols application enables users to create and manage various routing protocols and contains resources that are split between the [Overlay Routing](../routing.eda.nokia.com/index.md#overlay-routing) and [Default Routing](../routing.eda.nokia.com/index.md#underlay-routing) categories.
 
 Resources from the Default Routing category will have the _Default_ prefix in their name[^1] and are used in the network element's default VRF[^2], also known as Global Routing Table (GRT).  
 

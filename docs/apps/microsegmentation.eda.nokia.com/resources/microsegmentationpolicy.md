@@ -28,7 +28,7 @@ A `MicroSegmentationPolicy` is an ordered list of `policyEntries` that match cer
 ## Policy Entries
 
 The `policyEntries` are defined in an ordered list.
-Each packet is evaluated on ingress against all `policyEntries` in order. If there is no match, the packet is evaluated against the next entry and so on. Once a packet matches a particular entry, evaluation of the chain ends and the action specified in the entry is performed on the packet. This behavior is identical to [`Filters`](../../../filters.eda.nokia.com/docs/resources/filter.md)
+Each packet is evaluated on ingress against all `policyEntries` in order. If there is no match, the packet is evaluated against the next entry and so on. Once a packet matches a particular entry, evaluation of the chain ends and the action specified in the entry is performed on the packet. This behavior is identical to [`Filters`](../../filters.eda.nokia.com/resources/filter.md)
 
 ### Match Criteria
 Packets can be matched by their
@@ -50,12 +50,12 @@ When a packet matches the `matchCriteria` of a `policyEntry`, the following `act
 ## Service Targets
 The `MicroSegmentationPolicy` can be applied to one or more services by setting `serviceTargets`. The following type are supported:
 
-* [`VirtualNetworks`](../../../services.eda.nokia.com/docs/resources/virtualnetwork.md)
-* [`BridgeDomains`](../../../services.eda.nokia.com/docs/resources/bridgedomain.md)
-* [`Routers`](../../../services.eda.nokia.com/docs/resources/router.md)
+* [`VirtualNetworks`](../../services.eda.nokia.com/resources/virtualnetwork.md)
+* [`BridgeDomains`](../../services.eda.nokia.com/resources/bridgedomain.md)
+* [`Routers`](../../services.eda.nokia.com/resources/router.md)
 
 !!! info "MicroSegmentationPolicies can not be applied in the underlay"
-    `MicroSegmentatioPolicies` are not supported in [`DefaultRouters`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md).
+    `MicroSegmentatioPolicies` are not supported in [`DefaultRouters`](../../routing.eda.nokia.com/resources/defaultrouter.md).
 
 ## OS-specific implementation notes
 
@@ -66,9 +66,9 @@ The `MicroSegmentationPolicy` can be applied to one or more services by setting 
 
 A `MicroSegmentationPolicy` must be applied to one or more `serviceTargets` of the following types:
 
-* [`VirtualNetworks`](../../../services.eda.nokia.com/docs/resources/virtualnetwork.md)
-* [`BridgeDomains`](../../../services.eda.nokia.com/docs/resources/bridgedomain.md)
-* [`Routers`](../../../services.eda.nokia.com/docs/resources/router.md)
+* [`VirtualNetworks`](../../services.eda.nokia.com/resources/virtualnetwork.md)
+* [`BridgeDomains`](../../services.eda.nokia.com/resources/bridgedomain.md)
+* [`Routers`](../../services.eda.nokia.com/resources/router.md)
 
 
 These resources should be created first, before creating the `MicroSegmentationPolicy`.

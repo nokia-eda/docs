@@ -29,15 +29,15 @@ OSPF interfaces can be configured as "passive", meaning they won't actively try 
 
 To configure this resource, the following resources must exist or be created alongside the `OSPFInterface`
 
-* The [`RoutedInterface`](../../../services.eda.nokia.com/docs/resources/routedinterface.md) that the OSPF session will be established on
+* The [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md) that the OSPF session will be established on
 * The [`OSPFArea`](ospfarea.md) this interface is configured in
 * The [`OSPFInstance`](ospfinstance.md) this interface is configured in
 
 ## Referenced resources
 
-### [`RoutedInterface`](../../../services.eda.nokia.com/docs/resources/routedinterface.md)
+### [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md)
 
-OSPF adjacencies are formed between IP addresses, and therefore require a reference to the [`RoutedInterface`](../../../services.eda.nokia.com/docs/resources/routedinterface.md) that will establish the adjacency. If the `OSPFInterface` is configured as "passive", no adjacency will be attempted or accepted. This is useful when the prefixes reachable through this interface should be advertised to the OSPF area (for example loopback IP addresses, static routes, ...), without actively taking part in the topology.
+OSPF adjacencies are formed between IP addresses, and therefore require a reference to the [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md) that will establish the adjacency. If the `OSPFInterface` is configured as "passive", no adjacency will be attempted or accepted. This is useful when the prefixes reachable through this interface should be advertised to the OSPF area (for example loopback IP addresses, static routes, ...), without actively taking part in the topology.
 
 ### [`OSPFInstance`](ospfinstance.md)
 

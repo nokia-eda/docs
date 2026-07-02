@@ -85,7 +85,7 @@ Alarms are funny. Everyone wants as many of them supported as possible, but ever
 
 ## MPLS
 
-The first foray into MPLS support - you're now able to use LDP in the underlay alongside IPVPN services to enable easier automation of DC GWs. We've also introduced the [`RouterInterconnect`](../../../apps/services.eda.nokia.com/docs/resources/routerinterconnect.md) and [`BridgeDomainInterconnect`](../../../apps/services.eda.nokia.com/docs/resources/bridgedomaininterconnect.md) resources to allow you to easily stitch services at the DC GW across the WAN.
+The first foray into MPLS support - you're now able to use LDP in the underlay alongside IPVPN services to enable easier automation of DC GWs. We've also introduced the [`RouterInterconnect`](../../../apps/services.eda.nokia.com/resources/routerinterconnect.md) and [`BridgeDomainInterconnect`](../../../apps/services.eda.nokia.com/resources/bridgedomaininterconnect.md) resources to allow you to easily stitch services at the DC GW across the WAN.
 
 ## Nutanix
 
@@ -93,7 +93,7 @@ In the cloud connect domain, we added the [Nutanix Prism Central](../../../apps/
 
 ## Micro segmentation
 
-We started to roll out the support for [Micro segmentation](../../../apps/microsegmentation.eda.nokia.com/docs/index.md) with the initial Beta release for a standalone application enabling micro segmentation policies to be applied to the network.
+We started to roll out the support for [Micro segmentation](../../../apps/microsegmentation.eda.nokia.com/index.md) with the initial Beta release for a standalone application enabling micro segmentation policies to be applied to the network.
 
 This first release focuses on the task of configuring micro segmentation - expect additions in upcoming releases to provide a more visual approach to constructing your policies.
 

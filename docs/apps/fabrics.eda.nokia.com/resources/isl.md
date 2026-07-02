@@ -20,27 +20,27 @@ An inter-switch link, or ISL, is a logical representation of one or more physica
 
     Inter-switch links always connect to network switches, and are never connected to client equipment such as servers. Use `Links` to model a physical connection from an edge interface to a compute.
 
-In addition to modeling physical connectivity between switches, the `ISL` resource is responsible for the configuration of [underlay](../../../routing.eda.nokia.com/docs/index.md#underlay-routing) protocols like [BGP](../../../protocols.eda.nokia.com/docs/resources/defaultbgppeer.md) and [OSPF](../../../protocols.eda.nokia.com/docs/resources/defaultospfinterface.md) for the exchange of [underlay routes](../../../routing.eda.nokia.com/docs/index.md#underlay-routing).
+In addition to modeling physical connectivity between switches, the `ISL` resource is responsible for the configuration of [underlay](../../routing.eda.nokia.com/index.md#underlay-routing) protocols like [BGP](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) and [OSPF](../../protocols.eda.nokia.com/resources/defaultospfinterface.md) for the exchange of [underlay routes](../../routing.eda.nokia.com/index.md#underlay-routing).
 
 ## BFD
 
-BFD parameters can be configured on an `ISL`, which are passed down to the derived [`DefaultInterface`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md) that the `ISL` creates. The configured BFD session will monitor the neighboring interface, improving the fault detection time significantly if there is layer-2-only equipment in between the two switches.
+BFD parameters can be configured on an `ISL`, which are passed down to the derived [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) that the `ISL` creates. The configured BFD session will monitor the neighboring interface, improving the fault detection time significantly if there is layer-2-only equipment in between the two switches.
 
 ??? question "Not seeing BFD sessions being established?"
 
-    BFD requires a protocol to subscribe before a BFD session is created. This could be either a static route, a BGP peer, or OSPF neighbor. For example, a [`DefaultBGPPeer`](../../../protocols.eda.nokia.com/docs/resources/defaultbgppeer.md) with BFD enabled will only establish a session with its peer if the underlying [`DefaultInterface`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md) (which is created as a derived resource by the `ISL` resource) has BFD enabled as well, and vice versa.
+    BFD requires a protocol to subscribe before a BFD session is created. This could be either a static route, a BGP peer, or OSPF neighbor. For example, a [`DefaultBGPPeer`](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) with BFD enabled will only establish a session with its peer if the underlying [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) (which is created as a derived resource by the `ISL` resource) has BFD enabled as well, and vice versa.
 
 ## Dependencies
 
-### [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md)
+### [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md)
 
-`ISL` resources provide [underlay](../../../routing.eda.nokia.com/docs/index.md) connectivity in the [default VRF](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md). Therefore, it is required that [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md) resources are created on each switch that the `ISL` interconnects.
+`ISL` resources provide [underlay](../../routing.eda.nokia.com/index.md) connectivity in the [default VRF](../../routing.eda.nokia.com/resources/defaultrouter.md). Therefore, it is required that [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) resources are created on each switch that the `ISL` interconnects.
 
-### [`Interface`](../../../interfaces.eda.nokia.com/docs/resources/interface.md)
+### [`Interface`](../../interfaces.eda.nokia.com/resources/interface.md)
 
-Both endpoints of an `ISL` are [`Interface`](../../../interfaces.eda.nokia.com/docs/resources/interface.md) resources, which represent a (set of) physical port(s). For each endpoint, the `ISL` will use the [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md) resource and the [`Interface`](../../../interfaces.eda.nokia.com/docs/resources/interface.md) resource to create a derived [`DefaultInterface`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md) resource.
+Both endpoints of an `ISL` are [`Interface`](../../interfaces.eda.nokia.com/resources/interface.md) resources, which represent a (set of) physical port(s). For each endpoint, the `ISL` will use the [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) resource and the [`Interface`](../../interfaces.eda.nokia.com/resources/interface.md) resource to create a derived [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) resource.
 
-Once the ISL is created, the derived [`DefaultInterface`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md) are referenced in the state of the ISL.
+Once the ISL is created, the derived [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) are referenced in the state of the ISL.
 
 !!! info "LAGs vs individual links"
 
@@ -52,38 +52,38 @@ IP addresses are required if the switches are not using IPv6 unnumbered addresse
 
 ## Referenced resources
 
-### [`IngressPolicy`](../../../qos.eda.nokia.com/docs/resources/ingresspolicy.md)
+### [`IngressPolicy`](../../qos.eda.nokia.com/resources/ingresspolicy.md)
 
-Quality of Services (QoS) mechanisms can be configured on the `ISL`, ensuring that traffic is properly classified and prioritized. If an [`IngressPolicy`](../../../qos.eda.nokia.com/docs/resources/ingresspolicy.md) is used, these policies must be created before they can be attached to an `ISL`.
+Quality of Services (QoS) mechanisms can be configured on the `ISL`, ensuring that traffic is properly classified and prioritized. If an [`IngressPolicy`](../../qos.eda.nokia.com/resources/ingresspolicy.md) is used, these policies must be created before they can be attached to an `ISL`.
 
 !!! warning "Read the QoS documentation"
 
-    The [QoS application documentation](../../../qos.eda.nokia.com/docs/index.md) contains important information about QoS and what is supported by EDA. Specifically, QoS on an inter-switch link is typically referred to as Network QoS, which has different capabilities compared to Access QoS on most hardware platforms.
+    The [QoS application documentation](../../qos.eda.nokia.com/index.md) contains important information about QoS and what is supported by EDA. Specifically, QoS on an inter-switch link is typically referred to as Network QoS, which has different capabilities compared to Access QoS on most hardware platforms.
 
-### [`EgressPolicy`](../../../qos.eda.nokia.com/docs/resources/egresspolicy.md)
+### [`EgressPolicy`](../../qos.eda.nokia.com/resources/egresspolicy.md)
 
-Quality of Services (QoS) mechanisms can be configured on the `ISL`, ensuring that traffic is properly prioritized. If an [`EgressPolicy`](../../../qos.eda.nokia.com/docs/resources/egresspolicy.md) is used, these policies must be created before they can be attached to an `ISL`.
+Quality of Services (QoS) mechanisms can be configured on the `ISL`, ensuring that traffic is properly prioritized. If an [`EgressPolicy`](../../qos.eda.nokia.com/resources/egresspolicy.md) is used, these policies must be created before they can be attached to an `ISL`.
 
-### [`DefaultBGPGroup`](../../../protocols.eda.nokia.com/docs/resources/defaultbgpgroup.md)
+### [`DefaultBGPGroup`](../../protocols.eda.nokia.com/resources/defaultbgpgroup.md)
 
-If BGP is enabled on an `ISL`, the resource will automatically create derived [`DefaultBGPPeer`](../../../protocols.eda.nokia.com/docs/resources/defaultbgppeer.md) resources: one for each endpoint. These peers will exchange (MP-)BGP routes to advertise reachability information throughout the network. In EDA, [`DefaultBGPPeers`](../../../protocols.eda.nokia.com/docs/resources/defaultbgppeer.md) always belong to a [`DefaultBGPGroup`](../../../protocols.eda.nokia.com/docs/resources/defaultbgpgroup.md), which configures common parameters that are re-used across multiple BGP sessions.
+If BGP is enabled on an `ISL`, the resource will automatically create derived [`DefaultBGPPeer`](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) resources: one for each endpoint. These peers will exchange (MP-)BGP routes to advertise reachability information throughout the network. In EDA, [`DefaultBGPPeers`](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) always belong to a [`DefaultBGPGroup`](../../protocols.eda.nokia.com/resources/defaultbgpgroup.md), which configures common parameters that are re-used across multiple BGP sessions.
 
-Certain BGP session parameters, such as `importPolicies` and `exportPolicies` can be overridden in the `ISL` resource: if they are not specified, the policies of the [`DefaultBGPGroup`](../../../protocols.eda.nokia.com/docs/resources/defaultbgpgroup.md) are used instead. 
+Certain BGP session parameters, such as `importPolicies` and `exportPolicies` can be overridden in the `ISL` resource: if they are not specified, the policies of the [`DefaultBGPGroup`](../../protocols.eda.nokia.com/resources/defaultbgpgroup.md) are used instead. 
 
-### [`Policy`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md)
+### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
 
-Routing policies determine which reachability information is advertised to [BGP](../../../protocols.eda.nokia.com/docs/resources/defaultbgppeer.md) and [OSPF](../../../protocols.eda.nokia.com/docs/resources/defaultospfinterface.md) neighbors. In typical datacenter [fabrics](./fabric.md), the `/31` point-to-point subnets are not advertised to peers: the [underlay](../../../routing.eda.nokia.com/docs/index.md) BGP / OSPF sessions are only used for the exchange of system IP addresses. To accomplish this, [routing policies](../../../routingpolicies.eda.nokia.com/docs/index.md) are required. 
+Routing policies determine which reachability information is advertised to [BGP](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) and [OSPF](../../protocols.eda.nokia.com/resources/defaultospfinterface.md) neighbors. In typical datacenter [fabrics](./fabric.md), the `/31` point-to-point subnets are not advertised to peers: the [underlay](../../routing.eda.nokia.com/index.md) BGP / OSPF sessions are only used for the exchange of system IP addresses. To accomplish this, [routing policies](../../routingpolicies.eda.nokia.com/index.md) are required. 
 
-### [`DefaultOSPFInstance`](../../../protocols.eda.nokia.com/docs/resources/defaultospfinstance.md)
+### [`DefaultOSPFInstance`](../../protocols.eda.nokia.com/resources/defaultospfinstance.md)
 
 An OSPF instance is the top-most container in an OSPF hierarchy, and specifies which address families are being exchanged.
 
 !!! info "OSPF hierarchy concepts"
-    If OSPF is enabled, a [`DefaultOSPFInterface`](../../../protocols.eda.nokia.com/docs/resources/defaultospfinterface.md) will be created for each derived [`DefaultInterface`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md) resource, which is then assigned to a [`DefaultOSPFArea`](../../../protocols.eda.nokia.com/docs/resources/defaultospfarea.md) that in turn belongs to a [`DefaultOSPFInstance`](../../../protocols.eda.nokia.com/docs/resources/defaultospfinstance.md).
+    If OSPF is enabled, a [`DefaultOSPFInterface`](../../protocols.eda.nokia.com/resources/defaultospfinterface.md) will be created for each derived [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) resource, which is then assigned to a [`DefaultOSPFArea`](../../protocols.eda.nokia.com/resources/defaultospfarea.md) that in turn belongs to a [`DefaultOSPFInstance`](../../protocols.eda.nokia.com/resources/defaultospfinstance.md).
 
     Both resources must be created when configuring an `ISL` that uses OSPF to exchange reachability information.
 
-### [`DefaultOSPFArea`](../../../protocols.eda.nokia.com/docs/resources/defaultospfarea.md)
+### [`DefaultOSPFArea`](../../protocols.eda.nokia.com/resources/defaultospfarea.md)
 
 An OSPF area is a logical grouping of routers that share the same area ID, configured within an OSPF instance.
 

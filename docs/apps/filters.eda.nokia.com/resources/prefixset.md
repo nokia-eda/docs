@@ -21,7 +21,7 @@ A `PrefixSet` is a collection of IP prefixes. They are used in [`Filter`](filter
 
 !!! warning
 
-    This article discusses the `PrefixSet` resource used for configuring packet [`Filters`](filter.md). The [`PrefixSet`](../../../routingpolicies.eda.nokia.com/docs/resources/prefixset.md) resource used by [`RoutingPolicies`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md) is a different resource (same name, different app)
+    This article discusses the `PrefixSet` resource used for configuring packet [`Filters`](filter.md). The [`PrefixSet`](../../routingpolicies.eda.nokia.com/resources/prefixset.md) resource used by [`RoutingPolicies`](../../routingpolicies.eda.nokia.com/resources/policy.md) is a different resource (same name, different app)
 
 ## Dependencies
 
