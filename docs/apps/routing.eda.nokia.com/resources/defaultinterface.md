@@ -18,7 +18,7 @@ The `DefaultInterface` resource links an `Interface` to the [`DefaultRouter`](./
 
 !!! tip "Best deployed as part of a Fabric"
 
-    When possible, we recommend that you deploy this resource through a [`Fabric`](../../../fabrics.eda.nokia.com/docs/resources/fabric.md) which automatically creates two `DefaultInterfaces` for every [inter-switch link](../../../fabrics.eda.nokia.com/docs/resources/isl.md): one on each side of the `Link`.
+    When possible, we recommend that you deploy this resource through a [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md) which automatically creates two `DefaultInterfaces` for every [inter-switch link](../../fabrics.eda.nokia.com/resources/isl.md): one on each side of the `Link`.
 
 ## BFD
 
@@ -26,7 +26,7 @@ BFD parameters can be configured on a `DefaultInterface`. The configured BFD ses
 
 ??? question "Not seeing BFD sessions being established?"
 
-    BFD requires a protocol to subscribe before a BFD session is created. This could be either a static route, a BGP peer, or OSPF neighbor. For example, a [`BGPPeer`](../../../protocols.eda.nokia.com/docs/resources/bgppeer.md) with BFD enabled will only establish a session with its peer if the underlying [`DefaultInterface`](./defaultinterface.md) has BFD enabled as well, and vice versa.
+    BFD requires a protocol to subscribe before a BFD session is created. This could be either a static route, a BGP peer, or OSPF neighbor. For example, a [`BGPPeer`](../../protocols.eda.nokia.com/resources/bgppeer.md) with BFD enabled will only establish a session with its peer if the underlying [`DefaultInterface`](./defaultinterface.md) has BFD enabled as well, and vice versa.
 
 ## Dependencies
 

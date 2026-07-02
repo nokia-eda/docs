@@ -49,15 +49,15 @@ To configure this resource, the following resources must exist or be created alo
 
 The [`DefaultBGPPeer`](defaultbgppeer.md) resource that the `DefaultRouteReflector` creates towards each selected [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) is always linked to a single [`DefaultBGPGroup`](defaultbgpgroup.md). These BGP peers share common parameters, such as BGP import and export policies, local and peer autonomous system numbers, and BGP timers. By specifying these parameters in a [`DefaultBGPGroup`](defaultbgpgroup.md), the operator can change these settings in a single location for all client BGP peers.
 
-### [`SystemInterface`](../../../routing.eda.nokia.com/docs/resources/systeminterface.md)
+### [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md)
 
-To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`SystemInterface`](../../../routing.eda.nokia.com/docs/resources/systeminterface.md) attached directly to the system address of the [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md), a reference to this resource needs to be provided when creating the `DefaultRouteReflector`.
+To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md) attached directly to the system address of the [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md), a reference to this resource needs to be provided when creating the `DefaultRouteReflector`.
 
-### [`DefaultInterface`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md)
+### [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md)
 
-To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`DefaultInterface`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md) attached to a [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md), a reference to this resource needs to be provided when creating the `DefaultRouteReflector`.
+To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) attached to a [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md), a reference to this resource needs to be provided when creating the `DefaultRouteReflector`.
 
-### [`Policy`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md)
+### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
 
 The [`DefaultBGPPeer`](defaultbgppeer.md) resources that the `DefaultRouteReflector` creates towards each selected [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) inherit import/export policies from the assigned [`DefaultBGPGroup`](#dependencies). This behavior can be overridden by specifying policies in the `DefaultRouteReflector`. Click [here](bgppeer.md#policy) for more information on BGP import/export policies.
 

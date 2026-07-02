@@ -16,7 +16,7 @@ icon: auto-crd
 
 The `Fabric` is an abstracted representation of a datacenter that is using the Clos architecture. It manages the nodes in their different roles (leafs, spines, borderleafs, ...), the links that interconnect them, and the protocols that facilitate the exchange of routing information. 
 
-Upon deployment, the `Fabric` resource initiates several supporting resources including [`ISLs`](./isl.md) (Inter-Switch Links), [`DefaultRouters`](-{{ref_app_doc('routing', 'defaultrouter')}}-), [`DefaultInterfaces`](../../../routing.eda.nokia.com/docs/resources/defaultinterface.md), and [`DefaultBGPPeers`](../../../protocols.eda.nokia.com/docs/resources/defaultbgppeer.md), among others. These resources, in turn, generate node configurations. The operational state of the `Fabric` is determined by the collective status of these underlying resources.
+Upon deployment, the `Fabric` resource initiates several supporting resources including [`ISLs`](./isl.md) (Inter-Switch Links), [`DefaultRouters`](-{{ref_app_doc('routing', 'defaultrouter')}}-), [`DefaultInterfaces`](../../routing.eda.nokia.com/resources/defaultinterface.md), and [`DefaultBGPPeers`](../../protocols.eda.nokia.com/resources/defaultbgppeer.md), among others. These resources, in turn, generate node configurations. The operational state of the `Fabric` is determined by the collective status of these underlying resources.
 
 ## Fabric nodes
 
@@ -97,9 +97,9 @@ The `linkSelectors` property of the `interSwitchLinks` context of the `Fabric` r
 
 Several allocation pools are required to distribute IP addresses to the resources that the `Fabric` creates:
 
-- System IP addresses for the [`SystemInterface`](../../../routing.eda.nokia.com/docs/resources/systeminterface.md) resource on each node in the `Fabric`, drawn from an `IPAllocationPool`
+- System IP addresses for the [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md) resource on each node in the `Fabric`, drawn from an `IPAllocationPool`
 - Point-to-point IP subnets for the [`ISL`](#inter-switch-links), drawn from a `SubnetAllocationPool`
-- Autonomous System Numbers (ASNs) for the [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md) resource on each node in the `Fabric`, drawn from an `IndexAllocationPool`
+- Autonomous System Numbers (ASNs) for the [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) resource on each node in the `Fabric`, drawn from an `IndexAllocationPool`
 
 System IP address pools can be configured globally and/or per role. The system IP address pool configured under the [node role](#fabric-nodes) context overrides the globally configured pools.
 
@@ -111,7 +111,7 @@ Autonomous system pools can be specified under the [underlay](#underlay-protocol
 
 ## Underlay protocols
 
-The **underlay** of a datacenter refers to the exchange of reachability information that enables the [overlay](../../../routing.eda.nokia.com/docs/index.md#overlay-routing) routes to be exchanged. The `Fabric` resource uses the **underlay** protocol for the exchange of system IP addresses, which will be used to establish the MP-BGP session for the exchange of EVPN routes. Currently the following protocols are supported for the exchange of system IP addresses:
+The **underlay** of a datacenter refers to the exchange of reachability information that enables the [overlay](../../routing.eda.nokia.com/index.md#overlay-routing) routes to be exchanged. The `Fabric` resource uses the **underlay** protocol for the exchange of system IP addresses, which will be used to establish the MP-BGP session for the exchange of EVPN routes. Currently the following protocols are supported for the exchange of system IP addresses:
 
 - eBGP (iBGP not supported)
 - OSPFv2
@@ -125,7 +125,7 @@ The **underlay** of a datacenter refers to the exchange of reachability informat
 
     Different network operating systems have different default port MTUs. OSPF is notoriously specific when it comes to MTU, and will not establish a session if the signaled MTU is mismatched. 
     
-    If the MTU is not set using the [`DefaultMTU`](../../../siteinfo.eda.nokia.com/docs/resources/defaultmtu.md) resource, it is important to set the `ipMTU` property of the `interSwitchLinks` container in the `Fabric` resource. An MTU value of `8922` works for most interop scenarios.
+    If the MTU is not set using the [`DefaultMTU`](../../siteinfo.eda.nokia.com/resources/defaultmtu.md) resource, it is important to set the `ipMTU` property of the `interSwitchLinks` container in the `Fabric` resource. An MTU value of `8922` works for most interop scenarios.
 
 ## Overlay protocols
 
@@ -150,15 +150,15 @@ From a technical point of view, iBGP requires the addition of route reflectors. 
 
 ## Routing Policies
 
-If not explicitly specified, the Fabric will **automatically generate** the required [Policy](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md) resources. These policies are used in the BGP peering sessions to ensure IP reachability across the fabric. 
+If not explicitly specified, the Fabric will **automatically generate** the required [Policy](../../routingpolicies.eda.nokia.com/resources/policy.md) resources. These policies are used in the BGP peering sessions to ensure IP reachability across the fabric. 
 
-If [`routing policies`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md) are defined independently of the `Fabric` through the `importPolicies` or `exportPolicies` properties, they will be used instead.
+If [`routing policies`](../../routingpolicies.eda.nokia.com/resources/policy.md) are defined independently of the `Fabric` through the `importPolicies` or `exportPolicies` properties, they will be used instead.
 
 ## Route leaking
 
-Route leaking is used to establish connectivity between the [`DefaultRouter`](../../../routing.eda.nokia.com/docs/resources/defaultrouter.md) and virtual networking services. For example, it may be done on the [borderleaf nodes](#borderleaf-nodes) to expose an isolated in-band management network to the WAN.
+Route leaking is used to establish connectivity between the [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) and virtual networking services. For example, it may be done on the [borderleaf nodes](#borderleaf-nodes) to expose an isolated in-band management network to the WAN.
 
-Route leaking relies on [`routing policies`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md) and can be specified globally in the `Fabric` resource or overridden under each [node role](#fabric-nodes) container.
+Route leaking relies on [`routing policies`](../../routingpolicies.eda.nokia.com/resources/policy.md) and can be specified globally in the `Fabric` resource or overridden under each [node role](#fabric-nodes) container.
 
 ## Fabric of Fabrics
 
@@ -193,20 +193,20 @@ Index allocation pools are resource pools that hand out indices (whole numbers) 
 
 ## Referenced resources
 
-### [`Policy`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md)
+### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
 
 Routing policies determine which IP prefixes are advertised to neighbors. In the `Fabric` resource, they can optionally be specified:
 
 - In the [underlay protocol](#underlay-protocols) if BGP is selected
 - In the [route leaking](#route-leaking) context
 
-### [`IngressPolicy`](../../../qos.eda.nokia.com/docs/resources/ingresspolicy.md)
+### [`IngressPolicy`](../../qos.eda.nokia.com/resources/ingresspolicy.md)
 
-Quality of Service policies can optionally be specified in the `interSwitchLinks` container of the `Fabric` resource. An [`IngressPolicy`](../../../qos.eda.nokia.com/docs/resources/ingresspolicy.md) is used to assign priorities to incoming traffic, and optionally to rate-limit traffic with a particular priority.
+Quality of Service policies can optionally be specified in the `interSwitchLinks` container of the `Fabric` resource. An [`IngressPolicy`](../../qos.eda.nokia.com/resources/ingresspolicy.md) is used to assign priorities to incoming traffic, and optionally to rate-limit traffic with a particular priority.
 
-### [`EgressPolicy`](../../../qos.eda.nokia.com/docs/resources/egresspolicy.md)
+### [`EgressPolicy`](../../qos.eda.nokia.com/resources/egresspolicy.md)
 
-Quality of Service policies can optionally be specified in the `interSwitchLinks` container of the `Fabric` resource. An [`EgressPolicy`](../../../qos.eda.nokia.com/docs/resources/egresspolicy.md) is used to assign packets to [`Queues`](../../../qos.eda.nokia.com/docs/resources/queue.md) depending on their priority and to modify the priority bits in the headers of outgoing traffic.
+Quality of Service policies can optionally be specified in the `interSwitchLinks` container of the `Fabric` resource. An [`EgressPolicy`](../../qos.eda.nokia.com/resources/egresspolicy.md) is used to assign packets to [`Queues`](../../qos.eda.nokia.com/resources/queue.md) depending on their priority and to modify the priority bits in the headers of outgoing traffic.
 
 ## Examples
 

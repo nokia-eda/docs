@@ -22,7 +22,7 @@ The `DefaultRouter` resource is an abstraction for the main network instance of 
 
 !!! tip "Best deployed as part of a Fabric"
 
-    When possible, we recommend that you deploy this resource through a [`Fabric`](../../../fabrics.eda.nokia.com/docs/resources/fabric.md) which automatically creates a `DefaultRouter` for every node in the [`Fabric`](../../../fabrics.eda.nokia.com/docs/resources/fabric.md).
+    When possible, we recommend that you deploy this resource through a [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md) which automatically creates a `DefaultRouter` for every node in the [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md).
 
 The `DefaultRouter` resource is the representation of a routing table, which receives IPv4 and IPv6 routes from attached [`DefaultInterfaces`](./defaultinterface.md), [`SystemInterfaces`](./systeminterface.md), and BGP neighbors. In addition, it contains the service routes originating from bridged and routed interfaces connected to virtual network services.
 
@@ -61,13 +61,13 @@ A `DefaultRouter` is always linked to exactly one node. The `TopoNode` resource 
 
 ## Referenced resources
 
-### [`Policy`](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md)
+### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
 
-Import and export [routing policies](../../../routingpolicies.eda.nokia.com/docs/resources/policy.md) can be configured for [route leaking](#route-leaking) purposes or as global parameters for [BGP](#bgp) peering sessions. 
+Import and export [routing policies](../../routingpolicies.eda.nokia.com/resources/policy.md) can be configured for [route leaking](#route-leaking) purposes or as global parameters for [BGP](#bgp) peering sessions. 
 
-### [`Keychain`](../../../security.eda.nokia.com/docs/resources/keychain.md)
+### [`Keychain`](../../security.eda.nokia.com/resources/keychain.md)
 
-BGP keychains contain authentication parameters to secure communication between two BGP peers. If a [`Keychain`](../../../security.eda.nokia.com/docs/resources/keychain.md) is configured in the `DefaultRouter`, every BGP peer established on a [`DefaultInterface`](./defaultinterface.md) will use it to authenticate the neighbor unless it is overridden at the group or peer level.
+BGP keychains contain authentication parameters to secure communication between two BGP peers. If a [`Keychain`](../../security.eda.nokia.com/resources/keychain.md) is configured in the `DefaultRouter`, every BGP peer established on a [`DefaultInterface`](./defaultinterface.md) will use it to authenticate the neighbor unless it is overridden at the group or peer level.
 
 ## Examples
 
