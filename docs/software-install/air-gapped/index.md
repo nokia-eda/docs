@@ -16,6 +16,8 @@ In each environment, you must have a system from which you can execute the steps
 
 For each section, there will be a note in which environment the section applies.
 
+> For the OpenShift air-gapped environment see [OpenShift installation](../openshift/index.md).
+
 ## Hosting services in air-gapped environment
 
 Nokia EDA platform relies on three services to be available during the installation process:
