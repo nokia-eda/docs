@@ -17,6 +17,7 @@ nav:
           - Downloading the assets: software-install/air-gapped/downloading-the-assets.md
           - Deploying the assets VM: software-install/air-gapped/deploying-the-assets-vm.md
           - Uploading the assets: software-install/air-gapped/uploading-assets.md
+      - OpenShift: software-install/openshift/index.md
       - Deploying EDA:
           - software-install/deploying-eda/index.md
           - Setting up the EDA nodes: software-install/deploying-eda/setting-up-the-eda-virtual-machine-nodes.md
@@ -466,13 +467,13 @@ plugins:
       comments_path: "#__comments"
   - git-revision-date-localized:
       enable_creation_date: true
-      enabled: !ENV [ CI, false ]
+      enabled: !ENV [CI, false]
   - git-committers:
       repository: nokia-eda/docs
       branch: main
-      enabled: !ENV [ GIT_COMMITTERS, false ]
+      enabled: !ENV [GIT_COMMITTERS, false]
   - social:
-      enabled: !ENV [ CI, false ]
+      enabled: !ENV [CI, false]
       # enabled: true
       # debug: true
       # debug_color: yellow

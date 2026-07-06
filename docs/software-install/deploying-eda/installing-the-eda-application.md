@@ -1,6 +1,6 @@
 # Installing the Nokia EDA application
 
-After setting up Nokia EDA nodes and bootstrapping the Talos Kubernetes cluster, you can now install Nokia EDA applications using the playground repository [cloned during the preparation phase](../preparing-for-installation.md#download-the-nokia-eda-installation-playground).
+Nokia EDA application installation is performed using the playground repository [cloned during the preparation phase](../preparing-for-installation.md#download-the-nokia-eda-installation-playground).
 
 ## Customizing the installation
 

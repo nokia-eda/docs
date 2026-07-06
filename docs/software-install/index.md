@@ -194,13 +194,7 @@ Nokia EDA is deployed as an application on a compatible Kubernetes cluster compr
 * One or three Kubernetes master nodes that also function as worker nodes: one, in case a single-VM deployment is used; otherwise three Kubernetes master nodes.
 * Any remaining nodes (in a four or more node deployment) function as worker nodes.
 * One, two or more nodes must also be designated as storage nodes. For redundancy, two is the minimum in a three or more node deployment. These nodes still function as worker (and potentially master) nodes as well. Rook-Ceph is used to create a storage cluster across the nodes indicated as storage nodes.
-* (Optional) An Assets VM which will hold all the resources and files needed in case of an air-gapped environment.
-
-### OpenShift
-
-Nokia EDA can also be deployed on an existing OpenShift v4.16+ cluster[^1] with the Security Context Constraint (SCC) resource applied prior to installing Nokia EDA packages. The SCC manifest is provided in [nokia-eda/edaadm/openshift/eda-scc.yaml](https://github.com/nokia-eda/edaadm/blob/main/openshift/eda-scc.yaml) file.
-
-Adding the SCC resource is the only additional requirement that needs to be satisfied, the rest of the installation procedure remains the same.
+* (Optional) An Assets VM which will hold all the resources and files needed in case of an [air-gapped environment](air-gapped/index.md).
 
 ## Networking for Nokia EDA nodes
 

@@ -16,8 +16,6 @@ This vast array of new features demands a deep dive, which we absolutely plan to
 
 <!-- more -->
 
--{{image(url="../graphics/26-4-banner.webp", shadow=true, padding=20)}}-
-
 Our theme for this release was **AIOps** and **CI/CD** - but there's so many goodies that need to be called out.
 
 ## AI Ops

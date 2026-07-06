@@ -30,6 +30,12 @@ def on_config(config, **kwargs):
         config.extra["eda_major_minor_version"] = eda_major_minor_version
         config.extra["eda_year"] = 2000 + int(eda_major_version)  # e.g. 24 -> 2024
 
+        # expose the derived versions as macro variables via config.extra
+        config.extra["eda_major_version"] = eda_major_version
+        config.extra["eda_minor_version"] = eda_minor_version
+        config.extra["eda_major_minor_version"] = eda_major_minor_version
+        config.extra["eda_year"] = 2000 + int(eda_major_version)  # e.g. 24 -> 2024
+
 
 def _compute_crd_icon(manifest_file: Path, resource_plural: str) -> str:
     """Return a Material icon id for a CRD: workflow CRDs use graph-outline, else code-json."""
