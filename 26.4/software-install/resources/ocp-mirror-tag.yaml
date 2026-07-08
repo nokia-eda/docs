@@ -1,0 +1,18 @@
+apiVersion: config.openshift.io/v1
+kind: ImageTagMirrorSet
+metadata:
+  name: eda-tag-mirror
+spec:
+  imageTagMirrors:
+    - source: quay.io/metallb
+      mirrors:
+        - registry.example.com:8443/metallb
+      mirrorSourcePolicy: NeverContactSource
+    - source: ghcr.io/nokia-eda
+      mirrors:
+        - registry.example.com:8443/nokia-eda
+      mirrorSourcePolicy: NeverContactSource
+    - source: ghcr.io/nokia
+      mirrors:
+        - registry.example.com:8443/nokia
+      mirrorSourcePolicy: NeverContactSource

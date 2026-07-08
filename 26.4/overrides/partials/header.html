@@ -58,8 +58,8 @@
     {% include "partials/search.html" %}
     {% endif %}
     {% endif %}
-
     <div class="md-header__icon-cluster">
+      {% if not (config.extra.exclude_ai_search | default(false)) %}
       <button class="ai-search-trigger" type="button" data-kapa-open="ai" title="AI search" aria-label="AI search">
         <span class="ai-search-trigger__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" focusable="false">
@@ -68,6 +68,7 @@
           </svg>
         </span>
       </button>
+      {% endif %}
       <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="auto" aria-live="polite">
         <svg class="sun-and-moon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
           <mask class="moon" id="moon-mask">
