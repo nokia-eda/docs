@@ -13,8 +13,6 @@
 [//]: # (Note: you should fill in the hyperlink to your published manifest in your public catalog)
 [manifest]: https://docs.eda.dev/
 
-!!! info "Micro segmentation is introduced as BETA in EDA 26.4.1"
-
 
 !!! info "Micro segmentation is currently only available on select hardware platforms"
     Micro segmenation leverages the Group Based Policy functionality which was introduced in SRL 26.3.1
