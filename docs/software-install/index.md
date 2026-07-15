@@ -61,7 +61,7 @@ In case the installation will be air-gapped, this section provides steps on how 
 1. [Downloading the assets](air-gapped/downloading-the-assets.md)  
     This task describes how to download all the necessary assets using a system with Internet access, so they can be used to deploy EDA in the air-gapped environment.
 
-2. [Deploying the Assets VM](air-gapped/deploying-the-assets-vm.md) <small>optional</small>  
+2. [Deploying the Assets VM](air-gapped/assets-vm.md) <small>optional</small>  
     Deploys the Assets VM in the air-gapped environment, bootstraps it and uploads all the assets to it.
 
 3. [Uploading the assets](air-gapped/uploading-assets.md)  
@@ -169,12 +169,14 @@ The following table lists the default Talos and the corresponding Kubernetes ver
 
 | edaadm version | Talos version | Kubernetes version |
 |----------------|---------------|--------------------|
+| [3.3.0][edaadm-gh-3.3.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
 | [3.2.0][edaadm-gh-3.2.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
 | [3.1.0][edaadm-gh-3.1.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
 | [3.0.0][edaadm-gh-3.0.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
 | [2.0.0][edaadm-gh-2.0.0] | [1.9.2][talos-rel-1.9.2] | 1.32.1 |
 | [1.0.0][edaadm-gh-1.0.0] | [1.8.3][talos-rel-1.8.3] | 1.31.2 |
 
+[edaadm-gh-3.3.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.3.0
 [edaadm-gh-3.2.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.2.0
 [edaadm-gh-3.1.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.1.0
 

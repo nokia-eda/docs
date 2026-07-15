@@ -42,20 +42,48 @@ Check for:
 
 ## Output Format
 
-When analyzing content without directly editing files, lead with findings ordered by severity:
+When analyzing content without directly editing files, lead with findings ordered by severity.
 
-```markdown
+The Current and Suggested text should be on separate lines in the code blocks, so that it is easier to copy it. The blocks should use the markdown code block syntax.
+
+The current and suggested text should not be cropped, so that the entire line is visible before and after the suggested edit.
+
+````markdown
 ## Findings
 
-- **High**: [Issue summary] in `[file]#L[line number]`
-  Current: "[exact text]"
-  Suggested: "[replacement text]"
-  Why: [brief explanation]
+- **High [Issue number]**:  [Issue summary] in `[file]#L[line number]`  
 
-- **Medium**: [Issue summary] in `[file]#L[line number]`
-  Current: "[exact text]"
-  Suggested: "[replacement text]"
-  Why: [brief explanation]
+    Current:
+    ```
+
+    [exact text on the line]
+
+    ```
+    Suggested:
+    ```
+
+    [replacement text on the line]
+
+    ```
+    Why: [brief explanation]
+
+- **Medium [Issue number]**: [Issue summary] in `[file]#L[line number]`  
+
+    Current:
+    ```
+
+    [exact text on the line]
+
+    ```
+    Suggested:
+    ```
+
+    [replacement text on the line]
+
+    ```
+    Suggested: "[replacement text]"
+    Why: [brief explanation]
+````
 
 ## Style Notes
 
@@ -64,6 +92,7 @@ When analyzing content without directly editing files, lead with findings ordere
 ## Open Questions
 
 - [Any wording that needs domain confirmation.]
+
 ```
 
 Use severity this way:

@@ -14,8 +14,10 @@ nav:
       - Preparing for installation: software-install/preparing-for-installation.md
       - Air-gapped setup:
           - software-install/air-gapped/index.md
+          - Asset bundles: software-install/air-gapped/asset-bundles.md
           - Downloading the assets: software-install/air-gapped/downloading-the-assets.md
-          - Deploying the assets VM: software-install/air-gapped/deploying-the-assets-vm.md
+          - Hosting assets: software-install/air-gapped/hosting-assets.md
+          - Assets VM: software-install/air-gapped/assets-vm.md
           - Uploading the assets: software-install/air-gapped/uploading-assets.md
       - OpenShift: software-install/openshift/index.md
       - Deploying EDA:
@@ -481,6 +483,7 @@ plugins:
   - redirects:
       redirect_maps:
         software-install/eda-installation-overview.md: software-install/index.md
+        software-install/air-gapped/deploying-the-assets-vm.md: software-install/air-gapped/assets-vm.md
         user-guide/topologies.md: user-guide/network-topology.md
   - privacy:
       assets_exclude:
@@ -579,6 +582,7 @@ markdown_extensions:
 extra_css:
   - stylesheets/nokia.css
   - stylesheets/nokia-fonts.css
+  - stylesheets/google-sans-fonts.css
   - stylesheets/diagrams.css
   - stylesheets/animations.css
   - stylesheets/steps.css
