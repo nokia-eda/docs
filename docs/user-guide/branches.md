@@ -24,7 +24,7 @@ To support branching, EDA provides the following capabilities:
 
 - Port forwarding for local branches. EDA exposes the EDA API server, Kubernetes API server, and the gRPC port of N branches on a single IP.
 
-- Rebasing a branch. EDA can rebase a branch cluster to main, updating the branch cluster's main branch with to match the content of main on he live instance. EDA then reapplies any changes that had been made in the branch. This can trigger a three-way-merge to resolve any conflicts, if necessary.
+- Rebasing a branch. EDA can rebase a branch cluster to main, updating the branch cluster's main branch with to match the content of main on the live instance. EDA then reapplies any changes that had been made in the branch. This can trigger a three-way-merge to resolve any conflicts, if necessary.
 
 - Resetting a branch. EDA can reset a branch cluster to main, effectively discarding any changes in the branch cluster and updating it to be aligned with main.
 
@@ -162,7 +162,7 @@ When used with the EDA `vCluster` plugin, `vCluster` supports `cert-manager` to 
 
 The vCluster plugin mirrors the cert-manager resources of `Certificate`, `CertificateRequest`, `Issuer` to the host `vCluster` namespace and relies on the host `cert-manager`.
 
-Each pod has `CSI` driver options re-written to use name synced to host. The host `cert-manager` than issues certificates to the pods based on reflected resources.
+Each pod has `CSI` driver options re-written to use name synced to host. The host `cert-manager` then issues certificates to the pods based on reflected resources.
 
 A local version of `trust-manager` is installed to provide `Bundle` resource capabilities. It is not possible to use the host `trust-manager`, since it only reads `Configmaps` and `Secrets` from system namespace and does not want to pollute system namespace with branch resources.
 
