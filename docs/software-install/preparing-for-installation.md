@@ -18,7 +18,7 @@ Download the CLI tools that the installation process relies on.
 make download-tools
 ```
 
-As a result of this command, the `kind`, `edactl`, `kubectl`, `k9s`, `kpt`, and `yq` utilities will be installed in the `./tools` directory.
+As a result of this command, the `kind`, `edactl`, `kubectl`, `k9s`, `kpt`, `helm` and `yq` utilities will be installed in the `./tools` directory.
 
 ### Obtaining the Nokia EDA packages
 
@@ -58,19 +58,17 @@ This step downloads[^2] the `edaadm` CLI tool for your architecture in the `./bu
 sudo cp bundles/tools/edaadm* /usr/local/bin/edaadm
 ```
 
-<!-- After downloading the `edaadm` tool, download the tools for kpt. Go to the kpt directory in the `edaadm` repository.
+/// note | Upgrading <code>edaadm</code> tool
+Running the latest version of the `edaadm` tool is recommended. To upgrade the `edaadm` tool, perform `git pull` in the `edaadm` repository to update the local repository to the latest version and execute the `make -C bundles/ download-tools` command to download the latest available `edaadm` binary.
 
-```bash title="relative path assumes you are in the bundles directory"
-cd ../kpt
+This will download the latest `edaadm-<version>` binary to the `./bundles/tools` directory.  Copy it to the `/usr/local/bin` directory to replace the older version of the `edaadm` binary:
+
+```bash title="copying edaadm to /usr/local/bin"
+sudo cp bundles/tools/edaadm* /usr/local/bin/edaadm
+
 ```
 
-And download the tools for the kpt package.
-
-```bash
-make download-tools
-```
-
-This step downloads the `kpt` and `kubectl` tools in the `edaadm/kpt/tools` directory. -->
+///
 
 ## Download the Talos machine image
 
@@ -121,4 +119,4 @@ Download the `vmware-amd64.ova` image from the OVA URL, filepath.ova.
 You can download using your browser or you can use the curl or wget commands. You can also use the URL directly with the `ovftool` command to deploy the OVA to your VMware vSphere environment.
 
 [^1]: This system might also be referred to as the "tools-system" further in this documentation.
-[^2]: The `edaadm` binary for different platforms can be manually downloaded from https://github.com/nokia-eda/edaadm/releases/.
+[^2]: The `edaadm` binaries for different platforms can be found at https://github.com/nokia-eda/edaadm/releases/.

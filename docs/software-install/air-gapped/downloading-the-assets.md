@@ -2,19 +2,20 @@
 
 /// admonition | Caution
     type: note
-These steps are meant to be executed in the public environment with Internet access.
+Run these steps in the public environment, which has Internet access.
 ///
 
-There are two types of assets that need to be downloaded:
+The assets download operation fetches container images, Git repositories, and other artifacts needed to run Nokia EDA and its applications, and stores them on the local machine's disk.
 
-* Assets Bundles - The bundles that contain all the resources needed to run Nokia EDA. This includes container images, repositories, tools and more.
-* Base Talos VM image - The base images for the Nokia EDA Kubernetes nodes (VMs) that will run the Nokia EDA application.
+## Downloading the Nokia EDA Assets Bundles
 
-## Downloading the Assets Bundles
+Nokia EDA asset bundles contain the resources needed to run Nokia EDA and its applications. These resources include container images, repositories, tools, and more.
+
+The user is free to choose which bundles to download based on the needs of the air-gapped environment, with the default bundle list being the only mandatory one. The procedure for downloading the bundles is as follows:
 
 /// html | div.steps
 
-1. Change into the `edaadm` repository.
+1. Ensure you have changed into the directory of the [cloned `edaadm` repository](../preparing-for-installation.md#download-edaadm-tools).
 
     ```bash title="changing into edaadm repository directory"
     cd path/to/edaadm
@@ -22,63 +23,49 @@ There are two types of assets that need to be downloaded:
 
 2. Select Nokia EDA version.
 
-    Set the `EDA_CORE_VERSION` environment variable in your shell to the target Nokia EDA release version, otherwise the latest version will be assumed. This will ensure that the correct version of the cache and assets is downloaded and prepared for the Assets VM.
+    Set the `EDA_CORE_VERSION` and `EDA_APPS_VERSION` environment variables in your shell to the target Nokia EDA release version. Otherwise, the latest version is assumed. This ensures that the assets are downloaded for the correct version of Nokia EDA.
 
     ```bash
     export EDA_CORE_VERSION=-{{ eda_version }}-
+    export EDA_APPS_VERSION=-{{ eda_version }}-
     ```
 
-3. Download the Assets Bundles.
+3. Download the default assets bundle list.  
 
-    Container images used in Nokia EDA which are grouped by their function are called Assets Bundles. Users need to download these bundles to have all the necessary components available for the air-gapped installation.  
-
-    To optimize the download time and storage space, set the environment variables to skip downloading certain versions and/or types of assets. For example, consider the following set of environment variables and the inline explanations provided:
+    The [default assets bundle list](../air-gapped/asset-bundles.md#bundle-lists) contains the core components and applications for Nokia EDA and must be available in the air-gapped environment.
 
     ```bash
-    export SKIP_APPS_25_8=1 #(1)!
-    export SKIP_APPS_25_4=1
-    export SKIP_APPS_24_12=1
-    export SKIP_APPS_24_8=1
-    export SKIP_APPS_24_4=1
-    export SKIP_APPS_CONNECT=1 #(2)!
+    make -C bundles/ save-default-bundles
     ```
 
-    1. Skip Nokia EDA applications for older Nokia EDA versions.
-    2. Skip Nokia EDA Connect-related assets if Nokia EDA Cloud Connect is not in use.
+    The command will download the bundles from the default bundle list and store the downloaded assets in the `eda-cargo` folder.
 
-    > Instead of downloading all bundles, individual bundles can also be downloaded as described in the section below.
+4. Download optional asset bundles.  
 
-    The following command will download all Assets Bundles defined in the `bundles` folder respecting the environment variables set above and store them in the `eda-cargo` folder.
+    In case additional application or simulator bundles are needed, they can be downloaded with respective make targets:
 
     ```bash
-    make -C bundles/ save-all-bundles
+    make -C bundles/ save-<bundle-list-or-bundle>
     ```
 
-    /// details | Downloading individual bundles
-        type: subtle-note
-    In case individual bundles need to be downloaded, use the following command to list the available bundles:
+    Replace `<bundle-list-or-bundle>` with one of the following:
 
-    ```bash
-    make -C bundles/ ls-bundles
-    ```
+    * any of the available [bundle lists](../air-gapped/asset-bundles.md#bundle-lists)
+    * individual bundle names from the `make -C bundles/ ls-all-bundles` output.
+    * user bundles from the `make -C bundles/ ls-user-bundles` output.
 
-    Using the following command, you can then use the following command to download a specific bundle:
+5. Note the bundle names.
 
-    ```bash
-    make -C bundles/ save-<bundle-name>
-    ```
-
-    ///
-
+    The bundle names will be used in the upload step to upload the assets to the Assets Host or individual services capable of serving the downloaded assets in the air-gapped environment. Therefore, make sure to note the bundle names you used in the download step.
 ///
 
 ## Downloading the Base Talos VM images
 
-To deploy the Nokia EDA Kubernetes VMs, the base Talos image is needed for KVM or VMware vSphere. These images can also be downloaded using the edaadm bundles folder as described below.
+If Nokia EDA is deployed on its own Talos Kubernetes cluster, download the base Talos OS boot media. The command below fetches images for KVM (`nocloud`), VMware vSphere, and bare metal.
 
 /// html | div.steps
 
-1. Change into the `edaadm` repository.
+1. Ensure you are in the `edaadm` repository.
 
     In case you have changed directories, ensure that you are in the `edaadm` repository.
 
@@ -88,7 +75,7 @@ To deploy the Nokia EDA Kubernetes VMs, the base Talos image is needed for KVM o
 
 2. Download the base Talos images.
 
-    The following command downloads all images for both KVM and VMware vSphere.
+    The following command downloads boot media for KVM (`nocloud`), VMware vSphere, and bare metal.
 
     ```bash
     make -C bundles/ download-talos-stock-boot-media
@@ -124,28 +111,104 @@ To deploy the Nokia EDA Kubernetes VMs, the base Talos image is needed for KVM o
     ############################################################################################################################### 100.0%
     ```
 
-    The downloaded images will be stored in the `./bundles/eda-cargo/talos-stock-boot-media/` folder and can be used during the [deploying the Assets VM](deploying-the-assets-vm.md) step.
+    The downloaded images are stored in `./bundles/eda-cargo/talos-stock-boot-media/` and provide the base Talos boot media for the Nokia EDA Kubernetes cluster nodes.
 
 ///
 
-Depending on the approach used to host the services, follow the appropriate section below.
+## Downloading the EDA Assets VM components
 
-<div class="grid cards" markdown>
+If you choose to use the EDA Assets VM for all or some of the hosting services required to host the downloaded assets in the air-gapped environment, you need to download the EDA Assets VM components.
 
-* :octicons-container-16:{ .middle } **Using EDA Assets VM**
+> Read more on different [assets hosting models](../air-gapped/hosting-assets.md) available.
 
-    ---
+/// html | div.steps
 
-    When using the EDA Assets VM you next step is to deploy the Assets VM.
+1. Ensure you are in the `edaadm` repository.
 
-    [:octicons-arrow-right-24: Deploy the Assets VM](deploying-the-assets-vm.md)
+    In case you have changed directories, ensure that you are in the `edaadm` repository.
 
-* :material-hammer-screwdriver:{ .middle } **Using existing services**
+    ```bash title="changing into edaadm repository directory"
+    cd path/to/edaadm
+    ```
 
-    ---
+2. Download the EDA Assets VM cache.
 
-    In case you are using existing services for one of the required components (git server, container registry or web server), you need to upload the relevant assets using the `edaadm`.
+    ```bash
+    make -C bundles/ create-assets-host-bootstrap-image-cache
+    ```
 
-    [:octicons-arrow-right-24: Upload the assets](uploading-assets.md)
+3. Create the EDA Assets VM boot media.
 
-</div>
+    Based on the target hypervisor, run the appropriate command to create the EDA Assets VM boot media:
+
+    /// tab | KVM
+
+    ```bash
+    make -C bundles/ create-asset-vm-nocloud-boot-iso
+    ```
+
+    The ISO disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-nocloud-amd64.iso`.
+    ///
+
+    /// tab | VMware vSphere
+
+    > This command requires Linux kernel version 6 or higher[^1]
+
+    ```bash
+    make -C bundles/ create-asset-vm-vmware-boot-ova
+    ```
+
+    The OVA disk image will be saved at the relative path `./bundles/eda-cargo/talos-asset-vm-boot-imgs/asset-vm-vmware-amd64.ova`.
+    ///
+
+///
+
+## Transferring the assets to the air-gapped environment
+
+The following components need to be transferred to the air-gapped environment:
+
+* The `playground` repository cloned during the ["Preparing for installation"](../preparing-for-installation.md#download-the-nokia-eda-installation-playground) step with the downloaded tools.
+* The `edaadm` repository, which includes the downloaded assets.
+
+The assets can be transferred to the air-gapped environment in several ways:
+
+* By archiving the downloaded assets and transferring the archive to the air-gapped environment using the USB drive, network transfer, cloud storage service, etc.
+* By moving the Installer host with the downloaded assets to the air-gapped environment.
+* By cloning the Installer host disk image and creating a new VM from the cloned image in the air-gapped environment.
+
+If you transfer the assets using archives, each archive must contain the complete repository, not only the downloaded asset files.
+
+/// html | div.steps
+
+1. Archiving the `edaadm` repository
+
+    The `edaadm` repository archive can be created using the `tar` command executed from the root of the `edaadm` repository:
+
+    ```bash
+    tar -cf ../edaadm.tar -C .. edaadm
+    ```
+
+    This creates an archive file named `edaadm.tar` in the parent directory of the `edaadm` repository. Transfer the archive to the air-gapped environment using your chosen method.
+
+2. Archiving the `playground` repository  
+
+    The `playground` repository archive can be created using the `tar` command executed from the root of the `playground` repository:
+
+    ```bash
+    tar -cf ../playground.tar -C .. playground
+    ```
+
+    This creates an archive file named `playground.tar` in the parent directory of the `playground` repository. Transfer the archive to the air-gapped environment using your chosen method.
+///
+
+In the air-gapped environment, extract the archive using the `tar` command:
+
+```bash title="extracting the archive in the air-gapped environment"
+tar -xf edaadm.tar
+```
+
+Downloading the assets only stores them on the local machine's disk. Once the assets are downloaded, the next step is to [choose the hosting model](hosting-assets.md) for the assets in the air-gapped environment.
+
+[:octicons-arrow-right-24: Hosting the assets](hosting-assets.md)
+
+[^1]: See https://github.com/siderolabs/talos/issues/9264#issuecomment-2426756838
