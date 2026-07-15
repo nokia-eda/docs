@@ -449,7 +449,7 @@ You can find examples of the `prefs.mk` file contents for Internet-based and air
 ///
 /// tab | Air-gapped installation
 
-This example uses a [single Assets Host](../air-gapped/uploading-assets.md#uploading-all-assets-to-a-single-asset-host) to host the container registry, git server and web server.
+This example uses a [single Assets Host](../air-gapped/uploading-assets.md#uploading-assets-to-a-single-assets-host) to host the container registry, git server and web server.
 
 ```makefile title="Air-gapped installation using a single Assets Host"
 --8<-- "docs/software-install/resources/prefs-example.mk"

@@ -21,3 +21,4 @@ __pycache__
 *.png:Zone.Identifier
 *.jpg:Zone.Identifier
 *.jpeg:Zone.Identifier
+*.drawio.bkp

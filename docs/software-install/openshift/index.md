@@ -67,7 +67,7 @@ This procedure describes how to install the Nokia EDA application on OpenShift i
 
 1. Prepare the air-gapped EDA assets  
 
-    The default procedure to install OpenShift in a disconnected scenario uses the internal Quay container registry that does not support OCI images with nested indices[^1]. Therefore, you need to set up a compatible registry[^2] that supports such images or deploy the [EDA Assets Host](../air-gapped/deploying-the-assets-vm.md) that provides the required services.
+    The default procedure to install OpenShift in a disconnected scenario uses the internal Quay container registry that does not support OCI images with nested indices[^1]. Therefore, you need to set up a compatible registry[^2] that supports such images or deploy the [EDA Assets Host](../air-gapped/assets-vm.md) that provides the required services.
 
     [Download](../air-gapped/downloading-the-assets.md) the Nokia EDA assets and upload them to the EDA Assets Host or to your existing registry, Git server, and web server.
 
