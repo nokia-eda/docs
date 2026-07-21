@@ -337,6 +337,16 @@ nav:
               - Traffic Rate Overlay: apps/topologies.eda.nokia.com/resources/trafficrateoverlay.md
           - Workflows:
               - Network Topology: apps/topologies.eda.nokia.com/resources/networktopology.md
+      - TPI:
+          - apps/tpi.eda.nokia.com/index.md
+          - Resources:
+              - TPI: apps/tpi.eda.nokia.com/resources/tpi.md
+              - TPI Filters: apps/tpi.eda.nokia.com/resources/tpifilter.md
+              - TPI Storage: apps/tpi.eda.nokia.com/resources/tpistorage.md
+          - Workflows:
+              - TPI Export: apps/tpi.eda.nokia.com/resources/tpiexport.md
+              - TPI Import: apps/tpi.eda.nokia.com/resources/tpiimport.md
+              - TPI Import Dryrun: apps/tpi.eda.nokia.com/resources/tpiimportdryrun.md
       - Virtual Network: apps/virtualnetwork.md
       - xAI:
           - apps/xai.eda.nokia.com/index.md
