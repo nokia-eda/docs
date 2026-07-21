@@ -1,0 +1,50 @@
+apiVersion: services.eda.nokia.com/v2
+kind: VirtualNetwork
+metadata:
+  name: ipvrf1-vnet
+  labels:
+    eda.nokia.com/app1: app1
+spec:
+  bridgeDomains:
+    - name: ipvrf1-bd-220
+      spec:
+        type: EVPNVXLAN
+        eviPool: evi-pool
+        encapOptions:
+          vxlan:
+            vniPool: vni-pool
+            tunnelIndexPool: tunnel-index-pool
+    - name: macvrf-300
+      spec:
+        type: EVPNVXLAN
+        eviPool: evi-pool
+        encapOptions:
+          vxlan:
+            vniPool: vni-pool
+            tunnelIndexPool: tunnel-index-pool
+  irbInterfaces:
+    - name: irb-ipvrf1-bd-220
+      spec:
+        bridgeDomain: ipvrf1-bd-220
+        router: ipvrf1
+        ipAddresses:
+          - ipv4Address:
+              ipPrefix: 10.10.220.1/27
+              primary: true
+          - ipv4Address:
+              ipPrefix: 10.10.220.2/27
+              primary: false
+          - ipv4Address:
+              ipPrefix: 10.10.220.3/27
+              primary: false
+          - ipv4Address:
+              ipPrefix: 10.10.220.4/27
+              primary: false
+  routers:
+    - name: ipvrf1
+      spec:
+        routerID: 100.0.0.1
+        eviPool: evi-pool
+        bgp:
+          enabled: true
+          autonomousSystem: 65001
