@@ -1,0 +1,15 @@
+apiVersion: tpi.eda.nokia.com/v1
+kind: TPIFilter
+metadata:
+  name: example-filter
+  namespace: eda
+spec:
+  apiObjects:
+    - group: interfaces.eda.nokia.com
+      kind: Interface
+      labelSelector:
+        - eda.nokia.com/role=edge
+    - group: services.eda.nokia.com
+      kind: VirtualNetwork
+      columns:
+        - path: .spec

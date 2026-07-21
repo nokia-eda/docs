@@ -1,0 +1,8 @@
+apiVersion: tpi.eda.nokia.com/v1
+kind: TPI
+metadata:
+  name: example-tpi
+  namespace: eda
+spec:
+  storage: example-storage
+  path: example-tpi.xlsx

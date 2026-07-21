@@ -1,0 +1,14 @@
+apiVersion: tpi.eda.nokia.com/v1
+kind: TPIStorage
+metadata:
+  name: example-storage
+  namespace: eda
+spec:
+  protocol: HTTP
+  rootPath: examples/tpi
+  http:
+    hostname: tpi-storage.example.nokia.com
+    port: 443
+    basicAuthSecret: tpi-storage-basic-auth
+    https:
+      skipVerify: false
