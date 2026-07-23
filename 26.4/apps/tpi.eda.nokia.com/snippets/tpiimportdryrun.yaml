@@ -1,0 +1,7 @@
+apiVersion: tpi.eda.nokia.com/v1
+kind: TPIImportDryRun
+metadata:
+  name: example-import-dryrun
+  namespace: eda
+spec:
+  tpi: example-tpi
