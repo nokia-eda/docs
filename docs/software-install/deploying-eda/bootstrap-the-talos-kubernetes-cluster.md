@@ -29,7 +29,7 @@ Use the talosctl command to obtain the Kubernetes configuration file for use wit
 Obtain the Kubernetes configuration file with:
 
 ```bash
-edaadm get-kubeconfig -c eda-6-node-deployment.yaml
+edaadm get-kubeconfig -c eda-input-6-node.yaml
 ```
 
 > The kubeconfig certificate is valid for 1 year by default. To renew the kubeconfig certificate, run this command again.
