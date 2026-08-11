@@ -34,11 +34,11 @@ In EDA, a query consists of:
 
 For example:
 
-- `.namespace.alarms.current-alarm`
-- `.namespace.alarms.current-alarm where (severity = "critical")`
-- `.namespace.alarms.current-alarm where (severity = "critical") order by [type]`
-- `.namespace.alarms.current-alarm where (severity = "critical") limit 5`
-- `.namespace.alarms.current-alarm where (severity = "critical") order by [type] sample milliseconds 500`
+- `.namespace.alarms.v1.current-alarm`
+- `.namespace.alarms.v1.current-alarm where (severity = "critical")`
+- `.namespace.alarms.v1.current-alarm where (severity = "critical") order by [type]`
+- `.namespace.alarms.v1.current-alarm where (severity = "critical") limit 5`
+- `.namespace.alarms.v1.current-alarm where (severity = "critical") order by [type] sample milliseconds 500`
 
 EDA also supports queries using [Natural Query Language](#natural-language-queries).
 
@@ -65,7 +65,7 @@ In simple terms, each node within the JSPath file is its own table: `.namespace.
 
 A `Table` can be identified in the format of a JSPath path without keys. For example: `.namespace.node.srl.interface.subinterface`
 
-Tables cannot currently be qualified with keys. Instead, use a 'where' clause. For example, to select all interfaces on a specific node: `.namespace.node.srl.interface where (.node.name = "leaf1")`.
+Tables cannot currently be qualified with keys. Instead, use a 'where' clause. For example, to select all interfaces on a specific node: `.namespace.node.srl.interface where (.namespace.node.name = "leaf1")`.
 
 ### Selector
 
