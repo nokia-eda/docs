@@ -2,27 +2,27 @@
 
 [An application in EDA](index.md) can contain many things and do way more than just generating node configurations from the abstracted input. But, still, the most common thing you're going to want an app for is to generate some configuration for a target, and potentially publishing some state relating to that configuration and/or target.
 
-To fast track this common case an example demonstrating how to build an app is baked into the `edabuilder` CLI tool. In this quickstart we'll use the baked in example of an app that configures the login banner on a device and walk you through the steps required to build the app from scratch, iterate on it during the development cycle, and then publish it to a custom Catalog so you can share it with others.
+In this quickstart we will create a simple app that configures the bottom toolbar on an SR Linux switch and walk you through the steps required to build the app from scratch, and deploy it to an EDA cluster.
 
-Without further ado, let's get started by going into a directory where we want to create our project.
+> Before you begin, make sure you have completed the [setting the dev environment](setup-env.md) section.
 
 /// html | div.steps
 
 1. **Create a new project**
 
-    We begin with initializing a new project that will contain our demo application that will configure the login banner on a device.
+    We begin with initializing a new project in a directory of your choice.
 
     To create a project, supply the application vendor[^1] and the project name as an argument to the `edabuilder init` command:
 
     ```shell
-    edabuilder init --vendor community example && cd example
+    edabuilder init --vendor demo example-project && cd example-project
     ```
 
-    You find yourself in the `example` directory that we just initialized with some top-level project files and directories scaffolded out for you.
+    You find yourself in the `example-project` directory that we just initialized with some top-level project files and directories scaffolded out for you.
 
 2. **Create a Python virtual environment**
 
-    Now is a good time to create a Python virtual environment that we will use to get autocompletion, code formatting and linting for our application code.
+    Create a Python virtual environment since EDA intent applications are written in Python.
 
     If you have `uv` installed like was suggested in the [setting the dev environment](setup-env.md) section, you can just run:
 
@@ -34,105 +34,117 @@ Without further ado, let's get started by going into a directory where we want t
 
 3. **Create an app**
 
-    From the `./example` project directory, we proceed with creating a directory that will contain our EDA application.
+    Next, create an EDA application by running the `edabuilder create app` command from the scaffolded `./example-project` directory:
 
-    An important thing to note is that an application in EDA is **a group** that contains one or more of the following resources:
-
-    - config and/or state intents that declaratively describe the desired configuration and state of a target.
-    - operational workflows associated with this app
-    - dashboards
-
-    Let's call our application - `banners` - since we will scaffold an app that provisions a login banner on the network devices.
+    Let's call our application - `bottom-toolbar` - since we will scaffold an app that provisions a bottom toolbar message on the network devices.
 
     ```shell
-    edabuilder create app banners #(1)!
+    edabuilder create app --name bottom-toolbar #(1)!
     ```
 
     1.  
         //// warning
         If your application name is more than one word, the name must be in a kebab-case format.
-
-        In this example, the app name is simply `banners`, but if you wanted to name it "my banners", then you should've used `my-banners` argument value.
         ////
 
-    This step should generate the `banners` directory where you will find the scaffolded layout of the application with no particular logic implemented yet.
+    An application in EDA is **a group** that contains one or several resources of the following types:
 
-4. **Create a resource**
+    - application API expressed in a Kubernetes Custom Resource Definition (CRD)
+    - config and/or state intents that process the configuration and state changes of the resources
+    - operational workflows
+    - dashboards
 
-    At this stage, you would start defining the API of your app, typing code for your configuration and state intents, crafting alarms and creating the workflows and dashboards.  
-    But for the sake of this quickstart, we need something quick and easy; you will get to building real apps later once you've got the hang of it.
+    This step should generate the `bottom_toolbar` directory where you will find the scaffolded layout of the application with no particular logic implemented yet.
 
-    We have baked in the example `Banner` resource inside the `edabuilder` CLI tool to demonstrate the app building workflow using a real example, without typing any code.
+4. **Populate the app with the demo app resources**
 
-    //// admonition | custom resources, resources, and intents
-        type: subtle-note
-    We often use the terms "intent" and "custom resource" or "resource" interchangeably. They all mean the same thing: a declarative definition of the EDA resource which can be, for example, a configuration or state object or a workflow[^2].
-    ////
+    At this stage, you would define your app's API, create the configuration and state intents, define alarm behavior, and create workflows and dashboards.  
+    To keep the quick start simple, we prepared a script that downloads the example `BottomToolbar` resource and its configuration and state intents into your app directory.
 
-    With the `edabuilder create --app banners resource Banner` command, we will create the Banner resource in the `banners` app directory, and when used with the `-d | --scaffold-demo` flag, we tell edabuilder to output the demo scaffolding for the configuration and state scripts for the Banner resource.
+    Paste this script into your terminal while in the project's directory:
 
-    ```shell
-    edabuilder create --app banners resource Banner -d #(1)!
+    ```bash
+    set -euo pipefail
+
+    target="$(pwd)/bottom_toolbar"
+    tmp="$(mktemp -d)"
+    trap 'rm -rf "$tmp"' EXIT
+
+    commit="4584f841538310a71b318afd83762184e62c66c3"
+    archive_dir="$tmp/bottom-toolbar-app-$commit"
+
+    curl -fsSL "https://github.com/eda-labs/bottom-toolbar-app/archive/$commit.tar.gz" \
+    -o "$tmp/repo.tar.gz"
+
+    tar -xzf "$tmp/repo.tar.gz" -C "$tmp"
+
+    source="$archive_dir/bottom_toolbar"
+
+    rm -rf "$target/api" "$target/intents" "$target/manifest.yaml"
+    cp -a "$source/api" "$target/api"
+    cp -a "$source/intents" "$target/intents"
+    cp -a "$source/manifest.yaml" "$target/manifest.yaml"
+
+    manifest_tmp="$tmp/manifest.yaml"
+    sed 's/author: eda-labs/author: demo/' \
+        "$target/manifest.yaml" > "$manifest_tmp"
+    mv "$manifest_tmp" "$target/manifest.yaml"
+
+    printf 'Downloaded files into %s\n' "$target"
     ```
 
-    1. //// warning
-       The resource name must be in a CamelCase format.
-      ////
+    The script downloads the `BottomToolbar` resource API definition, the Python code behind it, and the manifest file into your app directory.
 
-    As a result of this command, you will find
+    > 1. In this guide, a resource (or custom resource) is the declarative API object, while an intent is the Python code that processes changes to that resource.[^2].
+    > 2. We cut some corners here, but you can find more in-depth examples in the development section of the documentation.
 
-    - the API specification for the Banner and BannerState custom resources created in the `banners/api/v1alpha1` directory[^3]
-    - scaffolded configuration and state resources (aka intents) with the corresponding scripts in the `intents/banner` and `intents/bannerstate` directories. Without the demo `-d` flag the resources are created without the scripts, as the developers add them manually.
+5. **Deploy the app in development mode**
 
-    We leave the app logic implementation details for a later deep dive. All we need to know for now, that an application that is capable of configuring banner message on the supported Network OSes has been scaffolded and we can deploy it onto the EDA cluster to see it in action.
-
-5. **Deploy the app**
-
-    During the app development you would want to quickly test the changes you made to the app by deploying it to EDA cluster. Edabuilder comes with a one-shot command to do just that:
-
-    ```shell
-    edabuilder deploy --app banners
-    ```
-
-    The `deploy` command will package app components in an OCI container image, push it to the container registry deployed for you in the EDA cluster and install the app.
+    During app development, you can quickly test your changes by deploying the app directly to the EDA cluster. The `edabuilder` CLI provides a one-shot command:
 
     //// admonition | `deploy` command requirements
         type: subtle-note
-    The `kubectl` should be using the context that points to the EDA cluster for the operation to succeed.
+    The `kubectl` command must use a context that points to the EDA cluster for the operation to succeed.
     ////
+
+    ```shell
+    edabuilder deploy --app bottom_toolbar
+    ```
+
+    The `deploy` command will generate the necessary artifacts to package the app components in an OCI container image, push it to the container registry deployed for you in the EDA cluster and install the app.
 
 6. **Try the app**
 
-    After deploying the development version of the app directly to the EDA cluster, you can try it out by creating an instance of the `Banner` resource via any of the EDA interfaces. Here are two of them:
+    After deploying the development version of the app directly to the EDA cluster, you can try it out by creating an instance of the `BottomToolbar` resource through either the EDA UI or the Kubernetes API using `kubectl`:
 
     //// tab | EDA UI
-    In the EDA UI you should see a new group menu named **Banner** appear in the list of the resources:
+    In the EDA UI you will see a new resource group named **Bottom Toolbars** under the **Management** category:
 
-    ![pic](https://github.com/user-attachments/assets/12db0509-7fd4-4d70-b124-e65f41d7de31)
+    -{{image(url="./graphics/bottom-toolbar-menuitem.webp", title="Bottom Toolbar in the EDA UI main menu")}}-
 
-    Selecting the **Banner** menu will take you to the list of instances of the `Banner` resource, where you can create a new instance of the resource and commit this transaction.
+    Selecting the **Bottom Toolbars** menu will take you to the list of instances of the `Bottom Toolbar` resource, where you can create a new instance of the resource and commit this transaction.
     ////
 
     //// tab | Kubernetes API/kubectl
-    To leverage the Kubernetes API one can create a custom resource in the YAML format like shown below:
+    To use the Kubernetes API, apply a resource in YAML, as shown below:
 
     Resource:
 
     ```yaml
-    --8<-- "docs/development/apps/snippets/banner.yml"
+    --8<-- "docs/development/apps/snippets/toolbar.yml"
     ```
 
     Apply:
 
     ```shell
     cat << 'EOF' | kubectl apply -f -
-    --8<-- "docs/development/apps/snippets/banner.yml"
+    --8<-- "docs/development/apps/snippets/toolbar.yml"
     EOF
     ```
 
     ////
 
-    Regardless of the interface you choose, the result of your actions should be a new instance of the `Banner` resource in the EDA cluster and the appropriate login banner configured on the targets matching your selection.
+    Regardless of the interface you choose, you should see `this is a demo message` in the bottom toolbar when you log in to an SR Linux switch in your fabric.
 
 ///
 
@@ -141,12 +153,11 @@ Without further ado, let's get started by going into a directory where we want t
 Quite a lot! Here's a breakdown of what you just did:
 
 1. You initialized a new project.
-2. You created a new app.
-3. You created a new resource - Banner - with the generated scripts for the Banner and BannerState intents.
-4. You generated code-generated artifacts (OpenAPI schemas, CRDs, etc.) for your app.
-5. You deployed your app to your EDA cluster.
-6. You created an instance of your new resource via Kubernetes API or EDA UI.
-7. And observed the results of your app in action by logging into the SR Linux CLI and seeing a new login banner in effect.
+2. You created a new app - `bottom_toolbar`.
+3. You downloaded the example code for the `BottomToolbar` resource into your app directory.
+4. You deployed your app in the development mode to your EDA cluster.
+5. You created an instance of your new resource via Kubernetes API or EDA UI.
+6. And observed the results of your app in action by logging into the SR Linux CLI and seeing a new bottom toolbar message in effect.
 
 ## Where to from here?
 
@@ -154,8 +165,7 @@ First, get to know the project layout and the role of each directory and files t
 
 Next, dive into the application components to learn what makes up an EDA app in the [Components](components.md) section.
 
-After that, you are ready to learn how the demo Banner app works. How it selects the nodes, generates the config snippets, creates resources in EDA cluster and so on. This is covered in the [Banner script deep dive](scripts/banner-script.md) section.
+After that, you are ready to learn how one of the basic native applications works using the `Banner` resource. How it selects the nodes, generates the config snippets, creates resources in EDA cluster and so on. This is covered in the [Basic app walkthrough](scripts/banner-script.md) section.
 
-[^1]: A vendor is the publishing authority of your app. It can be an arbitrary string, but typically it matches your company name, personal name or a community name.
-[^2]: The actual runtime used in EDA to run those scripts is MicroPython, but we will dive into these details in a later sections.
-[^3]: In the `banner_api_types.go` and `bannerstate_api_types.go` files accordingly. The path is provided from the root of the project's repository.
+[^1]: A vendor is the publishing authority of your app. It can be an arbitrary string, but typically it matches your company name, personal name or a community group name. Nokia-provided applications use the `nokia` vendor.
+[^2]: The actual runtime used in EDA to run those scripts is MicroPython, but we will cover this in a later section.
