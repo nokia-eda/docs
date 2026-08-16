@@ -1,10 +1,10 @@
 # Project Layout
 
-If you followed the [quickstart](quick-start.md) and initialized a new EDA project with the `banners` application in it, your top level project directory would look like this:
+If you followed the [quickstart](quick-start.md) and initialized a new EDA project with the `bottom_toolbar` application in it, your top level project directory would look like this:
 
 ```shell
 .
-├── banners # dir
+├── bottom_toolbar # dir
 ├── common  # dir
 ├── test    # dir
 ├── utils   # dir
@@ -22,7 +22,7 @@ Let's cover the purpose of each directory in more detail.
 
 ## Application
 
-The `banners` directory contains the `banners` application files that `edabuilder` created for us when we executed `edabuilder create app banners`. The contents of this app directory is covered in the [App Components](components.md) section.
+The `bottom_toolbar` directory contains the application files that `edabuilder` created for us when we executed `edabuilder create app --name bottom-toolbar`. The contents of this app directory is covered in the [App Components](components.md) section.
 
 ## Common
 
@@ -41,11 +41,11 @@ In the `utils` directory you will find shared utility functions that simplify so
 The `PROJECT` file contains the global config a project was initialized with. For example, if you are reading this after the quickstart, your project file should look similar to this:
 
 ```yaml
-builderVersion: v25.12.1
+builderVersion: v26.4.1
 domain: eda.local
-name: example
+name: example-project
 registry: change.me
-vendor: community
+vendor: demo
 ```
 
 The `builderVersion` contains the EDA release version that is used by this particular version of the `edabuilder` tool.

@@ -1,3 +1,8 @@
+---
+search:
+  boost: 4
+---
+
 # Command Line Tools
 
 Nokia Event-Driven Automation (EDA) exposes three north-bound APIs to its users:
@@ -144,21 +149,21 @@ If the `edactl platform` command returns the platform information, you are ready
 
 It is recommended to add the `e` alias for `edactl` to your shell configuration file to make it easier to use:
 
-//// tab | Bash
+/// tab | Bash
 
 ```bash
 echo 'alias e="edactl"' >> ~/.bashrc
 ```
 
-////
+///
 
-//// tab | Zsh
+/// tab | Zsh
 
 ```bash
 echo 'alias e="edactl"' >> ~/.zshrc
 ```
 
-////
+///
 
 /// details | Shell completions
 `edactl` acts as a drop-in replacement for `kubectl` when used for EDA resource management. The `get`, `apply`, `replace`, `delete`, and `patch` commands are supported and work similarly to their `kubectl` counterparts. To assist you with the commands and objects hierarchy, `edactl` provides shell completions for the common shells.
