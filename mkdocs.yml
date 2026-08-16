@@ -357,7 +357,7 @@ nav:
           - Quick start: development/apps/quick-start.md
           - Project layout: development/apps/project-layout.md
           - Components: development/apps/components.md
-          - Script apps:
+          - Intent apps:
               - development/apps/scripts/index.md
               - Config: development/apps/scripts/config.md
               - State: development/apps/scripts/state.md

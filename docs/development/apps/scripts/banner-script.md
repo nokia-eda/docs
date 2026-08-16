@@ -1,17 +1,17 @@
 # Banner Script Walkthrough
 
-To better understand how script apps work, we invite you to walk through the demo Banner application that is bundled with EDABuilder CLI and was part of the [app development quickstart guide](../quick-start.md).
+To better understand how script apps work, let's look how the `Banner` resource provided with the Nokia-provided **Site Information** application is built.
 
 The Banner app has a very simple purpose: to provision a login banner on the supported targets by submitting an abstracted input. This is the task of the configuration component of the app.  
 The state script of the Banner app simply lists the nodes that the Banner has been provisioned to.
 
 The simple scope of the app allows us to focus on the generic app development, rather than going into the weeds of the implementation logic.
 
-We are starting this walkthrough assuming you left off at the end of the quickstart guide, with the app named "banners" has been scaffolded with the Banner resource in it.
+This walkthrough assumes you completed the quickstart guide and have created an app named "banners" with the Banner resource in it.
 
 ## API
 
-Recall, that the "banners" application we created is meant to be a grouping for resources that make up the banners app. Each resource is an abstracted intent that is characterized by a set of inputs (spec) and outputs (status).
+Recall, that the application is meant to be a group for resources that make up the app. Each resource is an abstracted intent that is characterized by a set of inputs (spec) and outputs (status).
 
 During the scaffolding process we added the Banner resource to the "banners" application. This Banner resource is our abstracted intent that should be able to provision a login banner message on a list of target nodes based on the node selector.
 
@@ -39,7 +39,7 @@ We are focusing on the `banner_types.go` and `bannerstate_types.go` files, which
 
 /// admonition | Banner and BannerState?
     type: question
-Why the two resources you may ask? When in the quickstart we scaffolded the Banner resource and provided the `-d` flag to it, we got two types of resource:
+Why the two resources you may ask? In EDA the configuration-handling and state-handling itents (scripts) are triggered by the corresponding resources:
 
 1. `Banner` - the [configuration type](config.md) that defines the abstracted input for the configuration intent.
 2. `BannerState` - the [state type](state.md) that defines the abstracted input for the state intent.

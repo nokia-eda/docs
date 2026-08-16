@@ -1,8 +1,8 @@
 # Application Components
 
-Each application in EDA is its own directory in the EDA project repository[^1]. Taking the [quickstart app](quick-start.md) as a starting point, a project contains the `banners` directory that has the following structure.
+Each application in EDA is its own directory in the EDA project repository[^1]. Taking the [quickstart app](quick-start.md) as a starting point, a project contains the `bottom_toolbar` directory that has the following structure.
 
-```title="contents of the banners app directory"
+```title="contents of the bottom_toolbar app directory"
 .
 ├── api
 ├── crds
