@@ -1,0 +1,7 @@
+apiVersion: bottom-toolbar.eda.labs/v1alpha1
+kind: BottomToolbar
+metadata:
+  name: demo-toolbar
+  namespace: eda
+spec:
+  message: this is a demo message
