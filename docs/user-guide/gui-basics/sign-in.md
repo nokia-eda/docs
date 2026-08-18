@@ -20,7 +20,7 @@ To log into the Nokia EDA GUI, you must have:
 
 3. Click **Sign in**.
 
-    If more than 15 minutes has elapsed from when you opened the login page and when you click **Submit**, Nokia EDA rejects your login attempt and display an error message indicating that you took too long to log in. If this happens, enter your credentials again and click **Submit** to log in.
+    If more than 15 minutes has elapsed from when you opened the login page and when you click **Sign in**, Nokia EDA rejects your login attempt and displays an error message indicating that you took too long to log in. If this happens, enter your credentials again and click **Sign in** to log in.
 
 You are logged into the Nokia EDA GUI. If configured by your administrator, a login banner displays with information for all Nokia EDA users.
 
