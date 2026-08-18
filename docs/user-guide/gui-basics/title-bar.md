@@ -2,6 +2,24 @@
 
 The following elements are available at the upper right of every page within the Nokia EDA UI.
 
+## Search bar
+
+<!-- EDA-577: Top bar omni search -->
+
+The search bar can help you access the following items within EDA:
+
+- pages: jumps to pages within EDA, such as, Home, Alarms, Transactions
+- resources: jumps to resource lists, such as, Nodes, Interfaces, Fabrics
+- workflows: opens the input form for a workflow
+- EQL query: begin the search with a period (.) to enter an EQL term; select from the autocomplete suggestions, or press **Enter** to open Query Builder
+- Ask EDA: start a new Ask EDA chat with the search bar input
+
+When the search bar is not selected, it is accessible from any page by using the **/** hotkey. You can select from the recently searched options by navigating with your arrow keys and pressing **Enter** or clicking your selection. You can also type a new search and press **Enter** to select and navigate to the top result.
+
+To clear your recently searched history, select the search bar and click **Clear History**.
+
+To access Ask EDA through the search bar, select the search bar and click **Ask EDA**. You can also type your prompt in the search bar and then select **Ask EDA** from the drop-down to send the prompt to Ask EDA.
+
 ## Namespace selector
 
 The namespace drop-down specifies the namespace you are working in. The Nokia EDA UI includes the selected namespace in API server requests.
@@ -45,7 +63,7 @@ When you click the **Workflows** button, the 10 most recent workflows that you e
 
 ## Ask EDA
 
-**Ask EDA** is EDA chat interface. You can click the Ask EDA icon from anywhere in the Nokia EDA to open a chat window.
+**Ask EDA** is the EDA chat interface. You can click the Ask EDA icon from anywhere in the Nokia EDA to open a chat window.
 
 -{{image(url="../graphics/ask-eda-icon.png", title="Ask EDA icon", shadow=true, padding=20)}}-
 

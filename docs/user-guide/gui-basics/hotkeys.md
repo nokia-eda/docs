@@ -15,11 +15,14 @@ Where a combination is shown as &lt;key&gt; + &lt;key&gt;, press the second key 
 
 Where a combination is shown as &lt;key&gt; - &lt;key&gt;, press both keys at the same time to perform the action.
 
+<!-- EDA-577: Top bar omni search; updated hotkeys -->
+
 Table: Global shortcuts (available from all pages)
 
 |Key combination|Action|
 |:-------------:|------|
 |?|Show hotkey menu|
+|/|Accesses the search bar|
 |g+h|Navigates to Home page|
 |g+a|Navigates to the Alarms page|
 |g+q|Navigates to the Queries page|
