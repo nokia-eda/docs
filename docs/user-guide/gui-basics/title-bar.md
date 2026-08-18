@@ -10,15 +10,10 @@ The search bar can help you access the following items within EDA:
 
 - pages: jumps to pages within EDA, such as, Home, Alarms, Transactions
 - resources: jumps to resource lists, such as, Nodes, Interfaces, Fabrics
-- workflows: opens the input form for a workflow
-- EQL query: begin the search with a period (.) to enter an EQL term; select from the autocomplete suggestions, or press **Enter** to open Query Builder
-- Ask EDA: start a new Ask EDA chat with the search bar input
+- workflows: jumps to the Run page of a workflow
+- EQL query: when you begin a search with a period you can search using EQL terms, which results in EQL query results
 
-When the search bar is not selected, it is accessible from any page by using the **/** hotkey. You can select from the recently searched options by navigating with your arrow keys and pressing **Enter** or clicking your selection. You can also type a new search and press **Enter** to select and navigate to the top result.
-
-To clear your recently searched history, select the search bar and click **Clear History**.
-
-To access Ask EDA through the search bar, select the search bar and click **Ask EDA**. You can also type your prompt in the search bar and then select **Ask EDA** from the drop-down to send the prompt to Ask EDA.
+The search bar is accessible using the **/** hotkey. Pressing **Enter** selects and navigates to the top result.
 
 ## Namespace selector
 

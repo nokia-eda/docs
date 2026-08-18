@@ -15,7 +15,7 @@ You can use the menu options to display the **Main** panel; or the **System Admi
 
 Click the hamburger button at the upper left of the EDA UI to expand the menu horizontally and pin it open, or to un-pin it and allow it to collapse against the left edge of the Nokia EDA UI.
 
--{{image(url="../graphics/ui-basics-expanded-navigation-panel.png", title="The Nokia EDA navigation panel showing an expanded category", shadow=true, padding=20)}}-
+-{{image(url="../graphics/expanded-navigation-panel.png", title="The Nokia EDA navigation panel showing an expanded category", shadow=true, padding=20)}}-
 
 ## Menu categories
 

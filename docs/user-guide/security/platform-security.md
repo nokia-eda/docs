@@ -33,7 +33,7 @@ The following scripts are also available in the Nokia EDA toolbox pod:
            ```<eda-url>/core/httpproxy/v1/gogs/```<br>
            ```<eda-url>/core/httpproxy/v1/gogs-replica/```
   
-        2. Click the user icon, then from the navigation bar on the right, go to **Your Settings** &gt; **Password**.
+        2. Click the user icon, then from the navigation bar on the right, go to **Your Settings** > **Password**.
 
         3. Change your password.
         4. Log out and then log back in.
@@ -42,7 +42,7 @@ The following scripts are also available in the Nokia EDA toolbox pod:
         1. Generate a token for the admin user.
             1. Log in to the Git UI.
             2. Navigate to **Your Settings**.
-            3. From the right sidebar, select **Applications** &gt; **Generate New Token**. This token is required to access some admin-level REST endpoints.
+            3. From the right sidebar, select **Applications** > **Generate New Token**. This token is required to access some admin-level REST endpoints.
         2. Change the user password.
 
             Open a shell to the Nokia EDA toolbox pod. The following example resets the user password for eda-git and eda-git-replica.
@@ -63,13 +63,13 @@ The following scripts are also available in the Nokia EDA toolbox pod:
 
             Where:
 
-            -u &lt;username&gt; is the username of the account
+            -u <username> is the username of the account
 
-            -p &lt;password&gt; is the new password for the user
+            -p <password> is the new password for the user
 
-            -g &lt;git server url&gt; is the URL to reach the Gogs server
+            -g <git server url> is the URL to reach the Gogs server
 
-            -t &lt;access token&gt; is the access token from an admin user
+            -t <access token> is the access token from an admin user
 
 2. Update the Gogs initialization secret.
 
@@ -158,13 +158,13 @@ The following scripts are also available in the Nokia EDA toolbox pod:
 
             Where:
 
-            -r &lt;username&gt; is the user for which to trigger a password reset
+            -r <username> is the user for which to trigger a password reset
 
-            -t &lt;password&gt; is the temporary password for the user
+            -t <password> is the temporary password for the user
 
-            -a &lt;username&gt; is the admin user to fetch an API token
+            -a <username> is the admin user to fetch an API token
 
-            -p &lt;password&gt; is the admin user password to fetch an API token
+            -p <password> is the admin user password to fetch an API token
 
         3. Log in to the Keycloak UI with the temporary password. Follow the prompts to update the password.
 
@@ -179,9 +179,9 @@ The following scripts are also available in the Nokia EDA toolbox pod:
 
         Where:
 
-        -n &lt;namespace&gt; is the base namespace where Nokia EDA is deployed
+        -n <namespace> is the base namespace where Nokia EDA is deployed
 
-        -p &lt;password&gt; is the new password for the user
+        -p <password> is the new password for the user
 
 ///
 
@@ -268,7 +268,7 @@ Use this procedure to change the Keycloak admin password.
 
 3. From the user drop-down list on the upper right, select **Manage Account**.
 
-4. From the menu on the left, select **Account Security** &gt; **Signing In**.
+4. From the menu on the left, select **Account Security** > **Signing In**.
 
 5. Click **Update** next to **My Password**.
 
@@ -312,16 +312,16 @@ The setting for `ProxyMode` interacts with Keycloak configuration as follows:
 
 Table: Summary of how Keycloak handles forward headers
 
-|    | `relaxDomainNameEnforcement`=FALSE | `relaxDomainNameEnforcement`=TRUE |
-|---|---|---|
+| | `relaxDomainNameEnforcement`=FALSE | `relaxDomainNameEnforcement`=TRUE |
+| --- | --- | --- |
 | `ProxyMode`=`None` | --proxy-headers forwarded | --hostname-strict false --proxy-headers forwarded |
 | `ProxyMode`=`Forward` | --proxy-headers forwarded | --hostname-strict false --proxy-headers forwarded |
 | `ProxyMode`=`XForward` | --proxy-headers xforwarded | --hostname-strict false --proxy-headers xforwarded |
 
 Table: Summary of how the API-server handles forward headers
 
-|  | `relaxDomainNameEnforcement = FALSE` | `relaxDomainNameEnforcement = TRUE` |
+| | `relaxDomainNameEnforcement = FALSE` | `relaxDomainNameEnforcement = TRUE` |
 | ----------- | -------------------------------------- | -------------------------------------- |
-| `ProxyMode`=`None`  | • Drop `Forwarded` and `X‑Forwarded‑*` headers.<br>• Generate a new `Forwarded` header containing a `for=` directive.<br>• Add a `host=` directive only for the built‑in identity proxy. | Pass all `Forwarded` and `X‑Forwarded‑*` headers unchanged. |
+| `ProxyMode`=`None` | • Drop `Forwarded` and `X‑Forwarded‑*` headers.<br>• Generate a new `Forwarded` header containing a `for=` directive.<br>• Add a `host=` directive only for the built‑in identity proxy. | Pass all `Forwarded` and `X‑Forwarded‑*` headers unchanged. |
 | `ProxyMode`=`Forward` | • If a `Forwarded` header exists, append a `for=` directive and forward the rest unchanged.<br>• If absent, create a `Forwarded` header with a `for=` directive.<br>• Drop all `X‑Forwarded‑*` headers.<br>• No extra `host=` directives for the built‑in identity proxy. | Pass all `Forwarded` and `X‑Forwarded‑*` headers unchanged. |
 | `ProxyMode`=`XForward` | • If an `X‑Forwarded‑For` header exists, append the client IP to the list<br>• If absent, create an `X‑Forwarded‑For` header with the client IP.<br>• Forward other `X‑Forwarded‑*` headers unchanged.<br>• Drop the `Forwarded` header.<br>• No `X‑Forwarded‑Host` header for the built‑in identity proxy. | Pass all `Forwarded` and `X‑Forwarded‑*` headers unchanged. |
