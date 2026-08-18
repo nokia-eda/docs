@@ -1024,12 +1024,11 @@ EOF
 
 The outcomes of this workflow will be:
 
-- `node1` and `node3` is not re-created, because they already exist in the target namespace
+- `node1` and `node3` are not re-created, because they already exist in the target namespace
 - label `reconcile: test` is added to both nodes
 - an existing link between `node1` and `node3` remains unchanged
 - a new link between `node1` and `node3` is created to connect `node1` to `node3`
 - `node2` is removed from the topology along with its link to `node1`
-- `node1` and `node3` briefly move to the `Onboarded: false` state, and NPPs reconnect to the nodes shortly after the workflow completes.
 
 ### Replace
 
