@@ -566,11 +566,12 @@ In case the value of `GOGS_ADMIN_USER`/`CE_GIT_USERNAME` was changed, make sure 
 
 #### Nokia EDA user
 
-Nokia EDA users are managed by the Keycloak identity provider and by default an admin user is created during the installation process. Using the following setter it is possible to change the default admin user password[^1].
+Nokia EDA users are managed by the Keycloak identity provider. During installation, an admin user is created with a temporary default password. It is possible to change the default admin user password[^1] and disable the temporary flag[^2].
 
 | Component | Default value | Kpt Setter | Notes
 |-----------|------------|------------| -- |
 | Nokia EDA admin password  | `admin` | `SECRET_EDA_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
+| Set password as temporary  | `true` | `RESET_EDA_ADMIN_PASSWORD_ON_FIRST_LOGIN` | <small>Boolean</small> |
 
 #### Keycloak
 
@@ -708,3 +709,4 @@ You can now access the new Nokia EDA deployment using the following methods:
 Both examples assume that `EXT_HTTPS_PORT` was set to `443` in the preferences file.
 
 [^1]: Note, that it is not possible to change the default admin username.
+[^2]: API clients will receive an "Account is not fully set up” error if attempting to authenticate using a temporary password
