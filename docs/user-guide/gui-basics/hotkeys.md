@@ -7,7 +7,7 @@ In the Nokia EDA UI, you can perform some common actions by pressing a fixed set
 For a guide to these key combinations, do either of the following:
 
 - press "?" on your keyboard
-- click the **Help** icon from any page of the Nokia EDA GUI and select **Hotkeys**
+- click the **Help** icon from any page of the Nokia EDA UI and select **Hotkeys**
 
 ///
 

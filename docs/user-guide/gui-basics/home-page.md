@@ -1,6 +1,6 @@
 # Home page
 
-The **Nokia EDA Home** page is the first landing page for the Nokia EDA GUI. While some elements of the Home page are unique, it also includes a set of standard controls that are available from all pages within the Nokia EDA GUI.
+The **Nokia EDA Home** page is the first landing page for the Nokia EDA UI. While some elements of the Home page are unique, it also includes a set of standard controls that are available from all pages within the Nokia EDA UI.
 
 The **EDA Home** page includes a drop-down that allows you to choose between two views:
 
@@ -15,14 +15,14 @@ Table: Common elements on the Home page
 
 |#|Name|Function|
 |:---:|----|--------|
-|1|Menu pin/un-pin|Use this button to expand and pin, or collapse and hide, the main menu in the left column of the Nokia EDA GUI.|
+|1|Menu pin/un-pin|Use this button to expand and pin, or collapse and hide, the main menu in the left column of the Nokia EDA UI.|
 |2|Menu controls|Use these tools to:<br><ul><li>Change between:<ul><li>the **Main** menu, providing access to network management functions</li><li>the **System Administration** menu, providing access to functions that manage Nokia EDA itself</li><li>**All**, which displays all menu selections for the Main and System Administration menus</li></ul><li>Enable **Auto Expand** for the navigation menu, which causes a collapsed menu to expand horizontally when you hover over any menu icon</li><li>Search the full menu items for items that match specific text</li><li>Expand or collapse all menu categories</li></ul><br>**Note**: Because Nokia EDA allows you to create your own custom navigation panels, additional panels may be available for selection here. These could be panels you have created yourself, or created by others and then published for sharing with other users.|
 |3|Menu category|Click to expand or collapse a category to reveal or hide the individual links that are grouped within it.|
-|4|Event Driven Automation Home button|Click here on any page of the Nokia EDA GUI to navigate to, or re-load, the Nokia EDA Home page.|
+|4|Event Driven Automation Home button|Click here on any page of the Nokia EDA UI to navigate to, or re-load, the Nokia EDA Home page.|
 |5|Branch selector|This drop-down selector is visible only if branches are present in the system. Click to select a branch.|
 |6|Namespace selector|Use this drop-down selector to choose a working namespace: either all namespaces, or one specific namespace. This selection affects the namespace from which to display data, and either create or manage resources. **Note:** The namespaces listed in the selector are limited to those namespaces that you have permission to access.|
 |7|Common buttons|<ul><li>The **Transaction** basket: indicates the number of pending resource changes for the current user. Click to open the **Transactions** form.</li><li>The **Workflows** button opens the **Workflow Executions** form, which displays recent workflows and their status.</li><li>The **Ask EDA** button opens the **Ask EDA** chat window.</li><li>The **Help** button: click to open a menu to access API documentation, hotkey configuration, and Release information.</li><li>The **User settings** button: click to open the **User Settings** menu.</li></ul>|
-|8|Dashlets|Each dashlet displays important information about the status of the Nokia EDA application and the network it is managing. Clicking the **View** link in any dashlet opens the Nokia EDA GUI page specific to that dashlet's information.|
+|8|Dashlets|Each dashlet displays important information about the status of the Nokia EDA application and the network it is managing. Clicking the **View** link in any dashlet opens the Nokia EDA UI page specific to that dashlet's information.|
 |9|Live/Pause selector|Use this drop-down selector to start or pause streaming updates on all resource pages, including the following:<br><ul><li>datagrids</li><li>dashboards</li><li>schema forms</li><li>topologies</li></ul><br>Clicking **Pause** pauses the stream of data which can be helpful for pages with high rates of change.<br><br>Clicking **Live** resumes the streaming of data.|
 
 The following default dashlets display on the **Summary** page:
@@ -48,7 +48,7 @@ The following default dashlets display on the **Summary** page:
 
 ## The Platform Status page
 
-The second view available from the Home page of the Nokia EDA GUI is the Platform Status page.
+The second view available from the Home page of the Nokia EDA UI is the Platform Status page.
 
 -{{image(url="../graphics/sc0205.png", title="The Platform status page", shadow=true, padding=20)}}-
 
