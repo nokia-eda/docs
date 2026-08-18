@@ -270,7 +270,7 @@ spec:
 
 ///
 
-Natural-language queries are often resolved against the node-agnostic `.namespace.resources.cr` tables, which may not contain all the data required to fullfil the query request. To be able to query the node tables, prepend the query with the Network OS name. For example:
+Natural-language queries are often resolved against the node-agnostic `.namespace.resources.cr` tables, which may not contain all the data required to fulfill the query request. To be able to query the node tables, prepend the query with the Network OS name. For example:
 
 - for Nokia SR Linux: `srl: show me all bgp peers in established state`
 - for Nokia SR OS: `sros: list all ports with mtu greater than 1500`
@@ -291,6 +291,7 @@ Natural-language queries are often resolved against the node-agnostic `.namespac
         - a Sort that indicates the order in which data should be returned.
         - a Limit that restricts the number of results to return.
         - a Frequency that indicates the minimum period after which to automatically update the query results.
+
 4. When you have completed the query expression, click **Query** to view the results.
 
     /// admonition | Note
@@ -304,8 +305,6 @@ Natural-language queries are often resolved against the node-agnostic `.namespac
 
 2. In the query types drop-down list, click **Natural Language Query**.
 
-3. Type your question using simple language (not necessarily English). Your question must specify something to return information about (such as nodes, links, or other network objects).
-
     /// admonition | Note
         type: subtle-note
     Currently, natural-language queries are resolved only against the `.node.srl` table.
@@ -318,7 +317,7 @@ Natural-language queries are often resolved against the node-agnostic `.namespac
     - a limit on how many results to return.
     - a time period after which to automatically update the query results.
 
-4. When you have finished typing your query, click **Query** to view the results.
+3. When you have finished typing your query, click **Query** to view the results.
 
     /// admonition | Note
         type: subtle-note

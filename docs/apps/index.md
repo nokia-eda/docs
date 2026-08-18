@@ -305,7 +305,7 @@ Use this procedure to update the settings of an app after installation. This pro
 
 A catalog is a Git repository that contains the manifests of applications. A manifest contains all the details of an app needs to display the app in the Nokia EDA Store UI and for performing the installation. Nokia EDA Store builds a list of available apps using the manifests from all the catalogs registered in Nokia EDA.
 
-In the Nokia EDA UI, you can view the configured catalogs from the **System Administration** &gt; **Catalogs** page.
+In the Nokia EDA UI, you can view the configured catalogs from the **System Administration** > **Catalogs** page.
 
 The **Catalogs** page displays all the catalogs available in EDA. You can double-click a catalog to view or edit its details.
 
@@ -378,7 +378,7 @@ EOF
 
 The app's code is stored in an Open Container Initiative (OCI) image. This image is stored in a container registry. This registry must be known to the Nokia EDA deployment so Nokia EDA Store can pull the image and use the data in the image to deploy the app. Registry resources configure registries available to the Nokia EDA Store.
 
-In the Nokia EDA UI, you can manage registries from the **System Administration** &gt; **Registries** page. The **Registries** page displays all configured registries in the Nokia EDA system.
+In the Nokia EDA UI, you can manage registries from the **System Administration** > **Registries** page. The **Registries** page displays all configured registries in the Nokia EDA system.
 
 ### Adding a registry <span id="add-registry"></span>
 
