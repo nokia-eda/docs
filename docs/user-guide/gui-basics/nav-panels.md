@@ -128,7 +128,7 @@ Table: Elements of the Custom Navigation Panel Editor
 
     1. Specify the target page for the custom link by providing a URL in the **Custom Menu Link** field. Both internal and external links are supported.
 
-        - For an internal link, click the **Custom Menu Link** drop-down list and select an existing page in the Nokia EDA GUI from the displayed list. Some internal links require additional configuration:
+        - For an internal link, click the **Custom Menu Link** drop-down list and select an existing page in the Nokia EDA UI from the displayed list. Some internal links require additional configuration:
 
             - Alarms: Delect a **Screen Name** to identify the specific Alarms page to display. If navigating to the alarm list screen, optionally enter a EQL expression to filter to set of alarms displayed. Click **Validate** to confirm the EQL expression is valid before saving the custom menu item.
 

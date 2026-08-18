@@ -2,7 +2,7 @@
 
 /// html | div.steps
 
-1. Click the **User** icon at the upper right of the Nokia EDA GUI.
+1. Click the **User** icon at the upper right of the Nokia EDA UI.
 
 2. Click **Sign Out**.
 

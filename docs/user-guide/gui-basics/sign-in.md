@@ -1,6 +1,6 @@
 # Signing in
 
-To log into the Nokia EDA GUI, you must have:
+To log into the Nokia EDA UI, you must have:
 
 - the URL to the Nokia EDA server; for example, `https://<server URL>:9443/`
 - a valid user account and password for Nokia EDA
@@ -22,7 +22,7 @@ To log into the Nokia EDA GUI, you must have:
 
     If more than 15 minutes has elapsed from when you opened the login page and when you click **Submit**, Nokia EDA rejects your login attempt and display an error message indicating that you took too long to log in. If this happens, enter your credentials again and click **Submit** to log in.
 
-You are logged into the Nokia EDA GUI. If configured by your administrator, a login banner displays with information for all Nokia EDA users.
+You are logged into the Nokia EDA UI. If configured by your administrator, a login banner displays with information for all Nokia EDA users.
 
 ///
 

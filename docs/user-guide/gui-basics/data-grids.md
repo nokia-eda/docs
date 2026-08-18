@@ -1,6 +1,6 @@
 # Data grids
 
-Many pages in the Nokia EDA GUI display lists of featuring rows and columns of data. The options described here for managing such data grids are common to most data grids in the Nokia EDA GUI.
+Many pages in the Nokia EDA UI display lists featuring rows and columns of data. The options described here for managing such data grids are common to most data grids in the Nokia EDA UI.
 
 /// admonition | Note
     type: subtle-note
@@ -18,7 +18,6 @@ Table: Data grid controls
 |3|Text string filter|Enter an alphanumeric string to filter the list based on matching values in that column.|
 |4|Selection filter|Select a value to filter the list based on matching values in that column.|
 |5|Filter Applied indicator|When a dot is superimposed on the Filter icon, this field is currently applying a filter to the displayed list.|
-|6|Table settings and actions button|Click to open the menu of standard table actions, as well as the list of multi-row actions available for this table.|
 |6|Table row actions|An example of the actions menu that is displayed after clicking the **Table row actions** button.|
 |7|Table settings and actions button|Click to open the menu of standard table actions, as well as the list of multi-row actions available for this table.|
 |8|Information panel|Like other pages in Nokia EDA, this panel displays detailed information about the selected object – in this case, the row or rows that are selected in the data grid.|
@@ -36,9 +35,9 @@ Columns may be collected into groups; in this case, individual columns are neste
 
 For any table, you can select which columns are displayed and which are hidden from view.
 
-In the list of standard table actions, click **Manage columns** to open a Manage Columns dialog. This dialog lists all available columns; those checked are included in the data grid, and those unchecked are excluded. By default, some possible columns may already be excluded from view.
+In the list of standard table actions, click **Manage columns** to open a Manage Columns form. This form lists all available columns; those checked are included in the data grid, and those unchecked are excluded. By default, some possible columns may already be excluded from view.
 
-Select or un-select the available columns and click **Apply** to close the dialog and update the data grid display based on your selections.
+Select or un-select the available columns and click **Apply** to close the form and update the data grid display based on your selections.
 
 To rearrange the position of a column, click the column header and drag it to its new position.
 
@@ -62,7 +61,7 @@ However, if you have selected a single namespace in the **Namespace** selector o
 
 You can pin one or more columns to the left or right side of a data grid. Pinned columns continue to display even as the rest of the data grid scrolls to the left or right.
 
-The set of pinned columns are bounded by a vertical gray line on their right edge.
+The set of pinned columns is bounded by a vertical gray line on their right edge.
 
 In most data grids, the **Name** column is pinned by default. However, the default pinned columns can vary by page.
 
@@ -137,16 +136,18 @@ To switch to raw values, select **Show raw values** from the **Table settings &a
 
 To return to the UI rendered values, click **Show user-friendly values** from the **Table settings &amp; actions** menu.
 
-# Common data grid actions
+## Common data grid actions
 
-The following options are available for the menu of **Table settings and actions** for any table in the Nokia EDA GUI.
+The following options are available for the menu of **Table settings and actions** for any table in the Nokia EDA UI.
+
+<!-- EDA-5677: Column width improvement; updated "Save Column Layout" bullet -->
 
 - **Clear sorting**: select to remove all sorting from all columns.
 - **Clear filters**: select to remove all filters from all columns.
 - **Manage columns**: for any table, the displayed columns may be a subset of all available columns. Select this option to view a list of all possible columns, and enable or disable any items.
 - **Autosize all columns**: if you have previously adjusted the width of any column, select this option to restore all columns to their default width.
 - **Export to CSV**: select to save a comma-separated-values (.csv) file containing all data for the currently displayed table. The file is saved to your default download directory.
-- **Save Column Layout**: select to save the column selection and column width for the table on this page. These settings are saved as part of your user account and are retained in future sessions until you change them or reset the column layout.
+- **Save Column Layout**: select to save the column selection and column width for the table on this page. Select **Include column widths** or **Include applied filters** or both. These settings are saved as part of your user account and are retained in future sessions until you change them or reset the column layout.
 - **Reset Column Layout**: select to restore the column layout to the default settings.
 
 /// admonition | Note
@@ -158,13 +159,13 @@ In addition to the common actions described above, the list of actions may also 
 - Bulk edits, which allow you to modify multiple selected items in the same way.
 ///
 
-## Multi-row actions
+### Multi-row actions
 
 Some tables support actions that can be simultaneously applied to all selected rows. When available, these actions are displayed under a sub menu of the **Table settings and actions** menu.
 
 -{{image(url="../graphics/sc0214-26-4-1.png", title="Multi-row actions for alarms list", shadow=true, padding=20)}}-
 
-## Special actions
+### Special actions
 
 Some tables support special actions appropriate to the particular data displayed in the list. When available, these actions are displayed under a sub menu of the **Table settings and actions** menu.
 
@@ -219,17 +220,17 @@ After an item has been selected for editing, a drop-down control allows you to c
 
 The **Selected Items** split view button displays the selected items you are making changes to. You can deselect items from this list to exclude them from the bulk edit.
 
--{{image(url="../graphics/sc0217.png", title="The bulk edits page", shadow=true, padding=20)}}-
+-{{image(url="../graphics/ui-basics-bulk-edits.png", title="The bulk edits page", shadow=true, padding=20)}}-
 
 Table: Elements of the **Bulk Edit** page
 
 |Item|Description|
 |:---:|-----------|
-|1|The page name and an indication of the number of selected objects that are subject to these bulk changes after they are committed.|
+|1|The page name and the type of selected objects that are subject to these bulk changes after they are committed.|
 |2|A list of modifiable properties for the selected objects.|
-|3|In this, case the **Labels** field is selected for modification. Because the field has been selected for modification, the actions drop-down list is displayed. Available options are specific to the **Labels** field.|
+|3|The metadata, in this case, the **Labels** field is selected for modification. Because the field has been selected for modification, the actions drop-down list is displayed. Available options are specific to the **Labels** field.|
 |4|The **Selected Items** split view displays the selected items and allows you to select or deselect items from the list. This view can be collapsed.|
-|5|After configuring the set of changes for all parameters, choose from among the standard Commit options for this bulk edit:<ul><li>**Commit** to immediately apply the changes on this Bulk Edit page.</li><li>**Add To Basket** to store these changes to be processed later as part of a transaction (which can include other accumulated commits to be applied as part of the same operation).<li>**Dry Run** to test your changes, so you can reveal and resolve any issues before proceeding.|
+|5|After configuring the set of changes for all parameters, choose from among the standard Commit options for this bulk edit:<ul><li>**Commit** to immediately apply the changes on this Bulk Edit page.</li><li>**Add To Basket** to store these changes to be processed later as part of a transaction (which can include other accumulated commits to be applied as part of the same operation).<li>**Dry Run** to test your changes, so you can reveal and resolve any issues before proceeding.<li> **Commit without pipeline** to apply the changes without running pipelines.|
 
 The actions available for a specific parameter as part of a bulk edit depend on the type of data being modified.
 
