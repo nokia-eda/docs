@@ -80,7 +80,9 @@
 
 /* Show button at half opacity when hovering over header */
 .table-wrapper.header-hover .md-table__button {
-    opacity: 0.5;
+    opacity: 0.4;
+    color: var(--md-default-fg-color);
+    border-color: var(--md-default-fg-color);
     visibility: visible;
 }
 

@@ -547,40 +547,40 @@ Nokia EDA platform uses a set of credentials to authenticate and authorize acces
 
 #### Git
 
-| Component | Default value | Kpt Setter | Notes
-|-----------|------------|------------| -- |
-| Internal Git server (Gogs) admin username  | `eda` | `GOGS_ADMIN_USER` | Sets the username for the internal Git server. Not applicable if an external Git server is used. <small>Base64 encoded</small> |
-| Internal Git server (Gogs) admin password  | `eda` | `GOGS_ADMIN_PASS` | Same note as for the admin username. <small>Base64 encoded</small> |
-| Config Engine Git username  | `eda` | `CE_GIT_USERNAME` | Should match the Git server admin username. <small>Base64 encoded</small> |
-| Config Engine Git password  | `eda` | `CE_GIT_PASSWORD` | Should match the Git server admin password. <small>Base64 encoded</small> |
+| Component | Default value | Kpt Setter {: .nowrap} | Notes
+| ----------- | ------------ | ------------ | -- |
+| Internal Git server (Gogs) admin username | `eda` | `GOGS_ADMIN_USER` | Sets the username for the internal Git server. Not applicable if an external Git server is used. <small>Base64 encoded</small> |
+| Internal Git server (Gogs) admin password | `eda` | `GOGS_ADMIN_PASS` | Same note as for the admin username. <small>Base64 encoded</small> |
+| Config Engine Git username | `eda` | `CE_GIT_USERNAME` | Should match the Git server admin username. <small>Base64 encoded</small> |
+| Config Engine Git password | `eda` | `CE_GIT_PASSWORD` | Should match the Git server admin password. <small>Base64 encoded</small> |
 
 In case the value of `GOGS_ADMIN_USER`/`CE_GIT_USERNAME` was changed, make sure to set the setters for the repository paths as per the table below. The path values are provided as raw text values.
 
 | Component | Default value | Kpt Setter | Notes
-|-----------|------------|------------| -- |
-| Custom resources repo  | `/eda/customresources.git` | `GIT_REPO_CHECKPOINT` |  |
-| Apps repo  | `/eda/apps.git` | `GIT_REPO_APPS` |  |
-| User settings repo  | `/eda/usersettings.git` | `GIT_REPO_USER_SETTINGS` |  |
-| Credentials repo  | `/eda/credentials.git` | `GIT_REPO_SECURITY` |  |
-| Identity repo  | `/eda/identity.git` | `GIT_REPO_IDENTITY` |  |
+| ----------- | ------------ | ------------ | -- |
+| Custom resources repo | `/eda/customresources.git` | `GIT_REPO_CHECKPOINT` | |
+| Apps repo | `/eda/apps.git` | `GIT_REPO_APPS` | |
+| User settings repo | `/eda/usersettings.git` | `GIT_REPO_USER_SETTINGS` | |
+| Credentials repo | `/eda/credentials.git` | `GIT_REPO_SECURITY` | |
+| Identity repo | `/eda/identity.git` | `GIT_REPO_IDENTITY` | |
 
 #### Nokia EDA user
 
 Nokia EDA users are managed by the Keycloak identity provider. During installation, an admin user is created with a temporary default password. It is possible to change the default admin user password[^1] and disable the temporary flag[^2].
 
 | Component | Default value | Kpt Setter | Notes
-|-----------|------------|------------| -- |
-| Nokia EDA admin password  | `admin` | `SECRET_EDA_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
-| Set password as temporary  | `true` | `RESET_EDA_ADMIN_PASSWORD_ON_FIRST_LOGIN` | <small>Boolean</small> |
+| ----------- | ------------ | ------------ | -- |
+| Nokia EDA admin password | `admin` | `SECRET_EDA_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
+| Set password as temporary | `true` | `RESET_EDA_ADMIN_PASSWORD_ON_FIRST_LOGIN` | <small>Boolean</small> |
 
 #### Keycloak
 
 The Keycloak identity provider is managed by its own admin user and its credentials can be customized using the following setters:
 
 | Component | Default value | Kpt Setter | Notes
-|-----------|------------|------------| -- |
-| Keycloak admin username  | `admin` | `SECRET_KC_ADMIN_USERNAME` | <small>Base64 encoded</small> |
-| Keycloak admin password  | `admin` | `SECRET_KC_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
+| ----------- | ------------ | ------------ | -- |
+| Keycloak admin username | `admin` | `SECRET_KC_ADMIN_USERNAME` | <small>Base64 encoded</small> |
+| Keycloak admin password | `admin` | `SECRET_KC_ADMIN_PASSWORD` | <small>Base64 encoded</small> |
 
 #### Postgres DB
 

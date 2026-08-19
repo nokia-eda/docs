@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+function initExpandableBlocks() {
     // Global escape key handler for overlays
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
@@ -271,4 +271,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-});
+}
+
+if (typeof document$ !== "undefined" && document$.subscribe) {
+    document$.subscribe(initExpandableBlocks);
+} else {
+    document.addEventListener("DOMContentLoaded", initExpandableBlocks);
+}
