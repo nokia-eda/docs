@@ -199,6 +199,17 @@ tr:has(th.hide-th) {
   display: none;
 }
 
+/* Prevent wrapping in table cells marked with the nowrap class. */
+th.nowrap,
+td.nowrap {
+  white-space: nowrap;
+}
+
+/* Apply .nowrap on a third-column header to the entire third column. */
+.md-typeset table:has(th.nowrap:nth-child(3)) tr> :nth-child(3) {
+  white-space: nowrap;
+}
+
 /* Color the table header */
 /* .md-typeset table:not([class]) th {
   background-color: #9e9e9e;

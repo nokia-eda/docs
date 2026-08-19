@@ -31,7 +31,7 @@ Example: 25.4.1
 ////
 
 //// html | tr
-///// html | td
+///// html | td[style='white-space: nowrap;']
 `clusterName`
 /////
 ///// html | td
@@ -63,7 +63,7 @@ Example: `eda-node01`
 ///////
 
 /////// html | tr
-//////// html | td
+//////// html | td[style='white-space: nowrap;']
 `endpoint`
 ////////
 //////// html | td
@@ -72,7 +72,7 @@ The IP address on which the node is reachable for Talos to control. Optional.
 ///////
 
 /////// html | tr
-//////// html | td
+//////// html | td[style='white-space: nowrap;']
 `interfaces`
 ////////
 //////// html | td
@@ -183,7 +183,7 @@ The [Virtual IP (VIP) address](https://docs.siderolabs.com/talos/-{{ talos_versi
 ///////
 
 /////// html | tr
-//////// html | td
+//////// html | td[style='white-space: nowrap;']
 `primaryNode`
 ////////
 //////// html | td
@@ -411,7 +411,7 @@ Talos [logging](https://docs.siderolabs.com/talos/-{{ talos_version }}-/configur
 ////// html | table
 
 /////// html | tr
-//////// html | td
+//////// html | td[style='white-space: nowrap;']
 `destinations`
 ////////
 //////// html | td
