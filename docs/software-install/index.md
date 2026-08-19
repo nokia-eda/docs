@@ -151,6 +151,7 @@ EDA software consists of the EDA core and the pluggable applications. The core i
 
 | EDA release version | EDA core version |
 |-------------|------------------|
+| 26.8 | v6.0.0 |
 | 26.4 | v5.0.0 |
 | 25.12 | v4.0.0 |
 | 25.8 | v3.0.0 |
@@ -169,16 +170,24 @@ The following table lists the default Talos and the corresponding Kubernetes ver
 
 | edaadm version | Talos version | Kubernetes version |
 |----------------|---------------|--------------------|
-| [3.3.0][edaadm-gh-3.3.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
-| [3.2.0][edaadm-gh-3.2.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
-| [3.1.0][edaadm-gh-3.1.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
-| [3.0.0][edaadm-gh-3.0.0] | [1.11.5][talos-rel-1.11.5] | 1.34.1 |
+| [4.0.0][edaadm-gh-4.0.0] | [1.13.6][talos-rel-1.13.6] | [1.36.2][kubernetes-rel-1.36] |
+| [3.3.0][edaadm-gh-3.3.0] | [1.11.5][talos-rel-1.11.5] | [1.34.1][kubernetes-rel-1.34] |
+| [3.2.0][edaadm-gh-3.2.0] | [1.11.5][talos-rel-1.11.5] | [1.34.1][kubernetes-rel-1.34] |
+| [3.1.0][edaadm-gh-3.1.0] | [1.11.5][talos-rel-1.11.5] | [1.34.1][kubernetes-rel-1.34] |
+| [3.0.0][edaadm-gh-3.0.0] | [1.11.5][talos-rel-1.11.5] | [1.34.1][kubernetes-rel-1.34] |
 | [2.0.0][edaadm-gh-2.0.0] | [1.9.2][talos-rel-1.9.2] | 1.32.1 |
 | [1.0.0][edaadm-gh-1.0.0] | [1.8.3][talos-rel-1.8.3] | 1.31.2 |
+
+The Kubernetes version denotes the default Kubernetes version that is used by the `edaadm` tool of the given release. The user can choose a different Kubernetes version by specifying setting it in the [`edaadm` configuration file](deploying-eda/setting-up-the-eda-virtual-machine-nodes.md#edaadm-configuration-file-fields).
+
+[edaadm-gh-4.0.0]: https://github.com/nokia-eda/edaadm/releases/tag/v4.0.0
+[talos-rel-1.13.6]: https://github.com/siderolabs/talos/releases/tag/v1.13.6
+[kubernetes-rel-1.36]: https://kubernetes.io/releases/1.36/
 
 [edaadm-gh-3.3.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.3.0
 [edaadm-gh-3.2.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.2.0
 [edaadm-gh-3.1.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.1.0
+[kubernetes-rel-1.34]: https://kubernetes.io/releases/1.34/
 
 [edaadm-gh-3.0.0]: https://github.com/nokia-eda/edaadm/releases/tag/v3.0.0
 [talos-rel-1.11.5]: https://github.com/siderolabs/talos/releases/tag/v1.11.5

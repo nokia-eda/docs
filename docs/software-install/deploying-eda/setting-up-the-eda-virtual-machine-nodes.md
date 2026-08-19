@@ -26,7 +26,7 @@ Description
 /////
 ///// html | td
 The version of the Nokia EDA environment to be deployed.  
-Example: 25.4.1
+Example: -{{ eda_version }}-
 /////
 ////
 
@@ -102,10 +102,8 @@ A list of interfaces present in the node, each with the following settings:
 
     * `source`: a source interface for the route to apply to. Optional.
 
-* `deviceSelector`: specifies how to select the device associated with this interface.
-    * `busPath`: a PCI buspath that can contain wildcards. Optional.
-
-    * `hardwareAddr`: a MAC address that can contain wildcards. Optional.
+* `deviceSelector`: CEL expression that specifies how to select the device associated with this interface.
+    Example: `'"3a:9a:65:c6:1c:16" == mac(link.permanent_addr)'`
 ////////
 ///////
 
@@ -142,6 +140,19 @@ The Kubernetes-specific configuration. The following parameters define the Kuber
 
 <!-- k8s sub-table start -->
 ////// html | table
+
+/////// html | tr
+//////// html | td
+`version`
+////////
+//////// html | td
+Controls the Kubernetes version to be deployed.
+
+Optional. Defaults to the Kubernetes version controlled by the Talos version provided by the `edaadm`. See `edaadm` [Talos Kubernetes version matrix](../index.md#talos-kubernetes) for the matching Kubernetes version.
+
+Example: `1.36.2`
+////////
+///////
 
 /////// html | tr
 //////// html | td
@@ -464,6 +475,8 @@ The following examples show an EDAADM configuration file for a 6-node Kubernetes
 
 ///
 
+Save the EDAADM configuration file with a name that is unique for your deployment. The file name used in the examples is `eda-6-node.yaml`.
+
 ## Generating the Talos machine configurations
 
 After creating the EDAADM configuration file, the next step is to generate all the configuration files that are necessary to deploy the Kubernetes environment using Talos.
@@ -471,13 +484,13 @@ After creating the EDAADM configuration file, the next step is to generate all t
 Use the `edaadm` tool to generate the deployment files.
 
 ```bash
-edaadm generate -c eda-input-6-node.yaml
+edaadm generate -c eda-6-node.yaml
 ```
 
 <div class="embed-result">
 ```
-$ edaadm generate -c eda-input-6-node.yaml
-ConfigFile is eda-input-6-node.yaml
+$ edaadm generate -c eda-6-node.yaml
+ConfigFile is eda-6-node.yaml
 ...
 [1/4] Validating Machines
 [1/4] Validated Machines
@@ -551,10 +564,10 @@ This procedure expects two networks to be available on the KVM hypervisors. The 
     Use the `edaadm` tool to generate the cloud-init files for the Nokia EDA nodes using the edaadm configuration file:
 
     ```bash
-    edaadm make-iso -c eda-input-6-node.yaml #(1)!
+    edaadm make-iso -c eda-6-node.yaml #(1)!
     ```
 
-    1. Where `eda-input-6-node.yaml` is the name of the EDAADM configuration file for your Nokia EDA deployment.
+    1. Where `eda-6-node.yaml` is the name of the EDAADM configuration file for your Nokia EDA deployment.
 
     The `<machine-name>-data.iso`[^1] file(s) will be created in the `<cluster-name>` folder containing the cloud-init information for all Nokia EDA VMs defined in the EDAADM configuration file:
 
@@ -665,7 +678,7 @@ This procedure expects two networks (port groups) to be available on the ESXi hy
     In this example, the output is stored as an environment variable to make it easy to use in the command to deploy the image using the OVF Tool.
 
     ```
-    export NODECONFIG=$(base64 -i eda-node01.yaml)
+    export NODECONFIG=$(base64 -w 0 -i eda-node01.yaml)
     ```
 
 4. Deploy the OVA image using the OVF Tool.

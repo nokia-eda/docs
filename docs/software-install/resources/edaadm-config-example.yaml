@@ -1,4 +1,4 @@
-version: 25.4.1
+version: 26.8.1
 clusterName: eda-compute-cluster
 machines:
   - name: eda-node01
@@ -125,6 +125,7 @@ machines:
     disks:
       os: /dev/vda
 k8s:
+  version: 1.36.2
   stack: ipv4
   primaryNode: eda-node01
   endpointUrl: https://192.0.2.5:6443

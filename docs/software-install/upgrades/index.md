@@ -21,6 +21,7 @@ In geo-redundant clusters, cluster members cannot run different versions. Theref
 
 /// admonition | Version-specific upgrade considerations
     type: info
+<h4 id="version-25.4.1-and-below">Version 25.4.1 and below</h4>
 When upgrading from versions **older than 25.4.1**, ensure that the NodeGroup resources used by the nodes contain both gNOI and gNSI services.
 
 ```bash title="Example NodeGroup resource with gNOI and gNSI services"
@@ -46,6 +47,21 @@ spec:
   superuser: true
 ```
 </div>
+
+<h4 id="version-26.4.x-and-below">Version 26.4.x and below and Kubernetes version compatibility</h4>
+
+EDA releases **v26.4.x and below** can only be installed on Kubernetes clusters up to and including v1.35. See the [version matrix](../index.md#version-information) for the mapping of supported Kubernetes versions and the corresponding `edaadm` versions.
+
+Upgrading EDA releases v26.4.x and below to a newer version of EDA while running on Kubernetes clusters up to and including v1.35 is supported and does not require any additional steps. Follow the existing in-place upgrade procedure.
+
+In case you are upgrading EDA releases v26.4.x and below to a newer version of EDA and the Kubernetes cluster version is newer than v1.35, the following steps are required:
+
+1. Perform in-place upgrade of the EDA core components as per the existing in-place upgrade procedure.
+2. Upgrade the Nokia EDA applications to the new version of EDA.
+3. Take the backup of the cluster.
+4. Deploy a new EDA cluster using the `edaadm` tool with the desired (or default) Kubernetes version that is newer than v1.35.
+5. Install the target EDA version and restore the backup collected in step 3.
+
 ///
 
 /// admonition | Nokia EDA upgrade procedure scope
@@ -421,7 +437,7 @@ make eda-configure-core
 Install the new version of Nokia EDA core components by running:
 
 ```{.shell .no-select}
-make install-external-packages eda-install-core eda-is-core-ready
+make metallb install-external-packages eda-install-core eda-is-core-ready
 ```
 
 ## Upgrading your applications
