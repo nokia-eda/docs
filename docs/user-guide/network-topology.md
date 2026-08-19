@@ -1,3 +1,8 @@
+---
+search:
+  boost: 4
+---
+
 # Network Topology
 
 A network topology in a broad sense describes the network design on physical and logical levels. Whether Clos, a Fat Tree or a Ring design, the topology is what inherently defines the network.

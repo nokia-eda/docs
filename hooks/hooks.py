@@ -1,5 +1,6 @@
 from datetime import datetime
 from pathlib import Path
+
 import yaml
 from mkdocs.plugins import event_priority
 

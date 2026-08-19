@@ -1,0 +1,120 @@
+apiVersion: fabrics.eda.nokia.com/v1
+kind: FabricTopology
+metadata:
+  name: 3tier-200g-12l2s2dcgw-1
+  namespace: eda
+spec:
+  #########################
+  #### Node Templates #####
+  #########################
+  nodeTemplates:
+    - name: leaf
+      nodeProfile: srlinux-ghcr-26.3.1
+      platform: 7220 IXR-D2L
+      # labels:
+    - name: spine
+      nodeProfile: srlinux-ghcr-26.3.1
+      platform: 7220 IXR-D3L
+    - name: dcgw
+      nodeProfile: srsim-int-26.3.r1
+      platform: 7750 SR-1s
+      components:
+        - kind: lineCard
+          slot: "1"
+          type: xcm-1s
+        - kind: powerShelf
+          slot: "1"
+          type: ps-a4-shelf-dc
+        - kind: powerModule
+          slot: 1-{{1..4}}
+          type: ps-a-dc-6000
+        - kind: mda
+          slot: 1-a
+          type: s18-100gb-qsfp28
+        - kind: connector
+          slot: 1-a-{{1..18}}
+          type: c1-100g
+
+  #################################
+  ## Inter Switch Link Templates ##
+  #################################
+  interSwitchLinkTemplates:
+    - name: leaf-spine-isl
+      type: InterSwitch
+      speed: 100G
+      encapType: "Null"
+    - name: spine-dcgw-isl
+      type: InterSwitch
+      speed: 100G
+      encapType: "Null"
+
+  #########################
+  ## Edge Link Templates ##
+  #########################
+  edgeLinkTemplates:
+    - name: compute
+      type: ESLAG
+      encapType: Dot1q
+      nodesInLAG: 2
+
+  #########################
+  #### Pod Templates #####
+  #########################
+  podTemplates:
+    - name: leaf-spine-dcgw-pod
+      nodeGroups:
+        - name: leaf
+          nodeName: '{{.podName}}-{{.nodeGroupName}}{{ printf "%02d" .nodeIndex }}'
+          nodeTemplate: leaf
+          count: 12
+        - name: spine
+          nodeName: '{{.podName}}-{{.nodeGroupName}}{{printf "%02d" .nodeIndex}}'
+          nodeTemplate: spine
+          count: 2
+        - name: dcgw
+          nodeName: '{{.podName}}-{{.nodeGroupName}}{{printf "%02d" .nodeIndex}}'
+          nodeTemplate: dcgw
+          count: 2
+      ##############################
+      ## Inter Switch Link Groups ##
+      ##############################
+      interSwitchLinkGroups:
+        - name: leaf-spine
+          template: leaf-spine-isl
+          interfacesPerNodePair: 2
+          localNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=leaf
+            interfaceStartIndex: "1-53"
+            interfaceIndexIncrement: 2
+          remoteNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=spine
+        - name: spine-dcgw
+          template: spine-dcgw-isl
+          interfacesPerNodePair: 2
+          localNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=spine
+            interfaceStartIndex: "1-25"
+          remoteNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=dcgw
+            interfaceStartIndex: "1-a-{{1..}}-1"
+      ##############################
+      ###### Edge Link Groups ######
+      ##############################
+      edgeLinkGroups:
+        - name: compute
+          template: compute
+          localNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=leaf
+          count: 10
+  operation: Reconcile
+  ###############
+  #### Pods #####
+  ###############
+  pods:
+    - name: pod1
+      podTemplate: leaf-spine-dcgw-pod

@@ -14,7 +14,7 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-The `Fabric` is an abstracted representation of a datacenter that is using the Clos architecture. It manages the nodes in their different roles (leafs, spines, borderleafs, ...), the links that interconnect them, and the protocols that facilitate the exchange of routing information. 
+The `Fabric` is an abstracted representation of a datacenter that is using the Clos architecture. It manages the nodes in their different roles (leafs, spines, borderleafs, ...), the links that interconnect them, and the protocols that facilitate the exchange of routing information.
 
 Upon deployment, the `Fabric` resource initiates several supporting resources including [`ISLs`](./isl.md) (Inter-Switch Links), [`DefaultRouters`](-{{ref_app_doc('routing', 'defaultrouter')}}-), [`DefaultInterfaces`](../../routing.eda.nokia.com/resources/defaultinterface.md), and [`DefaultBGPPeers`](../../protocols.eda.nokia.com/resources/defaultbgppeer.md), among others. These resources, in turn, generate node configurations. The operational state of the `Fabric` is determined by the collective status of these underlying resources.
 
@@ -51,9 +51,9 @@ Different network switches fulfill different roles in the network, with differen
 
 ### Leaf nodes
 
-Leaf nodes are also referred to as top-of-rack switches, or ToR for short, and facilitate connectivity between computes in the same rack. As the name implies, these are typically installed in every rack, and duplicated for redundancy. They interconnect **physical computes** such as servers and firewalls to the datacenter `Fabric`, which will facilitate inter- and intra-rack connectivity, as well as connectivity to the WAN. 
+Leaf nodes are also referred to as top-of-rack switches, or ToR for short, and facilitate connectivity between computes in the same rack. As the name implies, these are typically installed in every rack, and duplicated for redundancy. They interconnect **physical computes** such as servers and firewalls to the datacenter `Fabric`, which will facilitate inter- and intra-rack connectivity, as well as connectivity to the WAN.
 
-Each leaf node gets its own system IP address from the [system IP](#allocation-pools) allocation pool, and its own autonomous system (AS) number. 
+Each leaf node gets its own system IP address from the [system IP](#allocation-pools) allocation pool, and its own autonomous system (AS) number.
 
 !!! question "Why one ASN per leaf switch?"
 
@@ -77,15 +77,15 @@ Superspines are used in highly scaled datacenters, where it is no longer feasibl
 
 ### Borderleaf nodes
 
-Borderleaf nodes are very similar in definition to [leaf nodes](#leaf-nodes), but often differ in port capabilities: while the focus for leaf switches is typically on supporting as many different port speeds as possible, the borderleaf is chosen for its high-bandwidth ports and control plane capabilities. It is used to advertise the `Fabric` to the WAN network (via a DCGW[^1] or an internet gateway), enabling connectivity between the `Fabric` and the network elements outside of the datacenter. 
+Borderleaf nodes are very similar in definition to [leaf nodes](#leaf-nodes), but often differ in port capabilities: while the focus for leaf switches is typically on supporting as many different port speeds as possible, the borderleaf is chosen for its high-bandwidth ports and control plane capabilities. It is used to advertise the `Fabric` to the WAN network (via a DCGW[^1] or an internet gateway), enabling connectivity between the `Fabric` and the network elements outside of the datacenter.
 
-In smaller networks, the role of the spine and the borderleaf is often collapsed: spines already have high-throughput ports to interconnect leaf switches, and if the switch can terminate EVPN services (becoming aware of the IP routes used in virtual networking services), it can establish the (MP-)BGP session to the WAN network. 
+In smaller networks, the role of the spine and the borderleaf is often collapsed: spines already have high-throughput ports to interconnect leaf switches, and if the switch can terminate EVPN services (becoming aware of the IP routes used in virtual networking services), it can establish the (MP-)BGP session to the WAN network.
 
-In larger networks, higher throughput requirements mean EVPN capabilities are reduced: if the [spine](#spine-nodes) switches are no longer capable of terminating EVPN services, borderleaf nodes are required to connect to the WAN and/or internet. 
+In larger networks, higher throughput requirements mean EVPN capabilities are reduced: if the [spine](#spine-nodes) switches are no longer capable of terminating EVPN services, borderleaf nodes are required to connect to the WAN and/or internet.
 
 ## Inter-switch links
 
-Once [nodes](#fabric-nodes) are configured in the `Fabric`, they need to be interconnected using inter-switch links ([`ISLs`](./isl.md)). These [`ISL`](./isl.md) resources configure routing protocols such as `eBGP` and `OSPF` for the exchange of system IP addresses. 
+Once [nodes](#fabric-nodes) are configured in the `Fabric`, they need to be interconnected using inter-switch links ([`ISLs`](./isl.md)). These [`ISL`](./isl.md) resources configure routing protocols such as `eBGP` and `OSPF` for the exchange of system IP addresses.
 
 The `linkSelectors` property of the `interSwitchLinks` context of the `Fabric` resource selects all `Link` resources that are used for inter-switch ([underlay](#underlay-protocols)) connectivity. If both ends of the `Link` correspond with a node of the `Fabric`, an [`ISL`](./isl.md) is created for that `Link`.
 
@@ -129,9 +129,9 @@ The **underlay** of a datacenter refers to the exchange of reachability informat
 
 ## Overlay protocols
 
-The **overlay** of a datacenter refers to the exchange of **service routes**. In a datacenter context, EVPN is most commonly used as a way of ensuring traffic isolation between (virtual) distributed networks belonging to different tenants. The inner workings of EVPN are beyond the scope of this article. 
+The **overlay** of a datacenter refers to the exchange of **service routes**. In a datacenter context, EVPN is most commonly used as a way of ensuring traffic isolation between (virtual) distributed networks belonging to different tenants. The inner workings of EVPN are beyond the scope of this article.
 
-Both eBGP and iBGP are supported: in case eBGP is used, service routes are exchanged between the IP addresses of the individual links between the nodes. If iBGP is used, service routes are exchanged between the system IP addresses of the nodes. 
+Both eBGP and iBGP are supported: in case eBGP is used, service routes are exchanged between the IP addresses of the individual links between the nodes. If iBGP is used, service routes are exchanged between the system IP addresses of the nodes.
 
 !!! question "Which protocol to choose?"
 
@@ -150,7 +150,7 @@ From a technical point of view, iBGP requires the addition of route reflectors. 
 
 ## Routing Policies
 
-If not explicitly specified, the Fabric will **automatically generate** the required [Policy](../../routingpolicies.eda.nokia.com/resources/policy.md) resources. These policies are used in the BGP peering sessions to ensure IP reachability across the fabric. 
+If not explicitly specified, the Fabric will **automatically generate** the required [Policy](../../routingpolicies.eda.nokia.com/resources/policy.md) resources. These policies are used in the BGP peering sessions to ensure IP reachability across the fabric.
 
 If [`routing policies`](../../routingpolicies.eda.nokia.com/resources/policy.md) are defined independently of the `Fabric` through the `importPolicies` or `exportPolicies` properties, they will be used instead.
 
