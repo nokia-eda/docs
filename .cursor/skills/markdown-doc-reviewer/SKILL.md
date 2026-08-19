@@ -39,6 +39,7 @@ Check for:
 - Prefer active voice when it improves clarity, but do not force it when passive voice is natural or accurate.
 - Avoid changing meaning, scope, support statements, requirements, defaults, or behavior unless the issue is clearly editorial.
 - If a sentence is technically ambiguous, flag it as a question instead of guessing.
+- Don't suggest the use of emdashes, use hyphens instead.
 
 ## Output Format
 

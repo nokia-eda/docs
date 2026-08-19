@@ -1,11 +1,46 @@
-// Re-initialize draw.io diagram embeds when they become visible inside Material tabs.
+// Restore draw.io diagram embeds after they become visible inside Material tabs.
 // GraphViewer.createViewerForElement is exposed by viewer-static.min.js and accepts the .mxgraph div.
-// The script runs on each page render (document$.subscribe) and when tabs are switched.
-// The [data-mxgraph-ready] guard prevents double-instantiating the same viewer.
+// viewer-static.min.js renders ordinary diagrams automatically; this script only handles tab switches.
 (function () {
     const MAX_RETRIES = 50;
     const RETRY_INTERVAL = 200;
     const RETRY_ON_VISIBLE_ONLY = true;
+
+    function restoreMxGraph(el) {
+        const viewer = el.__mxgraphViewer;
+        if (!viewer || !viewer.graph || !viewer.graph.view) {
+            return false;
+        }
+
+        const config = JSON.parse(el.getAttribute('data-mxgraph') || '{}');
+        const zoom = Number(config.zoom);
+        viewer.graph.view.setScale(Number.isFinite(zoom) && zoom > 0 ? zoom : 1);
+        if (typeof viewer.positionGraph === 'function') {
+            viewer.positionGraph();
+        }
+        return true;
+    }
+
+    function resetMxGraphElement(el) {
+        if (typeof ResizeSensor !== 'undefined' && typeof ResizeSensor.detach === 'function') {
+            ResizeSensor.detach(el);
+        }
+        if (window.mxEvent && typeof mxEvent.release === 'function') {
+            mxEvent.release(el);
+        }
+
+        el.replaceChildren();
+        [
+            'width',
+            'height',
+            'min-width',
+            'overflow',
+            'position',
+            'touch-action',
+            'color-scheme',
+            'cursor',
+        ].forEach((property) => el.style.removeProperty(property));
+    }
 
     function initMxGraphs(scope) {
         if (!window.GraphViewer || typeof GraphViewer.createViewerForElement !== 'function') {
@@ -13,15 +48,27 @@
         }
 
         (scope || document)
-            .querySelectorAll('.mxgraph:not([data-mxgraph-ready])')
+            .querySelectorAll('.mxgraph')
             .forEach((el) => {
                 if (RETRY_ON_VISIBLE_ONLY && !isVisible(el)) {
                     return;
                 }
+
+                if (restoreMxGraph(el) || el.hasAttribute('data-mxgraph-initializing')) {
+                    return;
+                }
+
                 try {
-                    GraphViewer.createViewerForElement(el);
-                    el.setAttribute('data-mxgraph-ready', '1');
+                    resetMxGraphElement(el);
+                    el.setAttribute('data-mxgraph-initializing', '1');
+                    GraphViewer.createViewerForElement(el, (viewer) => {
+                        el.__mxgraphViewer = viewer;
+                        el.removeAttribute('data-mxgraph-initializing');
+                        el.setAttribute('data-mxgraph-ready', '1');
+                    });
                 } catch (err) {
+                    el.removeAttribute('data-mxgraph-initializing');
+                    el.removeAttribute('data-mxgraph-ready');
                     console.warn('mxgraph init failed', err);
                 }
             });
@@ -106,7 +153,6 @@
 
     function boot(scope) {
         const host = scope || document;
-        retryInit(host, MAX_RETRIES);
         host.querySelectorAll('.tabbed-set').forEach(watchTabs);
     }
 
@@ -114,7 +160,7 @@
         boot();
     }
 
-    if (window.document && window.document.subscribe) {
+    if (typeof document$ !== 'undefined') {
         document$.subscribe(onRender);
     } else {
         document.addEventListener('DOMContentLoaded', onRender);

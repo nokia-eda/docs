@@ -14,7 +14,7 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-An inter-switch link, or ISL, is a logical representation of one or more physical links interconnecting two network nodes. ISLs are usually created as derived resources by a [`Fabric`](./fabric.md), as a way to model the physical connectivity of network switches that are part of that [`Fabric`](./fabric.md). 
+An inter-switch link, or ISL, is a logical representation of one or more physical links interconnecting two network nodes. ISLs are usually created as derived resources by a [`Fabric`](./fabric.md), as a way to model the physical connectivity of network switches that are part of that [`Fabric`](./fabric.md).
 
 !!! info "Inter-switch links vs edge links"
 
@@ -68,11 +68,11 @@ Quality of Services (QoS) mechanisms can be configured on the `ISL`, ensuring th
 
 If BGP is enabled on an `ISL`, the resource will automatically create derived [`DefaultBGPPeer`](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) resources: one for each endpoint. These peers will exchange (MP-)BGP routes to advertise reachability information throughout the network. In EDA, [`DefaultBGPPeers`](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) always belong to a [`DefaultBGPGroup`](../../protocols.eda.nokia.com/resources/defaultbgpgroup.md), which configures common parameters that are re-used across multiple BGP sessions.
 
-Certain BGP session parameters, such as `importPolicies` and `exportPolicies` can be overridden in the `ISL` resource: if they are not specified, the policies of the [`DefaultBGPGroup`](../../protocols.eda.nokia.com/resources/defaultbgpgroup.md) are used instead. 
+Certain BGP session parameters, such as `importPolicies` and `exportPolicies` can be overridden in the `ISL` resource: if they are not specified, the policies of the [`DefaultBGPGroup`](../../protocols.eda.nokia.com/resources/defaultbgpgroup.md) are used instead.
 
 ### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
 
-Routing policies determine which reachability information is advertised to [BGP](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) and [OSPF](../../protocols.eda.nokia.com/resources/defaultospfinterface.md) neighbors. In typical datacenter [fabrics](./fabric.md), the `/31` point-to-point subnets are not advertised to peers: the [underlay](../../routing.eda.nokia.com/index.md) BGP / OSPF sessions are only used for the exchange of system IP addresses. To accomplish this, [routing policies](../../routingpolicies.eda.nokia.com/index.md) are required. 
+Routing policies determine which reachability information is advertised to [BGP](../../protocols.eda.nokia.com/resources/defaultbgppeer.md) and [OSPF](../../protocols.eda.nokia.com/resources/defaultospfinterface.md) neighbors. In typical datacenter [fabrics](./fabric.md), the `/31` point-to-point subnets are not advertised to peers: the [underlay](../../routing.eda.nokia.com/index.md) BGP / OSPF sessions are only used for the exchange of system IP addresses. To accomplish this, [routing policies](../../routingpolicies.eda.nokia.com/index.md) are required.
 
 ### [`DefaultOSPFInstance`](../../protocols.eda.nokia.com/resources/defaultospfinstance.md)
 
