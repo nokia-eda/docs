@@ -74,6 +74,7 @@ nav:
       - Administration:
           - Image management: user-guide/administration/image-management.md
           - Technical support: user-guide/administration/technical-support-script.md
+          - EDA UI localization: user-guide/administration/eda-ui-localization.md
           - Talos Kubernetes cluster operations: user-guide/administration/cluster-operations.md
           - Platform operations: user-guide/administration/platform-operations.md
           - Backup and restore: user-guide/administration/backup-and-restore.md
