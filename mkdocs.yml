@@ -61,6 +61,7 @@ nav:
       - Allocation pools: user-guide/allocation-pools.md
       - Network topology: user-guide/network-topology.md
       - Node management: user-guide/node-management.md
+      - Client tables & insights: user-guide/client-engine.md
       - Security:
           - User management: user-guide/security/user-management.md
           - Certificate management: user-guide/security/certificate-management.md
