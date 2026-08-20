@@ -119,7 +119,7 @@ You can create, edit, and delete these clients, and assign roles to service ccco
     type: subtle-note
 
 By default, service accounts do not appear in the [User Sessions](#user-sessions) list.<br>
-This is because, as per [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.3), client credenitals grants should not use refresh tokens. Refresh tokens can be enabled per service account in the Keycloak Administrator Console under advanced options.
+This is because, as per [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.3), client credentials grants should not use refresh tokens. Refresh tokens can be enabled per service account in the Keycloak Administrator Console under advanced options.
 
 ///
 
