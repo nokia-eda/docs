@@ -7,9 +7,9 @@ The Nokia Config Engine can also be operated via the Kubernetes API. Kubernetes 
 
 Role-based access control (RBAC) restricts API requests based on the user's role in your organization. Nokia EDA uses the [OAuth 2.0](https://oauth.net/2/) standard for authorization.
 
-Nokia EDA uses [Keycloak](https://www.keycloak.org/) as the OAuth 2.0 identity provider, authenticating users and group membership. The Nokia EDA API server validates request authorization based on the role(s) assigned to the user's group(s).
+Nokia EDA uses [Keycloak](https://www.keycloak.org/) as the OAuth 2.0 identity provider, authenticating users and group membership. The Nokia EDA API server validates request authorization based on the role(s) assigned to the user's group(s). Roles can also be assigned to service accounts to authorize API access for non-human entities.
 
-Common Keyclock administrative actions including user and user group management, are available via the Nokia EDA API and UI.
+Common Keycloak administrative actions including user and user group management, are available via the Nokia EDA API and UI.
 
 ## Users and user groups
 
@@ -43,13 +43,13 @@ Nokia EDA supports:
 - Group synchronization from the directory and user group membership mapping
 - Limiting imported users and groups using LDAP filters
 
-Federated users are imported into Keycloak the first time a user logs in or when the user list is read via the Nokia EDA API and UI. Additionally, you can configure periodic sync of created and updates users.
+Federated users are imported into Keycloak the first time a user logs in or when the user list is read via the Nokia EDA API and UI. Additionally, you can configure periodic sync of created and updated users.
 
-In the Nokia EDA UI, federated users are identified in the **Federated User** field in users list.
+In the Nokia EDA UI, federated users are identified in the **Federated User** field in the users list.
 
 When a federation is configured, system administrators can continue to create local users and groups in Nokia EDA.
 
-The Nokia EDA API server server blocks all edits to federated users except for adding or removing the user to local groups. Local changes to federated groups are not supported; federated group membership must be configured on the LDAP server.
+The Nokia EDA API server blocks all edits to federated users except for adding or removing the user to local groups. Local changes to federated groups are not supported; federated group membership must be configured on the LDAP server.
 
 /// admonition | Note
     type: subtle-note
@@ -73,9 +73,9 @@ Nokia EDA monitors this secret and if it changes, Nokia EDA updates the certific
 
 ### Password policies
 
-The system enforces a password policy for local users. The password policy does not apply to users authenticated from remote directories.
+The system enforces a password policy for local users. The password policy does not apply to users authenticated from remote directories or service accounts.
 
-The password policy options includes password aging rules, password complexity rules, password history, and user lockout rules. An admin user can update the policy settings as needed. The policy also applies to the admin user.
+The password policy options include password aging rules, password complexity rules, password history, and user lockout rules. An admin user can update the policy settings as needed. The policy also applies to the admin user.
 
 /// admonition | Note
     type: subtle-note
@@ -84,7 +84,7 @@ Nokia recommends that system administrators configure a password policy for prod
 
 ### User Sessions
 
-Keycloak maintains a list of active sessions. Each of these sessions have are associated to a short-lived access token, and a longer lived refresh token.
+Keycloak maintains a list of active sessions. Each session is associated with a short-lived access token, and a longer lived refresh token.
 
 Session information includes:
 
@@ -96,7 +96,7 @@ Session information includes:
 From the Nokia EDA API and UI, you can:
 
 - View a system-wide list of active sessions
-- View per-user list of active sessions
+- View a per-user list of active sessions
 - Logout a specific session
 
 /// admonition | Note
@@ -106,9 +106,27 @@ Session logout prevents the user from using a refresh token to get a new access 
 
 ///
 
+## Service accounts
+
+Service accounts are non-human identities used by applications, controllers, and automation systems to access Nokia EDA APIs. Unlike user accounts, they do not use a username and password or any interactive login steps such as one-time-passward (OTP) or web browser redirect.
+
+A service account is an Oauth client using the [Client Credentials grant type](https://oauth.net/2/grant-types/client-credentials/), typically authenticating with a client id and client secret[^1].
+Nokia EDA `ClusterRole` and `Role` resources are assigned directly to the service account for managing permissions.
+
+You can create, edit, and delete these clients, and assign roles to service cccounts from the Nokia EDA UI and API.
+
+/// admonition | Note
+    type: subtle-note
+
+By default, service accounts do not appear in the [User Sessions](#user-sessions) list.<br>
+This is because, as per [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.3), client credenitals grants should not use refresh tokens. Refresh tokens can be enabled per service account in the Keycloak Administrator Console under advanced options.
+
+///
+
+
 ## Roles
 
-Nokia EDA `ClusterRole` and `Role` resources define user permissions.
+Nokia EDA `ClusterRole` and `Role` resources define permissions for users and for service accounts.
 
 Roles define permissions within a specific namespace, whereas Cluster Role permissions apply to all namespaces.
 
@@ -121,9 +139,11 @@ While similar in concept, Nokia EDA `Role` and `ClusterRole` resources are not t
 
 For `ClusterRole` and `Role`, the following rule types are supported:
 
-- **Resource Rules**: defined Nokia EDA resource and workflow permissions using Group-Version-Kind (GVK) semantics.
-- **Table Rules**: defines permissions for queries to EDB.
-- **URL Rules**: defines permissions for Nokia EDA API endpoints based on their URL path. URL Rule permission is not required for API endpoints which are Resource Rule or Table Rule enforced.
+- **Resource Rules**: define Nokia EDA resource and workflow permissions using Group-Version-Kind (GVK) semantics.
+- **Table Rules**: define permissions for queries to EDB.
+- **URL Rules**: define permissions for Nokia EDA API endpoints based on their URL path. URL Rule permission is not required for API endpoints which are Resource Rule or Table Rule enforced.
+
+You can assign  `ClusterRole` and `Role` to user groups and to service account clients.
 
 ### Resource rules
 
@@ -154,7 +174,7 @@ Access to transaction results is based on a user's access to the *input resource
 
   - If a user has read permission for **all** the input resources of a transaction, the user can list all changed resources (both input and derived) and view the resource diffs.
   - If a user has read permission for **none** or **some** of the input resources, that user cannot list any derived resources or view their diffs.
-  - Access to Node Configuration diffs require a URL rule. This is because the Node Configuration diff API returns the full node config, and not limited to the scope of the transaction.
+  - Access to Node Configuration diffs require a URL rule. This is because the Node Configuration diff API returns the full node config, and is not limited to the scope of the transaction.
   - To revert a transaction, a user must have `readWrite` permission for **all** input resources of the transaction.
   - To restore the Nokia EDA cluster to a specific transaction, a user must have `readWrite` permission to the restore API from a `ClusterRole` URL rule. Restore is a powerful action which should be limited to trusted administrators.
 
@@ -165,7 +185,7 @@ Access to transaction results is based on a user's access to the *input resource
 
 Access to workflow results is based on the user's access to the *root parent workflow*
 
-For example, a `DeployImage` workflow creates `Ping` subflows during it's pre and post check stages. If user A has read permission to the `DeployImage` workflow definition they will be able to read the subflow results even if they do not have access to the `Ping` workflow definition.
+For example, a `DeployImage` workflow creates `Ping` subflows during its pre- and post-check stages. If user A has read permission to the `DeployImage` workflow definition they will be able to read the subflow results even if they do not have access to the `Ping` workflow definition.
 
 ///
 
@@ -447,7 +467,7 @@ spec:
 
 ### Users page
 
-The **Users** page in the UI lists all local and remote Nokia EDA users and a provides a summary of user details. You can sort and filter for users using the typical mechanisms.
+The **Users** page in the UI lists all local and remote Nokia EDA users and provides a summary of user details. You can sort and filter for users using the typical mechanisms.
 
 |Column|Description|
 |------|-----------|
@@ -520,11 +540,11 @@ A user with system-administrator privileges cannot delete the built-in admin use
 To display all user sessions, from the **System Administration** navigation panel, expand **USER MANAGEMENT** and select **User Sessions**.
 
 - To filter sessions for a specific user, enter the user name in the filter box.
-- To terminate the a session for a user, click the **Table row actions** menu and select **Logout**.
+- To terminate a session for a user, click the **Table row actions** menu and select **Logout**.
 
 ### Changing your password
 
-Perform this task from any page on Nokia EDA UI.
+Perform this task from any page on the Nokia EDA UI.
 
 /// html | div.steps
 
@@ -603,7 +623,7 @@ LDAP groups are displayed in the **User Groups** page only after they are import
     - a unique name
     - the LDAP provider Vendor
     - **Enabled**
-    - **Import Users**: By default, this field is set to True; this field is ready-only.
+    - **Import Users**: By default, this field is set to True; this field is read-only.
 
 5. Configure LDAP server settings.
 
@@ -664,7 +684,7 @@ LDAP groups are displayed in the **User Groups** page only after they are import
 
 3. You can delete one federation or multiple federations at a time.
 
-    - Locate the federation that you want to delete and at click **Delete** from the **Table row actions** menu.
+    - Locate the federation that you want to delete and click **Delete** from the **Table row actions** menu.
     - Alternatively, you can select more than one federation, then, click the **Table settings &amp; actions** menu on the upper right of the page and select **Delete**. Click **Save**.
 
 4. Click **Save**.
@@ -711,7 +731,7 @@ A `ClusterRole` resource defines a set of permissions to access Nokia EDA resour
 
 3. Click **Create**.
 
-4. Provide a name  for the `ClusterRole` resource:
+4. Provide a name for the `ClusterRole` resource:
 
 5. Provide an optional description for this `ClusterRole` resource.
 
@@ -796,6 +816,75 @@ The `Role` resource defines a set of permissions to access Nokia EDA resources. 
 
 9. Click **Commit** to commit your change immediately or click **Add To Transaction** to add this item to transactions to commit later.
 
+///
+
+### Viewing service accounts
+
+From the **System Administration** navigation panel, expand **USER MANAGEMENT** and select **User Management**. From the User Management drop-down list, click **Service Accounts**.
+
+The **Service Accounts** page lists service account clients and the following client settings:
+
+| Parameter | Description |
+| --- | --- |
+| Client ID | OAuth client identifier. You cannot change the Client ID after you create the service account. |
+| Enabled | Whether the service account can authenticate. |
+| Name | Display name for the client. |
+| Description | Optional description. |
+| Roles | Nokia EDA `ClusterRole` and `Role` resources granted to this service account. |
+
+### Creating a service account
+
+/// html | div.steps
+
+1. From the **System Administration** navigation panel, expand **USER MANAGEMENT** and select **User Management**.
+2. From the **User Management** drop-down list, click **Service Accounts**.
+3. Click **Create**.
+4. Enter a value for **Client ID**, and optionally provide a name and description.
+5. Leave **Enabled** selected if the service account should be able to authenticate immediately.
+6. In **Assigned Roles**, assign one or more `ClusterRole` or `Role` resources. When you assign a `Role`, select the namespace that contains it.
+7. Click **Save**.
+
+///
+
+After you save, the system displays the client secret. Copy the client secret and store it securely. You cannot view the secret again from the list; open the service account to reveal, copy, or regenerate it.
+
+### Managing a service account
+
+/// html | div.steps
+
+1. From the **Service Accounts** page, double-click the service account, then click **Edit**.
+2. Update the name, description, enabled state, or assigned roles as needed. You cannot change the Client ID.
+3. To view the client secret, click the show icon. To copy it, click **Copy**.
+4. Click **Save**.
+
+///
+
+### Regenerating a client secret
+
+Regenerating the secret immediately invalidates the previous secret. Applications that still use the old secret cannot authenticate until you update them.
+
+/// html | div.steps
+
+1. From the **Service Accounts** page, double-click the service account.
+2. Click **Regenerate client secret**.
+3. Copy the new secret and update every application that uses this service account.
+4. Click **Save**.
+
+///
+
+### Deleting a service account
+
+/// html | div.steps
+
+1. From the **Service Accounts** page, delete one or more service accounts.
+
+    - To delete one service account, locate it and click **Delete** from the **Table row actions** menu.
+    - Alternatively, select one or more service accounts, then click **Delete** from the **Table settings &amp; actions** menu.
+
+2. Click **Save**.
+
+///
+
 ## Privacy considerations
 
 From a privacy perspective, Nokia EDA stores user information securely in a database. This information
@@ -809,3 +898,5 @@ Ensure that you store the backup information securely and limit access to both t
 Handle all environments containing privacy sensitive information according to the regulations that apply
 to the location and users of the system and the data.
 ///
+
+[^1]: Other authentication options are available via the Keycloak Administrator Console. EDA UI and API only supports managing service accounts using client ID and client secret authentication

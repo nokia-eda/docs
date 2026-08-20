@@ -42,6 +42,11 @@ For authentication and authorization, EDA uses Keycloak as its backend. Keycloak
 1. For browser-based clients, the user is redirected to Keycloak for authentication and then send back with the necessary tokens for the API to authenticate and verify the user as a legitimate user. This is referred to as the Standard Flow (Authorization Code Grant in the OAuth2 specifications [RFC 6749 4.1][oauth-rfc-ac]).
 2. For non-browser API clients, such as CLI applications, scripts, etc., the Direct Access Grant flow (Resource Owner Password Credentials Grant in the OAuth2 specifications [RFC 6749 4.5][oauth-rfc-ropc]) is used to obtain the authentication token. In this case the API client directly authenticates with Keycloak using client_secret and provides the Authorization Server with Resource Owner credentials (EDA username credentials). The Authorization Server (Keycloak) provides the client with the token that is used for further API calls to the EDA API. The API client is also responsible for refreshing or renewing their token.
 
+/// Caution
+While still available in EDA, the Direct Access Grant flow is deprecated in the OAuth 2.1 standard.<br>
+Nokia recommends creating a unique [service account](../../user-guide/security/user-management.md#service-accounts) for each API integration. Service accounts use the Client Credentials Grant flow.
+///
+
 [oauth-rfc-ac]: https://datatracker.ietf.org/doc/html/rfc6749#autoid-35
 [oauth-rfc-ropc]: https://datatracker.ietf.org/doc/html/rfc6749#autoid-45
 
