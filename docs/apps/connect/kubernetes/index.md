@@ -40,9 +40,9 @@ The underlay network used to transport this traffic is typically managed outside
 
 ### Supported Versions
 
-* Red Hat OpenShift 4.16
 * Red Hat OpenShift 4.18
 * Red Hat OpenShift 4.20
+* Red Hat OpenShift 4.22
 
 /// details | Other Kubernetes flavors
     type: warning
@@ -58,6 +58,20 @@ See the [Installation Guide](installation/index.md) for more details.
 The Kubernetes plugin is designed to work with Kubernetes clusters running on bare-metal nodes. When running the Kubernetes cluster inside VMs,
 the fabric can be orchestrated by EDA Connect through the hypervisor plugin (e.g., VMware vSphere, VMware NSX, OpenStack or the Nutanix Prism 
 Central plugin).
+
+///
+
+/// details | Running on ARM
+    type: warning
+
+ARM support for the Cloud Connect OpenShift plugin is currently in technical preview. 
+
+/// note 
+
+Installing EDA itself on ARM is not supported, only the Cloud Connect Plugin which will run in the target K8S
+Cluster is available with ARM support. 
+
+///
 
 ///
 ## Architecture
@@ -76,7 +90,9 @@ manage the required EDA resources based on the Kubernetes configuration.
 
 ### Installation
 
-For detailed deployment instructions, see the [Kubernetes Plugin Installation Guide](installation/index.md). 
+For detailed deployment instructions, see the [Kubernetes Plugin Installation Guide](installation/index.md).
+
+For pod metadata in the `networks` client table, see the [Kubernetes Client Provider](client-provider/index.md). 
 
 ## Features
 
@@ -296,6 +312,13 @@ EOF
 ///
 
 ///
+
+### Client Provider
+
+The [Kubernetes Client Provider](client-provider/index.md) is a technical preview. It publishes Kubernetes pod and node
+metadata into the EDA `networks` client table so that the Client Engine can correlate those endpoints with fabric
+`BridgeDomain` resources.
+
 ## Troubleshooting
 
 ### The controller plugin is not running

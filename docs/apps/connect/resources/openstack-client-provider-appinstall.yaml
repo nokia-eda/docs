@@ -1,12 +1,12 @@
 apiVersion: appstore.eda.nokia.com/v1
 kind: AppInstaller
 metadata:
-  name: nutanix-plugin
+  name: openstack-client-provider
   namespace: eda-system
 spec:
   operation: install
   apps:
-    - appId: nutanix.eda.nokia.com
+    - appId: openstack-client-provider.eda.nokia.com
       catalog: eda-catalog-builtin-apps
       version:
         type: alias

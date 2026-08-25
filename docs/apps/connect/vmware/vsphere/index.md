@@ -19,7 +19,8 @@ It provides the following capabilities:
 ### Supported Versions
 
 * VMware vSphere 8
-* VMWARE vSphere 9.0
+* VMware vSphere 9.0
+* VMware vSphere 9.1
 
 
 ## Architecture

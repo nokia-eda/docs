@@ -116,12 +116,18 @@ nav:
               - Installation: apps/connect/nutanix/installation.md
           - Kubernetes:
               - apps/connect/kubernetes/index.md
+              - Client Provider:
+                  - apps/connect/kubernetes/client-provider/index.md
+                  - Installation: apps/connect/kubernetes/client-provider/installation.md
               - Installation:
                   - apps/connect/kubernetes/installation/index.md
                   - Helm Installation: apps/connect/kubernetes/installation/helm-installation.md
                   - OLM Installation: apps/connect/kubernetes/installation/olm-installation.md
           - OpenStack:
               - apps/connect/openstack/index.md
+              - Client Provider:
+                  - apps/connect/openstack/client-provider/index.md
+                  - Installation: apps/connect/openstack/client-provider/installation.md
               - Installation:
                   - Overview: apps/connect/openstack/installation/index.md
                   - RHOSP 17.1 Installation: apps/connect/openstack/installation/rhosp-installation.md

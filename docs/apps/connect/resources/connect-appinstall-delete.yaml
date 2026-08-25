@@ -11,5 +11,5 @@ spec:
       vendor: nokia
       version:
         type: alias
-        version: latest
+        value: latest
   type: app-installer

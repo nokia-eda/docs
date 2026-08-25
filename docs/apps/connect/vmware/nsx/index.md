@@ -22,6 +22,7 @@ This plugin focuses on automating fabric configuration for overlay and VLAN segm
 
 * VMware NSX 4.2
 * VMware NSX 9.0
+* VMware NSX 9.1
 
 ## Architecture
 
@@ -51,7 +52,6 @@ While NSX is used for defining overlay networking, vCenter is still used to conf
 Overlay segments in NSX are L2 networks encapsulated in L3 using VXLAN or Geneve. The encapsulated traffic is VLAN-tagged and transported via uplinks defined in NSX configurations.
 
 The NSX plugin will create a `BridgeDomain` and a `VLAN` resource based on the *Transport VLAN* defined on the *Host Transport Node* in NSX. EDA and the Fabric will not be involved in the overlay traffic itself; the plugin will only facilitate communication between the hypervisors on these overlay segments.
-
 
 /// details | Default Uplink Profiles
     type: warning
@@ -104,24 +104,111 @@ The plugin supports the following operational modes:
 
 *EDA Managed Mode*
 
-: EDA managed BridgeDomains are supported for both VLAN and overlay networks. To specify an EDA managed BridgeDomain, use an NSX tag with:
+: EDA managed BridgeDomains are supported for both VLAN and overlay networks.
+
+A VLAN is uniquely defined by its hostSwitchID, vlanTag, and edaBridgeDomain. Two segments with the same VLAN tag but different BridgeDomain values will result in two Connect VLANs.
+
+#### Using EDA-Managed Mode
+
+EDA-Managed mode can be configured through two different methods:
+
+* Using an NSX tag
+* Using the `NSXEDAManagedBridgeDomain` custom resource
+
+#### Using an NSX tag
+
+To specify an EDA managed BridgeDomain, use an NSX tag with:
 
 
+>   **Scope (key)**: `ConnectBridgeDomain`
+> 
+>   **Tag (value)**: The BridgeDomain name
 
-    >   **Scope (key)**: `ConnectBridgeDomain`
-    > 
-    >   **Tag (value)**: The BridgeDomain name
 
-: 
 - For VLAN networks: Place the tag on the VLAN segment.
 - For overlay networks: Place the tag on the overlay transport zone.
 - For Edge Node transport VLANs: Place the tag on the Edge Node **overlay** transport zone.
 
-: A VLAN is uniquely defined by its hostSwitchID, vlanTag, and edaBridgeDomain (the tag value). Two segments with the same VLAN tag but different BridgeDomain tags will result in two Connect VLANs.
-
-
 [//]: # ( TODO&#40;Tom&#41; Add a screenshot of a tag here.)
 
+#### Using the NSXEDAManagedBridgeDomain custom resource
+
+To use the EDA-managed mode through the `NSXEDAManagedBridgeDomain` custom resource follow these steps:
+
+1. Create a `BridgeDomain` in EDA with the desired settings
+2. Create the VLAN segment or overlay transport zone in NSX
+3. Create an `NSXEDAManagedBridgeDomain` custom resource in EDA referring to the `BridgeDomain` and either the VLAN
+   segment (`segmentType: Vlan`) or the overlay transport zone (`segmentType: Overlay`).
+
+In the Nokia EDA UI, autocomplete functionality allows you to select the NSX resources automatically with a dropdown
+menu.
+
+/// note | NSX resource ID
+Set the VLAN segment ID or overlay transport zone ID to the NSX `id` field. This value is
+often the same as the display name, but it can differ. The autocomplete functionality will help you in mapping `id` to
+human-readable values as well.
+///
+
+/// tab | VLAN
+
+//// tab | Autocomplete
+
+-{{image(
+    light_url="../../resources/nsx-eda-mgd-vlan-light.webp",
+    dark_url="../../resources/nsx-eda-mgd-vlan-dark.webp",
+    padding=20,shadow=true,
+    title="In the Nokia EDA UI, autocomplete functionality allows you to select the NSX VLAN segment automatically with a dropdown menu."
+)}}-
+
+////
+//// tab | Select VLAN Segment ID
+
+-{{image(
+    light_url="../../resources/nsx-select-vlan-segment-id-light.webp",
+    dark_url="../../resources/nsx-select-vlan-segment-id-dark.webp",
+    padding=20,shadow=true,
+    title="Use the table icon on the right to select the VLAN Segment ID from a table with the human-readable name."
+)}}-
+
+////
+///
+/// tab | Overlay
+
+//// tab | Autocomplete
+
+-{{image(
+    light_url="../../resources/nsx-eda-mgd-overlay-light.webp",
+    dark_url="../../resources/nsx-eda-mgd-overlay-dark.webp",
+    padding=20,shadow=true,
+    title="In the Nokia EDA UI, autocomplete functionality allows you to select the NSX overlay transport zone automatically with a dropdown menu."
+)}}-
+
+////
+//// tab | Select Overlay Transport Zone ID
+
+-{{image(
+    light_url="../../resources/nsx-select-overlay-tz-id-light.webp",
+    dark_url="../../resources/nsx-select-overlay-tz-id-dark.webp",
+    padding=20,shadow=true,
+    title="Use the table icon on the right to select the Overlay Transport Zone ID from a table with the human-readable name."
+)}}-
+
+////
+///
+
+When both an NSX tag and an `NSXEDAManagedBridgeDomain` are defined for the same resource, the custom resource takes precedence.
+
+#### Restricting Operational Modes
+
+The plugin configuration allows you to restrict the operational modes that are allowed. By default, both modes are allowed (`Unrestricted`). You can restrict the modes to only allow NSX-managed mode by setting the `OperationalMode` to `ConnectManagedOnly`. You can restrict the modes to only allow EDA-managed mode by setting the `OperationalMode` to `EDAManagedOnly`.
+
+When the plugin is restricted, it ignores resources that are not allowed in that mode. The plugin does not create `BridgeDomain` or `VLAN` resources for ignored items, and it does not raise alarms for them.
+
+/// details | Restricting Operational Modes during operation
+    type: info
+
+If you change the `OperationalMode`, the plugin restarts. An audit then removes resources that the new mode does not allow, and it restores resources that the new mode allows.
+///
 
 ### Heartbeat
 

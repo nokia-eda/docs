@@ -13,6 +13,7 @@ spec:
   nsxTlsVerify: false # To verify TLS of the NSX server
   nsxCertificate: "" # If the NSX certificate is self signed, add it here to be able to verify from the plugin
   authSecretRef: my-nsx-creds # Credentials are hosted in a separate Secret
+  operationalMode: Unrestricted # The operational mode of the plugin, can be ConnectManagedOnly, EDAManagedOnly or Unrestricted
   vCenters:
     - vCenterFQDN: x.y.z # FQDN or IP of the Vcenter as defined in NSX
       vmwarePluginID: example-VMWARE # Name of the Vcenter Plugin
