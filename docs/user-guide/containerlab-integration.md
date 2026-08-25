@@ -138,7 +138,7 @@ Clab-connector leverages Kubernetes API, EDA API and Containerlab topology expor
 
 #### Integrate
 
-If you haven't changed any of the default credentials in your EDA installation, you can integrate EDA with Containerlab as simply as:
+For a Try EDA installation, or an installation explicitly configured with its default credentials, you can integrate EDA with Containerlab as simply as:
 
 ```bash
 clab-connector integrate \
@@ -148,7 +148,7 @@ clab-connector integrate \
 
 1. The `topology-data.json` file is located in the Containerlab [Lab Directory](https://containerlab.dev/manual/conf-artifacts/#identifying-a-lab-directory), which is created next to the lab's topology file.
 
-If you happen to change the default user credentials, you can provide them with `--eda-user` and `--eda-password` flags. Run `clab-connector integrate --help` to see all the available flags.
+For a standard new installation, provide the randomized EDA admin password with the `--eda-user` and `--eda-password` flags. Retrieve the initial password with `make show-generated-credentials` from the playground. Run `clab-connector integrate --help` to see all the available flags.
 
 The connector tool will create a new EDA namespace matching the Containerlab lab name and will create the required resources in it. This allows you to managed as many distinct labs as you want, without having clashing resources between them.
 

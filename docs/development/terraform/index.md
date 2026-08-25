@@ -147,7 +147,7 @@ If you omit the `client_secret` parameter, the provider will try to fetch the se
 
 The API client - Terraform - should have credentials of the EDA user it authenticates as. This is done by providing the `username` and `password` parameters in the provider configuration.
 
-Default value for both is `admin` if not set.
+If the parameters are not set, the provider uses `admin` for both values. This only works when the EDA installation uses those credentials, such as a Try EDA installation. Standard new installations use [randomized initial passwords](../../software-install/deploying-eda/installing-the-eda-application.md#credentials-and-secrets).
 
 [oauth-rfc-ropc]: https://datatracker.ietf.org/doc/html/rfc6749#autoid-45
 
