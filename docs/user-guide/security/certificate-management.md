@@ -86,8 +86,9 @@ spec:
 Nokia EDA is composed of multiple trust domains:
 
 - **Northbound**: Includes Nokia EDA API and Keycloak pods.
-- **Internal**: Includes Nokia EDA pods involved in internal inter-pod communication as well as communication with the kubernetes API server.
 - **Southbound**: Includes the managed nodes and the Nokia EDA pods interfacing with said nodes.
+- **Internal**: Includes Nokia EDA pods involved in internal inter-pod communication as well as communication with the kubernetes API server.
+- **External**: Includes Nokia EDA pods involved in communication to external services.
 
 ### Northbound
 
@@ -379,120 +380,6 @@ MAwGA1UEChMFTm9raWExCzAJBgNVBAsTAk5JMRMwEQYDVQQDEwplZGEtYXBpLWNh
 -----END CERTIFICATE-----
 ```
 </div>
-
-### Internal
-
-Internal Nokia EDA communication encompasses all traffic between Nokia EDA pods, as well as with the Kubernetes API.
-
-#### Nokia EDA pods
-
-This traffic uses mTLS (Mutual TLS), with both client and server certificates signed by the `eda-internal-issuer`. Internal certificates are generated and distributed using the Cert-Manager CSI driver, while trust bundles are distributed using `eda-internal-trust-bundle` [**TrustManager Bundle**](https://cert-manager.io/docs/trust/trust-manager/#usage) Custom Resource.
-
-To ensure that internal pods can continue communicating during issuer rotation, the previous internal CAs are preserved in a ConfigMap populated by a TrustManager Bundle:
-
-```yaml
-apiVersion: trust.cert-manager.io/v1alpha1
-kind: Bundle
-metadata:
-  labels:
-    eda.nokia.com/backup: "true"
-  name: eda-internal-trust-bundle
-spec:
-  sources:
-  - secret:
-      key: ca.crt
-      selector:
-        matchLabels:
-          eda.nokia.com/ca: internal
-  - configMap:
-      key: shadow-trust-bundle.pem
-      selector:
-        matchLabels:
-          eda.nokia.com/shadow-ca: internal
-  - configMap: #(1)!
-      key: ca.crt
-      selector:
-        matchLabels:
-          eda.nokia.com/ca: cx-internal
-  target:
-    configMap:
-      key: trust-bundle.pem
-    namespaceSelector:
-      matchLabels:
-        kubernetes.io/metadata.name: eda-system
-```
-
-1. Additional source that pulls in CA certificates published by Nokia EDA's CX (vCluster) integration so that pods in the base namespace also trust workloads running inside CX vClusters.
-
-This Bundle aggregates the current internal CA certificate (`ca.crt`) along with any previous CAs stored under the key `shadow-trust-bundle.pem` in ConfigMaps labeled `eda.nokia.com/shadow-ca: internal`, and any `cx-internal` CA certificates contributed by the CX integration. The combined trust bundle is written to a ConfigMap called `eda-internal-trust-bundle` in Nokia EDA's base namespace, which all internal pods mount to access the internal CA trust bundle.
-
-##### Tuning the internal certificate duration
-
-The lifetime of the certificates signed by `eda-internal-issuer` and the time at which Cert-Manager renews them are configurable via the same `EngineConfig` resource:
-
-```yaml title="Snippet from EngineConfig spec"
-apiVersion: core.eda.nokia.com/v1
-kind: EngineConfig
-metadata:
-  name: engine-config
-  namespace: eda-system
-spec:
-  internalCertDuration: 720h      #(1)!
-  internalCertRenewBefore: 240h   #(2)!
-```
-
-1. Validity of every internal pod certificate. Defaults to `720h` (30 days). Invalid or non-positive values fall back to the default.
-2. How long before expiry Cert-Manager renews each internal certificate. Defaults to `240h` (10 days). If left empty, invalid, or set to a value greater than or equal to `internalCertDuration`, it falls back to `internalCertDuration / 3`.
-
-These values flow into the `csi.cert-manager.io/duration` and `csi.cert-manager.io/renew-before` volume attributes on every pod that mounts an `eda-internal-issuer` CSI volume (API, Keycloak, CE, Toolbox, NPP, FE, PE, and so on). To inspect the current values:
-
-```bash
-kubectl get engineconfig engine-config -n eda-system \
-  -o jsonpath='{.spec.internalCertDuration}{"\t"}{.spec.internalCertRenewBefore}{"\n"}'
-```
-
-#### Kubernetes webhooks
-
-The webhook issuer is used by controller-based applications that need to create Validating or Mutating webhooks.
-
-The issuer signs webhook certificates for the application pods using the Cert-Manager CSI driver:
-
-```yaml
-spec:
-  volumes:
-  - name: webhook-certs
-    csi:
-      driver: csi.cert-manager.io
-      readOnly: true
-      volumeAttributes:
-        csi.cert-manager.io/dns-names: eda-nats-exporter-webhook-service.${POD_NAMESPACE}.svc
-        csi.cert-manager.io/issuer-name: eda-webhook-issuer
-```
-
-Kubernetes webhooks require mTLS connections, meaning the Kubernetes API server must trust certificates signed by the webhook issuer. The webhook issuer's CA certificate is injected into webhook configurations using the Cert-Manager annotation `cert-manager.io/inject-ca-from`, which automatically populates the `caBundle` field:
-
-```yaml
-apiVersion: admissionregistration.k8s.io/v1
-kind: MutatingWebhookConfiguration
-metadata:
-  name: eda-nats-exporter-mutating-webhook-configuration
-  annotations:
-    cert-manager.io/inject-ca-from: "eda-system/eda-webhook-ca" #(1)!
-webhooks:
-   ...
----
-apiVersion: admissionregistration.k8s.io/v1
-kind: ValidatingWebhookConfiguration
-metadata:
-  name: eda-nats-exporter-validating-webhook-configuration
-  annotations:
-    cert-manager.io/inject-ca-from: "eda-system/eda-webhook-ca" #(2)!
-webhooks:
-  ...
-```
-
-1. This annotation injects the CA ca.crt value in the `clientConfig` section of the Webhook. CA [Injector docs](https://cert-manager.io/docs/concepts/ca-injector/)
-2. This annotation injects the CA ca.crt value in the `clientConfig` section of the Webhook. CA [Injector docs](https://cert-manager.io/docs/concepts/ca-injector/)
 
 ### Southbound
 
@@ -827,4 +714,198 @@ spec:
 
 The referenced ConfigMap must be labeled with `eda.nokia.com/ca: node` so that the trust bundle is distributed to Nokia EDA pods.
 
+### Internal
+
+Internal Nokia EDA communication encompasses all traffic between Nokia EDA pods, as well as with the Kubernetes API.
+
+#### Nokia EDA pods
+
+This traffic uses mTLS (Mutual TLS), with both client and server certificates signed by the `eda-internal-issuer`. Internal certificates are generated and distributed using the Cert-Manager CSI driver, while trust bundles are distributed using `eda-internal-trust-bundle` [**TrustManager Bundle**](https://cert-manager.io/docs/trust/trust-manager/#usage) Custom Resource.
+
+To ensure that internal pods can continue communicating during issuer rotation, the previous internal CAs are preserved in a ConfigMap populated by a TrustManager Bundle:
+
+```yaml
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  labels:
+    eda.nokia.com/backup: "true"
+  name: eda-internal-trust-bundle
+spec:
+  sources:
+  - secret:
+      key: ca.crt
+      selector:
+        matchLabels:
+          eda.nokia.com/ca: internal
+  - configMap:
+      key: shadow-trust-bundle.pem
+      selector:
+        matchLabels:
+          eda.nokia.com/shadow-ca: internal
+  - configMap: #(1)!
+      key: ca.crt
+      selector:
+        matchLabels:
+          eda.nokia.com/ca: cx-internal
+  target:
+    configMap:
+      key: trust-bundle.pem
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: eda-system
+```
+
+1. Additional source that pulls in CA certificates published by Nokia EDA's CX (vCluster) integration so that pods in the base namespace also trust workloads running inside CX vClusters.
+
+This Bundle aggregates the current internal CA certificate (`ca.crt`) along with any previous CAs stored under the key `shadow-trust-bundle.pem` in ConfigMaps labeled `eda.nokia.com/shadow-ca: internal`, and any `cx-internal` CA certificates contributed by the CX integration. The combined trust bundle is written to a ConfigMap called `eda-internal-trust-bundle` in Nokia EDA's base namespace, which all internal pods mount to access the internal CA trust bundle.
+
+##### Tuning the internal certificate duration
+
+The lifetime of the certificates signed by `eda-internal-issuer` and the time at which Cert-Manager renews them are configurable via the same `EngineConfig` resource:
+
+```yaml title="Snippet from EngineConfig spec"
+apiVersion: core.eda.nokia.com/v1
+kind: EngineConfig
+metadata:
+  name: engine-config
+  namespace: eda-system
+spec:
+  internalCertDuration: 720h      #(1)!
+  internalCertRenewBefore: 240h   #(2)!
+```
+
+1. Validity of every internal pod certificate. Defaults to `720h` (30 days). Invalid or non-positive values fall back to the default.
+2. How long before expiry Cert-Manager renews each internal certificate. Defaults to `240h` (10 days). If left empty, invalid, or set to a value greater than or equal to `internalCertDuration`, it falls back to `internalCertDuration / 3`.
+
+These values flow into the `csi.cert-manager.io/duration` and `csi.cert-manager.io/renew-before` volume attributes on every pod that mounts an `eda-internal-issuer` CSI volume (API, Keycloak, CE, Toolbox, NPP, FE, PE, and so on). To inspect the current values:
+
+```bash
+kubectl get engineconfig engine-config -n eda-system \
+  -o jsonpath='{.spec.internalCertDuration}{"\t"}{.spec.internalCertRenewBefore}{"\n"}'
+```
+
+#### Kubernetes webhooks
+
+The webhook issuer is used by controller-based applications that need to create Validating or Mutating webhooks.
+
+The issuer signs webhook certificates for the application pods using the Cert-Manager CSI driver:
+
+```yaml
+spec:
+  volumes:
+  - name: webhook-certs
+    csi:
+      driver: csi.cert-manager.io
+      readOnly: true
+      volumeAttributes:
+        csi.cert-manager.io/dns-names: eda-nats-exporter-webhook-service.${POD_NAMESPACE}.svc
+        csi.cert-manager.io/issuer-name: eda-webhook-issuer
+```
+
+Kubernetes webhooks require mTLS connections, meaning the Kubernetes API server must trust certificates signed by the webhook issuer. The webhook issuer's CA certificate is injected into webhook configurations using the Cert-Manager annotation `cert-manager.io/inject-ca-from`, which automatically populates the `caBundle` field:
+
+```yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: eda-nats-exporter-mutating-webhook-configuration
+  annotations:
+    cert-manager.io/inject-ca-from: "eda-system/eda-webhook-ca" #(1)!
+webhooks:
+   ...
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: eda-nats-exporter-validating-webhook-configuration
+  annotations:
+    cert-manager.io/inject-ca-from: "eda-system/eda-webhook-ca" #(2)!
+webhooks:
+  ...
+```
+
+1. This annotation injects the CA ca.crt value in the `clientConfig` section of the Webhook. CA [Injector docs](https://cert-manager.io/docs/concepts/ca-injector/)
+2. This annotation injects the CA ca.crt value in the `clientConfig` section of the Webhook. CA [Injector docs](https://cert-manager.io/docs/concepts/ca-injector/)
+
+
+### External
+
+External communication encompasses traffic initiated by EDA pods towards an external[^2] service. The following EDA pods use the external trust bundle:
+
+- EDA Store & App Installer workflow: Used for connections to app catalogs and registries
+- Artifact Server: Used for fetching artifacts from remote servers
+- Config Engine: Used for connecting to remote Git servers
+
+External trust bundles are distributed using `eda-external-trust-bundle` [**TrustManager Bundle**](https://cert-manager.io/docs/trust/trust-manager/#usage).
+
+```yaml
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  labels:
+    eda.nokia.com/backup: "true"
+  name: eda-external-trust-bundle
+spec:
+  sources:
+  - useDefaultCAs: true
+  - secret:
+      key: ca.crt
+      selector:
+        matchLabels:
+          eda.nokia.com/ca: external
+  - configMap:
+      key: ca.crt
+      selector:
+        matchLabels:
+          eda.nokia.com/ca: external
+  target:
+    configMap:
+      key: trust-bundle.pem
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: eda-system
+```
+
+The bundle includes the default root certificate bundle derived from Debian's ca-certificates package.
+
+#### Adding certificates to the bundle
+
+To extend the external trust bundle with your own certificate authoritiy (CA), create a configmap with label `eda.nokia.com/ca: external`. Example:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap                                                                                                                                     
+metadata:
+  labels:
+    eda.nokia.com/ca: external
+  name: acme-corp-ca
+  namespace: eda-system
+data:
+  ca.crt: |-
+    -----BEGIN CERTIFICATE-----
+    MIIDoTCCAomgAwIBAgIUKCbP4f3qA+ahhPrCTVF60jxc35UwDQYJKoZIhvcNAQEL
+    BQAwYDELMAkGA1UEBhMCVVMxEzARBgNVBAgMCkNhbGlmb3JuaWExEjAQBgNVBAcM
+    CVN1bm55dmFsZTESMBAGA1UECgwJQWNtZSBDb3JwMRQwEgYDVQQDDAtleGFtcGxl
+    LmNvbTAeFw0yNjA4MTIxNjUwMjdaFw0yNzA4MTIxNjUwMjdaMGAxCzAJBgNVBAYT
+    AlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRIwEAYDVQQHDAlTdW5ueXZhbGUxEjAQ
+    BgNVBAoMCUFjbWUgQ29ycDEUMBIGA1UEAwwLZXhhbXBsZS5jb20wggEiMA0GCSqG
+    SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCFoI8Gv6Kt22dFqAyREza9EszrPQhioiU2
+    0eoO4wDvaoSF5wC0gKmG8TliUJzVBowdbwCBkqL685yl63Emh1U8yKioPYhkn/2+
+    0++PHW4GEiLMqRo6TFaruN9ZVmolOm6fM0ZM0FTniwJrZ+0yQDcJcVBXKc8woURw
+    Cbbf88+zH7eyiEkNsqEnl+4J6OwH/7ebDlSs51LTezlC6Nvj8vWSa6tXXlkRsJ26
+    SzrJJHOwY79HE4jWuMXmfqJDL4Cmra13RrFP5kaznW3580t3Gs+MxKm4HE141ofy
+    YUK5pDFvoYWsY+sj4OVxox+OfOo849pFeLMgDed2PQWTEj9KClVzAgMBAAGjUzBR
+    MB0GA1UdDgQWBBSIKWDDMytElnkx73TtqEmBUiSyUjAfBgNVHSMEGDAWgBSIKWDD
+    MytElnkx73TtqEmBUiSyUjAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUA
+    A4IBAQBYmvk50Od2Nj2n1SI49OwuXbwC1CaZy/70n+ezjwYVOOZCgM2Z77ldWeiz
+    RVaj3kUMINLETFn1my6HstMvry1chRLnPWSLB/BHr0gZa0VeUu99A5vT4WGToDkW
+    rokhfPlRIHNlqftziTrSb59DSWu1MkWXnnoQgN3UuigLSuD37vsf2pzpE/vzBM04
+    y3+L8b3c6d6zWRpiCHkLF0XgDM0IbR1HaeCa5as2Ng6GMkF7pY3FsDIMDxC0mmu9
+    5YD7aMccP/I7kwTuNEqLSexRUTgzPv/kg8JVLQh4fD4yf19foSX2rt/iE3qEUUTL
+    a6YSgAL+QfX++A8vB2oQEQ7AtoWP
+    -----END CERTIFICATE-----
+```
+
 [^1]: By default, Nokia EDA system components are installed in the `eda-system` namespace.
+[^2]: "External" refers to any a non-EDA service. It may include services deployed within the same Kubernetes cluster.
