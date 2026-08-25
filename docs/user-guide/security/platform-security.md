@@ -150,10 +150,12 @@ The following scripts are also available in the Nokia EDA toolbox pod:
         1. Open a shell to the Nokia EDA toolbox pod.
         2. Set a temporary Keycloak password.
 
+            Replace the `-p <password>` value in this example with the current Keycloak admin password.
+
             For example:
 
             ```
-            /eda/tools/reset-03-keycloak-admin-user.sh -e https://eda-api -r admin -t temporary -a admin -p admin
+            /eda/tools/reset-03-keycloak-admin-user.sh -e https://eda-api -r admin -t temporary -a admin -p <password>
             ```
 
             Where:

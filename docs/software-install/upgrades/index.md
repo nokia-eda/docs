@@ -440,6 +440,8 @@ Install the new version of Nokia EDA core components by running:
 make metallb install-external-packages eda-install-core eda-is-core-ready
 ```
 
+During an upgrade, existing credentials are not regenerated or rotated by `install-external-packages` target; use the current credentials for the cluster.
+
 ## Upgrading your applications
 
 After installing the new Nokia EDA core in the step above, you need to upgrade Nokia EDA applications as they are kept on their previous versions and may be incompatible with the new version of Nokia EDA core. Use the following command to install applications compatible with the new Nokia EDA core:
