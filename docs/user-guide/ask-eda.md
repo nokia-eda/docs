@@ -13,12 +13,15 @@ The AIOps implementation for Nokia EDA is built around a conversational chat int
 - Workflow triggering: you can start workflows from the chat, receive links to generated artifacts, and see a summary of the results.
 - Model-type control for queries: for more information, see [Model selection options](#model-selection-options).
 - Support for LLM providers with OpenAI-style API: for more information, see [LLM providers](#llm-providers).
+- Context-aware answers: Ask EDA is aware of the current UI context (the resources, alarms, and namespaces that you are viewing) so answers are scoped to the page that you're viewing.
+- Help with modal errors: you can trigger Ask EDA from errors resulting from resource Create, Update, or Delete operations.
+- Conversation export: download a conversation transcript in HTML or a zip file with JSON and HTML, including rendered dashlets and their data where applicable.
 
 ### Key concepts
 
 - Agentic AI: the main agent that orchestrates interactions with lower-level agents for task-specific purposes. Agents combine prompt engineering with additional resources such as workflows, APIs, and other agents.
 
-- Tool: functionality exposed to an agent. Any `WorkflowDefinition` tagged for that agent (for example, workflows tagged `main` are exposed as tools to the Main agent, `netops` to the NetOps agent, and so forth) is automatically exposed as a tool to the agent.
+- Tool: functionality exposed to an agent. Any `WorkflowDefinition` tagged for that agent (for example, workflows tagged `main` are exposed as tools to the Main agent, `netops` to the NetOps agent) is automatically exposed as a tool to the agent.
 
 - LLM provider: a configuration object that registers an external large-language-model service (for example, OpenAI, Google) with endpoint, API key, and model metadata. Nokia EDA supports LLM providers that expose an OpenAI-compatible API endpoint (`Chat/Completions`, `Responses`, or `Embeddings`).
 
@@ -109,13 +112,19 @@ To simplify the process of installing LLM providers, Nokia EDA provides a set of
 - OpenAI
 - Gemini
 - xAI
+- Claude
 
-When you install the application via EDA Store UI, you will be prompted to provide the necessary inputs (such as API keys) for the LLM provider you are installing. They will be used to create the `Provider` resources with the necessary configuration.
+When you install the application through the EDA Store UI, you will be prompted to provide the necessary inputs (such as API keys) for the LLM provider you are installing. They will be used to create the `Provider` resources with the necessary configuration.
 
--{{image(url="graphics/llm-providers-in-ui.webp", title="Installed LLM providers via OpenAI EDA application", shadow=true, padding=20)}}-
+-{{image(url="graphics/llm-providers-in-ui.png", title="Installed LLM providers via OpenAI EDA application", shadow=true, padding=20)}}-
 
-> 1. You must have an OpenAI API key even when installing non-OpenAI LLM providers. This is required to support the embeddings model (`openai-embeddings` from the screenshot above), that is only available for the OpenAI provider.
-> 2. In the current release, only one LLM application can be installed at a time.
+/// admonition | Note
+    type: subtle-note
+
+- You must have an OpenAI API key even when installing non-OpenAI LLM providers. This is required to support the embeddings model (`openai-embeddings` from the screenshot above), that is only available for the OpenAI provider.
+- In the current release, only one LLM application can be installed at a time.
+
+///
 
 ### Agents
 
@@ -173,11 +182,12 @@ Table: Elements of the Ask EDA window
 
 |\#|Name|Function|
 |:---:|----|--------|
-|1|Input bar|Enter queries here and press **Enter** on your keyboard.|
-|2|**Start new conversation** icon|Click to start a new conversation.|
-|3|Model type drop-down list|Select from **Auto**, **Reasoning**, or **Standard**.|
-|4|**Full screen** toggle|When the panel is docked, the **Full screen** icon is a left arrow. Click it to make the chat overlay the main view. In this mode, the **Full screen** icon is a right arrow; click it to dock the ASK EDA window.|
-|5|**X**|Click to close the chat window.|
+|1|Input bar|Enter a query here. The placeholder text is **Ask EDA AI a question:**. Press **Enter** on your keyboard to submit.|
+|2|LLM provider drop-down list|Select the configured LLM provider to use for the conversation (for example, **openai**).|
+|3|Model type drop-down list|Select from **Auto**, **Reasoning**, or **Standard**. For more information, see [Model selection options](#model-selection-options).|
+|4|**Start new conversation** icon|Click to start a new conversation.|
+|5|**Full screen** toggle|When the panel is docked, click to expand Ask EDA over the main view. Click again to return to the docked layout.|
+|6|**X**|Click to close the chat window.|
 
 You can set up the **Ask EDA** chat window to display in one of the following modes:
 
@@ -205,15 +215,30 @@ Click the action menu for a conversation and select one of the following actions
 - Click **Rename** to provide a new title. Then, click the check icon when you are finished.
 - Click **Delete** to remove the conversation from the list.
 
+#### Exporting a conversation
+
+You can export the current conversation for offline review or sharing.
+
+/// html | div.steps
+
+1. Open the conversation you want to export.
+2. Click the **Export Chat** icon.
+    -{{image(url="graphics/export-chat.png", title="Export Chat", shadow=true, padding=20)}}-
+3. Choose from **Export HTML** (downloads an HTML file) or **Export Logs** (downloads a zip file containing an HTML and the JSON source file).
+
+///
+
+HTML includes any dashlets that were rendered in the conversation, together with the dashlet data as it existed at export time. JSON export provides the conversation transcript in a machine-readable format.
+
 ### Contextual help
 
-Currently, **Ask EDA** provides contextual help for transactions and alarms.
+Currently, **Ask EDA** provides contextual help for transactions, alarms, and error messages.
 
-- For alarms, a sparkle icon appears in the **Alarm Details** view. Click it to open **Ask EDA** with the alarm ID pre-populated.
-**Ask EDA** returns a root-cause analysis, suggested remediation steps, and links to related resources.
-
-- For transactions, a sparkle icon appears in the **Transactions**>**Details** view. When you click the sparkle icon, the **Ask EDA** panel displays the summary of changes, success/failure status, and, if failed, an explanation of error messages for the selected transaction.
+When contextual help is available, a sparkle icon appears in the relevant view. Click it to open Ask EDA with that context preloaded.
+For example, for transactions, a sparkle icon appears in the **Transactions**>**Details** view. When you click the sparkle icon, the **Ask EDA** panel displays the summary of changes, success/failure status, and, if failed, an explanation of error messages for the selected transaction.
  -{{image(url="graphics/transaction-ask-eda-help.png", title="Transaction ASK EDA contextual help", shadow=true, padding=20)}}-
+
+For modal errors during resource create, update, or delete, a sparkle icon appears in the error dialog. Click it to open Ask EDA with the error context. Ask EDA explains the error, why it occurred, and what to change so the action can complete successfully.
 
 ### Dashboard generation
 
