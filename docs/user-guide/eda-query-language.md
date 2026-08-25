@@ -2,7 +2,7 @@
 
 EDA supports queries using a syntax that is collectively referred to as the EDA Query Language, or EQL.
 
-EQL allows the full surface area of the EDA API, its managed endpoints, and all state information in EDB to be queried and parsed in real time. Queries can be run during troubleshooting, providing instantaneous, streaming results across the entire fleet of the managed devices. Queries can as well be sourced as data for visualizations, and streamed via the API, allowing external applications to constrain event triggers.
+EQL allows the full surface area of the EDA API, its managed endpoints, and all state information in EDB to be queried and parsed in real time. Queries can be run during troubleshooting, providing instantaneous, streaming results across the entire fleet of the managed devices. Queries can also be sourced as data for visualizations, and streamed via the API, allowing external applications to constrain event triggers.
 
 /// details | EQL via REST API
     type: subtle-note
@@ -26,19 +26,19 @@ In EDA, a query consists of:
     The Table is the only mandatory element of any query.
     ///
 
-- a **Selector** that defines a set of fields to return (along with any functions to run on those fields).
-- a **Filter** that restricts the set of results to return.
-- a **Sort** that indicates the order in which results should be returned.
-- a **Limit** that restricts the number of results to return.
-- a **Frequency** that indicates the minimum period after which to automatically update the query results.
+- a **Selector** denoted by the `fields` keyword that defines a set of fields to return (along with any functions to run on those fields).
+- a **Filter** denoted by the `where` keyword that restricts the set of results to return.
+- a **Sort** denoted by the `order by` keywords that indicates the order in which results should be returned.
+- a **Limit** denoted by the `limit` keyword that restricts the number of results to return.
+- a **Frequency** denoted by the `delta` keyword that indicates the minimum period after which to automatically update the query results.
 
 For example:
 
-- `.namespace.alarms.current-alarm`
-- `.namespace.alarms.current-alarm where (severity = "critical")`
-- `.namespace.alarms.current-alarm where (severity = "critical") order by [type]`
-- `.namespace.alarms.current-alarm where (severity = "critical") limit 5`
-- `.namespace.alarms.current-alarm where (severity = "critical") order by [type] sample milliseconds 500`
+- `.namespace.node.srl.interface fields [oper-state, admin-state]`
+- `.namespace.node.srl.interface where (admin-state = "disable" and .node.name = "dut1")`
+- `.namespace.node.srl.platform.control.process order by [memory-usage descending]`
+- `.namespace.node.srl.interface limit 10`
+- `.namespace.node.srl.interface delta 10ms`
 
 EDA also supports queries using [Natural Query Language](#natural-language-queries).
 
@@ -59,7 +59,7 @@ A query using EQL can include the following elements.
 
 ### Table
 
-A Table is specified in JSPath notation, with a `Table` boundary at all lists and containers within a `TopoNode` schema, or within containers/lists provided by `StateEngine` scripts or external gRPC publishers via `StateController`.
+A Table is specified in JSPath notation, with a `Table` boundary and containers within a `TopoNode` schema, or within containers/lists provided by `StateEngine` scripts or external gRPC publishers via `StateController`.
 
 In simple terms, each node within the JSPath file is its own table: `.namespace.node` is a table, `.namespace.node.srl` is a table, and `.namespace.node.srl.interface` is a table.
 
@@ -72,7 +72,7 @@ Tables cannot currently be qualified with keys. Instead, use a 'where' clause. F
 A Selector is denoted by the `fields` keyword, where the value is an array of fields to return, along with any functions to run.
 
 - These fields must exist in the `Table` that is being queried, or the query fails.
-- For example, `.namespace.node.srl.interface FIELDS [admin-state, description] ORDER BY [oper-state ascending natural]`.
+- For example, `.namespace.node.srl.interface fields [admin-state, description] order by [oper-state ascending natural]`.
 - No fields other than those defined are returned. If no fields are selected, then all fields from the table are returned.
 - The `fields` keyword must precede any `where` or `order by` keywords.
 
@@ -82,7 +82,7 @@ A set of functions can assist with evaluation and aggregation. For example:
 - `count()` to return the count of unique combinations matching a `Filter`.
 - `sum()` to sum the values for a field matching a `Filter`.
 - `max()` to return the maximum found value for a given field matching a `Filter`.
-- `concat()` to merge multiple keys into a single field with a user defined delimiter.
+- `concat()` to merge multiple keys into a single field with a user-defined delimiter.
 
     For example:
 
@@ -120,7 +120,7 @@ A Filter is a string defining any filters to use. A Filter is defined with a `wh
 
 - EQL Filters support the `is set` and `is not set` operators within a `where` clause.
 
-    Evaluations against an unset field will yield `True` for not equal and NULL for equal.
+    Evaluations against an unset field will yield `True` for not equal and `Null` for equal.
 
     - The evaluation follows the three-valued logic of `True`, `False`, and `Null` to ensure logical consistency.
     - `not Null` is `Null`
@@ -133,42 +133,13 @@ A Filter is a string defining any filters to use. A Filter is defined with a `wh
 
 - A Filter can query ancestor keys and values by referencing their full JSPath.
 
-    For example, to add Filter criteria for a parent key:  `.namespace.node.srl.interface.subinterface where (.node.name = "leaf1")`.
+    For example, to add Filter criteria for a parent key: `.namespace.node.srl.interface.subinterface where (.node.name = "leaf1")`.
 
     You cannot currently filter on parent fields other than the key.
 
-### Sort
+#### Regular expressions for filters
 
-A Sort is similar to a Filter, but instead of describing how to select data, it describes how to return data. A Sort is denoted by the `ORDER BY` keywords which control the ordering (sorting) of data.
-
-A Query may include a single `ORDER BY` keyword, where the value is an array of fields, sorting algorithms, and directions which are evaluated in the order they are presented.
-
-- For example, `.namespace.node.srl.interface ORDER BY [oper-state ascending natural]`.
-- The second value may be either `ascending` or `descending`.
-- The third value is optional but currently can only be `natural`.
-
-### Limit
-
-A Limit restricts the number of results that are returned. It is denoted by the `limit` keyword. A Limit is processed after any other operations (for example, the Sort operation).
-
-- A `limit` accepts a single integer value.
-
-- This can be combined with Sort to get the 'top' N results, or the 'bottom' N results, where N is the value provided to the `limit` keyword.
-
-- The maximum value for `limit` is 1000, and the minimum value is 1. Any values above or below this return an error.
-
-### Frequency
-
-A Frequency allows you to control the rate at which data is returned, and is denoted by the `delta` keyword.
-
-- The `delta` keyword must be passed two values; one denotes the units used, and the other the actual value.
-- For example, `.namespace.node.srl.interface.traffic-rate where (in-bps != 0) delta seconds 1` means "do not update the client more than once every 1 second."
-- The value is the minimum period at which results are updated for the query.
-- Valid units are `seconds` and `milliseconds`.
-
-### Regular expressions
-
-Some EQL expressions need to match substring (or contains), prefix, and suffix matching on fields. To support these cases (among others), the `~` operator is supported. This allows the matching of regular expressions against values.
+Some EQL expressions must match substring (or contains), prefix, and suffix matching on fields. To support these cases (among others), the `~` operator is supported. This allows the matching of regular expressions against values.
 
 For example, the expression `.field where (fieldname ~ "regex-pattern")` would match all objects in the `.field` table, where those objects have a field named `fieldname` and that field contains the string value `regex-pattern`.
 
@@ -209,6 +180,37 @@ The following regex operations are supported:
     - `^` to match the start of a string.
     - `$` to match the end of a string.
 
+### Sort
+
+A Sort controls the ordering of results. A Sort is denoted by the `ORDER BY` keywords which control the ordering (sorting) of data.
+
+A Query may include a single `ORDER BY` keyword, where the value is an array of fields, sorting algorithms, and directions which are evaluated in the order they are presented.
+
+- For example, `.namespace.node.srl.interface ORDER BY [oper-state ascending natural]`.
+- The second value may be either `ascending` or `descending`.
+- The third value is optional but currently can only be `natural`.
+
+### Limit
+
+A Limit restricts the number of results that are returned. It is denoted by the `limit` keyword. A Limit is processed after any other operations (for example, the Sort operation).
+
+- A `limit` accepts a single integer value.
+
+- This can be combined with Sort to get the 'top' N results, or the 'bottom' N results, where N is the value provided to the `limit` keyword.
+
+- The maximum value for `limit` is 1000, and the minimum value is 1. Any values above or below this return an error.
+
+### Frequency
+
+A Frequency allows you to control the rate at which data is returned, and is denoted by the `delta` keyword.
+
+- The `delta` keyword must be passed two values; one denotes the units used, and the other the actual value.
+- For example, `.namespace.node.srl.interface.traffic-rate where (in-bps != 0) delta seconds 1` means "do not update the client more than once every 1 second."
+- The value is the minimum period at which results are updated for the query.
+- Valid units are `seconds` and `milliseconds`.
+
+
+
 ## Consolidated JSON to support EQL
 
 It is common to query for values that are presented as a single object in the EDA GUI, but in fact span multiple containers or lists as they are normally stored within EDA. Such queries can exceed the usual supported scope of a single EQL query.
@@ -236,7 +238,7 @@ To include "state" in the same query:
 
 ## Natural-language queries
 
-When creating a query in EDA, you also have the option of writing the query in natural language (NQL). With a natural-language query, you can ask questions of EDA such as:
+When creating a query in EDA, you also have the option of writing the query in natural query language (NQL). With a natural-language query, you can ask questions of EDA such as:
 
 - List all up interfaces
 - List all interfaces that have an MTU of 9232, sorted by interface name
@@ -270,11 +272,6 @@ spec:
 
 ///
 
-Natural-language queries are often resolved against the node-agnostic `.namespace.resources.cr` tables, which may not contain all the data required to fulfill the query request. To be able to query the node tables, prepend the query with the Network OS name. For example:
-
-- for Nokia SR Linux: `srl: show me all bgp peers in established state`
-- for Nokia SR OS: `sros: list all ports with mtu greater than 1500`
-
 ## Creating a query with EQL
 
 1. Use the **Main** navigation panel to select **Queries** to open the Query Builder page.
@@ -286,8 +283,8 @@ Natural-language queries are often resolved against the node-agnostic `.namespac
     - Begin the query with a period (`.`).
     - As you begin typing the query, EDA offers suggestions for the next element in the expression.
     - The finished query must specify a table in JSPath notation. This table identifies the overall set of data being queried. Optionally, the query can also include:
-        - a Selector that defines a set of fields to return (along with any functions to run on said fields).
-        - a Filter that restricts the set of fields to return.
+        - a Selector that defines a set of data to return (along with any functions to run on said fields).
+        - a Filter that restricts the set of data to return.
         - a Sort that indicates the order in which data should be returned.
         - a Limit that restricts the number of results to return.
         - a Frequency that indicates the minimum period after which to automatically update the query results.
