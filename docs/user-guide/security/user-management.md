@@ -130,7 +130,7 @@ Nokia EDA `ClusterRole` and `Role` resources define permissions for users and fo
 
 Roles define permissions within a specific namespace, whereas Cluster Role permissions apply to all namespaces.
 
-Non-namespaced Nokia EDA API endpoints can only be enforced by Cluster Roles. This includes cluster-wide resources (for example, `LogOutputs`), Nokia EDA administrative APIs, and transaction results. In general, any API that doesn't specify a namespace in the path or payload is enforced by Cluster Roles.
+Non-namespaced Nokia EDA API endpoints can only be enforced by Cluster Roles. This includes cluster-wide resources (for example, `LogOutputs`), Nokia EDA administrative APIs, and transaction results. In general, any API that does not specify a namespace in the path or payload is enforced by Cluster Roles.
 
 /// admonition | Note
     type: subtle-note
@@ -139,9 +139,10 @@ While similar in concept, Nokia EDA `Role` and `ClusterRole` resources are not t
 
 For `ClusterRole` and `Role`, the following rule types are supported:
 
-- **Resource Rules**: define Nokia EDA resource and workflow permissions using Group-Version-Kind (GVK) semantics.
-- **Table Rules**: define permissions for queries to EDB.
-- **URL Rules**: define permissions for Nokia EDA API endpoints based on their URL path. URL Rule permission is not required for API endpoints which are Resource Rule or Table Rule enforced.
+- **Resource Rules**: defined Nokia EDA resource and workflow permissions using Group-Version-Kind (GVK) semantics.
+- **Table Rules**: defines permissions for queries to EDB.
+- **URL Rules**: defines permissions for Nokia EDA API endpoints based on their URL path. URL Rule permission is not required for API endpoints which are Resource Rule or Table Rule enforced.
+- **Core access items**: defines permissions for access to Nokia EDA platform capabilities that are not associated with a specific EDA resource, or EDB table.
 
 You can assign  `ClusterRole` and `Role` to user groups and to service account clients.
 
@@ -174,9 +175,9 @@ Access to transaction results is based on a user's access to the *input resource
 
   - If a user has read permission for **all** the input resources of a transaction, the user can list all changed resources (both input and derived) and view the resource diffs.
   - If a user has read permission for **none** or **some** of the input resources, that user cannot list any derived resources or view their diffs.
-  - Access to Node Configuration diffs require a URL rule. This is because the Node Configuration diff API returns the full node config, and is not limited to the scope of the transaction.
+  - Access to Node Configuration diffs requires the `node/config/read` core access item. This is because the Node Configuration diff API returns the full node config, and not limited to the scope of the transaction.
   - To revert a transaction, a user must have `readWrite` permission for **all** input resources of the transaction.
-  - To restore the Nokia EDA cluster to a specific transaction, a user must have `readWrite` permission to the restore API from a `ClusterRole` URL rule. Restore is a powerful action which should be limited to trusted administrators.
+  - To restore the Nokia EDA cluster to a specific transaction, a user must have the `transaction/restore` core access item in a `ClusterRole`. Restore is a powerful action which should be limited to trusted administrators.
 
 ///
 
@@ -199,7 +200,6 @@ Table rules are similar to resource rules, except that they are relevant to the 
 
 - **Permissions**: Specifies `none` or `read` permissions for the EDB table.
 
-
 /// admonition | Implicit table rules for resource paths
     type: subtle-note
 To simplify user access to resource-related dashboards and queries, users are implicitly granted `read` permission to the following paths when they have an equivalent resource rule:
@@ -212,7 +212,7 @@ To simplify user access to resource-related dashboards and queries, users are im
 
 ### URL rules
 
-URL rules define generic enforcement of URL paths exposed by an API server. URL rules are needed for API endpoints that are not associated to resources or EDB tables.
+URL rules define generic enforcement of URL paths exposed by an API server.
 
 - **Path**: Specifies the API URL path to which this rule applies.
 
@@ -221,6 +221,93 @@ URL rules define generic enforcement of URL paths exposed by an API server. URL 
     `/**` at the end of the path indicates that the URL path can be anything if the prefix matches.
 
 - **Permissions**: Specifies `none`, `read`, or `readwrite` permissions for the URL path.
+
+/// admonition | Deprecation notice
+    type: note
+
+URL Rules are being replaced by [Core access items](#core-access-items), and will removed in a future major release.<br>
+In 26.8, the API Server will fall-back to a urlRule permission check for backwards compatibility with existing roles.<br>
+In 26.8, URL Rules are still required for the following APIs:
+
+- `/core/store/v1` and all subpaths
+- `/core/topology/v1` and all subpaths
+- EDA HTTP proxies configured with `inApiServer` authentication type
+
+///
+
+### Core access items
+
+Core access item rules define access to Nokia EDA platform capabilities that are not associated with a specific EDA resource, or EDB table.
+
+Core access items use a `{item}/{optional subitem}/{verb}` structure. Examples: `alarm/read`, `transaction/restore`, `aaa/user/write`.
+
+Wildcarding is supported:
+
+- **`*`**: Matches all core item permissions, for example for the `system-administrator` role.
+- **`*/read`**: Matches all core item permissions that use the `read` verb.
+- **`*/write`**: Matches all core item permissions that use the `write` verb and write-equivalent actions.
+- **`{item}/*`**: Matches all permissions under an item, including subitems. A single `*` is recursive. For example, `aaa/*` matches `aaa/user/read`, `aaa/group/write`, and other `aaa` permissions.
+- **`{item}/{subitem}/*`**: Matches all permissions for a subresource. For example, `aaa/user/*` matches `aaa/user/read`, `aaa/user/write`, and `aaa/user/resetpassword`.
+
+/// details | List of capabilities controlled by Core access items
+    type: text
+
+Namespaced items are applicable to both `Roles` and `ClusterRoles`. Non-namespace items are only applicable to `ClusterRoles`.
+
+**Alarm Management**
+
+| Core access item {: .nowrap} | Description | Namespaced |
+|---|---|---|
+| `alarm/read` | Read access to all alarms, or all alarms in a specific namespace.<br> This | TRUE |
+| `alarm/delete` | Delete permission to all alarms, or all alarms in a specific namespace. | TRUE |
+| `alarm/acknowledge` | Acknowledge and unacknowlege permission to all alarms, or all alarms in a specific namespace. | TRUE |
+| `alarm/suppress` | Suppress and unsuppress permission to all alarms, or all alarms in a specific namespace. | TRUE |
+
+**AI**
+
+| Core access item {: .nowrap} | Description | Namespaced |
+|---|---|---|
+| `ai/chat` | Access to AskEDA AI chat features.<br>**Note:** Internal requests made by the AskEDA AI assistant is authorized by the user's access token; therefore AskEDA can only access data and perform actions for which the user has permission.<br>**Note:** This permission will not fall back to a urlRule check. | FALSE |
+
+**User Management**
+
+| Core access item {: .nowrap} | Description | Namespaced |
+|---|---|---|
+| `aaa/user/read` | Read EDA users. | FALSE |
+| `aaa/user/write` | Create, update, or delete EDA users, including group memberships. | FALSE |
+| `aaa/user/resetpassword` | Reset a user's password. | FALSE |
+| `aaa/group/read` | Read EDA user groups, including associated users and roles. | FALSE |
+| `aaa/group/write` | Create, update, or delete EDA user groups, including their members and roles. | FALSE |
+| `aaa/federation/read` | Read EDA user federation provider configuration. | FALSE |
+| `aaa/federation/write` | Create, update, or delete EDA user federation providers. | FALSE |
+| `aaa/federation/test` | Run connection and authentication tests for EDA federation providers. | FALSE |
+| `aaa/passwordpolicy/read` | Read the EDA password policy configuratio.n | FALSE |
+| `aaa/passwordpolicy/write` | Update the EDA password policy configuration. | FALSE |
+| `aaa/session/read` | Read active EDA user sessions. | FALSE |
+| `aaa/session/logout` | Delete EDA user sessions. | FALSE |
+| `aaa/client/read` | Read EDA service account clients and their roles. | FALSE |
+| `aaa/client/write` | Create, update, or delete EDA service account clients. | FALSE |
+
+**Transactions, Merge Requests, and Branches**
+
+| Core access item {: .nowrap} | Description | Namespaced |
+|---|---|---|
+| `transaction/restore` | Perform a transaction restore. | FALSE |
+| `mergerequest/delete` | Permanently delete a merge request. | FALSE |
+| `branch/merge` | Create a merge request on the main cluster from a branch. | FALSE |
+| `branch/rebase` | Rebase a branch from the main cluster. | FALSE |
+| `branch/restore` | Restore a branch from the main cluster. | FALSE |
+
+**Other**
+
+| Core access item {: .nowrap} | Description | Namespaced |
+|---|---|---|
+| `node/config/read` | Read node configuration of all nodes, or all nodes in a specific namespace. This includes node configuration diffs in transaction results. | TRUE |
+| `sharedstorage/read` | Read a file or directory from shared user storage. This permission is needed for accessing shared dashboards and navigation panels. | FALSE |
+| `sharedstorage/write` | Create, update, or delete files or directories from shared user storage. This permission is needed for publishing dashboards and navigation panels. | FALSE |
+| `labels/global/read` | Allows label autocomplete results to include label key/values used by all resources in the cluster. Without this permission, label autocomplete results will only return key/values from resources with the specified GVK+namespace | FALSE |
+
+///
 
 ### Multiple rule behavior
 
@@ -248,10 +335,11 @@ apiVersion: core.eda.nokia.com/v1
 kind: ClusterRole
 metadata:
   name: system-administrator
+  namespace: eda-system
 spec:
-  description: >-
-    This is the default administrator role for Nokia EDA. It cannot be deleted.  A
-    user with this role can do anything.
+  coreAccessItems:
+    - '*'
+  description: This is the default administrator role for EDA. It cannot be deleted.
   resourceRules:
     - apiGroups:
         - '*'
@@ -309,6 +397,8 @@ metadata:
   name: ns-admin
   namespace: eda
 spec:
+  coreAccessItems:
+    - '*'
   resourceRules:
     - apiGroups:
         - '*'
@@ -336,6 +426,8 @@ metadata:
   namespace: eda-system
   labels: null
 spec:
+  coreAccessItems:
+    - '*/read'
   description: Read only for everything
   resourceRules:
     - apiGroups:
@@ -378,10 +470,6 @@ spec:
       permissions: read
       resources:
         - '*'
-  urlRules:
-    - path: /openapi/**
-      permissions: read
-
 ```
 
 ///
@@ -397,13 +485,12 @@ metadata:
   labels: null
   namespace: eda-system
 spec:
+  coreAccessItems:
+    - 'alarm/*'
   description: 'Permission to run queries and update alarms (ack/delete/suppress/etc)'
   tableRules:
     - path: .**
       permissions: read
-  urlRules:
-    - path: /core/alarm/**
-      permissions: readWrite
 ```
 
 ///
@@ -433,11 +520,11 @@ spec:
   urlRules:
     - path: /core/topology/v1
       permissions: read
-    - path: /core/topology/v1/topologies.eda.nokia.com_v1alpha1_physical
+    - path: /core/topology/v1/topologies.eda.nokia.com_v1_physical
       permissions: read
-    - path: /core/topology/v1/topologies.eda.nokia.com_v1alpha1_physical/overlay
+    - path: /core/topology/v1/topologies.eda.nokia.com_v1_physical/overlay
       permissions: read
-    - path: /core/topology/v1/topologies.eda.nokia.com_v1alpha1_physical/groupings
+    - path: /core/topology/v1/topologies.eda.nokia.com_v1_physical/groupings
       permissions: read
 ```
 
@@ -455,7 +542,7 @@ metadata:
 spec:
   description: Access physical topology state in namespace 'eda'
   urlRules:
-    - path: /core/topology/v1/topologies.eda.nokia.com_v1alpha1_physical/state
+    - path: /core/topology/v1/topologies.eda.nokia.com_v1_physical/state
       permissions: readWrite
 ```
 
