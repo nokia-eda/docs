@@ -10,4 +10,5 @@ spec:
   prismCentralTlsVerify: true # To verify TLS of the Prism Central
   prismCentralCertificate: "" # If the Prism Central certificate is self signed, add it here to be able to verify from the plugin
   authSecretRef: my-nutanix-creds # Credentials are hosted in a separate Secret
+  operationalMode: Unrestricted # The operational mode of the plugin, can be ConnectManagedOnly, EDAManagedOnly or Unrestricted
 

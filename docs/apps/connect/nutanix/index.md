@@ -24,6 +24,7 @@ Currently not supported:
 ### Supported Versions
 
 * Nutanix Prism Central 7.3
+* Nutanix Prism Central 7.5
 
 
 ## Architecture
@@ -63,18 +64,26 @@ The `BridgeDomain` is not routable through the fabric in this mode.
 If routing is required, EDA managed mode can be used, or external routing can be provisioned in the subnet.
 
 *__EDA-Managed Mode__*
-: Subnets can be associated with an existing EDA `BridgeDomain` by attaching the `connect.eda.nokia.com` category with key `EDA Managed` to the subnet
-in Prism Central. The name of the subnet must match the name of the EDA `BridgeDomain`.
+: Subnets can be associated with an existing EDA `BridgeDomain` from Prism Central or from EDA. In Prism Central, attach the
+`connect.eda.nokia.com` category with key `EDA Managed` to the subnet. The name of the subnet must match the name of the EDA `BridgeDomain`.
+In EDA, create a `NutanixEDAManagedBridgeDomain` custom resource.
 
 Alternatively, subnets can be excluded from EDA management by attaching the `connect.eda.nokia.com` category with key `EDA Ignored`. An example use
 case for this is the initial infrastructure network hosting the CVM and Prism Central VMs.
 
 #### Using EDA-Managed Mode
 
+EDA-Managed mode can be configured through two different methods:
+
+1. Using a Prism Central category
+2. Using the `NutanixEDAManagedBridgeDomain` custom resource
+
+#### Using a Prism Central category
+
 The plugin automatically creates the `connect.eda.nokia.com` category in Prism Central on startup if it does not exist. It also ensures that the two
 standard values, `EDA Managed` and `EDA Ignored`, are present for this category.
 
-To use EDA-managed mode:
+To use EDA-managed mode through a category:
 
 1. Create a `BridgeDomain` in EDA with the desired settings. This can be a `BridgeDomain` in a `VirtualNetwork` as well as a standalone `BridgeDomain`.
 2. In Prism Central, attach the `connect.eda.nokia.com` category to the subnet and set its value to `EDA Managed`. The name of the subnet must match
@@ -101,12 +110,62 @@ Categories can be assigned to subnets in Prism Central via the UI or API. An exa
 -{{image(url="../resources/nutanix-category-example.webp", title="Category configuration in Prism Central")}}-
 ///
 
-You can switch between EDA-managed and Prism-managed mode at any time.
 
 /// details | Switching between EDA-managed and Prism-managed mode
     type: subtle-note
-
+You can switch between EDA-managed and Prism-managed mode at any time.
 When switching between the two available modes, connectivity will be temporarily disrupted while the plugin reconfigures the resources in EDA.
+///
+
+#### Using the NutanixEDAManagedBridgeDomain custom resource
+
+To use the EDA-managed mode through the `NutanixEDAManagedBridgeDomain` custom resource follow these steps:
+
+1. Create a `BridgeDomain` in EDA with the desired settings
+2. Create the virtual switch and/or VLAN subnet in Prism Central
+3. Create a `NutanixEDAManagedBridgeDomain` custom resource in EDA referring to the `BridgeDomain`, virtual switch, and
+   subnet.
+
+In the Nokia EDA UI, autocomplete functionality allows you to select the Prism Central subnet automatically with a
+dropdown menu.
+
+/// note | Subnet ID
+Set the Subnet ID to the Nutanix `externalId` field. The autocomplete functionality will help you
+in mapping Subnet ID to human-readable values as well.
+///
+
+/// tab | Autocomplete
+
+-{{image(
+    light_url="../resources/nutanix-eda-mgd-from-eda-light.webp",
+    dark_url="../resources/nutanix-eda-mgd-from-eda-dark.webp",
+    padding=20,shadow=true,
+    title="In the Nokia EDA UI, autocomplete functionality allows you to select the Prism Central subnet automatically with a dropdown menu."
+)}}-
+
+///
+/// tab | Select Subnet ID
+
+-{{image(
+    light_url="../resources/nutanix-select-subnet-id-light.webp",
+    dark_url="../resources/nutanix-select-subnet-id-dark.webp",
+    padding=20,shadow=true,
+    title="Use the table icon on the right to select the Subnet ID from a table with the human-readable name."
+)}}-
+
+///
+
+
+When both a Prism Central category and a `NutanixEDAManagedBridgeDomain` are defined for the same subnet, the `NutanixEDAManagedBridgeDomain` takes precedence.
+
+#### Restricting Operational Modes
+
+The plugin configuration allows you to restrict the operational modes that are allowed. By default, both modes are allowed (`Unrestricted`). You can restrict the modes to only allow Prism Central-managed mode by setting the `OperationalMode` to `ConnectManagedOnly`. You can restrict the modes to only allow EDA-managed mode by setting the `OperationalMode` to `EDAManagedOnly`.
+
+/// details | Restricting Operational Modes during operation
+    type: info
+
+If you restrict the operational modes, an audit runs. The audit removes resources that the new mode does not allow, and it adds resources that the new mode allows.
 ///
 
 #### VPC Overlay Subnets

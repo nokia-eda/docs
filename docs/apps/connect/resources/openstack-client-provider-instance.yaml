@@ -1,0 +1,15 @@
+apiVersion: openstack-client-provider.eda.nokia.com/v1alpha1
+kind: OpenStackClientProviderInstance
+metadata:
+  name: my-openstack-client-provider # A unique name for the instance
+  namespace: eda-system # The EDA core namespace
+spec:
+  namespace: eda # The namespace that holds the fabric, BridgeDomains, and client table
+  authURL: https://keystone.example.com:5000/v3 # The Keystone authentication URL
+  authSecretRef: my-os-creds # Credentials are hosted in a Secret in spec.namespace
+  regionName: RegionOne # The OpenStack region
+  identityInterface: public # Keystone endpoint from the service catalog: public, internal, or admin
+  sync:
+    mode: Polling
+    polling:
+      fullSyncIntervalSeconds: 30 # How often the instance polls OpenStack

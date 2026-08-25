@@ -10,4 +10,4 @@ spec:
       catalog: eda-catalog-builtin-apps
       version:
         type: alias
-        version: latest
+        value: latest

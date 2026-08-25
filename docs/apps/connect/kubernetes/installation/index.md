@@ -29,9 +29,9 @@ Before installing or deploying the Kubernetes plugin components, ensure that:
 
 * The Cloud Connect Core application is properly installed in the EDA cluster (see [Cloud Connect Installation](../../cloud-connect-installation.md))
 * The OpenShift cluster is up and running
-* [NMState Operator](https://docs.openshift.com/container-platform/4.16/networking/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.html)
+* [NMState Operator](https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator)
   and Multus are installed on the OpenShift cluster
-* You have access to the controller container image: `ghcr.io/nokia-eda/eda-connect-k8s-controller:5.0.0`
+* You have access to the controller container image: `ghcr.io/nokia-eda/eda-connect-k8s-controller:7.0.0`
 * NMState Operator is configured to listen for LLDP TLVs on interfaces connected to leaf switches
 
 ### Configure NMState for LLDP

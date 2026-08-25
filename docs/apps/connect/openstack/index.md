@@ -52,6 +52,8 @@ mapping the relation between the physical NICs and the different networking cons
 
 For detailed deployment instructions, see the [OpenStack Plugin Installation Guide](installation/index.md).
 
+For VM metadata in the `networks` client table, see the [OpenStack Client Provider](client-provider/index.md).
+
 ## Features
 
 ### Operational Modes
@@ -240,3 +242,9 @@ On Highly Available (HA) Openstack deployments, if multiple audit requests are c
 Neutron instances. This can lead to a situation when multiple processing instances compete to correct the same discrepancy, yielding unpredictable
 results.
 It is recommended to ensure no Audit exist in Connect in `InProgress` state prior to creating a new Audit request.
+
+### Client Provider
+
+The [OpenStack Client Provider](client-provider/index.md) is a technical preview. It publishes OpenStack VM NIC metadata into
+the EDA `networks` client table so that the Client Engine can correlate those VMs with fabric `BridgeDomain` resources.
+
