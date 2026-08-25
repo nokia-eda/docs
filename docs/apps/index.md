@@ -14,7 +14,7 @@ This plugin-based architecture allows for easy extensibility and customization o
 The Nokia EDA Store is used to manage the applications inside Nokia EDA. Nokia EDA Store relies on the following resources to manage apps:
 
 - **Catalogs**: [Nokia EDA app catalogs](#catalogs) are a Git repository that contains the manifests of apps. The manifest contains all information needed to display the app in the Store UI and to perform the installation.
-- **Registries**: [Nokia EDA app registries](#registries) are container registries that serve a OCI images of the apps. All of an app's content and code are contained in a single OCI image.
+- **Registries**: [Nokia EDA app registries](#registries) are container registries that serve OCI images of the apps. All of an app's content and code are contained in a single OCI image.
 
 All apps available in the configured catalog(s) are displayed in the Nokia EDA Store UI. You can access the **EDA Store** page from the **System Administration** navigation panel and selecting **Store**. Nokia EDA Store displays all apps in a tile view, with high-level details for each app.
 
@@ -28,10 +28,10 @@ You can use the following fields to filter for apps:
 
 - From the **Status** drop-down list, select from the following options:
 
-    - **All**: displays all app packages know to Nokia EDA.
-    - **Updates Available**: displays apps for which an upgrade is available.
-    - **Installed**: displays all the installed apps in the current Nokia EDA deployment.
-    - **Not Installed**: displays all apps that are not installed.
+  - **All**: displays all app packages known to Nokia EDA.
+  - **Updates Available**: displays apps for which an upgrade is available.
+  - **Installed**: displays all the installed apps in the current Nokia EDA deployment.
+  - **Not Installed**: displays all apps that are not installed.
 
 - To filter for apps by catalog, click the **Catalog** drop-down list.
 - To display apps by category, click the **Category** drop-down list.
@@ -40,15 +40,15 @@ You can use the following fields to filter for apps:
 /// admonition | Note
     type: subtle-note
 If an app is published in multiple catalogs, Nokia EDA Store displays this as a single app. This allows you to upgrade app versions across catalog boundaries.
-The catalog filter only applied to the title view. In the app details view, the versions list combined versions available in all catalogs.
+The catalog filter only applies to the title view. In the app details view, the versions list combines versions available in all catalogs.
 
 ///
 
 ### App details
 
-From the Nokia EDA Store GUI, click any app to display details for that app.
+From the **EDA Store** page in the UI, click any app to display details for that app.
 
--{{image(url="/user-guide/graphics/sc0307-26.4.1v2.png", title="Fabric app example", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/fabrics-app.png", title="Fabric app example", shadow=true, padding=20)}}-
 
 This view provides the following information about the app:
 
@@ -56,6 +56,7 @@ This view provides the following information about the app:
 - version of the app. To view other versions of the app, click the drop-down list
 - vendor
 - publish date
+- signing status: **Signed** displays **Yes** when the selected app version’s OCI image is signed and the signature can be verified against a trusted public key configured in the cluster; otherwise **Signed** displays **No**
 - supported operating system: click **See More** to display all supported operating systems. To view the supported versions for each operating system, see the Supported Operating Systems section in the **Overview** tab.
 - category
 - latest version
@@ -77,7 +78,7 @@ The **Overview** tab lists the **Resource Definitions** and **Workflow Definitio
 
 - API Group, Kind, and Version
 - A Title, which is used to identify these resources and workflows throughout the Nokia EDA UI
-- API Access, which indicates how the resource definition to exposed on the Nokia EDA REST API (Value may be "None", "Read", or "Read Write")
+- API Access, which indicates how the resource definition is exposed on the Nokia EDA REST API (Value may be "None", "Read", or "Read Write")
 - Associated script type ("Configuration", "State", or none) which indicates the type of Nokia EDA MicroPython script that is triggered by creating a resource of this kind, if any.
 
 #### App requirements
@@ -86,22 +87,22 @@ Requirements are dependencies on other apps that are defined in an app's manifes
 
 The Nokia EDA Store calculates a full dependency tree of the app requirements, and a **Target Version** for each required app.
 
-- For required apps already installed, the target version preferences the currently installed version.
-- For required apps not yet installed, the target version preferences the latest compatible version.
+- For required apps already installed, the target version gives preference to the currently installed version.
+- For required apps not yet installed, the target version gives preference to the latest compatible version.
 
 When installing or upgrading an app via the Nokia EDA UI, any required apps that must be installed or upgraded together will be included with the app install. The install wizard lists all app installations and upgrades that will be included.
 
-The Nokia EDA Store makes sure that all the app requirements stay valid at all times to prevent invalid app version configurations. If an app requirement can not be satisfied, such as when a required app is missing or version requirement conflict with the requirement or another app, installation will fail. Uninstalling apps may also be blocked if it breaks the requirement of another app.
+The Nokia EDA Store makes sure that all the app requirements stay valid at all times to prevent invalid app version configurations. If an app requirement cannot be satisfied, such as when a required app is missing or version requirement conflict with the requirement or another app, installation will fail. Uninstalling apps may also be blocked if it breaks the requirement of another app.
 
 /// admonition | Note
     type: subtle-note
-Apps also have dependencies on the Nokia EDA core platform version. Apps which are not compatible with your ENokia DA cluster display "(incompatible)" in the version drop down in the Store UI.
+Apps also have dependencies on the Nokia EDA core platform version. Apps that are not compatible with the EDA cluster display **(incompatible)** in the version drop-down list in the **EDA Store** page.
 
 ///
 
-To view the dependencies for an app, from **EDA Store** click the app's tile to open its page, then click the **Required Applications** tab.
+To view the dependencies for an app, from **EDA Store**, click the app's tile to open its page, then click the **Required Applications** tab.
 
--{{image(url="/user-guide/graphics/sc0283-26.4.1v2.png", title="App requirements", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/apps-app-requirements.png", title="App requirements", shadow=true, padding=20)}}-
 
 As shown in the example, requirements that are satisfied are checked. The **Relation** column shows dependencies with apps in the **Required applications** list:
 
@@ -111,7 +112,7 @@ As shown in the example, requirements that are satisfied are checked. The **Rela
 
 For a graphical view of the app dependencies, click the **Graph View** toggle.
 
--{{image(url="/user-guide/graphics/sc0456_gs.png", title="App requirements in graph view", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/apps-reqs-graph-view.png", title="App requirements in graph view", shadow=true, padding=20)}}-
 
 You can use the typical UI controls to:
 
@@ -121,9 +122,9 @@ You can use the typical UI controls to:
 
 #### App settings
 
-If an app has fields that you can set during installation, the **Available Settings** tab shows the fields that you can set. App settings is commonly used to customizing the Kubernetes cpu and memory requests for apps which deploy controllers.
+If an app has fields that you can set during installation, the **Available Settings** tab shows the fields that you can set. App settings are commonly used to customize the Kubernetes CPU and memory requests for apps which deploy controllers.
 
--{{image(url="/user-guide/graphics/sc0284-26.4.1v2.png", title="Available Settings tab", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/apps-available-settings.png", title="Available Settings tab", shadow=true, padding=20)}}-
 
 During app install, the installer wizard will prompt you to set these fields. This step can be skipped to accept default values.
 
@@ -135,6 +136,8 @@ After app installation, the tab is renamed **Applied Settings**.
 
 Use this procedure to install an app or execute a dry run of the app installation. The steps for the installation and dry-run installation are similar. A dry-run installation downloads the application image and applies the app manifest as a dry-run transaction; this allows you to review the transaction result before proceeding with the app installation.
 
+Before the app is installed, Nokia EDA verifies the OCI image signature for the selected version. If the image is unsigned or not trusted, the UI displays a warning. To continue, acknowledge the warning and proceed with skip verification.
+
 **Procedure**
 /// html | div.steps
 
@@ -142,7 +145,7 @@ Use this procedure to install an app or execute a dry run of the app installatio
 
 2. Click the app that you want to install.
 
-3. In the app page that displays, you can install the app or a do a dry-run of the app installation:
+3. In the app page that displays, you can install the app or do a dry-run of the app installation:
 
     - To install the app, click **Install**.
     - To do a dry-run, click the drop-down list and select **Dry-run**
@@ -159,25 +162,25 @@ Use this procedure to install an app or execute a dry run of the app installatio
 
     1. From the **Installation Overview** page, click **Next**.
 
-        ![Installation Overview form](../user-guide/graphics/sc0286-26.4.1.png "Installation Overview form")
+        ![Installation Overview form](../user-guide/graphics/apps-install-overview.png "Installation Overview form")
 
     2. In the **Installation settings** page that displays, set the fields for your app.
 
-        ![Installation settings page](../user-guide/graphics/sc0287-26.4.1.png "Installation settings page")
+        ![Installation settings page](../user-guide/graphics/apps-install-settings.png "Installation settings page")
 
         Click **Next**.
 
     3. From the **Summary page**, click **Install** to complete the installation.
 
-        ![Summary page for an app with settings](../user-guide/graphics/sc0288-26.4.1.png "Summary page for an app with settings")
+        ![Summary page for an app with settings](../user-guide/graphics/apps-install-summary.png "Summary page for an app with settings")
 
         The procedure is complete at this point.
 
-6. <span id="step_yvr_hb1_3gc"></span>  If an app has requirements associated with it, the **Summary** page displays required apps. Click **Install** or **Dry Run Install** to complete the procedure. The system installs the app and any app required identified in the **Summary** page.
+6. <span id="step_yvr_hb1_3gc"></span>  If an app has requirements associated with it, the **Summary** page displays required apps. Click **Install** or **Dry Run Install** to complete the procedure. The system installs the app and any required app identified in the **Summary** page.
 
 ///
 
-You can also install an app using `kubectl` command, using `AppInstaller` custom resource. The following example shows to install the Cloud Connect app:
+You can also install an app using `kubectl` command, using the `AppInstaller` custom resource. The following example shows how to install the Cloud Connect app:
 
 /// tab | YAML Resource
 
@@ -328,9 +331,9 @@ The **Catalogs** page displays all the catalogs available in EDA. You can double
     - **Remote Type**: select from the drop-down list
     - **Remote URL**: provide the path to the catalog, the URL of the Git repo where the catalog resides
     - **Skip TLS Verify**: by default, TLS verification is enabled; set this parameter to skip TLS verification
-    - **Title**: Catalog name, as it will appear in the Nokia EDA Store GUI
+    - **Title**: Catalog name, as it will appear in the **EDA Store** page
 
-5. Click **Commit** to commit your change immediately or click **Add To Basket** to add this item to **Transactions Basket** to commit later.
+5. Click **Commit** to commit your change immediately or click **Add To Basket** to add this item to **Transactions** basket to commit later.
 ///
 
 ### Catalog credentials secret <span id="catalog-credentials-secret"></span>
@@ -388,13 +391,15 @@ In the Nokia EDA UI, you can manage registries from the **System Administration*
 
 2. Click **Create**.
 
-3. Provide a name for this resource:
+3. Provide a name for this resource.
 
 4. Configure specifications for this registry.
 
     - **Authentication Secret Reference**: Provide the name of the Kubernetes secret that will contain the credentials to connect to the registry. See [Registry credentials secret](#registry-credentials-secret)
     - **Remote URL**: provide the FQDN or IP address for the registry. This setting should only contain the FQDN or IP address of the registry, not a URL path.
     - **Skip TLS Verify**: enable this parameter to skip TLS verification
+    - **Skip Digest Verification**: enable this parameter to skip digest verification of app images hosted in this registry
+    - **Skip Signature Verification**: enable this parameter to skip signature verification of app images hosted in this registry
 
 ### Registry credentials secret <span id="registry-credentials-secret"></span>
 
@@ -438,8 +443,16 @@ EOF
 - Provide the `namespace` where Nokia EDA is deployed
 - Provide base64 encoded values for the `data` fields.
 
+## App image signing
+
+By default, EDA only allows apps to be installed if the app's OCI image is signed with a trusted private key. The public key for Nokia apps comes pre-installed with EDA.
+
+Administrators can add or remove trusted public keys via `SigningKey` resources. This is available in the EDA UI under the **System Administration** &gt; **App Management** &gt; **Signing Keys** page.
+
+To allow installation of an unsigned or untrusted application, set `skipSignatureVerification` and `skipDigestVerification` to `false` for the [registry](#registries) hosting the image.
+
 ## App documentation
 
-Nokia EDA generates an app documentation web site, which is updated when apps are installed in the system. In the Nokia EDA UI, the link to app documentation is available from the UI pages of the resources definitions provided by that app. Click the **Go to documentation** link from a resource page, as shown in the following example:
+Nokia EDA generates an app documentation web site, which is updated when apps are installed in the system. In the Nokia EDA UI, the link to app documentation is available from the UI pages of the resources definitions provided by that app. Click the **Go to documentation** icon from a resource page, as shown in the following example:
 
--{{image(url="/user-guide/graphics/aggregate-routes-doc.png", title="Link to documentation", shadow=true, padding=20)}}-
+-{{image(url="/user-guide/graphics/apps-doc-link.png", title="Link to documentation", shadow=true, padding=20)}}-
