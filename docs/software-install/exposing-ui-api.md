@@ -101,7 +101,7 @@ With an Ingress resource like this created, users would be able to access the No
 
 ## Gateway API
 
-If you're riding the [Gateway API](https://gateway-api.sigs.k8s.io/) wave, you can create a [`Gateway`](https://gateway-api.sigs.k8s.io/api-types/gateway/) resource to define your cluster gateway. As with the Ingress, the choice is yours if you want to terminate the TLS on the Gateway or not.
+If you're riding the [Gateway API](https://gateway-api.sigs.k8s.io/) wave, you can create a [`Gateway`](https://gateway-api.sigs.k8s.io/reference/api-types/gateway/) resource to define your cluster gateway. As with the Ingress, the choice is yours if you want to terminate the TLS on the Gateway or not.
 
 As a demonstration, we will create the Gateway resource with the TLS listener so that we will pass the TLS traffic to the Nokia EDA UI service, without terminating it on the Gateway.
 
