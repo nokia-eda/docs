@@ -1,0 +1,11 @@
+apiVersion: k8s-client-provider.core.eda.nokia.com/v1alpha1
+kind: K8sClientProviderInstance
+metadata:
+  name: my-k8s-client-provider # A unique name for the instance
+  namespace: eda-system # The EDA core namespace
+spec:
+  namespace: eda # The namespace that holds the fabric, BridgeDomains, and client table
+  k8sClusterURI: https://kubernetes.example:6443 # The Kubernetes API URL
+  authSecretRef: my-k8s-creds # Secret in eda-system that contains the usertoken
+  k8sClusterTLSEnabled: true
+  k8sClusterSkipTLSVerify: false
