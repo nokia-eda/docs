@@ -57,6 +57,7 @@ nav:
       - EDA Query Language (EQL): user-guide/eda-query-language.md
       - Branches: user-guide/branches.md
       - Transactions: user-guide/transactions.md
+      - Pipelines: user-guide/pipelines.md
       - Merge requests: user-guide/merge-requests.md
       - Allocation pools: user-guide/allocation-pools.md
       - Network topology: user-guide/network-topology.md

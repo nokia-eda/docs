@@ -1,8 +1,47 @@
 # Image management
 
-The `Image` resource is the workflow that is used to change image of the operating system on nodes, via an upgrade or downgrade. For more information about workflows, see [Workflows](../workflows.md).
+## Pipelines based
 
-You can use the `Image` workflow to perform the following tasks:
+The `DeployImagePipeline` resource is the workflow that is used to change image of the operating system on nodes, via an upgrade or downgrade. Starting from EDA `26.8.1`, the `Pipelines` feature has been released and allows system administrators to create a `PipelineDefinition`.
+
+For more information about pipelines, see [Pipelines](../pipelines.md).
+
+The `DeployImagePipeline` workflow bundles and sequences individual [Transactions](../transactions.md) on which `Pipelines` will trigger (when matching an enabled `PipelineDefinition`).
+
+You can use the `DeployImagePipeline` workflow to perform the following tasks:
+
+- Reimage a single node, a list of nodes by name, a set of nodes using a label selector, or tranches of nodes, including support for canaries
+- Any **configurable** set of pre and post checks are defined in the `PipelineDefinition`
+
+From EDA `26.8.1` onwards Pipelines-based image management is preferred, in a future release the workflow-based `DeployImage` workflow will be deprecated.
+
+/// admonition | Caution
+    type: caution
+
+The  `OperatingSystem` application ships with an example `deployimage-pipeline` with is **disabled** by default.
+
+In order to use the example `deployimage-pipeline`, the system administrator should set the `spec.enabled` field to `True`.
+
+When defining a custom `PipelineDefinition` that handles OS upgrades, the `metadata.labels` label `eda.nokia.com/resourcetype: deployimage-pipeline-definition` should be applied in the `PipelineDefinition`.
+
+///
+
+In the `DeployImagePipeline` resource, provide input for the following fields:
+
+- `nodeProfile`: set to the destination `NodeProfile` resource.
+- `canaries`: `labelSelector` to match canary hosts (these nodes will be upgraded first).
+- `tranches`: `list` of `labelSelectors`, [more information](#reimaging-node-tranches)
+- `nodeSelector`: `labelSelector` to match a group of nodes, [more information](#reimaging-nodes-using-labels)
+- `nodes`: `list` of individual nodes.
+
+The following settings are optional:
+
+- `dryRun`: Dry-run the Transaction, without actually deploying the image. This will not trigger any `Pipelines`
+
+## Workflow based
+The `DeployImage` resource is the workflow that is used to change image of the operating system on nodes, via an upgrade or downgrade. For more information about workflows, see [Workflows](../workflows.md).
+
+You can use the `DeployImage` workflow to perform the following tasks:
 
 - Reimage a single node, a list of nodes by name, a set of nodes using a label selector, or tranches of nodes, including support for canaries
 - Perform a configurable set of pre and post checks to verify:
@@ -11,11 +50,9 @@ You can use the `Image` workflow to perform the following tasks:
     - reachability on ISLs
     - reachability between system addresses
 
-In the `Image` resource, provide the input for the following fields:
+In the `DeployImage` resource, provide the input for the following fields:
 
-- `Type`: the type of workflow. Set to `node`, `nodeselector`, or `tranche`
 - `nodeProfile`: set to the destination `NodeProfile` resource.
-- `version`: set to the destination version in the `NodeProfile` resource.
 
 The following settings are optional:
 
@@ -43,17 +80,31 @@ Operators can attempt re-imaging by creating a new workflow.
 
 ## Reimaging individual nodes <span id="reimage-individual-nodes"></span>
 
-You can reimage individual nodes using the `Image` workflow or using the `edactl` tool.
+You can reimage individual nodes using the `DeployImagePipeline` or `DeployImage` workflow or using the `edactl` tool.
 
 ### Workflow resource for re-imaging specific nodes
 
-To reimage individual nodes using the `Image` workflow, provide the following input:
+To reimage individual nodes using the `DeployImagePipeline` or `DeployImage` workflow, provide the following input:
 
 - `nodes`: set to the name of the `TopoNodes` to be reimaged
 - `nodeProfile`: set the Node Profile which contains the software image to use
 
+/// tab | Pipelines
+```yaml
+apiVersion: os.eda.nokia.com/v1
+kind: DeployImagePipeline
+metadata:
+  name: upgrade-leaf1
+  namespace: eda
+spec:
+  nodeProfile: srlinux-26.7.1
+  nodes:
+    - leaf-1
 ```
-apiVersion: os.eda.nokia.com/v1alpha1
+///
+/// tab | Workflow
+```yaml
+apiVersion: os.eda.nokia.com/v1
 kind: DeployImage
 metadata:
   namespace: eda
@@ -63,10 +114,11 @@ spec:
     - leaf-1
   nodeProfile: srlinux-25.7.1
 ```
+///
 
 ## Reimaging nodes using labels <span id="reimage-nodes-using-labels"></span>
 
-You can reimage nodes using the `Image` workflow and applying labels to select TopoNodes or using the `edactl` tool.
+You can reimage nodes using the `DeployImagePipeline` or `DeployImage` workflow and applying labels to select TopoNodes or using the `edactl` tool.
 
 ### Workflow resource for re-imaging nodes using a label selector
 
@@ -75,8 +127,22 @@ To reimage a set of nodes using a label selector, provide the following input:
 - `nodeSelectors`: provide a list of label selectors to select `TopoNodes`.
 - `nodeProfile`: set the node profile which contains the software image to use
 
+/// tab | Pipelines
+```yaml
+apiVersion: os.eda.nokia.com/v1
+kind: DeployImagePipeline
+metadata:
+  name: upgrade-rack1
+  namespace: eda
+spec:
+  nodeProfile: srlinux-26.7.1
+  nodeSelectors:
+    - eda.nokia.com/redundancy-group=rack1
 ```
-apiVersion: os.eda.nokia.com/v1alpha1
+///
+/// tab | Workflow
+```yaml
+apiVersion: os.eda.nokia.com/v1
 kind: DeployImage
 metadata:
   namespace: eda
@@ -86,6 +152,7 @@ spec:
     - eda.nokia.com/redundancy-group=rack1
   nodeProfile: srlinux-25.7.1
 ```
+///
 
 ### Using the edactl tool with a GVK workflow definition
 
@@ -112,8 +179,27 @@ Imaging proceeds as follows:
 
 ### Workflow resource for re-imaging tranches of nodes
 
+/// tab | Pipelines
+```yaml
+apiVersion: os.eda.nokia.com/v1
+kind: DeployImagePipeline
+metadata:
+  name: upgrade-tranches
+  namespace: eda
+spec:
+  nodeProfile: srlinux-26.7.1
+  tranches:
+    - name: tranche1
+      nodeSelectors:
+        - eda.nokia.com/redundancy-group=rack1
+    - name: tranche2
+      nodeSelectors:
+        - eda.nokia.com/redundancy-group=rack2
 ```
-apiVersion: os.eda.nokia.com/v1alpha1
+///
+/// tab | Workflow
+```yaml
+apiVersion: os.eda.nokia.com/v1
 kind: DeployImage
 metadata:
   namespace: eda
@@ -128,10 +214,11 @@ spec:
         - eda.nokia.com/redundancy-group=rack2
   nodeProfile: srlinux-25.7.1
 ```
+///
 
 ## Node imaging checks <span id="node-imaging-checks"></span>
 
-The `Image` workflow supports the following checks during node imaging:
+The `DeployImage` workflow supports the following checks during node imaging:
 
 - Verifying that interlink switch interfaces are operational. This check gets any `Interface` resource with the label `eda.nokia.com/role=interSwitch` where the current node is a member. The list of up interfaces is stored for comparison later.
 - Verifying that BGP peers are up in the default network instance. As with interfaces, the list of up default BGP peers is stored for comparison later.
