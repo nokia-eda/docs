@@ -244,7 +244,7 @@ You can select from one of the following options:
     - do a route trace
     - do an attachment lookup
 
-    For more information about these workflows, see [Workflow Definition List page](workflows.md#workflow-definition-list).
+    For more information about these workflows, see [Workflow Definitions](workflows.md#workflow-definitions).
 
 ### Creating a TopoNode
 

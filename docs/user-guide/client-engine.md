@@ -84,4 +84,4 @@ Fields that are not present in the normalized client table remain available unde
 
 The `Services` app contains the Networks Client Provider, which populates the client table with the information that can
 be discovered from within the network itself (from the SR Linux and SR OS systems managed by EDA). For details,
-including how to view discovered endpoints, see the [app documentation](../../apps/services.eda.nokia.com).
+including how to view discovered endpoints, see the [app documentation](../apps/services.eda.nokia.com/index.md).

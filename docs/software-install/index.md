@@ -236,7 +236,7 @@ This section describes the platform requirements, node requirements, and virtual
 
 ### Installation platform requirements
 
-To execute the installation process, you need access to a Linux environment[^2] with the following components installed:
+To execute the installation process, you need access to a Linux environment[^1] with the following components installed:
 
 /// html | table
 //// html | th[style='text-align: center;']
@@ -457,5 +457,4 @@ The deployment of Nokia EDA requires two virtual IP addresses in the management 
 * Kubernetes VIP: the virtual IP address used by all the control plane nodes in the Kubernetes cluster.
 * Nokia EDA API/UI VIP: the virtual IP address used by the Nokia EDA API and UI.
 
-[^1]: Alpha support in the current release.
-[^2]: This system might also be referred to as the "tools-system" further in this documentation.
+[^1]: This system might also be referred to as the "tools-system" further in this documentation.
