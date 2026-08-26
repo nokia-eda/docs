@@ -74,13 +74,16 @@ function serve-docs-full {
 }
 
 function build-docs {
+  # Docker builds leave a root-owned .cache that can trigger optimize-plugin
+  # races on warm rebuilds; --clean only clears site/, not .cache/.
+  [ -d ./.cache ] && sudo rm -rf ./.cache
   docker run --rm -v "$(pwd)":/docs --entrypoint mkdocs ${MKDOCS_IMAGE} build --clean # --strict
 }
 
 function test-docs {
 	build-docs
   # docker build produces root:root ownership. Claim it back for seds sake
-  sudo chown -R $USER:$USER ./site
+  sudo chown -R $(id -u):$(id -g) ./site
   # replace empty href patterns that are result of version picker script not being templated
   # properly since we are not building with `mike` here. We replace these links with #
   # as they are not important for link testing
@@ -106,8 +109,8 @@ function list-versions {
 function build-version {
   # if ./site or ./.cache exist, chown them as they may be owned by root
   # as a result of containerized builds
-  [ -d ./site ] && sudo chown -R $USER:$USER ./site
-  [ -d ./.cache ] && sudo chown -R $USER:$USER ./.cache
+  [ -d ./site ] && sudo chown -R $(id -u):$(id -g) ./site
+  [ -d ./.cache ] && sudo chown -R $(id -u):$(id -g) ./.cache
   ${MIKE_CMD} deploy -b ${MIKE_BRANCH_NAME} --update-aliases "$@"
 
   # copy the 404 page to the root of the site
