@@ -4,7 +4,13 @@
 
 To facilitate end-to-end testing and validation of configuration changes, EDA comes equipped with its own multi vendor network emulation engine abbreviated as **CX**. CX is a highly scalable network emulation platform that powers EDA's Digital Twin capabilities.
 
-Acknowledging that EDA CX is a new network emulation platform that is still in the process of maturing, we wanted to offer a way to integrate EDA with multitude of existing network topologies built with [Containerlab](https://containerlab.dev/).
+
+/// admonition
+    type: warning
+
+We believe that there is value in using Containerlab instead of CX to test integration with EDA. However, CX is the **only supported** way of simulating a digital twin of a network with EDA. The integration instructions below should therefore not be used for any production deployments.
+
+///
 
 In this section we cover how to integrate EDA with a lab built with Containerlab in a fully [automated](#automated-integration) way first, and then explain how to do this [manually](#manual-integration) with a deep dive on things involved in the onboarding process. To keep things practical, we will take a real lab built with Containerlab - [srl-labs/srlinux-vlan-handling-lab](https://github.com/srl-labs/srlinux-vlan-handling-lab) and integrate it with EDA.
 
