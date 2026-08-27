@@ -198,7 +198,9 @@ Table rules are similar to resource rules, except that they are relevant to the 
 
     Table Rules support wildcarding of the final Nokia EDA path segment (`.*`) or multiple Nokia EDA path segments (`.**`)
 
-- **Permissions**: Specifies `none` or `read` permissions for the EDB table.
+- **Permissions**: Specifies `none`, `read`, or `readWrite` permissions for the EDB table.
+
+    `readWrite` access is not relevent for EDA UI and REST API users. This permission is intended for controller applications using [service account](#service-accounts) authentication for internal EDA gRPC services.
 
 /// admonition | Implicit table rules for resource paths
     type: subtle-note
@@ -258,7 +260,7 @@ Namespaced items are applicable to both `Roles` and `ClusterRoles`. Non-namespac
 
 | Core access item {: .nowrap} | Description | Namespaced |
 |---|---|---|
-| `alarm/read` | Read access to all alarms, or all alarms in a specific namespace.<br> This | TRUE |
+| `alarm/read` | Read access to all alarms, or all alarms in a specific namespace.<br> Includes read permission to EDB table `.namespace.alarms.v1.alarm`| TRUE |
 | `alarm/delete` | Delete permission to all alarms, or all alarms in a specific namespace. | TRUE |
 | `alarm/acknowledge` | Acknowledge and unacknowlege permission to all alarms, or all alarms in a specific namespace. | TRUE |
 | `alarm/suppress` | Suppress and unsuppress permission to all alarms, or all alarms in a specific namespace. | TRUE |
