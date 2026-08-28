@@ -14,10 +14,13 @@
 [manifest]: https://docs.eda.dev/
 
 
-!!! info "Micro segmentation is currently only available on select hardware platforms"
-    Micro segmenation leverages the Group Based Policy functionality which was introduced in SRL 26.3.1
+/// admonition | Micro segmentation is currently only available on select hardware platforms
+    type: info
 
-    It is only supported on IXR 7220-D2/D3 platforms and on IXR 7220-D4 (for L2 only).
+Micro segmenation leverages the Group Based Policy functionality which was introduced in SRL 26.3.1
+
+It is only supported on IXR 7220-D2/D3 platforms and on IXR 7220-D4 (for L2 only).
+///
 
 
 
@@ -51,15 +54,36 @@ The application provides the following components:
 </div>
 </div>
 ///
+/// tab | Workflows
+
+<div class="grid" markdown>
+<div markdown>
+
+* [`GroupTagPoolSetup`](./resources/grouptagpoolsetup.md)
+
+</div>
+</div>
+///
 /// tab | Dashboards
 
 <div class="grid" markdown>
 <div markdown>
-Summary dashboards for the following resource types:
+Dashboards for the following resource types:
 
-* Group Tags
-* Microsegmentation Policies - Policy Entry Coutners
-* Microsegmenation Policies - Node Platform Status
+* [**Group Tags**](./resources/grouptag.md#dashboards) — Summary, Explorer
+* [**Micro Segmentation Policies**](./resources/microsegmentationpolicy.md#dashboards) — Policy Entry Counters, Node Platform Status
+
+</div>
+</div>
+///
+/// tab | Alarms
+
+<div class="grid" markdown>
+<div markdown>
+
+Micro segmentation can raise the following alarm on SR Linux nodes:
+
+* **Node Reboot Required** — enabling micro segmentation can require a node reboot; see [`MicroSegmentationPolicy`](./resources/microsegmentationpolicy.md#alarms)
 
 </div>
 </div>

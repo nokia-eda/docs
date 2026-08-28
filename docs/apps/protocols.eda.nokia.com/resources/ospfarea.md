@@ -21,9 +21,11 @@ Open Shortest Path First, or OSPF, is a routing protocol to exchange IP routes. 
 
 OSPF sessions are always established between [`OSPFInterfaces`](ospfinterface.md) in an `OSPFArea`, and never operate inter-area. To connect two OSPF areas to each other, an area border router (ABR) configures both areas in the same [`OSPFInstance`](ospfinstance.md). An [`OSPFInstance`](ospfinstance.md) is an isolated process with its own Link State Database (LSDB).
 
-!!! note "OSPF area notation"
+/// admonition | OSPF area notation
+    type: note
 
-    In EDA, the area identifier follows the IP-like "Dotted Decimal Notation" to represent a 32-bit integer, meaning area `1` should be entered as `0.0.0.1`.
+In EDA, the area identifier follows the IP-like "Dotted Decimal Notation" to represent a 32-bit integer, meaning area `1` should be entered as `0.0.0.1`.
+///
 
 > To set up an OSPF area in the default VRF, use [`DefaultOSPFArea`](defaultospfarea.md) instead.
 

@@ -1,1 +1,21 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: RouterInterconnect
+metadata:
+  name: stretched-l3-interconnect
+  namespace: services
+spec:
+  interconnectBGPInstance:
+    controlPlane: EVPN
+    encapsulation: VXLAN
+    exportTarget: target:333:1
+    importTarget: target:333:1
+    routeDistinguisher:
+      assignedNumber: '65000'
+      type: Type 1
+    vxlan:
+      tunnelIndexPool: tunnel-index-pool
+      vni: 333
+  nodeSelectors:
+    - eda.nokia.com/role = dcgw
+  routerRef:
+    name: stretched-l3

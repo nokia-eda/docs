@@ -14,9 +14,11 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-??? abstract "A brief introduction to QoS"
+/// details | A brief introduction to QoS
+    type: abstract
 
-    Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+///
 
 An `IngressPolicy` is used to **map** an incoming packet to a particular [Queue](./queue.md). It operates in 3 stages, each of which is explained in more detail below:
 
@@ -26,13 +28,17 @@ An `IngressPolicy` is used to **map** an incoming packet to a particular [Queue]
 
 In addition, the `IngressPolicy` also determines the parameters of the `Queue`, such as Committed Burst Size (CBS), Maximum Burst Size (MBS), and PFC[^1] parameters.
 
-!!! warning "Mapping a forwarding class to a queue"
+/// admonition | Mapping a forwarding class to a queue
+    type: warning
 
-    Currently, EDA does not support mapping a forwarding class to a [`Queue`](./queue.md) on ingress, even though it can be configured through the `forwardingClassToQueueMapping` property: this property is ignored.
+Currently, EDA does not support mapping a forwarding class to a [`Queue`](./queue.md) on ingress, even though it can be configured through the `forwardingClassToQueueMapping` property: this property is ignored.
 
-    ??? question "Why?"
-    
-        While advanced routers like the Nokia 7750 SR have dedicated queues for ingressing and egressing traffic, in the datacenter there is often only one queue being used. This queue is either a Virtual Output Queue (VOQ) before the packet crosses the forwarding fabric, or an Egress Queue (EGQ) after the packet has crossed the forwarding fabric. The technical reason for this, as well as their benefits and drawbacks, are beyond the scope of this article.
+/// details | Why?
+    type: question
+
+While advanced routers like the Nokia 7750 SR have dedicated queues for ingressing and egressing traffic, in the datacenter there is often only one queue being used. This queue is either a Virtual Output Queue (VOQ) before the packet crosses the forwarding fabric, or an Egress Queue (EGQ) after the packet has crossed the forwarding fabric. The technical reason for this, as well as their benefits and drawbacks, are beyond the scope of this article.
+///
+///
 
 ## Classification
 
@@ -68,9 +74,11 @@ Policers count bits per second, and can recolor packets (re-assign drop probabil
     * A packet that comes in while the policer exceeds the committed rate (CIR), but below the peak rate (PIR), is recolored in accordance with `exceedAction`.
     * A packet that comes in while the policer exceeds the peak rate (PIR) is recolored in accordance with `violateAction`.
 
-!!! question "What about pre-coloring?"
+/// admonition | What about pre-coloring?
+    type: question
 
-    Policers rely on a two-rate token-based system, where each packet drains a number of tokens from one, two, or zero buckets (depending on pre-coloring done by the classifiers) that are continuously being refilled. There are a lot of nuances to this mechanism and there are subtle implementation differences between operating systems and even hardware platforms. For an in-depth overview of policers, refer to the OS-specific user documentation.
+Policers rely on a two-rate token-based system, where each packet drains a number of tokens from one, two, or zero buckets (depending on pre-coloring done by the classifiers) that are continuously being refilled. There are a lot of nuances to this mechanism and there are subtle implementation differences between operating systems and even hardware platforms. For an in-depth overview of policers, refer to the OS-specific user documentation.
+///
 
 ## Queueing
 
@@ -88,9 +96,11 @@ Slope policies drop a certain percentage of incoming packets when a packet enter
 
 Most QoS mechanisms either assign a [`ForwardingClass`](./forwardingclass.md) to a packet, or take an action based on the assigned [`ForwardingClass`](./forwardingclass.md). These must exist as a resource if the `IngressPolicy` refers to them.
 
-!!! warning "Deployment of a ForwardingClass"
+/// admonition | Deployment of a ForwardingClass
+    type: warning
 
-    Both the `IngressPolicy` and [`EgressPolicy`](./egresspolicy.md) resources refer to a [`ForwardingClass`](./forwardingclass.md) by name, and therefore this name must exist on the node. Only the [`EgressPolicy`](./egresspolicy.md) configures these, which means that a (default) [`EgressPolicy`](./egresspolicy.md) must always be configured that maps all referenced [`ForwardingClasses`](./forwardingclass.md) to a queue, even if it is not used.
+Both the `IngressPolicy` and [`EgressPolicy`](./egresspolicy.md) resources refer to a [`ForwardingClass`](./forwardingclass.md) by name, and therefore this name must exist on the node. Only the [`EgressPolicy`](./egresspolicy.md) configures these, which means that a (default) [`EgressPolicy`](./egresspolicy.md) must always be configured that maps all referenced [`ForwardingClasses`](./forwardingclass.md) to a queue, even if it is not used.
+///
 
 ### [`Queue`](./queue.md)
 

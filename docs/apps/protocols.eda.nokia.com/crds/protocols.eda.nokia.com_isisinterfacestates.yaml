@@ -1,0 +1,122 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: isisinterfacestates.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: ISISInterfaceState
+    listKind: ISISInterfaceStateList
+    plural: isisinterfacestates
+    singular: isisinterfacestate
+  scope: Namespaced
+  versions:
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: ISISInterfaceState is the Schema for the isisinterfacestates
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ISISInterfaceStateSpec defines the desired state of ISISInterfaceState
+            properties:
+              addressFamilies:
+                description: Address families that are configured and enabled on the
+                  interface
+                items:
+                  enum:
+                  - IPv4
+                  - IPv6
+                  type: string
+                type: array
+              bfdEnabledAddressFamilies:
+                description: Address families that are bfd enabled
+                items:
+                  enum:
+                  - IPv4
+                  - IPv6
+                  type: string
+                type: array
+              defaultISISInterface:
+                description: Denotes if the interface is a DefaultISISInterface or
+                  ISISInterface
+                type: boolean
+              instance:
+                description: Reference to an isis instance
+                type: string
+              instanceEnabled:
+                description: Indicates whether the isis instance is administratively
+                  enabled
+                type: boolean
+              interface:
+                description: Reference to an isis interface
+                type: string
+              interfaceKind:
+                description: Reference to the Kind of interface where ISIS is enabled.
+                type: string
+              nodeInterfaceName:
+                description: Configured norm interface name, for example "routed-interface"
+                type: string
+              nodes:
+                description: Node details on which the isis Interface configuration
+                  resides
+                items:
+                  properties:
+                    networkInstanceName:
+                      description: The name of the network-instance
+                      type: string
+                    node:
+                      description: The Node on which the ISIS Interface configuration
+                        resides
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name, for example "ethernet-1/1",
+                        "1/1/c1/1"
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    routerConfiguredName:
+                      description: ConfiguredName of the router
+                      type: string
+                  type: object
+                type: array
+              passive:
+                description: Reference to an isis interface as passive.
+                type: boolean
+              router:
+                description: Router to which the isis Instance is attached
+                type: string
+            required:
+            - defaultISISInterface
+            - instance
+            - instanceEnabled
+            type: object
+          status:
+            description: ISISInterfaceStateStatus defines the observed state of ISISInterfaceState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

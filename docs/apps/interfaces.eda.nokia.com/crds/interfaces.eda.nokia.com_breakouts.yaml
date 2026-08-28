@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: breakouts.interfaces.eda.nokia.com
 spec:
   group: interfaces.eda.nokia.com
@@ -43,6 +43,7 @@ spec:
             properties:
               channels:
                 description: The number of breakout channels to create.
+                format: int32
                 maximum: 8
                 minimum: 1
                 type: integer
@@ -51,6 +52,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               nodeSelectors:
                 description: Label selector to select nodes on which to configure
                   the breakout interfaces. Either Nodes or NodeSelector must have
@@ -58,12 +60,14 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               nodes:
                 description: Reference to a list of TopoNodes where the parent interfaces
                   are to be broken out.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               speed:
                 description: The speed of each breakout channel.
                 enum:
@@ -120,6 +124,7 @@ spec:
             properties:
               channels:
                 description: The number of breakout channels to create.
+                format: int32
                 maximum: 8
                 minimum: 1
                 type: integer

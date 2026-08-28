@@ -1,0 +1,32 @@
+# InfluxDB Exporter Application
+
+-{{% import 'icons.html' as icons %}}-
+
+| <nbsp> {: .hide-th } |                                         |
+| -------------------- |-----------------------------------------|
+| **Group/Version**    | -{{ app_group }}-/-{{ app_api_version }}-   |
+| **Supported OS**     | -{{ supported_os_versions() }}-  |
+| **Catalog**          | [Nokia/catalog/influxdbexporter ][manifest] |
+| **Source Code**      | <small>coming soon</small>              |
+
+[//]: # (Note: you should fill in the hyperlink to your published manifest in your public catalog)
+[manifest]: https://docs.eda.dev/
+
+/// admonition | Documentation coming soon!
+    type: info
+
+///
+
+The application provides the following components:
+
+/// tab | Resources
+
+<div class="grid" markdown>
+
+* [`Export`](./resources/export.md)
+* [`ClusterExport`](./resources/clusterexport.md)
+* [`Server`](./resources/server.md)
+* [`ClusterServer`](./resources/clusterserver.md)
+
+</div>
+///

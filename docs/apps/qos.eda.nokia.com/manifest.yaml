@@ -177,26 +177,34 @@ spec:
     - file:
         path: utils/
     - file:
-        path: filters/
+        path: filters/api/v1/pysrc
     - file:
-        path: interfaces/
+        path: filters/intents/common/filterqoscommon.py
+    - file:
+        path: filters/intents/common/imports.py
+    - file:
+        path: interfaces/api/v1/pysrc
+    - file:
+        path: interfaces/intents/common/imports.py
+    - file:
+        path: interfaces/intents/common/utils.py
     - file:
         path: qos/api/v2/pysrc
   description: |
     This application provides resources relating to QOS for various Network Operating Systems.
-  image: ghcr.io/nokia-eda/apps/qos:v6.999.0
+  image: ghcr.io/nokia-eda/apps/qos:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   group: qos.eda.nokia.com
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   title: QoS
   version: v2
   requirements:
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: filters.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
   supportedEndpoints:
     - "srl:24.10.*"
     - "srl:25.3.*"

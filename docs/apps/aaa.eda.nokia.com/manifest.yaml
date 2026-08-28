@@ -10,7 +10,7 @@ spec:
     This application provides functionality relating to authentication, authorization, and accounting.
 
     It allows the deployment of users, groups, and AAA policy, performing any alarming as necessary.
-  image: ghcr.io/nokia-eda/apps/aaa:v6.999.0
+  image: ghcr.io/nokia-eda/apps/aaa:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: nokia
@@ -28,7 +28,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   appInfo:
     categories:
       - "system"
@@ -134,6 +134,30 @@ spec:
         trigger:
           kind: AuthenticationPolicyState
         type: state
+    - crd:
+        api:
+          expose: readWrite
+        path: aaa/crds/aaa.eda.nokia.com_accountingpolicies.yaml
+        schema: aaa/openapiv3/eda_oas_aaa.eda.nokia.com_accountingpolicies.json
+        ui:
+          category: AAA
+          name: Accounting Policies
+          icon: Security
+    - script:
+        path: aaa/intents/accountingpolicy/accountingpolicy_intent.py
+        trigger:
+          kind: AccountingPolicy
+        type: config
+    - crd:
+        api:
+          expose: readWrite
+        path: aaa/crds/aaa.eda.nokia.com_accountingpolicystates.yaml
+        schema: aaa/openapiv3/eda_oas_aaa.eda.nokia.com_accountingpolicystates.json
+    - script:
+        path: aaa/intents/accountingpolicystate/accountingpolicystate_intent.py
+        trigger:
+          kind: AccountingPolicyState
+        type: state
   dependencies:
     - file:
         path: common/
@@ -142,7 +166,7 @@ spec:
     - file:
         path: aaa/intents
     - file:
-        path: core/pysrc/
+        path: core/pysrc
     - file:
         path: aaa/api
     - file:
@@ -153,3 +177,7 @@ spec:
         path: aaa/alarms/pysrc
     - file:
         path: aaa/intents/common/common.py
+    - file:
+        path: routing/api/v1/pysrc
+    - file:
+        path: bootstrap/api/v1/pysrc

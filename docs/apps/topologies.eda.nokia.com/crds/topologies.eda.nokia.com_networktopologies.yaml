@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: networktopologies.topologies.eda.nokia.com
 spec:
   group: topologies.eda.nokia.com
@@ -59,6 +59,26 @@ spec:
                       type: string
                     type: array
                 type: object
+              hmacSecretRef:
+                description: |-
+                  HMACSecretRef references a Kubernetes Secret containing the HMAC key the server
+                  uses to validate request signatures from the caller. When set, the server rejects
+                  any request whose signature does not match.
+                properties:
+                  key:
+                    description: Key within the Secret's data map.
+                    type: string
+                  name:
+                    description: Name of the Secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the Secret. If not provided, the Secret
+                      is assumed to be in the same namespace as the Topology.
+                    type: string
+                required:
+                - key
+                - name
+                type: object
               linkTemplates:
                 description: Define the link parameters that are meant to be inherited
                   by the topology links referencing the template. These parameters
@@ -80,6 +100,7 @@ spec:
                             properties:
                               channels:
                                 description: The number of breakout channels to create
+                                format: int32
                                 maximum: 8
                                 minimum: 1
                                 type: integer
@@ -104,6 +125,7 @@ spec:
                             properties:
                               channels:
                                 description: The number of breakout channels to create
+                                format: int32
                                 maximum: 8
                                 minimum: 1
                                 type: integer
@@ -162,8 +184,8 @@ spec:
                         Specify the type of link.
                         If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
                       enum:
-                      - Edge
                       - InterSwitch
+                      - Edge
                       - Loopback
                       type: string
                   required:
@@ -259,8 +281,8 @@ spec:
                               Specify the type of link.
                               If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
                             enum:
-                            - Edge
                             - InterSwitch
+                            - Edge
                             - Loopback
                             type: string
                         required:
@@ -543,6 +565,8 @@ spec:
                       - sonic
                       - ios-xr
                       - nxos
+                      - junos
+                      - cumulus
                       type: string
                     platform:
                       description: Platform type of this TopoNode, e.g. 7220 IXR-D3L.
@@ -870,6 +894,39 @@ spec:
                     minItems: 0
                     type: array
                 type: object
+              tls:
+                description: |-
+                  TLS configures optional TLS settings when connecting to an external HTTPS
+                  server via remoteLocation. When omitted, EDA's internal TLS bundle is used.
+                properties:
+                  caBundleRef:
+                    description: |-
+                      CABundleRef references a Kubernetes ConfigMap whose value under the
+                      given key is a PEM-encoded CA certificate bundle used to verify the
+                      remote server's TLS certificate. When set, EDA's internal trust bundle is replaced by the provided bundle,
+                      but the internal client certificate is still presented for mutual TLS.
+                    properties:
+                      key:
+                        description: Key within the ConfigMap's data map.
+                        type: string
+                      name:
+                        description: Name of the ConfigMap.
+                        type: string
+                      namespace:
+                        description: |-
+                          Namespace of the ConfigMap. If not provided, the ConfigMap is assumed to
+                          be in the same namespace as the Topology.
+                        type: string
+                    required:
+                    - key
+                    - name
+                    type: object
+                  skipVerify:
+                    description: |-
+                      SkipVerify disables TLS certificate verification for the remote server.
+                      Intended for non-production environments only.
+                    type: boolean
+                type: object
             type: object
           status:
             description: NetworkTopologyStatus defines the observed state of NetworkTopology
@@ -887,12 +944,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   interfaces:
@@ -900,12 +960,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   links:
@@ -913,12 +976,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   nodes:
@@ -926,12 +992,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   simLinks:
@@ -939,12 +1008,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   simNodes:
@@ -952,12 +1024,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   totalDuration:
@@ -965,6 +1040,7 @@ spec:
                     type: string
                   totalResources:
                     description: Total number of resources processed across all types
+                    format: int64
                     type: integer
                 type: object
               result:
@@ -1022,6 +1098,7 @@ spec:
                       x-kubernetes-preserve-unknown-fields: true
                     channels:
                       description: The number of breakout channels to create
+                      format: int32
                       maximum: 8
                       minimum: 1
                       type: integer
@@ -1063,6 +1140,7 @@ spec:
                       x-kubernetes-preserve-unknown-fields: true
                     channels:
                       description: The number of breakout channels to create
+                      format: int32
                       maximum: 8
                       minimum: 1
                       type: integer
@@ -1149,6 +1227,7 @@ spec:
                             properties:
                               channels:
                                 description: The number of breakout channels to create
+                                format: int32
                                 maximum: 8
                                 minimum: 1
                                 type: integer
@@ -1173,6 +1252,7 @@ spec:
                             properties:
                               channels:
                                 description: The number of breakout channels to create
+                                format: int32
                                 maximum: 8
                                 minimum: 1
                                 type: integer
@@ -1612,6 +1692,8 @@ spec:
                       - sonic
                       - ios-xr
                       - nxos
+                      - junos
+                      - cumulus
                       type: string
                     platform:
                       description: Platform type of this TopoNode, e.g. 7220 IXR-D3L.
@@ -1956,12 +2038,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   interfaces:
@@ -1969,12 +2054,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   links:
@@ -1982,12 +2070,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   nodes:
@@ -1995,12 +2086,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   simLinks:
@@ -2008,12 +2102,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   simNodes:
@@ -2021,12 +2118,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   totalDuration:
@@ -2034,6 +2134,7 @@ spec:
                     type: string
                   totalResources:
                     description: Total number of resources processed across all types
+                    format: int64
                     type: integer
                 type: object
               result:

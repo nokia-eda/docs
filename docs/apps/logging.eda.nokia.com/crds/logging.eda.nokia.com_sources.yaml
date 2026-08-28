@@ -1,0 +1,392 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: sources.logging.eda.nokia.com
+spec:
+  group: logging.eda.nokia.com
+  names:
+    kind: Source
+    listKind: SourceList
+    plural: sources
+    singular: source
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Source is the Schema for the Sources API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SourceSpec defines the desired state of Source
+            properties:
+              facilities:
+                description: Syslog facilities that messages will be sourced from.
+                  When left empty, every facility is matched.
+                items:
+                  description: Facility selects logs by syslog-style facility for
+                    a given operating system and severity comparison.
+                  properties:
+                    facility:
+                      default: All
+                      description: Facility name or identifier used when matching
+                        log records for this operating system.
+                      enum:
+                      - All
+                      - Kernel
+                      - User
+                      - Mail
+                      - Daemon
+                      - Auth
+                      - Syslog
+                      - LPR
+                      - News
+                      - UUCP
+                      - Cron
+                      - AuthPriv
+                      - FTP
+                      - NTP
+                      - LogAudit
+                      - LogAlert
+                      - Clock
+                      - Local0
+                      - Local1
+                      - Local2
+                      - Local3
+                      - Local4
+                      - Local5
+                      - Local6
+                      - Local7
+                      type: string
+                    severity:
+                      description: Severity level used together with the severity
+                        operator when evaluating log records for this facility.
+                      enum:
+                      - Debug
+                      - Informational
+                      - Notice
+                      - Warning
+                      - Error
+                      - Critical
+                      - Alert
+                      - Emergency
+                      type: string
+                    severityOperator:
+                      description: How log record severity is compared to the configured
+                        Severity for this facility (at or above the level, or exactly
+                        that level).
+                      enum:
+                      - Minimum
+                      - Exact
+                      type: string
+                  required:
+                  - severityOperator
+                  type: object
+                type: array
+              messageFiltering:
+                description: 'Optional message filtering: evaluate log message text
+                  against filter rules and allow or deny forwarding based on the match
+                  mode.'
+                properties:
+                  matchMode:
+                    default: Allow
+                    description: Whether log messages that match the filter rules
+                      are forwarded or blocked.
+                    enum:
+                    - Allow
+                    - Deny
+                    type: string
+                  rules:
+                    description: Filter rules applied to log message text. If the
+                      message matches at least one rule, it is forwarded or blocked
+                      according to the match mode.
+                    items:
+                      description: MessageRule defines one text match entry used for
+                        message filtering.
+                      properties:
+                        operator:
+                          description: How Text is matched against the log message
+                            for filtering.
+                          enum:
+                          - StartsWith
+                          - Contains
+                          - Regex
+                          type: string
+                        text:
+                          description: Text or pattern compared to the log message
+                            using Operator.
+                          type: string
+                      required:
+                      - operator
+                      - text
+                      type: object
+                    type: array
+                type: object
+              subsystems:
+                description: Which subsystems to include in the log records. If no
+                  subsystems are selected, all subsystems will be included.
+                properties:
+                  extensions:
+                    description: Used to define more granular and OS-specific subsystems.
+                    properties:
+                      srlExtensions:
+                        description: SR Linux-specific subsystem selector. Extensions
+                          are limited to one operating system per Source.
+                        items:
+                          enum:
+                          - All
+                          - AAA
+                          - Accounting
+                          - ACL
+                          - Alarm
+                          - App
+                          - ARPND
+                          - BFD
+                          - BGP
+                          - BridgeTable
+                          - Cflowd
+                          - Chassis
+                          - Debug
+                          - DHCP
+                          - ETHCFM
+                          - EVPN
+                          - FIB
+                          - GNMI
+                          - GNOI
+                          - GNPSI
+                          - GNSI
+                          - GRIBI
+                          - GRPC
+                          - IGMP
+                          - ISIS
+                          - JSON
+                          - LAG
+                          - LDP
+                          - License
+                          - Linux
+                          - LLDP
+                          - Log
+                          - Mgmt
+                          - Mirror
+                          - MLD
+                          - MPLS
+                          - NETCONF
+                          - NetInst
+                          - OamPm
+                          - OSPF
+                          - P4RT
+                          - PCC
+                          - PIM
+                          - Platform
+                          - Policy
+                          - PW
+                          - QoS
+                          - SATH
+                          - SDK
+                          - SFLOW
+                          - StaticRoute
+                          - STP
+                          - Sync
+                          - TLS
+                          - TWAMP
+                          - UsrContainer
+                          - VXLAN
+                          - XDP
+                          type: string
+                        type: array
+                      srosExtensions:
+                        description: SROS-specific subsystem selector. Extensions
+                          are limited to one operating system per Source.
+                        items:
+                          enum:
+                          - All
+                          - ADP
+                          - AnySec
+                          - ApplicationAssurance
+                          - AutoProv
+                          - BFD
+                          - BGP
+                          - BIER
+                          - CallTrace
+                          - Cflowd
+                          - Chassis
+                          - Debug
+                          - DHCP
+                          - DHCPS
+                          - Diameter
+                          - Dot1x
+                          - DynSvc
+                          - EFMOAM
+                          - ELMI
+                          - ERing
+                          - EthCFM
+                          - ETun
+                          - Filter
+                          - GSMP
+                          - IGMP
+                          - IGMPSnooping
+                          - IP
+                          - IPSec
+                          - ISIS
+                          - L2TP
+                          - LAG
+                          - LDAP
+                          - LDP
+                          - LI
+                          - LLDP
+                          - Logger
+                          - MACSEC
+                          - MCPath
+                          - MCRedundancy
+                          - MgmtCore
+                          - Mirror
+                          - MLD
+                          - MLDSnooping
+                          - MPLS
+                          - MPLSTP
+                          - MSDP
+                          - NAT
+                          - NTP
+                          - OAM
+                          - OSPF
+                          - PCAP
+                          - PCEP
+                          - PFCP
+                          - PIM
+                          - PIMSnooping
+                          - Port
+                          - PPPoE
+                          - PPPoEClnt
+                          - PTP
+                          - Python
+                          - Radius
+                          - RIP
+                          - RIPng
+                          - RoutePolicy
+                          - RPKI
+                          - RSVP
+                          - Satellite
+                          - Security
+                          - SFLOW
+                          - SNMP
+                          - SRMPLS
+                          - SRPolicy
+                          - SRv6
+                          - STP
+                          - SvcMgr
+                          - System
+                          - TLS
+                          - TreeSID
+                          - User
+                          - Video
+                          - VRRP
+                          - VRtr
+                          - WLANGW
+                          - WPP
+                          type: string
+                        type: array
+                    type: object
+                  operational:
+                    description: Operational subsystems.
+                    items:
+                      enum:
+                      - All
+                      - Alarm
+                      - CFLOWD
+                      - Chassis
+                      - GNXI
+                      - License
+                      - Log
+                      - NETCONF
+                      - NTP
+                      - SFLOW
+                      - SNMP
+                      - TWAMP
+                      type: string
+                    type: array
+                  routing:
+                    description: Routing-related subsystems.
+                    items:
+                      enum:
+                      - All
+                      - ACL
+                      - ARP
+                      - BFD
+                      - BGP
+                      - DHCP
+                      - EVPN
+                      - FIB
+                      - Filter
+                      - Interface
+                      - ISIS
+                      - LAG
+                      - LDP
+                      - LLDP
+                      - Mirror
+                      - MPLS
+                      - Multicast
+                      - OSPF
+                      - QoS
+                      - StaticRoute
+                      - STP
+                      - VXLAN
+                      type: string
+                    type: array
+                  security:
+                    description: Security-related subsystems.
+                    items:
+                      enum:
+                      - All
+                      - AAA
+                      - Linux
+                      - TLS
+                      type: string
+                    type: array
+                  severity:
+                    description: Severity level to filter on.
+                    enum:
+                    - Debug
+                    - Informational
+                    - Notice
+                    - Warning
+                    - Error
+                    - Critical
+                    - Alert
+                    - Emergency
+                    type: string
+                  severityOperator:
+                    description: Operator to determine which severity levels to filter
+                      on.
+                    enum:
+                    - Minimum
+                    - Exact
+                    type: string
+                type: object
+            type: object
+          status:
+            description: SourceStatus defines the observed state of Source
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

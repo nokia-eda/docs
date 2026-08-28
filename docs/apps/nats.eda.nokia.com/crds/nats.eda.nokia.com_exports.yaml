@@ -1,0 +1,269 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: exports.nats.eda.nokia.com
+spec:
+  group: nats.eda.nokia.com
+  names:
+    kind: Export
+    listKind: ExportList
+    plural: exports
+    singular: export
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Export is the Schema for the exports API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ExportSpec defines the desired state of Export
+            properties:
+              description:
+                description: A short description of the export rules.
+                type: string
+              destinations:
+                description: List of NATS cluster destination where EDB tables must
+                  be exported.
+                items:
+                  properties:
+                    name:
+                      description: Publisher name.
+                      type: string
+                    subject:
+                      description: NATS or Jetstream subject.
+                      type: string
+                    subjectFromJsPath:
+                      description: If true, the subject name is based on the received
+                        JsPath.
+                      type: boolean
+                    subjectPrefix:
+                      description: A prefix to be appended to the subject in case
+                        it's based on the received JsPath.
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              enabled:
+                default: true
+                description: Specifies if the Export rules are enabled or not.
+                type: boolean
+              exports:
+                description: Define data sources to be exported to a NATS cluster.
+                properties:
+                  alarms:
+                    description: Defines Alarms as export source
+                    properties:
+                      exclude:
+                        description: List of Alarm types to exclude.
+                        items:
+                          type: string
+                        type: array
+                      include:
+                        description: List of Alarm types to include. Set it to '*'
+                          for all.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  query:
+                    description: Defines a custom query as export source
+                    items:
+                      properties:
+                        fields:
+                          description: |-
+                            Fields to export from the EDB table set in `spec.query.path`.
+                            Exports all fields if not specified.
+                          items:
+                            type: string
+                          type: array
+                        includeTimestamps:
+                          description: Include the export timestamp in the published
+                            message.
+                          type: boolean
+                        mode:
+                          default: on-change
+                          description: Export mode.
+                          enum:
+                          - on-change
+                          - periodic
+                          - both
+                          type: string
+                        path:
+                          description: |-
+                            The EDB path to export, in the format '.node.srl.interface'.
+                            Should NOT include the namespace element.
+                          type: string
+                        period:
+                          description: Export period in seconds. Applicable if mode
+                            is set to 'periodic' or 'both'.
+                          format: int64
+                          type: integer
+                        where:
+                          description: A where clause to use for the query, e.g. 'oper-state
+                            = down'. You can omit enclosing parentheses.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+            required:
+            - destinations
+            - exports
+            type: object
+          status:
+            description: ExportStatus defines the observed state of Export.
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Export is the Schema for the exports API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ExportSpec defines the desired state of Export
+            properties:
+              description:
+                description: A short description of the export rules.
+                type: string
+              destinations:
+                description: List of NATS cluster destination where EDB tables must
+                  be exported.
+                items:
+                  properties:
+                    name:
+                      description: Publisher name.
+                      type: string
+                    subject:
+                      description: NATS or Jetstream subject.
+                      type: string
+                    subjectFromJsPath:
+                      description: If true, the subject name is based on the received
+                        JsPath.
+                      type: boolean
+                    subjectPrefix:
+                      description: A prefix to be appended to the subject in case
+                        it's based on the received JsPath.
+                      type: string
+                  required:
+                  - name
+                  type: object
+                type: array
+              enabled:
+                default: true
+                description: Specifies if the Export rules are enabled or not.
+                type: boolean
+              exports:
+                description: Define data sources to be exported to a NATS cluster.
+                properties:
+                  alarms:
+                    description: Defines Alarms as export source
+                    properties:
+                      exclude:
+                        description: List of Alarm types to exclude.
+                        items:
+                          type: string
+                        type: array
+                      include:
+                        description: List of Alarm types to include. Set it to '*'
+                          for all.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  query:
+                    description: Defines a custom query as export source
+                    items:
+                      properties:
+                        fields:
+                          description: |-
+                            Fields to export from the EDB table set in `spec.query.path`.
+                            Exports all fields if not specified.
+                          items:
+                            type: string
+                          type: array
+                        includeTimestamps:
+                          description: Include the export timestamp in the published
+                            message.
+                          type: boolean
+                        mode:
+                          default: on-change
+                          description: Export mode.
+                          enum:
+                          - on-change
+                          - periodic
+                          - both
+                          type: string
+                        path:
+                          description: |-
+                            The EDB path to export, in the format '.node.srl.interface'.
+                            Should NOT include the namespace element.
+                          type: string
+                        period:
+                          description: Export period in seconds. Applicable if mode
+                            is set to 'periodic' or 'both'.
+                          format: int64
+                          type: integer
+                        where:
+                          description: A where clause to use for the query, e.g. 'oper-state
+                            = down'. You can omit enclosing parentheses.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+            required:
+            - destinations
+            - exports
+            type: object
+          status:
+            description: ExportStatus defines the observed state of Export.
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

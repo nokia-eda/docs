@@ -20,18 +20,21 @@ The policy consists of entries allowing to group multiple associations between [
 Possible `associationTargets` include:
 
 
-* [`BridgeInterfaces`](../../services.eda.nokia.com/resources/bridgeinterface.md)
-* [`RoutedInterfaces`](../../services.eda.nokia.com/resources/routedinterface.md)
-* [`IRBInterfaces`](../../services.eda.nokia.com/resources/irbinterface.md)
-* [`VLANs`](../../services.eda.nokia.com/resources/vlan.md)
-* [`StaticRoutes`](../../protocols.eda.nokia.com/resources/staticroute.md)
+* [`BridgeInterfaces`](-{{ ref_app_doc('services', 'bridgeinterface') }}-)
+* [`RoutedInterfaces`](-{{ ref_app_doc('services', 'routedinterface') }}-)
+* [`IRBInterfaces`](-{{ ref_app_doc('services', 'irbinterface') }}-)
+* [`VLANs`](-{{ ref_app_doc('services', 'vlan') }}-)
+* [`StaticRoutes`](-{{ ref_app_doc('protocols', 'staticroute') }}-)
 
 These resources can be selected by name or using their corresponding label selectors.
 
-For example: a policy entry could associate the Quarantine `GroupTag` with all [`BridgeInterfaces`](../../services.eda.nokia.com/resources/bridgeinterface.md) with the label "eda.nokia.com/security=quarantine".
+For example: a policy entry could associate the Quarantine `GroupTag` with all [`BridgeInterfaces`](-{{ ref_app_doc('services', 'bridgeinterface') }}-) with the label "eda.nokia.com/security=quarantine".
 
-!!! info "Group Tags can not be associated with network resources from in the underlay"
-    Group Tags are not supported on [`DefaultInterfaces`](../../routing.eda.nokia.com/resources/defaultinterface.md).
+/// admonition | Group Tags can not be associated with network resources from in the underlay
+    type: info
+
+Group Tags are not supported on [`DefaultInterfaces`](-{{ ref_app_doc('routing', 'defaultinterface') }}-).
+///
 
 ## Dependencies
 
@@ -41,11 +44,11 @@ One or more [`GroupTags`](../resources/grouptag.md) are required to create an `A
 
 One or more `associationTargets` are required to create an `AssociationPolicy`.
 
-* [`BridgeInterfaces`](../../services.eda.nokia.com/resources/bridgeinterface.md)
-* [`RoutedInterfaces`](../../services.eda.nokia.com/resources/routedinterface.md)
-* [`IRBInterfaces`](../../services.eda.nokia.com/resources/irbinterface.md)
-* [`VLANs`](../../services.eda.nokia.com/resources/vlan.md)
-* [`StaticRoutes`](../../protocols.eda.nokia.com/resources/staticroute.md)
+* [`BridgeInterfaces`](-{{ ref_app_doc('services', 'bridgeinterface') }}-)
+* [`RoutedInterfaces`](-{{ ref_app_doc('services', 'routedinterface') }}-)
+* [`IRBInterfaces`](-{{ ref_app_doc('services', 'irbinterface') }}-)
+* [`VLANs`](-{{ ref_app_doc('services', 'vlan') }}-)
+* [`StaticRoutes`](-{{ ref_app_doc('protocols', 'staticroute') }}-)
 
 ## Referenced resources
 

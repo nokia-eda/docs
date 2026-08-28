@@ -1,0 +1,261 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: reboots.components.eda.nokia.com
+spec:
+  group: components.eda.nokia.com
+  names:
+    kind: Reboot
+    listKind: RebootList
+    plural: reboots
+    singular: reboot
+  scope: Namespaced
+  versions:
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: Reboot is the Schema for the reboots API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RebootSpec defines the desired state of Reboot
+            properties:
+              drains:
+                default: {}
+                description: Configure drains to gracefully drain traffic away from
+                  nodes before rebooting.
+                properties:
+                  skip:
+                    default: false
+                    description: Do not run any drain operations. Nodes will be rebooted
+                      without attempting to gracefully drain them.
+                    type: boolean
+                  waitSeconds:
+                    default: 60
+                    description: |-
+                      Seconds to wait before rebooting a node after the drain has been initiated.
+                      This is used to allow time for any traffic to drain away from the node before reboot.
+                    format: int32
+                    maximum: 300
+                    minimum: 0
+                    type: integer
+                type: object
+              nodeSelectors:
+                description: |-
+                  List of node selectors to select nodes to reboot.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be rebooted.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes to reboot.
+                items:
+                  type: string
+                type: array
+              options:
+                default: {}
+                description: Reboot Options to configure how the reboot is performed.
+                properties:
+                  componentRecoveryTimeoutSeconds:
+                    default: 900
+                    description: |-
+                      Seconds to wait for ControlModule and InterfaceModule recovery after ReconnectionTimeout.
+                      Minimum value is 60 seconds (1 minute), maximum value is 3600 seconds (1 hour).
+                      The default value is 900 seconds (15 minutes).
+                    format: int32
+                    maximum: 3600
+                    minimum: 60
+                    type: integer
+                  delaySeconds:
+                    description: |-
+                      Delay in seconds before performing the reboot.
+                      Minimum value is 0 seconds (immediate), maximum value is 300 seconds (5 minutes).
+                    format: int32
+                    maximum: 300
+                    minimum: 0
+                    type: integer
+                  force:
+                    default: false
+                    description: |-
+                      Force the reboot, bypassing any softchecks on the node.
+                      For example: unsaved configuration between running and startup config.
+                    type: boolean
+                  ignoreInterfaceModuleRecover:
+                    default: false
+                    description: Do not require InterfaceModules to transition to
+                      Up After Reboot.
+                    type: boolean
+                  message:
+                    description: Supply a broadcast message to all users logged in
+                      to the node(s) being rebooted.
+                    type: string
+                  rebootMethod:
+                    default: Cold
+                    description: Reboot method to use, currently only cold reboot
+                      is supported, other methods may be added in the future.
+                    enum:
+                    - Cold
+                    type: string
+                  reconnectionTimeoutSeconds:
+                    default: 600
+                    description: |-
+                      Seconds to wait for node to come back online after reboot.
+                      Minimum value is 60 seconds (1 minute), maximum value is 3600 seconds (1 hour).
+                      The default value is 600 seconds (10 minutes).
+                      SR OS nodes in NPP maintenance mode use 1800 seconds when unset or set to default value of 600 seconds.
+                    format: int32
+                    maximum: 3600
+                    minimum: 60
+                    type: integer
+                type: object
+              prompts:
+                default: {}
+                description: |-
+                  Control when to prompt the user for input.
+                  If any pre or post checks fail, the user will be prompted for input, but this may be used to prompt even if they're successful.
+                properties:
+                  prompts:
+                    default:
+                    - InputSafety
+                    - RecoveryTimeout
+                    description: |-
+                      Prompts the user to confirm wether to proceed with the reboot or wait for nodes to recover.
+                      InputSafety prompts the user for confirmation to proceed if any unintended input is detected.
+                      RecoveryTimeout prompts the user for confirmation, to wait for an additional ReconnectionTimeoutSeconds duration, allowing time for the node to recover.
+                    items:
+                      enum:
+                      - InputSafety
+                      - RecoveryTimeout
+                      type: string
+                    type: array
+                  skip:
+                    default: false
+                    description: Skip all user prompts and execute without any user
+                      interaction.
+                    type: boolean
+                type: object
+              tranches:
+                description: |-
+                  List of tranches to use to reboot nodes.
+                  A tranche is a list of node selectors, and a name.
+                  Tranches are rebooted in order, sequentially.
+                  Tranches are rebooted before any Nodes and/or Node Selectors are evaluated. When there is overlap between a Tranche and the list of Nodes evaluated by Nodes and/or Node Selectors, the matching Node will be purged from the list of Nodes / NodeSelectors.
+                items:
+                  properties:
+                    name:
+                      description: |-
+                        Name of the tranche.
+                        This is used to identify the tranche in the UI and in logs.
+                      type: string
+                    nodeSelectors:
+                      description: |-
+                        Node Selectors is a list of node selectors to select nodes to reboot in this tranche.
+                        This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be rebooted.
+                        This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+            type: object
+          status:
+            description: RebootStatus defines the observed state of Reboot
+            properties:
+              details:
+                description: Per-node reboot details.
+                items:
+                  properties:
+                    drainTime:
+                      description: |-
+                        The time when the node was drained.
+                        This is the time when the node was drained before the imaging operation.
+                      format: date-time
+                      type: string
+                    error:
+                      description: Error message if the operation was unsuccessful
+                        for this node.
+                      type: string
+                    nodeName:
+                      description: The name of the node this result is for.
+                      type: string
+                    rebootRecoveryTime:
+                      description: |-
+                        The time when the node was recovered after reboot.
+                        This is the time when the node was recovered after the reboot operation.
+                      format: date-time
+                      type: string
+                    rebootTime:
+                      description: |-
+                        The time when the node was rebooted.
+                        This is the time when the node was rebooted during the reboot operation.
+                      format: date-time
+                      type: string
+                    success:
+                      default: false
+                      description: |-
+                        Indicates if the reboot operation was successful for this node.
+                        This is true if the reboot operation was successful, false if it failed.
+                      type: boolean
+                    undrainTime:
+                      description: |-
+                        The time when the node was undrained.
+                        This is the time when the node was undrained after the imaging operation.
+                      format: date-time
+                      type: string
+                  type: object
+                type: array
+              firstNodeDrainedTime:
+                description: The time when the first node was drained.
+                format: date-time
+                type: string
+              firstNodeRebootedTime:
+                description: The time when the first node was rebooted.
+                format: date-time
+                type: string
+              lastNodeRebootRecoveredTime:
+                description: The time when the last node recovered post reboot.
+                format: date-time
+                type: string
+              lastNodeUndrainedTime:
+                description: The time when the last node was undrained.
+                format: date-time
+                type: string
+              result:
+                description: |-
+                  Result is the overall result of the reboot operation.
+                  It can be one of the following values:
+                  - "Success": All reboots were successfully performed.
+                  - "Failed": No reboots were successfully performed.
+                  - "PartialSuccess": Some reboots were successfully performed, but not all.
+                enum:
+                - Success
+                - Failed
+                - PartialSuccess
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

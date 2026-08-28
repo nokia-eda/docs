@@ -1,0 +1,249 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: grouptagpoolsetups.microsegmentation.eda.nokia.com
+spec:
+  group: microsegmentation.eda.nokia.com
+  names:
+    kind: GroupTagPoolSetup
+    listKind: GroupTagPoolSetupList
+    plural: grouptagpoolsetups
+    singular: grouptagpoolsetup
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GroupTagPoolSetup is the Schema for the grouptagpoolsetups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              GroupTagPoolSetupSpec defines the desired layout for the global,
+              local, and (optional) reserved GroupTag ranges. Segments are specified
+              explicitly with start and end/size. Global and Local segments are optional;
+              when omitted the workflow preserves the existing pool sizes.
+
+              Run during a maintenance window. The workflow refuses to apply ranges
+              that would invalidate existing GroupTag allocations.
+            properties:
+              globalGroupTagPool:
+                description: GlobalGroupTagPool is the IndexAllocationPool from which
+                  GroupTag IDs in the global range are allocated. The workflow can
+                  resize this pool.
+                type: string
+              groupTagPoolSegments:
+                description: |-
+                  GroupTagPoolSegments is the list of desired GroupTag segments.
+                  Each segment specifies a start index and either an end or a size,
+                  along with its type (Global, Local, or Reserved). Global and Local
+                  segments are optional; when omitted the workflow preserves existing
+                  pool sizes.
+                items:
+                  description: |-
+                    GroupTagSegment describes a contiguous range of GroupTag indices by
+                    start index and either an explicit end or a size. At least one of End
+                    or Size must be set. If both are set, they must satisfy: end = start + size - 1.
+                  properties:
+                    end:
+                      description: |-
+                        End is the last GroupTag index in the segment (inclusive).
+                        Mutually exclusive with Size; at least one must be set.
+                      format: int64
+                      minimum: 1
+                      type: integer
+                    size:
+                      description: |-
+                        Size is the number of IDs in the segment.
+                        Mutually exclusive with End; at least one must be set.
+                      format: int64
+                      minimum: 1
+                      type: integer
+                    start:
+                      description: Start is the first GroupTag index in the segment
+                        (inclusive).
+                      format: int64
+                      minimum: 1
+                      type: integer
+                    type:
+                      description: Type identifies the role of this segment (Global,
+                        Local, or Reserved).
+                      enum:
+                      - Global
+                      - Local
+                      - Reserved
+                      type: string
+                  required:
+                  - start
+                  - type
+                  type: object
+                  x-kubernetes-validations:
+                  - message: at least one of end or size must be set
+                    rule: '(has(self.end) ? 1 : 0) + (has(self.size) ? 1 : 0) >= 1'
+                  - message: when both end and size are set, end must equal start
+                      + size - 1
+                    rule: '!has(self.end) || !has(self.size) || self.end == self.start
+                      + self.size - 1'
+                minItems: 1
+                type: array
+              has7220IxrD2D3:
+                description: |-
+                  Has7220IxrD2D3 is true when the network includes Nokia 7220 IXR D2 or D3 systems.
+                  When true, group tag index ranges are validated against a maximum of 127.
+                type: boolean
+              has7220IxrD4D5:
+                description: |-
+                  Has7220IxrD4D5 is true when the network includes Nokia 7220 IXR D4 or D5 systems.
+                  When true and D2/D3 is false, group tag index ranges are validated against a maximum of 16383.
+                type: boolean
+              localGroupTagPool:
+                description: |-
+                  LocalGroupTagPool is the IndexAllocationPool from which GroupTag IDs in the local range are allocated. The workflow can resize this pool.
+                  IndexAllocationPool CR to resize.
+                type: string
+              prompts:
+                description: |-
+                  Prompts controls when the workflow pauses for user confirmation.
+                  When AfterDryrun is included, the user is prompted after the
+                  dry-run comparison shows changes but before the transaction is
+                  applied.
+                items:
+                  description: |-
+                    Prompt identifies a point in the workflow where user confirmation is
+                    requested before proceeding.
+                  enum:
+                  - AfterDryrun
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+            required:
+            - groupTagPoolSegments
+            type: object
+          status:
+            description: |-
+              GroupTagPoolSetupStatus defines the observed outcome of a
+              GroupTagPoolSetup run.
+            properties:
+              appliedLayout:
+                description: |-
+                  AppliedLayout records the layout the workflow most recently
+                  computed and (in Success/NoOp cases) successfully applied.
+                properties:
+                  groupTagPoolSegments:
+                    description: |-
+                      GroupTagPoolSegments is the list of resolved segments with fully
+                      computed start, end, and size values.
+                    items:
+                      description: |-
+                        GroupTagSegment describes a contiguous range of GroupTag indices by
+                        start index and either an explicit end or a size. At least one of End
+                        or Size must be set. If both are set, they must satisfy: end = start + size - 1.
+                      properties:
+                        end:
+                          description: |-
+                            End is the last GroupTag index in the segment (inclusive).
+                            Mutually exclusive with Size; at least one must be set.
+                          format: int64
+                          minimum: 1
+                          type: integer
+                        size:
+                          description: |-
+                            Size is the number of IDs in the segment.
+                            Mutually exclusive with End; at least one must be set.
+                          format: int64
+                          minimum: 1
+                          type: integer
+                        start:
+                          description: Start is the first GroupTag index in the segment
+                            (inclusive).
+                          format: int64
+                          minimum: 1
+                          type: integer
+                        type:
+                          description: Type identifies the role of this segment (Global,
+                            Local, or Reserved).
+                          enum:
+                          - Global
+                          - Local
+                          - Reserved
+                          type: string
+                      required:
+                      - start
+                      - type
+                      type: object
+                      x-kubernetes-validations:
+                      - message: at least one of end or size must be set
+                        rule: '(has(self.end) ? 1 : 0) + (has(self.size) ? 1 : 0)
+                          >= 1'
+                      - message: when both end and size are set, end must equal start
+                          + size - 1
+                        rule: '!has(self.end) || !has(self.size) || self.end == self.start
+                          + self.size - 1'
+                    type: array
+                required:
+                - groupTagPoolSegments
+                type: object
+              conflictingAllocations:
+                description: |-
+                  ConflictingAllocations lists existing GroupTag allocations that the
+                  requested layout would invalidate. Non-empty when Result is
+                  "Failed" with reason E1 (refuse rather than orphan).
+                items:
+                  description: |-
+                    ConflictingAllocation identifies a single existing allocation whose
+                    index is incompatible with the requested layout.
+                  properties:
+                    index:
+                      description: Index is the GroupTag index that conflicts with
+                        the new layout.
+                      format: int64
+                      type: integer
+                    pool:
+                      description: |-
+                        Pool is the name of the pool whose new range conflicts with the
+                        allocation: typically "global" or "local".
+                      type: string
+                    reason:
+                      description: |-
+                        Reason explains why the index conflicts: "out-of-range",
+                        "in-reserved-range", "in-global-range", or "in-local-range".
+                      type: string
+                  required:
+                  - index
+                  - pool
+                  - reason
+                  type: object
+                type: array
+              result:
+                description: |-
+                  Result reports the high-level outcome of the most recent run:
+                  "Success" (transaction applied), "NoOp" (computed layout already
+                  matched the live state, no transaction applied), or "Failed".
+                type: string
+            required:
+            - result
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

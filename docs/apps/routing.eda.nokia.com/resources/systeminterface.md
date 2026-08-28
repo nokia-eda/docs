@@ -16,17 +16,21 @@ icon: auto-crd
 
 The system interface is also known as the router ID, and is a special loopback address in the [`DefaultRouter`](./defaultrouter.md) used as a unique identifier for the node in the network. The `SystemInterface` resource is also typically used as the source IP address for setting up MP-BGP sessions that exchange [overlay](../index.md#overlay-routing) routes.
 
-!!! tip "Best deployed as part of a Fabric"
+/// admonition | Best deployed as part of a Fabric
+    type: tip
 
-    When possible, we recommend that you deploy this resource through a [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md) which automatically creates a `SystemInterface` for every node in the `Fabric`.
+When possible, we recommend that you deploy this resource through a [`Fabric`](-{{ ref_app_doc('fabrics', 'fabric') }}-) which automatically creates a `SystemInterface` for every node in the `Fabric`.
+///
 
 ## BFD
 
 BFD parameters can be configured on a `SystemInterface`. The configured BFD session will monitor a remote IP address, improving the fault detection time significantly. 
 
-??? question "Not seeing BFD sessions being established?"
+/// details | Not seeing BFD sessions being established?
+    type: question
 
-    BFD requires a protocol to subscribe before a BFD session is created. This could be either a static route or a BGP peer. For example, a [`BGPPeer`](../../protocols.eda.nokia.com/resources/bgppeer.md) with BFD enabled will only establish a BFD session with its peer if the underlying [`SystemInterface`](./systeminterface.md) has BFD enabled as well, and vice versa.
+BFD requires a protocol to subscribe before a BFD session is created. This could be either a static route or a BGP peer. For example, a [`BGPPeer`](-{{ ref_app_doc('protocols', 'bgppeer') }}-) with BFD enabled will only establish a BFD session with its peer if the underlying [`SystemInterface`](./systeminterface.md) has BFD enabled as well, and vice versa.
+///
 
 ## Dependencies
 

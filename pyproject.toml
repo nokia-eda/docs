@@ -17,7 +17,7 @@ dependencies = [
     "mkdocs-minify-plugin==0.7.1",
     "mkdocs-redirects==1.2.2",
     "click >=7.0, <=8.2.1",
-    "mkdocs-crd-viewer @ https://github.com/eda-labs/mkdocs-crd-viewer/archive/refs/tags/v0.2.0.zip",
+    "mkdocs-crd-viewer @ https://github.com/eda-labs/mkdocs-crd-viewer/archive/refs/tags/v0.2.2.zip",
     "ruamel.yaml>=0.18",
     "pillow>=12.3.0",
 ]

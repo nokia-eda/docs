@@ -1,1 +1,9 @@
-# Add an example
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: CommunitySet
+metadata:
+  name: origin-dc
+  namespace: routingpolicies
+spec:
+  members:
+    - origin:65500:100
+  type: Extended

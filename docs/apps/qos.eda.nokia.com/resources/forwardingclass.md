@@ -14,9 +14,11 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-??? abstract "A brief introduction to QoS"
+/// details | A brief introduction to QoS
+    type: abstract
 
-    Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+///
 
 To prioritize one traffic stream over another, the router must assign a priority to each packet as it ingresses on an interface. Several options are available:
 
@@ -26,17 +28,21 @@ To prioritize one traffic stream over another, the router must assign a priority
 
 These are called **classifiers**: based on the classifier criteria, the router attaches an internal 'tag' to the packet that determines how the packet is treated while it propagates through the box. This 'tag' is called a **forwarding class**.
 
-!!! note "Forwarding classes"
+/// admonition | Forwarding classes
+    type: note
 
-    Forwarding classes are only locally significant, meaning they are not added to the packet headers. Ingressing traffic is classified based on the `classifiers` in an [`IngressPolicy`](./ingresspolicy.md). 
-    
-    To influence the packet's priority at the next hop, a rewrite policy must be defined in an [`EgressPolicy`](./egresspolicy.md), which translates the internal forwarding class to the priority bits of the IP / MAC header of the egressing packet.
+Forwarding classes are only locally significant, meaning they are not added to the packet headers. Ingressing traffic is classified based on the `classifiers` in an [`IngressPolicy`](./ingresspolicy.md).
+
+To influence the packet's priority at the next hop, a rewrite policy must be defined in an [`EgressPolicy`](./egresspolicy.md), which translates the internal forwarding class to the priority bits of the IP / MAC header of the egressing packet.
+///
 
 The creation of a `ForwardingClass` resource does not result in configuration being pushed to the nodes. It is configured on the nodes by creating a [`PolicyAttachment`](./policyattachment.md) or [`PolicyDeployment`](./policydeployment.md) that specifies an [`IngressPolicy`](./ingresspolicy.md) or [`EgressPolicy`](./egresspolicy.md) that references the `ForwardingClass`.
 
-!!! warning "Forwarding class naming conventions"
+/// admonition | Forwarding class naming conventions
+    type: warning
 
-    The naming convention of a forwarding class matters. See section "OS-specific implementation notes" for more information.
+The naming convention of a forwarding class matters. See section "OS-specific implementation notes" for more information.
+///
 
 ## OS-specific implementation notes
 

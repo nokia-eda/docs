@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: defaultrouters.routing.eda.nokia.com
 spec:
   group: routing.eda.nokia.com
@@ -53,12 +53,14 @@ spec:
                 properties:
                   autonomousSystem:
                     description: Autonomous System number for BGP.
+                    format: int64
                     maximum: 4294967295
                     minimum: 1
                     type: integer
                   ebgpPreference:
                     default: 170
                     description: Preference to be set for eBGP.
+                    format: int32
                     maximum: 255
                     minimum: 1
                     type: integer
@@ -69,6 +71,7 @@ spec:
                   ibgpPreference:
                     default: 170
                     description: Preference to be set for iBGP.
+                    format: int32
                     maximum: 255
                     minimum: 1
                     type: integer
@@ -82,6 +85,22 @@ spec:
                       enabled:
                         description: Enables the IPv4 unicast AFISAFI.
                         type: boolean
+                      exportPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
+                      importPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
                       multipath:
                         description: Enable multipath.
                         properties:
@@ -98,6 +117,7 @@ spec:
                             description: The maximum number of BGP ECMP next-hops
                               for BGP routes with an NLRI belonging to the address
                               family of this configuration context.
+                            format: int32
                             maximum: 256
                             minimum: 1
                             type: integer
@@ -119,6 +139,22 @@ spec:
                       enabled:
                         description: Enables the IPv6 unicast AFISAFI
                         type: boolean
+                      exportPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
+                      importPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
                       multipath:
                         description: Enable multipath
                         properties:
@@ -135,6 +171,7 @@ spec:
                             description: The maximum number of BGP ECMP next-hops
                               for BGP routes with an NLRI belonging to the address
                               family of this configuration context.
+                            format: int32
                             maximum: 256
                             minimum: 1
                             type: integer
@@ -159,6 +196,22 @@ spec:
                       enabled:
                         description: Enables the L2VPN EVPN AFISAFI.
                         type: boolean
+                      exportPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
+                      importPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
                       interASVPN:
                         default: false
                         description: Enable inter-AS VPN for EVPN.
@@ -179,6 +232,7 @@ spec:
                             description: The maximum number of BGP ECMP next-hops
                               for BGP routes with an NLRI belonging to the address
                               family of this configuration context.
+                            format: int32
                             maximum: 256
                             minimum: 1
                             type: integer
@@ -199,6 +253,7 @@ spec:
                     default: 0
                     description: Minimum wait time in seconds before advertising routes
                       post BGP restart.
+                    format: int32
                     maximum: 3600
                     minimum: 0
                     type: integer
@@ -224,6 +279,22 @@ spec:
                       enabled:
                         description: Enables the VPN IPv4 Unicast AFI/SAFI.
                         type: boolean
+                      exportPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
+                      importPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
                       interASVPN:
                         default: false
                         description: Enables inter-AS VPN.
@@ -249,6 +320,22 @@ spec:
                       enabled:
                         description: Enables the VPN IPv6 Unicast AFI/SAFI.
                         type: boolean
+                      exportPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route exports from the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
+                      importPolicies:
+                        description: Reference to a Policy resource to use when evaluating
+                          route imports into the DefaultRouter for this address family.
+                        items:
+                          type: string
+                        maxItems: 5
+                        minItems: 1
+                        type: array
                       interASVPN:
                         default: false
                         description: Enables inter-AS VPN.
@@ -276,6 +363,7 @@ spec:
                 description: Set the maximum number of ECMP paths for the DefaultRouter.
                   This is supported only by some platforms, and will be ignored for
                   others.
+                format: int32
                 maximum: 256
                 minimum: 1
                 type: integer
@@ -291,6 +379,23 @@ spec:
                 items:
                   type: string
                 type: array
+              loadBalancing:
+                description: Load Balancing configuration.
+                properties:
+                  dynamic:
+                    description: Dynamic load balancing configuration.
+                    properties:
+                      prefixes:
+                        description: List of IPv4 and/or IPv6 prefixes. Active routes
+                          in the FIB that are covered by this list are programmed
+                          with dynamic load balancing if conditions are met.
+                        items:
+                          type: string
+                        minItems: 1
+                        type: array
+                        x-kubernetes-list-type: set
+                    type: object
+                type: object
               node:
                 description: Reference to a TopoNode on which to configure the default
                   routing instance.
@@ -323,6 +428,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the Router.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -386,12 +493,14 @@ spec:
                 properties:
                   autonomousSystem:
                     description: Autonomous System number for BGP.
+                    format: int64
                     maximum: 4294967295
                     minimum: 1
                     type: integer
                   ebgpPreference:
                     default: 170
                     description: Preference to be set for eBGP.
+                    format: int32
                     maximum: 255
                     minimum: 1
                     type: integer
@@ -402,6 +511,7 @@ spec:
                   ibgpPreference:
                     default: 170
                     description: Preference to be set for iBGP.
+                    format: int32
                     maximum: 255
                     minimum: 1
                     type: integer
@@ -431,6 +541,7 @@ spec:
                             description: The maximum number of BGP ECMP next-hops
                               for BGP routes with an NLRI belonging to the address
                               family of this configuration context.
+                            format: int32
                             maximum: 256
                             minimum: 1
                             type: integer
@@ -468,6 +579,7 @@ spec:
                             description: The maximum number of BGP ECMP next-hops
                               for BGP routes with an NLRI belonging to the address
                               family of this configuration context.
+                            format: int32
                             maximum: 256
                             minimum: 1
                             type: integer
@@ -512,6 +624,7 @@ spec:
                             description: The maximum number of BGP ECMP next-hops
                               for BGP routes with an NLRI belonging to the address
                               family of this configuration context.
+                            format: int32
                             maximum: 256
                             minimum: 1
                             type: integer
@@ -527,6 +640,7 @@ spec:
                     default: 0
                     description: Minimum wait time before advertising routes post
                       BGP restart.
+                    format: int32
                     maximum: 3600
                     minimum: 0
                     type: integer
@@ -554,6 +668,7 @@ spec:
                 description: Set the maximum number of ECMP paths for the DefaultRouter.
                   This is supported only by some platforms, and will be ignored for
                   others.
+                format: int32
                 maximum: 256
                 minimum: 1
                 type: integer
@@ -601,6 +716,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the Router.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.

@@ -14,15 +14,83 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-!!! info "Documentation coming soon!"
+The `ASPathSet` resource groups one or more autonomous system numbers (ASNs) and can be referenced by a [routing policy](./policy.md) to match a route that has none, any, or all of these AS numbers.
 
-<!-- ## Dependencies
+## Match options
 
-..
+Whether the route is matched if **all**, **any**, or **none** of the members are found in the route's AS path is determined by the [`Policy`](./policy.md) statement, not the `ASPathSet`.
+
+Members of the `ASPathSet` are regexes, which are checked against either the entire AS path or the individual AS numbers (see section about [regex modes](#regex-modes)).
+
+### Regex modes
+
+When `regexMode` is set to `ASN`, each ASN is treated as a single element that is matched against the member regexes defined in the `ASPathSet`. If `regexMode` is set to `Character`, the route's entire AS path is treated as a string and matched character by character, similar to traditional regex matching.
+
+/// details | Example 1: matching any path that contains ASN 100 or 101
+    type: example
+
+In `Character` mode, AS paths containing ASNs such as 1000 or 2101 would also be matched.
+
+```yaml
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: ASPathSet
+metadata:
+  name: leaf-asns
+  namespace: routingpolicies
+spec:
+  members:
+    - '100'
+    - '101'
+  regexMode: ASN
+```
+
+///
+
+/// details | Example 2: matching any path where at least one ASN has a 9 in it
+    type: example
+
+In `ASN` mode, this expression would match only ASN 9, not any ASN containing the digit 9.
+
+```yaml
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: ASPathSet
+metadata:
+  name: leaf-asns
+  namespace: routingpolicies
+spec:
+  members:
+    - '9'
+  regexMode: Character
+```
+
+///
+
+/// details | Example 3: matching any path containing a single ASN from 100 through 109
+    type: example
+
+In `Character` mode, this path would also match paths with ASN 1000 or 1099
+
+```yaml
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: ASPathSet
+metadata:
+  name: leaf-asns
+  namespace: routingpolicies
+spec:
+  members:
+    - '^[100-109]'
+  regexMode: ASN
+```
+
+///
+
+## Dependencies
+
+This resource does not have any dependencies.
 
 ## Referenced resources
 
-..
+This resource does not reference any other resource.
 
 ## Examples
 
@@ -42,7 +110,7 @@ cat << 'EOF' | kubectl apply -f -
 EOF
 ```
 
-/// -->
+///
 
 ## Custom Resource Definition
 

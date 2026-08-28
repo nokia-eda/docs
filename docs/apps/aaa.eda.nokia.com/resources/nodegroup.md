@@ -14,25 +14,30 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-A `NodeGroup` defines what a user can or cannot do. It is a set of rules for all users that belong to the `NodeGroup`, where each rule consists of a state path or command and an action.
+A `NodeGroup` defines what a user can or cannot do. It is a set of rules for all users that belong to the `NodeGroup`, where each rule consists of a state path or command and an action. 
 
-!!! warning "Rule ordering"
+/// admonition | Rule ordering
+    type: warning
 
-    The **order** in which the rules appear may matter, depending on the operating system. For SR Linux, longest path match decides on the action that is taken, while SR OS is strictly numbered, meaning it will execute the action of the first rule that matches.
+The **order** in which the rules appear may matter, depending on the operating system. For SRLinux, longest path match decides on the action that is taken, while SR OS is strictly numbered, meaning it will execute the action of the first rule that matches.
+///
 
 Each rule in the list matches a particular operating system. If the deploy target of the `NodeGroup` does not match the operating system of that rule, the rule will not be configured on the node. The syntax of the rule should match the target operating system. On which nodes a `NodeGroup` is deployed is determined by [AuthenticationPolicy](authenticationpolicy.md) and [ServerGroup](servergroup.md) resources or by `NodeUser` group bindings.
 
-!!! info "State paths vs commands"
+/// admonition | State paths vs commands
+    type: info
 
-    Rules are either command-based or path-based. **Commands** match what the user types in the CLI, while **paths** match the underlying state information that the command accesses. The behavior and syntax of the rules depend on the operating system that the rule targets. A practical example comparing SR OS and SR Linux is provided below.
+Rules are either command-based or path-based. **Commands** match what the user types in the CLI, while **paths** match the underlying state information that the command accesses. The behavior and syntax of the rules depend on the operating system that the rule targets. A practical example comparing SR OS and SRLinux is provided below.
+///
 
-### SR OS vs SR Linux: an example
+
+### SR OS vs SRLinux: an example
 
 /// tab | SR OS (command-based)
 
 SR OS does authorization through configuration profiles, where each rule matches a specific **command**. The example below allows users assigned to this group to access the interface if-1/1/c1/1, but no others.
 
-```yaml
+```
 apiVersion: aaa.eda.nokia.com/v1alpha1
 kind: NodeGroup
 metadata:
@@ -72,11 +77,11 @@ MINOR: MGMT_CORE #2020: Permission denied - unauthorized use of 'interface'
 ```
 
 ///
-/// tab | SR Linux (path-based)
+/// tab | SRLinux (path-based)
 
-SR Linux does authorization through configuration roles, where each rule matches a state path. The example below allows users assigned to this group to access the interface ethernet-1/1, but no others.
+SRLinux does authorization through configuration roles, where each rule matches a state path. The example below allows users assigned to this group to access the interface ethernet-1/1, but no others.
 
-```yaml
+```
 apiVersion: aaa.eda.nokia.com/v1alpha1
 kind: NodeGroup
 metadata:

@@ -7,7 +7,7 @@ spec:
   version: v1
   title: Site Information
   description: "This application provides resources describing the environment at a given site. \n\nThis includes managing DNS, host and domain names, banners and MOTD messages, and other site-specific information.\n"
-  image: ghcr.io/nokia-eda/apps/siteinfo:v6.999.0
+  image: ghcr.io/nokia-eda/apps/siteinfo:v7.0.0
   author: Nokia
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
@@ -25,7 +25,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   appInfo:
     documentation: siteinfo/docs
     categories:
@@ -130,10 +130,10 @@ spec:
     - file:
         path: utils/
     - file:
-        path: routing/
+        path: routing/api/v1/pysrc
     - file:
-        path: services/
+        path: services/api/v2/pysrc
     - file:
-        path: bootstrap/
+        path: bootstrap/api/v1/pysrc
     - file:
         path: siteinfo/api/v1/pysrc

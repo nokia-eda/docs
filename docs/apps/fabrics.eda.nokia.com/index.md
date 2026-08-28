@@ -44,9 +44,11 @@ The application provides the following components:
 The Fabric application supports highly flexible deployment models, enabling you to tailor the configuration of your data center fabric to suit different architectural needs. You can deploy a single instance of a [`Fabric`](./resources/fabric.md) resource to manage the entire data center, incorporating all network nodes, or you can opt to divide your data center into multiple, smaller [`Fabric`](./resources/fabric.md) instances.
 
 
-!!! example "Deployment model example"
+/// admonition | Deployment model example
+    type: example
 
-    For example, you might deploy one Fabric instance to manage the superspine and borderleaf layers while deploying separate Fabric instances for each pod within the data center. This modular approach allows for more granular control. This can be taken to the extreme where each layer of a data center fabric could be its own instance of a Fabric. The choice is yours!
+For example, you might deploy one Fabric instance to manage the superspine and borderleaf layers while deploying separate Fabric instances for each pod within the data center. This modular approach allows for more granular control. This can be taken to the extreme where each layer of a data center fabric could be its own instance of a Fabric. The choice is yours!
+///
 
 A [`Fabric`](resources/fabric.md) is a collection of network nodes that are interconnected using Inter-Switch Links or [`ISLs`](resources/isl.md). Inter-Switch links are point-to-point links, where each endpoint is a node in the fabric. Edge links that have only one endpoint attached to the [`Fabric`](./resources/fabric.md) are modeled through the `Link` resource.
 
@@ -56,7 +58,7 @@ Clos fabrics are designed to scale with deployment size, ranging from very small
 
 This topology focuses on small to medium deployments with a couple of racks, where leaf[^1] switches are interconnected through spines[^2]. Leaf switches are often chosen for their port capabilities in terms of speed and connector types, while spine switches are optimized for forwarding capacity.
 
-Typically, computes are attached to [Bridge Domains](../services.eda.nokia.com/resources/bridgedomain.md) or [Routers](../services.eda.nokia.com/resources/router.md). To facilitate external connectivity to and from these computes, the reachability information for the IP subnets that are available within the fabric is exchanged with Datacenter Gateway[^3] (DCGW) routers, using one of two methods:
+Typically, computes are attached to [Bridge Domains](-{{ ref_app_doc('services', 'bridgedomain') }}-) or [Routers](-{{ ref_app_doc('services', 'router') }}-). To facilitate external connectivity to and from these computes, the reachability information for the IP subnets that are available within the fabric is exchanged with Datacenter Gateway[^3] (DCGW) routers, using one of two methods:
 
 - PE-CE connection type A: exchange **IP-only** routes using a routing protocol like OSPF or BGP
     - Requires strict separation of IP subnets between datacenter fabrics

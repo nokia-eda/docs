@@ -30,13 +30,13 @@ Although every group-level parameter can be overridden individually on the [`BGP
 
 The following resources are referenced in the specification of the `BGPGroup`:
 
-### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
+### [`Policy`](-{{ ref_app_doc('routingpolicies', 'policy') }}-)
 
 The [`BGPPeer`](bgppeer.md) resources that the `RouteReflector` creates towards each selected [`RouteReflectorClient`](routereflectorclient.md) inherit import/export policies from the assigned [`BGPGroup`](#dependencies). This behavior can be overridden by specifying policies in the `RouteReflector`. Click [here](bgppeer.md#policy) for more information on BGP import/export policies.
 
-### [`KeyChain`](../../security.eda.nokia.com/resources/keychain.md)
+### [`KeyChain`](-{{ ref_app_doc('security', 'keychain') }}-)
 
-To secure the connection between two BGP peers, a secret authentication key can be configured in a keychain. This ensures that only BGP speakers with the password can establish a connection. Multiple keys can be defined in a [`Keychain`](../../security.eda.nokia.com/resources/keychain.md) to enable automatic key rollover.
+To secure the connection between two BGP peers, a secret authentication key can be configured in a keychain. This ensures that only BGP speakers with the password can establish a connection. Multiple keys can be defined in a [`Keychain`](-{{ ref_app_doc('security', 'keychain') }}-) to enable automatic key rollover.
 
 ## Examples
 

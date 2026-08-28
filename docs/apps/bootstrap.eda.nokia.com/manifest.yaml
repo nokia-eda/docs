@@ -10,7 +10,7 @@ spec:
     This application provides device bootstrap for various Network Operating Systems.
 
     It generates initial device configuration for Zero Touch Provisioning (ZTP).
-  image: ghcr.io/nokia-eda/apps/bootstrap:v6.999.0
+  image: ghcr.io/nokia-eda/apps/bootstrap:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -32,7 +32,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: bootstrap/crds/bootstrap.eda.nokia.com_inits.yaml
@@ -89,6 +89,7 @@ spec:
         workflow: true
         ui:
           name: Rotate Certificates
+          category: Maintenance
         conversionScript: bootstrap/intents/rotatecertificate/conversion_v1.py
     - crd:
         api:
@@ -111,9 +112,9 @@ spec:
         type: state
   requirements:
     - appId: aaa.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
   dependencies:
     - file:
         path: bootstrap/intents
@@ -124,8 +125,11 @@ spec:
     - file:
         path: bootstrap/api
     - file:
-        path: aaa/api
+        path: aaa/api/v1/pysrc
     - file:
-        path: interfaces/api
+        path: interfaces/api/v1/pysrc
     - file:
         path: bootstrap/api/v1/pysrc
+    - container:
+        image: registry.eda.dev/bootstrap/workflows/rotatecertificate:latest
+        name: rotatecertificate

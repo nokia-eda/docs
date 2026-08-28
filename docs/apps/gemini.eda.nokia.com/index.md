@@ -1,4 +1,4 @@
-# Openai Application
+# Gemini Application
 
 -{{% import 'icons.html' as icons %}}-
 
@@ -6,14 +6,16 @@
 | -------------------- |-----------------------------------------|
 | **Group/Version**    | -{{ app_group }}-/-{{ app_api_version }}-   |
 | **Supported OS**     | -{{ supported_os_versions() }}-  |
-| **Catalog**          | [nokia/catalog/openai ][manifest] |
+| **Catalog**          | [nokia/catalog/gemini ][manifest] |
 | **Source Code**      | <small>coming soon</small>              |
 
 [//]: # (Note: you should fill in the hyperlink to your published manifest in your public catalog)
 [manifest]: https://docs.eda.dev/
 
-!!! info "Documentation coming soon!"
+/// admonition | Documentation coming soon!
+    type: info
 
+///
 <!-- The application provides the following components:
 
 /// tab | Resources

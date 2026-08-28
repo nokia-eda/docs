@@ -18,9 +18,11 @@ This workflow looks through the routing table of all selected nodes for a route 
 
 By default, the workflow performs a lookup in the [`DefaultRouter`](./defaultrouter.md). A different router can be specified by using the `networkInstance` property.
 
-!!! warning
+/// admonition
+    type: warning
 
-    This workflow does not rely on EDA to do the lookup: it investigates the routing tables on the nodes directly. Currently, only SR Linux nodes are supported. Other operating systems are silently skipped.
+This workflow does not rely on EDA to do the lookup: it investigates the routing tables on the nodes directly. Currently, only SR Linux nodes are supported. Other operating systems are silently skipped.
+///
 
 ## Resolve property
 
@@ -54,95 +56,97 @@ EOF
 
 ///
 
-??? example "Example execution"
+/// details | Example execution
+    type: example
 
-    The workflow correctly discovered 3 nodes that have a route towards IP `10.30.1.24` in the `inventory-router` network instance:
-        
-    - Node `leaf12` has an indirect route and will send these packets to `leaf11`
-    - Node `leaf13` has an indirect route and will send these packets to `leaf11`
-    - Node `leaf11` has a direct route and will send these packets out over sub-interface `ethernet-1/1.1311`
-    
-    The two spine nodes do not terminate the `inventory-router` service and do not have a route for this IP.
+The workflow correctly discovered 3 nodes that have a route towards IP `10.30.1.24` in the `inventory-router` network instance:
 
-    ---
+- Node `leaf12` has an indirect route and will send these packets to `leaf11`
+- Node `leaf13` has an indirect route and will send these packets to `leaf11`
+- Node `leaf11` has a direct route and will send these packets out over sub-interface `ethernet-1/1.1311`
 
-    ```
-    apiVersion: routing.eda.nokia.com/v1
-    kind: RouteLookup
-    metadata:
-      annotations:
-        workflows.core.eda.nokia.com/id: '1'
-        workflows.core.eda.nokia.com/root-workflow-group: routing.eda.nokia.com
-        workflows.core.eda.nokia.com/root-workflow-kind: RouteLookup
-        workflows.core.eda.nokia.com/root-workflow-name: routelookup-2d5801bd-a80e-4f64-8fe9-fca57c3a6a73
-        workflows.core.eda.nokia.com/root-workflow-namespace: eda
-        workflows.core.eda.nokia.com/root-workflow-version: v1
-        workflows.core.eda.nokia.com/state: Completed
-        workflows.core.eda.nokia.com/username: admin
-      name: routelookup-2d5801bd-a80e-4f64-8fe9-fca57c3a6a73
-      namespace: eda
-    spec:
-      address: 10.30.1.24
+The two spine nodes do not terminate the `inventory-router` service and do not have a route for this IP.
+
+---
+
+```
+apiVersion: routing.eda.nokia.com/v1
+kind: RouteLookup
+metadata:
+  annotations:
+    workflows.core.eda.nokia.com/id: '1'
+    workflows.core.eda.nokia.com/root-workflow-group: routing.eda.nokia.com
+    workflows.core.eda.nokia.com/root-workflow-kind: RouteLookup
+    workflows.core.eda.nokia.com/root-workflow-name: routelookup-2d5801bd-a80e-4f64-8fe9-fca57c3a6a73
+    workflows.core.eda.nokia.com/root-workflow-namespace: eda
+    workflows.core.eda.nokia.com/root-workflow-version: v1
+    workflows.core.eda.nokia.com/state: Completed
+    workflows.core.eda.nokia.com/username: admin
+  name: routelookup-2d5801bd-a80e-4f64-8fe9-fca57c3a6a73
+  namespace: eda
+spec:
+  address: 10.30.1.24
+  networkInstance: inventory-router
+  resolve: false
+status:
+  found: true
+  nodesWithRoute: 3
+  results:
+    - found: false
       networkInstance: inventory-router
-      resolve: false
-    status:
-      found: true
-      nodesWithRoute: 3
-      results:
-        - found: false
-          networkInstance: inventory-router
-          node: g99-spine11
-        - found: false
-          networkInstance: inventory-router
-          node: g99-spine12
-        - found: true
-          networkInstance: inventory-router
-          nextHopGroupID: 8605221109
-          nextHops:
-            - interfaces:
-                - localAddress: 10.30.1.1/24
-                  name: ethernet-1/1.1311
-                  peerNode: g99-leaf11
-              ipAddress: 10.30.1.1
-              nextHopID: 8605221096
-              type: Direct
-          node: g99-leaf11
-          rawOutput: |-
-            /network-instance[name=inventory-router]/route-table:
-                10.30.1.0/24
-          route: 10.30.1.0/24
-        - found: true
-          networkInstance: inventory-router
-          nextHopGroupID: 8605387614
-          nextHops:
-            - ipAddress: 10.46.99.31
-              nextHopID: 8605387596
-              type: Indirect
-          node: g99-leaf13
-          rawOutput: |-
-            /network-instance[name=inventory-router]/route-table:
-                10.30.1.0/24
-          route: 10.30.1.0/24
-        - found: true
-          networkInstance: inventory-router
-          nextHopGroupID: 8605208653
-          nextHops:
-            - ipAddress: 10.46.99.31
-              nextHopID: 8605208636
-              type: Indirect
-          node: g99-leaf12
-          rawOutput: |-
-            /network-instance[name=inventory-router]/route-table:
-                10.30.1.0/24
-          route: 10.30.1.0/24
-    workflowStatus:
-      stages:
-        - name: Initializing
-          state: Completed
-        - name: performing-lookup
-          state: Completed
+      node: g99-spine11
+    - found: false
+      networkInstance: inventory-router
+      node: g99-spine12
+    - found: true
+      networkInstance: inventory-router
+      nextHopGroupID: 8605221109
+      nextHops:
+        - interfaces:
+            - localAddress: 10.30.1.1/24
+              name: ethernet-1/1.1311
+              peerNode: g99-leaf11
+          ipAddress: 10.30.1.1
+          nextHopID: 8605221096
+          type: Direct
+      node: g99-leaf11
+      rawOutput: |-
+        /network-instance[name=inventory-router]/route-table:
+            10.30.1.0/24
+      route: 10.30.1.0/24
+    - found: true
+      networkInstance: inventory-router
+      nextHopGroupID: 8605387614
+      nextHops:
+        - ipAddress: 10.46.99.31
+          nextHopID: 8605387596
+          type: Indirect
+      node: g99-leaf13
+      rawOutput: |-
+        /network-instance[name=inventory-router]/route-table:
+            10.30.1.0/24
+      route: 10.30.1.0/24
+    - found: true
+      networkInstance: inventory-router
+      nextHopGroupID: 8605208653
+      nextHops:
+        - ipAddress: 10.46.99.31
+          nextHopID: 8605208636
+          type: Indirect
+      node: g99-leaf12
+      rawOutput: |-
+        /network-instance[name=inventory-router]/route-table:
+            10.30.1.0/24
+      route: 10.30.1.0/24
+workflowStatus:
+  stages:
+    - name: Initializing
       state: Completed
-    ```
+    - name: performing-lookup
+      state: Completed
+  state: Completed
+```
+///
 
 ## Custom Resource Definition
 

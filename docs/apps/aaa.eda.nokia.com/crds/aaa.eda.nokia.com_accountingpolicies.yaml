@@ -1,0 +1,87 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: accountingpolicies.aaa.eda.nokia.com
+spec:
+  group: aaa.eda.nokia.com
+  names:
+    kind: AccountingPolicy
+    listKind: AccountingPolicyList
+    plural: accountingpolicies
+    singular: accountingpolicy
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: AccountingPolicy is the Schema for the accountingpolicies API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: An AccountingPolicy defines accounting parameters for nodes,
+              such as the accounting mode and which nodes to send accounting messages
+              to.
+            properties:
+              mode:
+                description: Accounting mode to use. Disabled turns off accounting,
+                  StartStop sends an accounting record both at the start and at the
+                  end of each session, while StopOnly sends only the stop record.
+                enum:
+                - StartStop
+                - StopOnly
+                type: string
+              nodeSelectors:
+                description: Selects TopoNodes on which to configure the AccountingPolicy.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              nodes:
+                description: List of TopoNodes on which to configure the AccountingPolicy.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              serverGroups:
+                description: List of ServerGroups that will be used for accounting
+                  purposes. Order significant only for SR Linux.
+                items:
+                  type: string
+                type: array
+            required:
+            - mode
+            type: object
+          status:
+            description: AccountingPolicyStatus defines the observed state of AccountingPolicy.
+            properties:
+              nodes:
+                description: List of nodes this accounting policy has been applied
+                  to.
+                items:
+                  type: string
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

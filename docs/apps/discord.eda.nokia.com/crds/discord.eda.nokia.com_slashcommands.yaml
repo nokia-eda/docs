@@ -1,0 +1,250 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: slashcommands.discord.eda.nokia.com
+spec:
+  group: discord.eda.nokia.com
+  names:
+    kind: SlashCommand
+    listKind: SlashCommandList
+    plural: slashcommands
+    shortNames:
+    - cmd
+    singular: slashcommand
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.registered
+      name: Ready
+      type: boolean
+    - jsonPath: .spec.botRef
+      name: Bot
+      type: string
+    - jsonPath: .status.error
+      name: Error
+      priority: 1
+      type: string
+    - jsonPath: .status.lastRegistered
+      name: Registered
+      priority: 1
+      type: date
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SlashCommand is the Schema for the slashcommands API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              SlashCommandSpec defines the desired state of SlashCommand.
+
+              The command is invoked in Discord as `/<metadata.name>`. To register
+              the same logical command on multiple servers, create one
+              SlashCommand CR per server (each pointing at the corresponding Bot).
+            properties:
+              allowedRoles:
+                description: Discord role IDs allowed to invoke the command.
+                items:
+                  type: string
+                type: array
+              allowedUsers:
+                description: Discord user IDs allowed to invoke the command.
+                items:
+                  type: string
+                type: array
+              botRef:
+                description: |-
+                  Bot this command will be registered through. The bot determines
+                  the target Discord server.
+                type: string
+              description:
+                description: User-facing description shown in the Discord client.
+                type: string
+              ephemeral:
+                description: |-
+                  Send the command response as ephemeral (only visible to the
+                  invoker) by default.
+                type: boolean
+              options:
+                description: Command options (arguments) presented to the user.
+                items:
+                  description: CommandOption is a single argument to a slash command.
+                  properties:
+                    autocomplete:
+                      description: Enable Discord autocomplete on this option.
+                      type: boolean
+                    choices:
+                      description: Pre-defined choices presented to the user (string/integer
+                        options).
+                      items:
+                        description: Choice is a selectable value for a CommandOption.
+                        properties:
+                          name:
+                            description: Display name of the choice.
+                            type: string
+                          value:
+                            description: |-
+                              Underlying value of the choice. Stored as a string and cast to
+                              the option's type at registration time.
+                            type: string
+                        required:
+                        - name
+                        - value
+                        type: object
+                      type: array
+                    description:
+                      description: Option description shown to the user.
+                      type: string
+                    max:
+                      description: Maximum value (integer/number options).
+                      format: int64
+                      type: integer
+                    maxLength:
+                      description: Maximum length (string options).
+                      format: int64
+                      type: integer
+                    min:
+                      description: Minimum value (integer/number options).
+                      format: int64
+                      type: integer
+                    minLength:
+                      description: Minimum length (string options).
+                      format: int64
+                      type: integer
+                    name:
+                      description: Option name (lowercased, no spaces).
+                      pattern: ^[a-z0-9_-]+$
+                      type: string
+                    required:
+                      description: Whether the option is required.
+                      type: boolean
+                    type:
+                      description: Discord option type.
+                      enum:
+                      - string
+                      - integer
+                      - number
+                      - boolean
+                      - user
+                      - channel
+                      - role
+                      - mentionable
+                      - attachment
+                      type: string
+                  required:
+                  - name
+                  - type
+                  type: object
+                type: array
+              provider:
+                description: Provider that implements the command.
+                properties:
+                  eql:
+                    description: Run an EQL query and return its result.
+                    properties:
+                      eql:
+                        description: EQL query string.
+                        type: string
+                    required:
+                    - eql
+                    type: object
+                  http:
+                    description: Call an HTTP endpoint.
+                    properties:
+                      body:
+                        description: |-
+                          Request body (Go template, evaluated against the command
+                          invocation arguments).
+                        type: string
+                      headers:
+                        additionalProperties:
+                          type: string
+                        description: Request headers.
+                        type: object
+                      method:
+                        description: HTTP method.
+                        enum:
+                        - GET
+                        - POST
+                        - PUT
+                        - PATCH
+                        - DELETE
+                        type: string
+                      timeout:
+                        description: Per-request timeout.
+                        type: string
+                      url:
+                        description: Target URL.
+                        type: string
+                    required:
+                    - method
+                    - url
+                    type: object
+                  workflow:
+                    description: Trigger an EDA workflow.
+                    properties:
+                      workflow:
+                        description: Reference to the workflow to trigger.
+                        type: string
+                    required:
+                    - workflow
+                    type: object
+                type: object
+            required:
+            - botRef
+            - description
+            type: object
+          status:
+            description: SlashCommandStatus defines the observed state of SlashCommand.
+            properties:
+              commandID:
+                description: |-
+                  CommandID returned by Discord at registration time, used for
+                  updates and deletes.
+                type: string
+              error:
+                description: |-
+                  Error is set when the last registration attempt failed; empty
+                  otherwise.
+                type: string
+              lastRegistered:
+                description: |-
+                  LastRegistered is the time the command was last successfully
+                  registered or updated.
+                format: date-time
+                type: string
+              registered:
+                description: |-
+                  Registered is true when the command is currently registered with
+                  Discord through .spec.botRef.
+                type: boolean
+            required:
+            - registered
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -19,9 +19,11 @@ A `ControlPlaneFilter` is an ordered list of filter entries that **match** certa
 - IP filters that can match based on the IP header of an IP packet
 - MAC filters that can match based on the layer 2 (ethernet) header of an ethernet frame
 
-!!! note
+/// admonition
+    type: note
 
-    A `ControlPlaneFilter` resource is deployed system-wide to the nodes specified in the `nodes` or `nodeSelectors` properties. To filter data-plane packets as they ingress / egress a particular sub-interface, check out the [`Filter`](filter.md) resource.
+A `ControlPlaneFilter` resource is deployed system-wide to the nodes specified in the `nodes` or `nodeSelectors` properties. To filter data-plane packets as they ingress / egress a particular sub-interface, check out the [`Filter`](filter.md) resource.
+///
 
 The packet is filtered through all filter entries in-order. If there is no match, the packet is evaluated against the next entry and so on. Once a packet matches a particular entry, evaluation of the chain ends and the action specified in the entry is performed on the packet. 
 

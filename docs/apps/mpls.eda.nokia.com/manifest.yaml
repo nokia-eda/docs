@@ -10,11 +10,9 @@ spec:
   author: nokia
   dependencies:
     - file:
-        path: utils
+        path: utils/
     - file:
-        path: common
-    - file:
-        path: routing/api/v1alpha1/pysrc
+        path: common/
     - file:
         path: routing/api/v1/pysrc
     - file:
@@ -29,9 +27,9 @@ spec:
         path: mpls/api/v1alpha1/pysrc
   description: MPLS
   group: mpls.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/mpls:v6.999.0
+  image: ghcr.io/nokia-eda/apps/mpls:v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   title: MPLS
   version: v1alpha1
   components:

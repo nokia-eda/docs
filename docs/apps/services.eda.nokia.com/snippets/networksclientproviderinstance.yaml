@@ -1,0 +1,7 @@
+apiVersion: services.eda.nokia.com/v2
+kind: NetworksClientProviderInstance
+metadata:
+  name: test-ncp
+  namespace: eda-system
+spec:
+  namespace: eda

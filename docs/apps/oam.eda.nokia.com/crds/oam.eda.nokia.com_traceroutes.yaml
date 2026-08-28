@@ -1,0 +1,248 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: traceroutes.oam.eda.nokia.com
+spec:
+  group: oam.eda.nokia.com
+  names:
+    kind: TraceRoute
+    listKind: TraceRouteList
+    plural: traceroutes
+    singular: traceroute
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: TraceRoute is the Schema for the TraceRoutes API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: TraceRouteSpec defines the desired state of TraceRoute
+            properties:
+              destination:
+                description: |-
+                  Destination to TraceRoute to.
+                  This is a single IP address (IPv4 or IPv6) or a hostname that resolves to an IP address.
+                minLength: 1
+                type: string
+              networkInstance:
+                default: default
+                description: |-
+                  The network instance to use for the TraceRoute. This is the named network instance on the node, typically "default" or some other base name.
+                  If not specified, the default network instance will be used, which is typically the main/default/global network interface on the node.
+                type: string
+              nodeSelectors:
+                description: |-
+                  List of selectors to select nodes to perform TraceRoutes on.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that TraceRoutes will be performed on.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              nodes:
+                description: |-
+                  List of nodes to perform TraceRoutes from.
+                  Items in the list should be the names of the nodes, where each node will have a TraceRoute performed on it.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              options:
+                default: {}
+                description: Additional options for the TraceRoute operation, such
+                  as number of pings to send, packet size, etc.
+                properties:
+                  doNotFragment:
+                    default: false
+                    description: |-
+                      Disable fragmentation of IPv4 TraceRoute packets by setting the "Don't Fragment" flag.
+                      Default value is false, which means fragmentation is allowed for IPv4 packets.
+                    type: boolean
+                  doNotLookupAsn:
+                    default: false
+                    description: |-
+                      Disable ASN lookup for TraceRoute hops. This can speed up TraceRoutes by not performing ASN lookups for each hop.
+                      Default value is false, which means ASN lookups will be performed for each hop.
+                    type: boolean
+                  doNotResolve:
+                    default: false
+                    description: |-
+                      Disable DNS resolution for TraceRoute hops. This can speed up TraceRoutes by not performing DNS lookups for each hop.
+                      Default value is false, which means DNS lookups will be performed for each hop.
+                    type: boolean
+                  initialTTL:
+                    default: 1
+                    description: |-
+                      Initial TTL (Time To Live) value for the TraceRoute packets.
+                      Default is 1.
+                    format: int32
+                    type: integer
+                  l3Protocol:
+                    default: Unspecified
+                    description: Layer3 protocol to use for the TraceRoute. This can
+                      be either "IPv4" or "IPv6". If not specified, the protocol will
+                      be determined based on the destination address (IPv4 or IPv6).
+                    enum:
+                    - Unspecified
+                    - IPv4
+                    - IPv6
+                    type: string
+                  l4Protocol:
+                    default: UDP
+                    description: Layer4 protocol to use for the TraceRoute. This can
+                      be either "ICMP", "TCP", or "UDP". If not specified, the default
+                      will be "UDP".
+                    enum:
+                    - ICMP
+                    - TCP
+                    - UDP
+                    type: string
+                  maxTTL:
+                    default: 30
+                    description: |-
+                      Maximum TTL (Time To Live) value for the TraceRoute packets.
+                      Default is 30.
+                    format: int32
+                    type: integer
+                  timeoutMilliseconds:
+                    default: 5000
+                    description: TimeoutMilliSeconds is the timeout per hop in milliseconds.
+                    format: int32
+                    type: integer
+                type: object
+            required:
+            - destination
+            type: object
+          status:
+            description: TraceRouteStatus defines the observed state of TraceRoute
+            properties:
+              details:
+                description: |-
+                  Details contains the results of the pings performed on each node.
+                  Each entry in the list corresponds to a node that was pinged.
+                items:
+                  description: NodeTraceRouteResult defines the TraceRoute result,
+                    per Node.
+                  properties:
+                    details:
+                      default: {}
+                      description: Details of the TraceRoute result, if available.
+                      properties:
+                        destinationAddress:
+                          description: The IPv4 or IPv6 address of the destination.
+                          type: string
+                        destinationName:
+                          description: The name of the destination, if DNS resolution
+                            is enabled and successful.
+                          type: string
+                        hopsDetails:
+                          description: The details of each hop in the TraceRoute,
+                            including the hop ID, address, hostname, ASN, RTT, and
+                            whether it responded to the probe.
+                          items:
+                            description: HopDetail defines the status of each hop
+                              in the TraceRoute result.
+                            properties:
+                              address:
+                                description: The IPv4 or IPv6 address of the hop.
+                                type: string
+                              asn:
+                                description: The Autonomous System Number (ASN) associated
+                                  with the hop, if ASN lookup is enabled and successful.
+                                format: int32
+                                type: integer
+                              hopId:
+                                description: |-
+                                  The hop ID, which alligns with the TTL value for that hop.
+                                  Currently gNOI sends a single probe per TTL value, explicitly setting the HopID in case multiple probes per TTL value are sent in the future.
+                                format: int32
+                                type: integer
+                              hostname:
+                                description: The Resolved hostname of the hop, if
+                                  DNS resolution is enabled and successful.
+                                type: string
+                              responded:
+                                default: false
+                                description: Indicates if the hop responded to the
+                                  TraceRoute probe.
+                                type: boolean
+                              rtt:
+                                description: The round-trip time (RTT) to the hop
+                                  in milliseconds.
+                                type: string
+                              state:
+                                description: The state of the hop, as returned by
+                                  gNOI.
+                                type: string
+                            type: object
+                          type: array
+                        maxHops:
+                          description: The maximum number of hops to returned by gNOI
+                            for the TraceRoute. This is the same amount as specified
+                            in the TraceRouteOptions in spec.
+                          format: int32
+                          type: integer
+                        packetSize:
+                          description: The size of the packets sent by gNOI for the
+                            TraceRoute.
+                          format: int32
+                          type: integer
+                      type: object
+                    error:
+                      description: Error message, if the TraceRoute failed.
+                      type: string
+                    networkInstance:
+                      default: default
+                      description: Network instance used to source the TraceRoute
+                        from.
+                      type: string
+                    node:
+                      description: Node the TraceRoute was sourced from.
+                      type: string
+                    success:
+                      default: false
+                      description: Indicates if the TraceRoute was successful.
+                      type: boolean
+                  type: object
+                type: array
+              result:
+                default: Success
+                description: |-
+                  Result is the overall result of the TraceRoute operation.
+                  It can be one of the following values:
+                  - "Success": All TraceRoutes were successful.
+                  - "Failed": No TraceRoutes were successful.
+                  - "PartialSuccess": Some TraceRoutes were successful, but not all.
+                enum:
+                - Success
+                - Failed
+                - PartialSuccess
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

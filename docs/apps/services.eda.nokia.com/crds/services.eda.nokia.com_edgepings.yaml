@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: edgepings.services.eda.nokia.com
 spec:
   group: services.eda.nokia.com
@@ -62,6 +62,8 @@ spec:
               virtualNetwork:
                 type: string
               vlanID:
+                format: int32
+                maximum: 65535
                 type: integer
             required:
             - pingType
@@ -112,22 +114,32 @@ spec:
             properties:
               count:
                 default: 1
+                description: Number of ping packets to send.
+                format: int32
                 maximum: 10
                 minimum: 1
                 type: integer
               destination:
+                description: Destination address to ping.
                 type: string
               interfaceResource:
+                description: Interface that sends the ping packet(s).
                 type: string
               pingType:
+                description: The type of ping to perform.
                 enum:
                 - Gateway
                 - EdgeMesh
                 - Edge
                 type: string
               virtualNetwork:
+                description: Virtual network resource to perform the ping in.
                 type: string
               vlanID:
+                description: Source VLAN ID of the ping packet(s).
+                format: int32
+                maximum: 4094
+                minimum: 0
                 type: integer
             required:
             - pingType

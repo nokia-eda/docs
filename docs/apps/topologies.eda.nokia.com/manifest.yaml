@@ -8,7 +8,7 @@ spec:
   title: Topologies
   description: |
     This application provides physical topology support
-  image: ghcr.io/nokia-eda/apps/topologies:v6.999.0
+  image: ghcr.io/nokia-eda/apps/topologies:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -30,7 +30,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: topologies/crds/topologies.eda.nokia.com_topolinkmonitors.yaml
@@ -45,6 +45,12 @@ spec:
         api:
           expose: none
         conversionScript: topologies/intents/topolinkstate/conversion_v1.py
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_clustertopolinkstates.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_clustertopolinkstates.json
+        namespaced: false
+        api:
+          expose: none
     - crd:
         path: topologies/crds/topologies.eda.nokia.com_topologies.yaml
         schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_topologies.json
@@ -102,6 +108,11 @@ spec:
         trigger:
           kind: TopoLinkState
     - script:
+        path: topologies/intents/clustertopolinkstate/clustertopolinkstate_intent.py
+        type: state
+        trigger:
+          kind: ClusterTopoLinkState
+    - script:
         path: topologies/intents/topology/topology_intent.py
         type: state
         trigger:
@@ -154,6 +165,7 @@ spec:
         workflow: true
         ui:
           name: Network Topology
+          category: Topology
         conversionScript: topologies/intents/networktopology/conversion_v1.py
     - cr:
         path: topologies/alarms/alarms.yaml
@@ -167,13 +179,23 @@ spec:
     - file:
         path: utils/
     - file:
-        path: core/pysrc/
+        path: core/pysrc
     - file:
-        path: interfaces/
+        path: interfaces/api/v1/pysrc
+    - file:
+        path: interfaces/intents/common/imports.py
+    - file:
+        path: interfaces/intents/common/utils.py
     - file:
         path: topologies/alarms/pysrc
     - file:
         path: topologies/api/v1/pysrc
+    - container:
+        image: registry.eda.dev/topologies/workflows/generator:latest
+        name: generator
+    - container:
+        image: registry.eda.dev/topologies/workflows/topology:latest
+        name: topology
   requirements:
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0

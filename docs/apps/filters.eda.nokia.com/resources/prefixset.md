@@ -19,9 +19,11 @@ A `PrefixSet` is a collection of IP prefixes. They are used in [`Filter`](filter
 - Allowing SSH connections from a subnet of IP addresses associated with internal, privileged clients
 - Restricting DNS traffic to a few IP addresses, to enable content filtering
 
-!!! warning
+/// admonition
+    type: warning
 
-    This article discusses the `PrefixSet` resource used for configuring packet [`Filters`](filter.md). The [`PrefixSet`](../../routingpolicies.eda.nokia.com/resources/prefixset.md) resource used by [`RoutingPolicies`](../../routingpolicies.eda.nokia.com/resources/policy.md) is a different resource (same name, different app)
+This article discusses the `PrefixSet` resource used for configuring packet [`Filters`](filter.md). The [`PrefixSet`](-{{ ref_app_doc('routingpolicies', 'prefixset') }}-) resource used by [`RoutingPolicies`](-{{ ref_app_doc('routingpolicies', 'policy') }}-) is a different resource (same name, different app)
+///
 
 ## Dependencies
 

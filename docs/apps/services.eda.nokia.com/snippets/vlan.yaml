@@ -1,1 +1,11 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: VLAN
+metadata:
+  name: stretched-l2-vlan
+  namespace: services
+spec:
+  bridgeDomain: stretched-l2
+  interfaceSelectors:
+    - edge-type = compute
+    - edge-type = storage
+  vlanID: '100'

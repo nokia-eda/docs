@@ -8,7 +8,7 @@ spec:
   title: Routing Policies
   description: |
     This application provides routing policies for various Network Operating Systems.
-  image: ghcr.io/nokia-eda/apps/routingpolicies:v6.999.0
+  image: ghcr.io/nokia-eda/apps/routingpolicies:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -27,10 +27,11 @@ spec:
     - "sros:25.7.*"
     - "sros:25.10.*"
     - "sros:26.3.*"
+    - "junos:26.2.*"
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: routingpolicies/crds/routingpolicies.eda.nokia.com_policys.yaml
@@ -158,7 +159,7 @@ spec:
         conversionScript: routingpolicies/intents/tagset/conversion_v1.py
     - crd:
         api:
-          expose: readWrite
+          expose: none
         path: routingpolicies/crds/routingpolicies.eda.nokia.com_tagsetdeployments.yaml
         schema: routingpolicies/openapiv3/eda_oas_routingpolicies.eda.nokia.com_tagsetdeployments.json
         conversionScript: routingpolicies/intents/tagsetdeployment/conversion_v1.py

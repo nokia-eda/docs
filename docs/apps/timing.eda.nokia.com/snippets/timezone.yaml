@@ -1,0 +1,11 @@
+apiVersion: timing.eda.nokia.com/v1
+kind: TimeZone
+metadata:
+  name: my-test-timezone
+  namespace: eda
+spec:
+  useUTC: false
+  nodeSelectors:
+    - eda.nokia.com/security-profile = managed
+  region: America
+  americaPlace: Los_Angeles

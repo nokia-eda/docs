@@ -1,0 +1,9 @@
+---
+# All EDA platform apps — empty spec audits every discoverable app in eda-system.
+# The CR must be placed in the EDA base namespace.
+apiVersion: certchecker.eda.nokia.com/v1alpha1
+kind: PlatformCertificateAudit
+metadata:
+  name: audit-all-platform
+  namespace: eda-system
+spec: {}

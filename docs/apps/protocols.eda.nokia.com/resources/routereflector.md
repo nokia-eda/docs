@@ -19,19 +19,21 @@ BGP route reflectors are used to eliminate the need for a full-mesh iBGP peering
 
 EDA creates a derived [`BGPPeer`](bgppeer.md) for every [`RouteReflectorClient`](routereflectorclient.md) that the `RouteReflector` targets. This targeting is done by assigning labels to the [`RouteReflectorClient`](routereflectorclient.md), and referencing this label in the `RouteReflector`.
 
-!!! warning "Don't forget to use labels!"
+/// admonition | Don't forget to use labels!
+    type: warning
 
-    If no target label is specified in the `ClientSelector` property of the `RouteReflector` resource, the `RouteReflector` will create [`BGPPeer`](bgppeer.md) resources for **every** [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) and [`RouteReflectorClient`](routereflectorclient.md).
+If no target label is specified in the `ClientSelector` property of the `RouteReflector` resource, the `RouteReflector` will create [`BGPPeer`](bgppeer.md) resources for **every** [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) and [`RouteReflectorClient`](routereflectorclient.md).
 
-    **Example:**
-    
-    * `RouteReflector` RR1 has **no** `ClientSelector` labels
-    * `RouteReflector` RR2 has **one** `ClientSelector` label: `my-rrc-label=A`
-    * [`RouteReflectorClient`](routereflectorclient.md) Client1 has one label: `my-rrc-label=A`
-    * [`RouteReflectorClient`](routereflectorclient.md) Client2 has one label: `my-rrc-label=A`
-    * [`RouteReflectorClient`](routereflectorclient.md) Client3 has one label: `my-rrc-label=B`
+**Example:**
 
-    In this example, `RR1` will create 3 derived [`BGPPeer`](bgppeer.md) resources: one for each client. `RR2` will create only 2 derived [`BGPPeer`](bgppeer.md) resources: one towards `client1`, and one towards `client2`. `Client3` does not have label `my-rrc-label=A`, and therefore is not selected as client for `RR2`.
+* `RouteReflector` RR1 has **no** `ClientSelector` labels
+* `RouteReflector` RR2 has **one** `ClientSelector` label: `my-rrc-label=A`
+* [`RouteReflectorClient`](routereflectorclient.md) Client1 has one label: `my-rrc-label=A`
+* [`RouteReflectorClient`](routereflectorclient.md) Client2 has one label: `my-rrc-label=A`
+* [`RouteReflectorClient`](routereflectorclient.md) Client3 has one label: `my-rrc-label=B`
+
+In this example, `RR1` will create 3 derived [`BGPPeer`](bgppeer.md) resources: one for each client. `RR2` will create only 2 derived [`BGPPeer`](bgppeer.md) resources: one towards `client1`, and one towards `client2`. `Client3` does not have label `my-rrc-label=A`, and therefore is not selected as client for `RR2`.
+///
 
 To set up BGP route reflectors in the default VRF, use [`DefaultRouteReflector`](defaultroutereflector.md) instead.
 
@@ -48,15 +50,15 @@ To configure this resource, the following resources must exist or be created alo
 
 The [`BGPPeer`](bgppeer.md) resource that the `RouteReflector` creates towards each selected [`RouteReflectorClient`](routereflectorclient.md) is always linked to a single [`BGPGroup`](bgpgroup.md). These BGP peers share common parameters, such as BGP import and export policies, local and peer autonomous system numbers, and BGP timers. By specifying these parameters in a [`BGPGroup`](bgpgroup.md), the operator can change these settings in a single location for all client BGP peers.
 
-### [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md)
+### [`RoutedInterface`](-{{ ref_app_doc('services', 'routedinterface') }}-)
 
-To know which IP address the router uses to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md) attached directly to an [`Interface`](../../interfaces.eda.nokia.com/resources/interface.md), a reference to this resource needs to be provided when creating the `RouteReflector`.
+To know which IP address the router uses to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`RoutedInterface`](-{{ ref_app_doc('services', 'routedinterface') }}-) attached directly to an [`Interface`](-{{ ref_app_doc('interfaces', 'interface') }}-), a reference to this resource needs to be provided when creating the `RouteReflector`.
 
-### [`IRBInterface`](../../services.eda.nokia.com/resources/irbinterface.md)
+### [`IRBInterface`](-{{ ref_app_doc('services', 'irbinterface') }}-)
 
-To know which IP address the router uses to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`IRBInterface`](../../services.eda.nokia.com/resources/irbinterface.md) attached to a [`BridgeDomain`](../../services.eda.nokia.com/resources/bridgedomain.md), a reference to this resource needs to be provided when creating the `RouteReflector`.
+To know which IP address the router uses to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`IRBInterface`](-{{ ref_app_doc('services', 'irbinterface') }}-) attached to a [`BridgeDomain`](-{{ ref_app_doc('services', 'bridgedomain') }}-), a reference to this resource needs to be provided when creating the `RouteReflector`.
 
-### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
+### [`Policy`](-{{ ref_app_doc('routingpolicies', 'policy') }}-)
 
 The [`BGPPeer`](bgppeer.md) resources that the `RouteReflector` creates towards each selected [`RouteReflectorClient`](routereflectorclient.md) inherit import/export policies from the assigned [`BGPGroup`](#dependencies). This behavior can be overridden by specifying policies in the `RouteReflector`. Click [here](bgppeer.md#policy) for more information on BGP import/export policies.
 

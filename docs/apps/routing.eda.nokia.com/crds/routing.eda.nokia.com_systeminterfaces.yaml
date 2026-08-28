@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: systeminterfaces.routing.eda.nokia.com
 spec:
   group: routing.eda.nokia.com
@@ -59,6 +59,7 @@ spec:
                     default: 1000
                     description: The minimum interval in milliseconds between transmission
                       of BFD control packets.
+                    format: int32
                     maximum: 100000
                     minimum: 10
                     type: integer
@@ -66,6 +67,7 @@ spec:
                     default: 3
                     description: The number of packets that must be missed to declare
                       this session as down.
+                    format: int32
                     maximum: 20
                     minimum: 3
                     type: integer
@@ -77,6 +79,7 @@ spec:
                     default: 1000
                     description: The minimum interval between echo packets the local
                       node can receive.
+                    format: int32
                     maximum: 100000
                     minimum: 0
                     type: integer
@@ -84,12 +87,14 @@ spec:
                     default: 1000
                     description: The minimum interval in milliseconds between received
                       BFD control packets that this system should support.
+                    format: int32
                     maximum: 100000
                     minimum: 10
                     type: integer
                   ttl:
                     description: Sets custom IP TTL or Hop Limit for multi-hop BFD
                       sessions packets. Not applicable to single-hop BFD sessions.
+                    format: int32
                     maximum: 255
                     minimum: 2
                     type: integer
@@ -116,6 +121,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the SystemInterface.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -185,6 +192,7 @@ spec:
                     default: 1000000
                     description: The minimum interval in microseconds between transmission
                       of BFD control packets[default=1000000].
+                    format: int32
                     maximum: 100000000
                     minimum: 10000
                     type: integer
@@ -192,6 +200,7 @@ spec:
                     default: 3
                     description: The number of packets that must be missed to declare
                       this session as down. [default=3]
+                    format: int32
                     maximum: 20
                     minimum: 3
                     type: integer
@@ -203,6 +212,7 @@ spec:
                     default: 1000000
                     description: The minimum interval between echo packets the local
                       node can receive in microseconds
+                    format: int32
                     maximum: 100000000
                     minimum: 0
                     type: integer
@@ -210,12 +220,14 @@ spec:
                     default: 1000000
                     description: The minimum interval in microseconds between received
                       BFD control packets that this system should support.[default=1000000].
+                    format: int32
                     maximum: 100000000
                     minimum: 10000
                     type: integer
                   ttl:
                     description: Sets custom IP TTL or Hop Limit for multi-hop BFD
                       sessions packets. Not applicable to single-hop BFD sessions.
+                    format: int32
                     maximum: 255
                     minimum: 2
                     type: integer
@@ -246,6 +258,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the SystemInterface.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.

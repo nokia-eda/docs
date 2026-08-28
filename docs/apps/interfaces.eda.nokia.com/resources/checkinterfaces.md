@@ -41,9 +41,11 @@ The `CheckInterfaces` workflow does not depend on any other resources.
 
 The workflow selects nodes that it will check interfaces on through the `nodeSelectors` and `nodes` properties. 
 
-!!! note
+/// admonition
+    type: note
 
-    Only interfaces that have a matching [`Interface`](interface.md) will be checked.
+Only interfaces that have a matching [`Interface`](interface.md) will be checked.
+///
 
 ## Examples
 

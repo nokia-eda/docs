@@ -24,15 +24,15 @@ As the Default BGP Group is not configured on the node before a [`DefaultBGPPeer
 
 ## Referenced resources
 
-- [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md): specification of BGP import and export policies
-- [`Keychain`](../../security.eda.nokia.com/resources/keychain.md): authentication parameters for the BGP session
+- [`Policy`](-{{ ref_app_doc('routingpolicies', 'policy') }}-): specification of BGP import and export policies
+- [`Keychain`](-{{ ref_app_doc('security', 'keychain') }}-): authentication parameters for the BGP session
 
 ## Examples
 
 /// tab | YAML
 
 ```yaml
--{{ include_yaml('docs/snippets/%s.yaml' | format(resource_name | lower)) }}-
+-{{ include_yaml('docs/snippets/%s.yaml' | format(resource_name | lower)) }}-"
 ```
 
 ///
@@ -41,7 +41,7 @@ As the Default BGP Group is not configured on the node before a [`DefaultBGPPeer
 
 ```bash
 cat << 'EOF' | kubectl apply -f -
--{{ include_yaml('docs/snippets/%s.yaml' | format(resource_name | lower)) }}-
+-{{ include_yaml('docs/snippets/%s.yaml' | format(resource_name | lower)) }}-"
 EOF
 ```
 

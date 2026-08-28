@@ -65,6 +65,8 @@ flowchart LR
     I4[Interface CR 4] --> C4((Compute 4))
 ```
 
-!!! note "Resource creation"
+/// admonition | Resource creation
+    type: note
 
-    [`Breakout`](resources/breakout.md) resources do not create derived [`Interface`](resources/interface.md) resources. The [`Interfaces`](resources/interface.md) must be created manually if they are connected to endpoints.
+[`Breakout`](resources/breakout.md) resources do not create derived [`Interface`](resources/interface.md) resources. The [`Interfaces`](resources/interface.md) must be created manually if they are connected to endpoints.
+///

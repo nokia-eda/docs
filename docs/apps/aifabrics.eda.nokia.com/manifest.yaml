@@ -8,7 +8,7 @@ spec:
   title: AIFabrics
   description: |
     This application provides automation resources relating to datacenter AI fabrics.
-  image: ghcr.io/nokia-eda/apps/aifabrics:v6.999.0
+  image: ghcr.io/nokia-eda/apps/aifabrics:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -30,7 +30,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: aifabrics/crds/aifabrics.eda.nokia.com_backends.yaml
@@ -69,35 +69,37 @@ spec:
     - file:
         path: aifabrics
     - file:
-        path: fabrics
+        path: fabrics/api/v1/pysrc
     - file:
         path: common/
     - file:
         path: utils/
     - file:
-        path: protocols/
+        path: protocols/api/v2/pysrc
     - file:
-        path: qos/
+        path: qos/api/v2/pysrc
     - file:
-        path: services/
+        path: services/api/v2/pysrc
     - file:
-        path: routingpolicies/
+        path: routingpolicies/api/v1/pysrc
     - file:
-        path: interfaces/
+        path: interfaces/api/v1/pysrc
+    - file:
+        path: siteinfo/api/v1/pysrc
     - file:
         path: aifabrics/api
     - file:
         path: aifabrics/api/v1/pysrc
   requirements:
     - appId: fabrics.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: protocols.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: qos.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: services.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: routingpolicies.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0

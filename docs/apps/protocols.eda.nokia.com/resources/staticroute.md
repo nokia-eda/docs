@@ -18,9 +18,11 @@ Static routes enable connectivity to remote network elements that do not have a 
 
 Example: if all outbound traffic is meant to pass through a firewall device, a default static route (`0.0.0.0/0`) could be configured with the next-hop IP address of the firewall.
 
-!!! note "Deployment of the static route"
+/// admonition | Deployment of the static route
+    type: note
 
-    The `StaticRoute` resource can optionally configured with a list of `TopoNodes` on which the static route is configured. If no nodes are referenced, EDA will configure the static route on all nodes that the [`Router`](../../services.eda.nokia.com/resources/router.md) is configured on. Although static routes are not installed in the routing table if the next-hop is not a locally reachable IP address, configuring a static route with a non-local next-hop should be avoided.
+The `StaticRoute` resource can optionally configured with a list of `TopoNodes` on which the static route is configured. If no nodes are referenced, EDA will configure the static route on all nodes that the [`Router`](-{{ ref_app_doc('services', 'router') }}-) is configured on. Although static routes are not installed in the routing table if the next-hop is not a locally reachable IP address, configuring a static route with a non-local next-hop should be avoided.
+///
 
 > To set up static routes in the default VRF, use [`DefaultStaticRoute`](defaultstaticroute.md) instead.
 
@@ -28,17 +30,17 @@ Example: if all outbound traffic is meant to pass through a firewall device, a d
 
 To configure this resource, the following resources must exist or be created alongside the `StaticRoute`
 
-* The [`Router`](../../services.eda.nokia.com/resources/router.md) in which the static route will be configured
+* The [`Router`](-{{ ref_app_doc('services', 'router') }}-) in which the static route will be configured
 
 ## Referenced resources
 
-### [`Router`](../../services.eda.nokia.com/resources/router.md)
+### [`Router`](-{{ ref_app_doc('services', 'router') }}-)
 
-Static route prefixes configured in the `StaticRoute` resource are only configured in the VRF of the linked [`Router`](../../services.eda.nokia.com/resources/router.md) resource. The next-hop of the static routes should be reachable through a local interface (typically a [`RoutedInterface`](../../services.eda.nokia.com/resources/routedinterface.md) or [`IRBInterface`](../../services.eda.nokia.com/resources/irbinterface.md)) configured in the same [`Router`](../../services.eda.nokia.com/resources/router.md).
+Static route prefixes configured in the `StaticRoute` resource are only configured in the VRF of the linked [`Router`](-{{ ref_app_doc('services', 'router') }}-) resource. The next-hop of the static routes should be reachable through a local interface (typically a [`RoutedInterface`](-{{ ref_app_doc('services', 'routedinterface') }}-) or [`IRBInterface`](-{{ ref_app_doc('services', 'irbinterface') }}-)) configured in the same [`Router`](-{{ ref_app_doc('services', 'router') }}-).
 
 ### `TopoNode`
 
-Optionally, a list of nodes can be provided on which the static route is deployed. EDA **does not** determine on which nodes the next-hop IP address is reachable through a local interface, but instead deploys the static route on **ALL** nodes that the [`Router`](../../services.eda.nokia.com/resources/router.md) is configured on, if no nodes are specified.
+Optionally, a list of nodes can be provided on which the static route is deployed. EDA **does not** determine on which nodes the next-hop IP address is reachable through a local interface, but instead deploys the static route on **ALL** nodes that the [`Router`](-{{ ref_app_doc('services', 'router') }}-) is configured on, if no nodes are specified.
 
 ## Examples
 

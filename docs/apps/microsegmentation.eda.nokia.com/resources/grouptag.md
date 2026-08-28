@@ -15,28 +15,40 @@ icon: auto-crd
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
 A `GroupTag` is used to create micro segments in the network, tagging endpoints with a similar security posture, allowing for easy management of security rules. 
-Group tags can be assigned to [`BridgeInterfaces`](../../services.eda.nokia.com/resources/bridgeinterface.md), [`RoutedInterfaces`](../../services.eda.nokia.com/resources/routedinterface.md), [`IRBInterfaces`](../../services.eda.nokia.com/resources/irbinterface.md), [`VLANs`](../../services.eda.nokia.com/resources/vlan.md), and [`StaticRoutes`](../../protocols.eda.nokia.com/resources/staticroute.md) through a [`GroupTagAssociationPolicy`](../resources/associationpolicy.md)
+Group tags can be assigned to [`BridgeInterfaces`](-{{ ref_app_doc('services', 'bridgeinterface') }}-), [`RoutedInterfaces`](-{{ ref_app_doc('services', 'routedinterface') }}-), [`IRBInterfaces`](-{{ ref_app_doc('services', 'irbinterface') }}-), [`VLANs`](-{{ ref_app_doc('services', 'vlan') }}-), and [`StaticRoutes`](-{{ ref_app_doc('protocols', 'staticroute') }}-) through a [`GroupTagAssociationPolicy`](../resources/associationpolicy.md).
 
 ## Scopes
 
 `GroupTags` are uniquely identified by a "Group Tag ID" which is automatically assigned by EDA and is used by the node to distribute the `GroupTags` through the control plane. The `Group Tag IDs` are allocated from predefined `IndexAllocationPools` bootstrap resources named `group-tag-pool-global` and `group-tag-pool-local`. 
 
-!!! info "Manually creating the Group Tag Pools"
-    By default the `IndexAllocationPools` bootstrap resources named `group-tag-pool-global` and `group-tag-pool-local` are installed during the installation of the micro segmentation app, and in new namespaces with bootstrap enabled. When using micro segmentation in a namespace that is created without bootstrapping, the `IndexAllocationPools` can be created manually with the same names.
+Group Tag ID 0 is globally reserved for the no-group-tag bootstrap resource, which can be used to reference any endpoint that is not associated with a `GroupTag`.
 
-Because there is a limited range from which to assign "Group Tag IDs", EDA introduces a concept of local and global "scopes" where an ID is uniquely defined. Scopes can be either global (the whole namespace) or local (the Virtual Network or highest level service abstraction used, for example, a [`Router`](../../services.eda.nokia.com/resources/router.md) or [`BridgeDomain`](../../services.eda.nokia.com/resources/bridgedomain.md)).
+/// admonition | Manually creating the Group Tag Pools
+    type: info
 
-!!! info "The use of Virtual Networks abstractions is recommended"
+By default the `IndexAllocationPools` bootstrap resources named `group-tag-pool-global` and `group-tag-pool-local` are installed during the installation of the micro segmentation app, and in new namespaces with bootstrap enabled. When using micro segmentation in a namespace that is created without bootstrapping, the `IndexAllocationPools` can be created manually with the same names.
+///
 
-    Scopes are automatically derived by the highest level service abstraction. When `Virtual Networks` are used, each Virtual Network becomes a scope and a dedicated instance of the group-tag-pool-local is assigned. This guarantees optimal ID reuse across services. 
-    When lower level service abstractions such as `Bridge Domain` or `Router` are used to compose a service, the use of Global `GroupTags` is recommended to guarantee the GroupTag is defined using the same ID across the service end to end.
+Because there is a limited range from which to assign "Group Tag IDs", EDA introduces a concept of local and global "scopes" where an ID is uniquely defined. Scopes can be either global (the whole namespace) or local (the Virtual Network or highest level service abstraction used, for example, a [`Router`](-{{ ref_app_doc('services', 'router') }}-) or [`BridgeDomain`](-{{ ref_app_doc('services', 'bridgedomain') }}-)).
+
+### Pool range management
+
+Use the [`GroupTagPoolSetup`](./grouptagpoolsetup.md) workflow to resize the `group-tag-pool-global` and `group-tag-pool-local` allocation ranges and optionally reserve portions of the Group Tag ID space for future use. The workflow validates requested ranges and refuses updates that would invalidate existing Group Tag allocations, or hardware compatibility.
+
+
+/// admonition | The use of Virtual Networks abstractions is recommended
+    type: info
+
+Scopes are automatically derived by the highest level service abstraction. When `Virtual Networks` are used, each Virtual Network becomes a scope and a dedicated instance of the group-tag-pool-local is assigned. This guarantees optimal ID reuse across services.
+When lower level service abstractions such as `Bridge Domain` or `Router` are used to compose a service, the use of Global `GroupTags` is recommended to guarantee the GroupTag is defined using the same ID across the service end to end.
+///
 
 ### Global scope 
 
 A global scope is only recommended when
 
 * `GroupTags` are leaked between different services (for example shared infrastructure such as DNS, storage, NTP, etc)
-* A service is manually composed of individual service abstractions such as a [`Router`](../../services.eda.nokia.com/resources/router.md) or [`BridgeDomain`](../../services.eda.nokia.com/resources/bridgedomain.md) etc. 
+* A service is manually composed of individual service abstractions such as a [`Router`](-{{ ref_app_doc('services', 'router') }}-) or [`BridgeDomain`](-{{ ref_app_doc('services', 'bridgedomain') }}-) etc.
 
 If a `GroupTag` is created with a global scope, the "Group Tag ID" is reserved in the group-tag-pool-global `IndexAllocationPool`. The ID is reserved within the namespace before association, at the time of creation. 
 
@@ -47,10 +59,17 @@ For example: a global `GroupTag` is assigned ID 11; this ID is reserved in all s
 A local `GroupTag` can have different IDs in different scopes.
 If a `GroupTag` is created with a local scope a "Group Tag ID" will be reserved in an instance of the group-tag-pool-local `IndexAllocationPool` for each scope where the `GroupTag` is used.
 
-For example a `GroupTag` "blue" is created with a local scope and `GroupTag` "blue" is associated with a [`BridgeInterface`](../../services.eda.nokia.com/resources/bridgeinterface.md) in [`VirtualNetwork`](../../services.eda.nokia.com/resources/virtualnetwork.md) Service-1, an ID (e.g. 64) will be allocated from a `group-tag-pool-local` instance dedicated to Service-1. When "blue" is associated with an interface or route in another [`VirtualNetwork`](../../services.eda.nokia.com/resources/virtualnetwork.md) Service-2, an ID (e.g. 92) will be allocated from a `group-tag-pool-local` instance dedicated to Service-2. 
+For example a `GroupTag` "blue" is created with a local scope and `GroupTag` "blue" is associated with a [`BridgeInterface`](-{{ ref_app_doc('services', 'bridgeinterface') }}-) in [`VirtualNetwork`](-{{ ref_app_doc('services', 'virtualnetwork') }}-) Service-1, an ID (e.g. 64) will be allocated from a `group-tag-pool-local` instance dedicated to Service-1. When "blue" is associated with an interface or route in another [`VirtualNetwork`](-{{ ref_app_doc('services', 'virtualnetwork') }}-) Service-2, an ID (e.g. 92) will be allocated from a `group-tag-pool-local` instance dedicated to Service-2.
 The `GroupTag` "blue" can have different IDs in different scopes depending on the availability of indices in the pool instance. 
 
+## Dashboards
 
+Use the **Group Tags** dashboards to monitor tag allocation and scope usage.
+
+* **Summary** — counts of global and local group tags and how IDs are distributed across scopes
+* **Explorer** — detailed view of a selected `GroupTag` and scope, including the allocated Group Tag ID, referencing `MicroSegmentationPolicy`, and associated resources. Useful for:
+    * identifying inconsistencies, such as `GroupTags` that are not referenced in any `MicroSegmentationPolicy`
+    * reviewing all resources associated with a `GroupTag`, including bridge interfaces, routed interfaces, IRB interfaces, VLANs, and static routes
 
 ## Dependencies
 

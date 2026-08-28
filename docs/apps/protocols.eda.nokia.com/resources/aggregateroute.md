@@ -36,9 +36,11 @@ In the example above `10.0.1.0/24` is a static route, and `10.0.2.0/24` is recei
 
 All three routes are advertised to other BGP peers, unless the property `summaryOnly` property is set to `true`: in this case only the aggregate route `10.0.0.0/22` is advertised.
 
-!!! note "Non-matching traffic"
+/// admonition | Non-matching traffic
+    type: note
 
-    Traffic towards an IP that matches the aggregate route, but not a more specific route, is blackholed. In our example, the node would attract traffic for destination IP `10.0.3.123`, but would discard the packet when it arrives.
+Traffic towards an IP that matches the aggregate route, but not a more specific route, is blackholed. In our example, the node would attract traffic for destination IP `10.0.3.123`, but would discard the packet when it arrives.
+///
 
 > To set up aggregate routes in the default VRF, use [`DefaultAggregateRoute`](defaultaggregateroute.md) instead.
 
@@ -46,17 +48,17 @@ All three routes are advertised to other BGP peers, unless the property `summary
 
 To configure this resource, the following resources must exist or be created alongside the `AggregateRoute`
 
-* The [`Router`](../../services.eda.nokia.com/resources/router.md) in which the static route will be configured
+* The [`Router`](-{{ ref_app_doc('services', 'router') }}-) in which the static route will be configured
 
 ## Referenced resources
 
-### [`Router`](../../services.eda.nokia.com/resources/router.md)
+### [`Router`](-{{ ref_app_doc('services', 'router') }}-)
 
-Aggregate route prefixes configured in the `AggregateRoute` resource are only configured in the VRF of the linked [`Router`](../../services.eda.nokia.com/resources/router.md) resource. Note that the aggregate route is only installed and becomes active if at least one more specific route installed in the VRF routing table. 
+Aggregate route prefixes configured in the `AggregateRoute` resource are only configured in the VRF of the linked [`Router`](-{{ ref_app_doc('services', 'router') }}-) resource. Note that the aggregate route is only installed and becomes active if at least one more specific route installed in the VRF routing table.
 
 ### `TopoNode`
 
-Optionally, a list of nodes can be provided on which the aggregate route is configured. If no nodes are specified, EDA will deploy the aggregate route on **ALL** nodes that the [`Router`](../../services.eda.nokia.com/resources/router.md) is configured on.
+Optionally, a list of nodes can be provided on which the aggregate route is configured. If no nodes are specified, EDA will deploy the aggregate route on **ALL** nodes that the [`Router`](-{{ ref_app_doc('services', 'router') }}-) is configured on.
 
 ## Examples
 

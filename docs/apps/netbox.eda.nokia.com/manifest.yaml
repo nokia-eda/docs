@@ -1,0 +1,104 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: netbox
+spec:
+  group: netbox.eda.nokia.com
+  version: v1alpha1
+  title: NetBox
+  description: Create EDA allocations from NetBox.
+  image: ghcr.io/nokia-eda/apps/netbox:v7.0.0
+  author: Nokia
+  gitPathPrefix: /
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: netbox/README.md
+    documentation: netbox/docs
+    license: LICENSE
+    screenshots:
+      - netbox/assets/netbox-logo.png
+    categories:
+      - "integrations"
+    settings: netbox/settings/openapi/eda_oas_netbox.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: netbox/crds/netbox.eda.nokia.com_allocations.yaml
+        schema: netbox/openapiv3/eda_oas_netbox.eda.nokia.com_allocations.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: NetBox
+          name: Allocation
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: netbox/crds/netbox.eda.nokia.com_instances.yaml
+        schema: netbox/openapiv3/eda_oas_netbox.eda.nokia.com_instances.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: NetBox
+          name: Instance
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: netbox/crds/netbox.eda.nokia.com_applyallocations.yaml
+        schema: netbox/openapiv3/eda_oas_netbox.eda.nokia.com_applyallocations.json
+        namespaced: true
+        workflow: true
+        api:
+          expose: readWrite
+        ui:
+          name: Apply Allocation
+          category: NetBox
+    - crd:
+        path: netbox/crds/netbox.eda.nokia.com_applytopologies.yaml
+        schema: netbox/openapiv3/eda_oas_netbox.eda.nokia.com_applytopologies.json
+        namespaced: true
+        workflow: true
+        api:
+          expose: readWrite
+        ui:
+          name: Apply Topology
+          category: NetBox
+    - cr:
+        path: netbox/workflows/applyallocation/core_v1_flowdefinition.yaml
+    - cr:
+        path: netbox/workflows/applytopology/core_v1_flowdefinition.yaml
+    - cr:
+        path: netbox/manifests/deployment.yaml
+    - cr:
+        path: netbox/alarms/alarms.yaml
+  requirements:
+    - appId: topologies.eda.nokia.com
+      version: v7.0.0
+  dependencies:
+    - container:
+        name: netboxcontroller
+        image: registry.eda.dev/netbox/operators/controller:latest
+    - container:
+        image: registry.eda.dev/netbox/workflows/applyallocation:latest
+        name: applyallocation
+    - container:
+        image: registry.eda.dev/netbox/workflows/applytopology:latest
+        name: applytopology
+    - file:
+        path: netbox/api

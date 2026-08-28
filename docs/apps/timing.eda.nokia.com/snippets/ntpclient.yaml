@@ -1,1 +1,14 @@
-# Add an example
+apiVersion: timing.eda.nokia.com/v1
+kind: NTPClient
+metadata:
+  name: ntpclient
+  namespace: timing
+spec:
+  routerKind: Router
+  servers:
+    - iBurst: true
+      preferred: true
+      server: 10.0.100.101
+  sourceInterfaceKind: IRBInterface
+  sourceInterface: inband-mgmt-bd-irb
+  router: inband-mgmt-router

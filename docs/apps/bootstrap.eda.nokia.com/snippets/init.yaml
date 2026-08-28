@@ -1,1 +1,13 @@
-# Add an example
+apiVersion: bootstrap.eda.nokia.com/v1
+kind: Init
+metadata:
+  labels:
+    eda.nokia.com/bootstrap: 'true'
+  name: init-base
+  namespace: eda
+spec:
+  mgmt:
+    staticRoutes:
+      - prefix: 172.19.255.0/24
+        nextHop: 172.16.100.100
+    ipMTU: 1400

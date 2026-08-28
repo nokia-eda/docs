@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: sflows.flowsampling.eda.nokia.com
 spec:
   group: flowsampling.eda.nokia.com
@@ -73,12 +73,18 @@ spec:
                       items:
                         type: string
                       type: array
+                      x-kubernetes-list-type: set
                   required:
                   - address
                   - routerKind
                   type: object
                 minItems: 1
                 type: array
+                x-kubernetes-list-map-keys:
+                - address
+                - port
+                - routerKind
+                x-kubernetes-list-type: map
               dscp:
                 description: DSCP value to use for sFlow packets. If not specified,
                   the system default DSCP value is used.
@@ -93,6 +99,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               interfaces:
                 description: Specifies a list of Interfaces on which to enable sFlow
                   sampling. If both Interfaces and InterfaceSelector are used, the
@@ -100,6 +107,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               mode:
                 default: Ingress
                 description: Specifies the sampling mode (ingress, egress, or both)
@@ -114,7 +122,7 @@ spec:
                 default: 1048576
                 description: 'Sampling rate. For example, a value of 16384 means that
                   one out of every 16384 packets is sampled. [Default: 1048576]'
-                format: int32
+                format: int64
                 minimum: 1
                 type: integer
               sampleSizeBytes:
@@ -150,6 +158,8 @@ spec:
                 type: array
               health:
                 description: Indicates the health score of the SFlow.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.

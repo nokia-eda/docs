@@ -14,15 +14,35 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-!!! info "Documentation coming soon!"
+The `ManagementRouter` enables a node to communicate with other network nodes through its management port, which may be an out-of-band or an in-band port. It is often connected to a separate physical or virtual (VLAN) network used to manage the nodes.
 
-<!-- ## Dependencies
+/// admonition
+    type: warning
 
-..
+The `ManagementRouter` is created by the [`Init`](./init.md) resource. It should not be necessary to create this resource manually.
+///
+
+
+## Management network instance name
+
+On each node, EDA configures a single management network instance. The instance name is fixed per operating system and must not be reused as the name of a virtual router service.
+
+- **SR Linux**: `mgmt`
+- **SR OS**: `management`
+- **Cumulus**: N/A
+- **EOS**: N/A
+- **Junos**: `mgmt_junos`
+- **Nexus**: N/A
+
+## Dependencies
+
+### `TopoNode`
+
+Nodes can be selected with a label selector or listed by name. If neither is provided, the management network instance is configured on all `TopoNode` resources.
 
 ## Referenced resources
 
-..
+The `ManagementRouter` does not reference any other EDA resources.
 
 ## Examples
 
@@ -42,7 +62,7 @@ cat << 'EOF' | kubectl apply -f -
 EOF
 ```
 
-/// -->
+///
 
 ## Custom Resource Definition
 

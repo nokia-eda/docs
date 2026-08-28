@@ -1,1 +1,15 @@
-# Add an example
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: Policy
+metadata:
+  name: process-tagged-routes
+  namespace: routingpolicies
+spec:
+  defaultAction:
+    policyResult: Accept
+  statements:
+    - action:
+        policyResult: Reject
+      match:
+        tags:
+          tagSet: no-export
+      name: reject routes with no-export tag

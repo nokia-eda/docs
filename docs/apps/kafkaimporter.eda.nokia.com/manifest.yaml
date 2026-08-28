@@ -1,0 +1,64 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: kafka-importer
+spec:
+  group: kafkaimporter.eda.nokia.com
+  version: v1alpha1
+  title: Kafka Importer
+  author: Nokia
+  description: Import data into EDB from Kafka brokers
+  image: ghcr.io/nokia-eda/apps/kafkaimporter:v7.0.0
+  gitPathPrefix: /
+  supportedEndpoints:
+    - "srl:0.0.0"
+    - "srl:23.7.1"
+    - "srl:23.10.*"
+    - "srl:24.*"
+    - "sros:23.7.r1"
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: kafkaimporter/README.md
+    documentation: kafkaimporter/docs
+    license: LICENSE
+    screenshots:
+      - kafkaimporter/assets/screenshot1.png
+    categories:
+      - "integrations"
+    settings: kafkaimporter/settings/openapi/eda_oas_kafkaimporter.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: kafkaimporter/crds/kafkaimporter.eda.nokia.com_consumers.yaml
+        schema: kafkaimporter/openapiv3/eda_oas_kafkaimporter.eda.nokia.com_consumers.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: Kafka
+          name: Consumer
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: kafkaimporter/crds/kafkaimporter.eda.nokia.com_clusterconsumers.yaml
+        schema: kafkaimporter/openapiv3/eda_oas_kafkaimporter.eda.nokia.com_clusterconsumers.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: Kafka
+          name: Cluster Consumer
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - cr:
+        path: kafkaimporter/manifests/webhook.yaml
+    - cr:
+        path: kafkaimporter/manifests/deployment.yaml
+  dependencies:
+    - container:
+        name: kafkaimportercontroller
+        image: registry.eda.dev/kafkaimporter/operators/controller:latest
+    - file:
+        path: kafkaimporter/api

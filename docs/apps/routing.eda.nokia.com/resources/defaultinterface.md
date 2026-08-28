@@ -16,17 +16,21 @@ icon: auto-crd
 
 The `DefaultInterface` resource links an `Interface` to the [`DefaultRouter`](./defaultrouter.md), with the addition of an optional VLAN tag. It can be configured with an IP-Prefix or IPv6 unnumbered, which configures the IP that will be associated with the interface. 
 
-!!! tip "Best deployed as part of a Fabric"
+/// admonition | Best deployed as part of a Fabric
+    type: tip
 
-    When possible, we recommend that you deploy this resource through a [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md) which automatically creates two `DefaultInterfaces` for every [inter-switch link](../../fabrics.eda.nokia.com/resources/isl.md): one on each side of the `Link`.
+When possible, we recommend that you deploy this resource through a [`Fabric`](-{{ ref_app_doc('fabrics', 'fabric') }}-) which automatically creates two `DefaultInterfaces` for every [inter-switch link](-{{ ref_app_doc('fabrics', 'isl') }}-): one on each side of the `Link`.
+///
 
 ## BFD
 
 BFD parameters can be configured on a `DefaultInterface`. The configured BFD session will monitor the neighboring interface, improving the fault detection time significantly if there is layer-2-only equipment in between the two switches.
 
-??? question "Not seeing BFD sessions being established?"
+/// details | Not seeing BFD sessions being established?
+    type: question
 
-    BFD requires a protocol to subscribe before a BFD session is created. This could be either a static route, a BGP peer, or OSPF neighbor. For example, a [`BGPPeer`](../../protocols.eda.nokia.com/resources/bgppeer.md) with BFD enabled will only establish a session with its peer if the underlying [`DefaultInterface`](./defaultinterface.md) has BFD enabled as well, and vice versa.
+BFD requires a protocol to subscribe before a BFD session is created. This could be either a static route, a BGP peer, or OSPF neighbor. For example, a [`BGPPeer`](-{{ ref_app_doc('protocols', 'bgppeer') }}-) with BFD enabled will only establish a session with its peer if the underlying [`DefaultInterface`](./defaultinterface.md) has BFD enabled as well, and vice versa.
+///
 
 ## Dependencies
 

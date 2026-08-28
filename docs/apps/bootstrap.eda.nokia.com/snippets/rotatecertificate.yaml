@@ -1,1 +1,10 @@
-# Add an example
+apiVersion: bootstrap.eda.nokia.com/v1
+kind: RotateCertificate
+metadata:
+  name: rotatecertificate-8e72bf0d-eac8-45ca-94c8-8c4066ce37f0
+  namespace: eda
+spec:
+  nodeSelectors:
+    - eda.nokia.com/role = leaf
+    - eda.nokia.com/role = spine
+  skipCertificateValidation: false

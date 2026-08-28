@@ -20,9 +20,11 @@ The `DefaultRouter` resource is an abstraction for the main network instance of 
 - Establishes transport tunnels like VxLAN and MPLS tunnels
 - Originates and advertises MP-BGP service routes like EVPN and BGP-IPVPN routes
 
-!!! tip "Best deployed as part of a Fabric"
+/// admonition | Best deployed as part of a Fabric
+    type: tip
 
-    When possible, we recommend that you deploy this resource through a [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md) which automatically creates a `DefaultRouter` for every node in the [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md).
+When possible, we recommend that you deploy this resource through a [`Fabric`](-{{ ref_app_doc('fabrics', 'fabric') }}-) which automatically creates a `DefaultRouter` for every node in the [`Fabric`](-{{ ref_app_doc('fabrics', 'fabric') }}-).
+///
 
 The `DefaultRouter` resource is the representation of a routing table, which receives IPv4 and IPv6 routes from attached [`DefaultInterfaces`](./defaultinterface.md), [`SystemInterfaces`](./systeminterface.md), and BGP neighbors. In addition, it contains the service routes originating from bridged and routed interfaces connected to virtual network services.
 
@@ -41,9 +43,11 @@ If BGP is used as a protocol to exchange routes from the default router to its n
 
 Most of the properties of the BGP container can be overridden by BGP peers and BGP groups (set of BGP peers that share common parameters). Nevertheless, it is useful to have default values specified in the `DefaultRouter` resource and to enable all BGP address families that will be exchanged in your network, even if not every BGP peer will be used to exchange all of these families. 
 
-!!! important "Autonomous system number"
+/// admonition | Autonomous system number
+    type: important
 
-    On Nokia SR OS, the autonomous system number must be present in the `DefaultRouter`, even if it is overridden in the BGP peer. Without it, BGP sessions will appear as down and no routes will be exchanged.
+On Nokia SR OS, the autonomous system number must be present in the `DefaultRouter`, even if it is overridden in the BGP peer. Without it, BGP sessions will appear as down and no routes will be exchanged.
+///
 
 ## Route leaking
 
@@ -61,13 +65,13 @@ A `DefaultRouter` is always linked to exactly one node. The `TopoNode` resource 
 
 ## Referenced resources
 
-### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
+### [`Policy`](-{{ ref_app_doc('routingpolicies', 'policy') }}-)
 
-Import and export [routing policies](../../routingpolicies.eda.nokia.com/resources/policy.md) can be configured for [route leaking](#route-leaking) purposes or as global parameters for [BGP](#bgp) peering sessions. 
+Import and export [routing policies](-{{ ref_app_doc('routingpolicies', 'policy') }}-) can be configured for [route leaking](#route-leaking) purposes or as global parameters for [BGP](#bgp) peering sessions.
 
-### [`Keychain`](../../security.eda.nokia.com/resources/keychain.md)
+### [`Keychain`](-{{ ref_app_doc('security', 'keychain') }}-)
 
-BGP keychains contain authentication parameters to secure communication between two BGP peers. If a [`Keychain`](../../security.eda.nokia.com/resources/keychain.md) is configured in the `DefaultRouter`, every BGP peer established on a [`DefaultInterface`](./defaultinterface.md) will use it to authenticate the neighbor unless it is overridden at the group or peer level.
+BGP keychains contain authentication parameters to secure communication between two BGP peers. If a [`Keychain`](-{{ ref_app_doc('security', 'keychain') }}-) is configured in the `DefaultRouter`, every BGP peer established on a [`DefaultInterface`](./defaultinterface.md) will use it to authenticate the neighbor unless it is overridden at the group or peer level.
 
 ## Examples
 

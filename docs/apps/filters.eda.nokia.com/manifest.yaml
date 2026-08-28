@@ -8,7 +8,7 @@ spec:
   title: Filters
   description: |
     This application provides resources relating to filtering for various Network Operating Systems.
-  image: ghcr.io/nokia-eda/apps/filters:v6.999.0
+  image: ghcr.io/nokia-eda/apps/filters:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -30,7 +30,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: filters/crds/filters.eda.nokia.com_filters.yaml

@@ -1,0 +1,97 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: applytopologies.netbox.eda.nokia.com
+spec:
+  group: netbox.eda.nokia.com
+  names:
+    kind: ApplyTopology
+    listKind: ApplyTopologyList
+    plural: applytopologies
+    singular: applytopology
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ApplyTopology is the Schema for the applytopologies API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ApplyTopologySpec defines the desired state of ApplyTopology
+            properties:
+              deviceTags:
+                description: |-
+                  Tags to filter Devices to sync.
+                  It not set all Devices in the Site are synced.
+                  kubebuilder:validation:Optional
+                items:
+                  items:
+                    type: string
+                  type: array
+                type: array
+              dryRun:
+                default: false
+                description: Maps to the Dry Run field in the Checks struct of the
+                  NetworkTopology CR.
+                type: boolean
+              instanceName:
+                description: Netbox instance reference
+                type: string
+              netboxClientTimeoutMinutes:
+                default: 5
+                description: |-
+                  NetboxClientTimeoutMinutes is the HTTP client timeout in minutes for calls to
+                  the netbox controller — the createNetTopology POST (which synchronously fetches
+                  from external NetBox and builds the topology payload) and the cleanup DELETE.
+                  Defaults to 5 minutes. Bounded by the same 24-hour job TTL ceiling.
+                format: int32
+                maximum: 1440
+                minimum: 1
+                type: integer
+              networkTopologyTimeoutMinutes:
+                default: 5
+                description: |-
+                  NetworkTopologyTimeoutMinutes is the maximum time in minutes to wait for the
+                  NetworkTopology workflow to reach Success or Failed. Defaults to 5 minutes.
+                  The platform flow engine's 24-hour job TTL is the effective ceiling; values
+                  above 1440 are rejected.
+                format: int32
+                maximum: 1440
+                minimum: 1
+                type: integer
+              siteName:
+                description: |-
+                  Site name to sync Devices and Cables from.
+                  It not set the Namespace name is used.
+                type: string
+            required:
+            - instanceName
+            type: object
+          status:
+            description: ApplyTopologyStatus defines the observed state of ApplyTopology
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

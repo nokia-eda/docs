@@ -1,0 +1,64 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: nats-importer
+spec:
+  group: natsimporter.eda.nokia.com
+  version: v1alpha1
+  title: NATS Importer
+  author: Nokia
+  description: Import data into EDB from NATS servers
+  image: ghcr.io/nokia-eda/apps/natsimporter:v7.0.0
+  gitPathPrefix: /
+  supportedEndpoints:
+    - "srl:0.0.0"
+    - "srl:23.7.1"
+    - "srl:23.10.*"
+    - "srl:24.*"
+    - "sros:23.7.r1"
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: natsimporter/README.md
+    documentation: natsimporter/docs
+    license: LICENSE
+    screenshots:
+      - natsimporter/assets/logo.png
+    categories:
+      - "integrations"
+    settings: natsimporter/settings/openapi/eda_oas_natsimporter.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: natsimporter/crds/natsimporter.eda.nokia.com_subscribers.yaml
+        schema: natsimporter/openapiv3/eda_oas_natsimporter.eda.nokia.com_subscribers.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: NATS
+          name: Subscriber
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: natsimporter/crds/natsimporter.eda.nokia.com_clustersubscribers.yaml
+        schema: natsimporter/openapiv3/eda_oas_natsimporter.eda.nokia.com_clustersubscribers.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: NATS
+          name: Cluster Subscriber
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - cr:
+        path: natsimporter/manifests/webhook.yaml
+    - cr:
+        path: natsimporter/manifests/deployment.yaml
+  dependencies:
+    - container:
+        name: natsimportercontroller
+        image: registry.eda.dev/natsimporter/operators/controller:latest
+    - file:
+        path: natsimporter/api

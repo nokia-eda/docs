@@ -14,9 +14,11 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-??? abstract "A brief introduction to QoS"
+/// details | A brief introduction to QoS
+    type: abstract
 
-    Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+///
 
 The `PolicyAttachment` is a resource that configures [`IngressPolicies`](./ingresspolicy.md) and [`EgressPolicies`](./egresspolicy.md) on a subinterface.
 

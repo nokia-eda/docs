@@ -1,1 +1,14 @@
-# Add an example
+apiVersion: management.eda.nokia.com/v1
+kind: GRPCServer
+metadata:
+  name: grpc-server
+  namespace: eda
+spec:
+  enabled: true
+  metadataAuthentication: true
+  router: my-router
+  routerKind: Router
+  services:
+    - GNMI
+    - GNOI
+    - GNSI

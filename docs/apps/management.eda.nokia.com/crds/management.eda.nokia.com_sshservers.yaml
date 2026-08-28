@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: sshservers.management.eda.nokia.com
 spec:
   group: management.eda.nokia.com
@@ -48,6 +48,7 @@ spec:
                 type: boolean
               port:
                 description: Port for the SSH server to listen on.
+                format: int32
                 maximum: 65535
                 minimum: 1
                 type: integer
@@ -67,6 +68,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
             required:
             - enabled
             type: object
@@ -92,6 +94,8 @@ spec:
                 type: array
               health:
                 description: Health score of the SSH server.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Reason for the health score.
@@ -150,6 +154,7 @@ spec:
                 type: boolean
               port:
                 description: Port for the SSH server to listen on.
+                format: int32
                 maximum: 65535
                 minimum: 1
                 type: integer
@@ -194,6 +199,8 @@ spec:
                 type: array
               health:
                 description: Health score of the SSH server.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Reason for the health score.

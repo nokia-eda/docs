@@ -1,1 +1,32 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: IRBInterface
+metadata:
+  name: dhcp-domain-irb
+  namespace: eda
+spec:
+  bridgeDomain: dhcp-domain
+  evpnRouteAdvertisementType:
+    arpDynamic: false
+    arpStatic: false
+    ndDynamic: false
+    ndStatic: false
+  indexAllocation:
+    mode: GlobalPool
+  ipAddresses:
+    - ipv4Address:
+        anycast: true
+        ipPrefix: 192.168.0.1/24
+        primary: false
+    - ipv4Address:
+        anycast: false
+        ipPrefix: 192.168.0.11/24
+        primary: true
+      node: leaf1
+    - ipv4Address:
+        anycast: false
+        ipPrefix: 192.168.0.12/24
+        primary: true
+      node: leaf2
+  ipMTU: 1500
+  router: dhcp-router
+  virtualIPDiscovery: []

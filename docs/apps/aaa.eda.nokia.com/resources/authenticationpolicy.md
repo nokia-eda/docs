@@ -22,9 +22,11 @@ Using external authentication servers enables robust integration with existing p
 
 While this has obvious benefits, some network designs may require multiple authentication methods to be attempted. One of the most common use-cases for multiple authentication methods is the so-called "emergency access account".
 
-!!! info "Emergency access accounts"
+/// admonition | Emergency access accounts
+    type: info
 
-    If the centralized authentication servers become unreachable or compromised, users can no longer log into the network elements. An emergency access account is a locally configured user account that is not used during regular operation, but is a last resort for gaining access to the network elements.
+If the centralized authentication servers become unreachable or compromised, users can no longer log into the network elements. An emergency access account is a locally configured user account that is not used during regular operation, but is a last resort for gaining access to the network elements.
+///
 
 The `authenticationOrder` property of the `AuthenticationPolicy` determines which authentication methods are attempted, and in what order. For example:
 
@@ -33,6 +35,12 @@ The `authenticationOrder` property of the `AuthenticationPolicy` determines whic
 3. Finally, try local user authentication
 
 The `exitOnReject` boolean controls whether to continue to the next method after a rejection. When `exitOnReject` is `True`, a rejection from one authentication method stops the chain and no further methods are tried.
+
+/// admonition 
+    type: warning
+
+If the `exitOnReject` boolean is set to `True`, and the first authentication method fails to authenticate the node user which EDA uses to manage the node, deployment will fail and the commit will be automatically reverted as EDA will be unable to confirm the commit. It is recommended to test the authentication server connectivity before setting the `exitOnReject` property to `True`.
+///
 
 `exitOnReject` should be set to `True` when subsequent authentication methods must be used **only if** the servers in the current [`ServerGroup`](servergroup.md) are unreachable. When it is `False`, methods are tried in order until one accepts the authentication request or the list is exhausted. The following diagram illustrates the behavior when a **local user** 'admin' tries to log in:
 
@@ -47,6 +55,18 @@ flowchart LR
     Y[Deny access]
 ```
 
+## Password complexity rules
+
+It is possible to configure password complexity rules on the node using an `AuthenticationPolicy`, which may be required to adhere to government regulations.
+
+/// admonition
+    type: danger
+
+The `AuthenticationPolicy` does not check whether the passwords of users configured on the node adhere to the password complexity rules. As such, it is possible to get into a state where a node becomes unmanaged because EDA is trying to push a password to the node which does not comply to the password complexity rules.
+
+If setting password complexity rules on the node is absolutely necessary, ensure that **all** local node users are configured with a password that adheres to the password complexity rules.
+
+///
 
 ## Referenced resources
 

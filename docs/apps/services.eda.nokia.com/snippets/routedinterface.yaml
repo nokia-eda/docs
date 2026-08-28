@@ -1,1 +1,11 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: RoutedInterface
+metadata:
+  name: internet-gateway
+  namespace: scale-across
+spec:
+  interface: dc1-leaf-1-ethernet-1-8
+  ipMTU: 1500
+  router: compute-vrf
+  vlanID: '909'
+  vlanPool: vlan-pool

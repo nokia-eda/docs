@@ -14,8 +14,10 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-!!! info "Documentation coming soon!"
+/// admonition | Documentation coming soon!
+    type: info
 
+///
 <!-- ## Dependencies
 
 ..

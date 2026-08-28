@@ -14,9 +14,11 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-??? abstract "A brief introduction to QoS"
+/// details | A brief introduction to QoS
+    type: abstract
 
-    Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+///
 
 An `EgressPolicy` applies to packets that are egressing through a physical interface, and converts the internal [`ForwardingClass`](./forwardingclass.md) tag attached to the packet to the priority bits in the packet headers so packet prioritization is maintained end-to-end.
 
@@ -36,13 +38,15 @@ By default packets are dropped if there is no more room in the queue. This is fi
 - If the occupancy of the queue is above the maximum threshold, the packet is dropped.
 - If the occupancy of the queue is above the minimum, but below the maximum threshold, the packet has a chance to be dropped that increases as the queue becomes more occupied.
 
-??? example "Quick maths"
+/// details | Quick maths
+    type: example
 
-    The effective drop probability is calculated in accordance with the following formula:
+The effective drop probability is calculated in accordance with the following formula:
 
-    ```
-    ((maxThreshold - minThreshold) / queueOccupancy) * (maxProbability - 0%)
-    ```
+```
+((maxThreshold - minThreshold) / queueOccupancy) * (maxProbability - 0%)
+```
+///
 
 ## Rewrite policies
 

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: islstates.fabrics.eda.nokia.com
 spec:
   group: fabrics.eda.nokia.com
@@ -41,6 +41,12 @@ spec:
             properties:
               localInterface:
                 properties:
+                  IPv4Address:
+                    description: Local Interface IPv4 address
+                    type: string
+                  IPv6Address:
+                    description: Local Interface IPv4 address
+                    type: string
                   bgpPeerIPv4:
                     description: Reference to the IPV4 BGPPeer created for the local
                       peer
@@ -57,12 +63,13 @@ spec:
                     description: Reference to the dynamic IPV6 BGPPeer created for
                       the local peer
                     type: string
-                  ipv4Address:
-                    description: Local Interface IPv4 address
-                    type: string
-                  ipv6Address:
-                    description: Local Interface IPv4 address
-                    type: string
+                  isis:
+                    description: Reference to the ISIS State of the local interface
+                    properties:
+                      isisInterface:
+                        description: Reference to the ISIS Interface
+                        type: string
+                    type: object
                   node:
                     description: Reference to the TopoNode on which the local interface
                       is configured
@@ -100,6 +107,12 @@ spec:
                 type: array
               remoteInterface:
                 properties:
+                  IPv4Address:
+                    description: Remote Interface IPv4 address
+                    type: string
+                  IPv6Address:
+                    description: Remote Interface IPv4 address
+                    type: string
                   bgpPeerIPv4:
                     description: Reference to the IPV4 BGPPeer created for the remote
                       peer
@@ -116,12 +129,13 @@ spec:
                     description: Reference to the dynamic IPV6 BGPPeer created for
                       the remote peer
                     type: string
-                  ipv4Address:
-                    description: Remote Interface IPv4 address
-                    type: string
-                  ipv6Address:
-                    description: Remote Interface IPv4 address
-                    type: string
+                  isis:
+                    description: Reference to the ISIS State of the remote interface
+                    properties:
+                      isisInterface:
+                        description: Reference to the ISIS Interface
+                        type: string
+                    type: object
                   node:
                     description: Reference to the TopoNode on which the remote interface
                       is configured

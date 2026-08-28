@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: deployimages.os.eda.nokia.com
 spec:
   group: os.eda.nokia.com
@@ -92,6 +92,7 @@ spec:
                     description: |-
                       Seconds to wait before rebooting a node after it has been drained.
                       This is used to allow time for any traffic to drain away from the node before reboot.
+                    format: int64
                     type: integer
                   skip:
                     description: Do not run any drain operations. Nodes will be rebooted
@@ -130,6 +131,7 @@ spec:
               reconnectionTimeoutSeconds:
                 default: 600
                 description: Seconds to wait for node to come back online after reboot.
+                format: int64
                 type: integer
               tranches:
                 description: |-
@@ -340,6 +342,7 @@ spec:
                     description: |-
                       Seconds to wait before rebooting a node after it has been drained.
                       This is used to allow time for any traffic to drain away from the node before reboot.
+                    format: int64
                     type: integer
                   skip:
                     description: Do not run any drain operations. Nodes will be rebooted
@@ -378,6 +381,7 @@ spec:
               reconnectionTimeoutSeconds:
                 default: 600
                 description: Seconds to wait for node to come back online after reboot.
+                format: int64
                 type: integer
               tranches:
                 description: |-

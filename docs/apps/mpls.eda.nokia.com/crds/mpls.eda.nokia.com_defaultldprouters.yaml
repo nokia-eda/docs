@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: defaultldprouters.mpls.eda.nokia.com
 spec:
   group: mpls.eda.nokia.com
@@ -74,12 +74,14 @@ spec:
                   keepAliveHoldTimeSeconds:
                     description: Hold time (in seconds) for maintaining LDP session
                       in the absence of received KeepAlives.
+                    format: int32
                     maximum: 65535
                     minimum: 3
                     type: integer
                   keepAliveIntervalSeconds:
                     description: Keep-Alive interval (in seconds) for sending LDP
                       KeepAlive messages.
+                    format: int32
                     maximum: 65535
                     minimum: 1
                     type: integer
@@ -93,6 +95,7 @@ spec:
                 type: string
               labelWithdrawalDelaySeconds:
                 description: Label withdrawal delay time (in seconds).
+                format: int32
                 maximum: 120
                 minimum: 3
                 type: integer
@@ -111,12 +114,14 @@ spec:
                   helloHoldTimeSeconds:
                     description: Hold time (in seconds) for maintaining LDP Link Hello
                       adjacency in the absence of received Hellos.
+                    format: int32
                     maximum: 65535
                     minimum: 3
                     type: integer
                   helloIntervalSeconds:
                     description: Hello interval (in seconds) for sending LDP Link
                       Hello messages.
+                    format: int32
                     maximum: 65535
                     minimum: 1
                     type: integer
@@ -137,11 +142,13 @@ spec:
                 type: boolean
               maxECMP:
                 description: The maximum number of ECMP paths towards an LDP FEC.
+                format: int32
                 maximum: 64
                 minimum: 1
                 type: integer
               tunnelDownDampTimeSeconds:
                 description: Dampening time (in seconds) for a tunnel down event.
+                format: int32
                 maximum: 20
                 minimum: 0
                 type: integer
@@ -151,6 +158,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the LDP Router.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
