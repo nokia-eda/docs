@@ -217,7 +217,7 @@ If your browser can not resolve the `eda-api.k8s.orb.local` domain, you need to 
 
 -{{image(url="graphics/1180ab27_image.webp", padding=0, scale=0.8)}}-
 
-This non-production installation uses the Try EDA default credentials: `admin:admin`. Production installations using the standard installation procedure use randomized initial passwords; see [Credentials and secrets](../deploying-eda/installing-the-eda-application.md#credentials-and-secrets).
+The default Nokia EDA credentials are `admin:admin`.
 ///
 
 ## Tearing down

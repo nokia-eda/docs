@@ -141,7 +141,7 @@ If you prefer a video walkthrough that starts from the very beginning, we have y
     1. Instead of `10.10.1.1` IP you may see the IP address of the VM/Server where you installed EDA Playground or its hostname. You can use any address that resolves to the VM/Server hosting the Try EDA installation, not only the one printed in the terminal.
   
     Open your web browser and navigate to provided URL to access the EDA UI. As you would expect, credentials are required in order to log in.
-    Try EDA default[^6] credentials are:
+    The default credentials are as follow:
 
     * Username: `admin`  
     * Password: `admin`
@@ -245,4 +245,3 @@ The cpu-hours counter is reset at the beginning of each calendar month, so you c
 
 [^4]: Limited by the free tier offered by GitHub Codespaces.
 [^5]: The terms of the free plan may be subject to change, consult with the [official documentation](https://docs.github.com/en/billing/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#monthly-included-storage-and-core-hours-for-personal-accounts) for the current terms and conditions.
-[^6]: Production installations using the standard installation procedure use randomized initial passwords instead. For more information, see [Credentials and secrets](../software-install/deploying-eda/installing-the-eda-application.md#credentials-and-secrets).

@@ -6,7 +6,7 @@ As any modern platform, EDA's UI is an API client of the API server and uses the
 
 While we applaud those who will choose to follow the tour using the API interface, for the most part we will use the UI in our examples. Chances are high that this will be your first time seeing and using the EDA UI, so let us give you a quick intro to what it looks like and how to use it.
 
-To access the EDA UI, open your web browser and navigate to the URL displayed at the end of the ["Try EDA" installation process](../getting-started/try-eda.md). For Try EDA, log in using the default administrator credentials: `admin` as the username and `admin` as the password.
+To access the EDA UI, open your web browser and navigate to https URL displayed at the end of the ["Try EDA" installation process](../getting-started/try-eda.md). Log in using the default administrator credentials - `admin` as username and `admin` as password.
 
 ## Main page
 

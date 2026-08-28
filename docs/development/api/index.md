@@ -70,7 +70,7 @@ Every EDA deployment gets a unique client secret token generated during installt
 /// tab | UI
 
 * Navigate to `https://{EDA_URL}/core/httpproxy/v1/keycloak` in your browser.
-* Log in with the Keycloak administrator username and password. The username is `admin`; on a standard new installation, use the [generated password](../../software-install/deploying-eda/installing-the-eda-application.md#credentials-and-secrets). [Try EDA](../../getting-started/try-eda.md) installations use `admin:admin` as the Keycloak administrator credentials.
+* Log in with the Keycloak administrator username and password (default is `admin:admin` and can be changed).
 * From the **Keycloak** drop-down list on the upper left, select **Event Driven Automation** (eda).
 * Select **Clients** from the menu on the left.
 * Select **eda** in the client table.
@@ -112,7 +112,7 @@ In case you're using [Ansible collections for Nokia EDA](https://ansible.eda.dev
 With the client secret obtained from the previous step, an API client can now request an access token from Keycloak. Below you will find different ways of getting the token:
 
 /// tab | curl
-An example of using `curl` to authenticate and get an access token for the EDA API. Make sure to use your own EDA URL, EDA credentials, and Keycloak client secret. For a standard new installation, use the [generated at installation time](../../software-install/deploying-eda/installing-the-eda-application.md#credentials-and-secrets) EDA admin password.
+An example of using `curl` to authenticate and get an access token for the EDA API. Make sure to use your own EDA URL and Keycloak client secret.
 
 ```bash
 curl -s https://${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
@@ -120,9 +120,9 @@ curl -s https://${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/op
   --data-urlencode 'client_id=eda' \
   --data-urlencode 'grant_type=password' \
   --data-urlencode 'scope=openid' \
-  --data-urlencode "username=${EDA_USERNAME}" \
-  --data-urlencode "password=${EDA_PASSWORD}" \
-  --data-urlencode "client_secret=${EDA_CLIENT_SECRET}"
+  --data-urlencode 'username=${EDA_USERNAME}' \
+  --data-urlencode 'password=${EDA_PASSWORD}' \
+  --data-urlencode 'client_secret=${EDA_CLIENT_SECRET}'
 ```
 
 //// details | Example output parsed using `jq`
@@ -135,7 +135,7 @@ curl -s https://${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/op
   --data-urlencode 'grant_type=password' \
   --data-urlencode 'scope=openid' \
   --data-urlencode 'username=admin' \
-  --data-urlencode "password=${EDA_PASSWORD}" \
+  --data-urlencode 'password=admin' \
   --data-urlencode 'client_secret=9eGhwdAaox8bQ5DnfuUHuQTbOxhJxUwg' | jq -S
 {
   "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJBTHBheFhxanhaYmY5Vy1Pb3JpVnoxSUNTUV9SLUNrc05jZzVGRGFadUI0In0.eyJleHAiOjE3MzM5OTMyNDcsImlhdCI6MTczMzk5Mjk0NywianRpIjoiZjExZTdmM2UtMzFkNi00NTQ0LWE3MDUtMjA2Mzg0ZTYyYmNiIiwiaXNzIjoiaHR0cHM6Ly9wbG0tc2Itazgubm92YWxvY2FsOjk0NDMvY29yZS9odHRwcHJveHkvdjEva2V5Y2xvYWsvcmVhbG1zL2VkYSIsInN1YiI6ImYyYTc1MDM1LTU2YTUtNGJhMC1iZTliLTUzZTEzNTEyNTliZSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImVkYSIsInNpZCI6ImYyZTU1YjQ2LWRiN2YtNGIwMi05ZTIwLTc2YTc2YWE0MDYwMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImVkYXJvbGVfc3lzdGVtLWFkbWluaXN0cmF0b3IiLCJhZG1pbiJdfSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkVEQSBhZG1pbiB1c2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiRURBIiwiZmFtaWx5X25hbWUiOiJhZG1pbiB1c2VyIn0.ZH2vO1sbxm4tke2bE1fUdUbkCtHYo3bFUZpr0J46GL0lGpyIf0LkxOnosatjpLCQl7-CpExhZCv11SmUM6W6c4DoX6d90PKeC-t-GoSKshAxGIh7njtFt1_dYAf1NgF4EGOQMPINj-_n4igjU22Ef7aU8c05m-QkbIPykYFJ0BefqG_H8A1QzNvntADrEfrpHAudGFxB1Ei5FpBxIRfqX40B7_9brzWMlrRRXeWA9i-JVe-6JXQxTTqRKAF9sWGllTA-vbcl-MZ1WsGcC8yS-KQ9nyTrqkwT4Sh06Z7s8IpqBNPEcVJ8p_X65bblGoRKrXMSD0zEXM2zTsJRGd6JVA",
