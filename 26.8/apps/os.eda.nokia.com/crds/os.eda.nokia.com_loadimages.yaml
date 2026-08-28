@@ -1,0 +1,138 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: loadimages.os.eda.nokia.com
+spec:
+  group: os.eda.nokia.com
+  names:
+    kind: LoadImage
+    listKind: LoadImageList
+    plural: loadimages
+    singular: loadimage
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: LoadImage is the Schema for the loadimages API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: LoadImageSpec defines the desired state of LoadImage
+            properties:
+              nodeProfile:
+                description: |-
+                  Destination profile to use for imaging.
+                  This profile contains the image to deploy, and other configuration for the node.
+                type: string
+              nodeSelectors:
+                description: |-
+                  List of node selectors to select nodes to down/upload images on.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes to down/upload images on.
+                items:
+                  type: string
+                type: array
+              options:
+                default:
+                  activate: true
+                description: Options for loading images.
+                properties:
+                  activate:
+                    default: true
+                    description: |-
+                      Activate the image after loading.
+                      The no_reboot option will be set to true for the gNOI OS Activate RPC, so the node will not be rebooted after activation.
+                       It is expected to run the RebootNode workflow separately to handle reboots after images are loaded and activated.
+                    type: boolean
+                  force:
+                    default: false
+                    description: |-
+                      Force reloading the image even when the node is already at the target version.
+                      Useful for 0.0.0 builds and patch releases.
+                    type: boolean
+                type: object
+            required:
+            - nodeProfile
+            type: object
+          status:
+            description: LoadImageStatus defines the observed state of LoadImage
+            properties:
+              details:
+                description: Per-node image deployment details.
+                items:
+                  description: LoadImageResultDetail defines per-node details of the
+                    image loading operation, such as which images were loaded on which
+                    nodes, and any errors that occurred during the operation.
+                  properties:
+                    error:
+                      description: Error message if the operation was unsuccessful
+                        for this node.
+                      type: string
+                    image:
+                      description: |-
+                        Displays the image that was loaded on the node.
+                        If the operation was unsuccessful, this contains the image that was attempted to be loaded.
+                      type: string
+                    node:
+                      description: The name of the node this result is for.
+                      type: string
+                    operatingSystem:
+                      description: Displays the operating system of the Node.
+                      type: string
+                    success:
+                      description: |-
+                        Indicates if the imaging operation was successful for this node.
+                        This is true if the imaging operation was successful, false if it failed.
+                      type: boolean
+                    version:
+                      description: Displays the software version of the Image that
+                        was loaded on the node.
+                      type: string
+                  type: object
+                type: array
+              result:
+                description: |-
+                  Result is the overall result of the image operation.
+                  It can be one of the following values:
+                  - "Success": All images were successfully deployed.
+                  - "Failed": No images were successfully deployed.
+                  - "PartialSuccess": Some images were successfully deployed, but not all.
+                enum:
+                - Success
+                - Failed
+                - PartialSuccess
+                type: string
+            required:
+            - result
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

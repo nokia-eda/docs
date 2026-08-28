@@ -1,0 +1,179 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: isisinterfaces.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: ISISInterface
+    listKind: ISISInterfaceList
+    plural: isisinterfaces
+    singular: isisinterface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: ISISInterface is the Schema for the isisinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ISISInterfaceSpec defines the desired state of ISISInterface
+            properties:
+              bfd:
+                description: Configure BFD on the IS-IS interface.
+                properties:
+                  bfdEnabledTLV:
+                    description: Use the BFD-Enabled TLV for establishing adjacencies
+                      on this interface.
+                    type: boolean
+                  enabledAddressFamilies:
+                    description: Enables BFD on the IS-IS interface using the specified
+                      address families (IPv4 and/or IPv6).
+                    items:
+                      enum:
+                      - IPv4
+                      - IPv6
+                      type: string
+                    minItems: 1
+                    type: array
+                    x-kubernetes-list-type: set
+                required:
+                - enabledAddressFamilies
+                type: object
+              interface:
+                description: Reference to a RoutedInterface or IRBInterface.
+                type: string
+              interfaceKind:
+                default: RoutedInterface
+                description: Reference to the Kind of interface to enable IS-IS on.
+                enum:
+                - RoutedInterface
+                - IRBInterface
+                type: string
+              isisInstance:
+                description: Reference to an IS-IS Instance on which the interface
+                  is configured.
+                type: string
+              level:
+                default: L2
+                description: IS-IS interface level capability.
+                enum:
+                - L1
+                - L2
+                - L1L2
+                type: string
+              level1:
+                description: IS-IS Level 1 Configuration.
+                properties:
+                  metric:
+                    description: Interface metric for this level.
+                    format: int32
+                    maximum: 16777215
+                    minimum: 1
+                    type: integer
+                type: object
+              level2:
+                description: IS-IS Level 2 Configuration.
+                properties:
+                  metric:
+                    description: Interface metric for this level.
+                    format: int32
+                    maximum: 16777215
+                    minimum: 1
+                    type: integer
+                type: object
+              passive:
+                default: false
+                description: Configure the IS-IS interface as passive.
+                type: boolean
+              type:
+                default: PointToPoint
+                description: IS-IS interface type.
+                enum:
+                - PointToPoint
+                - Broadcast
+                type: string
+            required:
+            - isisInstance
+            type: object
+          status:
+            description: ISISInterfaceStatus defines the observed state of ISISInterface
+            properties:
+              adjacencies:
+                description: Neighbor adjacencies within the IS-IS interface.
+                items:
+                  properties:
+                    adjacencyState:
+                      description: Adjacency state of the IS-IS neighbor.
+                      type: string
+                    level:
+                      description: IS-IS level of the adjacency.
+                      enum:
+                      - L1
+                      - L2
+                      - L1L2
+                      type: string
+                    neighborIPv4Address:
+                      description: Neighbor IPv4 address.
+                      type: string
+                    neighborIPv6Address:
+                      description: Neighbor IPv6 address.
+                      type: string
+                    neighborSystemID:
+                      description: System ID of the IS-IS neighbor.
+                      type: string
+                  type: object
+                type: array
+              health:
+                description: Indicates the health score of the IS-IS interface.
+                format: int32
+                maximum: 100
+                minimum: 0
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the IS-IS interface.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

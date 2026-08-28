@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: islpings.fabrics.eda.nokia.com
 spec:
   group: fabrics.eda.nokia.com
@@ -58,6 +58,7 @@ spec:
               count:
                 default: 1
                 description: Count is the number of pings to send.
+                format: int64
                 type: integer
               islSelectors:
                 description: |-
@@ -66,15 +67,18 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               isls:
                 description: Inter-Switch Links is a list of named ISL resources to
                   execute ISL pings for.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               timeoutSeconds:
                 default: 5
                 description: TimeoutSeconds is the timeout for the ping in seconds.
+                format: int64
                 type: integer
             type: object
           status:
@@ -103,9 +107,11 @@ spec:
                           type: integer
                         received:
                           description: Number of pings received.
+                          format: int64
                           type: integer
                         sent:
                           description: Number of pings sent.
+                          format: int64
                           type: integer
                         stdDevNanoseconds:
                           description: Standard deviation of time taken for all pings.
@@ -139,10 +145,15 @@ spec:
                   - "Success": All pings were successful.
                   - "Failed": No pings were successful.
                   - "PartialSuccess": Some pings were successful, but not all.
+                  - "Degraded": The result for this run is failure when compared with a previous Success or PartialSuccess run.
                 enum:
                 - Success
                 - Failed
                 - PartialSuccess
+                - Degraded
+                type: string
+              summary:
+                description: Summary is the result summary of the ping operation.
                 type: string
             type: object
         type: object
@@ -197,6 +208,7 @@ spec:
               count:
                 default: 1
                 description: Count is the number of pings to send.
+                format: int64
                 type: integer
               islSelectors:
                 description: |-
@@ -214,6 +226,7 @@ spec:
               timeoutSeconds:
                 default: 5
                 description: TimeoutSeconds is the timeout for the ping in seconds.
+                format: int64
                 type: integer
             type: object
           status:
@@ -242,9 +255,11 @@ spec:
                           type: integer
                         received:
                           description: Number of pings received.
+                          format: int64
                           type: integer
                         sent:
                           description: Number of pings sent.
+                          format: int64
                           type: integer
                         stdDevNanoseconds:
                           description: Standard deviation of time taken for all pings.

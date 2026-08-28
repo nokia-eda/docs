@@ -1,0 +1,297 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: notifications.discord.eda.nokia.com
+spec:
+  group: discord.eda.nokia.com
+  names:
+    kind: Notification
+    listKind: NotificationList
+    plural: notifications
+    shortNames:
+    - noti
+    singular: notification
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=="Ready")].status
+      name: Ready
+      type: string
+    - jsonPath: .status.delivered
+      name: Delivered
+      type: integer
+    - jsonPath: .status.lastDelivered
+      name: LastDelivered
+      priority: 1
+      type: date
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Notification is the Schema for the notifications API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NotificationSpec defines the desired state of Notification.
+            properties:
+              botRef:
+                description: |-
+                  Bot to deliver the notification through. The bot determines the
+                  target Discord server.
+                type: string
+              buttons:
+                description: |-
+                  Buttons attached to every message produced by this Notification.
+                  Up to 25 (5 action rows of 5). Buttons let users acknowledge
+                  alarms, drill into details via EQL/HTTP, or trigger workflows
+                  directly from the Discord message.
+                items:
+                  description: |-
+                    NotificationButton is a Discord message component (button) attached to
+                    every message produced by this Notification. Buttons cannot exceed
+                    Discord limits: 5 action rows of 5 buttons each.
+                  properties:
+                    action:
+                      description: |-
+                        Action executed when a user clicks the button. Required for any
+                        non-link style; ignored for style=link.
+                      properties:
+                        ackAlarm:
+                          description: Acknowledge the alarm or query row that triggered
+                            the message.
+                          properties:
+                            comment:
+                              description: |-
+                                Optional comment to attach to the alarm acknowledgement. Go
+                                template, evaluated against the click context (user, message).
+                              type: string
+                            disableAfterClick:
+                              default: true
+                              description: Disable the button after a successful ack.
+                              type: boolean
+                          type: object
+                        eql:
+                          description: |-
+                            Run an EQL query and reply (ephemeral by default) with the
+                            result.
+                          properties:
+                            eql:
+                              description: EQL query string.
+                              type: string
+                          required:
+                          - eql
+                          type: object
+                        http:
+                          description: Call an HTTP endpoint.
+                          properties:
+                            body:
+                              description: |-
+                                Request body (Go template, evaluated against the command
+                                invocation arguments).
+                              type: string
+                            headers:
+                              additionalProperties:
+                                type: string
+                              description: Request headers.
+                              type: object
+                            method:
+                              description: HTTP method.
+                              enum:
+                              - GET
+                              - POST
+                              - PUT
+                              - PATCH
+                              - DELETE
+                              type: string
+                            timeout:
+                              description: Per-request timeout.
+                              type: string
+                            url:
+                              description: Target URL.
+                              type: string
+                          required:
+                          - method
+                          - url
+                          type: object
+                        suppressAlarm:
+                          description: Suppress the alarm or query row that triggered
+                            the message.
+                          properties:
+                            comment:
+                              description: |-
+                                Optional comment to attach to the suppression. Go template,
+                                evaluated against the click context (user, message).
+                              type: string
+                            disableAfterClick:
+                              default: true
+                              description: Disable the button after a successful suppress.
+                              type: boolean
+                            duration:
+                              description: |-
+                                How long to suppress the alarm for, e.g. "30m", "4h", "24h".
+                                If empty, the alarm is suppressed indefinitely (until manually
+                                un-suppressed).
+                              type: string
+                          type: object
+                        workflow:
+                          description: Trigger an EDA workflow.
+                          properties:
+                            workflow:
+                              description: Reference to the workflow to trigger.
+                              type: string
+                          required:
+                          - workflow
+                          type: object
+                      type: object
+                    disabled:
+                      description: Render the button as disabled.
+                      type: boolean
+                    emoji:
+                      description: |-
+                        Optional emoji shown next to the label. Either a unicode emoji
+                        (e.g. "✅") or a Discord custom emoji in the form 'name:id'.
+                      type: string
+                    label:
+                      description: |-
+                        Display label shown on the button. Discord limits this to 80
+                        characters.
+                      maxLength: 80
+                      type: string
+                    style:
+                      description: |-
+                        Visual style of the button. 'link' opens .url in the browser and
+                        produces no interaction; the other styles call back into the bot
+                        with the configured action.
+                      enum:
+                      - primary
+                      - secondary
+                      - success
+                      - danger
+                      - link
+                      type: string
+                    url:
+                      description: Target URL for style=link. Mutually exclusive with
+                        .action.
+                      type: string
+                  required:
+                  - label
+                  - style
+                  type: object
+                maxItems: 25
+                type: array
+              channels:
+                description: |-
+                  Channel IDs to deliver the notification to. The server is
+                  implied by .spec.botRef (one bot is bound to one server). Each
+                  channel ID must be in the bot's .spec.allowedChannels. If empty,
+                  the bot uses its first allowed channel.
+                items:
+                  type: string
+                type: array
+              description:
+                description: A user provided description of this Notification.
+                type: string
+              enabled:
+                default: true
+                description: Enable or disable this Notification.
+                type: boolean
+              sources:
+                description: 'Trigger source: alarms and/or query.'
+                properties:
+                  alarms:
+                    description: Listen to EDA alarms.
+                    properties:
+                      exclude:
+                        description: |-
+                          A list of alarm types to exclude. If a source matches both
+                          include and exclude, it will be excluded.
+                          For example: 'InterfaceMemberDown'.
+                        items:
+                          type: string
+                        type: array
+                      include:
+                        description: |-
+                          A list of alarm types to listen to, matching the 'type' field
+                          within alarms. Use the '*' wildcard to include all alarms.
+                          For example: 'InterfaceDown'.
+                        items:
+                          type: string
+                        type: array
+                      namespaces:
+                        description: |-
+                          A list of namespaces to listen to. If empty, the notification will
+                          listen to all namespaces.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  query:
+                    description: Run a query and notify on each row of its results.
+                    properties:
+                      color:
+                        description: |-
+                          Color of notifications generated from this query. Web color names
+                          such as 'red', 'green', 'blue', 'yellow', 'purple', 'gray' are
+                          accepted; rendered as the embed accent in Discord.
+                        type: string
+                      fields:
+                        description: |-
+                          Fields to include in the query results, available to the
+                          template, e.g. '.node.name' or '.node.srl.interface.name'.
+                        items:
+                          type: string
+                        type: array
+                      table:
+                        description: The table to use for the query, e.g. '.namespace.node.srl.interface'.
+                        type: string
+                      template:
+                        description: |-
+                          Go template applied to each result row when sending notifications,
+                          e.g. 'Interface {{ index . "interface.name" }} is down on node
+                          {{ index . "node.name" }}'.
+                        type: string
+                      title:
+                        description: |-
+                          Title used when presenting results for this query, e.g.
+                          'InterfaceDown'.
+                        type: string
+                      where:
+                        description: |-
+                          A where clause for the query, e.g. 'oper-state = down'. Enclosing
+                          parentheses may be omitted.
+                        type: string
+                    type: object
+                type: object
+            required:
+            - botRef
+            - sources
+            type: object
+          status:
+            description: NotificationStatus defines the observed state of Notification.
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,154 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: allocations.netbox.eda.nokia.com
+spec:
+  group: netbox.eda.nokia.com
+  names:
+    kind: Allocation
+    listKind: AllocationList
+    plural: allocations
+    singular: allocation
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Allocation is the Schema for the allocations API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AllocationSpec defines the desired state of Allocation
+            properties:
+              description:
+                description: A short description of the Allocation resource
+                type: string
+              enabled:
+                default: true
+                description: If true the Allocation is enabled.
+                type: boolean
+              instance:
+                description: Netbox instance reference
+                type: string
+              subnetLength:
+                description: Prefix length when the type is subnet
+                type: integer
+              tags:
+                description: |-
+                  List of tags that must be included in the IPPrefix/ASNRange received from NetBox
+                  for this allocation to be applied.
+                items:
+                  type: string
+                type: array
+              type:
+                description: 'The allocation type: one of ip-address, subnet, ip-in-subnet,
+                  vlan or asn'
+                enum:
+                - ip-address
+                - subnet
+                - ip-in-subnet
+                - asn
+                - vlan
+                type: string
+            required:
+            - instance
+            type: object
+          status:
+            description: AllocationStatus defines the observed state of Allocation
+            properties:
+              lastEvent:
+                type: string
+              lastEventStatus:
+                type: string
+              lastEventTime:
+                format: date-time
+                type: string
+              matchedAsnRanges:
+                items:
+                  properties:
+                    end:
+                      format: int64
+                      type: integer
+                    id:
+                      format: int32
+                      type: integer
+                    name:
+                      type: string
+                    rir:
+                      format: int32
+                      type: integer
+                    start:
+                      format: int64
+                      type: integer
+                    tags:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+              matchedPrefixes:
+                items:
+                  properties:
+                    id:
+                      format: int32
+                      type: integer
+                    isContainer:
+                      type: boolean
+                    prefix:
+                      type: string
+                    tags:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+              matchedVlanGroups:
+                items:
+                  properties:
+                    id:
+                      format: int32
+                      type: integer
+                    name:
+                      type: string
+                    ranges:
+                      items:
+                        properties:
+                          end:
+                            format: int32
+                            type: integer
+                          start:
+                            format: int32
+                            type: integer
+                        type: object
+                      type: array
+                    tags:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

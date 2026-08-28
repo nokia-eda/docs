@@ -1,0 +1,18 @@
+apiVersion: management.eda.nokia.com/v1
+kind: SNMPServer
+metadata:
+  name: mgmt-snmp-server
+  namespace: eda
+spec:
+  accessPermission: ReadWriteAll
+  enabled: true
+  nodeUsers:
+    - snmpuser
+  protocol: Both
+  router: init-base-mgmt-router
+  routerKind: ManagementRouter
+  securityLevel: AuthPriv
+  streaming: Disabled
+  version: SNMPv3
+  AuthenticationProtocol: SHA2-256
+  privacyProtocol: CFB128-AES-256

@@ -1,0 +1,343 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: destinations.remotewrite.eda.nokia.com
+spec:
+  group: remotewrite.eda.nokia.com
+  names:
+    kind: Destination
+    listKind: DestinationList
+    plural: destinations
+    singular: destination
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Destination is the Schema for the destinations API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DestinationSpec defines the desired state of Destination
+            properties:
+              authentication:
+                description: Authentication details (username and password) for accessing
+                  the server.
+                properties:
+                  password:
+                    description: Client password
+                    type: string
+                  username:
+                    description: Client username
+                    type: string
+                type: object
+              authorization:
+                description: Authorization token for accessing the server.
+                properties:
+                  credentials:
+                    description: Credentials such as a token value
+                    type: string
+                  type:
+                    default: Bearer
+                    description: Authorization type
+                    type: string
+                type: object
+              metadata:
+                description: Configuration related to sending metadata to the remote
+                  server.
+                properties:
+                  include:
+                    description: If enabled, includes metadata in the write requests.
+                    type: boolean
+                  interval:
+                    default: 60s
+                    description: Interval at which metadata is sent to the remote
+                      server.
+                    type: string
+                  maxEntriesPerWrite:
+                    default: 500
+                    description: Maximum number of metadata entries to be sent per
+                      Write request.
+                    format: int64
+                    type: integer
+                type: object
+              tls:
+                description: TLS configuration for secure connection to the remote
+                  server.
+                properties:
+                  fromFiles:
+                    description: Certificates files.
+                    properties:
+                      caFile:
+                        description: Path to a certificate authority file.
+                        type: string
+                      certFile:
+                        description: The client certificate file location.
+                        type: string
+                      keyFile:
+                        description: The client private key location.
+                        type: string
+                      skipVerify:
+                        description: If true the client will not verify the server's
+                          certificate.
+                        type: boolean
+                    type: object
+                  fromSecret:
+                    description: |-
+                      Secret containing a `tls.crt`, a `tls.key` and a `ca.crt` keys.
+                      Both `tls.crt` and `tls.key` must be present.
+                      If `ca.crt` is not present and `.trustBundle` is not set
+                      the remote server certificate is not verified.
+                    type: string
+                  trustBundle:
+                    description: |-
+                      ConfigMap containing a set of trust bundles (key `trust-bundle.pem`) used to
+                      verify the remote server certificates.
+                    type: string
+                type: object
+              url:
+                description: Remote server address for sending metrics.
+                type: string
+              writeOptions:
+                description: 'Remote write options such as: Flush interval, Retries,
+                  etc.'
+                properties:
+                  bufferSize:
+                    default: 1000
+                    description: The buffer size threshold that initiates sending
+                      the accumulated metrics to the remote destination once reached.
+                    format: int64
+                    type: integer
+                  flushInterval:
+                    default: 5s
+                    description: |-
+                      Interval at which metrics stored in the local buffer are sent to the remote server.
+                      Metrics are sent regardless of the buffer size threshold.
+                    type: string
+                  headers:
+                    description: Custom HTTP headers to be sent along with each remote
+                      write request.
+                    items:
+                      properties:
+                        name:
+                          description: Header name
+                          type: string
+                        value:
+                          description: Header value
+                          type: string
+                      type: object
+                    type: array
+                  maxRetries:
+                    default: 3
+                    description: The total number of times to retry sending a message
+                    format: int64
+                    type: integer
+                  maxTimeSeriesPerWrite:
+                    default: 500
+                    description: Maximum number of metrics per write request.
+                    format: int64
+                    type: integer
+                  timeout:
+                    default: 10s
+                    description: Write client timeout.
+                    type: string
+                type: object
+            required:
+            - url
+            type: object
+          status:
+            description: DestinationStatus defines the observed state of Destination
+            properties:
+              error:
+                description: Last encountered error for this destination.
+                type: string
+              lastChecked:
+                description: Last checked time for connectivity status
+                format: date-time
+                type: string
+              reachable:
+                default: false
+                description: Indicates if the destination is reachable.
+                type: boolean
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Destination is the Schema for the destinations API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DestinationSpec defines the desired state of Destination
+            properties:
+              authentication:
+                description: Authentication details (username and password) for accessing
+                  the server.
+                properties:
+                  password:
+                    description: Client password
+                    type: string
+                  username:
+                    description: Client username
+                    type: string
+                type: object
+              authorization:
+                description: Authorization token for accessing the server.
+                properties:
+                  credentials:
+                    description: Credentials such as a token value
+                    type: string
+                  type:
+                    default: Bearer
+                    description: Authorization type
+                    type: string
+                type: object
+              metadata:
+                description: Configuration related to sending metadata to the remote
+                  server.
+                properties:
+                  include:
+                    description: If enabled, includes metadata in the write requests.
+                    type: boolean
+                  interval:
+                    default: 60s
+                    description: Interval at which metadata is sent to the remote
+                      server.
+                    type: string
+                  maxEntriesPerWrite:
+                    default: 500
+                    description: Maximum number of metadata entries to be sent per
+                      Write request.
+                    format: int64
+                    type: integer
+                type: object
+              tls:
+                description: TLS configuration for secure connection to the remote
+                  server.
+                properties:
+                  caFile:
+                    description: Path to the Certificate Authority file for verifying
+                      the server certificate.
+                    type: string
+                  certFile:
+                    description: Path to the client certificate file.
+                    type: string
+                  keyFile:
+                    description: Path to the client key file.
+                    type: string
+                  skipVerify:
+                    description: Skip verifying the server certificate
+                    type: boolean
+                type: object
+              url:
+                description: Remote server address for sending metrics.
+                type: string
+              writeOptions:
+                description: 'Remote write options such as: Flush interval, Retries,
+                  etc.'
+                properties:
+                  bufferSize:
+                    default: 1000
+                    description: The buffer size threshold that initiates sending
+                      the accumulated metrics to the remote destination once reached.
+                    format: int64
+                    type: integer
+                  flushInterval:
+                    default: 5s
+                    description: |-
+                      Interval at which metrics stored in the local buffer are sent to the remote server.
+                      Metrics are sent regardless of the buffer size threshold.
+                    type: string
+                  headers:
+                    description: Custom HTTP headers to be sent along with each remote
+                      write request.
+                    items:
+                      properties:
+                        name:
+                          description: Header name
+                          type: string
+                        value:
+                          description: Header value
+                          type: string
+                      type: object
+                    type: array
+                  maxRetries:
+                    default: 3
+                    description: The total number of times to retry sending a message
+                    format: int64
+                    type: integer
+                  maxTimeSeriesPerWrite:
+                    default: 500
+                    description: Maximum number of metrics per write request.
+                    format: int64
+                    type: integer
+                  timeout:
+                    default: 10s
+                    description: Write client timeout.
+                    type: string
+                type: object
+            required:
+            - url
+            type: object
+          status:
+            description: DestinationStatus defines the observed state of Destination
+            properties:
+              error:
+                description: Last encountered error for this destination.
+                type: string
+              lastChecked:
+                description: Last checked time for connectivity status
+                format: date-time
+                type: string
+              reachable:
+                default: false
+                description: Indicates if the destination is reachable.
+                type: boolean
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

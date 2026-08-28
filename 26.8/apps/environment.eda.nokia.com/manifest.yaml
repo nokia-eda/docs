@@ -10,7 +10,7 @@ spec:
     This application provides workflows for environment configuration.
 
     It deploys CLI plugins and environment files to targets.
-  image: ghcr.io/nokia-eda/apps/environment:v6.999.0
+  image: ghcr.io/nokia-eda/apps/environment:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   author: Nokia
   supportedEndpoints:
@@ -27,7 +27,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   appInfo:
     documentation: environment/docs
     categories:
@@ -46,6 +46,7 @@ spec:
         workflow: true
         ui:
           name: Push Environment
+          category: Maintenance
         conversionScript: environment/intents/setupenv/conversion_v1.py
     - crd:
         api:
@@ -56,9 +57,18 @@ spec:
         workflow: true
         ui:
           name: Push CLI Plugin
+          category: Maintenance
         conversionScript: environment/intents/cliplugin/conversion_v1.py
   dependencies:
     - file:
         path: environment/api
     - file:
         path: environment/api/v1/pysrc
+    - file:
+        path: utils/
+    - container:
+        image: registry.eda.dev/environment/workflows/env:latest
+        name: env
+    - container:
+        image: registry.eda.dev/environment/workflows/cliplugin:latest
+        name: cliplugin

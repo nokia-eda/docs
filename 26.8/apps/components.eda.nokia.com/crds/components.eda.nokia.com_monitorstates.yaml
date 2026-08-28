@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: monitorstates.components.eda.nokia.com
 spec:
   group: components.eda.nokia.com
@@ -60,6 +60,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a critical alarm.
                               This value must be greater than the majorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -68,6 +69,7 @@ spec:
                             description: |-
                               The delta in which a triggered threshold must drop below to clear an alarm.
                               For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            format: int32
                             maximum: 25
                             minimum: 1
                             type: integer
@@ -76,6 +78,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a major alarm.
                               This value must be greater than the minorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -83,6 +86,7 @@ spec:
                             default: 80
                             description: The minimum average utilization over the
                               last 1 minute to trigger a minor alarm.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -105,6 +109,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a critical alarm.
                               This value must be greater than the majorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -113,6 +118,7 @@ spec:
                             description: |-
                               The delta in which a triggered threshold must drop below to clear an alarm.
                               For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            format: int32
                             maximum: 25
                             minimum: 1
                             type: integer
@@ -121,6 +127,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a major alarm.
                               This value must be greater than the minorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -128,6 +135,7 @@ spec:
                             default: 80
                             description: The minimum average utilization over the
                               last 1 minute to trigger a minor alarm.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -160,6 +168,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a critical alarm.
                               This value must be greater than the majorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -168,6 +177,7 @@ spec:
                             description: |-
                               The delta in which a triggered threshold must drop below to clear an alarm.
                               For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            format: int32
                             maximum: 25
                             minimum: 1
                             type: integer
@@ -176,6 +186,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a major alarm.
                               This value must be greater than the minorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -183,6 +194,7 @@ spec:
                             default: 80
                             description: The minimum average utilization over the
                               last 1 minute to trigger a minor alarm.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -257,6 +269,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a critical alarm.
                               This value must be greater than the majorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -265,6 +278,7 @@ spec:
                             description: |-
                               The delta in which a triggered threshold must drop below to clear an alarm.
                               For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            format: int32
                             maximum: 25
                             minimum: 1
                             type: integer
@@ -273,6 +287,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a major alarm.
                               This value must be greater than the minorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -280,6 +295,7 @@ spec:
                             default: 80
                             description: The minimum average utilization over the
                               last 1 minute to trigger a minor alarm.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -302,6 +318,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a critical alarm.
                               This value must be greater than the majorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -310,6 +327,7 @@ spec:
                             description: |-
                               The delta in which a triggered threshold must drop below to clear an alarm.
                               For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            format: int32
                             maximum: 25
                             minimum: 1
                             type: integer
@@ -318,6 +336,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a major alarm.
                               This value must be greater than the minorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -325,6 +344,7 @@ spec:
                             default: 80
                             description: The minimum average utilization over the
                               last 1 minute to trigger a minor alarm.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -357,6 +377,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a critical alarm.
                               This value must be greater than the majorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -365,6 +386,7 @@ spec:
                             description: |-
                               The delta in which a triggered threshold must drop below to clear an alarm.
                               For example, with a criticalThreshold of 90 and a fallingDelta of 5, the critical alarm will clear when the utilization drops below 85.
+                            format: int32
                             maximum: 25
                             minimum: 1
                             type: integer
@@ -373,6 +395,7 @@ spec:
                             description: |-
                               The minimum average utilization over the last 1 minute to trigger a major alarm.
                               This value must be greater than the minorThreshold.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -380,6 +403,7 @@ spec:
                             default: 80
                             description: The minimum average utilization over the
                               last 1 minute to trigger a minor alarm.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer

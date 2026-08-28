@@ -1,1 +1,16 @@
-# Add an example
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: PrefixSet
+metadata:
+  namespace: eda
+  name: private-ip-subnets
+spec:
+  prefixes:
+    - prefix: 10.0.0.0/8
+      startRange: 8
+      endRange: 32
+    - prefix: 172.16.0.0/12
+      startRange: 12
+      endRange: 32
+    - prefix: 192.168.0.0/16
+      startRange: 16
+      endRange: 32

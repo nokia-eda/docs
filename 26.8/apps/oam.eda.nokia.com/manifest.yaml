@@ -48,11 +48,11 @@ spec:
         workflow: true
         ai:
           matchTags:
-            - main
             - alarm
             - netops
         ui:
           name: Ping
+          category: Troubleshooting
         conversionScript: oam/intents/ping/conversion_v1.py
     - crd:
         path: oam/crds/oam.eda.nokia.com_thresholds.yaml
@@ -87,6 +87,18 @@ spec:
           matchTags:
             - main
         conversionScript: oam/intents/techsupport/conversion_v1.py
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: oam/crds/oam.eda.nokia.com_traceroutes.yaml
+        schema: oam/openapiv3/eda_oas_oam.eda.nokia.com_traceroutes.json
+        ui:
+          name: Trace Route
+          category: Troubleshooting
+        workflow: true
+    - cr:
+        path: oam/workflows/traceroute/core_v1_flowdefinition.yaml
   dependencies:
     - file:
         path: oam/intents
@@ -95,40 +107,59 @@ spec:
     - file:
         path: utils/
     - file:
-        path: services/
+        path: services/api/v2/pysrc
     - file:
-        path: filters/
+        path: filters/api/v1/pysrc
     - file:
-        path: interfaces/
+        path: filters/api/v1alpha1/pysrc
     - file:
-        path: qos/
+        path: filters/intents/common/filterqoscommon.py
+    - file:
+        path: filters/intents/common/filterutils.py
+    - file:
+        path: filters/intents/common/imports.py
+    - file:
+        path: filters/intents/filter/conversion_v1.py
+    - file:
+        path: filters/intents/mirrorfilter/conversion_v1.py
+    - file:
+        path: interfaces/api/v1/pysrc
     - file:
         path: oam/api
     - file:
-        path: routing/
+        path: routing/api/v1/pysrc
     - file:
-        path: topologies/
+        path: topologies/intents/common/gvk.py
     - file:
         path: oam/api/v1/pysrc
+    - container:
+        image: registry.eda.dev/oam/workflows/techsupport:latest
+        name: techsupport
+    - container:
+        image: registry.eda.dev/oam/workflows/traceroute:latest
+        name: traceroute
+    - container:
+        image: registry.eda.dev/oam/workflows/ping:latest
+        name: ping
   requirements:
     - appId: services.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: filters.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: qos.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: topologies.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
   description: |
     This application provides the ping workflow, along with mirroring services for interfaces, subinterfaces and ipfilters.
   gitPathPrefix: /
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   group: oam.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/oam:v6.999.0
+  image: ghcr.io/nokia-eda/apps/oam:v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   supportedEndpoints:
     - "srl:24.10.*"
     - "srl:25.3.*"

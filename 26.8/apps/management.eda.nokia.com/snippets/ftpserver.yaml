@@ -1,1 +1,9 @@
-# Add an example
+apiVersion: management.eda.nokia.com/v1
+kind: FTPServer
+metadata:
+  name: my-ftp-server
+  namespace: eda
+spec:
+  enabled: true
+  router: init-base-mgmt-router
+  routerKind: ManagementRouter

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: drains.routing.eda.nokia.com
 spec:
   group: routing.eda.nokia.com
@@ -51,11 +51,13 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               defaultRouters:
                 description: Reference to DefaultRouters to drain.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               enabled:
                 default: true
                 description: Enable this Drain.

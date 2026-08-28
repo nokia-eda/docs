@@ -1,0 +1,134 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: gitlab
+spec:
+  group: gitlab.eda.nokia.com
+  version: v1alpha1
+  title: Gitlab
+  description: Creates Gitlab pipelines and issues.
+  image: ghcr.io/nokia-eda/apps/gitlab:v7.0.0
+  author: Nokia
+  gitPathPrefix: /
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: gitlab/README.md
+    documentation: gitlab/docs/
+    license: gitlab/LICENSE
+    screenshots:
+      - gitlab/assets/gitlab-logo.png
+    categories:
+      - "integrations"
+    settings: gitlab/settings/openapi/eda_oas_gitlab.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: gitlab/crds/gitlab.eda.nokia.com_gitlabinstances.yaml
+        schema: gitlab/openapiv3/eda_oas_gitlab.eda.nokia.com_gitlabinstances.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: Gitlab
+          name: Instance
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: gitlab/crds/gitlab.eda.nokia.com_clustergitlabinstances.yaml
+        schema: gitlab/openapiv3/eda_oas_gitlab.eda.nokia.com_clustergitlabinstances.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: Gitlab
+          name: Cluster Instance
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: gitlab/crds/gitlab.eda.nokia.com_gitlabpipelines.yaml
+        schema: gitlab/openapiv3/eda_oas_gitlab.eda.nokia.com_gitlabpipelines.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: Gitlab
+          name: Pipeline
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: gitlab/crds/gitlab.eda.nokia.com_clustergitlabpipelines.yaml
+        schema: gitlab/openapiv3/eda_oas_gitlab.eda.nokia.com_clustergitlabpipelines.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: Gitlab
+          name: Cluster Pipeline
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: gitlab/crds/gitlab.eda.nokia.com_gitlabissues.yaml
+        schema: gitlab/openapiv3/eda_oas_gitlab.eda.nokia.com_gitlabissues.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: Gitlab
+          name: Issue
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: gitlab/crds/gitlab.eda.nokia.com_clustergitlabissues.yaml
+        schema: gitlab/openapiv3/eda_oas_gitlab.eda.nokia.com_clustergitlabissues.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: Gitlab
+          name: Cluster Issue
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: gitlab/crds/gitlab.eda.nokia.com_creategitlabissues.yaml
+        schema: gitlab/openapiv3/eda_oas_gitlab.eda.nokia.com_creategitlabissues.json
+        namespaced: true
+        workflow: true
+        api:
+          expose: readWrite
+        ui:
+          name: Create Gitlab Issue
+    - crd:
+        path: gitlab/crds/gitlab.eda.nokia.com_rungitlabpipelines.yaml
+        schema: gitlab/openapiv3/eda_oas_gitlab.eda.nokia.com_rungitlabpipelines.json
+        namespaced: true
+        workflow: true
+        api:
+          expose: readWrite
+        ui:
+          name: Run Gitlab Pipeline
+    - cr:
+        path: gitlab/manifests/webhooks.yaml
+    - cr:
+        path: gitlab/manifests/deployment.yaml
+    - cr:
+        path: gitlab/workflows/create-gitlab-issue/core_v1_flowdefinition.yaml
+    - cr:
+        path: gitlab/workflows/run-gitlab-pipeline/core_v1_flowdefinition.yaml
+  dependencies:
+    - container:
+        name: gitlab-controller
+        image: registry.eda.dev/gitlab/operators/controller:latest
+    - container:
+        name: create-gitlab-issue
+        image: registry.eda.dev/gitlab/workflows/create-gitlab-issue:latest
+    - container:
+        name: run-gitlab-pipeline
+        image: registry.eda.dev/gitlab/workflows/run-gitlab-pipeline:latest
+    - file:
+        path: gitlab/api

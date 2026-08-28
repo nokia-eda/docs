@@ -1,1 +1,11 @@
-# Add an example
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: ASPathSet
+metadata:
+  name: leaf-asns
+  namespace: routingpolicies
+spec:
+  members:
+    - '100'
+    - '102'
+    - '104'
+    - '103'

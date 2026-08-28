@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: fabrictopologies.fabrics.eda.nokia.com
 spec:
   group: fabrics.eda.nokia.com
@@ -79,6 +79,7 @@ spec:
                             properties:
                               channels:
                                 description: The number of breakout channels to create
+                                format: int32
                                 maximum: 8
                                 minimum: 1
                                 type: integer
@@ -103,6 +104,7 @@ spec:
                             properties:
                               channels:
                                 description: The number of breakout channels to create
+                                format: int32
                                 maximum: 8
                                 minimum: 1
                                 type: integer
@@ -132,8 +134,10 @@ spec:
                       - "Null"
                       - Dot1q
                       type: string
-                    interfacesInLag:
-                      description: Number of interfaces in the edge link.
+                    interfacesInLAG:
+                      description: Number of interfaces in the edge LAG link.
+                      format: int32
+                      maximum: 65535
                       type: integer
                     labels:
                       additionalProperties:
@@ -146,33 +150,46 @@ spec:
                         topologiesv1.TopoLinkTemplate `json:",inline"`
                         The name of the TopoLinkTemplate.
                       type: string
-                    nodeInLag:
+                    nodesInLAG:
                       description: Number of nodes in the edge link.
+                      format: int32
+                      maximum: 65535
                       type: integer
                     type:
+                      default: Edge
                       description: Specify the type of edge link.
                       enum:
-                      - esi-lag
-                      - edge
-                      - local-lag
+                      - ESLAG
+                      - Edge
+                      - LocalLAG
                       type: string
                   required:
                   - name
                   - type
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - name
+                x-kubernetes-list-type: map
               interSwitchLinkTemplates:
                 description: Inter-switch link templates used in the topology.
                 items:
+                  description: |-
+                    ISLTemplate defines a template for inter-switch link groups, extending the upstream
+                    link template with optional LocalLAG bundle configuration.
+                    When InterfacesInLAG is greater than zero, each ISL group using this template emits
+                    LAG bundles with that many member interfaces instead of individual P2P links.
                   properties:
                     annotations:
                       additionalProperties:
                         type: string
-                      description: Annotations to assign to the TopoLink.
+                      description: Annotations to assign to TopoLinks created from
+                        this template.
                       type: object
                       x-kubernetes-preserve-unknown-fields: true
                     breakouts:
-                      description: Breakout endpoints propertiesfor the link
+                      description: Breakouts optionally defines port breakout for
+                        link members.
                       items:
                         properties:
                           local:
@@ -180,6 +197,7 @@ spec:
                             properties:
                               channels:
                                 description: The number of breakout channels to create
+                                format: int32
                                 maximum: 8
                                 minimum: 1
                                 type: integer
@@ -204,6 +222,7 @@ spec:
                             properties:
                               channels:
                                 description: The number of breakout channels to create
+                                format: int32
                                 maximum: 8
                                 minimum: 1
                                 type: integer
@@ -233,43 +252,41 @@ spec:
                       - "Null"
                       - Dot1q
                       type: string
+                    interfacesInLAG:
+                      description: |-
+                        InterfacesInLAG, when greater than zero, enables LocalLAG mode.
+                        Each ISL group using this template emits LAG bundles where every bundle
+                        has InterfacesInLAG member interfaces between the local and remote node pair.
+                        InterfacesPerNodePair on the ISL group then controls how many bundles are
+                        created per node pair (default 1).
+                      format: int32
+                      maximum: 65535
+                      type: integer
                     labels:
                       additionalProperties:
                         type: string
-                      description: Labels to assign to the TopoLink.
+                      description: Labels to assign to TopoLinks created from this
+                        template.
                       type: object
                       x-kubernetes-preserve-unknown-fields: true
                     name:
-                      description: The name of the TopoLinkTemplate.
+                      description: The name of the ISLTemplate.
                       type: string
                     speed:
-                      description: Speed of the link.
-                      enum:
-                      - 800G
-                      - 400G
-                      - 200G
-                      - 100G
-                      - 50G
-                      - 40G
-                      - 25G
-                      - 10G
-                      - 2.5G
-                      - 1G
-                      - 100M
+                      description: Speed of the link (e.g. 100G).
                       type: string
                     type:
-                      description: |-
-                        Specify the type of link.
-                        If type is set to edge, topology information for the remote device can be set; when doing so the Remote Node can be set as the hostname of the remote device and Remote Interface as the remote interface name in the device specific format, e.g. eth0.
-                      enum:
-                      - Edge
-                      - InterSwitch
-                      - Loopback
+                      default: InterSwitch
+                      description: Type of the TopoLink (e.g. interSwitch). Defaults
+                        to interSwitch when omitted.
                       type: string
                   required:
                   - name
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - name
+                x-kubernetes-list-type: map
               nodeTemplates:
                 description: Node templates used in the topology.
                 items:
@@ -414,6 +431,9 @@ spec:
                   - name
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - name
+                x-kubernetes-list-type: map
               operation:
                 default: Reconcile
                 description: |-
@@ -436,32 +456,113 @@ spec:
                 description: Pod templates used in the topology.
                 items:
                   properties:
-                    edgeGroups:
+                    edgeLinkGroups:
                       description: Edge link groups to create in the pod.
                       items:
                         properties:
+                          annotations:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              Annotations to assign to TopoLinks created from this group. Takes precedence over
+                              annotations from the referenced template.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          count:
+                            description: Number of endpoints to connect to the edge
+                              link group.
+                            format: int64
+                            type: integer
+                          interfaceName:
+                            description: |-
+                              Interface name pattern for Interface CRs on each link endpoint. When empty, the
+                              default pattern depends on the link shape: plain edge links use
+                              {{.nodeName}}-ethernet-{{.interfaceIndex}} (one Interface CR per physical port);
+                              ESI-LAG and local-LAG bundles use the counter-based
+                              {{.podName}}-{{.groupName}}{{if .linkType}}-{{.linkType}}{{end}}-{{.linkIndex}}-{{.side}}
+                              (every bundle member folds into one shared Interface CR). When set, overrides the
+                              Interface CR metadata.name (not the physical port string). Evaluated per local endpoint
+                              with .podName, .groupName, .linkIndex, .nodeName, .interfaceIndex, .side ("local"),
+                              .linkType ("eslag", "lag", or empty for plain edge links), .Links, .Members, plus
+                              pod vars. interfaceIndex is the topology interface name with the
+                              ethernet- prefix removed (e.g. ethernet-1-29 → 1-29, ethernet-1-a-3-1 → 1-a-3-1).
+                              .Links is the raw []TopologyLinkMember endpoint list for the TopoLink being named;
+                              .Members is the raw []TopologyEndpoint local endpoints (from .Links) that fold into the
+                              Interface CR currently being named — a single entry for a plain edge link, or one entry
+                              per bundle member for an ESI-LAG or local-LAG bundle, e.g.
+                              {{ range .Members }}{{.Node}}{{ end }}.
+                            type: string
+                          labels:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              Labels to assign to TopoLinks created from this group. Takes precedence over
+                              labels from the referenced template.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          linkName:
+                            description: |-
+                              Link name pattern for TopoLinks created from this group. When empty, the default
+                              pattern is {{.podName}}-{{.groupName}}{{if .linkType}}-{{.linkType}}{{end}}-{{.linkIndex}}.
+                              Available template variables: .podName, .groupName, .linkIndex, .linkType ("eslag" for
+                              ESI-LAG, "lag" for local-LAG, or empty for plain edge links), .Links, plus any keys from
+                              the pod's vars map.
+                              .Links is the raw []TopologyLinkMember endpoint list for the TopoLink being named (one
+                              entry for a plain edge link, one per bundle member for an ESI-LAG or local-LAG bundle),
+                              e.g. {{ (index .Links 0).Local.Node }}.
+                            type: string
                           localNodes:
                             description: Local nodes to connect to the edge link group.
-                            items:
-                              properties:
-                                count:
-                                  description: Number of endpoints to connect to the
-                                    edge link group.
-                                  type: integer
-                                interfaceStartIndex:
-                                  default: 1
-                                  description: Starting index for the interfaces.
-                                  type: integer
-                                nodeSelectors:
-                                  description: Node selectors to select the nodes
-                                    to connect to the endpoint.
-                                  items:
-                                    type: string
-                                  type: array
-                              type: object
-                            type: array
+                            properties:
+                              interfaceIndexIncrement:
+                                default: 1
+                                description: |-
+                                  Stride between consecutive interface allocations in a link group on each
+                                  matched node. A value of 1 (default) allocates adjacent ports or slots;
+                                  2 leaves every other port free (e.g. start 1-50 with increment 2 and
+                                  count 4 yields 1-50, 1-52, 1-54, 1-56). Applies to whole-port and
+                                  breakout allocation; LAG members within one bundle stay contiguous on
+                                  the same parent port.
+                                format: int32
+                                minimum: 1
+                                type: integer
+                              interfaceStartIndex:
+                                default: "1"
+                                description: |-
+                                  Starting index or candidate pool for interfaces allocated on each matched node.
+                                  Every matched node evaluates the same expression into its own independent
+                                  sequence; pools are not shared across nodes.
+
+                                  Pool syntax uses double-brace expressions: {{...}}. Bounded pools include
+                                  dot-dot ranges ({{3..6}}), comma lists ({{a,b}}), and combinations ({{1..4,6,10..12}}).
+                                  Multi-segment expressions expand as a cartesian product with the rightmost segment varying fastest.
+
+                                  Open-ended syntax {{N..}} (numeric only) means start at N and increment
+                                  forever. A bare positive integer such as "3" is equivalent to "{{3..}}".
+
+                                  Left-pinning sharp edge: a finite segment to the left of an open-ended
+                                  segment never advances (for example, 1-{{a,b}}-{{1..}} uses only a).
+                                  Split such cases into separate groups or selectors with explicit per-subset
+                                  pools.
+
+                                  Finite pools exceeding 100,000 candidates are rejected at parse time.
+
+                                  Channel-form ranges are supported for flat (SR Linux) breakout and LAG
+                                  groups (for example, 1-{{29..30}}-{{1..4}}); each LAG bundle must fit on
+                                  one parent port's channels.
+                                type: string
+                              nodeSelectors:
+                                description: Node selectors to select the nodes to
+                                  connect to the endpoint.
+                                items:
+                                  type: string
+                                type: array
+                                x-kubernetes-list-type: set
+                            type: object
                           name:
                             description: Name of the edge link group.
+                            maxLength: 253
+                            pattern: ^[a-z0-9]([a-z0-9\-]*[a-z0-9])?$
                             type: string
                           template:
                             description: Template name for the edge link group.
@@ -472,47 +573,168 @@ spec:
                         - template
                         type: object
                       type: array
-                    islGroups:
-                      description: ISL groups to create in the pod.
+                      x-kubernetes-list-map-keys:
+                      - name
+                      x-kubernetes-list-type: map
+                    interSwitchLinkGroups:
+                      description: Inter-switch link groups to create in the pod.
                       items:
                         properties:
-                          interfacesPerPair:
+                          annotations:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              Annotations to assign to TopoLinks created from this group. Takes precedence over
+                              annotations from the referenced template.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          interfaceName:
+                            description: |-
+                              Interface name pattern for Interface CRs on each link endpoint. When empty, the
+                              default pattern depends on the link shape: plain (non-LAG) ISL links use
+                              {{.nodeName}}-ethernet-{{.interfaceIndex}} (one Interface CR per physical port);
+                              ISL-LAG bundles use the counter-based
+                              {{.podName}}-{{.groupName}}-{{.linkIndex}}-{{.side}} (every bundle member folds into
+                              one shared Interface CR per side; .linkType is always empty for ISL links). When set,
+                              overrides the Interface CR metadata.name (not the physical port string). Evaluated per
+                              endpoint with .podName, .groupName, .linkIndex, .nodeName, .interfaceIndex, .side
+                              ("local" or "remote"), .linkType (always empty for ISL links), .Links, .Members, plus
+                              pod vars. interfaceIndex is the topology interface
+                              name with the ethernet- prefix removed (e.g. ethernet-1-29 → 1-29,
+                              ethernet-1-a-3-1 → 1-a-3-1). .Links is the raw []TopologyLinkMember endpoint list for
+                              the TopoLink being named; .Members is the raw []TopologyEndpoint per-side endpoints
+                              (from .Links) that fold into the Interface CR currently being named — a single entry
+                              for a plain ISL link, or one entry per bundle member for an ISL-LAG bundle, e.g.
+                              {{ range .Members }}{{.Node}}{{ end }}.
+                            type: string
+                          interfacesPerNodePair:
                             default: 1
-                            description: Number of interfaces per pair.
+                            description: Number of interfaces per node pair.
+                            format: int64
                             type: integer
+                          labels:
+                            additionalProperties:
+                              type: string
+                            description: |-
+                              Labels to assign to TopoLinks created from this group. Takes precedence over
+                              labels from the referenced template.
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          linkName:
+                            description: |-
+                              Link name pattern for TopoLinks created from this group. When empty, the default
+                              pattern is {{.podName}}-{{.groupName}}{{if .linkType}}-{{.linkType}}{{end}}-{{.linkIndex}}.
+                              Available template variables: .podName, .groupName, .linkIndex, .linkType (always empty
+                              for ISL links, plain and ISL-LAG), .Links, plus any keys from the pod's vars map. .Links is the raw
+                              []TopologyLinkMember endpoint list for the TopoLink being named (one entry for a plain
+                              ISL link, one per bundle member for an ISL-LAG bundle), e.g.
+                              {{ (index .Links 0).Local.Node }}--{{ (index .Links 0).Remote.Node }}.
+                            type: string
                           localNodes:
-                            description: Local nodes to connect to the ISL group.
+                            description: Local nodes to connect to the inter-switch
+                              link group.
                             properties:
-                              interfaceStartIndex:
+                              interfaceIndexIncrement:
                                 default: 1
-                                description: Starting index for the interfaces.
+                                description: |-
+                                  Stride between consecutive interface allocations in a link group on each
+                                  matched node. A value of 1 (default) allocates adjacent ports or slots;
+                                  2 leaves every other port free (e.g. start 1-50 with increment 2 and
+                                  count 4 yields 1-50, 1-52, 1-54, 1-56). Applies to whole-port and
+                                  breakout allocation; LAG members within one bundle stay contiguous on
+                                  the same parent port.
+                                format: int32
+                                minimum: 1
                                 type: integer
+                              interfaceStartIndex:
+                                default: "1"
+                                description: |-
+                                  Starting index or candidate pool for interfaces allocated on each matched node.
+                                  Every matched node evaluates the same expression into its own independent
+                                  sequence; pools are not shared across nodes.
+
+                                  Pool syntax uses double-brace expressions: {{...}}. Bounded pools include
+                                  dot-dot ranges ({{3..6}}), comma lists ({{a,b}}), and combinations ({{1..4,6,10..12}}).
+                                  Multi-segment expressions expand as a cartesian product with the rightmost segment varying fastest.
+
+                                  Open-ended syntax {{N..}} (numeric only) means start at N and increment
+                                  forever. A bare positive integer such as "3" is equivalent to "{{3..}}".
+
+                                  Left-pinning sharp edge: a finite segment to the left of an open-ended
+                                  segment never advances (for example, 1-{{a,b}}-{{1..}} uses only a).
+                                  Split such cases into separate groups or selectors with explicit per-subset
+                                  pools.
+
+                                  Finite pools exceeding 100,000 candidates are rejected at parse time.
+
+                                  Channel-form ranges are supported for flat (SR Linux) breakout and LAG
+                                  groups (for example, 1-{{29..30}}-{{1..4}}); each LAG bundle must fit on
+                                  one parent port's channels.
+                                type: string
                               nodeSelectors:
                                 description: Node selectors to select the nodes to
                                   connect to the endpoint.
                                 items:
                                   type: string
                                 type: array
+                                x-kubernetes-list-type: set
                             type: object
                           name:
-                            description: Name of the ISL group.
+                            description: Name of the inter-switch link group.
+                            maxLength: 253
+                            pattern: ^[a-z0-9]([a-z0-9\-]*[a-z0-9])?$
                             type: string
                           remoteNodes:
-                            description: Remote nodes to connect to the ISL group.
+                            description: Remote nodes to connect to the inter-switch
+                              link group.
                             properties:
-                              interfaceStartIndex:
+                              interfaceIndexIncrement:
                                 default: 1
-                                description: Starting index for the interfaces.
+                                description: |-
+                                  Stride between consecutive interface allocations in a link group on each
+                                  matched node. A value of 1 (default) allocates adjacent ports or slots;
+                                  2 leaves every other port free (e.g. start 1-50 with increment 2 and
+                                  count 4 yields 1-50, 1-52, 1-54, 1-56). Applies to whole-port and
+                                  breakout allocation; LAG members within one bundle stay contiguous on
+                                  the same parent port.
+                                format: int32
+                                minimum: 1
                                 type: integer
+                              interfaceStartIndex:
+                                default: "1"
+                                description: |-
+                                  Starting index or candidate pool for interfaces allocated on each matched node.
+                                  Every matched node evaluates the same expression into its own independent
+                                  sequence; pools are not shared across nodes.
+
+                                  Pool syntax uses double-brace expressions: {{...}}. Bounded pools include
+                                  dot-dot ranges ({{3..6}}), comma lists ({{a,b}}), and combinations ({{1..4,6,10..12}}).
+                                  Multi-segment expressions expand as a cartesian product with the rightmost segment varying fastest.
+
+                                  Open-ended syntax {{N..}} (numeric only) means start at N and increment
+                                  forever. A bare positive integer such as "3" is equivalent to "{{3..}}".
+
+                                  Left-pinning sharp edge: a finite segment to the left of an open-ended
+                                  segment never advances (for example, 1-{{a,b}}-{{1..}} uses only a).
+                                  Split such cases into separate groups or selectors with explicit per-subset
+                                  pools.
+
+                                  Finite pools exceeding 100,000 candidates are rejected at parse time.
+
+                                  Channel-form ranges are supported for flat (SR Linux) breakout and LAG
+                                  groups (for example, 1-{{29..30}}-{{1..4}}); each LAG bundle must fit on
+                                  one parent port's channels.
+                                type: string
                               nodeSelectors:
                                 description: Node selectors to select the nodes to
                                   connect to the endpoint.
                                 items:
                                   type: string
                                 type: array
+                                x-kubernetes-list-type: set
                             type: object
                           template:
-                            description: Template name for the ISL group.
+                            description: Template name for the inter-switch link group.
                             type: string
                         required:
                         - localNodes
@@ -521,6 +743,9 @@ spec:
                         - template
                         type: object
                       type: array
+                      x-kubernetes-list-map-keys:
+                      - name
+                      x-kubernetes-list-type: map
                     name:
                       description: Name of the pod template.
                       type: string
@@ -535,6 +760,7 @@ spec:
                             type: object
                           count:
                             description: Number of nodes in the node group.
+                            format: int64
                             type: integer
                           labels:
                             additionalProperties:
@@ -543,11 +769,13 @@ spec:
                             type: object
                           name:
                             description: Name of the node group.
+                            maxLength: 253
+                            pattern: ^[a-z0-9]([a-z0-9\-]*[a-z0-9])?$
                             type: string
                           nodeName:
                             description: Node name pattern to be used to generate
-                              the node names. default pattern is {{ podName }}-{{
-                              nodeGroupName }}{{ nodeIndex_d }}
+                              the node names. default pattern is {{.podName}}-{{.nodeGroupName}}{{
+                              printf "%02d" .nodeIndex }}
                             type: string
                           nodeTemplate:
                             description: Template name for the node group.
@@ -558,10 +786,16 @@ spec:
                         - nodeTemplate
                         type: object
                       type: array
+                      x-kubernetes-list-map-keys:
+                      - name
+                      x-kubernetes-list-type: map
                   required:
                   - name
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - name
+                x-kubernetes-list-type: map
               pods:
                 description: Pods defining the topology structure.
                 items:
@@ -569,17 +803,28 @@ spec:
                   properties:
                     name:
                       description: Name of the pod.
+                      maxLength: 63
+                      pattern: ^[a-z0-9]([a-z0-9\-]*[a-z0-9])?$
                       type: string
                     podTemplate:
                       description: Template name for the pod.
                       type: string
+                    vars:
+                      additionalProperties:
+                        type: string
+                      description: |-
+                        Variables defined on the pod instance level as key/value pairs.
+                        The variables can be used in the fields that support templating syntax such as node, link and interface names in the pod template.
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
                   required:
                   - name
                   - podTemplate
                   type: object
                 type: array
-            required:
-            - pods
+                x-kubernetes-list-map-keys:
+                - name
+                x-kubernetes-list-type: map
             type: object
           status:
             properties:
@@ -596,12 +841,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   interfaces:
@@ -609,12 +857,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   links:
@@ -622,12 +873,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   nodes:
@@ -635,12 +889,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   simLinks:
@@ -648,12 +905,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   simNodes:
@@ -661,12 +921,15 @@ spec:
                     properties:
                       created:
                         description: Number of resources created
+                        format: int64
                         type: integer
                       deleted:
                         description: Number of resources deleted
+                        format: int64
                         type: integer
                       updated:
                         description: Number of resources updated
+                        format: int64
                         type: integer
                     type: object
                   totalDuration:
@@ -674,6 +937,7 @@ spec:
                     type: string
                   totalResources:
                     description: Total number of resources processed across all types
+                    format: int64
                     type: integer
                 type: object
               result:

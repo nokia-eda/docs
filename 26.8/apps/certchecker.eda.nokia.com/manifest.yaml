@@ -1,0 +1,53 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: certchecker
+spec:
+  appInfo:
+    categories:
+      - security
+    documentation: certchecker/docs
+  author: nokia
+  description: |
+    CertChecker audits TLS certificates across EDA-managed nodes and EDA platform
+    components, surfacing expiry and configuration issues via NodeCertificateAudit
+    and PlatformCertificateAudit workflow results.
+  group: certchecker.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/certchecker:v7.0.0
+  supportedCoreVersions:
+    - "v6.0"
+  title: CertChecker
+  version: v1alpha1
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        path: certchecker/crds/certchecker.eda.nokia.com_nodecertificateaudits.yaml
+        schema: certchecker/openapiv3/eda_oas_certchecker.eda.nokia.com_nodecertificateaudits.json
+        workflow: true
+        ui:
+          name: Audit Node Certificates
+          category: Maintenance
+    - cr:
+        path: certchecker/workflows/nodecertificateaudit/core_v1_flowdefinition.yaml
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: false
+        path: certchecker/crds/certchecker.eda.nokia.com_platformcertificateaudits.yaml
+        schema: certchecker/openapiv3/eda_oas_certchecker.eda.nokia.com_platformcertificateaudits.json
+        workflow: true
+        ui:
+          name: Audit Platform Certificates
+          category: Maintenance
+    - cr:
+        path: certchecker/workflows/platformcertificateaudit/core_v1_flowdefinition.yaml
+  dependencies:
+    - file:
+        path: certchecker/api
+    - container:
+        image: registry.eda.dev/certchecker/workflows/nodecertificateaudit:latest
+        name: nodecertificateaudit
+    - container:
+        image: registry.eda.dev/certchecker/workflows/platformcertificateaudit:latest
+        name: platformcertificateaudit

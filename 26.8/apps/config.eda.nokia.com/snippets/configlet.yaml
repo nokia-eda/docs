@@ -1,1 +1,18 @@
-# Add an example
+apiVersion: config.eda.nokia.com/v1
+kind: Configlet
+metadata:
+  name: my-hostname
+  namespace: eda
+spec:
+  priority: 100
+  endpointSelectors:
+    - eda.nokia.com/role = leaf
+  operatingSystem: srl
+  version: 25.10.1
+  configs:
+    - operation: Create
+      path: .system.name
+      config: |-
+        {
+            "host-name": "my-hostname-override"
+        }

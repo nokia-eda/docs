@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: thresholds.oam.eda.nokia.com
 spec:
   group: oam.eda.nokia.com
@@ -108,12 +108,14 @@ spec:
                     description: |-
                       The minimum average utilization over the last 1 minute to trigger a critical alarm.
                       This value must be greater than the majorThreshold.
+                    format: int64
                     type: integer
                   delta:
                     default: 5
                     description: |-
                       The delta value for clearing a threshold.
                       For example, with a critical threshold of 90, direction of Rising and a delta of 5, the critical alarm will clear when the utilization drops below 85.
+                    format: int64
                     type: integer
                   direction:
                     default: Rising
@@ -126,14 +128,17 @@ spec:
                     description: |-
                       The minimum average utilization over the last 1 minute to trigger a major alarm.
                       This value must be greater than the minorThreshold.
+                    format: int64
                     type: integer
                   minorThreshold:
                     description: The minimum average utilization over the last 1 minute
                       to trigger a minor alarm.
+                    format: int64
                     type: integer
                   warningThreshold:
                     description: The minimum average utilization over the last 1 minute
                       to trigger a warning alarm.
+                    format: int64
                     type: integer
                 required:
                 - direction
@@ -249,12 +254,14 @@ spec:
                     description: |-
                       The minimum average utilization over the last 1 minute to trigger a critical alarm.
                       This value must be greater than the majorThreshold.
+                    format: int64
                     type: integer
                   delta:
                     default: 5
                     description: |-
                       The delta value for clearing a threshold.
                       For example, with a critical threshold of 90, direction of Rising and a delta of 5, the critical alarm will clear when the utilization drops below 85.
+                    format: int64
                     type: integer
                   direction:
                     default: Rising
@@ -267,14 +274,17 @@ spec:
                     description: |-
                       The minimum average utilization over the last 1 minute to trigger a major alarm.
                       This value must be greater than the minorThreshold.
+                    format: int64
                     type: integer
                   minorThreshold:
                     description: The minimum average utilization over the last 1 minute
                       to trigger a minor alarm.
+                    format: int64
                     type: integer
                   warningThreshold:
                     description: The minimum average utilization over the last 1 minute
                       to trigger a warning alarm.
+                    format: int64
                     type: integer
                 required:
                 - direction

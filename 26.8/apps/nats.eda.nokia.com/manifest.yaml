@@ -1,0 +1,90 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: natsexporter
+spec:
+  group: nats.eda.nokia.com
+  version: v1
+  title: NATS Exporter
+  description: Publish EDA alarms or any EDB object to a NATS cluster.
+  image: ghcr.io/nokia-eda/apps/nats:v7.0.0
+  author: Nokia
+  gitPathPrefix: /
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: natsexporter/README.md
+    documentation: natsexporter/docs/
+    license: natsexporter/LICENSE
+    screenshots:
+      - natsexporter/assets/logo.png
+    categories:
+      - "integrations"
+    settings: natsexporter/settings/openapi/eda_oas_nats.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: natsexporter/crds/nats.eda.nokia.com_exports.yaml
+        schema: natsexporter/openapiv3/eda_oas_nats.eda.nokia.com_exports.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: NATS
+          name: Export
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+        conversionScript: natsexporter/api/v1alpha1/pysrc/conversion_v1.py
+    - crd:
+        path: natsexporter/crds/nats.eda.nokia.com_clusterexports.yaml
+        schema: natsexporter/openapiv3/eda_oas_nats.eda.nokia.com_clusterexports.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: NATS
+          name: Cluster Export
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+        conversionScript: natsexporter/api/v1alpha1/pysrc/conversion_v1.py
+    - crd:
+        path: natsexporter/crds/nats.eda.nokia.com_publishers.yaml
+        schema: natsexporter/openapiv3/eda_oas_nats.eda.nokia.com_publishers.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: NATS
+          name: Publisher
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+        conversionScript: natsexporter/api/v1alpha1/pysrc/conversion_v1.py
+    - crd:
+        path: natsexporter/crds/nats.eda.nokia.com_clusterpublishers.yaml
+        schema: natsexporter/openapiv3/eda_oas_nats.eda.nokia.com_clusterpublishers.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: NATS
+          name: Cluster Publisher
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+        conversionScript: natsexporter/api/v1alpha1/pysrc/conversion_v1.py
+    - cr:
+        path: natsexporter/manifests/webhook.yaml
+    - cr:
+        path: natsexporter/manifests/deployment.yaml
+    - cr:
+        path: natsexporter/alarms/alarms.yaml
+  dependencies:
+    - container:
+        name: natsexporter-controller
+        image: registry.eda.dev/natsexporter/operators/controller:latest
+    - file:
+        path: natsexporter/api/v1alpha1/pysrc
+    - file:
+        path: natsexporter/api

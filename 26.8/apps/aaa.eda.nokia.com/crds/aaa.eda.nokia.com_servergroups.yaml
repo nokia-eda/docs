@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: servergroups.aaa.eda.nokia.com
 spec:
   group: aaa.eda.nokia.com
@@ -37,11 +37,6 @@ spec:
           metadata:
             type: object
           spec:
-            description: The ServerGroup defines a list of AAA servers to be used
-              for authentication, authorization, and accounting. It includes settings
-              for both Radius and Tacacs servers, although each ServerGroup is limited
-              to servers of a single type. The ServerGroup is deployed onto nodes
-              using the label selector.
             properties:
               aaaServers:
                 description: The AAA servers that are part of this ServerGroup.
@@ -59,35 +54,43 @@ spec:
                   - secret
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - address
+                x-kubernetes-list-type: map
               nodeGroupSelectors:
                 description: Label selector for NodeGroup resources to deploy on the
                   node for this ServerGroup.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               nodeGroups:
                 description: Which NodeGroup resources to deploy on the node for this
                   ServerGroup.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               radius:
                 description: RADIUS parameters.
                 properties:
                   accountingPort:
                     default: 1813
                     description: Accounting port of the Radius server(s).
+                    format: int32
                     maximum: 65535
                     minimum: 1
                     type: integer
                   authenticationPort:
                     default: 1812
                     description: Authentication port of the Radius server(s).
+                    format: int32
                     maximum: 65535
                     minimum: 1
                     type: integer
                   retransmitAttempts:
                     description: Retransmit attempts per Radius server.
+                    format: int32
                     maximum: 10
                     minimum: 1
                     type: integer
@@ -104,6 +107,7 @@ spec:
                   port:
                     default: 49
                     description: Tacacs server port.
+                    format: int32
                     maximum: 65535
                     minimum: 0
                     type: integer
@@ -115,6 +119,7 @@ spec:
                 description: Timeout in seconds that the node will wait for a response
                   from the AAA server before retrying or continuing to the next server
                   in the group.
+                format: int32
                 maximum: 90
                 minimum: 1
                 type: integer
@@ -136,6 +141,8 @@ spec:
                 description: Indicates the health score of the ServerGroup. The health
                   score of the ServerGroup is determined by the aggregate health score
                   of all servers in this group on all nodes.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.

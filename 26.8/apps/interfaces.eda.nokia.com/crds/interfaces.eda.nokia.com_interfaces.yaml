@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: interfaces.interfaces.eda.nokia.com
 spec:
   group: interfaces.eda.nokia.com
@@ -92,12 +92,14 @@ spec:
                           exponent:
                             description: Threshold exponent for the signal degrade
                               condition.
+                            format: int32
                             maximum: 9
                             minimum: 1
                             type: integer
                           multiplier:
                             description: Threshold multiplier for the signal degrade
                               condition.
+                            format: int32
                             maximum: 9
                             minimum: 1
                             type: integer
@@ -113,12 +115,14 @@ spec:
                           exponent:
                             description: Threshold exponent for the signal failure
                               condition.
+                            format: int32
                             maximum: 9
                             minimum: 1
                             type: integer
                           multiplier:
                             description: Threshold multiplier for the signal failure
                               condition.
+                            format: int32
                             maximum: 9
                             minimum: 1
                             type: integer
@@ -129,6 +133,8 @@ spec:
                       windowSizeSeconds:
                         description: Sliding window size over which CRC errors are
                           measured, in number of seconds.
+                        format: int32
+                        maximum: 65535
                         minimum: 1
                         type: integer
                     type: object
@@ -174,6 +180,7 @@ spec:
                       seconds keeps an interface shut down with the laser off for
                       a configured amount of time until connectivity with the rest
                       of network is established.
+                    format: int32
                     maximum: 86400
                     minimum: 1
                     type: integer
@@ -225,6 +232,7 @@ spec:
                       unknownUnicastRate:
                         description: Sets the maximum rate allowed for ingress unknown
                           unicast frames on the interface.
+                        format: int32
                         maximum: 100000000
                         minimum: 0
                         type: integer
@@ -242,6 +250,7 @@ spec:
                       - All
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                 type: object
               lag:
                 description: LAG configuration options.
@@ -253,6 +262,7 @@ spec:
                       adminKey:
                         description: Configure the LACP admin-key to be advertised
                           by the local system.
+                        format: int32
                         maximum: 65535
                         minimum: 1
                         type: integer
@@ -280,6 +290,7 @@ spec:
                             default: 60
                             description: Specifies the LACP-fallback timeout interval
                               in seconds. [default=60]
+                            format: int32
                             maximum: 3600
                             minimum: 4
                             type: integer
@@ -303,6 +314,7 @@ spec:
                         description: System priority used by the Node on this LAG
                           interface. Lower value is higher priority for determining
                           which Node is the controlling system.[default=32768]
+                        format: int32
                         maximum: 65535
                         minimum: 0
                         type: integer
@@ -313,6 +325,7 @@ spec:
                       of member links that must be active in order for the LAG to
                       be operationally up. If the number of active links falls below
                       this threshold, the entire LAG is brought operationally down.[default=1]
+                    format: int32
                     maximum: 64
                     minimum: 1
                     type: integer
@@ -362,6 +375,7 @@ spec:
                           in seconds keeps an interface shut down with the laser off
                           for a configured amount of time until connectivity with
                           the rest of network is established. [default=100]
+                        format: int32
                         maximum: 86400
                         minimum: 1
                         type: integer
@@ -370,6 +384,25 @@ spec:
                         description: Enables revertive DF election behavior with Preference-Based
                           Election mode. [default=false]
                         type: boolean
+                      vtep:
+                        default:
+                          mode: Unicast
+                        description: VTEP mode configuration for the Multi-homed Ethernet
+                          Segment.
+                        properties:
+                          anycastIPv4Pool:
+                            description: Reference to a pool of anycast IPv4 addresses
+                              for the Multi-homed Ethernet Segment. Applicable only
+                              if the mode is set to Anycast.
+                            type: string
+                          mode:
+                            default: Unicast
+                            description: VTEP mode for the Multi-homed Ethernet Segment.
+                            enum:
+                            - Unicast
+                            - Anycast
+                            type: string
+                        type: object
                     type: object
                   type:
                     default: LACP
@@ -412,6 +445,7 @@ spec:
                       description: Configure the port priority for LACP. This value
                         is used to determine which port should be activated with LACP
                         fallback mode. Lower values are more preferred.[default=32768]
+                      format: int32
                       maximum: 65535
                       minimum: 0
                       type: integer
@@ -423,6 +457,10 @@ spec:
                   - node
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - interface
+                - node
+                x-kubernetes-list-type: map
               mode:
                 description: Set interface mode for platforms that support explicit
                   configuration of access or network mode. [SROS only]
@@ -433,6 +471,7 @@ spec:
                 type: string
               mtu:
                 description: MTU to apply on the interface(s).
+                format: int32
                 maximum: 9500
                 minimum: 1450
                 type: integer
@@ -457,6 +496,8 @@ spec:
                 properties:
                   adminKey:
                     description: LACP Admin Key.
+                    format: int32
+                    maximum: 65535
                     type: integer
                   systemMAC:
                     description: LACP System ID MAC address.
@@ -478,17 +519,47 @@ spec:
                     lastChange:
                       description: Indicates when this member last changed state.
                       type: string
+                    lldpOperationalState:
+                      description: |-
+                        Indicates how the discovered LLDP neighbor on this member relates to the
+                        configured topology mate.
+
+                          * ``Aligned``    – LLDP is enabled on the local member and the discovered
+                                             neighbor matches the configured remote endpoint
+                                             (TopoLink mate / static neighbor).
+                          * ``Misaligned`` – LLDP is enabled and a neighbor is discovered, but it
+                                             does not match the configured remote endpoint. This
+                                             is the only state that raises ``LLDPTopologyMisaligned``.
+                          * ``Present``    – LLDP is enabled and at least one neighbor is
+                                             discovered, but the configured remote endpoint is not
+                                             authoritative enough to validate alignment (no
+                                             TopoLink resolved, peer Interface CR missing on an
+                                             interSwitch link, or stub edge with no mate).
+                          * ``NotPresent`` – LLDP is enabled but no neighbor has been discovered.
+                          * ``N/A``        – LLDP is administratively disabled on the local member
+                                             (``spec.lldp == false``).
+                      enum:
+                      - Aligned
+                      - Misaligned
+                      - Present
+                      - NotPresent
+                      - N/A
+                      type: string
                     neighbors:
                       description: List of discovered neighbors on this member.
                       items:
                         properties:
                           interface:
-                            description: The name of a neighbor interface of this
-                              member in node specific format.
+                            description: |-
+                              The neighbor interface name. When the neighbor node is EDA-managed
+                              this is reported in TopoLink-normalized form (e.g. ``ethernet-1-1``);
+                              for non-EDA-managed peers the LLDP wire form is preserved.
                             type: string
                           node:
-                            description: The name of a neighbor node of this member
-                              in node specific format.
+                            description: |-
+                              The name of a neighbor node of this member. When the neighbor is an
+                              EDA-managed TopoNode this matches the TopoNode name; otherwise the
+                              LLDP system-name TLV is used as-is.
                             type: string
                         type: object
                       type: array
@@ -508,6 +579,14 @@ spec:
                       - Degraded
                       - Unknown
                       - N/A
+                      type: string
+                    operationalStateReason:
+                      description: Indicates the reason for the operational state.
+                        Currently only used when the state is Down.
+                      enum:
+                      - Standby
+                      - Other
+                      - Lower Layer Down
                       type: string
                     speed:
                       description: Indicates the operational speed of the member.
@@ -615,12 +694,14 @@ spec:
                           exponent:
                             description: Threshold exponent for the signal degrade
                               condition.
+                            format: int32
                             maximum: 9
                             minimum: 1
                             type: integer
                           multiplier:
                             description: Threshold multiplier for the signal degrade
                               condition.
+                            format: int32
                             maximum: 9
                             minimum: 1
                             type: integer
@@ -636,12 +717,14 @@ spec:
                           exponent:
                             description: Threshold exponent for the signal failure
                               condition.
+                            format: int32
                             maximum: 9
                             minimum: 1
                             type: integer
                           multiplier:
                             description: Threshold multiplier for the signal failure
                               condition.
+                            format: int32
                             maximum: 9
                             minimum: 1
                             type: integer
@@ -652,6 +735,8 @@ spec:
                       windowSizeSec:
                         description: Sliding window size over which CRC errors are
                           measured, in number of seconds.
+                        format: int32
+                        maximum: 65535
                         minimum: 1
                         type: integer
                     type: object
@@ -697,6 +782,7 @@ spec:
                       seconds keeps an interface shut down with the laser off for
                       a configured amount of time until connectivity with the rest
                       of network is established.
+                    format: int32
                     maximum: 86400
                     minimum: 1
                     type: integer
@@ -747,6 +833,7 @@ spec:
                       unknownUnicastRate:
                         description: Sets the maximum rate allowed for ingress unknown
                           unicast frames on the interface.
+                        format: int32
                         maximum: 100000000
                         minimum: 0
                         type: integer
@@ -775,6 +862,7 @@ spec:
                       adminKey:
                         description: Configure the LACP admin-key to be advertised
                           by the local system.
+                        format: int32
                         maximum: 65535
                         minimum: 1
                         type: integer
@@ -802,6 +890,7 @@ spec:
                             default: 60
                             description: Specifies the LACP-fallback timeout interval
                               in seconds. [default=60]
+                            format: int32
                             maximum: 3600
                             minimum: 4
                             type: integer
@@ -825,6 +914,7 @@ spec:
                         description: System priority used by the Node on this LAG
                           interface. Lower value is higher priority for determining
                           which Node is the controlling system.[default=32768]
+                        format: int32
                         maximum: 65535
                         minimum: 0
                         type: integer
@@ -835,6 +925,7 @@ spec:
                       of member links that must be active in order for the LAG to
                       be operationally up. If the number of active links falls below
                       this threshold, the entire LAG is brought operationally down.[default=1]
+                    format: int32
                     maximum: 64
                     minimum: 1
                     type: integer
@@ -869,6 +960,7 @@ spec:
                           in seconds keeps an interface shut down with the laser off
                           for a configured amount of time until connectivity with
                           the rest of network is established. [default=100]
+                        format: int32
                         maximum: 86400
                         minimum: 1
                         type: integer
@@ -919,6 +1011,7 @@ spec:
                       description: Configure the port priority for LACP. This value
                         is used to determine which port should be activated with LACP
                         fallback mode. Lower values are more preferred.[default=32768]
+                      format: int32
                       maximum: 65535
                       minimum: 0
                       type: integer
@@ -932,6 +1025,7 @@ spec:
                 type: array
               mtu:
                 description: MTU to apply on the interface(s).
+                format: int32
                 maximum: 9500
                 minimum: 1450
                 type: integer
@@ -955,6 +1049,8 @@ spec:
                 properties:
                   adminKey:
                     description: LACP Admin Key.
+                    format: int32
+                    maximum: 65535
                     type: integer
                   systemIdMac:
                     description: LACP System ID MAC address.

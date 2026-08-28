@@ -8,7 +8,7 @@ spec:
   title: Routing
   description: |
     This application provides underlay routing resources for various Network Operating Systems.
-  image: ghcr.io/nokia-eda/apps/routing:v6.999.0
+  image: ghcr.io/nokia-eda/apps/routing:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -30,7 +30,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - view:
         path: routing/ui/defaultinterface_dashboard.json
@@ -163,9 +163,9 @@ spec:
         workflow: true
         ui:
           name: Route Lookup
+          category: Troubleshooting
         ai:
           matchTags:
-            - main
             - netops
         conversionScript: routing/intents/routelookup/conversion_v1.py
     - crd:
@@ -177,9 +177,9 @@ spec:
         workflow: true
         ui:
           name: Route Trace
+          category: Troubleshooting
         ai:
           matchTags:
-            - main
             - netops
         conversionScript: routing/intents/routetrace/conversion_v1.py
     - crd:
@@ -191,9 +191,9 @@ spec:
         workflow: true
         ui:
           name: Attachment Lookup
+          category: Troubleshooting
         ai:
           matchTags:
-            - main
             - netops
         conversionScript: routing/intents/attachmentlookup/conversion_v1.py
     - crd:
@@ -205,28 +205,66 @@ spec:
         workflow: true
         ui:
           name: System Ping
+          category: Troubleshooting
         conversionScript: routing/intents/systemping/conversion_v1.py
     - cr:
         path: routing/alarms/alarms.yaml
+    - crd:
+        api:
+          expose: readWrite
+        path: routing/crds/routing.eda.nokia.com_defaultloopbackinterfaces.yaml
+        schema: routing/openapiv3/eda_oas_routing.eda.nokia.com_defaultloopbackinterfaces.json
+        ui:
+          category: Underlay Routing
+          name: Loopback Interfaces
+    - crd:
+        path: routing/crds/routing.eda.nokia.com_defaultloopbackinterfacestates.yaml
+        schema: routing/openapiv3/eda_oas_routing.eda.nokia.com_defaultloopbackinterfacestates.json
+        api:
+          expose: none
+    - script:
+        path: routing/intents/defaultloopbackinterface/defaultloopbackinterface_intent.py
+        type: config
+        trigger:
+          kind: DefaultLoopbackInterface
+    - script:
+        path: routing/intents/defaultloopbackinterfacestate/defaultloopbackinterfacestate_intent.py
+        type: state
+        trigger:
+          kind: DefaultLoopbackInterfaceState
   dependencies:
     - file:
         path: routing/intents
     - file:
         path: routing/api
     - file:
-        path: routingpolicies/
+        path: routingpolicies/api/v1/pysrc
     - file:
-        path: security/
+        path: routingpolicies/intents/common/policycommon.py
+    - file:
+        path: security/api/v1/pysrc
     - file:
         path: common/
     - file:
         path: utils/
     - file:
-        path: interfaces/
+        path: interfaces/api/v1/pysrc
     - file:
         path: routing/alarms/pysrc
     - file:
         path: routing/api/v1/pysrc
+    - container:
+        image: registry.eda.dev/routing/workflows/routelookup:latest
+        name: routelookup
+    - container:
+        image: registry.eda.dev/routing/workflows/attachmentlookup:latest
+        name: attachmentlookup
+    - container:
+        image: registry.eda.dev/routing/workflows/systemping:latest
+        name: systemping
+    - container:
+        image: registry.eda.dev/routing/workflows/routetrace:latest
+        name: routetrace
   requirements:
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0

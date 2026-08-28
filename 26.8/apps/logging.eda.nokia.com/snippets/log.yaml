@@ -1,0 +1,13 @@
+apiVersion: logging.eda.nokia.com/v1alpha1
+kind: Log
+metadata:
+  name: my-log
+  namespace: eda
+spec:
+  destinations:
+    - file-destination
+    - my-mgmt-syslog-destination
+  nodeSelectors:
+    - eda.nokia.com/security-profile = managed
+  sources:
+    - bgp-source

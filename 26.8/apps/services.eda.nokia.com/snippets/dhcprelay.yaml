@@ -1,1 +1,14 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: DHCPRelay
+metadata:
+  name: my-dhcp-relay
+  namespace: services
+spec:
+  irbInterfaceSelectors:
+    - dhcp = enabled
+  router: dhcp-router
+  servers:
+    - 10.10.10.10
+  subOptions:
+    - CircuitID
+    - RemoteID

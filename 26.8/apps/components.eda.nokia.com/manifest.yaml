@@ -214,6 +214,18 @@ spec:
         conversionScript: components/intents/fan/conversion_v2.py
     - cr:
         path: components/alarms/alarms.yaml
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: components/crds/components.eda.nokia.com_reboots.yaml
+        schema: components/openapiv3/eda_oas_components.eda.nokia.com_reboots.json
+        ui:
+          name: Reboot Node
+          category: Maintenance
+        workflow: true
+    - cr:
+        path: components/workflows/rebootnode/core_v1_flowdefinition.yaml
   dependencies:
     - file:
         path: common/
@@ -222,19 +234,22 @@ spec:
     - file:
         path: components/intents
     - file:
-        path: topologies/intents/common
-    - file:
-        path: oam/api/v1alpha1/pysrc
+        path: topologies/intents/common/gvk.py
     - file:
         path: oam/api/v1/pysrc
     - file:
-        path: oam/intents/threshold
+        path: oam/intents/threshold/common/common.py
+    - file:
+        path: oam/intents/threshold/instance.py
     - file:
         path: components/alarms/pysrc
     - file:
         path: components/api
     - file:
         path: components/api/v2/pysrc
+    - container:
+        image: registry.eda.dev/components/workflows/rebootnode:latest
+        name: rebootnode
   description: |
     This application provides functionality relating to hardware components for various Network Operating Systems.
 
@@ -242,9 +257,9 @@ spec:
   gitPathPrefix: /
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   group: components.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/components:v6.999.0
+  image: ghcr.io/nokia-eda/apps/components:v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   supportedEndpoints:
     - "srl:24.10.*"
     - "srl:25.3.*"

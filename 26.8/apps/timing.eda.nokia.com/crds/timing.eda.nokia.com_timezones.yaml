@@ -1,0 +1,560 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: timezones.timing.eda.nokia.com
+spec:
+  group: timing.eda.nokia.com
+  names:
+    kind: TimeZone
+    listKind: TimeZoneList
+    plural: timezones
+    singular: timezone
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: TimeZone is the Schema for the timezones API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: TimeZoneSpec defines the desired state of TimeZone
+            properties:
+              africaPlace:
+                description: Place in the Africa region.
+                enum:
+                - Abidjan
+                - Accra
+                - Addis_Ababa
+                - Algiers
+                - Asmara
+                - Bamako
+                - Bangui
+                - Banjul
+                - Bissau
+                - Blantyre
+                - Brazzaville
+                - Bujumbura
+                - Cairo
+                - Ceuta
+                - Conakry
+                - Dakar
+                - Dar_es_Salaam
+                - Djibouti
+                - Douala
+                - Freetown
+                - Gaborone
+                - Harare
+                - Johannesburg
+                - Juba
+                - Kampala
+                - Khartoum
+                - Kigali
+                - Kinshasa
+                - Lagos
+                - Libreville
+                - Lome
+                - Luanda
+                - Lubumbashi
+                - Lusaka
+                - Malabo
+                - Maputo
+                - Maseru
+                - Mbabane
+                - Mogadishu
+                - Monrovia
+                - Nairobi
+                - Ndjamena
+                - Niamey
+                - Nouakchott
+                - Ouagadougou
+                - Porto-Novo
+                - Sao_Tome
+                - Timbuktu
+                - Tripoli
+                - Tunis
+                - Windhoek
+                type: string
+              americaPlace:
+                description: Place in the America region.
+                enum:
+                - Adak
+                - Anchorage
+                - Anguilla
+                - Antigua
+                - Araguaina
+                - Argentina/Buenos_Aires
+                - Argentina/Catamarca
+                - Argentina/Cordoba
+                - Argentina/Jujuy
+                - Argentina/La_Rioja
+                - Argentina/Mendoza
+                - Argentina/Rio_Gallegos
+                - Argentina/Salta
+                - Argentina/San_Juan
+                - Argentina/San_Luis
+                - Argentina/Tucuman
+                - Argentina/Ushuaia
+                - Aruba
+                - Asuncion
+                - Atikokan
+                - Atka
+                - Bahia
+                - Bahia_Banderas
+                - Barbados
+                - Belem
+                - Belize
+                - Blanc-Sablon
+                - Boa_Vista
+                - Bogota
+                - Boise
+                - Cambridge_Bay
+                - Campo_Grande
+                - Cancun
+                - Caracas
+                - Cayenne
+                - Cayman
+                - Chicago
+                - Chihuahua
+                - Ciudad_Juarez
+                - Coral_Harbour
+                - Costa_Rica
+                - Coyhaique
+                - Creston
+                - Cuiaba
+                - Curacao
+                - Danmarkshavn
+                - Dawson
+                - Dawson_Creek
+                - Denver
+                - Detroit
+                - Dominica
+                - Edmonton
+                - Eirunepe
+                - El_Salvador
+                - Ensenada
+                - Fort_Nelson
+                - Fortaleza
+                - Glace_Bay
+                - Godthab
+                - Goose_Bay
+                - Grand_Turk
+                - Grenada
+                - Guadeloupe
+                - Guatemala
+                - Guayaquil
+                - Guyana
+                - Halifax
+                - Havana
+                - Hermosillo
+                - Indiana/Indianapolis
+                - Indiana/Knox
+                - Indiana/Marengo
+                - Indiana/Petersburg
+                - Indiana/Tell_City
+                - Indiana/Vevay
+                - Indiana/Vincennes
+                - Indiana/Winamac
+                - Inuvik
+                - Iqaluit
+                - Jamaica
+                - Juneau
+                - Kentucky/Louisville
+                - Kentucky/Monticello
+                - Kralendijk
+                - La_Paz
+                - Lima
+                - Los_Angeles
+                - Lower_Princes
+                - Maceio
+                - Managua
+                - Manaus
+                - Marigot
+                - Martinique
+                - Matamoros
+                - Mazatlan
+                - Menominee
+                - Merida
+                - Metlakatla
+                - Mexico_City
+                - Miquelon
+                - Moncton
+                - Monterrey
+                - Montevideo
+                - Montreal
+                - Montserrat
+                - Nassau
+                - New_York
+                - Nipigon
+                - Nome
+                - Noronha
+                - North_Dakota/Beulah
+                - North_Dakota/Center
+                - North_Dakota/New_Salem
+                - Nuuk
+                - Ojinaga
+                - Panama
+                - Pangnirtung
+                - Paramaribo
+                - Phoenix
+                - Port-au-Prince
+                - Port_of_Spain
+                - Porto_Acre
+                - Porto_Velho
+                - Puerto_Rico
+                - Punta_Arenas
+                - Rainy_River
+                - Rankin_Inlet
+                - Recife
+                - Regina
+                - Resolute
+                - Rio_Branco
+                - Santa_Isabel
+                - Santarem
+                - Santiago
+                - Santo_Domingo
+                - Sao_Paulo
+                - Scoresbysund
+                - Shiprock
+                - Sitka
+                - St_Barthelemy
+                - St_Johns
+                - St_Kitts
+                - St_Lucia
+                - St_Thomas
+                - St_Vincent
+                - Swift_Current
+                - Tegucigalpa
+                - Thule
+                - Thunder_Bay
+                - Tijuana
+                - Toronto
+                - Tortola
+                - Vancouver
+                - Virgin
+                - Whitehorse
+                - Winnipeg
+                - Yakutat
+                - Yellowknife
+                type: string
+              antarcticaPlace:
+                description: Place in the Antarctica region.
+                enum:
+                - Casey
+                - Davis
+                - DumontDUrville
+                - Macquarie
+                - Mawson
+                - McMurdo
+                - Palmer
+                - Rothera
+                - Syowa
+                - Vostok
+                type: string
+              arcticPlace:
+                description: Place in the Arctic ocean region.
+                enum:
+                - Longyearbyen
+                type: string
+              asiaPlace:
+                description: Place in the Asia region.
+                enum:
+                - Aden
+                - Almaty
+                - Amman
+                - Anadyr
+                - Aqtau
+                - Aqtobe
+                - Ashgabat
+                - Atyrau
+                - Baghdad
+                - Bahrain
+                - Baku
+                - Bangkok
+                - Barnaul
+                - Beirut
+                - Bishkek
+                - Brunei
+                - Chita
+                - Choibalsan
+                - Chongqing
+                - Colombo
+                - Damascus
+                - Dhaka
+                - Dili
+                - Dubai
+                - Dushanbe
+                - Famagusta
+                - Harbin
+                - Ho_Chi_Minh
+                - Hong_Kong
+                - Hovd
+                - Irkutsk
+                - Istanbul
+                - Jakarta
+                - Jayapura
+                - Kabul
+                - Kamchatka
+                - Karachi
+                - Kashgar
+                - Kathmandu
+                - Khandyga
+                - Kolkata
+                - Krasnoyarsk
+                - Kuala_Lumpur
+                - Kuching
+                - Kuwait
+                - Macau
+                - Magadan
+                - Makassar
+                - Manila
+                - Muscat
+                - Nicosia
+                - Novokuznetsk
+                - Novosibirsk
+                - Omsk
+                - Oral
+                - Phnom_Penh
+                - Pontianak
+                - Pyongyang
+                - Qatar
+                - Qostanay
+                - Qyzylorda
+                - Riyadh
+                - Sakhalin
+                - Samarkand
+                - Seoul
+                - Shanghai
+                - Singapore
+                - Srednekolymsk
+                - Taipei
+                - Tashkent
+                - Tbilisi
+                - Tehran
+                - Thimphu
+                - Tokyo
+                - Tomsk
+                - Ulaanbaatar
+                - Urumqi
+                - Ust-Nera
+                - Vientiane
+                - Vladivostok
+                - Yakutsk
+                - Yangon
+                - Yekaterinburg
+                - Yerevan
+                type: string
+              atlanticPlace:
+                description: Place in the Atlantic ocean region.
+                enum:
+                - Azores
+                - Bermuda
+                - Canary
+                - Cape_Verde
+                - Faroe
+                - Jan_Mayen
+                - Madeira
+                - Reykjavik
+                - South_Georgia
+                - St_Helena
+                - Stanley
+                type: string
+              australiaPlace:
+                description: Place in the Australia region.
+                enum:
+                - Adelaide
+                - Brisbane
+                - Broken_Hill
+                - Canberra
+                - Currie
+                - Darwin
+                - Eucla
+                - Hobart
+                - Lindeman
+                - Lord_Howe
+                - Melbourne
+                - Perth
+                - Sydney
+                - Yancowinna
+                type: string
+              europePlace:
+                description: Place in the Europe region.
+                enum:
+                - Amsterdam
+                - Andorra
+                - Astrakhan
+                - Athens
+                - Belfast
+                - Belgrade
+                - Berlin
+                - Bratislava
+                - Brussels
+                - Bucharest
+                - Budapest
+                - Busingen
+                - Chisinau
+                - Copenhagen
+                - Dublin
+                - Gibraltar
+                - Guernsey
+                - Helsinki
+                - Isle_of_Man
+                - Istanbul
+                - Jersey
+                - Kaliningrad
+                - Kiev
+                - Kirov
+                - Kyiv
+                - Lisbon
+                - Ljubljana
+                - London
+                - Luxembourg
+                - Madrid
+                - Malta
+                - Mariehamn
+                - Minsk
+                - Monaco
+                - Moscow
+                - Nicosia
+                - Oslo
+                - Paris
+                - Podgorica
+                - Prague
+                - Riga
+                - Rome
+                - Samara
+                - San_Marino
+                - Sarajevo
+                - Saratov
+                - Simferopol
+                - Skopje
+                - Sofia
+                - Stockholm
+                - Tallinn
+                - Tirane
+                - Tiraspol
+                - Ulyanovsk
+                - Uzhgorod
+                - Vaduz
+                - Vatican
+                - Vienna
+                - Vilnius
+                - Volgograd
+                - Warsaw
+                - Zagreb
+                - Zaporozhye
+                - Zurich
+                type: string
+              indianPlace:
+                description: Place in the Indian ocean region.
+                enum:
+                - Antananarivo
+                - Chagos
+                - Christmas
+                - Cocos
+                - Comoro
+                - Kerguelen
+                - Mahe
+                - Maldives
+                - Mauritius
+                - Mayotte
+                - Reunion
+                type: string
+              nodeSelectors:
+                description: Label selector for nodes on which to configure the TimeZone.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              nodes:
+                description: Nodes on which to configure the TimeZone.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              pacificPlace:
+                description: Place in the Pacific ocean region.
+                enum:
+                - Auckland
+                - Bougainville
+                - Chuuk
+                - Easter
+                - Efate
+                - Fiji
+                - Funafuti
+                - Galapagos
+                - Gambier
+                - Guadalcanal
+                - Guam
+                - Honolulu
+                - Johnston
+                - Kosrae
+                - Kwajalein
+                - Majuro
+                - Marquesas
+                - Midway
+                - Nauru
+                - Niue
+                - Norfolk
+                - Noumea
+                - Pago_Pago
+                - Palau
+                - Pitcairn
+                - Pohnpei
+                - Port_Moresby
+                - Rarotonga
+                - Saipan
+                - Samoa
+                - Tahiti
+                - Tarawa
+                - Wake
+                - Wallis
+                - Yap
+                type: string
+              region:
+                description: Geographical region of the time zone.
+                enum:
+                - America
+                - Europe
+                - Asia
+                - Australia
+                - Indian
+                - Africa
+                - Pacific
+                - Antarctica
+                - Atlantic
+                - Arctic
+                type: string
+              useUTC:
+                default: false
+                description: Whether to use UTC as the time zone, instead of selecting
+                  a region.
+                type: boolean
+            type: object
+          status:
+            description: TimezoneStatus defines the observed state of TimeZone
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: isls.fabrics.eda.nokia.com
 spec:
   group: fabrics.eda.nokia.com
@@ -58,6 +58,7 @@ spec:
                     default: 1000
                     description: The minimum interval in milliseconds between transmission
                       of BFD control packets.
+                    format: int32
                     maximum: 100000
                     minimum: 10
                     type: integer
@@ -65,6 +66,7 @@ spec:
                     default: 3
                     description: The number of packets that must be missed to declare
                       this session as down.
+                    format: int32
                     maximum: 20
                     minimum: 3
                     type: integer
@@ -76,6 +78,7 @@ spec:
                     default: 1000
                     description: The minimum interval between echo packets the local
                       node can receive.
+                    format: int32
                     maximum: 100000
                     minimum: 0
                     type: integer
@@ -83,12 +86,14 @@ spec:
                     default: 1000
                     description: The minimum interval in milliseconds between received
                       BFD control packets that this system should support.
+                    format: int32
                     maximum: 100000
                     minimum: 10
                     type: integer
                   ttl:
                     description: Sets custom IP TTL or Hop Limit for multi-hop BFD
                       sessions packets. Not applicable to single-hop BFD sessions.
+                    format: int32
                     maximum: 255
                     minimum: 2
                     type: integer
@@ -103,6 +108,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   bgpGroup:
                     description: Reference to a DefaultBgpGroup.
                     type: string
@@ -128,15 +134,13 @@ spec:
                     type: string
                   localInterfaceAS:
                     description: The Autonomous System to configure on the Local Interface.
-                    format: int32
-                    maximum: 4294967295
+                    format: int64
                     minimum: 0
                     type: integer
                   remoteInterfaceAS:
                     description: The Autonomous System to configure on the Remote
                       Interface.
-                    format: int32
-                    maximum: 4294967295
+                    format: int64
                     minimum: 0
                     type: integer
                 required:
@@ -146,9 +150,39 @@ spec:
                 type: object
               ipMTU:
                 description: Sets the IP MTU for the local and remote Interfaces
+                format: int32
                 maximum: 9486
                 minimum: 1280
                 type: integer
+              isis:
+                description: Enable or disable IS-IS on the ISL.
+                properties:
+                  addressFamilies:
+                    description: Address families to enable. Uses a single-topology
+                      (native) configuration mode.
+                    items:
+                      enum:
+                      - IPv4
+                      - IPv6
+                      type: string
+                    minItems: 1
+                    type: array
+                    x-kubernetes-list-type: set
+                  enabled:
+                    description: Enable or disable IS-IS between the two endpoints
+                      of the ISL.
+                    type: boolean
+                  localInstance:
+                    description: Reference to a DefaultISISInstance on the local interface.
+                    type: string
+                  remoteInstance:
+                    description: Reference to a IPV4 DefaultISISInstance on the remote
+                      interface
+                    type: string
+                required:
+                - addressFamilies
+                - enabled
+                type: object
               localDefaultRouter:
                 description: Reference to the DefaultRouter associated with the local
                   Interface in which the ISL will be provisioned.
@@ -167,6 +201,9 @@ spec:
                   ospfv2:
                     description: OSPFv2 Parameters.
                     properties:
+                      keychain:
+                        description: Keychain to be used for authentication
+                        type: string
                       localIPv4Area:
                         description: Reference to a IPV4 DefaultOSPFArea on the local
                           interface.
@@ -258,6 +295,7 @@ spec:
                 type: string
               vlanID:
                 description: Single VLAN tag value between 1-4094.
+                format: int32
                 maximum: 4094
                 minimum: 1
                 type: integer
@@ -272,6 +310,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the ISL
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score
@@ -376,6 +416,7 @@ spec:
                     default: 1000000
                     description: The minimum interval in microseconds between transmission
                       of BFD control packets.
+                    format: int32
                     maximum: 100000000
                     minimum: 10000
                     type: integer
@@ -383,6 +424,7 @@ spec:
                     default: 3
                     description: The number of packets that must be missed to declare
                       this session as down.
+                    format: int32
                     maximum: 20
                     minimum: 3
                     type: integer
@@ -394,6 +436,7 @@ spec:
                     default: 1000000
                     description: The minimum interval between echo packets the local
                       node can receive in microseconds.
+                    format: int32
                     maximum: 100000000
                     minimum: 0
                     type: integer
@@ -401,12 +444,14 @@ spec:
                     default: 1000000
                     description: The minimum interval in microseconds between received
                       BFD control packets that this system should support.
+                    format: int32
                     maximum: 100000000
                     minimum: 10000
                     type: integer
                   ttl:
                     description: Sets custom IP TTL or Hop Limit for multi-hop BFD
                       sessions packets. Not applicable to single-hop BFD sessions.
+                    format: int32
                     maximum: 255
                     minimum: 2
                     type: integer
@@ -444,14 +489,14 @@ spec:
                     type: string
                   localInterfaceAS:
                     description: The Autonomous System to configure on the Local Interface.
-                    format: int32
+                    format: int64
                     maximum: 4294967295
                     minimum: 0
                     type: integer
                   remoteInterfaceAS:
                     description: The Autonomous System to configure on the Remote
                       Interface.
-                    format: int32
+                    format: int64
                     maximum: 4294967295
                     minimum: 0
                     type: integer
@@ -462,6 +507,7 @@ spec:
                 type: object
               ipMTU:
                 description: Sets the IP MTU for the local and remote Interfaces
+                format: int32
                 maximum: 9486
                 minimum: 1280
                 type: integer
@@ -574,6 +620,7 @@ spec:
                 type: string
               vlanID:
                 description: Single VLAN tag value between 1-4094.
+                format: int32
                 maximum: 4094
                 minimum: 1
                 type: integer
@@ -588,6 +635,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the ISL
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score

@@ -1,0 +1,213 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: clusterconsumers.kafkaimporter.eda.nokia.com
+spec:
+  group: kafkaimporter.eda.nokia.com
+  names:
+    kind: ClusterConsumer
+    listKind: ClusterConsumerList
+    plural: clusterconsumers
+    singular: clusterconsumer
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.topic
+      name: Topic
+      type: string
+    - jsonPath: .status.connected
+      name: Connected
+      type: boolean
+    - jsonPath: .status.lastSeen
+      name: Last Seen
+      type: date
+    - jsonPath: .status.message
+      name: Message
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ClusterConsumer is the Schema for the clusterconsumers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ClusterConsumerSpec defines the desired state of ClusterConsumer
+            properties:
+              brokers:
+                description: List of Kafka broker addresses to connect to
+                items:
+                  type: string
+                minItems: 1
+                type: array
+              clientName:
+                description: |-
+                  Kafka consumer client name.
+                  If not set defaults to `eda-consumer-${.metadata.namespace}-${.metadata.name}`
+                type: string
+              condition:
+                description: Optional CEL expression to filter which messages get
+                  processed
+                type: string
+              data:
+                description: |-
+                  Go template for the payload to publish.
+                  Must return a JSON string.
+                  defaults to {{ index .msg "data" }}
+                type: string
+              deliveryMode:
+                default: AtLeastOnce
+                description: Message delivery semantics (optional; defaults to AtLeastOnce)
+                enum:
+                - AtMostOnce
+                - AtLeastOnce
+                type: string
+              offsetResetPolicy:
+                default: latest
+                description: |-
+                  Offset reset policy controls which messages are sent to the consumer
+                  at (re)connection. One of:
+                  - `latest`: Force offset to latest (skip past msgs)
+                  - `earliest`: Force offset to beginning
+                  - `resume`: Use Kafka's committed offsets
+                enum:
+                - latest
+                - earliest
+                - resume
+                type: string
+              path:
+                description: |-
+                  Go template for where to publish the message
+                  defaults to {{ index .msg "path" }}
+                type: string
+              sasl:
+                description: Optional SASL authentication configuration
+                properties:
+                  credentials:
+                    description: SASL credetnials
+                    type: string
+                  mechanism:
+                    default: plain
+                    description: SASL Mechanism
+                    enum:
+                    - plain
+                    - scram-sha-256
+                    - scram-sha-512
+                    - oauthbearer
+                    type: string
+                  tokenUrl:
+                    description: token url for OAUTHBEARER SASL mechanism
+                    type: string
+                type: object
+              tls:
+                description: Optional TLS configuration for secure communication
+                properties:
+                  fromFiles:
+                    description: Certificates files.
+                    properties:
+                      caFile:
+                        description: Path to a certificate authority file.
+                        type: string
+                      certFile:
+                        description: The client certificate file location.
+                        type: string
+                      keyFile:
+                        description: The client private key location.
+                        type: string
+                      skipVerify:
+                        description: If true the client will not verify the server's
+                          certificate.
+                        type: boolean
+                    type: object
+                  fromSecret:
+                    description: |-
+                      Secret containing a `tls.crt`, a `tls.key` and a `ca.crt` keys.
+                      Both `tls.crt` and `tls.key` must be present.
+                      If `ca.crt` is not present and `.trustBundle` is not set
+                      the remote server certificate is not verified.
+                    type: string
+                  trustBundle:
+                    description: |-
+                      ConfigMap containing a set of trust bundles (key `trust-bundle.pem`) used to
+                      verify the remote server certificates.
+                    type: string
+                type: object
+              topic:
+                description: Kafka topic to consume messages from
+                minLength: 1
+                type: string
+            required:
+            - brokers
+            - data
+            - path
+            - topic
+            type: object
+          status:
+            description: ClusterConsumerStatus defines the observed state of ClusterConsumer.
+            properties:
+              connected:
+                description: Indicates whether the consumer is currently connected
+                  to Kafka
+                type: boolean
+              lastError:
+                description: Most recent error message if any
+                type: string
+              lastSeen:
+                description: Timestamp of last successful activity
+                format: date-time
+                type: string
+              message:
+                description: Short message about current state or issue
+                type: string
+              offsets:
+                description: Last successfully committed offsets for each partition
+                items:
+                  description: PartitionOffset represents the offset for a specific
+                    partition
+                  properties:
+                    offset:
+                      description: Current offset value
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    partition:
+                      description: Partition number
+                      format: int32
+                      minimum: 0
+                      type: integer
+                    topic:
+                      description: Kafka topic name
+                      type: string
+                  required:
+                  - offset
+                  - partition
+                  - topic
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

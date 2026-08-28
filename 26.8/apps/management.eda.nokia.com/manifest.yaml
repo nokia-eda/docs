@@ -10,9 +10,9 @@ spec:
   author: nokia
   description: This application provides resources to various management plane entities, such as gRPC, HTTP, FTP and SSH servers.
   group: management.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/management:v6.999.0
+  image: ghcr.io/nokia-eda/apps/management:v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   title: Management
   version: v1
   components:
@@ -121,30 +121,60 @@ spec:
         trigger:
           kind: GRPCServerState
         type: state
+    - crd:
+        api:
+          expose: readWrite
+        path: management/crds/management.eda.nokia.com_snmpservers.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_snmpservers.json
+        ui:
+          category: Management
+          name: SNMP Servers
+          icon: Protocol
+    - script:
+        path: management/intents/snmpserver/snmpserver_intent.py
+        trigger:
+          kind: SNMPServer
+        type: config
+    - crd:
+        api:
+          expose: readWrite
+        path: management/crds/management.eda.nokia.com_snmpserverstates.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_snmpserverstates.json
+    - script:
+        path: management/intents/snmpserverstate/snmpserverstate_intent.py
+        trigger:
+          kind: SNMPServerState
+        type: state
   requirements:
     - appId: routing.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: services.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: bootstrap.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
   dependencies:
     - file:
         path: management/intents
+    - file:
+        path: management/utils
     - file:
         path: common/
     - file:
         path: utils/
     - file:
-        path: routing/
+        path: routing/api/v1/pysrc
     - file:
-        path: services/
+        path: services/api/v2/pysrc
     - file:
-        path: bootstrap/
-    - file:
-        path: management/api
+        path: bootstrap/api/v1/pysrc
     - file:
         path: management/api/v1/pysrc
+    - file:
+        path: core/pysrc
+    - file:
+        path: aaa/api/v1/pysrc
+    - file:
+        path: management/api
   supportedEndpoints:
     - "srl:24.10.*"
     - "srl:25.3.*"

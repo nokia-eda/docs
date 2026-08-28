@@ -1,0 +1,44 @@
+---
+# All TopoNodes in the namespace — empty spec selects all.
+apiVersion: certchecker.eda.nokia.com/v1alpha1
+kind: NodeCertificateAudit
+metadata:
+  name: audit-all-nodes
+  namespace: eda
+spec: {}
+
+---
+# Explicit TopoNode names.
+apiVersion: certchecker.eda.nokia.com/v1alpha1
+kind: NodeCertificateAudit
+metadata:
+  name: audit-explicit-nodes
+  namespace: eda
+spec:
+  nodes:
+    - leaf-1
+    - spine-1
+
+---
+# TopoNodes matched by Kubernetes label selector strings.
+apiVersion: certchecker.eda.nokia.com/v1alpha1
+kind: NodeCertificateAudit
+metadata:
+  name: audit-by-node-selectors
+  namespace: eda
+spec:
+  nodeSelectors:
+    - eda.nokia.com/role=leaf
+
+---
+# Explicit nodes combined with label selectors (results deduplicated).
+apiVersion: certchecker.eda.nokia.com/v1alpha1
+kind: NodeCertificateAudit
+metadata:
+  name: audit-nodes-and-selectors
+  namespace: eda
+spec:
+  nodes:
+    - spine-1
+  nodeSelectors:
+    - eda.nokia.com/role=leaf

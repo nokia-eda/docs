@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: bridgedomaininterconnects.services.eda.nokia.com
 spec:
   group: services.eda.nokia.com
@@ -77,8 +77,9 @@ spec:
                     - MPLS
                     type: string
                   evi:
-                    description: Required for EVPN control plane on SRLinux
-                    format: int32
+                    description: Required for EVPN control plane on SRLinux. Can also
+                      be used to auto-derive RDs.
+                    format: int64
                     type: integer
                   exportPolicy:
                     description: Reference to a Policy CR that will be used to export
@@ -114,10 +115,35 @@ spec:
                           - SR-OSPFv3
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                       controlWord:
                         description: Enable or disable the use of control word. Applicable
                           only to EVPNMPLS service Type.
                         type: boolean
+                    type: object
+                  routeDistinguisher:
+                    description: Route Distinguisher for the Interconnect service
+                      instance. Required when redundant DCGWs are used.
+                    properties:
+                      administrator:
+                        default: Auto
+                        description: Administrator part of the route distinguisher.
+                          Use a 4-byte dotted quad notation (e.g. 1.2.3.4), or `Auto`
+                          keyword to use a system IP.
+                        pattern: ^(Auto|(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$
+                        type: string
+                      assignedNumber:
+                        default: Auto
+                        description: Assigned number part of the route distinguisher.
+                          Use a 2-byte integer (e.g. 12345), or `Auto` to use the
+                          corresponding EVI or pool (if specified in the assignedNumberPool).
+                        pattern: ^(Auto|0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+                        type: string
+                      assignedNumberPool:
+                        description: Reference to a pool to use for the Assigned Number
+                          allocation. Takes precedence over assignedNumber.
+                        minLength: 1
+                        type: string
                     type: object
                   vxlan:
                     description: VXLAN encapsulation options. Only applicable if VXLAN
@@ -143,11 +169,45 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               nodes:
                 description: List of nodes (gateways) on which to configure the BridgeDomainInterconnect.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
+              primaryBGPInstance:
+                description: Additional BGP Service Instance parameters related to
+                  the primary BGP service Instance. Required when redundant DCGWs
+                  are used.
+                properties:
+                  routeDistinguisher:
+                    description: Route Distinguisher for the service instance. Required
+                      when redundant DCGWs are used.
+                    properties:
+                      administrator:
+                        default: Auto
+                        description: Administrator part of the route distinguisher.
+                          Use a 4-byte dotted quad notation (e.g. 1.2.3.4), or `Auto`
+                          keyword to use a system IP.
+                        pattern: ^(Auto|(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$
+                        type: string
+                      assignedNumber:
+                        default: Auto
+                        description: Assigned number part of the route distinguisher.
+                          Use a 2-byte integer (e.g. 12345), or `Auto` to use the
+                          corresponding EVI or pool (if specified in the assignedNumberPool).
+                        pattern: ^(Auto|0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$
+                        type: string
+                      assignedNumberPool:
+                        description: Reference to a pool to use for the Assigned Number
+                          allocation. Takes precedence over assignedNumber.
+                        minLength: 1
+                        type: string
+                    type: object
+                required:
+                - routeDistinguisher
+                type: object
             required:
             - bridgeDomainRef
             - interconnectBGPInstance
@@ -158,6 +218,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the BridgeDomainInterconnect.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Explains the reason for the health score.

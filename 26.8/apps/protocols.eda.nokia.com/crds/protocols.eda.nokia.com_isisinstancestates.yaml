@@ -1,0 +1,68 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: isisinstancestates.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: ISISInstanceState
+    listKind: ISISInstanceStateList
+    plural: isisinstancestates
+    singular: isisinstancestate
+  scope: Namespaced
+  versions:
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: ISISInstanceState is the Schema for the isisinstancestates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ISISInstanceStateSpec defines the desired state of ISISInstanceState
+            properties:
+              addressFamilies:
+                description: Address families that are enabled
+                items:
+                  enum:
+                  - IPv4
+                  - IPv6
+                  type: string
+                type: array
+              defaultISISInstance:
+                description: Denotes if the group is a DefaultISISInstance or ISISInstance
+                type: boolean
+              enabled:
+                description: Indicates whether the ISIS Insance is administratively
+                  enabled
+                type: boolean
+            required:
+            - defaultISISInstance
+            - enabled
+            type: object
+          status:
+            description: ISISInstanceStateStatus defines the observed state of ISISInstanceState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

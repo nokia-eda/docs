@@ -1,0 +1,51 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: discord
+spec:
+  group: discord.eda.nokia.com
+  version: v1alpha1
+  title: Discord
+  author: nokia
+  description: Sample description
+  image: ghcr.io/nokia-eda/apps/discord:v7.0.0
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    categories:
+      - integrations
+    documentation: discord/docs
+    settings: discord/settings/openapi/eda_oas_discord.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        path: discord/crds/discord.eda.nokia.com_bots.yaml
+        schema: discord/openapiv3/eda_oas_discord.eda.nokia.com_bots.json
+        ui:
+          category: Discord
+          name: Bots
+    - crd:
+        api:
+          expose: readWrite
+        path: discord/crds/discord.eda.nokia.com_slashcommands.yaml
+        schema: discord/openapiv3/eda_oas_discord.eda.nokia.com_slashcommands.json
+        ui:
+          category: Discord
+          name: Slash Commands
+    - crd:
+        api:
+          expose: readWrite
+        path: discord/crds/discord.eda.nokia.com_notifications.yaml
+        schema: discord/openapiv3/eda_oas_discord.eda.nokia.com_notifications.json
+        ui:
+          category: Discord
+          name: Notifications
+    - cr:
+        path: discord/manifests/deployment.yaml
+  dependencies:
+    - container:
+        image: registry.eda.dev/discord/operators/controller:latest
+        name: discord-controller
+    - file:
+        path: discord/api

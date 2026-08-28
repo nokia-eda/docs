@@ -1,0 +1,468 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: deployimagepipelines.os.eda.nokia.com
+spec:
+  group: os.eda.nokia.com
+  names:
+    kind: DeployImagePipeline
+    listKind: DeployImagePipelineList
+    plural: deployimagepipelines
+    singular: deployimagepipeline
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: DeployImagePipeline is the Schema for the deployimagepipelines
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DeployImagePipelineSpec defines the desired state of DeployImagePipeline
+            properties:
+              canaries:
+                description: |-
+                  List of node selectors to use to match canary nodes.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                  Canary nodes are upgraded before any other nodes, and are used to test images before broader roll out.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=canary"].
+                items:
+                  type: string
+                type: array
+              nodeProfile:
+                description: |-
+                  Destination profile to use for imaging.
+                  This profile contains the image to deploy, and other configuration for the node.
+                type: string
+              nodeSelectors:
+                description: |-
+                  List of node selectors to select nodes to deploy images on.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes to deploy images on.
+                items:
+                  type: string
+                type: array
+              options:
+                default:
+                  dryRun: false
+                description: Options for deploying images.
+                properties:
+                  dryRun:
+                    default: false
+                    description: |-
+                      Dry-run the DeployImage Transaction, without actually deploying the image.
+                      Note: setting dry-run will not trigger any Pipeline Runs.
+                    type: boolean
+                type: object
+              tranches:
+                description: |-
+                  List of tranches to use for imaging.
+                  A tranche is a list of node selectors, and a name.
+                  Tranches are upgraded in order, sequentially.
+                items:
+                  properties:
+                    name:
+                      description: |-
+                        Name of the tranche.
+                        This is used to identify the tranche in the UI and in logs.
+                      type: string
+                    nodeSelectors:
+                      description: |-
+                        Node Selectors is a list of node selectors to select nodes to deploy images on in this tranche.
+                        This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that will be imaged.
+                        This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf"].
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+            required:
+            - nodeProfile
+            type: object
+          status:
+            description: Status of the imaging operation.
+            properties:
+              canariesResult:
+                description: Canaries Result for the operation.
+                properties:
+                  error:
+                    description: Error message if the imaging operation failed for
+                      this group of nodes.
+                    type: string
+                  matchedPipelineDefinitions:
+                    description: |-
+                      The PipelineDefinitions that matched changes in this transaction,
+                      grouped by the namespace of the changed resources. Populated whenever
+                      the transaction was pipeline-eligible and matched at least one
+                      PipelineDefinition, regardless of whether pipelines runs or not
+                      (like for DryRun transactions no pipeline is run)
+                    items:
+                      description: |-
+                        MatchedPipelineDefinitions groups PipelineDefinitions that matched the
+                        resources changed in a single namespace by this transaction.
+                      properties:
+                        namespace:
+                          description: |-
+                            Namespace of the changed resource which matched the trigger events of
+                            below PipelineDefinitions, or in other words the namespace in which below
+                            PipelineDefinitions runs.
+                          type: string
+                        pipelineDefinitions:
+                          description: PipelineDefinitions that matched changes in
+                            this namespace.
+                          items:
+                            description: |-
+                              MatchedPipelineDefinitionRef identifies a single PipelineDefinition by its
+                              own namespace and name.
+                            properties:
+                              name:
+                                description: Name of the PipelineDefinition.
+                                type: string
+                              namespace:
+                                description: Namespace of the PipelineDefinition.
+                                type: string
+                            required:
+                            - name
+                            - namespace
+                            type: object
+                          type: array
+                      required:
+                      - namespace
+                      type: object
+                    type: array
+                  newNodeProfile:
+                    description: The new profile for all nodes in this group.
+                    type: string
+                  newVersion:
+                    description: The new version desired for all nodes in this group.
+                    type: string
+                  nodes:
+                    description: The group of nodes this result is for.
+                    items:
+                      description: |-
+                        NodeDetail defines the per Node details.
+                        It contains the previous version and previous node profile of the node, if applicable.
+                      properties:
+                        node:
+                          description: The name of the node this result is for.
+                          type: string
+                        previousNodeProfile:
+                          description: |-
+                            The previous profile of the node.
+                            This is the node profile that was running before the imaging operation.
+                          type: string
+                        previousVersion:
+                          description: |-
+                            The previous version of the node.
+                            This is the version of the image that was running before the imaging operation.
+                          type: string
+                      type: object
+                    type: array
+                  pipelineRunnerRef:
+                    description: PipelineRun Reference of the imaging operation.
+                    properties:
+                      gvk:
+                        description: Group, version, kind of TransactionPipelineRunner.
+                        type: string
+                      id:
+                        description: The pipeline runner ID, if this transaction triggered
+                          a pipeline.
+                        format: int64
+                        type: integer
+                      name:
+                        description: Name of the TransactionPipelineRunner.
+                        type: string
+                      namespace:
+                        description: Namespace in which TransactionPipelineRunner
+                          is created
+                        type: string
+                    required:
+                    - gvk
+                    - name
+                    - namespace
+                    type: object
+                  success:
+                    description: |-
+                      Indicates if the imaging operation was successful for this group of nodes.
+                      This is true if the imaging operation was successful, false if it failed.
+                    type: boolean
+                  transactionID:
+                    description: Transaction IDs of the imaging operation.
+                    format: int64
+                    type: integer
+                type: object
+              nodesAndNodeSelectorsResult:
+                description: Node Selectors Result for the operation.
+                properties:
+                  error:
+                    description: Error message if the imaging operation failed for
+                      this group of nodes.
+                    type: string
+                  matchedPipelineDefinitions:
+                    description: |-
+                      The PipelineDefinitions that matched changes in this transaction,
+                      grouped by the namespace of the changed resources. Populated whenever
+                      the transaction was pipeline-eligible and matched at least one
+                      PipelineDefinition, regardless of whether pipelines runs or not
+                      (like for DryRun transactions no pipeline is run)
+                    items:
+                      description: |-
+                        MatchedPipelineDefinitions groups PipelineDefinitions that matched the
+                        resources changed in a single namespace by this transaction.
+                      properties:
+                        namespace:
+                          description: |-
+                            Namespace of the changed resource which matched the trigger events of
+                            below PipelineDefinitions, or in other words the namespace in which below
+                            PipelineDefinitions runs.
+                          type: string
+                        pipelineDefinitions:
+                          description: PipelineDefinitions that matched changes in
+                            this namespace.
+                          items:
+                            description: |-
+                              MatchedPipelineDefinitionRef identifies a single PipelineDefinition by its
+                              own namespace and name.
+                            properties:
+                              name:
+                                description: Name of the PipelineDefinition.
+                                type: string
+                              namespace:
+                                description: Namespace of the PipelineDefinition.
+                                type: string
+                            required:
+                            - name
+                            - namespace
+                            type: object
+                          type: array
+                      required:
+                      - namespace
+                      type: object
+                    type: array
+                  newNodeProfile:
+                    description: The new profile for all nodes in this group.
+                    type: string
+                  newVersion:
+                    description: The new version desired for all nodes in this group.
+                    type: string
+                  nodes:
+                    description: The group of nodes this result is for.
+                    items:
+                      description: |-
+                        NodeDetail defines the per Node details.
+                        It contains the previous version and previous node profile of the node, if applicable.
+                      properties:
+                        node:
+                          description: The name of the node this result is for.
+                          type: string
+                        previousNodeProfile:
+                          description: |-
+                            The previous profile of the node.
+                            This is the node profile that was running before the imaging operation.
+                          type: string
+                        previousVersion:
+                          description: |-
+                            The previous version of the node.
+                            This is the version of the image that was running before the imaging operation.
+                          type: string
+                      type: object
+                    type: array
+                  pipelineRunnerRef:
+                    description: PipelineRun Reference of the imaging operation.
+                    properties:
+                      gvk:
+                        description: Group, version, kind of TransactionPipelineRunner.
+                        type: string
+                      id:
+                        description: The pipeline runner ID, if this transaction triggered
+                          a pipeline.
+                        format: int64
+                        type: integer
+                      name:
+                        description: Name of the TransactionPipelineRunner.
+                        type: string
+                      namespace:
+                        description: Namespace in which TransactionPipelineRunner
+                          is created
+                        type: string
+                    required:
+                    - gvk
+                    - name
+                    - namespace
+                    type: object
+                  success:
+                    description: |-
+                      Indicates if the imaging operation was successful for this group of nodes.
+                      This is true if the imaging operation was successful, false if it failed.
+                    type: boolean
+                  transactionID:
+                    description: Transaction IDs of the imaging operation.
+                    format: int64
+                    type: integer
+                type: object
+              result:
+                description: |-
+                  Result is the overall result of the image operation.
+                  It can be one of the following values:
+                  - "Success": All images were successfully deployed.
+                  - "Failed": No images were successfully deployed.
+                  - "PartialSuccess": Some images were successfully deployed, but not all.
+                enum:
+                - Success
+                - Failed
+                - PartialSuccess
+                type: string
+              trancheResults:
+                description: Tranches Result for the operation.
+                items:
+                  description: TranchResult defines the result of a tranche in the
+                    imaging operation.
+                  properties:
+                    trancheName:
+                      description: The Tranche Name.
+                      type: string
+                    trancheResult:
+                      description: The Tranche Result.
+                      properties:
+                        error:
+                          description: Error message if the imaging operation failed
+                            for this group of nodes.
+                          type: string
+                        matchedPipelineDefinitions:
+                          description: |-
+                            The PipelineDefinitions that matched changes in this transaction,
+                            grouped by the namespace of the changed resources. Populated whenever
+                            the transaction was pipeline-eligible and matched at least one
+                            PipelineDefinition, regardless of whether pipelines runs or not
+                            (like for DryRun transactions no pipeline is run)
+                          items:
+                            description: |-
+                              MatchedPipelineDefinitions groups PipelineDefinitions that matched the
+                              resources changed in a single namespace by this transaction.
+                            properties:
+                              namespace:
+                                description: |-
+                                  Namespace of the changed resource which matched the trigger events of
+                                  below PipelineDefinitions, or in other words the namespace in which below
+                                  PipelineDefinitions runs.
+                                type: string
+                              pipelineDefinitions:
+                                description: PipelineDefinitions that matched changes
+                                  in this namespace.
+                                items:
+                                  description: |-
+                                    MatchedPipelineDefinitionRef identifies a single PipelineDefinition by its
+                                    own namespace and name.
+                                  properties:
+                                    name:
+                                      description: Name of the PipelineDefinition.
+                                      type: string
+                                    namespace:
+                                      description: Namespace of the PipelineDefinition.
+                                      type: string
+                                  required:
+                                  - name
+                                  - namespace
+                                  type: object
+                                type: array
+                            required:
+                            - namespace
+                            type: object
+                          type: array
+                        newNodeProfile:
+                          description: The new profile for all nodes in this group.
+                          type: string
+                        newVersion:
+                          description: The new version desired for all nodes in this
+                            group.
+                          type: string
+                        nodes:
+                          description: The group of nodes this result is for.
+                          items:
+                            description: |-
+                              NodeDetail defines the per Node details.
+                              It contains the previous version and previous node profile of the node, if applicable.
+                            properties:
+                              node:
+                                description: The name of the node this result is for.
+                                type: string
+                              previousNodeProfile:
+                                description: |-
+                                  The previous profile of the node.
+                                  This is the node profile that was running before the imaging operation.
+                                type: string
+                              previousVersion:
+                                description: |-
+                                  The previous version of the node.
+                                  This is the version of the image that was running before the imaging operation.
+                                type: string
+                            type: object
+                          type: array
+                        pipelineRunnerRef:
+                          description: PipelineRun Reference of the imaging operation.
+                          properties:
+                            gvk:
+                              description: Group, version, kind of TransactionPipelineRunner.
+                              type: string
+                            id:
+                              description: The pipeline runner ID, if this transaction
+                                triggered a pipeline.
+                              format: int64
+                              type: integer
+                            name:
+                              description: Name of the TransactionPipelineRunner.
+                              type: string
+                            namespace:
+                              description: Namespace in which TransactionPipelineRunner
+                                is created
+                              type: string
+                          required:
+                          - gvk
+                          - name
+                          - namespace
+                          type: object
+                        success:
+                          description: |-
+                            Indicates if the imaging operation was successful for this group of nodes.
+                            This is true if the imaging operation was successful, false if it failed.
+                          type: boolean
+                        transactionID:
+                          description: Transaction IDs of the imaging operation.
+                          format: int64
+                          type: integer
+                      type: object
+                  type: object
+                type: array
+            required:
+            - result
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

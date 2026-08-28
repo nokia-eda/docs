@@ -1,0 +1,12 @@
+apiVersion: aaa.eda.nokia.com/v1
+kind: AccountingPolicy
+metadata:
+  namespace: eda
+  name: my-acct-policy
+spec:
+  mode: StopOnly
+  serverGroups:
+    - tacacs-servers
+  nodeSelectors:
+    - eda.nokia.com/role = leaf
+    - eda.nokia.com/role = spine

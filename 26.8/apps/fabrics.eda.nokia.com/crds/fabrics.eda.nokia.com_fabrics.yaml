@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: fabrics.fabrics.eda.nokia.com
 spec:
   group: fabrics.eda.nokia.com
@@ -66,6 +66,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   routeLeaking:
                     description: Route leaking controlled by routing policies in and
                       out of the DefaultRouters on each node.  If specified under
@@ -110,10 +111,12 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               interSwitchLinks:
                 properties:
                   ipMTU:
                     description: Sets the IP MTU for the DefaultInterface.
+                    format: int32
                     maximum: 9486
                     minimum: 1280
                     type: integer
@@ -124,6 +127,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   poolIPv4:
                     description: Reference to an IPAllocationPool used to dynamically
                       allocate an IPv4 address to DefaultInterfaces which are members
@@ -154,6 +158,7 @@ spec:
                   vlanID:
                     description: Configures the provided VLAN on the DefaultInterfaces
                       which are members of the ISLs.
+                    format: int32
                     maximum: 4094
                     minimum: 1
                     type: integer
@@ -172,6 +177,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   routeLeaking:
                     description: Route leaking controlled by routing policies in and
                       out of the DefaultRouters on each node.  If specified under
@@ -205,6 +211,23 @@ spec:
                       system/lo0 interfaces.
                     type: string
                 type: object
+              loadBalancing:
+                description: Load Balancing configuration.
+                properties:
+                  dynamic:
+                    description: Dynamic load balancing configuration.
+                    properties:
+                      prefixes:
+                        description: List of IPv4 and/or IPv6 prefixes. Active routes
+                          in the FIB that are covered by this list are programmed
+                          with dynamic load balancing if conditions are met.
+                        items:
+                          type: string
+                        minItems: 1
+                        type: array
+                        x-kubernetes-list-type: set
+                    type: object
+                type: object
               overlayProtocol:
                 description: Set the overlay protocol used
                 properties:
@@ -215,6 +238,7 @@ spec:
                         default: 1000
                         description: The minimum interval in milliseconds between
                           transmission of BFD control packets.
+                        format: int32
                         maximum: 100000
                         minimum: 10
                         type: integer
@@ -222,6 +246,7 @@ spec:
                         default: 3
                         description: The number of packets that must be missed to
                           declare this session as down.
+                        format: int32
                         maximum: 20
                         minimum: 3
                         type: integer
@@ -233,6 +258,7 @@ spec:
                         default: 1000
                         description: The minimum interval between echo packets the
                           local node can receive.
+                        format: int32
                         maximum: 100000
                         minimum: 0
                         type: integer
@@ -240,12 +266,14 @@ spec:
                         default: 1000
                         description: The minimum interval in milliseconds between
                           received BFD control packets that this system should support.
+                        format: int32
                         maximum: 100000
                         minimum: 10
                         type: integer
                       ttl:
                         description: Sets custom IP TTL or Hop Limit for multi-hop
                           BFD sessions packets. Not applicable to single-hop BFD sessions.
+                        format: int32
                         maximum: 255
                         minimum: 2
                         type: integer
@@ -259,7 +287,9 @@ spec:
                         description: Autonomous System used for iBGP peering session,
                           when protocol is set to IBGP providing an autonomousSystem
                           is required.
-                        format: int32
+                        format: int64
+                        maximum: 4294967295
+                        minimum: 1
                         type: integer
                       clusterID:
                         description: Sets the cluster ID used by DefaultRouteReflectors,
@@ -292,6 +322,7 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                       rrIpAddresses:
                         description: List of route reflector IP addresses not provisioned
                           by this instance of a Fabric resource.  Used with rrClientNodeSelector
@@ -300,6 +331,7 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                       rrNodeSelectors:
                         description: Label selector used to select Toponodes to configure
                           as DefaultRouteReflectors, these are typically Spine, Superspine
@@ -309,30 +341,35 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                       timers:
                         description: Timer configurations
                         properties:
                           connectRetrySeconds:
                             description: The time interval in seconds between successive
                               attempts to establish a session with a peer.
+                            format: int32
                             maximum: 65535
                             minimum: 1
                             type: integer
                           holdTimeSeconds:
                             description: The hold-time interval in seconds that the
                               router proposes to the peer in its OPEN message.
+                            format: int32
                             maximum: 65535
                             minimum: 0
                             type: integer
                           keepAliveSeconds:
                             description: The interval in seconds between successive
                               keepalive messages sent to the peer.
+                            format: int32
                             maximum: 21845
                             minimum: 0
                             type: integer
                           minimumAdvertisementIntervalSeconds:
                             description: The value assigned to the MinRouteAdvertisementIntervalTimer
                               of RFC 4271, for both EBGP and IBGP sessions.
+                            format: int32
                             maximum: 255
                             minimum: 1
                             type: integer
@@ -398,6 +435,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   systemPoolIPv4:
                     description: Reference to an IPAllocationPool used to dynamically
                       allocate an IPv4 address to system/lo0 interfaces.  This reference
@@ -445,6 +483,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   systemPoolIPv4:
                     description: Reference to an IPAllocationPool used to dynamically
                       allocate an IPv4 address to system/lo0 interfaces.  This reference
@@ -484,6 +523,7 @@ spec:
                         default: 1000
                         description: The minimum interval in milliseconds between
                           transmission of BFD control packets.
+                        format: int32
                         maximum: 100000
                         minimum: 10
                         type: integer
@@ -491,6 +531,7 @@ spec:
                         default: 3
                         description: The number of packets that must be missed to
                           declare this session as down.
+                        format: int32
                         maximum: 20
                         minimum: 3
                         type: integer
@@ -502,6 +543,7 @@ spec:
                         default: 1000
                         description: The minimum interval between echo packets the
                           local node can receive.
+                        format: int32
                         maximum: 100000
                         minimum: 0
                         type: integer
@@ -509,12 +551,14 @@ spec:
                         default: 1000
                         description: The minimum interval in milliseconds between
                           received BFD control packets that this system should support.
+                        format: int32
                         maximum: 100000
                         minimum: 10
                         type: integer
                       ttl:
                         description: Sets custom IP TTL or Hop Limit for multi-hop
                           BFD sessions packets. Not applicable to single-hop BFD sessions.
+                        format: int32
                         maximum: 255
                         minimum: 2
                         type: integer
@@ -553,24 +597,28 @@ spec:
                           connectRetrySeconds:
                             description: The time interval in seconds between successive
                               attempts to establish a session with a peer.
+                            format: int32
                             maximum: 65535
                             minimum: 1
                             type: integer
                           holdTimeSeconds:
                             description: The hold-time interval in seconds that the
                               router proposes to the peer in its OPEN message.
+                            format: int32
                             maximum: 65535
                             minimum: 0
                             type: integer
                           keepAliveSeconds:
                             description: The interval in seconds between successive
                               keepalive messages sent to the peer.
+                            format: int32
                             maximum: 21845
                             minimum: 0
                             type: integer
                           minimumAdvertisementIntervalSeconds:
                             description: The value assigned to the MinRouteAdvertisementIntervalTimer
                               of RFC 4271, for both EBGP and IBGP sessions.
+                            format: int32
                             maximum: 255
                             minimum: 1
                             type: integer
@@ -589,6 +637,10 @@ spec:
                           - IPv6Unicast
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
+                      keychain:
+                        description: Keychain to be used for authentication
+                        type: string
                     type: object
                   protocols:
                     description: List of routing protocols to used between peers of
@@ -599,8 +651,10 @@ spec:
                       - EBGP
                       - OSPFv2
                       - OSPFv3
+                      - ISIS
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                 required:
                 - protocols
                 type: object
@@ -624,7 +678,9 @@ spec:
                     underlayAutonomousSystem:
                       description: Underlay Autonomous System used for eBGP peering
                         session, when protocol is set to eBGP this is required.
-                      format: int32
+                      format: int64
+                      maximum: 4294967295
+                      minimum: 1
                       type: integer
                   type: object
                 type: array
@@ -633,6 +689,8 @@ spec:
                   score of the Fabric is determined by the aggregate health score
                   of the resources emitted by the Fabric such as ISL, DefaultRouteReflectors
                   etc.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -656,7 +714,9 @@ spec:
                     underlayAutonomousSystem:
                       description: Underlay Autonomous System used for eBGP peering
                         session, when protocol is set to eBGP this is required.
-                      format: int32
+                      format: int64
+                      maximum: 4294967295
+                      minimum: 1
                       type: integer
                   type: object
                 type: array
@@ -686,7 +746,9 @@ spec:
                     underlayAutonomousSystem:
                       description: Underlay Autonomous System used for eBGP peering
                         session, when protocol is set to eBGP this is required.
-                      format: int32
+                      format: int64
+                      maximum: 4294967295
+                      minimum: 1
                       type: integer
                   type: object
                 type: array
@@ -706,7 +768,9 @@ spec:
                     underlayAutonomousSystem:
                       description: Underlay Autonomous System used for eBGP peering
                         session, when protocol is set to eBGP this is required.
-                      format: int32
+                      format: int64
+                      maximum: 4294967295
+                      minimum: 1
                       type: integer
                   type: object
                 type: array
@@ -819,6 +883,7 @@ spec:
                 properties:
                   ipMTU:
                     description: Sets the IP MTU for the DefaultInterface.
+                    format: int32
                     maximum: 9486
                     minimum: 1280
                     type: integer
@@ -859,6 +924,7 @@ spec:
                   vlanID:
                     description: Configures the provided VLAN on the DefaultInterfaces
                       which are members of the ISLs.
+                    format: int32
                     maximum: 4094
                     minimum: 1
                     type: integer
@@ -920,6 +986,7 @@ spec:
                         default: 1000000
                         description: The minimum interval in microseconds between
                           transmission of BFD control packets.
+                        format: int32
                         maximum: 100000000
                         minimum: 10000
                         type: integer
@@ -927,6 +994,7 @@ spec:
                         default: 3
                         description: The number of packets that must be missed to
                           declare this session as down.
+                        format: int32
                         maximum: 20
                         minimum: 3
                         type: integer
@@ -938,6 +1006,7 @@ spec:
                         default: 1000000
                         description: The minimum interval between echo packets the
                           local node can receive in microseconds.
+                        format: int32
                         maximum: 100000000
                         minimum: 0
                         type: integer
@@ -945,12 +1014,14 @@ spec:
                         default: 1000000
                         description: The minimum interval in microseconds between
                           received BFD control packets that this system should support.
+                        format: int32
                         maximum: 100000000
                         minimum: 10000
                         type: integer
                       ttl:
                         description: Sets custom IP TTL or Hop Limit for multi-hop
                           BFD sessions packets. Not applicable to single-hop BFD sessions.
+                        format: int32
                         maximum: 255
                         minimum: 2
                         type: integer
@@ -962,7 +1033,7 @@ spec:
                         description: Autonomous System used for iBGP peering session,
                           when protocol is set to IBGP providing an autonomousSystem
                           is required.
-                        format: int32
+                        format: int64
                         type: integer
                       clusterID:
                         description: Sets the cluster ID used by DefaultRouteReflectors,
@@ -1018,24 +1089,28 @@ spec:
                           connectRetry:
                             description: The time interval in seconds between successive
                               attempts to establish a session with a peer.
+                            format: int32
                             maximum: 65535
                             minimum: 1
                             type: integer
                           holdTime:
                             description: The hold-time interval in seconds that the
                               router proposes to the peer in its OPEN message.
+                            format: int32
                             maximum: 65535
                             minimum: 0
                             type: integer
                           keepAlive:
                             description: The interval in seconds between successive
                               keepalive messages sent to the peer.
+                            format: int32
                             maximum: 21845
                             minimum: 0
                             type: integer
                           minimumAdvertisementInterval:
                             description: The value assigned to the MinRouteAdvertisementIntervalTimer
                               of RFC 4271, for both EBGP and IBGP sessions.
+                            format: int32
                             maximum: 255
                             minimum: 1
                             type: integer
@@ -1187,6 +1262,7 @@ spec:
                         default: 1000000
                         description: The minimum interval in microseconds between
                           transmission of BFD control packets.
+                        format: int32
                         maximum: 100000000
                         minimum: 10000
                         type: integer
@@ -1194,6 +1270,7 @@ spec:
                         default: 3
                         description: The number of packets that must be missed to
                           declare this session as down.
+                        format: int32
                         maximum: 20
                         minimum: 3
                         type: integer
@@ -1205,6 +1282,7 @@ spec:
                         default: 1000000
                         description: The minimum interval between echo packets the
                           local node can receive in microseconds.
+                        format: int32
                         maximum: 100000000
                         minimum: 0
                         type: integer
@@ -1212,12 +1290,14 @@ spec:
                         default: 1000000
                         description: The minimum interval in microseconds between
                           received BFD control packets that this system should support.
+                        format: int32
                         maximum: 100000000
                         minimum: 10000
                         type: integer
                       ttl:
                         description: Sets custom IP TTL or Hop Limit for multi-hop
                           BFD sessions packets. Not applicable to single-hop BFD sessions.
+                        format: int32
                         maximum: 255
                         minimum: 2
                         type: integer
@@ -1254,24 +1334,28 @@ spec:
                           connectRetry:
                             description: The time interval in seconds between successive
                               attempts to establish a session with a peer.
+                            format: int32
                             maximum: 65535
                             minimum: 1
                             type: integer
                           holdTime:
                             description: The hold-time interval in seconds that the
                               router proposes to the peer in its OPEN message.
+                            format: int32
                             maximum: 65535
                             minimum: 0
                             type: integer
                           keepAlive:
                             description: The interval in seconds between successive
                               keepalive messages sent to the peer.
+                            format: int32
                             maximum: 21845
                             minimum: 0
                             type: integer
                           minimumAdvertisementInterval:
                             description: The value assigned to the MinRouteAdvertisementIntervalTimer
                               of RFC 4271, for both EBGP and IBGP sessions.
+                            format: int32
                             maximum: 255
                             minimum: 1
                             type: integer
@@ -1325,7 +1409,7 @@ spec:
                     underlayAutonomousSystem:
                       description: Underlay Autonomous System used for eBGP peering
                         session, when protocol is set to eBGP this is required.
-                      format: int32
+                      format: int64
                       type: integer
                   type: object
                 type: array
@@ -1334,6 +1418,8 @@ spec:
                   score of the Fabric is determined by the aggregate health score
                   of the resources emitted by the Fabric such as ISL, DefaultRouteReflectors
                   etc.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -1357,7 +1443,7 @@ spec:
                     underlayAutonomousSystem:
                       description: Underlay Autonomous System used for eBGP peering
                         session, when protocol is set to eBGP this is required.
-                      format: int32
+                      format: int64
                       type: integer
                   type: object
                 type: array
@@ -1382,7 +1468,7 @@ spec:
                     underlayAutonomousSystem:
                       description: Underlay Autonomous System used for eBGP peering
                         session, when protocol is set to eBGP this is required.
-                      format: int32
+                      format: int64
                       type: integer
                   type: object
                 type: array
@@ -1402,7 +1488,7 @@ spec:
                     underlayAutonomousSystem:
                       description: Underlay Autonomous System used for eBGP peering
                         session, when protocol is set to eBGP this is required.
-                      format: int32
+                      format: int64
                       type: integer
                   type: object
                 type: array

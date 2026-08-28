@@ -20,20 +20,73 @@ spec:
         workflow: true
         ui:
           name: Deploy Image
+          category: Maintenance
         conversionScript: operatingsystem/intents/deployimage/conversion_v1.py
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: operatingsystem/crds/os.eda.nokia.com_loadimages.yaml
+        schema: operatingsystem/openapiv3/eda_oas_os.eda.nokia.com_loadimages.json
+        ui:
+          name: Load Image
+          category: Maintenance
+        workflow: true
+    - cr:
+        path: operatingsystem/workflows/loadimage/core_v1_flowdefinition.yaml
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: operatingsystem/crds/os.eda.nokia.com_ztps.yaml
+        schema: operatingsystem/openapiv3/eda_oas_os.eda.nokia.com_ztps.json
+        ui:
+          name: ZTP
+          category: Maintenance
+        workflow: true
+    - cr:
+        path: operatingsystem/workflows/ztp/core_v1_flowdefinition.yaml
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: operatingsystem/crds/os.eda.nokia.com_deployimagepipelines.yaml
+        schema: operatingsystem/openapiv3/eda_oas_os.eda.nokia.com_deployimagepipelines.json
+        ui:
+          name: Deploy Image Pipelines
+          category: Maintenance
+        workflow: true
+    - cr:
+        path: operatingsystem/workflows/deployimagepipeline/core_v1_flowdefinition.yaml
+    - cr:
+        path: operatingsystem/pipelines/deployimage.yaml
   dependencies:
     - file:
         path: operatingsystem/api
     - file:
         path: operatingsystem/api/v1/pysrc
+    - file:
+        path: utils/
+    - container:
+        image: registry.eda.dev/operatingsystem/workflows/ztp:latest
+        name: ztp
+    - container:
+        image: registry.eda.dev/operatingsystem/workflows/image:latest
+        name: image
+    - container:
+        image: registry.eda.dev/operatingsystem/workflows/loadimage:latest
+        name: loadimage
+    - container:
+        image: registry.eda.dev/operatingsystem/workflows/deployimagepipeline:latest
+        name: deployimagepipeline
   description: |
     This application provides workflows managing the operating system version of targets.
   gitPathPrefix: /
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   group: os.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/operatingsystem:v6.999.0
+  image: ghcr.io/nokia-eda/apps/os:v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   supportedEndpoints:
     - "srl:24.10.*"
     - "srl:25.3.*"

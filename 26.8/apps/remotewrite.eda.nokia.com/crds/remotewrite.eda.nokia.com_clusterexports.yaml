@@ -1,0 +1,361 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: clusterexports.remotewrite.eda.nokia.com
+spec:
+  group: remotewrite.eda.nokia.com
+  names:
+    kind: ClusterExport
+    listKind: ClusterExportList
+    plural: clusterexports
+    singular: clusterexport
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: ClusterExport is the Schema for the clusterexports API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ClusterExportSpec defines the desired state of ClusterExport
+            properties:
+              destinations:
+                description: List of remote destination names where metrics will be
+                  written.
+                items:
+                  type: string
+                type: array
+              exports:
+                description: |-
+                  List of metrics and their sources to be written to a remote server.
+                  Metrics will be sent using the Prometheus remote write protocol.
+                items:
+                  properties:
+                    fields:
+                      description: Optional set of fields to be exposed by this export.
+                      items:
+                        type: string
+                      type: array
+                    interval:
+                      description: Period defines the frequency at which the metric
+                        is polled.
+                      type: string
+                    labels:
+                      description: Allows adding static or dynamic labels to the metrics.
+                      properties:
+                        dynamic:
+                          description: List of dynamic labels to add to the metrics,
+                            based on a state DB path.
+                          items:
+                            properties:
+                              field:
+                                description: The field name to add as a label
+                                type: string
+                              path:
+                                description: The state DB path to export, in the format
+                                  '.node.srl.interface'
+                                type: string
+                              regex:
+                                description: A regular expression to be applied to
+                                  the field value.
+                                type: string
+                              replacement:
+                                description: A regular expression replacement to be
+                                  applied to the field value.
+                                type: string
+                            required:
+                            - field
+                            - path
+                            type: object
+                          type: array
+                        static:
+                          description: List of static labels to add to the metrics.
+                          items:
+                            properties:
+                              name:
+                                description: Label name.
+                                pattern: '[a-zA-Z_][a-zA-Z0-9_]*'
+                                type: string
+                              value:
+                                description: Label value.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    mappings:
+                      description: Rules for mapping metric values (e.g., DOWN ->
+                        1, UP -> 2).
+                      items:
+                        properties:
+                          destination:
+                            description: The new value for the mapped source (must
+                              convert to float64).
+                            pattern: ^-?\d+(\.\d+)?([eE][+-]?\d+)?$
+                            type: string
+                          source:
+                            description: The value to be mapped (supports regex with
+                              capture groups).
+                            type: string
+                        type: object
+                      type: array
+                    metricName:
+                      description: Regex and replacement for renaming the metric name.
+                      properties:
+                        regex:
+                          description: Regular expression for the metric name transformation.
+                          type: string
+                        replacement:
+                          description: Replacement string for the transformed metric
+                            name.
+                          type: string
+                      type: object
+                    mode:
+                      description: 'Mode defines how the metric is collected: periodic,
+                        on-change, or periodic-on-change.'
+                      type: string
+                    path:
+                      description: The state DB path to export, in the format '.namespace.node.srl.interface'
+                      type: string
+                    resource:
+                      description: |-
+                        A Custom resource to be used as a source for the metric.
+                        It will generate a metric with the CR labels and a value of 1.
+                      properties:
+                        group:
+                          description: The CR group such as `core.eda.nokia.com`.
+                          type: string
+                        kind:
+                          description: The CR kind such as `toponode`.
+                          type: string
+                        labels:
+                          description: |-
+                            List of labels to include with the metric.
+                            Include all if not set.
+                          items:
+                            type: string
+                          type: array
+                        name:
+                          description: |-
+                            CR name to be queried.
+                            Get all of not set.
+                          type: string
+                        namespace:
+                          description: The CR namespace, it defaults to all if not
+                            specified.
+                          type: string
+                        version:
+                          description: The CR version such as `v1` or `v1alpha1`.
+                          type: string
+                      type: object
+                    where:
+                      description: Condition for filtering the metric (e.g., 'oper-state
+                        = down').
+                      type: string
+                  type: object
+                type: array
+            required:
+            - destinations
+            - exports
+            type: object
+          status:
+            description: ClusterExportStatus defines the observed state of ClusterExport
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ClusterExport is the Schema for the clusterexports API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ClusterExportSpec defines the desired state of ClusterExport
+            properties:
+              destinations:
+                description: List of remote destination names where metrics will be
+                  written.
+                items:
+                  type: string
+                type: array
+              exports:
+                description: |-
+                  List of metrics and their sources to be written to a remote server.
+                  Metrics will be sent using the Prometheus remote write protocol.
+                items:
+                  properties:
+                    fields:
+                      description: Optional set of fields to be exposed by this export.
+                      items:
+                        type: string
+                      type: array
+                    interval:
+                      description: Period defines the frequency at which the metric
+                        is polled.
+                      type: string
+                    labels:
+                      description: Allows adding static or dynamic labels to the metrics.
+                      properties:
+                        dynamic:
+                          description: List of dynamic labels to add to the metrics,
+                            based on a state DB path.
+                          items:
+                            properties:
+                              field:
+                                description: The field name to add as a label
+                                type: string
+                              path:
+                                description: The state DB path to export, in the format
+                                  '.node.srl.interface'
+                                type: string
+                              regex:
+                                description: A regular expression to be applied to
+                                  the field value.
+                                type: string
+                              replacement:
+                                description: A regular expression replacement to be
+                                  applied to the field value.
+                                type: string
+                            required:
+                            - field
+                            - path
+                            type: object
+                          type: array
+                        static:
+                          description: List of static labels to add to the metrics.
+                          items:
+                            properties:
+                              name:
+                                description: Label name.
+                                pattern: '[a-zA-Z_][a-zA-Z0-9_]*'
+                                type: string
+                              value:
+                                description: Label value.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    mappings:
+                      description: Rules for mapping metric values (e.g., DOWN ->
+                        1, UP -> 2).
+                      items:
+                        properties:
+                          destination:
+                            description: The new value for the mapped source (must
+                              convert to float64).
+                            pattern: ^-?\d+(\.\d+)?([eE][+-]?\d+)?$
+                            type: string
+                          source:
+                            description: The value to be mapped (supports regex with
+                              capture groups).
+                            type: string
+                        type: object
+                      type: array
+                    metricName:
+                      description: Regex and replacement for renaming the metric name.
+                      properties:
+                        regex:
+                          description: Regular expression for the metric name transformation.
+                          type: string
+                        replacement:
+                          description: Replacement string for the transformed metric
+                            name.
+                          type: string
+                      type: object
+                    mode:
+                      description: 'Mode defines how the metric is collected: periodic,
+                        on-change, or periodic-on-change.'
+                      type: string
+                    path:
+                      description: The state DB path to export, in the format '.namespace.node.srl.interface'
+                      type: string
+                    resource:
+                      description: |-
+                        A Custom resource to be used as a source for the metric.
+                        It will generate a metric with the CR labels and a value of 1.
+                      properties:
+                        group:
+                          description: The CR group such as `core.eda.nokia.com`.
+                          type: string
+                        kind:
+                          description: The CR kind such as `toponode`.
+                          type: string
+                        labels:
+                          description: |-
+                            List of labels to include with the metric.
+                            Include all if not set.
+                          items:
+                            type: string
+                          type: array
+                        name:
+                          description: |-
+                            CR name to be queried.
+                            Get all of not set.
+                          type: string
+                        namespace:
+                          description: The CR namespace, it defaults to all if not
+                            specified.
+                          type: string
+                        version:
+                          description: The CR version such as `v1` or `v1alpha1`.
+                          type: string
+                      type: object
+                    where:
+                      description: Condition for filtering the metric (e.g., 'oper-state
+                        = down').
+                      type: string
+                  type: object
+                type: array
+            required:
+            - destinations
+            - exports
+            type: object
+          status:
+            description: ClusterExportStatus defines the observed state of ClusterExport
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

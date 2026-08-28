@@ -1,0 +1,134 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: instances.netbox.eda.nokia.com
+spec:
+  group: netbox.eda.nokia.com
+  names:
+    kind: Instance
+    listKind: InstanceList
+    plural: instances
+    singular: instance
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: Indicates if the netbox instance is reachable
+      jsonPath: .status.reachable
+      name: Reachable
+      type: boolean
+    - description: Reason for the netbox instance being unreachable
+      jsonPath: .status.errorReason
+      name: Error Reason
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Instance is the Schema for the instances API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: InstanceSpec defines the desired state of Instance
+            properties:
+              apiToken:
+                description: |-
+                  Reference to a Kubernetes secret containing netbox
+                  credentials.
+                  The secret must define the key `apiToken`.
+                type: string
+              checkInterval:
+                default: 1m
+                description: Interval between NetBox instance status checks.
+                type: string
+              disableWebhook:
+                default: false
+                description: If true, the instance will not reconcile the related
+                  allocations based on received NetBox webhooks.
+                type: boolean
+              signatureKey:
+                description: |-
+                  Reference to a Kubernetes secret containing NetBox
+                  webhook signature secret. Required if webhook is enabled.
+                  Secret must define the key `signatureKey`.
+                type: string
+              sync:
+                description: |-
+                  Define Sync parameters for syncing Devices and Cables to
+                  the NetBox instance.
+                properties:
+                  enabled:
+                    default: false
+                    description: Indicates if the sync to netbox is enabled
+                    type: boolean
+                  region:
+                    description: name of the region to be associated to the site.
+                    type: string
+                  tenant:
+                    description: name of the tenant to be associated to the site.
+                    type: string
+                type: object
+              timeout:
+                default: 10s
+                description: Timeout for API requests to the NetBox instance.
+                type: string
+              tls:
+                description: |-
+                  Define TLS parameters for connecting to
+                  the NetBox instance.
+                properties:
+                  skipVerify:
+                    description: |-
+                      If true, the app will not verify the certificate returned
+                      by NetBox.
+                    type: boolean
+                  trustBundle:
+                    description: |-
+                      ConfigMap reference containing additional CAs (key `trust-bundle.pem`)
+                      to validate the certificate returned by external NetBox. The platform
+                      external trust bundle is always appended automatically when TLS
+                      verification is enabled.
+                    type: string
+                type: object
+              url:
+                description: The URL of the Netbox instance.
+                type: string
+            required:
+            - url
+            type: object
+          status:
+            description: InstanceStatus defines the observed state of Instance
+            properties:
+              errorReason:
+                description: Provides an error reason if the instance is unreachable
+                type: string
+              lastChecked:
+                description: Last checked time for connectivity status
+                format: date-time
+                type: string
+              reachable:
+                description: Indicates if the netbox instance is reachable
+                type: boolean
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -73,6 +73,10 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/aaa.eda.nokia.com/resources/accountingpolicy/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/aaa.eda.nokia.com/resources/authenticationpolicy/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -97,10 +101,6 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/anomalies.eda.nokia.com/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
          <loc>https://docs.eda.dev/26.8/apps/bootstrap.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -121,6 +121,18 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/certchecker.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/certchecker.eda.nokia.com/resources/nodecertificateaudit/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/certchecker.eda.nokia.com/resources/platformcertificateaudit/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -129,19 +141,11 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/resources/clusterdiscovery/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
          <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/resources/component/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
          <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/resources/controlmodule/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/resources/cpuoverlay/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -157,10 +161,6 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/resources/memoryoverlay/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
          <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/resources/monitor/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -169,7 +169,7 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/resources/volumeoverlay/</loc>
+         <loc>https://docs.eda.dev/26.8/apps/components.eda.nokia.com/resources/reboot/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -277,6 +277,22 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/discord.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/discord.eda.nokia.com/resources/bot/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/discord.eda.nokia.com/resources/notification/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/discord.eda.nokia.com/resources/slashcommand/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/environment.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -341,6 +357,98 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/resources/clustergithubaction/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/resources/clustergithubinstance/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/resources/clustergithubissue/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/resources/creategithubissue/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/resources/githubaction/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/resources/githubinstance/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/resources/githubissue/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/github.eda.nokia.com/resources/rungithubworkflow/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/resources/clustergitlabinstance/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/resources/clustergitlabissue/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/resources/clustergitlabpipeline/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/resources/creategitlabissue/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/resources/gitlabinstance/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/resources/gitlabissue/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/resources/gitlabpipeline/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/gitlab.eda.nokia.com/resources/rungitlabpipeline/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/influxdb.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/influxdb.eda.nokia.com/resources/clusterexport/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/influxdb.eda.nokia.com/resources/clusterserver/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/influxdb.eda.nokia.com/resources/export/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/influxdb.eda.nokia.com/resources/server/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/interfaces.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -361,7 +469,31 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/logs.eda.nokia.com/</loc>
+         <loc>https://docs.eda.dev/26.8/apps/kafkaimporter.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/kafkaimporter.eda.nokia.com/resources/clusterconsumer/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/kafkaimporter.eda.nokia.com/resources/consumer/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/logging.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/logging.eda.nokia.com/resources/destination/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/logging.eda.nokia.com/resources/log/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/logging.eda.nokia.com/resources/source/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -381,6 +513,10 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/management.eda.nokia.com/resources/snmpserver/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/management.eda.nokia.com/resources/sshserver/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -394,6 +530,10 @@
     </url>
     <url>
          <loc>https://docs.eda.dev/26.8/apps/microsegmentation.eda.nokia.com/resources/grouptag/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/microsegmentation.eda.nokia.com/resources/grouptagpoolsetup/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -417,6 +557,78 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/nats.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/nats.eda.nokia.com/resources/clusterexport/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/nats.eda.nokia.com/resources/clusterpublisher/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/nats.eda.nokia.com/resources/export/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/nats.eda.nokia.com/resources/publisher/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/natsimporter.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/natsimporter.eda.nokia.com/resources/clustersubscriber/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/natsimporter.eda.nokia.com/resources/subscriber/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/netbox.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/netbox.eda.nokia.com/resources/allocation/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/netbox.eda.nokia.com/resources/applyallocation/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/netbox.eda.nokia.com/resources/applytopology/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/netbox.eda.nokia.com/resources/instance/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/notifiers.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/notifiers.eda.nokia.com/resources/clusternotifier/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/notifiers.eda.nokia.com/resources/clusterprovider/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/notifiers.eda.nokia.com/resources/notifier/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/notifiers.eda.nokia.com/resources/provider/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/oam.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -433,7 +645,7 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/oam.eda.nokia.com/resources/threshold/</loc>
+         <loc>https://docs.eda.dev/26.8/apps/oam.eda.nokia.com/resources/traceroute/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -446,6 +658,18 @@
     </url>
     <url>
          <loc>https://docs.eda.dev/26.8/apps/os.eda.nokia.com/resources/deployimage/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/os.eda.nokia.com/resources/deployimagepipeline/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/os.eda.nokia.com/resources/loadimage/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/os.eda.nokia.com/resources/ztp/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -485,6 +709,14 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/protocols.eda.nokia.com/resources/defaultisisinstance/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/protocols.eda.nokia.com/resources/defaultisisinterface/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/protocols.eda.nokia.com/resources/defaultospfarea/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -506,6 +738,14 @@
     </url>
     <url>
          <loc>https://docs.eda.dev/26.8/apps/protocols.eda.nokia.com/resources/defaultstaticroute/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/protocols.eda.nokia.com/resources/isisinstance/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/protocols.eda.nokia.com/resources/isisinterface/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -561,6 +801,26 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/remotewrite.eda.nokia.com/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/remotewrite.eda.nokia.com/resources/clusterdestination/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/remotewrite.eda.nokia.com/resources/clusterexport/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/remotewrite.eda.nokia.com/resources/destination/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/remotewrite.eda.nokia.com/resources/export/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/routing.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -570,6 +830,10 @@
     </url>
     <url>
          <loc>https://docs.eda.dev/26.8/apps/routing.eda.nokia.com/resources/defaultinterface/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/routing.eda.nokia.com/resources/defaultloopbackinterface/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -621,10 +885,6 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/routingpolicies.eda.nokia.com/resources/tagsetdeployment/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
          <loc>https://docs.eda.dev/26.8/apps/security.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -662,6 +922,10 @@
     </url>
     <url>
          <loc>https://docs.eda.dev/26.8/apps/services.eda.nokia.com/resources/irbinterface/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
+         <loc>https://docs.eda.dev/26.8/apps/services.eda.nokia.com/resources/networksclientproviderinstance/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
@@ -713,10 +977,6 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/system.eda.nokia.com/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
          <loc>https://docs.eda.dev/26.8/apps/timing.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
@@ -725,35 +985,15 @@
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
+         <loc>https://docs.eda.dev/26.8/apps/timing.eda.nokia.com/resources/timezone/</loc>
+         <lastmod>2026-08-28</lastmod>
+    </url>
+    <url>
          <loc>https://docs.eda.dev/26.8/apps/topologies.eda.nokia.com/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>
-         <loc>https://docs.eda.dev/26.8/apps/topologies.eda.nokia.com/resources/alarmoverlay/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.eda.dev/26.8/apps/topologies.eda.nokia.com/resources/deviationoverlay/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.eda.dev/26.8/apps/topologies.eda.nokia.com/resources/lldpoverlay/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
          <loc>https://docs.eda.dev/26.8/apps/topologies.eda.nokia.com/resources/networktopology/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.eda.dev/26.8/apps/topologies.eda.nokia.com/resources/topology/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.eda.dev/26.8/apps/topologies.eda.nokia.com/resources/topologygrouping/</loc>
-         <lastmod>2026-08-28</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.eda.dev/26.8/apps/topologies.eda.nokia.com/resources/trafficrateoverlay/</loc>
          <lastmod>2026-08-28</lastmod>
     </url>
     <url>

@@ -1,0 +1,129 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: clusternotifiers.notifiers.eda.nokia.com
+spec:
+  group: notifiers.eda.nokia.com
+  names:
+    kind: ClusterNotifier
+    listKind: ClusterNotifierList
+    plural: clusternotifiers
+    singular: clusternotifier
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: ClusterNotifier is the Schema for the clusternotifiers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ClusterNotifierSpec defines the desired state of ClusterNotifier
+            properties:
+              description:
+                description: A simple user provided description of this Notifier
+                type: string
+              enabled:
+                default: true
+                description: Enable or disable this Notifier
+                type: boolean
+              providers:
+                description: A list of references to Providers to send to for notifications
+                  matching any source in this Notifier
+                items:
+                  type: string
+                type: array
+              sources:
+                description: Set the notifier sources
+                properties:
+                  alarms:
+                    description: Include alarm sources in this notifier
+                    properties:
+                      exclude:
+                        description: |-
+                          A list of alarm excludes for this Notifier, matching the 'type' field within alarms.
+                          If a source matches both the 'sources' and 'excludes' lists, it will be excluded.
+                          For example, 'InterfaceMemberDown'.
+                        items:
+                          type: string
+                        type: array
+                      include:
+                        description: |-
+                          A list of alarms that this Notifier will listen to, matching the 'type' field within alarms.
+                          Including all alarms is indicated using the '*' wildcard.
+                          For example, 'InterfaceDown'.
+                        items:
+                          type: string
+                        type: array
+                      namespaces:
+                        description: |-
+                          Namespaces to consider when selecting alarms for this Notifier.
+                          Alarms from these namespaces will be either included or excluded based on the other filters.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  query:
+                    description: Include a query source in this notifier
+                    properties:
+                      color:
+                        description: Sets the color of notifications generated from
+                          this query. Valid values are web color names, e.g. 'red',
+                          'green', 'blue', 'yellow', 'purple', 'gray', etc.
+                        type: string
+                      fields:
+                        description: |-
+                          Fields to include in the query results, which can then be used in the template,
+                          e.g. '.node.name' or '.node.srl.interface.name"'.
+                        items:
+                          type: string
+                        type: array
+                      table:
+                        description: The table to use for the query, e.g. '.node.srl.interface'
+                        type: string
+                      template:
+                        description: |-
+                          A template to use when sending notifications for this query. The template can use the fields from the query results.
+                          e.g. 'Interface {{ index . "interface.name" }} is down on node {{ index . "node.name" }}'.
+                        type: string
+                      title:
+                        description: The title to use when presenting results for
+                          this query, e.g. 'InterfaceDown'
+                        type: string
+                      where:
+                        description: A where clause to use for the query, e.g. 'oper-state
+                          = down'. You can omit enclosing parentheses.
+                        type: string
+                    type: object
+                type: object
+            required:
+            - providers
+            - sources
+            type: object
+          status:
+            description: ClusterNotifierStatus defines the observed state of ClusterNotifier
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

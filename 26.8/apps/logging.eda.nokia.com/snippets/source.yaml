@@ -1,0 +1,14 @@
+apiVersion: logging.eda.nokia.com/v1alpha1
+kind: Source
+metadata:
+  name: bgp-source
+  namespace: eda
+spec:
+  subsystems:
+    routing:
+      - BGP
+  messageFiltering:
+    matchMode: Deny
+    rules:
+      - operator: Contains
+        text: Established

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: authenticationpolicies.aaa.eda.nokia.com
 spec:
   group: aaa.eda.nokia.com
@@ -70,6 +70,7 @@ spec:
                 description: Determines how long a user can be idle for before they
                   are logged out (in minutes). When set to zero, users are never logged
                   out.
+                format: int32
                 maximum: 1440
                 minimum: 0
                 type: integer
@@ -79,18 +80,21 @@ spec:
                   attempts:
                     description: How many failed login attempts are allowed, set to
                       zero for unlimited attempts.
+                    format: int32
                     maximum: 64
                     minimum: 0
                     type: integer
                   lockoutMinutes:
                     description: How many minutes the user will be locked out for,
                       set to zero for indefinite (until manually unlocked).
+                    format: int32
                     maximum: 1440
                     minimum: 0
                     type: integer
                   timeMinutes:
                     description: The time window for failed attempts to occur in (in
                       minutes).
+                    format: int32
                     maximum: 60
                     minimum: 0
                     type: integer
@@ -100,11 +104,13 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               nodes:
                 description: List of TopoNodes on which to configure the AuthenticationPolicy.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               passwordComplexityRules:
                 description: Password complexity rules.
                 properties:
@@ -114,38 +120,45 @@ spec:
                   maximumSequentialCharacters:
                     description: The maximum length of sequential characters in the
                       password. For example, abcd is a sequence of 4 sequential keys.
+                    format: int32
                     maximum: 8
                     minimum: 2
                     type: integer
                   minimumLength:
                     description: The minimum length of the password.
+                    format: int32
                     maximum: 12
                     minimum: 6
                     type: integer
                   minimumLowercase:
                     description: The minimum amount of lowercase characters in the
                       password.
+                    format: int32
                     maximum: 10
                     minimum: 0
                     type: integer
                   minimumNumeric:
                     description: The minimum amount of numeric characters in the password.
+                    format: int32
                     maximum: 10
                     minimum: 0
                     type: integer
                   minimumSpecial:
                     description: The minimum amount of special characters in the password.
+                    format: int32
                     maximum: 10
                     minimum: 0
                     type: integer
                   minimumUppercase:
                     description: The minimum amount of uppercase characters in the
                       password.
+                    format: int32
                     maximum: 10
                     minimum: 0
                     type: integer
                   repeatedCharacters:
                     description: How many repeated characters are allowed.
+                    format: int32
                     maximum: 8
                     minimum: 2
                     type: integer

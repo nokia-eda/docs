@@ -1,0 +1,84 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: notifier
+spec:
+  group: notifiers.eda.nokia.com
+  version: v1
+  title: Notifier
+  author: Nokia
+  description: Notifies users using external providers
+  image: ghcr.io/nokia-eda/apps/notifiers:v7.0.0
+  gitPathPrefix: /
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: notifier/docs/README.md
+    documentation: notifier/docs
+    license: notifier/docs/LICENSE.md
+    screenshots:
+      - notifier/assets/screenshot1.png
+    categories:
+      - "integrations"
+    settings: notifier/settings/openapi/eda_oas_notifiers.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: notifier/crds/notifiers.eda.nokia.com_notifiers.yaml
+        schema: notifier/openapiv3/eda_oas_notifiers.eda.nokia.com_notifiers.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: Notifier
+          name: Notifier
+        kubernetes:
+          exportPolicy: all
+          importPolicy: spec
+    - crd:
+        path: notifier/crds/notifiers.eda.nokia.com_providers.yaml
+        schema: notifier/openapiv3/eda_oas_notifiers.eda.nokia.com_providers.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: Notifier
+          name: Provider
+        kubernetes:
+          exportPolicy: all
+          importPolicy: spec
+    - crd:
+        path: notifier/crds/notifiers.eda.nokia.com_clusternotifiers.yaml
+        schema: notifier/openapiv3/eda_oas_notifiers.eda.nokia.com_clusternotifiers.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: Notifier
+          name: Cluster Notifier
+        kubernetes:
+          exportPolicy: all
+          importPolicy: spec
+    - crd:
+        path: notifier/crds/notifiers.eda.nokia.com_clusterproviders.yaml
+        schema: notifier/openapiv3/eda_oas_notifiers.eda.nokia.com_clusterproviders.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: Notifier
+          name: Cluster Provider
+        kubernetes:
+          exportPolicy: all
+          importPolicy: spec
+    - cr:
+        path: notifier/manifests/webhooks.yaml
+    - cr:
+        path: notifier/manifests/deployment.yaml
+    - cr:
+        path: notifier/alarms/alarms.yaml
+  dependencies:
+    - container:
+        name: notifier-controller
+        image: registry.eda.dev/notifier/operators/controller:latest
+    - file:
+        path: notifier/api

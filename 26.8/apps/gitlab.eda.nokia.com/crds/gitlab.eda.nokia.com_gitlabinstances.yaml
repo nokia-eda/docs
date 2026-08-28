@@ -1,0 +1,76 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: gitlabinstances.gitlab.eda.nokia.com
+spec:
+  group: gitlab.eda.nokia.com
+  names:
+    kind: GitlabInstance
+    listKind: GitlabInstanceList
+    plural: gitlabinstances
+    singular: gitlabinstance
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GitlabInstance is the Schema for the gitlabinstances API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: spec defines the desired state of GitlabInstance
+            properties:
+              apiBaseURL:
+                description: Base URL for the Gitlab API.
+                type: string
+              authSecretRef:
+                description: Reference to the secret containing the Gitlab token.
+                properties:
+                  key:
+                    description: Key of the secret
+                    type: string
+                  name:
+                    description: Name of the secret
+                    type: string
+                type: object
+            type: object
+          status:
+            description: status defines the observed state of GitlabInstance
+            properties:
+              connected:
+                description: Whether the instance is connected.
+                type: boolean
+              error:
+                description: Error message if the instance is not connected.
+                type: string
+              lastChecked:
+                description: Last checked time.
+                format: date-time
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -1,0 +1,127 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: gitlabpipelines.gitlab.eda.nokia.com
+spec:
+  group: gitlab.eda.nokia.com
+  names:
+    kind: GitlabPipeline
+    listKind: GitlabPipelineList
+    plural: gitlabpipelines
+    singular: gitlabpipeline
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GitlabPipeline is the Schema for the gitlabpipelines API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: spec defines the desired state of GitlabPipeline
+            properties:
+              instance:
+                description: Gitlab instance name.
+                type: string
+              parameters:
+                description: Parameters to pass to the workflow.
+                items:
+                  properties:
+                    name:
+                      description: Parameter name
+                      type: string
+                    value:
+                      description: Parameter value
+                      properties:
+                        dynamicValue:
+                          description: Dynamic value.
+                          properties:
+                            field:
+                              description: Field to watch.
+                              type: string
+                            path:
+                              description: Path to the value.
+                              type: string
+                            where:
+                              description: Where clause to filter the results.
+                              type: string
+                          type: object
+                        staticValue:
+                          description: Static value.
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              pipeline:
+                description: Pipeline to run.
+                type: string
+              ref:
+                description: Reference is the branch, tag or commit hash to run the
+                  workflow.
+                type: string
+              repo:
+                description: Repository to run the workflow.
+                type: string
+              trigger:
+                description: Trigger conditions to run the pipeline.
+                properties:
+                  alarm:
+                    description: Alarm trigger.
+                    properties:
+                      exclude:
+                        description: Excluded alarm types that don't trigger the workflow
+                        items:
+                          type: string
+                        type: array
+                      include:
+                        description: Included alarm types that trigger the workflow
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  query:
+                    description: Query trigger.
+                    properties:
+                      fields:
+                        description: List of fields to watch
+                        items:
+                          type: string
+                        type: array
+                      path:
+                        description: Path to the EDB table to watch
+                        type: string
+                      where:
+                        description: Where clause to filter the results
+                        type: string
+                    type: object
+                type: object
+            type: object
+          status:
+            description: status defines the observed state of GitlabPipeline
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

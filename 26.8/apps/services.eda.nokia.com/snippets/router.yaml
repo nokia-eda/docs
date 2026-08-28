@@ -1,1 +1,17 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: Router
+metadata:
+  namespace: services
+  name: my-router
+spec:
+  type: EVPNVXLAN
+  eviPool: evi-pool
+  bgp:
+    enabled: true
+    rapidWithdrawl: true
+    waitForFIBInstall: false
+    minWaitToAdvertiseSeconds: 0
+    ebgpPreference: 170
+    ibgpPreference: 170
+    ipv4Unicast:
+      enabled: true

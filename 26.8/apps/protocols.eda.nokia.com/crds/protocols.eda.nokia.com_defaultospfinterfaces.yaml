@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: defaultospfinterfaces.protocols.eda.nokia.com
 spec:
   group: protocols.eda.nokia.com
@@ -52,6 +52,7 @@ spec:
             properties:
               deadIntervalSec:
                 description: Dead Interval in seconds.
+                format: int32
                 maximum: 65535
                 minimum: 3
                 type: integer
@@ -64,6 +65,7 @@ spec:
                 type: string
               helloIntervalSec:
                 description: Hello Interval in seconds.
+                format: int32
                 maximum: 65535
                 minimum: 1
                 type: integer
@@ -79,10 +81,12 @@ spec:
                 type: string
               metric:
                 description: Interface metric.
+                format: int64
                 minimum: 0
                 type: integer
               mtu:
                 description: OSPF interface MTU
+                format: int32
                 maximum: 10240
                 minimum: 512
                 type: integer
@@ -98,6 +102,7 @@ spec:
                     type: boolean
                   strictModeHoldDownSec:
                     description: Enables Hold Down Timer for BFD Strict Mode, in seconds.
+                    format: int32
                     maximum: 3600
                     minimum: 512
                     type: integer
@@ -127,6 +132,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the OSPF interface.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -148,6 +155,7 @@ spec:
                 type: array
               numNeighbors:
                 description: The number of discovered neighbors.
+                format: int64
                 type: integer
               operationalState:
                 description: Operational state of the OSPF interface.
@@ -203,6 +211,7 @@ spec:
                     type: boolean
                   strictModeHoldDownSeconds:
                     description: Enables Hold Down Timer for BFD Strict Mode, in seconds.
+                    format: int32
                     maximum: 3600
                     minimum: 512
                     type: integer
@@ -211,6 +220,7 @@ spec:
                 type: object
               deadIntervalSeconds:
                 description: Dead Interval in seconds.
+                format: int32
                 maximum: 65535
                 minimum: 3
                 type: integer
@@ -223,6 +233,7 @@ spec:
                 type: string
               helloIntervalSeconds:
                 description: Hello Interval in seconds.
+                format: int32
                 maximum: 65535
                 minimum: 1
                 type: integer
@@ -235,13 +246,20 @@ spec:
                 enum:
                 - DefaultInterface
                 - SystemInterface
+                - DefaultLoopbackInterface
+                type: string
+              keychain:
+                description: Reference to a Keychain resource that will be used for
+                  authentication with the OSPF peer interface.
                 type: string
               metric:
                 description: Interface metric.
+                format: int64
                 minimum: 0
                 type: integer
               mtu:
                 description: OSPF interface MTU
+                format: int32
                 maximum: 10240
                 minimum: 512
                 type: integer
@@ -268,6 +286,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the OSPF interface.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -282,6 +302,12 @@ spec:
                     adjacencyState:
                       description: Adjacency state of the OSPF neighbor.
                       type: string
+                    localIPAddress:
+                      description: Local IP address (IPv4 or IPv6).
+                      type: string
+                    neighborIPAddress:
+                      description: Neighbor IP address (IPv4 or IPv6).
+                      type: string
                     neighborRouterID:
                       description: Router ID of the OSPF neighbor.
                       type: string
@@ -289,6 +315,7 @@ spec:
                 type: array
               numNeighbors:
                 description: The number of discovered neighbors.
+                format: int64
                 type: integer
               operationalState:
                 description: Operational state of the OSPF interface.

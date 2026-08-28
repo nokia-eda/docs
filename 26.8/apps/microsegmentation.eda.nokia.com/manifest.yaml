@@ -10,40 +10,57 @@ spec:
   author: Nokia
   dependencies:
     - file:
-        path: utils
+        path: utils/
     - file:
-        path: common
+        path: common/
     - file:
         path: microsegmentation/api
-    - file:
-        path: microsegmentation/alarms/pysrc
     - file:
         path: microsegmentation/intents
     - file:
         path: services/api/v2/pysrc
     - file:
-        path: filters/
+        path: filters/api/v1/pysrc
+    - file:
+        path: filters/intents/common/filterqoscommon.py
+    - file:
+        path: filters/intents/common/imports.py
     - file:
         path: protocols/api/v2/pysrc
     - file:
         path: microsegmentation/api/v1alpha1/pysrc
+    - container:
+        image: registry.eda.dev/microsegmentation/workflows/grouptagpoolsetup:latest
+        name: grouptagpoolsetup
   description: Micro segmentation
   group: microsegmentation.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/microsegmentation:v6.999.0
+  image: ghcr.io/nokia-eda/apps/microsegmentation:v7.0.0
   requirements:
     - appId: services.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: routingpolicies.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   supportedEndpoints:
+    - "srl:0.0.0"
     - "srl:26.3.*"
   title: Micro Segmentation
   version: v1alpha1
   components:
+    - cr:
+        path: microsegmentation/workflows/grouptagpoolsetup/core_v1_flowdefinition.yaml
+    - crd:
+        api:
+          expose: readWrite
+        path: microsegmentation/crds/microsegmentation.eda.nokia.com_grouptagpoolsetups.yaml
+        schema: microsegmentation/openapiv3/eda_oas_microsegmentation.eda.nokia.com_grouptagpoolsetups.json
+        workflow: true
+        namespaced: true
+        ui:
+          name: Group Tag Pool Setup
     - crd:
         api:
           expose: readWrite
@@ -75,6 +92,8 @@ spec:
         path: microsegmentation/resources/group-tag-pool-global.yaml
     - cr:
         path: microsegmentation/resources/group-tag-pool-local.yaml
+    - cr:
+        path: microsegmentation/resources/group-tag-no-tag.yaml
     - script:
         path: microsegmentation/intents/grouptag/config_intent.py
         trigger:
@@ -109,6 +128,11 @@ spec:
         path: microsegmentation/intents/grouptagstate/state_intent.py
         trigger:
           kind: GroupTagState
+        type: state
+    - script:
+        path: microsegmentation/intents/microsegmentationpolicystate/state_intent.py
+        trigger:
+          kind: MicroSegmentationPolicyState
         type: state
     - view:
         path: microsegmentation/ui/grouptag-dashboard.json

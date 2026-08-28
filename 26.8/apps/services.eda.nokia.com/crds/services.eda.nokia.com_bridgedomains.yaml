@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: bridgedomains.services.eda.nokia.com
 spec:
   group: services.eda.nokia.com
@@ -79,6 +79,7 @@ spec:
               evi:
                 description: EVI to use for this BridgeDomain, can be optionally left
                   blank to have it automatically allocated using the EVI Pool.
+                format: int32
                 maximum: 65535
                 minimum: 1
                 type: integer
@@ -105,6 +106,7 @@ spec:
                       ageTime:
                         description: Aging timer value for the proxy entries in seconds.
                           If not set, this indicates that the entries are never flushed.
+                        format: int32
                         maximum: 86400
                         minimum: 60
                         type: integer
@@ -117,6 +119,7 @@ spec:
                           the system generates three ARP Requests or Neighbor Solicitations
                           with the intent to refresh the proxy entry. The refresh
                           is sent within the age-time window.
+                        format: int32
                         maximum: 86400
                         minimum: 120
                         type: integer
@@ -132,6 +135,7 @@ spec:
                         description: Time to wait in minutes from the moment an IP
                           is declared duplicate to the time the IP is removed from
                           the proxy ARP/ND table.
+                        format: int32
                         maximum: 60
                         minimum: 2
                         type: integer
@@ -139,6 +143,7 @@ spec:
                         default: 3
                         description: Monitoring window for detecting duplication on
                           a given IP address in the proxy ARP/ND table.
+                        format: int32
                         maximum: 15
                         minimum: 1
                         type: integer
@@ -146,6 +151,7 @@ spec:
                         default: 5
                         description: Number of moves in the proxy ARP/ND table that
                           an IP is allowed within the monitoring-window.
+                        format: int32
                         maximum: 10
                         minimum: 3
                         type: integer
@@ -162,6 +168,7 @@ spec:
                     default: 250
                     description: Maximum number of entries allowed in the proxy table
                       of the bridge domain.
+                    format: int32
                     maximum: 8192
                     minimum: 1
                     type: integer
@@ -194,6 +201,7 @@ spec:
                     default: 9
                     description: Time to wait in minutes from the moment a mac is
                       declared duplicate to the mac is flushed from the bridge table.
+                    format: int32
                     maximum: 60
                     minimum: 2
                     type: integer
@@ -201,6 +209,7 @@ spec:
                     default: 3
                     description: Monitoring window in minutes for detecting duplication
                       on a given mac address.
+                    format: int32
                     maximum: 15
                     minimum: 1
                     type: integer
@@ -208,6 +217,7 @@ spec:
                     default: 5
                     description: Number of moves a mac is allowed within the monitoring-window,
                       before it is declared duplicate.
+                    format: int64
                     minimum: 3
                     type: integer
                 type: object
@@ -218,7 +228,7 @@ spec:
               macLimit:
                 description: Sets the maximum number of MAC entries accepted in the
                   bridge table.
-                format: int32
+                format: int64
                 minimum: 1
                 type: integer
               tunnelIndexPool:
@@ -238,6 +248,7 @@ spec:
               vni:
                 description: VNI to use for this BridgeDomain, can be optionally left
                   blank to have it allocated using the VNI Pool.
+                format: int32
                 maximum: 16777215
                 minimum: 1
                 type: integer
@@ -252,12 +263,15 @@ spec:
             properties:
               evi:
                 description: EVI in use for this bridge domain.
+                format: int64
                 type: integer
               exportTarget:
                 description: Export route target for this bridge domain.
                 type: string
               health:
                 description: Indicates the health score of the VNET.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -276,23 +290,26 @@ spec:
               numNodes:
                 description: Number of nodes which have the BridgeDomain configured
                   (min 1 sub-interface).
+                format: int64
                 type: integer
               numSubInterfaces:
                 description: Number of sub-interfaces attached to the BridgeDomain.
-                format: int32
+                format: int64
                 type: integer
               numSubInterfacesOperDown:
                 description: Number of oper-down sub-interfaces attached to the BridgeDomain.
-                format: int32
+                format: int64
                 type: integer
               operationalState:
                 description: Operational state of the VNET.
                 type: string
               tunnelIndex:
                 description: Vxlan tunnel index in use.
+                format: int64
                 type: integer
               vni:
                 description: VNI in use for this bridge domain.
+                format: int64
                 type: integer
             type: object
         type: object
@@ -383,6 +400,7 @@ spec:
                           - SR-OSPFv3
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                       controlWord:
                         description: Enable or disable the use of control word. Applicable
                           only to EVPNMPLS service Type.
@@ -399,6 +417,7 @@ spec:
                       vni:
                         description: VNI to use for this BridgeDomain, can be optionally
                           left blank to have it allocated using the VNI Pool.
+                        format: int32
                         maximum: 16777215
                         minimum: 1
                         type: integer
@@ -412,6 +431,7 @@ spec:
               evi:
                 description: EVI to use for this BridgeDomain, can be optionally left
                   blank to have it automatically allocated using the EVI Pool.
+                format: int32
                 maximum: 65535
                 minimum: 1
                 type: integer
@@ -453,6 +473,7 @@ spec:
                           the system generates three ARP Requests or Neighbor Solicitations
                           with the intent to refresh the proxy entry. The refresh
                           is sent within the age-time window.
+                        format: int32
                         maximum: 86400
                         minimum: 120
                         type: integer
@@ -470,6 +491,7 @@ spec:
                         description: Time to wait in minutes from the moment an IP
                           is declared duplicate to the time the IP is removed from
                           the proxy ARP/ND table.
+                        format: int32
                         maximum: 60
                         minimum: 2
                         type: integer
@@ -477,6 +499,7 @@ spec:
                         default: 3
                         description: Monitoring window for detecting duplication on
                           a given IP address in the proxy ARP/ND table.
+                        format: int32
                         maximum: 15
                         minimum: 1
                         type: integer
@@ -484,6 +507,7 @@ spec:
                         default: 5
                         description: Number of moves in the proxy ARP/ND table that
                           an IP is allowed within the monitoring-window.
+                        format: int32
                         maximum: 10
                         minimum: 3
                         type: integer
@@ -492,6 +516,7 @@ spec:
                     default: 250
                     description: Maximum number of entries allowed in the proxy table
                       of the bridge domain.
+                    format: int32
                     maximum: 8192
                     minimum: 1
                     type: integer
@@ -541,6 +566,7 @@ spec:
                     default: 5
                     description: Number of moves a mac is allowed within the monitoring-window,
                       before it is declared duplicate.
+                    format: int64
                     minimum: 3
                     type: integer
                 type: object
@@ -568,7 +594,7 @@ spec:
               macLimit:
                 description: Sets the maximum number of MAC entries accepted in the
                   bridge table.
-                format: int32
+                format: int64
                 minimum: 1
                 type: integer
               type:
@@ -588,12 +614,15 @@ spec:
             properties:
               evi:
                 description: EVI in use for this bridge domain.
+                format: int64
                 type: integer
               exportTarget:
                 description: Export route target for this bridge domain.
                 type: string
               health:
                 description: Indicates the health score of the VNET.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -612,14 +641,15 @@ spec:
               numNodes:
                 description: Number of nodes which have the BridgeDomain configured
                   (min 1 sub-interface).
+                format: int64
                 type: integer
               numSubinterfaces:
                 description: Number of sub-interfaces attached to the BridgeDomain.
-                format: int32
+                format: int64
                 type: integer
               numSubinterfacesOperDown:
                 description: Number of oper-down sub-interfaces attached to the BridgeDomain.
-                format: int32
+                format: int64
                 type: integer
               operationalState:
                 description: Operational state of the VNET.
@@ -631,9 +661,11 @@ spec:
                 type: string
               tunnelIndex:
                 description: Vxlan tunnel index in use.
+                format: int64
                 type: integer
               vni:
                 description: VNI in use for this bridge domain.
+                format: int64
                 type: integer
             type: object
         type: object
