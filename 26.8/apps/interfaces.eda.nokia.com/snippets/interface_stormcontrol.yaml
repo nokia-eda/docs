@@ -1,0 +1,25 @@
+apiVersion: interfaces.eda.nokia.com/v1
+kind: Interface
+metadata:
+  labels:
+    eda.nokia.com/role: edge
+    edge-type: compute
+  name: leaf1-ethernet-1-1
+  namespace: fabric-arista
+spec:
+  enabled: true
+  encapType: Dot1q
+  ethernet:
+    stormControl:
+      enabled: true
+      unit: Kbps
+      multicastRate: 10000
+      broadcastRate: 20000
+      unknownUnicastRate: 25000
+  lldp: true
+  members:
+    - enabled: true
+      interface: ethernet-1-1
+      lacpPortPriority: 32768
+      node: leaf1
+  type: Interface

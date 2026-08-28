@@ -1,0 +1,622 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: backends.aifabrics.eda.nokia.com
+spec:
+  group: aifabrics.eda.nokia.com
+  names:
+    kind: Backend
+    listKind: BackendList
+    plural: backends
+    singular: backend
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: Backend is the Schema for the backends API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BackendSpec defines the desired state of Backend
+            properties:
+              addressAllocation:
+                default:
+                  edaManagedIPv6:
+                    leafIndexPoolScope: Global
+                    prefixLength: "64"
+                  type: EDAManagedIPv6
+                description: Address allocation profile for GPU endpoints.
+                properties:
+                  edaManagedIPv6:
+                    description: EDA managed IPv6 allocation configuration.
+                    properties:
+                      leafIndexPoolScope:
+                        default: Global
+                        description: Leaf Index Pool Allocation scope (used for IP
+                          Address allocation). Global scope means that the leaf index
+                          will be allocated from a common pool for the entire namespace,
+                          Fabric scope means that the leaf index will be allocated
+                          from a pool for the entire fabric, Stripe scope means that
+                          the leaf index will be allocated from a pool for the stripe.
+                        enum:
+                        - Global
+                        - Fabric
+                        - Stripe
+                        type: string
+                      prefixLength:
+                        default: "64"
+                        description: IPv6 Prefix Length.
+                        enum:
+                        - "64"
+                        - "96"
+                        type: string
+                    type: object
+                  globalIPv6Pool:
+                    description: Global IPv6 pool allocation configuration.
+                    properties:
+                      name:
+                        description: Reference to an IPv6 allocation pool to use for
+                          prefix allocation.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  type:
+                    default: EDAManagedIPv6
+                    description: Type of address allocation strategy.
+                    enum:
+                    - EDAManagedIPv6
+                    - GlobalIPv6Pool
+                    - PerTenantIPv6Pool
+                    type: string
+                type: object
+              asnPool:
+                description: Reference to an IndexAllocationPool pool to use for Autonomous
+                  System Number allocations.  Used when eBGP is configured as an underlay
+                  protocol.
+                type: string
+              gpuIsolationGroups:
+                description: GPU Isolation Groups are used to isolate GPU traffic
+                  over the network, GPUs in different GPU isolation groups will not
+                  be able to communicate with each other.  If all GPUs across all
+                  stripes need to be able to communicate with each other, create a
+                  single GPUIsolationGroup selecting all GPU facing interfaces.
+                items:
+                  properties:
+                    interfaceSelectors:
+                      items:
+                        type: string
+                      type: array
+                    ipv6Pool:
+                      description: IPv6 Pool reference for allocating IPv6 addresses
+                        to GPU facing interfaces in this IsolationGroup. Can be used
+                        only when `PerTenantIPv6Pool` address allocation type is selected
+                        in the Backend spec.
+                      properties:
+                        name:
+                          description: Reference to an IPv6 allocation pool to use
+                            for prefix allocation.
+                          type: string
+                      required:
+                      - name
+                      type: object
+                    name:
+                      description: Name of the IsolationGroup.
+                      type: string
+                  required:
+                  - interfaceSelectors
+                  - name
+                  type: object
+                type: array
+              ipMTU:
+                default: 4200
+                description: IP MTU for this fabric. Default is 4136 bytes.
+                maximum: 9000
+                minimum: 1500
+                type: integer
+              rocev2QoS:
+                description: Set of properties to configure the RoCEv2 QoS.
+                properties:
+                  ecnMaxDropProbabilityPercent:
+                    default: 100
+                    description: If the queue depth is between min and max threshold
+                      then this the probability with which packets are dropped or
+                      marked.
+                    type: integer
+                  ecnSlopeMaxThresholdPercent:
+                    default: 80
+                    description: The maximum threshold parameter for a RED-managed
+                      queue in percent. When the average queue length exceeds the
+                      max value, all packets are dropped (or marked if ECN is enabled).
+                      Mutually exclusive with min-threshold and max-threshold.
+                    type: integer
+                  ecnSlopeMinThresholdPercent:
+                    default: 5
+                    description: The minimum threshold parameter for a RED-managed
+                      queue in percent. When the average queue length is less than
+                      min, all packets are admitted to the queue. Mutually exclusive
+                      with min-threshold and max-threshold.
+                    type: integer
+                  pfcDeadlockDetectionTimerMs:
+                    default: 750
+                    description: Number of milliseconds during which outgoing interface
+                      is receiving pfc-pause-frames before triggering recovery-timer.
+                    type: integer
+                  pfcDeadlockRecoveryTimerMs:
+                    default: 750
+                    description: Number of milliseconds during which the pfc-pause-frames
+                      will be ignored.
+                    type: integer
+                  queueMaximumBurstSizeBytes:
+                    default: 1024000
+                    description: Maximum amount of shared buffer memory available
+                      to the queue in bytes.
+                    format: int32
+                    maximum: 4294967295
+                    minimum: 0
+                    type: integer
+                required:
+                - ecnMaxDropProbabilityPercent
+                - ecnSlopeMaxThresholdPercent
+                - ecnSlopeMinThresholdPercent
+                - pfcDeadlockDetectionTimerMs
+                - pfcDeadlockRecoveryTimerMs
+                - queueMaximumBurstSizeBytes
+                type: object
+              stripeConnector:
+                description: StripeConnector is the spine layer interconnecting multiple
+                  stripes.
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.
+                    type: string
+                  linkSelectors:
+                    description: Selects TopoLinks to include in this AI Fabric, the
+                      selected TopoLinks will be used to create ISLs between the stripe
+                      connector devices and the leaf devices.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: The name of the Stripe Connector.
+                    type: string
+                  nodeSelectors:
+                    description: Node selector to select the nodes to be used for
+                      this stripe connector.
+                    items:
+                      type: string
+                    type: array
+                  systemPoolIPv4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces for the stripe
+                      connector devices.  If not specified, the system will use the
+                      default IPAllocationPool.
+                    type: string
+                required:
+                - linkSelectors
+                - name
+                - nodeSelectors
+                type: object
+              stripes:
+                description: A list of stripes, stripes contain a set of nodes (rails).
+                items:
+                  properties:
+                    asnPool:
+                      description: Optional reference to an IndexAllocationPool pool
+                        to use for Autonomous System Number allocations.  If left
+                        blank, ASN allocation will be done from the ASNAllocationRange.
+                      type: string
+                    gpuVLAN:
+                      description: The VLAN used on interfaces facing the GPU servers.
+                      format: int32
+                      maximum: 4094
+                      minimum: 1
+                      type: integer
+                    name:
+                      description: The name of the Stripe.
+                      type: string
+                    nodeSelectors:
+                      description: Node selector to select the nodes to be used for
+                        this stripe.
+                      items:
+                        type: string
+                      type: array
+                    stripeID:
+                      description: Unique ID for a stripe
+                      type: integer
+                    systemPoolIPv4:
+                      description: Optional reference to an IPAllocationPool used
+                        to dynamically allocate an IPv4 address to system/lo0 interfaces.
+                        If left blank, system IP allocation will be done from the
+                        SystemIPV4Subnet.
+                      type: string
+                  required:
+                  - name
+                  - nodeSelectors
+                  - stripeID
+                  type: object
+                type: array
+              systemPoolIPv4:
+                description: Reference to an IPAllocationPool used to dynamically
+                  allocate an IPv4 address to system/lo0 interfaces.  If specified
+                  under the Leaf/Spine/Superspine/Borderleaf those will take precedence.
+                type: string
+            required:
+            - gpuIsolationGroups
+            - rocev2QoS
+            - stripes
+            type: object
+          status:
+            description: BackendStatus defines the observed state of Backend
+            properties:
+              health:
+                description: Indicates the health score of the Fabric.  The health
+                  score of the Fabric is determined by the aggregate health score
+                  of the resources emitted by the Fabric such as ISL, DefaultRouteReflectors
+                  etc.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: 'Operational state of the Fabric.  The operational state
+                  of the fabric is determined by monitoring the operational state
+                  of the following resources (if applicable): DefaultRouters, ISLs.'
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              stripeConnector:
+                description: Stripe connector in the Backend.
+                properties:
+                  name:
+                    description: The name of the Stripe Connector.
+                    type: string
+                  stripeConnectorNodes:
+                    description: List of stripe connector nodes in the Stripe.
+                    items:
+                      properties:
+                        node:
+                          description: Name of the TopoNode.
+                          type: string
+                        operatingSystem:
+                          description: Operating system running on the node.
+                          type: string
+                        operatingSystemVersion:
+                          description: Operating system version running on the node.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              stripes:
+                description: List of stripes in the Backend.
+                items:
+                  properties:
+                    leafNodes:
+                      description: List of leaf nodes in the Stripe.
+                      items:
+                        properties:
+                          node:
+                            description: Name of the TopoNode.
+                            type: string
+                          operatingSystem:
+                            description: Operating system running on the node.
+                            type: string
+                          operatingSystemVersion:
+                            description: Operating system version running on the node.
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      description: The name of the Stripe.
+                      type: string
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Backend is the Schema for the backends API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BackendSpec defines the desired state of Backend
+            properties:
+              asnPool:
+                description: Reference to an IndexAllocationPool pool to use for Autonomous
+                  System Number allocations.  Used when eBGP is configured as an underlay
+                  protocol.
+                type: string
+              gpuIsolationGroups:
+                description: GPU Isolation Groups are used to isolate GPU traffic
+                  over the network, GPUs in different GPU isolation groups will not
+                  be able to communicate with each other.  If all GPUs across all
+                  stripes need to be able to communicate with each other, create a
+                  single GPUIsolationGroup selecting all GPU facing interfaces.
+                items:
+                  properties:
+                    interfaceSelector:
+                      items:
+                        type: string
+                      type: array
+                    name:
+                      description: Name of the IsolationGroup.
+                      type: string
+                  required:
+                  - interfaceSelector
+                  - name
+                  type: object
+                type: array
+              ipMTU:
+                default: 4136
+                description: IP MTU for this fabric. Default is 4136 bytes.
+                maximum: 9000
+                minimum: 1500
+                type: integer
+              rocev2QoS:
+                description: Set of properties to configure the RoCEv2 QoS.
+                properties:
+                  ecnMaxDropProbabilityPercent:
+                    default: 100
+                    description: If the queue depth is between min and max threshold
+                      then this the probability with which packets are dropped or
+                      marked.
+                    type: integer
+                  ecnSlopeMaxThresholdPercent:
+                    default: 80
+                    description: The maximum threshold parameter for a RED-managed
+                      queue in percent. When the average queue length exceeds the
+                      max value, all packets are dropped (or marked if ECN is enabled).
+                      Mutually exclusive with min-threshold and max-threshold.
+                    type: integer
+                  ecnSlopeMinThresholdPercent:
+                    default: 5
+                    description: The minimum threshold parameter for a RED-managed
+                      queue in percent. When the average queue length is less than
+                      min, all packets are admitted to the queue. Mutually exclusive
+                      with min-threshold and max-threshold.
+                    type: integer
+                  pfcDeadlockDetectionTimer:
+                    default: 750
+                    description: Number of milliseconds during which outgoing interface
+                      is receiving pfc-pause-frames before triggering recovery-timer.
+                    type: integer
+                  pfcDeadlockRecoveryTimer:
+                    default: 750
+                    description: Number of milliseconds during which the pfc-pause-frames
+                      will be ignored.
+                    type: integer
+                  queueMaximumBurstSize:
+                    default: 1024000
+                    description: Maximum amount of shared buffer memory available
+                      to the queue in bytes.
+                    format: int32
+                    maximum: 4294967295
+                    minimum: 0
+                    type: integer
+                required:
+                - ecnMaxDropProbabilityPercent
+                - ecnSlopeMaxThresholdPercent
+                - ecnSlopeMinThresholdPercent
+                - pfcDeadlockDetectionTimer
+                - pfcDeadlockRecoveryTimer
+                - queueMaximumBurstSize
+                type: object
+              stripeConnector:
+                description: StripeConnector is the spine layer interconnecting multiple
+                  stripes.
+                properties:
+                  asnPool:
+                    description: Reference to an IndexAllocationPool pool to use for
+                      Autonomous System Number allocations.
+                    type: string
+                  linkSelector:
+                    description: Selects TopoLinks to include in this AI Fabric, the
+                      selected TopoLinks will be used to create ISLs between the stripe
+                      connector devices and the leaf devices.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: The name of the Stripe Connector.
+                    type: string
+                  nodeSelector:
+                    description: Node selector to select the nodes to be used for
+                      this stripe connector.
+                    items:
+                      type: string
+                    type: array
+                  systemPoolIPV4:
+                    description: Reference to an IPAllocationPool used to dynamically
+                      allocate an IPv4 address to system/lo0 interfaces for the stripe
+                      connector devices.  If not specified, the system will use the
+                      default IPAllocationPool.
+                    type: string
+                required:
+                - linkSelector
+                - name
+                - nodeSelector
+                type: object
+              stripes:
+                description: A list of stripes, stripes contain a set of nodes (rails).
+                items:
+                  properties:
+                    asnPool:
+                      description: Optional reference to an IndexAllocationPool pool
+                        to use for Autonomous System Number allocations.  If left
+                        blank, ASN allocation will be done from the ASNAllocationRange.
+                      type: string
+                    gpuVlan:
+                      description: The VLAN used on interfaces facing the GPU servers.
+                      type: integer
+                    name:
+                      description: The name of the Stripe.
+                      type: string
+                    nodeSelector:
+                      description: Node selector to select the nodes to be used for
+                        this stripe.
+                      items:
+                        type: string
+                      type: array
+                    stripeID:
+                      description: Unique ID for a stripe
+                      type: integer
+                    systemPoolIPV4:
+                      description: Optional reference to an IPAllocationPool used
+                        to dynamically allocate an IPv4 address to system/lo0 interfaces.
+                        If left blank, system IP allocation will be done from the
+                        SystemIPV4Subnet.
+                      type: string
+                  required:
+                  - gpuVlan
+                  - name
+                  - nodeSelector
+                  - stripeID
+                  type: object
+                type: array
+              systemPoolIPV4:
+                description: Reference to an IPAllocationPool used to dynamically
+                  allocate an IPv4 address to system/lo0 interfaces.  If specified
+                  under the Leaf/Spine/Superspine/Borderleaf those will take precedence.
+                type: string
+            required:
+            - gpuIsolationGroups
+            - rocev2QoS
+            - stripes
+            type: object
+          status:
+            description: BackendStatus defines the observed state of Backend
+            properties:
+              health:
+                description: Indicates the health score of the Fabric.  The health
+                  score of the Fabric is determined by the aggregate health score
+                  of the resources emitted by the Fabric such as ISL, DefaultRouteReflectors
+                  etc.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: 'Operational state of the Fabric.  The operational state
+                  of the fabric is determined by monitoring the operational state
+                  of the following resources (if applicable): DefaultRouters, ISLs.'
+                type: string
+              stripeConnector:
+                description: Stripe connector in the Backend.
+                properties:
+                  name:
+                    description: The name of the Stripe Connector.
+                    type: string
+                  stripeConnectorNodes:
+                    description: List of stripe connector nodes in the Stripe.
+                    items:
+                      properties:
+                        node:
+                          description: Name of the TopoNode.
+                          type: string
+                        operatingSystem:
+                          description: Operating system running on the node.
+                          type: string
+                        operatingSystemVersion:
+                          description: Operating system version running on the node.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              stripes:
+                description: List of stripes in the Backend.
+                items:
+                  properties:
+                    leafNodes:
+                      description: List of leaf nodes in the Stripe.
+                      items:
+                        properties:
+                          node:
+                            description: Name of the TopoNode.
+                            type: string
+                          operatingSystem:
+                            description: Operating system running on the node.
+                            type: string
+                          operatingSystemVersion:
+                            description: Operating system version running on the node.
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      description: The name of the Stripe.
+                      type: string
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

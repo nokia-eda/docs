@@ -1,0 +1,10 @@
+apiVersion: tpi.eda.nokia.com/v1
+kind: TPIStorage
+metadata:
+  name: tpi-demo-storage
+  namespace: eda
+spec:
+  protocol: HTTP
+  http:
+    hostname: demo-server.eda-system.svc.cluster.local
+    port: 8080

@@ -1,0 +1,15 @@
+apiVersion: connect.eda.nokia.com/v1
+kind: ConnectNetworkDefinition
+metadata:
+  name: cnd-router
+spec:
+  routers:
+    - name: router-1
+  subnets:
+    - name: "subnet1"
+      router: router-1
+      ipv4Addresses:
+        - ipPrefix: 192.168.6.0/24
+      networkAttachmentDefinitions:
+        - name: ipvlan-ns1/ipvlan-nad1
+        - name: ipvlan-ns1/ipvlan-nad2

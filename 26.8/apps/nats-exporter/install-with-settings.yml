@@ -1,0 +1,15 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: AppInstaller
+metadata:
+  name: nats-exporter-install-sized
+  namespace: eda-system
+spec:
+  operation: install
+  apps:
+    - appId: nats.eda.nokia.com
+      catalog: eda-catalog-builtin-apps
+      version:
+        value: v4.0.0
+      appSettings:
+        exporterCPULimit: "2"
+        exporterMemoryLimit: 2Gi

@@ -1,0 +1,110 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultldpinterfaces.mpls.eda.nokia.com
+spec:
+  group: mpls.eda.nokia.com
+  names:
+    kind: DefaultLDPInterface
+    listKind: DefaultLDPInterfaceList
+    plural: defaultldpinterfaces
+    singular: defaultldpinterface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DefaultLDPInterface is the Schema for the defaultldpinterfaces
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultLDPInterfaceSpec defines the desired state of DefaultLDPInterface
+            properties:
+              defaultLDPRouter:
+                description: Reference to a Default LDP Router where the interface
+                  will be enabled.
+                type: string
+              interface:
+                description: Reference to a DefaultInterface to enable LDP on.
+                type: string
+              ipv4:
+                description: LDP IPv4 settings.
+                properties:
+                  bfd:
+                    description: Enable BFD for LDP sessions over IPv4.
+                    type: boolean
+                  enabled:
+                    description: Enable LDP Discovery over IPv4.
+                    type: boolean
+                required:
+                - enabled
+                type: object
+              ipv6:
+                description: LDP IPv6 settings.
+                properties:
+                  bfd:
+                    description: Enable BFD for LDP sessions over IPv6.
+                    type: boolean
+                  enabled:
+                    description: Enable LDP Discovery over IPv6.
+                    type: boolean
+                required:
+                - enabled
+                type: object
+            required:
+            - defaultLDPRouter
+            - interface
+            type: object
+          status:
+            description: DefaultLDPInterfaceStatus defines the observed state of DefaultLDPInterface
+            properties:
+              health:
+                description: Indicates the health score of the LDP interface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the LDP interface.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

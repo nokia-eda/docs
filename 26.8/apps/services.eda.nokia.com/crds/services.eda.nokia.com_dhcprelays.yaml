@@ -1,0 +1,177 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: dhcprelays.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: DHCPRelay
+    listKind: DHCPRelayList
+    plural: dhcprelays
+    singular: dhcprelay
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: DHCPRelay is the Schema for the dhcprelays API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The DHCPRelay enables the forwarding of DHCP requests and
+              responses between clients and servers across different networks. This
+              resource allows for the configuration of various DHCP relay sub-options,
+              such as CircuitID, RemoteID, and ClientLinkLayerAddress, to provide
+              detailed client information. It also includes settings for specifying
+              the router to reach the DHCP server, the list of DHCP servers to forward
+              requests to, and selectors for Routed and IRB interfaces where the relay
+              will be configured. Additionally, the GI Address option can be set to
+              derive the Gateway IP address from the selected interface, ensuring
+              correct routing of DHCP messages.
+            properties:
+              giAddress:
+                description: Set GI Address to the IP derived from the IRBInterface
+                  or RoutedInterface on which the DHCP relay is configured.
+                type: boolean
+              irbInterfaceSelector:
+                description: Label selector to select the IRBInterface on which to
+                  configure the DHCP relay.
+                items:
+                  type: string
+                type: array
+              routedInterfaceSelector:
+                description: Label selector to select the RoutedInterface on which
+                  to configure the DHCP relay.
+                items:
+                  type: string
+                type: array
+              router:
+                description: Router to be used to reach the DHCP server, if not specified
+                  the Router under which the source IRBInterface or RoutedInterface
+                  resides will be used.
+                type: string
+              servers:
+                description: List of servers to send the DHCP relayed packet to. These
+                  can be IP addresses or FQDN.
+                items:
+                  type: string
+                minItems: 1
+                type: array
+              subOptions:
+                description: DHCP Relay sub-options; available options are CircuitID,
+                  RemoteID, and ClientLinkLayerAddress.
+                items:
+                  type: string
+                type: array
+            required:
+            - servers
+            type: object
+          status:
+            description: DHCPRelayStatus defines the observed state of DHCPRelay
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: DHCPRelay is the Schema for the dhcprelays API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The DHCPRelay enables the forwarding of DHCP requests and
+              responses between clients and servers across different networks. This
+              resource allows for the configuration of various DHCP relay sub-options,
+              such as CircuitID, RemoteID, and ClientLinkLayerAddress, to provide
+              detailed client information. It also includes settings for specifying
+              the router to reach the DHCP server, the list of DHCP servers to forward
+              requests to, and selectors for Routed and IRB interfaces where the relay
+              will be configured. Additionally, the GI Address option can be set to
+              derive the Gateway IP address from the selected interface, ensuring
+              correct routing of DHCP messages.
+            properties:
+              giAddress:
+                description: Set GI Address to the IP derived from the IRBInterface
+                  or RoutedInterface on which the DHCP relay is configured.
+                type: boolean
+              irbInterfaceSelectors:
+                description: Label selector to select the IRBInterface on which to
+                  configure the DHCP relay.
+                items:
+                  type: string
+                type: array
+              routedInterfaceSelectors:
+                description: Label selector to select the RoutedInterface on which
+                  to configure the DHCP relay.
+                items:
+                  type: string
+                type: array
+              router:
+                description: Router to be used to reach the DHCP server, if not specified
+                  the Router under which the source IRBInterface or RoutedInterface
+                  resides will be used.
+                type: string
+              servers:
+                description: List of servers to send the DHCP relayed packet to. These
+                  can be IP addresses or FQDN.
+                items:
+                  type: string
+                minItems: 1
+                type: array
+              subOptions:
+                description: DHCP Relay sub-options; available options are CircuitID,
+                  RemoteID, and ClientLinkLayerAddress.
+                items:
+                  type: string
+                type: array
+            required:
+            - servers
+            type: object
+          status:
+            description: DHCPRelayStatus defines the observed state of DHCPRelay
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

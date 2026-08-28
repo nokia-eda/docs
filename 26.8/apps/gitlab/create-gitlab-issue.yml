@@ -1,0 +1,17 @@
+apiVersion: gitlab.eda.nokia.com/v1alpha1
+kind: CreateGitlabIssue
+metadata:
+  name: create-gitlab-issue-now
+  namespace: eda
+spec:
+  instance: gitlab-server
+  repo: network-operations/eda-automation
+  issue:
+    title: "Manual issue from EDA workflow"
+    body: |
+      This issue was created by the GitLab app workflow resource.
+    assignees:
+      - network-ops
+    labels:
+      - eda
+      - workflow

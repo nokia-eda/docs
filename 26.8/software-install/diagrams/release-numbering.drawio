@@ -1,0 +1,41 @@
+<mxfile host="65bd71144e" compressed="false" pages="1">
+    <diagram name="[0] Release numbering" id="release-numbering">
+        <mxGraphModel dx="976" dy="1028" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1040" pageHeight="520" background="#101824" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="release-card" value="&lt;div&gt;&lt;font style=&quot;font-size: 14px&quot;&gt;Complete release number&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 30px&quot;&gt;26.4.1&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#243142;strokeColor=#FFFFFF;strokeWidth=2;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#FFFFFF;arcSize=14;align=center;verticalAlign=middle;spacingTop=6;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="152" width="320" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="major-card" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;span style=&quot;font-size: 26px;&quot;&gt;&lt;b&gt;26&lt;br&gt;&lt;/b&gt;&lt;/span&gt;Major release&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 12px&quot;&gt;Year: 2026&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2C3D;strokeColor=#005AFF;strokeWidth=2;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#FFFFFF;arcSize=12;align=center;verticalAlign=middle;spacing=8;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="316" width="240" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="minor-card" value="&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 26px&quot;&gt;4&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Minor release&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 12px&quot;&gt;Month: April feature release&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2C3D;strokeColor=#23ABB6;strokeWidth=2;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#FFFFFF;arcSize=12;align=center;verticalAlign=middle;spacing=8;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="316" width="240" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="maintenance-card" value="&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 26px&quot;&gt;1&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;Maintenance release&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 12px&quot;&gt;Iteration: 1st, 2nd, ...&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2C3D;strokeColor=#37CC73;strokeWidth=2;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;fontColor=#FFFFFF;arcSize=12;align=center;verticalAlign=middle;spacing=8;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="316" width="240" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="major-edge" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#CCCCCC;strokeWidth=2;endArrow=block;endFill=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" parent="1" source="release-card" target="major-card" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="520" y="282"/>
+                            <mxPoint x="240" y="282"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="minor-edge" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#CCCCCC;strokeWidth=2;endArrow=block;endFill=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" parent="1" source="release-card" target="minor-card" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="maintenance-edge" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#CCCCCC;strokeWidth=2;endArrow=block;endFill=1;fontFamily=Google Sans;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DGoogle%2BSans;" parent="1" source="release-card" target="maintenance-card" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="520" y="282"/>
+                            <mxPoint x="800" y="282"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

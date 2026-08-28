@@ -1,0 +1,14 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: BGPPeer
+metadata:
+  name: my-bgp-peer-leaf1
+  namespace: eda
+spec:
+  group: my-bgp-group
+  interface: leaf-1-interface
+  interfaceKind: RoutedInterface
+  ipv4Unicast:
+    enabled: true
+  ipv6Unicast:
+    enabled: true
+  peerIP: 192.168.0.2

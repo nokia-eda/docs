@@ -1,0 +1,19 @@
+apiVersion: topologies.eda.nokia.com/v1alpha1
+kind: NetworkTopology
+metadata:
+  generateName: replace-all-check-
+  namespace: net-topo-test
+spec:
+  operation: replaceAll
+
+  nodeTemplates:
+    - name: node
+      nodeProfile: srlinux-ghcr-25.10.1
+      platform: 7220 IXR-D3L
+      labels:
+        eda.nokia.com/security-profile: managed
+  nodes:
+    - name: switch1
+      template: node
+  checks:
+    dryRun: true

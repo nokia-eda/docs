@@ -1,0 +1,9 @@
+apiVersion: routing.eda.nokia.com/v1
+kind: RouteLookup
+metadata:
+  name: routelookup-a338a899-0042-4432-b7b1-71e98bd478bf
+  namespace: eda
+spec:
+  resolve: false
+  address: 10.30.1.24
+  networkInstance: inventory-router

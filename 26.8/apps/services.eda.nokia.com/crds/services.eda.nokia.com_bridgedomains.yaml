@@ -1,0 +1,643 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: bridgedomains.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: BridgeDomain
+    listKind: BridgeDomainList
+    plural: bridgedomains
+    singular: bridgedomain
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.vni
+      name: VNI
+      type: string
+    - jsonPath: .status.evi
+      name: EVI
+      type: string
+    - jsonPath: .status.importTarget
+      name: Import Target
+      type: string
+    - jsonPath: .status.exportTarget
+      name: Export Target
+      type: string
+    - jsonPath: .status.numSubInterfacesOperDown
+      name: OperDown SubIf
+      type: string
+    - jsonPath: .status.numSubInterfaces
+      name: Total SubIf
+      type: string
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChange
+      name: LastChange
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The BridgeDomain enables the configuration and management
+              of Layer 2 virtual networks. It includes settings for VNI, EVI, route
+              targets for import and export, and tunnel index allocation. Additionally,
+              the specification allows for advanced features such as MAC address table
+              limits, aging, Proxy ARP and detection of MAC and IP duplication.
+            properties:
+              configuredName:
+                description: The name of the BridgeDomain to configure on the device.
+                type: string
+              description:
+                description: The description of the BridgeDomain.
+                type: string
+              evi:
+                description: EVI to use for this BridgeDomain, can be optionally left
+                  blank to have it automatically allocated using the EVI Pool.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              eviPool:
+                default: evi-pool
+                description: Reference to an EVI pool to use for allocations if EVI
+                  is left blank.
+                type: string
+              exportTarget:
+                description: Export route target in 'target:N:N' format, if not specified,
+                  the default value taken as "target:1:<evi>".
+                pattern: ^target.*$
+                type: string
+              importTarget:
+                description: Import route target in 'target:N:N' format, if not specified,
+                  the default value taken as "target:1:<evi>".
+                pattern: ^target.*$
+                type: string
+              l2proxyARPND:
+                description: Enables / Disabled Proxy ARP / Proxy ND.
+                properties:
+                  dynamicLearning:
+                    properties:
+                      ageTime:
+                        description: Aging timer value for the proxy entries in seconds.
+                          If not set, this indicates that the entries are never flushed.
+                        maximum: 86400
+                        minimum: 60
+                        type: integer
+                      enabled:
+                        default: false
+                        description: Enables or disables Dynamic Learning.
+                        type: boolean
+                      sendRefresh:
+                        description: The interval determines the frequency at which
+                          the system generates three ARP Requests or Neighbor Solicitations
+                          with the intent to refresh the proxy entry. The refresh
+                          is sent within the age-time window.
+                        maximum: 86400
+                        minimum: 120
+                        type: integer
+                    type: object
+                  ipDuplication:
+                    properties:
+                      enabled:
+                        default: false
+                        description: Enables or disables IP Duplication.
+                        type: boolean
+                      holdDownTime:
+                        default: 9
+                        description: Time to wait in minutes from the moment an IP
+                          is declared duplicate to the time the IP is removed from
+                          the proxy ARP/ND table.
+                        maximum: 60
+                        minimum: 2
+                        type: integer
+                      monitoringWindow:
+                        default: 3
+                        description: Monitoring window for detecting duplication on
+                          a given IP address in the proxy ARP/ND table.
+                        maximum: 15
+                        minimum: 1
+                        type: integer
+                      numMoves:
+                        default: 5
+                        description: Number of moves in the proxy ARP/ND table that
+                          an IP is allowed within the monitoring-window.
+                        maximum: 10
+                        minimum: 3
+                        type: integer
+                    type: object
+                  proxyARP:
+                    default: false
+                    description: Enables proxy ARP.
+                    type: boolean
+                  proxyND:
+                    default: false
+                    description: Enables proxy ND.
+                    type: boolean
+                  tableSize:
+                    default: 250
+                    description: Maximum number of entries allowed in the proxy table
+                      of the bridge domain.
+                    maximum: 8192
+                    minimum: 1
+                    type: integer
+                type: object
+              macAging:
+                default: 300
+                description: Configurable aging time for dynamically learned mac addresses.
+                format: int32
+                maximum: 86400
+                minimum: 60
+                type: integer
+              macDuplicationDetection:
+                description: Enable or disable MAC duplication detection and resolution
+                  mechanisms.
+                properties:
+                  action:
+                    default: StopLearning
+                    description: Action to take on the subinterface upon detecting
+                      at least one mac addresses as duplicate on the subinterface.
+                    enum:
+                    - Blackhole
+                    - OperDown
+                    - StopLearning
+                    type: string
+                  enabled:
+                    default: false
+                    description: Enables or disables Mac Duplication Detection.
+                    type: boolean
+                  holdDownTime:
+                    default: 9
+                    description: Time to wait in minutes from the moment a mac is
+                      declared duplicate to the mac is flushed from the bridge table.
+                    maximum: 60
+                    minimum: 2
+                    type: integer
+                  monitoringWindow:
+                    default: 3
+                    description: Monitoring window in minutes for detecting duplication
+                      on a given mac address.
+                    maximum: 15
+                    minimum: 1
+                    type: integer
+                  numMoves:
+                    default: 5
+                    description: Number of moves a mac is allowed within the monitoring-window,
+                      before it is declared duplicate.
+                    minimum: 3
+                    type: integer
+                type: object
+              macLearning:
+                default: true
+                description: Enable MAC learning for this BridgeDomain.
+                type: boolean
+              macLimit:
+                description: Sets the maximum number of MAC entries accepted in the
+                  bridge table.
+                format: int32
+                minimum: 1
+                type: integer
+              tunnelIndexPool:
+                default: tunnel-index-pool
+                description: Reference to a tunnel index pool to use for allocations.
+                type: string
+              type:
+                default: EVPNVXLAN
+                description: Select the type of BridgeDomain.  Simple doesn't include
+                  any overlay control plane or dataplane properties (EVPN/VXLAN).
+                  EVPNVXLAN includes the properties needed to provision this BridgeDomain
+                  over an IP Fabric.
+                enum:
+                - SIMPLE
+                - EVPNVXLAN
+                type: string
+              vni:
+                description: VNI to use for this BridgeDomain, can be optionally left
+                  blank to have it allocated using the VNI Pool.
+                maximum: 16777215
+                minimum: 1
+                type: integer
+              vniPool:
+                default: vni-pool
+                description: Reference to a VNI pool to use for allocations if VNI
+                  is left blank.
+                type: string
+            type: object
+          status:
+            description: BridgeDomainStatus defines the observed state of BridgeDomain
+            properties:
+              evi:
+                description: EVI in use for this bridge domain.
+                type: integer
+              exportTarget:
+                description: Export route target for this bridge domain.
+                type: string
+              health:
+                description: Indicates the health score of the VNET.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              importTarget:
+                description: Import route target for this bridge domain.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              nodes:
+                description: Nodes which have the BridgeDomain configured (min 1 sub-interface).
+                items:
+                  type: string
+                type: array
+              numNodes:
+                description: Number of nodes which have the BridgeDomain configured
+                  (min 1 sub-interface).
+                type: integer
+              numSubInterfaces:
+                description: Number of sub-interfaces attached to the BridgeDomain.
+                format: int32
+                type: integer
+              numSubInterfacesOperDown:
+                description: Number of oper-down sub-interfaces attached to the BridgeDomain.
+                format: int32
+                type: integer
+              operationalState:
+                description: Operational state of the VNET.
+                type: string
+              tunnelIndex:
+                description: Vxlan tunnel index in use.
+                type: integer
+              vni:
+                description: VNI in use for this bridge domain.
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.vni
+      name: VNI
+      type: string
+    - jsonPath: .status.evi
+      name: EVI
+      type: string
+    - jsonPath: .status.importTarget
+      name: Import Target
+      type: string
+    - jsonPath: .status.exportTarget
+      name: Export Target
+      type: string
+    - jsonPath: .status.numSubinterfacesOperDown
+      name: OperDown SubIf
+      type: string
+    - jsonPath: .status.numSubinterfaces
+      name: Total SubIf
+      type: string
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChangeTime
+      name: LastChangeTime
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The BridgeDomain enables the configuration and management
+              of Layer 2 virtual networks. It includes settings for VNI, EVI, route
+              targets for import and export, and tunnel index allocation. Additionally,
+              the specification allows for advanced features such as MAC address table
+              limits, aging, Proxy ARP and detection of MAC and IP duplication.
+            properties:
+              configuredName:
+                description: The name of the BridgeDomain to configure on the device.
+                type: string
+              description:
+                description: The description of the BridgeDomain.
+                type: string
+              encapOptions:
+                default:
+                  vxlan:
+                    tunnelIndexPool: tunnel-index-pool
+                    vniPool: vni-pool
+                description: Encapsulation-specific options (such as MPLS tunneling
+                  options).
+                properties:
+                  mpls:
+                    description: MPLS encapsulation options. Only applicable if MPLS
+                      encapsulation is used (Type=EVPNMPLS).
+                    properties:
+                      allowedTunnelTypes:
+                        description: Allowed tunnel types for MPLS transport.
+                        items:
+                          enum:
+                          - LDP
+                          - RSVP
+                          - BGP
+                          - SR-ISIS
+                          - SR-OSPFv2
+                          - SR-OSPFv3
+                          type: string
+                        type: array
+                      controlWord:
+                        description: Enable or disable the use of control word. Applicable
+                          only to EVPNMPLS service Type.
+                        type: boolean
+                    type: object
+                  vxlan:
+                    description: VXLAN encapsulation options. Only applicable if VXLAN
+                      encapsulation is used (Type=EVPNVXLAN).
+                    properties:
+                      tunnelIndexPool:
+                        default: tunnel-index-pool
+                        description: Reference to a tunnel index pool to use for allocations.
+                        type: string
+                      vni:
+                        description: VNI to use for this BridgeDomain, can be optionally
+                          left blank to have it allocated using the VNI Pool.
+                        maximum: 16777215
+                        minimum: 1
+                        type: integer
+                      vniPool:
+                        default: vni-pool
+                        description: Reference to a VNI pool to use for allocations
+                          if VNI is left blank.
+                        type: string
+                    type: object
+                type: object
+              evi:
+                description: EVI to use for this BridgeDomain, can be optionally left
+                  blank to have it automatically allocated using the EVI Pool.
+                maximum: 65535
+                minimum: 1
+                type: integer
+              eviPool:
+                default: evi-pool
+                description: Reference to an EVI pool to use for allocations if EVI
+                  is left blank.
+                type: string
+              exportTarget:
+                description: Export route target in 'target:N:N' format, if not specified,
+                  the default value taken as "target:1:<evi>".
+                pattern: ^target.*$
+                type: string
+              importTarget:
+                description: Import route target in 'target:N:N' format, if not specified,
+                  the default value taken as "target:1:<evi>".
+                pattern: ^target.*$
+                type: string
+              l2proxyARPND:
+                description: Enables / Disabled Proxy ARP / Proxy ND.
+                properties:
+                  dynamicLearning:
+                    description: Configures dynamic learning of ARP/ND entries in
+                      the proxy table.
+                    properties:
+                      agingTimeSeconds:
+                        description: Aging timer value for the proxy entries in seconds.
+                          If not set, this indicates that the entries are never flushed.
+                        format: int32
+                        maximum: 86400
+                        minimum: 60
+                        type: integer
+                      enabled:
+                        default: false
+                        description: Enables or disables Dynamic Learning.
+                        type: boolean
+                      refreshIntervalSeconds:
+                        description: The interval determines the frequency at which
+                          the system generates three ARP Requests or Neighbor Solicitations
+                          with the intent to refresh the proxy entry. The refresh
+                          is sent within the age-time window.
+                        maximum: 86400
+                        minimum: 120
+                        type: integer
+                    type: object
+                  ipDuplication:
+                    description: Configures IP duplication detection and resolution
+                      mechanisms.
+                    properties:
+                      enabled:
+                        default: false
+                        description: Enables or disables IP Duplication.
+                        type: boolean
+                      holdDownTimeMinutes:
+                        default: 9
+                        description: Time to wait in minutes from the moment an IP
+                          is declared duplicate to the time the IP is removed from
+                          the proxy ARP/ND table.
+                        maximum: 60
+                        minimum: 2
+                        type: integer
+                      monitoringWindowMinutes:
+                        default: 3
+                        description: Monitoring window for detecting duplication on
+                          a given IP address in the proxy ARP/ND table.
+                        maximum: 15
+                        minimum: 1
+                        type: integer
+                      numMoves:
+                        default: 5
+                        description: Number of moves in the proxy ARP/ND table that
+                          an IP is allowed within the monitoring-window.
+                        maximum: 10
+                        minimum: 3
+                        type: integer
+                    type: object
+                  maxEntries:
+                    default: 250
+                    description: Maximum number of entries allowed in the proxy table
+                      of the bridge domain.
+                    maximum: 8192
+                    minimum: 1
+                    type: integer
+                  proxyARP:
+                    default: false
+                    description: Enables proxy ARP.
+                    type: boolean
+                  proxyND:
+                    default: false
+                    description: Enables proxy ND.
+                    type: boolean
+                type: object
+              macDuplicationDetection:
+                description: Enable or disable MAC duplication detection and resolution
+                  mechanisms.
+                properties:
+                  action:
+                    default: StopLearning
+                    description: Action to take on the subinterface upon detecting
+                      at least one mac addresses as duplicate on the subinterface.
+                    enum:
+                    - Blackhole
+                    - OperDown
+                    - StopLearning
+                    type: string
+                  enabled:
+                    default: false
+                    description: Enables or disables Mac Duplication Detection.
+                    type: boolean
+                  holdDownTimeMinutes:
+                    default: 9
+                    description: Time to wait in minutes from the moment a mac is
+                      declared duplicate to the mac is flushed from the bridge table.
+                    format: int32
+                    maximum: 60
+                    minimum: 2
+                    type: integer
+                  monitoringWindowMinutes:
+                    default: 3
+                    description: Monitoring window in minutes for detecting duplication
+                      on a given mac address.
+                    format: int32
+                    maximum: 15
+                    minimum: 1
+                    type: integer
+                  numMoves:
+                    default: 5
+                    description: Number of moves a mac is allowed within the monitoring-window,
+                      before it is declared duplicate.
+                    minimum: 3
+                    type: integer
+                type: object
+              macLearning:
+                default:
+                  agingTimeSeconds: 300
+                  enabled: true
+                description: Enable MAC learning for this BridgeDomain.
+                properties:
+                  agingTimeSeconds:
+                    default: 300
+                    description: Configurable aging time for dynamically learned mac
+                      addresses.
+                    format: int32
+                    maximum: 86400
+                    minimum: 60
+                    type: integer
+                  enabled:
+                    default: true
+                    description: Enables or disables MAC learning for the BridgeDomain.
+                    type: boolean
+                required:
+                - enabled
+                type: object
+              macLimit:
+                description: Sets the maximum number of MAC entries accepted in the
+                  bridge table.
+                format: int32
+                minimum: 1
+                type: integer
+              type:
+                default: EVPNVXLAN
+                description: Select the type of BridgeDomain.  Simple doesn't include
+                  any overlay control plane or dataplane properties (EVPN/VXLAN).
+                  EVPNVXLAN includes the properties needed to provision this BridgeDomain
+                  over an IP Fabric.
+                enum:
+                - Simple
+                - EVPNVXLAN
+                - EVPNMPLS
+                type: string
+            type: object
+          status:
+            description: BridgeDomainStatus defines the observed state of BridgeDomain
+            properties:
+              evi:
+                description: EVI in use for this bridge domain.
+                type: integer
+              exportTarget:
+                description: Export route target for this bridge domain.
+                type: string
+              health:
+                description: Indicates the health score of the VNET.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              importTarget:
+                description: Import route target for this bridge domain.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              nodes:
+                description: Nodes which have the BridgeDomain configured (min 1 sub-interface).
+                items:
+                  type: string
+                type: array
+              numNodes:
+                description: Number of nodes which have the BridgeDomain configured
+                  (min 1 sub-interface).
+                type: integer
+              numSubinterfaces:
+                description: Number of sub-interfaces attached to the BridgeDomain.
+                format: int32
+                type: integer
+              numSubinterfacesOperDown:
+                description: Number of oper-down sub-interfaces attached to the BridgeDomain.
+                format: int32
+                type: integer
+              operationalState:
+                description: Operational state of the VNET.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              tunnelIndex:
+                description: Vxlan tunnel index in use.
+                type: integer
+              vni:
+                description: VNI in use for this bridge domain.
+                type: integer
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

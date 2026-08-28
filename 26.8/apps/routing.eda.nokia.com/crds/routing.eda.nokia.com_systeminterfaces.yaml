@@ -1,0 +1,264 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: systeminterfaces.routing.eda.nokia.com
+spec:
+  group: routing.eda.nokia.com
+  names:
+    kind: SystemInterface
+    listKind: SystemInterfaceList
+    plural: systeminterfaces
+    singular: systeminterface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    - jsonPath: .spec.ipv4Address
+      name: IPv4 Address
+      type: string
+    - jsonPath: .spec.ipv6Address
+      name: IPv6 Address
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: SystemInterface is the Schema for the systeminterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SystemInterfaceSpec defines the desired state of SystemInterface
+            properties:
+              bfd:
+                description: Enable or disable BFD on this SystemInterface.
+                properties:
+                  desiredMinTransmitIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between transmission
+                      of BFD control packets.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down.
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables Biforward Detection.
+                    type: boolean
+                  requiredMinEchoReceiveIntMs:
+                    default: 1000
+                    description: The minimum interval between echo packets the local
+                      node can receive.
+                    maximum: 100000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceiveIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between received
+                      BFD control packets that this system should support.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - enabled
+                type: object
+              defaultRouter:
+                description: Reference to a DefaultRouter.
+                type: string
+              description:
+                description: The description of the SystemInterface.
+                type: string
+              ipv4Address:
+                description: IPv4 address in ip/mask form, e.g., 192.168.0.1/32.
+                type: string
+              ipv6Address:
+                description: IPv6 address in ip/mask form, e.g., fc00::1/128.
+                type: string
+            required:
+            - defaultRouter
+            type: object
+          status:
+            description: SystemInterfaceStatus defines the observed state of SystemInterface
+            properties:
+              health:
+                description: Indicates the health score of the SystemInterface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: Indicates when this Interface last changed state.
+                type: string
+              operationalState:
+                description: Indicates the current operational state of the SystemInterface.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    - jsonPath: .spec.ipv4Address
+      name: IPv4 Address
+      type: string
+    - jsonPath: .spec.ipv6Address
+      name: IPv6 Address
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SystemInterface is the Schema for the systeminterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SystemInterfaceSpec defines the desired state of SystemInterface
+            properties:
+              bfd:
+                description: Enable or disable BFD on this SystemInterface.
+                properties:
+                  desiredMinTransmitInt:
+                    default: 1000000
+                    description: The minimum interval in microseconds between transmission
+                      of BFD control packets[default=1000000].
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down. [default=3]
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enable Biforward Detection[default=false].
+                    type: boolean
+                  minEchoReceiveInterval:
+                    default: 1000000
+                    description: The minimum interval between echo packets the local
+                      node can receive in microseconds
+                    maximum: 100000000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceive:
+                    default: 1000000
+                    description: The minimum interval in microseconds between received
+                      BFD control packets that this system should support.[default=1000000].
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - desiredMinTransmitInt
+                - detectionMultiplier
+                - enabled
+                - minEchoReceiveInterval
+                - requiredMinReceive
+                type: object
+              defaultRouter:
+                description: Reference to a DefaultRouter.
+                type: string
+              description:
+                description: The description of the SystemInterface.
+                type: string
+              ipv4Address:
+                description: IPv4 address in ip/mask form, e.g., 192.168.0.1/32.
+                type: string
+              ipv6Address:
+                description: IPv6 address in ip/mask form, e.g., fc00::1/128.
+                type: string
+            required:
+            - defaultRouter
+            type: object
+          status:
+            description: SystemInterfaceStatus defines the observed state of SystemInterface
+            properties:
+              health:
+                description: Indicates the health score of the SystemInterface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: Indicates when this Interface last changed state.
+                type: string
+              operationalState:
+                description: Indicates the current operational state of the SystemInterface.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

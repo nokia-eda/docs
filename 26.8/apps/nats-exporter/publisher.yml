@@ -1,0 +1,13 @@
+apiVersion: nats.eda.nokia.com/v1
+kind: Publisher
+metadata:
+  name: nats-publisher
+  namespace: eda
+spec:
+  address: nats.example.svc.cluster.local:4222
+  type: NATS
+  clientName: eda-nats-client
+  credentialsSecretName: nats-credentials
+  tls:
+    fromSecret: nats-client-tls
+    trustBundle: nats-ca-bundle

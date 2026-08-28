@@ -1,0 +1,255 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: interfacemodules.components.eda.nokia.com
+spec:
+  group: components.eda.nokia.com
+  names:
+    kind: InterfaceModule
+    listKind: InterfaceModuleList
+    plural: interfacemodules
+    singular: interfacemodule
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: InterfaceModule is the Schema for the interfacemodules API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: InterfaceModuleSpec defines the desired state of InterfaceModule
+            type: object
+          status:
+            description: InterfaceModuleStatus defines the observed state of InterfaceModule
+            properties:
+              commonLanguageEquipmentIdentifier:
+                description: The CLEI code of this component
+                type: string
+              lastBooted:
+                description: The date and time this component last booted
+                type: string
+              lastChange:
+                description: The date and time this component last changed operational
+                  state
+                type: string
+              locatorEnabled:
+                description: Indicates if the locator LED for the component is active
+                type: boolean
+              manufacturedDate:
+                description: The date this component was manufactured
+                type: string
+              operationalState:
+                description: Indicates the current operational state of this component.
+                enum:
+                - Up
+                - Down
+                - Rebooting
+                - Unknown
+                - Starting
+                - Empty
+                type: string
+              parent:
+                description: Reference to a parent component
+                type: string
+              parentType:
+                description: Type of the parent component
+                enum:
+                - Fan
+                - FanTray
+                - PowerSupply
+                - PowerModule
+                - PowerShelf
+                - InterfaceModule
+                - ControlModule
+                - FabricModule
+                - Chassis
+                - Transceiver
+                type: string
+              partNumber:
+                description: The discovered part number of this component
+                type: string
+              removable:
+                description: Indicates if this component is removable
+                type: boolean
+              serialNumber:
+                description: The discovered serial number of this component
+                type: string
+              slot:
+                description: Slot this component resides in, unset for components
+                  that do not have a slot or ID
+                type: string
+              softwareVersion:
+                description: Version string of the software running on this component
+                type: string
+              target:
+                description: Target this component resides on.
+                type: string
+              temperature:
+                description: Temperature information for this component
+                properties:
+                  alarmState:
+                    description: The temperature alarm state, as reported by the component
+                    type: boolean
+                  instant:
+                    description: The current temperature of this component
+                    type: integer
+                  margin:
+                    description: The margin temperature of this component
+                    type: integer
+                  maximum:
+                    description: The maximum temperature of this component
+                    type: integer
+                  threshold:
+                    description: The threshold temperature of this component
+                    type: integer
+                type: object
+              type:
+                description: Component type, as provided by the target
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: InterfaceModule is the Schema for the interfacemodules API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: InterfaceModuleSpec defines the desired state of InterfaceModule
+            type: object
+          status:
+            description: InterfaceModuleStatus defines the observed state of InterfaceModule
+            properties:
+              commonLanguageEquipmentIdentifier:
+                description: The CLEI code of this component
+                type: string
+              lastBooted:
+                description: The date and time this component last booted
+                type: string
+              lastChangeTime:
+                description: The date and time this component last changed operational
+                  state
+                type: string
+              locatorEnabled:
+                description: Indicates if the locator LED for the component is active
+                type: boolean
+              manufacturedDate:
+                description: The date this component was manufactured
+                type: string
+              operationalState:
+                description: Indicates the current operational state of this component.
+                enum:
+                - Up
+                - Down
+                - Rebooting
+                - Unknown
+                - Starting
+                - Empty
+                type: string
+              parent:
+                description: Reference to a parent component
+                type: string
+              parentType:
+                description: Type of the parent component
+                enum:
+                - Fan
+                - FanTray
+                - PowerSupply
+                - PowerModule
+                - PowerShelf
+                - InterfaceModule
+                - ControlModule
+                - FabricModule
+                - Chassis
+                - Transceiver
+                type: string
+              partNumber:
+                description: The discovered part number of this component
+                type: string
+              removable:
+                description: Indicates if this component is removable
+                type: boolean
+              serialNumber:
+                description: The discovered serial number of this component
+                type: string
+              slot:
+                description: Slot this component resides in, unset for components
+                  that do not have a slot or ID
+                type: string
+              softwareVersion:
+                description: Version string of the software running on this component
+                type: string
+              target:
+                description: Target this component resides on.
+                type: string
+              temperature:
+                description: Temperature information for this component
+                properties:
+                  alarmState:
+                    description: The temperature alarm state, as reported by the component
+                    type: boolean
+                  instant:
+                    description: The current temperature of this component
+                    type: integer
+                  margin:
+                    description: The margin temperature of this component
+                    type: integer
+                  maximum:
+                    description: The maximum temperature of this component
+                    type: integer
+                  threshold:
+                    description: The threshold temperature of this component
+                    type: integer
+                type: object
+              type:
+                description: Component type, as provided by the target
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

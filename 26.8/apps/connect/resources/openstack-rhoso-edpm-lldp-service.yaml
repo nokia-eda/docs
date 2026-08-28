@@ -1,0 +1,45 @@
+apiVersion: dataplane.openstack.org/v1beta1
+kind: OpenStackDataPlaneService
+metadata:
+  name: edpm-lldp-service
+  namespace: openstack
+spec:
+  edpmServiceType: edpm-lldp-service
+  addCertMounts: false
+  playbookContents: |
+    ---
+    - name: Configure LLDP on EDPM compute nodes
+      hosts: all
+      become: true
+      tasks:
+        - name: Install lldpd package
+          ansible.builtin.package:
+            name: lldpd
+            state: present
+
+        - name: Enable and start lldpd service
+          ansible.builtin.systemd:
+            name: lldpd
+            state: started
+            enabled: true
+
+        - name: Create lldpd config directory
+          ansible.builtin.file:
+            path: /etc/lldpd.d
+            state: directory
+            mode: '0755'
+
+        - name: Write persistent lldpd configuration
+          ansible.builtin.copy:
+            dest: /etc/lldpd.d/eda-connect.conf
+            content: |
+              configure lldp portidsubtype ifname
+              configure system interface pattern em*,en*,p*,!en*v*,!p*v*
+            mode: '0644'
+          notify: restart lldpd
+
+      handlers:
+        - name: restart lldpd
+          ansible.builtin.systemd:
+            name: lldpd
+            state: restarted

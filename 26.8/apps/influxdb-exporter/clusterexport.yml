@@ -1,0 +1,20 @@
+apiVersion: influxdb.eda.nokia.com/v1alpha1
+kind: ClusterExport
+metadata:
+  name: cluster-alarms
+  namespace: eda-system
+spec:
+  description: Export alarms from selected namespaces to InfluxDB
+  enabled: true
+  exports:
+    alarms:
+      namespaces:
+        - eda
+        - tenant-a
+      include:
+        - "*"
+      exclude:
+        - InfluxDBServerConnectionFailed
+  servers:
+    - name: cluster-server1
+      bucket: eda

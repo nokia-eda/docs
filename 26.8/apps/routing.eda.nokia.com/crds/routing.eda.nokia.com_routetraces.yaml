@@ -1,0 +1,243 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: routetraces.routing.eda.nokia.com
+spec:
+  group: routing.eda.nokia.com
+  names:
+    kind: RouteTrace
+    listKind: RouteTraceList
+    plural: routetraces
+    singular: routetrace
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: RouteTrace is the Schema for the routetraces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RouteTraceSpec defines the desired state of RouteTrace
+            properties:
+              address:
+                description: This is a standard IPv4 or IPv6 address, excluding mask
+                  or prefix length, e.g. 12.0.0.1.
+                type: string
+              networkInstance:
+                description: |-
+                  Network Instance is the locally named network instance to use for the lookup.
+                  Can be omitted if the default network instance is to be used.
+                type: string
+              node:
+                description: Node is the name of the node to execute lookups on.
+                type: string
+            required:
+            - address
+            - node
+            type: object
+          status:
+            description: RouteTraceStatus defines the observed state of RouteTrace
+            properties:
+              links:
+                items:
+                  properties:
+                    fromNode:
+                      properties:
+                        destination:
+                          description: Extract indicate the from node owns the address.
+                          type: boolean
+                        direct:
+                          description: Direct indicates that the host is directly
+                            connected to the node.
+                          type: boolean
+                        error:
+                          description: If the trace is not successful, this field
+                            will contain an error message on the 'to' node.
+                          type: string
+                        interface:
+                          description: Interface is the name of the interface on the
+                            node that the trace is either entering or exiting.
+                          type: string
+                        localAddress:
+                          description: LocalAddress is the local address of the endpoint
+                            (e.g. the nexthop address on the 'to' node).
+                          type: string
+                        node:
+                          description: Node is the name of the node where the endpoint
+                            is located.
+                          type: string
+                      type: object
+                    toNode:
+                      properties:
+                        destination:
+                          description: Extract indicate the from node owns the address.
+                          type: boolean
+                        direct:
+                          description: Direct indicates that the host is directly
+                            connected to the node.
+                          type: boolean
+                        error:
+                          description: If the trace is not successful, this field
+                            will contain an error message on the 'to' node.
+                          type: string
+                        interface:
+                          description: Interface is the name of the interface on the
+                            node that the trace is either entering or exiting.
+                          type: string
+                        localAddress:
+                          description: LocalAddress is the local address of the endpoint
+                            (e.g. the nexthop address on the 'to' node).
+                          type: string
+                        node:
+                          description: Node is the name of the node where the endpoint
+                            is located.
+                          type: string
+                      type: object
+                  required:
+                  - fromNode
+                  - toNode
+                  type: object
+                type: array
+            required:
+            - links
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: RouteTrace is the Schema for the routetraces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RouteTraceSpec defines the desired state of RouteTrace
+            properties:
+              address:
+                description: This is a standard IPv4 or IPv6 address, excluding mask
+                  or prefix length, e.g. 12.0.0.1.
+                type: string
+              networkInstance:
+                description: |-
+                  Network Instance is the locally named network instance to use for the lookup.
+                  Can be omitted if the default network instance is to be used.
+                type: string
+              node:
+                description: Node is the name of the node to execute lookups on.
+                type: string
+            required:
+            - address
+            - node
+            type: object
+          status:
+            description: RouteTraceStatus defines the observed state of RouteTrace
+            properties:
+              links:
+                items:
+                  properties:
+                    fromNode:
+                      properties:
+                        destination:
+                          description: Extract indicate the from node owns the address.
+                          type: boolean
+                        direct:
+                          description: Direct indicates that the host is directly
+                            connected to the node.
+                          type: boolean
+                        error:
+                          description: If the trace is not successful, this field
+                            will contain an error message on the 'to' node.
+                          type: string
+                        interface:
+                          description: Interface is the name of the interface on the
+                            node that the trace is either entering or exiting.
+                          type: string
+                        localAddress:
+                          description: LocalAddress is the local address of the endpoint
+                            (e.g. the nexthop address on the 'to' node).
+                          type: string
+                        node:
+                          description: Node is the name of the node where the endpoint
+                            is located.
+                          type: string
+                      type: object
+                    toNode:
+                      properties:
+                        destination:
+                          description: Extract indicate the from node owns the address.
+                          type: boolean
+                        direct:
+                          description: Direct indicates that the host is directly
+                            connected to the node.
+                          type: boolean
+                        error:
+                          description: If the trace is not successful, this field
+                            will contain an error message on the 'to' node.
+                          type: string
+                        interface:
+                          description: Interface is the name of the interface on the
+                            node that the trace is either entering or exiting.
+                          type: string
+                        localAddress:
+                          description: LocalAddress is the local address of the endpoint
+                            (e.g. the nexthop address on the 'to' node).
+                          type: string
+                        node:
+                          description: Node is the name of the node where the endpoint
+                            is located.
+                          type: string
+                      type: object
+                  required:
+                  - fromNode
+                  - toNode
+                  type: object
+                type: array
+            required:
+            - links
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

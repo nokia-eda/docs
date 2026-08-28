@@ -1,0 +1,17 @@
+apiVersion: interfaces.eda.nokia.com/v1
+kind: CheckInterfaces
+metadata:
+  name: checkinterfaces-20b8144f-a4b6-488a-ac5b-4c5f8cc27502
+  namespace: eda
+spec:
+  interfaceSelectors:
+    - eda.nokia.com/role = interSwitch
+  checkStateCounters:
+    skip: false
+    waitTimeSeconds: 30
+    checks:
+      - LACPErrors
+      - TransceiverHealth
+  nodeSelectors:
+    - eda.nokia.com/role = leaf
+    - eda.nokia.com/role = spine

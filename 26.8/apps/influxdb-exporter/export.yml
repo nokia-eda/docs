@@ -1,0 +1,28 @@
+apiVersion: influxdb.eda.nokia.com/v1alpha1
+kind: Export
+metadata:
+  name: interface-query
+  namespace: eda
+spec:
+  description: Export enabled interface state to InfluxDB
+  enabled: true
+  exports:
+    query:
+      - path: .node.srl.interface
+        fields:
+          - admin-state
+          - oper-state
+          - name
+        where: 'admin-state = "enable"'
+        mode: periodic
+        period: 10s
+        customization:
+          measurement:
+            match: namespace_node_srl_interface
+            replacement: interface_query
+          fields:
+            - match: ^admin-state$
+              replacement: state
+  servers:
+    - name: server1
+      bucket: eda

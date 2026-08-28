@@ -1,0 +1,22 @@
+apiVersion: microsegmentation.eda.nokia.com/v1alpha1
+kind: AssociationPolicy
+metadata:
+  name: client-group-associations
+  namespace: eda
+spec:
+  associationPolicyEntries:
+  - associationTargets:
+      bridgeInterfaceSelectors:
+      - eda.nokia.com/groupinfo = client-group1
+    groupTagNames:
+    - client-group1
+  - associationTargets:
+      bridgeInterfaces:
+      - leaf1-client2
+    groupTagNames:
+    - client-group2
+  - associationTargets:
+      bridgeInterfaceSelectors:
+      - label eda.nokia.com/security = quarantine
+    groupTagNames:
+    - quarantine

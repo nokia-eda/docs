@@ -1,0 +1,15 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: DefaultStaticRoute
+metadata:
+  namespace: eda
+  name: my-default-static-route
+spec:
+  nexthopGroup:
+    blackhole: false
+    resolve: false
+    nexthops:
+      - resolve: false
+        ipPrefix: 172.16.0.2/31
+  prefixes:
+    - 10.0.1.0/24
+  defaultRouter: router-leaf-1

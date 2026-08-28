@@ -1,0 +1,9 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: Catalog
+metadata:
+  name: your-catalog # name of your catalog
+spec:
+  title: Your Awesome Catalog # UI name of your catalog, optional
+  remoteURL: https://<your-catalog>.git # link to your git repository.
+  authSecretRef: your-creds # reference to valid credentials for the git repository
+  skipTLSVerify: {true|false}

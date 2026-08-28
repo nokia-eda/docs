@@ -1,0 +1,135 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: keychains.security.eda.nokia.com
+spec:
+  group: security.eda.nokia.com
+  names:
+    kind: Keychain
+    listKind: KeychainList
+    plural: keychains
+    singular: keychain
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Keychain is the Schema for the keychains API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KeychainSpec defines the desired state of Keychain
+            properties:
+              keys:
+                description: List of keychain keys.
+                items:
+                  properties:
+                    algorithm:
+                      description: Algorithm of the key.
+                      enum:
+                      - MD5
+                      type: string
+                    authenticationKey:
+                      description: Authentication key string.
+                      type: string
+                    id:
+                      description: Key ID. If not specified, IDs will be auto-allocated
+                        starting from 1.
+                      pattern: ^([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$
+                      type: string
+                  required:
+                  - authenticationKey
+                  type: object
+                maxItems: 1
+                minItems: 1
+                type: array
+              type:
+                description: Keychain type.
+                enum:
+                - TCPMD5
+                type: string
+            required:
+            - keys
+            - type
+            type: object
+          status:
+            description: KeychainStatus defines the observed state of Keychain
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Keychain is the Schema for the keychains API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KeychainSpec defines the desired state of Keychain
+            properties:
+              key:
+                description: Keychain key. Only one key is supported.
+                properties:
+                  algorithm:
+                    description: Type of the key, which can be MD5.
+                    enum:
+                    - MD5
+                    type: string
+                  authenticationKey:
+                    description: Authentication key string.
+                    type: string
+                required:
+                - algorithm
+                - authenticationKey
+                type: object
+            required:
+            - key
+            type: object
+          status:
+            description: KeychainStatus defines the observed state of Keychain
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

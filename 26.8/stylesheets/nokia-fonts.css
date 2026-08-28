@@ -1,0 +1,45 @@
+@font-face {
+  font-family: 'NokiaPureHeadlineLight';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../fonts/nokia/nokiapureheadline_light.eot');
+  src: url('../fonts/nokia/nokiapureheadline_light.woff2') format('woff2'),
+    url('../fonts/nokia/nokiapureheadline_light.woff') format('woff'),
+    url('../fonts/nokia/nokiapureheadline_light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NokiaPureHeadlineUltralight';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../fonts/nokia/nokiapureheadline_ultralight.eot');
+  src: url('../fonts/nokia/nokiapureheadline_ultralight.woff2') format('woff2'),
+    url('../fonts/nokia/nokiapureheadline_ultralight.woff') format('woff'),
+    url('../fonts/nokia/nokiapureheadline_ultralight.ttf') format('truetype');
+}
+
+/* This is a regular font for the text body */
+@font-face {
+  font-family: 'NokiaPureText';
+  src: url('../fonts/nokia/NokiaPureText_Lt.eot');
+  /* IE9 Compat Modes */
+  src: url('../fonts/nokia/NokiaPureText_Lt.woff2') format('woff2'),
+    /* Super Modern Browsers */
+    url('../fonts/nokia/NokiaPureText_Lt.woff') format('woff');
+  /* Legacy iOS */
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* This is a bold font */
+@font-face {
+  font-family: 'NokiaPureText';
+  src: url('../fonts/nokia/NokiaPureText_Bd.eot');
+  /* IE9 Compat Modes */
+  src: url('../fonts/nokia/NokiaPureText_Bd.woff2') format('woff2'),
+    /* Super Modern Browsers */
+    url('../fonts/nokia/NokiaPureText_Bd.woff') format('woff');
+    /* Safari, Android, iOS */
+  font-weight: bold;
+  font-style: normal;
+}

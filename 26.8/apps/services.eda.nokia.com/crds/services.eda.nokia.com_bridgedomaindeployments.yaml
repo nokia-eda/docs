@@ -1,0 +1,127 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: bridgedomaindeployments.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: BridgeDomainDeployment
+    listKind: BridgeDomainDeploymentList
+    plural: bridgedomaindeployments
+    singular: bridgedomaindeployment
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: BridgeDomainDeployment is the Schema for the bridgedomaindeployments
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BridgeDomainDeploymentSpec defines the desired state of BridgeDomainDeployment
+            properties:
+              bridgeDomain:
+                description: Reference to a BridgeDomain
+                type: string
+              node:
+                description: Reference to a Node on which to push the BridgeDomain
+                type: string
+              type:
+                default: DEFAULT
+                description: Specifies the Type of BridgeDomain to be deployed
+                enum:
+                - SIMPLE
+                - DEFAULT
+                type: string
+            required:
+            - bridgeDomain
+            - node
+            - type
+            type: object
+          status:
+            description: BridgeDomainDeploymentStatus defines the observed state of
+              BridgeDomainDeployment
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: BridgeDomainDeployment is the Schema for the bridgedomaindeployments
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BridgeDomainDeploymentSpec defines the desired state of BridgeDomainDeployment
+            properties:
+              bridgeDomain:
+                description: Reference to a BridgeDomain
+                type: string
+              node:
+                description: Reference to a Node on which to push the BridgeDomain
+                type: string
+              type:
+                default: Default
+                description: Specifies the Type of BridgeDomain to be deployed
+                enum:
+                - Simple
+                - Default
+                - EVPNMPLS
+                - EVPNVXLAN
+                type: string
+            required:
+            - bridgeDomain
+            - node
+            - type
+            type: object
+          status:
+            description: BridgeDomainDeploymentStatus defines the observed state of
+              BridgeDomainDeployment
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

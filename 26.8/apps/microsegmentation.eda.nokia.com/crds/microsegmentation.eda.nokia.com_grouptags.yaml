@@ -1,0 +1,199 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: grouptags.microsegmentation.eda.nokia.com
+spec:
+  group: microsegmentation.eda.nokia.com
+  names:
+    kind: GroupTag
+    listKind: GroupTagList
+    plural: grouptags
+    singular: grouptag
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GroupTag is the Schema for the grouptags API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: A group tag is a name for a network segment with an identical
+              security posture. It allows grouping together endpoints that require
+              the same Micro Segmentation Policy.
+            properties:
+              description:
+                type: string
+              scope:
+                description: The GroupTag scope defines if the GroupTagID (used in
+                  the control plane) can be assigned per service from a local pool
+                  or needs to be unique across multiple services. A global pool is
+                  required to reference tags across multiple interconnected services,
+                  for example for a shared infrastructure service.
+                enum:
+                - Local
+                - Global
+                type: string
+            required:
+            - scope
+            type: object
+          status:
+            description: GroupTagStatus defines the observed state of GroupTag
+            properties:
+              name:
+                description: Name is the group tag name (e.g. group-tag-1).
+                type: string
+              scopes:
+                items:
+                  description: 'ScopeTagStatus holds the status for one scope (e.g.
+                    vnet1): scopeName, tag, nodes'
+                  properties:
+                    nodes:
+                      items:
+                        description: 'NodeStatus holds per-node status: nodeName,
+                          routers, bridgeDomains, optional microsegmentation policies'
+                        properties:
+                          bridgeDomains:
+                            items:
+                              description: 'BridgeDomainStatus holds bridge domain-related
+                                status: bridgeDomainName, interfaces, vlans, optional
+                                microsegmentation policies'
+                              properties:
+                                bridgeDomainName:
+                                  type: string
+                                bridgeInterfaces:
+                                  items:
+                                    description: GroupTagInterfaceRef references an
+                                      interface by interface name and resource name
+                                      (status only).
+                                    properties:
+                                      interface:
+                                        type: string
+                                      resource:
+                                        type: string
+                                    required:
+                                    - interface
+                                    - resource
+                                    type: object
+                                  type: array
+                                microsegmentationPolicy:
+                                  type: string
+                                vlans:
+                                  items:
+                                    description: GroupTagInterfaceRef references an
+                                      interface by interface name and resource name
+                                      (status only).
+                                    properties:
+                                      interface:
+                                        type: string
+                                      resource:
+                                        type: string
+                                    required:
+                                    - interface
+                                    - resource
+                                    type: object
+                                  type: array
+                              required:
+                              - bridgeDomainName
+                              type: object
+                            type: array
+                          nodeName:
+                            type: string
+                          routers:
+                            items:
+                              description: 'RouterStatus holds router-related status:
+                                routerName, interfaces, routes, optional microsegmentation
+                                policies'
+                              properties:
+                                irbInterfaces:
+                                  items:
+                                    description: GroupTagInterfaceRef references an
+                                      interface by interface name and resource name
+                                      (status only).
+                                    properties:
+                                      interface:
+                                        type: string
+                                      resource:
+                                        type: string
+                                    required:
+                                    - interface
+                                    - resource
+                                    type: object
+                                  type: array
+                                microsegmentationPolicy:
+                                  type: string
+                                routedInterfaces:
+                                  items:
+                                    description: GroupTagInterfaceRef references an
+                                      interface by interface name and resource name
+                                      (status only).
+                                    properties:
+                                      interface:
+                                        type: string
+                                      resource:
+                                        type: string
+                                    required:
+                                    - interface
+                                    - resource
+                                    type: object
+                                  type: array
+                                routerName:
+                                  type: string
+                                staticRoutes:
+                                  items:
+                                    description: GroupTagStaticRouteRef references
+                                      a static route by prefixes and resource name
+                                      (status only).
+                                    properties:
+                                      prefixes:
+                                        items:
+                                          type: string
+                                        type: array
+                                      resource:
+                                        type: string
+                                    required:
+                                    - resource
+                                    type: object
+                                  type: array
+                              required:
+                              - routerName
+                              type: object
+                            type: array
+                        required:
+                        - nodeName
+                        type: object
+                      type: array
+                    scopeName:
+                      type: string
+                    tag:
+                      type: integer
+                  required:
+                  - scopeName
+                  - tag
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

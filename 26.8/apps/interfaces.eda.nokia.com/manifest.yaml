@@ -1,0 +1,116 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: interfaces
+spec:
+  group: interfaces.eda.nokia.com
+  version: v1
+  title: Interface
+  description: |
+    This application provides interface configuration and state for various Network Operating Systems.
+
+    It also supports alarming driven by interface operational state and the population of a normalized table to support queries across supported endpoints.
+  image: ghcr.io/nokia-eda/apps/interfaces:v6.999.0
+  author: Nokia
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  gitPathPrefix: /
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  supportedCoreVersions:
+    - "v5.0"
+  appInfo:
+    categories:
+      - "networking"
+      - "monitoring"
+    documentation: interfaces/docs
+  components:
+    - crd:
+        path: interfaces/crds/interfaces.eda.nokia.com_interfaces.yaml
+        schema: interfaces/openapiv3/eda_oas_interfaces.eda.nokia.com_interfaces.json
+        api:
+          expose: readWrite
+        ui:
+          category: Topology
+          name: Interfaces
+          icon: LinkAggregation
+        kubernetes:
+          exportPolicy: all # needed for connect controllers
+        conversionScript: interfaces/intents/interface/conversion_v1.py
+    - crd:
+        path: interfaces/crds/interfaces.eda.nokia.com_breakouts.yaml
+        schema: interfaces/openapiv3/eda_oas_interfaces.eda.nokia.com_breakouts.json
+        api:
+          expose: readWrite
+        ui:
+          category: Topology
+          name: Breakouts
+          icon: SplitLtr
+        kubernetes:
+          exportPolicy: all # needed for connect controllers
+        conversionScript: interfaces/intents/breakout/conversion_v1.py
+    - crd:
+        path: interfaces/crds/interfaces.eda.nokia.com_interfacestates.yaml
+        schema: interfaces/openapiv3/eda_oas_interfaces.eda.nokia.com_interfacestates.json
+        api:
+          expose: none
+          # no ui section means do not present in the UI
+    - script:
+        path: interfaces/intents/breakout/breakout_intent.py
+        type: config
+        trigger:
+          kind: Breakout
+    - script:
+        path: interfaces/intents/interface/interface_intent.py
+        type: config
+        trigger:
+          kind: Interface
+    - script:
+        path: interfaces/intents/interfacestate/interfacestate_intent.py
+        type: state
+        trigger:
+          kind: InterfaceState
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: interfaces/crds/interfaces.eda.nokia.com_checkinterfacess.yaml
+        schema: interfaces/openapiv3/eda_oas_interfaces.eda.nokia.com_checkinterfacess.json
+        workflow: true
+        ui:
+          name: Check Interfaces
+        conversionScript: interfaces/intents/checkinterfaces/conversion_v1.py
+    - cr:
+        path: interfaces/workflows/checkinterfaces/core_v1_flowdefinition.yaml
+    - cr:
+        path: interfaces/alarms/alarms.yaml
+    - cr:
+        path: interfaces/workflows/analyzealarm/core_v1_flowdefinition.yaml
+    - crd:
+        namespaced: true
+        path: interfaces/crds/interfaces.eda.nokia.com_analyzealarms.yaml
+        schema: interfaces/openapiv3/eda_oas_interfaces.eda.nokia.com_analyzealarms.json
+        workflow: true
+  dependencies:
+    - file:
+        path: interfaces/intents
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: interfaces/alarms/pysrc
+    - file:
+        path: interfaces/api
+    - file:
+        path: interfaces/api/v1/pysrc

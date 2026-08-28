@@ -1,0 +1,20 @@
+---
+- hosts: neutron_ovs_agent,neutron_ovs_dpdk_agent
+  gather_facts: no
+  become: true
+  tasks:
+    - name: Make sure the lldpd package is installed
+      package:
+        name:
+          - lldpd
+        state: present
+    - name: Make sure lldpd service is enabled/running
+      service:
+        name: lldpd
+        state: started
+        enabled: yes
+    - name: Configure portID TLV value
+      command: lldpcli configure lldp portidsubtype ifname
+    - name: Configure lldpd interface pattern
+      command: lldpcli configure system interface pattern {{ nic_pattern | default('em*,en*,p*,!en*v*,!p*v*') }}
+

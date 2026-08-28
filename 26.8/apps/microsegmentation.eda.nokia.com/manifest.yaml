@@ -1,0 +1,122 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: microsegmentation
+spec:
+  appInfo:
+    categories:
+      - security
+    documentation: microsegmentation/docs
+  author: Nokia
+  dependencies:
+    - file:
+        path: utils
+    - file:
+        path: common
+    - file:
+        path: microsegmentation/api
+    - file:
+        path: microsegmentation/alarms/pysrc
+    - file:
+        path: microsegmentation/intents
+    - file:
+        path: services/api/v2/pysrc
+    - file:
+        path: filters/
+    - file:
+        path: protocols/api/v2/pysrc
+    - file:
+        path: microsegmentation/api/v1alpha1/pysrc
+  description: Micro segmentation
+  group: microsegmentation.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/microsegmentation:v6.999.0
+  requirements:
+    - appId: services.eda.nokia.com
+      version: v6.999.0
+    - appId: routingpolicies.eda.nokia.com
+      version: v6.999.0
+    - appId: interfaces.eda.nokia.com
+      version: v6.999.0
+  supportedCoreVersions:
+    - "v5.0"
+  supportedEndpoints:
+    - "srl:26.3.*"
+  title: Micro Segmentation
+  version: v1alpha1
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        path: microsegmentation/crds/microsegmentation.eda.nokia.com_grouptags.yaml
+        schema: microsegmentation/openapiv3/eda_oas_microsegmentation.eda.nokia.com_grouptags.json
+        ui:
+          category: Micro Segmentation
+          name: Group Tags
+          icon: Tag
+    - crd:
+        api:
+          expose: readWrite
+        path: microsegmentation/crds/microsegmentation.eda.nokia.com_associationpolicies.yaml
+        schema: microsegmentation/openapiv3/eda_oas_microsegmentation.eda.nokia.com_associationpolicies.json
+        ui:
+          category: Micro Segmentation
+          name: Group Tag Association Policies
+          icon: ProfileAssign
+    - crd:
+        api:
+          expose: readWrite
+        path: microsegmentation/crds/microsegmentation.eda.nokia.com_microsegmentationpolicies.yaml
+        schema: microsegmentation/openapiv3/eda_oas_microsegmentation.eda.nokia.com_microsegmentationpolicies.json
+        ui:
+          category: Micro Segmentation
+          name: Micro Segmentation Policies
+          icon: FilterAdd
+    - cr:
+        path: microsegmentation/resources/group-tag-pool-global.yaml
+    - cr:
+        path: microsegmentation/resources/group-tag-pool-local.yaml
+    - script:
+        path: microsegmentation/intents/grouptag/config_intent.py
+        trigger:
+          kind: GroupTag
+        type: config
+    - script:
+        path: microsegmentation/intents/microsegmentationpolicy/config_intent.py
+        trigger:
+          kind: MicroSegmentationPolicy
+        type: config
+    - script:
+        path: microsegmentation/intents/associationpolicy/config_intent.py
+        trigger:
+          kind: AssociationPolicy
+        type: config
+    - crd:
+        api:
+          expose: none
+        path: microsegmentation/crds/microsegmentation.eda.nokia.com_associationpolicystates.yaml
+        schema: microsegmentation/openapiv3/eda_oas_microsegmentation.eda.nokia.com_associationpolicystates.json
+    - crd:
+        api:
+          expose: none
+        path: microsegmentation/crds/microsegmentation.eda.nokia.com_microsegmentationpolicystates.yaml
+        schema: microsegmentation/openapiv3/eda_oas_microsegmentation.eda.nokia.com_microsegmentationpolicystates.json
+    - crd:
+        api:
+          expose: none
+        path: microsegmentation/crds/microsegmentation.eda.nokia.com_grouptagstates.yaml
+        schema: microsegmentation/openapiv3/eda_oas_microsegmentation.eda.nokia.com_grouptagstates.json
+    - script:
+        path: microsegmentation/intents/grouptagstate/state_intent.py
+        trigger:
+          kind: GroupTagState
+        type: state
+    - view:
+        path: microsegmentation/ui/grouptag-dashboard.json
+        ui:
+          category: Micro Segmentation
+          name: Group Tags
+    - view:
+        path: microsegmentation/ui/microsegmentationpolicy-dashboard.json
+        ui:
+          category: Micro Segmentation
+          name: Micro Segmentation Policies

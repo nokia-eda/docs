@@ -1,0 +1,14 @@
+apiVersion: aaa.eda.nokia.com/v1
+kind: AuthenticationPolicy
+metadata:
+  name: my-auth-policy
+  namespace: eda
+spec:
+  authenticationOrder:
+    exitOnReject: false
+    localAuthentication: First
+    serverGroupOrder:
+      - my-radius-servers
+  nodes:
+    - leaf-2
+    - leaf-1

@@ -1,0 +1,19 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: RouteReflectorClient
+metadata:
+  labels:
+    my-rrc-label: vnet-bgp
+  name: my-rrc
+  namespace: eda
+spec:
+  bgpGroup: bgp-ipv4-only
+  interface: leaf-1-interface-rrc
+  interfaceKind: RoutedInterface
+  ipv4RouteReflectorSelectors:
+    - my-rr-label=vnet-bgp
+  ipv4Unicast:
+    enabled: true
+  ipv6RouteReflectorSelectors:
+    - my-rr-label=vnet-bgp
+  ipv6Unicast:
+    enabled: false

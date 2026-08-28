@@ -1,0 +1,13 @@
+apiVersion: netbox.eda.nokia.com/v1alpha1
+kind: ApplyTopology
+metadata:
+  name: my-topology-sync
+  namespace: eda
+spec:
+  instanceName: netbox     # <-- Reference to the Instance resource
+  siteName: eda            # <-- NetBox Site to import
+  # Optional: filter Devices by tags. Each inner list is AND, the outer list is OR.
+  # Empty or omitted = sync all Devices in the Site.
+  deviceTags:
+    - [eda.nokia.com/role=leaf]
+    - [eda.nokia.com/role=spine]

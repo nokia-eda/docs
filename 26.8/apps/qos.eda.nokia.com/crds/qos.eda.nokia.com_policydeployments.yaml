@@ -1,0 +1,167 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: policydeployments.qos.eda.nokia.com
+spec:
+  group: qos.eda.nokia.com
+  names:
+    kind: PolicyDeployment
+    listKind: PolicyDeploymentList
+    plural: policydeployments
+    singular: policydeployment
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: PolicyDeployment is the Schema for the policydeployments API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PolicyDeploymentSpec defines the desired state of PolicyDeployment
+            properties:
+              egressPolicy:
+                description: Specifies an EgressPolicy to deploy on the specified
+                  Node.
+                type: string
+              ingressPolicy:
+                description: Specifies the IngressPolicy to deploy on the specified
+                  Node.
+                type: string
+              interfaceSelector:
+                description: Specifies a label selector to filter the interfaces on
+                  which to deploy the policies.
+                items:
+                  type: string
+                type: array
+              interfaceType:
+                description: Used for platforms that differentiate between access/service
+                  interfaces and network interface.  These platforms may require different
+                  classifiers depending on whether they are applied on access/service
+                  interfaces or network interfaces.  Specifies whether the classifier
+                  should be configured as a service Egress classifier or network Egress
+                  classifier
+                enum:
+                - ACCESS
+                - NETWORK
+                type: string
+              interfaces:
+                description: Specifies a list of Interfaces on which to deploy the
+                  policies.
+                items:
+                  type: string
+                type: array
+              node:
+                description: Specifies a Node to deploy the policies on.
+                type: string
+              nodeSelector:
+                description: Specifies a label selector to filter the nodes on which
+                  to deploy the policies.
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: PolicyDeploymentStatus defines the observed state of PolicyDeployment
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: PolicyDeployment is the Schema for the policydeployments API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PolicyDeploymentSpec defines the desired state of PolicyDeployment
+            properties:
+              egressPolicy:
+                description: Specifies an EgressPolicy to deploy on the specified
+                  Node.
+                type: string
+              ingressPolicy:
+                description: Specifies the IngressPolicy to deploy on the specified
+                  Node.
+                type: string
+              interfaceSelectors:
+                description: Specifies a label selector to filter the interfaces on
+                  which to deploy the policies.
+                items:
+                  type: string
+                type: array
+              interfaceType:
+                description: Used for platforms that differentiate between access/service
+                  interfaces and network interface.  These platforms may require different
+                  classifiers depending on whether they are applied on access/service
+                  interfaces or network interfaces.  Specifies whether the classifier
+                  should be configured as a service Egress classifier or network Egress
+                  classifier
+                enum:
+                - Access
+                - Network
+                type: string
+              interfaces:
+                description: Specifies a list of Interfaces on which to deploy the
+                  policies.
+                items:
+                  type: string
+                type: array
+              node:
+                description: Specifies a Node to deploy the policies on.
+                type: string
+              nodeSelectors:
+                description: Specifies a label selector to filter the nodes on which
+                  to deploy the policies.
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: PolicyDeploymentStatus defines the observed state of PolicyDeployment
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

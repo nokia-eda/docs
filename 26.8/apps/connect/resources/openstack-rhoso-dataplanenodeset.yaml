@@ -1,0 +1,123 @@
+apiVersion: dataplane.openstack.org/v1beta1
+kind: OpenStackDataPlaneNodeSet
+metadata:
+  name: openstack-data-plane
+  namespace: openstack
+spec:
+  preProvisioned: true
+  networkAttachments:
+    - ctlplane
+  services:
+    - redhat
+    - download-cache
+    - bootstrap
+    - configure-network
+    - validate-network
+    - install-os
+    - configure-os
+    - ssh-known-hosts
+    - run-os
+    - reboot-os
+    - install-certs
+    - ovn
+    - neutron-metadata
+    - neutron-sriov         # Include if SR-IOV is used
+    - edpm-lldp-service     # EDA: LLDP for topology discovery
+    - libvirt
+    - nova-custom-sriov     # Include if SR-IOV is used
+    - telemetry
+  nodeTemplate:
+    ansibleSSHPrivateKeySecret: dataplane-ansible-ssh-private-key-secret
+    managementNetwork: ctlplane
+    ansible:
+      ansibleUser: cloud-admin
+      ansiblePort: 22
+      ansibleVarsFrom:
+        - secretRef:
+            name: subscription-manager
+        - secretRef:
+            name: redhat-registry
+      ansibleVars:
+        rhc_release: "9.4"
+        rhc_repositories:
+          - {name: "*", state: disabled}
+          - {name: "rhel-9-for-x86_64-baseos-eus-rpms", state: enabled}
+          - {name: "rhel-9-for-x86_64-appstream-eus-rpms", state: enabled}
+          - {name: "rhel-9-for-x86_64-highavailability-eus-rpms", state: enabled}
+          - {name: "fast-datapath-for-rhel-9-x86_64-rpms", state: enabled}
+          - {name: "rhoso-18.0-for-rhel-9-x86_64-rpms", state: enabled}
+          - {name: "rhceph-7-tools-for-rhel-9-x86_64-rpms", state: enabled}
+        edpm_bootstrap_release_version_package: []
+
+        # Kernel args required for SR-IOV PCI passthrough (IOMMU)
+        edpm_kernel_args: "iommu=pt intel_iommu=on"
+
+        # SR-IOV NIC configuration (adapt interface names and VF counts)
+        edpm_neutron_sriov_agent_SRIOV_NIC_physical_device_mappings: "datacentre:ens1f0np0,datacentre:ens1f1np1"
+        edpm_nova_libvirt_SRIOV_numvfs:
+          ens1f0np0: 8
+          ens1f1np1: 8
+
+        # NTP
+        edpm_chrony_ntp_servers:
+          - <NTP_SERVER_1>
+          - <NTP_SERVER_2>
+
+        # Network config (adapt MACs/interfaces to your hardware)
+        neutron_physical_bridge_name: br-ex
+        edpm_network_config_nmstate: true
+        edpm_network_config_update: false
+        edpm_network_config_template: |
+          ---
+          network_config:
+          - type: ovs_bridge
+            name: {{ neutron_physical_bridge_name }}
+            use_dhcp: false
+            addresses:
+            - ip_netmask: {{ ctlplane_ip }}/{{ ctlplane_cidr }}
+            members:
+            - type: linux_bond
+              name: bond0
+              bonding_options: "mode=802.3ad lacp_rate=fast updelay=1000 miimon=100 xmit_hash_policy=layer3+4"
+              members:
+              - type: interface
+                name: nic1
+                primary: true
+              - type: interface
+                name: nic2
+            {% for network in nodeset_networks %}
+            - type: vlan
+              vlan_id: {{ lookup('vars', networks_lower[network] ~ '_vlan_id') }}
+              addresses:
+              - ip_netmask: {{ lookup('vars', networks_lower[network] ~ '_ip') }}/{{ lookup('vars', networks_lower[network] ~ '_cidr') }}
+            {% endfor %}
+
+  nodes:
+    edpm-compute-0:
+      hostName: edpm-compute-0
+      ansible:
+        ansibleHost: <COMPUTE_0_CTLPLANE_IP>
+      networks:
+        - name: ctlplane
+          subnetName: subnet1
+          fixedIP: <COMPUTE_0_CTLPLANE_IP>
+        - name: internalapi
+          subnetName: subnet1
+        - name: storage
+          subnetName: subnet1
+        - name: tenant
+          subnetName: subnet1
+    edpm-compute-1:
+      hostName: edpm-compute-1
+      ansible:
+        ansibleHost: <COMPUTE_1_CTLPLANE_IP>
+      networks:
+        - name: ctlplane
+          subnetName: subnet1
+          fixedIP: <COMPUTE_1_CTLPLANE_IP>
+        - name: internalapi
+          subnetName: subnet1
+        - name: storage
+          subnetName: subnet1
+        - name: tenant
+          subnetName: subnet1

@@ -1,0 +1,239 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultinterfacestates.routing.eda.nokia.com
+spec:
+  group: routing.eda.nokia.com
+  names:
+    kind: DefaultInterfaceState
+    listKind: DefaultInterfaceStateList
+    plural: defaultinterfacestates
+    singular: defaultinterfacestate
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: DefaultInterfaceState is the Schema for the defaultinterfacestates
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultInterfaceStateSpec defines the desired state of DefaultInterfaceState
+            properties:
+              bfdEnabled:
+                description: Indicates if bfd is enabled or disabled
+                type: boolean
+              defaultNodeInterface:
+                description: Node specific default interface name, for example "ethernet-1/1.0",
+                  "if-1/1/c1/1"
+                type: string
+              defaultRouter:
+                description: Reference to a DefaultRouter
+                type: string
+              interface:
+                description: Reference to an interface
+                type: string
+              interfaceEnabled:
+                description: Indicates if the interface is enabled or disabled
+                type: boolean
+              ipv4Addresses:
+                description: List of IPv4 addresses
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              ipv6Addresses:
+                description: List of IPv6 addresses
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              networkInstanceName:
+                description: The name of the network-instance or base routing instance
+                  in which the DefaultInterface is configured
+                type: string
+              node:
+                description: Reference to Node object
+                type: string
+              nodeInterface:
+                description: Node specific interface name, for example "ethernet-1/1",
+                  "1/1/c1/1"
+                type: string
+              operatingSystem:
+                description: Operating System of the Node
+                type: string
+              subInterfaceIndex:
+                description: Index of the subinterface
+                type: integer
+              unnumbered:
+                description: Indicates if the interface is unnumbered
+                enum:
+                - IPv6
+                type: string
+            required:
+            - defaultNodeInterface
+            - defaultRouter
+            - interface
+            - interfaceEnabled
+            - networkInstanceName
+            - node
+            - nodeInterface
+            type: object
+          status:
+            description: DefaultInterfaceStateStatus defines the observed state of
+              DefaultInterfaceState
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DefaultInterfaceState is the Schema for the defaultinterfacestates
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultInterfaceStateSpec defines the desired state of DefaultInterfaceState
+            properties:
+              bfdEnabled:
+                description: Indicates if bfd is enabled or disabled
+                type: boolean
+              defaultNodeInterface:
+                description: Node specific default interface name, for example "ethernet-1/1.0",
+                  "if-1/1/c1/1"
+                type: string
+              defaultRouter:
+                description: Reference to a DefaultRouter
+                type: string
+              interface:
+                description: Reference to an interface
+                type: string
+              interfaceEnabled:
+                description: Indicates if the interface is enabled or disabled
+                type: boolean
+              ipv4Addresses:
+                description: List of IPv4 addresses
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              ipv6Addresses:
+                description: List of IPv6 addresses
+                items:
+                  properties:
+                    ipPrefix:
+                      description: IP Address and prefix length in CIDR notation.
+                      type: string
+                    primary:
+                      description: Indicates which address to use as primary.
+                      type: boolean
+                  required:
+                  - ipPrefix
+                  type: object
+                type: array
+              networkInstanceName:
+                description: The name of the network-instance or base routing instance
+                  in which the DefaultInterface is configured
+                type: string
+              node:
+                description: Reference to Node object
+                type: string
+              nodeInterface:
+                description: Node specific interface name, for example "ethernet-1/1",
+                  "1/1/c1/1"
+                type: string
+              operatingSystem:
+                description: Operating System of the Node
+                type: string
+              subInterfaceIndex:
+                description: Index of the subinterface
+                type: integer
+              unnumbered:
+                description: Indicates if the interface is unnumbered
+                enum:
+                - IPV6
+                type: string
+            required:
+            - defaultNodeInterface
+            - defaultRouter
+            - interface
+            - interfaceEnabled
+            - networkInstanceName
+            - node
+            - nodeInterface
+            type: object
+          status:
+            description: DefaultInterfaceStateStatus defines the observed state of
+              DefaultInterfaceState
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

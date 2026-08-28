@@ -1,0 +1,145 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultmtus.siteinfo.eda.nokia.com
+spec:
+  group: siteinfo.eda.nokia.com
+  names:
+    kind: DefaultMTU
+    listKind: DefaultMTUList
+    plural: defaultmtus
+    singular: defaultmtu
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: DefaultMTU is the Schema for the defaultmtus API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultMTUSpec defines the desired state of DefaultMTU
+            properties:
+              interfaceMTU:
+                description: Configures the Default MTU value for Ethernet interfaces.
+                  Includes Ethernet headers but excludes 4-byte FCS trailer.
+                maximum: 11000
+                minimum: 1500
+                type: integer
+              layer2SubinterfaceMTU:
+                description: Configures the Default MTU value for Layer 2 (bridged)
+                  interfaces. Includes Ethernet headers but excludes 4-byte FCS trailer.
+                maximum: 11000
+                minimum: 1500
+                type: integer
+              layer3MTU:
+                description: Configures the Default IP MTU value for Layer 3 interfaces.
+                  Includes IP headers but excludes Ethernet headers.
+                maximum: 11000
+                minimum: 1280
+                type: integer
+              nodeSelectors:
+                description: Label selector to select nodes on which to configure
+                  the defaults.
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes on which to configure the defaults.
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: DefaultMTUStatus defines the observed state of DefaultMTU
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DefaultMTU is the Schema for the defaultmtus API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultMTUSpec defines the desired state of DefaultMTU
+            properties:
+              interfaceMTU:
+                description: Configures the Default MTU value for Ethernet interfaces.
+                  Includes Ethernet headers but excludes 4-byte FCS trailer.
+                maximum: 11000
+                minimum: 1500
+                type: integer
+              layer2SubifMTU:
+                description: Configures the Default MTU value for Layer 2 (bridged)
+                  interfaces. Includes Ethernet headers but excludes 4-byte FCS trailer.
+                maximum: 11000
+                minimum: 1500
+                type: integer
+              layer3MTU:
+                description: Configures the Default IP MTU value for Layer 3 interfaces.
+                  Includes IP headers but excludes Ethernet headers.
+                maximum: 11000
+                minimum: 1280
+                type: integer
+              nodeSelector:
+                description: Label selector to select nodes on which to configure
+                  the defaults.
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes on which to configure the defaults.
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: DefaultMTUStatus defines the observed state of DefaultMTU
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

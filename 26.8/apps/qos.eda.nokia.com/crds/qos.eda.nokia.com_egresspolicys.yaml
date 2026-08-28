@@ -1,0 +1,680 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: egresspolicys.qos.eda.nokia.com
+spec:
+  group: qos.eda.nokia.com
+  names:
+    kind: EgressPolicy
+    listKind: EgressPolicyList
+    plural: egresspolicys
+    singular: egresspolicy
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: EgressPolicy is the Schema for the egresspolicys API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: EgressPolicySpec defines the desired state of EgressPolicy
+            properties:
+              dot1pRewritePolicy:
+                description: Dot1pRewritePolicy enables the configuration of rewrite
+                  policies for Dot1p values. It includes mappings of forwarding classes
+                  to Dot1p values, with options for drop probability-specific overrides
+                  within each forwarding class.
+                properties:
+                  dot1pMap:
+                    description: Map of forwarding classes to PCP values
+                    items:
+                      properties:
+                        dropProbability:
+                          description: Drop probability specific overrides within
+                            the forwarding class
+                          items:
+                            properties:
+                              level:
+                                description: A drop probability level within the forwarding
+                                  class for which a different remarking is desired
+                                enum:
+                                - High
+                                - Medium
+                                - Low
+                                type: string
+                              pcpValue:
+                                description: The PCP value to be used for packets
+                                  associated with the forwarding class and the specific
+                                  drop probability. This overrides the general PCP
+                                  value.
+                                maximum: 7
+                                minimum: 0
+                                type: integer
+                            type: object
+                          type: array
+                        forwardingClasses:
+                          description: The forwarding class matched to apply the rewrite
+                            policy
+                          items:
+                            type: string
+                          type: array
+                        pcpValue:
+                          description: The PCP value to be used for all packets associated
+                            with the forwarding class, except those with a drop-probability-specific
+                            or profile-specific override
+                          maximum: 7
+                          minimum: 0
+                          type: integer
+                      required:
+                      - forwardingClasses
+                      type: object
+                    type: array
+                required:
+                - dot1pMap
+                type: object
+              dscpRewritePolicy:
+                description: DSCPRewritePolicy enables the configuration of rewrite
+                  policies for Differentiated Services Code Point (DSCP) values. It
+                  includes mappings of forwarding classes to DSCP values, with options
+                  for drop probability-specific overrides within each forwarding class.  If
+                  a DSCPRewritePolicy is not specified, the DSCP value of the packet
+                  is unchanged. If a DSCP policy is specific and ECN is enabled on
+                  any of the queues, the DSCP policy will be applied to all ECN capable
+                  packets.
+                properties:
+                  dscpMap:
+                    description: Map of forwarding classes to DSCP values.
+                    items:
+                      properties:
+                        dropProbability:
+                          description: A drop probability within the forwarding class
+                            for which a different remarking is desired.
+                          items:
+                            properties:
+                              dscp:
+                                description: The DSCP value to be used for packets
+                                  associated with the forwarding class and the specific
+                                  drop probability. This overrides the general DSCP
+                                  value.
+                                maximum: 63
+                                minimum: 0
+                                type: integer
+                              level:
+                                description: A drop probability level within the forwarding
+                                  class for which a different remarking is desired.
+                                enum:
+                                - High
+                                - Medium
+                                - Low
+                                type: string
+                            type: object
+                          type: array
+                        dscp:
+                          description: The DSCP value to be used for all packets associated
+                            with the forwarding class, except those with a drop-probability-specific
+                            or profile-specific override.
+                          maximum: 63
+                          minimum: 0
+                          type: integer
+                        forwardingClasses:
+                          description: The forwarding class matched to apply the rewrite
+                            policy.
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - forwardingClasses
+                      type: object
+                    type: array
+                required:
+                - dscpMap
+                type: object
+              forwardingClassToQueueMapping:
+                description: Forwarding class to queue mapping policy.
+                items:
+                  properties:
+                    forwardingClasses:
+                      description: The forwarding classes to which the mapping applies,
+                        these are references to ForwardingClass resources.
+                      items:
+                        type: string
+                      minItems: 1
+                      type: array
+                    queue:
+                      description: The queue to which the forwarding classes are mapped,
+                        this is a reference to a Queue resource.
+                      type: string
+                    queueGroup:
+                      description: The queue-group name for queue to forwarding class
+                        mapping.
+                      type: string
+                  required:
+                  - forwardingClasses
+                  - queue
+                  type: object
+                type: array
+              pfcDeadlockAvoidance:
+                description: Parameters related to avoid a deadlock related to pfc
+                  on outgoing interface.
+                properties:
+                  deadlockAvoidance:
+                    description: Parameters related to avoid a deadlock related to
+                      pfc on outgoing interface
+                    type: boolean
+                  deadlockDetectionTimer:
+                    description: Number of milliseconds during which outgoing interface
+                      is receiving pfc-pause-frames before triggering recovery-timer.
+                    type: integer
+                  deadlockRecoveryTimer:
+                    description: Number of milliseconds during which the pfc-pause-frames
+                      will be ignored.
+                    type: integer
+                required:
+                - deadlockAvoidance
+                - deadlockDetectionTimer
+                - deadlockRecoveryTimer
+                type: object
+              queueManagement:
+                description: Queue management policy for egress queues.
+                items:
+                  properties:
+                    queues:
+                      description: List of queues.
+                      items:
+                        properties:
+                          committedBurstSize:
+                            description: Committed Burst Size.
+                            format: int32
+                            type: integer
+                          maximumBurstSize:
+                            description: Maximum amount of shared buffer memory available
+                              to the queue in bytes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 0
+                            type: integer
+                          pfcPauseFramePriority:
+                            description: The pfc-priority received in pfc-pause-frame.
+                            type: integer
+                          queue:
+                            description: Reference to a Queue resource.
+                            type: string
+                          schedulerPeakRatePercent:
+                            description: The peak rate percent used by the scheduler
+                              for the queue.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          schedulerPriorityLevel:
+                            description: The priority level at this Port Scheduler
+                              Policy.
+                            maximum: 8
+                            minimum: 1
+                            type: integer
+                          schedulerWeight:
+                            description: The weight factor used for the WRR scheduler.
+                              If any of the queues have a configured weight the set
+                              of queues will use a WRR scheduler and thus all queues
+                              must have a weight configured.  If no weights are set
+                              then the queues are scheduled in strict priority from
+                              lowest to higher queue ID.
+                            maximum: 255
+                            minimum: 0
+                            type: integer
+                        required:
+                        - maximumBurstSize
+                        - queue
+                        type: object
+                      type: array
+                    slopePolicyWeight:
+                      default: 0
+                      description: 'The average queue size is calculated using both
+                        the previous average and the current queue size: average =
+                        (previous average)(1 - 2^(-n)) + (current size)(2^(-n)), where
+                        n is a user-configurable weight factor. A higher n gives more
+                        importance to the previous average, smoothing peaks and lows
+                        in the queue. Lower n makes the average closer to the current
+                        queue size. If this leaf is absent, the default value is used.'
+                      maximum: 15
+                      minimum: 0
+                      type: integer
+                    wredSlopPolicies:
+                      description: Slope policy to apply to the set of queues.
+                      items:
+                        properties:
+                          drop:
+                            default: false
+                            description: When set to true, and if the ECN field in
+                              the packet indicates that the endpoints are not ECN-capable,
+                              and the WRED algorithm determines that the packet should
+                              be dropped based on the drop probability, the packet
+                              will be dropped
+                            type: boolean
+                          dropProbability:
+                            default: All
+                            enum:
+                            - High
+                            - Medium
+                            - Low
+                            - All
+                            type: string
+                          ecn:
+                            default: false
+                            description: When set to true and the queue length is
+                              between the thresholds and the ECN field indicates ECN-capable
+                              endpoints, the CE bits are set to 1, and the packet
+                              is transmitted based on WRED. If false, such packets
+                              are discarded.
+                            type: boolean
+                          maxDropProbabilityPercent:
+                            description: If the queue depth is between min and max
+                              threshold then this the probability with which packets
+                              are dropped or marked.
+                            type: integer
+                          maxThreshold:
+                            description: The maximum threshold parameter for a RED-managed
+                              queue in bytes. When the average queue length exceeds
+                              the max value, all packets are dropped (or marked if
+                              ECN is enabled). Mutually exclusive with min-threshold-percent
+                              and max-threshold-percent.
+                            format: int64
+                            type: integer
+                          maxThresholdPercent:
+                            description: The maximum threshold parameter for a RED-managed
+                              queue in percent. When the average queue length exceeds
+                              the max value, all packets are dropped (or marked if
+                              ECN is enabled). Mutually exclusive with min-threshold
+                              and max-threshold.
+                            type: integer
+                          minThreshold:
+                            description: The minimum threshold parameter for a RED-managed
+                              queue in bytes. When the average queue length is less
+                              than min, all packets are admitted to the queue. Mututally
+                              exclusive with min-threshold-percent and max-threshold-percent.
+                            format: int64
+                            type: integer
+                          minThresholdPercent:
+                            description: The minimum threshold parameter for a RED-managed
+                              queue in percent. When the average queue length is less
+                              than min, all packets are admitted to the queue. Mutually
+                              exclusive with min-threshold and max-threshold.
+                            type: integer
+                          trafficType:
+                            default: All
+                            description: The traffic type to which the WRED slope
+                              applies.
+                            enum:
+                            - Tcp
+                            - NonTcp
+                            - All
+                            type: string
+                        required:
+                        - drop
+                        - dropProbability
+                        - ecn
+                        - trafficType
+                        type: object
+                      type: array
+                  required:
+                  - queues
+                  type: object
+                type: array
+            type: object
+          status:
+            description: EgressPolicyStatus defines the observed state of EgressPolicy
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: EgressPolicy is the Schema for the egresspolicys API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: EgressPolicySpec defines the desired state of EgressPolicy
+            properties:
+              dot1pRewritePolicy:
+                description: Dot1pRewritePolicy enables the configuration of rewrite
+                  policies for Dot1p values. It includes mappings of forwarding classes
+                  to Dot1p values, with options for drop probability-specific overrides
+                  within each forwarding class.
+                properties:
+                  dot1pMap:
+                    description: Map of forwarding classes to PCP values
+                    items:
+                      properties:
+                        dropProbabilities:
+                          description: Drop probability specific overrides within
+                            the forwarding class
+                          items:
+                            properties:
+                              level:
+                                description: A drop probability level within the forwarding
+                                  class for which a different remarking is desired
+                                enum:
+                                - High
+                                - Medium
+                                - Low
+                                type: string
+                              pcpValue:
+                                description: The PCP value to be used for packets
+                                  associated with the forwarding class and the specific
+                                  drop probability. This overrides the general PCP
+                                  value.
+                                maximum: 7
+                                minimum: 0
+                                type: integer
+                            type: object
+                          type: array
+                        forwardingClasses:
+                          description: The forwarding class matched to apply the rewrite
+                            policy
+                          items:
+                            type: string
+                          type: array
+                        pcpValue:
+                          description: The PCP value to be used for all packets associated
+                            with the forwarding class, except those with a drop-probability-specific
+                            or profile-specific override
+                          maximum: 7
+                          minimum: 0
+                          type: integer
+                      required:
+                      - forwardingClasses
+                      type: object
+                    type: array
+                required:
+                - dot1pMap
+                type: object
+              dscpRewritePolicy:
+                description: DSCPRewritePolicy enables the configuration of rewrite
+                  policies for Differentiated Services Code Point (DSCP) values. It
+                  includes mappings of forwarding classes to DSCP values, with options
+                  for drop probability-specific overrides within each forwarding class.  If
+                  a DSCPRewritePolicy is not specified, the DSCP value of the packet
+                  is unchanged. If a DSCP policy is specific and ECN is enabled on
+                  any of the queues, the DSCP policy will be applied to all ECN capable
+                  packets.
+                properties:
+                  dscpMap:
+                    description: Map of forwarding classes to DSCP values.
+                    items:
+                      properties:
+                        dropProbabilities:
+                          description: A drop probability within the forwarding class
+                            for which a different remarking is desired.
+                          items:
+                            properties:
+                              dscp:
+                                description: The DSCP value to be used for packets
+                                  associated with the forwarding class and the specific
+                                  drop probability. This overrides the general DSCP
+                                  value.
+                                maximum: 63
+                                minimum: 0
+                                type: integer
+                              level:
+                                description: A drop probability level within the forwarding
+                                  class for which a different remarking is desired.
+                                enum:
+                                - High
+                                - Medium
+                                - Low
+                                type: string
+                            type: object
+                          type: array
+                        dscp:
+                          description: The DSCP value to be used for all packets associated
+                            with the forwarding class, except those with a drop-probability-specific
+                            or profile-specific override.
+                          maximum: 63
+                          minimum: 0
+                          type: integer
+                        forwardingClasses:
+                          description: The forwarding class matched to apply the rewrite
+                            policy.
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - forwardingClasses
+                      type: object
+                    type: array
+                required:
+                - dscpMap
+                type: object
+              forwardingClassToQueueMapping:
+                description: Forwarding class to queue mapping policy.
+                items:
+                  properties:
+                    forwardingClasses:
+                      description: The forwarding classes to which the mapping applies,
+                        these are references to ForwardingClass resources.
+                      items:
+                        type: string
+                      minItems: 1
+                      type: array
+                    queue:
+                      description: The queue to which the forwarding classes are mapped,
+                        this is a reference to a Queue resource.
+                      type: string
+                    queueGroup:
+                      description: The queue-group name for queue to forwarding class
+                        mapping.
+                      type: string
+                  required:
+                  - forwardingClasses
+                  - queue
+                  type: object
+                type: array
+              pfcDeadlockAvoidance:
+                description: Parameters related to avoid a deadlock related to pfc
+                  on outgoing interface.
+                properties:
+                  deadlockAvoidance:
+                    description: Parameters related to avoid a deadlock related to
+                      pfc on outgoing interface
+                    type: boolean
+                  deadlockDetectionTimerMs:
+                    description: Number of milliseconds during which outgoing interface
+                      is receiving pfc-pause-frames before triggering recovery-timer.
+                    type: integer
+                  deadlockRecoveryTimerMs:
+                    description: Number of milliseconds during which the pfc-pause-frames
+                      will be ignored.
+                    type: integer
+                required:
+                - deadlockAvoidance
+                - deadlockDetectionTimerMs
+                - deadlockRecoveryTimerMs
+                type: object
+              queueManagement:
+                description: Queue management policy for egress queues.
+                items:
+                  properties:
+                    queues:
+                      description: List of queues.
+                      items:
+                        properties:
+                          committedBurstSizeBytes:
+                            description: Committed Burst Size in bytes.
+                            format: int32
+                            type: integer
+                          maximumBurstSizeBytes:
+                            description: Maximum amount of shared buffer memory available
+                              to the queue in bytes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 0
+                            type: integer
+                          pfcPauseFramePriority:
+                            description: The pfc-priority received in pfc-pause-frame.
+                            type: integer
+                          queue:
+                            description: Reference to a Queue resource.
+                            type: string
+                          schedulerPeakRatePercent:
+                            description: The peak rate percent used by the scheduler
+                              for the queue.
+                            maximum: 100
+                            minimum: 1
+                            type: integer
+                          schedulerPriorityLevel:
+                            description: The priority level at this Port Scheduler
+                              Policy.
+                            maximum: 8
+                            minimum: 1
+                            type: integer
+                          schedulerWeight:
+                            description: The weight factor used for the WRR scheduler.
+                              If any of the queues have a configured weight the set
+                              of queues will use a WRR scheduler and thus all queues
+                              must have a weight configured.  If no weights are set
+                              then the queues are scheduled in strict priority from
+                              lowest to higher queue ID.
+                            maximum: 255
+                            minimum: 0
+                            type: integer
+                        required:
+                        - maximumBurstSizeBytes
+                        - queue
+                        type: object
+                      type: array
+                    slopePolicyWeight:
+                      default: 0
+                      description: 'The average queue size is calculated using both
+                        the previous average and the current queue size: average =
+                        (previous average)(1 - 2^(-n)) + (current size)(2^(-n)), where
+                        n is a user-configurable weight factor. A higher n gives more
+                        importance to the previous average, smoothing peaks and lows
+                        in the queue. Lower n makes the average closer to the current
+                        queue size. If this leaf is absent, the default value is used.'
+                      maximum: 15
+                      minimum: 0
+                      type: integer
+                    wredSlopePolicies:
+                      description: Slope policy to apply to the set of queues.
+                      items:
+                        properties:
+                          dropProbability:
+                            default: All
+                            description: The drop probability level to which the WRED
+                              slope applies.
+                            enum:
+                            - High
+                            - Medium
+                            - Low
+                            - All
+                            type: string
+                          ecn:
+                            default: false
+                            description: When set to true and the queue length is
+                              between the thresholds and the ECN field indicates ECN-capable
+                              endpoints, the CE bits are set to 1, and the packet
+                              is transmitted based on WRED. If false, such packets
+                              are discarded.
+                            type: boolean
+                          maxDropProbabilityPercent:
+                            description: If the queue depth is between min and max
+                              threshold then this the probability with which packets
+                              are dropped or marked.
+                            type: integer
+                          maxThresholdBytes:
+                            description: The maximum threshold parameter for a RED-managed
+                              queue in bytes. When the average queue length exceeds
+                              the max value, all packets are dropped (or marked if
+                              ECN is enabled). Mutually exclusive with min-threshold-percent
+                              and max-threshold-percent.
+                            format: int64
+                            type: integer
+                          maxThresholdPercent:
+                            description: The maximum threshold parameter for a RED-managed
+                              queue in percent. When the average queue length exceeds
+                              the max value, all packets are dropped (or marked if
+                              ECN is enabled). Mutually exclusive with min-threshold
+                              and max-threshold.
+                            type: integer
+                          minThresholdBytes:
+                            description: The minimum threshold parameter for a RED-managed
+                              queue in bytes. When the average queue length is less
+                              than min, all packets are admitted to the queue. Mututally
+                              exclusive with min-threshold-percent and max-threshold-percent.
+                            format: int64
+                            type: integer
+                          minThresholdPercent:
+                            description: The minimum threshold parameter for a RED-managed
+                              queue in percent. When the average queue length is less
+                              than min, all packets are admitted to the queue. Mutually
+                              exclusive with min-threshold and max-threshold.
+                            type: integer
+                          trafficType:
+                            default: All
+                            description: The traffic type to which the WRED slope
+                              applies.
+                            enum:
+                            - TCP
+                            - NonTCP
+                            - All
+                            type: string
+                        required:
+                        - dropProbability
+                        - ecn
+                        - trafficType
+                        type: object
+                      type: array
+                  required:
+                  - queues
+                  type: object
+                type: array
+            type: object
+          status:
+            description: EgressPolicyStatus defines the observed state of EgressPolicy
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

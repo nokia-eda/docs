@@ -1,0 +1,45 @@
+apiVersion: qos.eda.nokia.com/v2
+kind: EgressPolicy
+metadata:
+  name: egress-backend-my-datacenter
+  namespace: scale-across
+spec:
+  forwardingClassToQueueMapping:
+    - forwardingClasses:
+        - fc0
+      queue: unicast-0
+    - forwardingClasses:
+        - fc3
+      queue: unicast-3
+    - forwardingClasses:
+        - fc6
+      queue: unicast-6
+  pfcDeadlockAvoidance:
+    deadlockAvoidance: true
+    deadlockDetectionTimerMs: 750
+    deadlockRecoveryTimerMs: 750
+  queueManagement:
+    - queues:
+        - maximumBurstSizeBytes: 1024000
+          queue: unicast-6
+          schedulerPeakRatePercent: 10
+      slopePolicyWeight: 0
+    - queues:
+        - maximumBurstSizeBytes: 1024000
+          queue: unicast-0
+          schedulerWeight: 1
+      slopePolicyWeight: 0
+    - queues:
+        - maximumBurstSizeBytes: 1024000
+          pfcPauseFramePriority: 3
+          queue: unicast-3
+          schedulerPeakRatePercent: 100
+          schedulerWeight: 50
+      slopePolicyWeight: 0
+      wredSlopePolicies:
+        - dropProbability: All
+          ecn: true
+          maxDropProbabilityPercent: 100
+          maxThresholdPercent: 80
+          minThresholdPercent: 5
+          trafficType: All

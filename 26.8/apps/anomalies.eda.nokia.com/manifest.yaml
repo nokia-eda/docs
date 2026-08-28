@@ -1,0 +1,33 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: anomalies
+spec:
+  appInfo:
+    categories:
+      - networking
+    documentation: anomalies/docs
+  author: Nokia
+  dependencies:
+    - file:
+        path: anomalies/api/v1alpha1/pysrc/
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: anomalies/intents/
+  description: Anomaly detection
+  group: anomalies.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/anomalies:v999.9.0
+  supportedCoreVersions:
+    - "v2.0.0-0"
+  supportedEndpoints:
+    - "srl:0.0.0"
+    - "sros:0.0.0"
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+  title: Anomalies
+  version: v1alpha1

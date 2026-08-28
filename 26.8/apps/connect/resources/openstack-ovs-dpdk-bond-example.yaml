@@ -1,0 +1,18 @@
+- type: ovs_dpdk_bond
+  name: bond1
+  mtu: 9000
+  ovs_options: "bond_mode=balance-tcp lacp=active other-config:lacp-fallback-ab=true other_config:lacp-time=fast"
+  members:
+    - type: ovs_dpdk_port
+      name: ens3f0np0
+      driver: mlx5_core
+      members:
+        - type: interface
+          name: ens3f0np0
+    - type: ovs_dpdk_port
+      name: ens3f1np1
+      driver: mlx5_core
+      members:
+        - type: interface
+          name: ens3f1np1
+

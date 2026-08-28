@@ -1,0 +1,117 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: ospfinstancedeployments.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: OSPFInstanceDeployment
+    listKind: OSPFInstanceDeploymentList
+    plural: ospfinstancedeployments
+    singular: ospfinstancedeployment
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: OSPFInstanceDeployment is the Schema for the ospfinstancedeployments
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OSPFInstanceDeploymentSpec defines the desired state of OSPFInstanceDeployment
+            properties:
+              node:
+                description: Reference to a Node on which to push the OSPFInstance.
+                type: string
+              ospfInstance:
+                description: Reference to an OSPFInstance.
+                type: string
+              router:
+                description: Reference to a Router
+                type: string
+            required:
+            - node
+            - ospfInstance
+            - router
+            type: object
+          status:
+            description: OSPFInstanceDeploymentStatus defines the observed state of
+              OSPFInstanceDeployment
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: OSPFInstanceDeployment is the Schema for the ospfinstancedeployments
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OSPFInstanceDeploymentSpec defines the desired state of OSPFInstanceDeployment
+            properties:
+              node:
+                description: Reference to a Node on which to push the OSPFInstance.
+                type: string
+              ospfInstance:
+                description: Reference to an OSPFInstance.
+                type: string
+              router:
+                description: Reference to a Router
+                type: string
+            required:
+            - node
+            - ospfInstance
+            - router
+            type: object
+          status:
+            description: OSPFInstanceDeploymentStatus defines the observed state of
+              OSPFInstanceDeployment
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

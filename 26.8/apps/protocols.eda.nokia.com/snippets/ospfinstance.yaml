@@ -1,0 +1,9 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: OSPFInstance
+metadata:
+  name: ospf-instance-v3
+  namespace: eda
+spec:
+  addressFamily: IPv4Unicast
+  enabled: true
+  version: OSPFv3

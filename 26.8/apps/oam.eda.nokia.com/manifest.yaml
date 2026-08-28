@@ -1,0 +1,146 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: oam
+spec:
+  appInfo:
+    categories:
+      - networking
+    documentation: oam/docs
+  author: nokia
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: oam/crds/oam.eda.nokia.com_mirrors.yaml
+        schema: oam/openapiv3/eda_oas_oam.eda.nokia.com_mirrors.json
+        ui:
+          category: OAM
+          name: Mirror
+          icon: CloudUpgrade
+        conversionScript: oam/intents/mirror/conversion_v1.py
+    - crd:
+        namespaced: true
+        path: oam/crds/oam.eda.nokia.com_mirrorstates.yaml
+        schema: oam/openapiv3/eda_oas_oam.eda.nokia.com_mirrorstates.json
+        conversionScript: oam/intents/mirrorstate/conversion_v1.py
+    - script:
+        path: oam/intents/mirror/mirror_intent.py
+        trigger:
+          kind: Mirror
+        type: config
+    - script:
+        path: oam/intents/mirrorstate/mirrorstate_intent.py
+        trigger:
+          kind: MirrorState
+        type: state
+    - cr:
+        path: oam/workflows/ping/core_v1_flowdefinition.yaml
+    - cr:
+        path: oam/workflows/techsupport/core_v1_flowdefinition.yaml
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: oam/crds/oam.eda.nokia.com_pings.yaml
+        schema: oam/openapiv3/eda_oas_oam.eda.nokia.com_pings.json
+        workflow: true
+        ai:
+          matchTags:
+            - main
+            - alarm
+            - netops
+        ui:
+          name: Ping
+        conversionScript: oam/intents/ping/conversion_v1.py
+    - crd:
+        path: oam/crds/oam.eda.nokia.com_thresholds.yaml
+        schema: oam/openapiv3/eda_oas_oam.eda.nokia.com_thresholds.json
+        ui:
+          category: OAM
+          name: Thresholds
+          icon: ThresholdAlarm
+        api:
+          expose: readWrite
+        conversionScript: oam/intents/threshold/conversion_v1.py
+    - script:
+        path: oam/intents/threshold/threshold_intent.py
+        type: state
+        trigger:
+          kind: Threshold
+    - script:
+        path: oam/intents/threshold/threshold_intent.py
+        type: config
+        trigger:
+          kind: Threshold
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: oam/crds/oam.eda.nokia.com_techsupports.yaml
+        schema: oam/openapiv3/eda_oas_oam.eda.nokia.com_techsupports.json
+        workflow: true
+        ui:
+          name: Tech Support
+        ai:
+          matchTags:
+            - main
+        conversionScript: oam/intents/techsupport/conversion_v1.py
+  dependencies:
+    - file:
+        path: oam/intents
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: services/
+    - file:
+        path: filters/
+    - file:
+        path: interfaces/
+    - file:
+        path: qos/
+    - file:
+        path: oam/api
+    - file:
+        path: routing/
+    - file:
+        path: topologies/
+    - file:
+        path: oam/api/v1/pysrc
+  requirements:
+    - appId: services.eda.nokia.com
+      version: v6.999.0
+    - appId: filters.eda.nokia.com
+      version: v6.999.0
+    - appId: interfaces.eda.nokia.com
+      version: v6.999.0
+    - appId: qos.eda.nokia.com
+      version: v6.999.0
+    - appId: topologies.eda.nokia.com
+      version: v6.999.0
+  description: |
+    This application provides the ping workflow, along with mirroring services for interfaces, subinterfaces and ipfilters.
+  gitPathPrefix: /
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  group: oam.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/oam:v6.999.0
+  supportedCoreVersions:
+    - "v5.0"
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  title: OAM
+  version: v1

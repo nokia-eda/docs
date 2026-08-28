@@ -1,0 +1,160 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: management
+spec:
+  appInfo:
+    documentation: management/docs
+    categories:
+      - networking
+  author: nokia
+  description: This application provides resources to various management plane entities, such as gRPC, HTTP, FTP and SSH servers.
+  group: management.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/management:v6.999.0
+  supportedCoreVersions:
+    - "v5.0"
+  title: Management
+  version: v1
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        path: management/crds/management.eda.nokia.com_grpcservers.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_grpcservers.json
+        ui:
+          category: Management
+          name: gRPC Servers
+          icon: FunctionControlPoint
+        conversionScript: management/intents/grpcserver/conversion_v1.py
+    - crd:
+        api:
+          expose: readWrite
+        path: management/crds/management.eda.nokia.com_httpservers.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_httpservers.json
+        ui:
+          category: Management
+          name: HTTP Servers
+          icon: Http
+        conversionScript: management/intents/httpserver/conversion_v1.py
+    - crd:
+        api:
+          expose: readWrite
+        path: management/crds/management.eda.nokia.com_ftpservers.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_ftpservers.json
+        ui:
+          category: Management
+          name: FTP Servers
+          icon: FileCopy
+        conversionScript: management/intents/ftpserver/conversion_v1.py
+    - crd:
+        api:
+          expose: readWrite
+        path: management/crds/management.eda.nokia.com_sshservers.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_sshservers.json
+        ui:
+          category: Management
+          name: SSH Servers
+          icon: TerminalAction
+        conversionScript: management/intents/sshserver/conversion_v1.py
+    - crd:
+        path: management/crds/management.eda.nokia.com_ftpserverstates.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_ftpserverstates.json
+        api:
+          expose: none
+          # no ui section means do not present in the UI
+        conversionScript: management/intents/ftpserverstate/conversion_v1.py
+    - script:
+        path: management/intents/ftpserver/ftpserver_intent.py
+        trigger:
+          kind: FTPServer
+        type: config
+    - script:
+        path: management/intents/httpserver/httpserver_intent.py
+        trigger:
+          kind: HTTPServer
+        type: config
+    - script:
+        path: management/intents/grpcserver/grpcserver_intent.py
+        trigger:
+          kind: GRPCServer
+        type: config
+    - script:
+        path: management/intents/sshserver/sshserver_intent.py
+        trigger:
+          kind: SSHServer
+        type: config
+    - script:
+        path: management/intents/ftpserverstate/ftpserverstate_intent.py
+        trigger:
+          kind: FTPServerState
+        type: state
+    - crd:
+        api:
+          expose: none
+        path: management/crds/management.eda.nokia.com_sshserverstates.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_sshserverstates.json
+        conversionScript: management/intents/sshserverstate/conversion_v1.py
+    - script:
+        path: management/intents/sshserverstate/sshserverstate_intent.py
+        trigger:
+          kind: SSHServerState
+        type: state
+    - crd:
+        api:
+          expose: none
+        path: management/crds/management.eda.nokia.com_httpserverstates.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_httpserverstates.json
+        conversionScript: management/intents/httpserverstate/conversion_v1.py
+    - script:
+        path: management/intents/httpserverstate/httpserverstate_intent.py
+        trigger:
+          kind: HTTPServerState
+        type: state
+    - crd:
+        api:
+          expose: none
+        path: management/crds/management.eda.nokia.com_grpcserverstates.yaml
+        schema: management/openapiv3/eda_oas_management.eda.nokia.com_grpcserverstates.json
+        conversionScript: management/intents/grpcserverstate/conversion_v1.py
+    - script:
+        path: management/intents/grpcserverstate/grpcserverstate_intent.py
+        trigger:
+          kind: GRPCServerState
+        type: state
+  requirements:
+    - appId: routing.eda.nokia.com
+      version: v6.999.0
+    - appId: services.eda.nokia.com
+      version: v6.999.0
+    - appId: bootstrap.eda.nokia.com
+      version: v6.999.0
+  dependencies:
+    - file:
+        path: management/intents
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: routing/
+    - file:
+        path: services/
+    - file:
+        path: bootstrap/
+    - file:
+        path: management/api
+    - file:
+        path: management/api/v1/pysrc
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"

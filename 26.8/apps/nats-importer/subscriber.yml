@@ -1,0 +1,17 @@
+apiVersion: natsimporter.eda.nokia.com/v1alpha1
+kind: Subscriber
+metadata:
+  name: user-events
+  namespace: eda
+spec:
+  servers:
+    - nats://nats.nats.svc.cluster.local:4222
+  subject: "events.user.*"
+  type: NATS
+  condition: 'msg.subject.endsWith(".created") && has(msg.data.user_id)'
+  path: '.users[id="{{ .msg.data.user_id }}"]'
+  data: |
+    {
+      "email": "{{ .msg.data.email }}",
+      "username": "{{ .msg.data.username }}"
+    }

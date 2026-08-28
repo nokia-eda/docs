@@ -1,0 +1,166 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: servergroups.aaa.eda.nokia.com
+spec:
+  group: aaa.eda.nokia.com
+  names:
+    kind: ServerGroup
+    listKind: ServerGroupList
+    plural: servergroups
+    singular: servergroup
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: ServerGroup is the Schema for the servergroups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The ServerGroup defines a list of AAA servers to be used
+              for authentication, authorization, and accounting. It includes settings
+              for both Radius and Tacacs servers, although each ServerGroup is limited
+              to servers of a single type. The ServerGroup is deployed onto nodes
+              using the label selector.
+            properties:
+              aaaServers:
+                description: The AAA servers that are part of this ServerGroup.
+                items:
+                  properties:
+                    address:
+                      description: Address of the AAA server, must be either IPv4
+                        or IPv6, or an FQDN.
+                      type: string
+                    secret:
+                      description: Secret used for the AAA server.
+                      type: string
+                  required:
+                  - address
+                  - secret
+                  type: object
+                type: array
+              nodeGroupSelectors:
+                description: Label selector for NodeGroup resources to deploy on the
+                  node for this ServerGroup.
+                items:
+                  type: string
+                type: array
+              nodeGroups:
+                description: Which NodeGroup resources to deploy on the node for this
+                  ServerGroup.
+                items:
+                  type: string
+                type: array
+              radius:
+                description: RADIUS parameters.
+                properties:
+                  accountingPort:
+                    default: 1813
+                    description: Accounting port of the Radius server(s).
+                    maximum: 65535
+                    minimum: 1
+                    type: integer
+                  authenticationPort:
+                    default: 1812
+                    description: Authentication port of the Radius server(s).
+                    maximum: 65535
+                    minimum: 1
+                    type: integer
+                  retransmitAttempts:
+                    description: Retransmit attempts per Radius server.
+                    maximum: 10
+                    minimum: 1
+                    type: integer
+                type: object
+              routerKind:
+                description: Kind of the router used to reach the AAA servers.
+                enum:
+                - DefaultRouter
+                - ManagementRouter
+                type: string
+              tacacs:
+                description: TACACS+ parameters.
+                properties:
+                  port:
+                    default: 49
+                    description: Tacacs server port.
+                    maximum: 65535
+                    minimum: 0
+                    type: integer
+                  privLvlAuthorization:
+                    description: Whether to enable TACACS+ privilege level authorization.
+                    type: boolean
+                type: object
+              timeoutSeconds:
+                description: Timeout in seconds that the node will wait for a response
+                  from the AAA server before retrying or continuing to the next server
+                  in the group.
+                maximum: 90
+                minimum: 1
+                type: integer
+              type:
+                description: Select the type of all servers in the ServerGroup. Can
+                  either be Radius or Tacacs.
+                enum:
+                - RADIUS
+                - TACACS
+                type: string
+            required:
+            - routerKind
+            - type
+            type: object
+          status:
+            description: ServerGroupStatus defines the observed state of ServerGroup.
+            properties:
+              health:
+                description: Indicates the health score of the ServerGroup. The health
+                  score of the ServerGroup is determined by the aggregate health score
+                  of all servers in this group on all nodes.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              nodes:
+                description: List of nodes this ServerGroup has been applied to
+                items:
+                  type: string
+                type: array
+              operationalState:
+                description: Operational state of the ServerGroup.  The operational
+                  state of the ServerGroup is determined by monitoring the operational
+                  state of all servers in this group on all nodes.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

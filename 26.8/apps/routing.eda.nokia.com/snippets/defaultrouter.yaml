@@ -1,0 +1,26 @@
+apiVersion: routing.eda.nokia.com/v1
+kind: DefaultRouter
+metadata:
+  name: router-leaf-1
+  namespace: eda
+spec:
+  bgp:
+    autonomousSystem: 65500
+    ebgpPreference: 170
+    enabled: true
+    ibgpPreference: 170
+    l2VPNEVPN:
+      enabled: true
+      interASVPN: false
+      multipath:
+        allowMultipleAS: true
+        maxAllowedPaths: 64
+      rapidUpdate: true
+      retainAllRoutes: false
+    minWaitToAdvertiseSeconds: 0
+    rapidWithdrawl: false
+    waitForFibInstall: false
+  description: 'fabric role: leaf'
+  ecmp: 64
+  node: leaf-1
+  routerID: 11.0.0.2

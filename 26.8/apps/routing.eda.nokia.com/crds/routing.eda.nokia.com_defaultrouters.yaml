@@ -1,0 +1,619 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultrouters.routing.eda.nokia.com
+spec:
+  group: routing.eda.nokia.com
+  names:
+    kind: DefaultRouter
+    listKind: DefaultRouterList
+    plural: defaultrouters
+    singular: defaultrouter
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: DefaultRouter is the Schema for the defaultrouters API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultRouter enables the configuration of default routing
+              instances on a specified Node, including options for BGP configuration,
+              import and export policies, and router IDs.
+            properties:
+              bgp:
+                description: BGP configuration.
+                properties:
+                  autonomousSystem:
+                    description: Autonomous System number for BGP.
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                  ebgpPreference:
+                    default: 170
+                    description: Preference to be set for eBGP.
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables BGP in the default VRF.
+                    type: boolean
+                  ibgpPreference:
+                    default: 170
+                    description: Preference to be set for iBGP.
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                  ipv4Unicast:
+                    description: Parameters relating to the IPv4 unicast AFI/SAFI.
+                    properties:
+                      advertiseIPv6NextHops:
+                        description: Enables advertisement of IPv4 Unicast routes
+                          with IPv6 next-hops to peers.
+                        type: boolean
+                      enabled:
+                        description: Enables the IPv4 unicast AFISAFI.
+                        type: boolean
+                      multipath:
+                        description: Enable multipath.
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                      rapidUpdate:
+                        description: Enables rapid update.
+                        type: boolean
+                      receiveIPv6NextHops:
+                        description: Enables the advertisement of the RFC 5549 capability
+                          to receive IPv4 routes with IPv6 next-hops.
+                        type: boolean
+                    type: object
+                  ipv6Unicast:
+                    description: Parameters relating to the IPv6 unicast AFI/SAFI.
+                    properties:
+                      enabled:
+                        description: Enables the IPv6 unicast AFISAFI
+                        type: boolean
+                      multipath:
+                        description: Enable multipath
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                      rapidUpdate:
+                        description: Enables rapid update.
+                        type: boolean
+                    type: object
+                  keychain:
+                    description: Keychain to be used for authentication
+                    type: string
+                  l2VPNEVPN:
+                    description: Parameters relating to the EVPN AFI/SAFI.
+                    properties:
+                      advertiseIPv6NextHops:
+                        description: Enables advertisement of EVPN routes with IPv6
+                          next-hops to peers.
+                        type: boolean
+                      enabled:
+                        description: Enables the L2VPN EVPN AFISAFI.
+                        type: boolean
+                      interASVPN:
+                        default: false
+                        description: Enable inter-AS VPN for EVPN.
+                        type: boolean
+                      multipath:
+                        description: Enable multipath
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                      rapidUpdate:
+                        description: Enables rapid update.
+                        type: boolean
+                      retainAllRoutes:
+                        default: false
+                        description: Retain all routes in RIB-In (even those that
+                          are not imported to services).
+                        type: boolean
+                    type: object
+                  minWaitToAdvertiseSeconds:
+                    default: 0
+                    description: Minimum wait time in seconds before advertising routes
+                      post BGP restart.
+                    maximum: 3600
+                    minimum: 0
+                    type: integer
+                  rapidWithdrawl:
+                    default: false
+                    description: Enable rapid withdrawal in BGP.
+                    type: boolean
+                  sendCommunityLarge:
+                    description: When false, all large (12 byte) BGP communities from
+                      all outbound routes advertised to the peer are stripped.
+                    type: boolean
+                  sendCommunityStandard:
+                    description: When false, all standard (4 byte) communities from
+                      all outbound routes advertised to the peer are stripped.
+                    type: boolean
+                  vpnIPv4Unicast:
+                    description: Parameters related to the VPN IPv4 unicast AFI/SAFI.
+                    properties:
+                      advertiseIPv6NextHops:
+                        description: Enables advertisement of VPN IPv4 routes with
+                          IPv6 next-hops to peers.
+                        type: boolean
+                      enabled:
+                        description: Enables the VPN IPv4 Unicast AFI/SAFI.
+                        type: boolean
+                      interASVPN:
+                        default: false
+                        description: Enables inter-AS VPN.
+                        type: boolean
+                      rapidUpdate:
+                        description: Enables rapid update.
+                        type: boolean
+                      receiveIPv6NextHops:
+                        description: Enables advertisement of the Extended Next Hop
+                          Encoding Capability (RFC 8950) to peers.
+                        type: boolean
+                      retainAllRoutes:
+                        default: false
+                        description: Retain all routes in RIB-In (even those that
+                          are not imported to services).
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
+                  vpnIPv6Unicast:
+                    description: Parameters related to the VPN IPv6 unicast AFI/SAFI.
+                    properties:
+                      enabled:
+                        description: Enables the VPN IPv6 Unicast AFI/SAFI.
+                        type: boolean
+                      interASVPN:
+                        default: false
+                        description: Enables inter-AS VPN.
+                        type: boolean
+                      rapidUpdate:
+                        description: Enables rapid update.
+                        type: boolean
+                      retainAllRoutes:
+                        default: false
+                        description: Retain all routes in RIB-In (even those that
+                          are not imported to services).
+                        type: boolean
+                    required:
+                    - enabled
+                    type: object
+                  waitForFibInstall:
+                    default: false
+                    description: Wait for FIB installation before advertising routes.
+                    type: boolean
+                type: object
+              description:
+                description: Sets the description on the Default router.
+                type: string
+              ecmp:
+                description: Set the maximum number of ECMP paths for the DefaultRouter.
+                  This is supported only by some platforms, and will be ignored for
+                  others.
+                maximum: 256
+                minimum: 1
+                type: integer
+              exportPolicies:
+                description: Reference to a Policy resource to use when evaluating
+                  route exports from the DefaultRouter.
+                items:
+                  type: string
+                type: array
+              importPolicies:
+                description: Reference to a Policy resource to use when evaluating
+                  route imports into the DefaultRouter.
+                items:
+                  type: string
+                type: array
+              node:
+                description: Reference to a TopoNode on which to configure the default
+                  routing instance.
+                type: string
+              routeLeaking:
+                description: Route leaking controlled by routing policies in and out
+                  of the DefaultRouter.
+                properties:
+                  exportPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route exports from the DefaultRouter.
+                    type: string
+                  importPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route imports into the DefaultRouter.
+                    type: string
+                required:
+                - exportPolicy
+                - importPolicy
+                type: object
+              routerID:
+                description: Router ID in dotted quad notation.
+                type: string
+            required:
+            - node
+            - routerID
+            type: object
+          status:
+            description: DefaultRouterStatus defines the observed state of DefaultRouter
+            properties:
+              health:
+                description: Indicates the health score of the Router.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the Router.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DefaultRouter is the Schema for the defaultrouters API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultRouter enables the configuration of default routing
+              instances on a specified Node, including options for BGP configuration,
+              import and export policies, and router IDs.
+            properties:
+              bgp:
+                description: BGP configuration.
+                properties:
+                  autonomousSystem:
+                    description: Autonomous System number for BGP.
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                  ebgpPreference:
+                    default: 170
+                    description: Preference to be set for eBGP.
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables BGP in the default VRF.
+                    type: boolean
+                  ibgpPreference:
+                    default: 170
+                    description: Preference to be set for iBGP.
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                  ipv4Unicast:
+                    description: Parameters relating to the IPv4 unicast AFI/SAFI.
+                    properties:
+                      advertiseIPV6NextHops:
+                        description: Enables advertisement of IPv4 Unicast routes
+                          with IPv6 next-hops to peers.
+                        type: boolean
+                      enabled:
+                        description: Enables the IPv4 unicast AFISAFI.
+                        type: boolean
+                      multipath:
+                        description: Enable multipath.
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                      rapidUpdate:
+                        description: Enables rapid update.
+                        type: boolean
+                      receiveIPV6NextHops:
+                        description: Enables the advertisement of the RFC 5549 capability
+                          to receive IPv4 routes with IPv6 next-hops.
+                        type: boolean
+                    type: object
+                  ipv6Unicast:
+                    description: Parameters relating to the IPv6 unicast AFI/SAFI.
+                    properties:
+                      enabled:
+                        description: Enables the IPv6 unicast AFISAFI
+                        type: boolean
+                      multipath:
+                        description: Enable multipath
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                      rapidUpdate:
+                        description: Enables rapid update.
+                        type: boolean
+                    type: object
+                  keychain:
+                    description: Keychain to be used for authentication
+                    type: string
+                  l2VPNEVPN:
+                    description: Parameters relating to the EVPN AFI/SAFI.
+                    properties:
+                      advertiseIPV6NextHops:
+                        description: Enables advertisement of EVPN routes with IPv6
+                          next-hops to peers.
+                        type: boolean
+                      enabled:
+                        description: Enables the L2VPN EVPN AFISAFI.
+                        type: boolean
+                      interASVPN:
+                        default: false
+                        description: Enable inter-AS VPN for EVPN.
+                        type: boolean
+                      multipath:
+                        description: Enable multipath
+                        properties:
+                          allowMultipleAS:
+                            default: true
+                            description: When set to true, BGP is allowed to build
+                              a multipath set using BGP routes with different neighbor
+                              AS (most recent AS in the AS_PATH), When set to false,
+                              BGP is only allowed to use non-best paths for ECMP if
+                              they meet the multipath criteria and they have the same
+                              neighbor AS as the best path.
+                            type: boolean
+                          maxAllowedPaths:
+                            description: The maximum number of BGP ECMP next-hops
+                              for BGP routes with an NLRI belonging to the address
+                              family of this configuration context.
+                            maximum: 256
+                            minimum: 1
+                            type: integer
+                        required:
+                        - allowMultipleAS
+                        - maxAllowedPaths
+                        type: object
+                      rapidUpdate:
+                        description: Enables rapid update.
+                        type: boolean
+                    type: object
+                  minWaitToAdvertise:
+                    default: 0
+                    description: Minimum wait time before advertising routes post
+                      BGP restart.
+                    maximum: 3600
+                    minimum: 0
+                    type: integer
+                  rapidWithdrawl:
+                    default: false
+                    description: Enable rapid withdrawal in BGP.
+                    type: boolean
+                  sendCommunityLarge:
+                    description: When false, all large (12 byte) BGP communities from
+                      all outbound routes advertised to the peer are stripped.
+                    type: boolean
+                  sendCommunityStandard:
+                    description: When false, all standard (4 byte) communities from
+                      all outbound routes advertised to the peer are stripped.
+                    type: boolean
+                  waitForFibInstall:
+                    default: false
+                    description: Wait for FIB installation before advertising routes.
+                    type: boolean
+                type: object
+              description:
+                description: Sets the description on the Default router.
+                type: string
+              ecmp:
+                description: Set the maximum number of ECMP paths for the DefaultRouter.
+                  This is supported only by some platforms, and will be ignored for
+                  others.
+                maximum: 256
+                minimum: 1
+                type: integer
+              exportPolicy:
+                description: Reference to a Policy resource to use when evaluating
+                  route exports from the DefaultRouter.
+                items:
+                  type: string
+                type: array
+              importPolicy:
+                description: Reference to a Policy resource to use when evaluating
+                  route imports into the DefaultRouter.
+                items:
+                  type: string
+                type: array
+              node:
+                description: Reference to a TopoNode on which to configure the default
+                  routing instance.
+                type: string
+              routeLeaking:
+                description: Route leaking controlled by routing policies in and out
+                  of the DefaultRouter.
+                properties:
+                  exportPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route exports from the DefaultRouter.
+                    type: string
+                  importPolicy:
+                    description: Reference to a Policy resource to use when evaluating
+                      route imports into the DefaultRouter.
+                    type: string
+                required:
+                - exportPolicy
+                - importPolicy
+                type: object
+              routerID:
+                description: Router ID in dotted quad notation.
+                type: string
+            required:
+            - node
+            - routerID
+            type: object
+          status:
+            description: DefaultRouterStatus defines the observed state of DefaultRouter
+            properties:
+              health:
+                description: Indicates the health score of the Router.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the Router.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

@@ -1,0 +1,60 @@
+apiVersion: microsegmentation.eda.nokia.com/v1alpha1
+kind: MicroSegmentationPolicy
+metadata:
+  name: client-security-1
+  namespace: eda
+spec:
+  entries:
+    - action:
+        collectStats: false
+        forward: Accept
+        log: false
+      bidirectional: true
+      description: allow any TCP IPv4 traffic to firewall
+      match:
+        destinationGroupTag:
+          - firewall
+        protocolName: TCP
+        ipVersion: IPv4
+    - action:
+        collectStats: true
+        forward: Accept
+        log: true
+      bidirectional: true
+      description: quarantined hosts allow to firewall only
+      match:
+        destinationGroupTag:
+          - firewall
+        sourceGroupTag:
+          - quarantine
+    - action:
+        collectStats: true
+        forward: Drop
+        log: true
+      bidirectional: true
+      description: block all other quarantine traffic
+      match:
+        sourceGroupTag:
+          - quarantine
+    - action:
+        collectStats: false
+        forward: Accept
+        log: false
+      bidirectional: true
+      description: allow clientgroup1 and clientgroup2 traffic
+      match:
+        destinationGroupTag:
+          - group-client2
+        sourceGroupTag:
+          - group-client1
+    - action:
+        collectStats: true
+        forward: Drop
+        log: false
+      bidirectional: true
+      description: drop by default
+      match: {}
+  serviceTargets:
+    virtualNetworks:
+      - vnet1
+      - vnet2

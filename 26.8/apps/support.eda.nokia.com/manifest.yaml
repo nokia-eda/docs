@@ -1,0 +1,55 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: support
+spec:
+  appInfo:
+    documentation: support/docs
+    categories:
+      - networking
+  author: nokia
+  dependencies:
+    - file:
+        path: utils
+    - file:
+        path: common
+    - file:
+        path: support/api
+    - file:
+        path: support/api/v1/pysrc
+  description: This application provides resources that can be used to identify and troubleshoot targets.
+  group: support.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/support:v6.999.0
+  supportedCoreVersions:
+    - "v5.0"
+  title: Support
+  version: v1
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        workflow: true
+        namespaced: true
+        path: support/crds/support.eda.nokia.com_locators.yaml
+        schema: support/openapiv3/eda_oas_support.eda.nokia.com_locators.json
+        ui:
+          name: Locator
+        ai:
+          matchTags:
+            - main
+        conversionScript: support/intents/locator/conversion_v1.py
+    - cr:
+        path: support/workflows/locator/core_v1_flowdefinition.yaml
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"

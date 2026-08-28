@@ -1,0 +1,14 @@
+apiVersion: prom.eda.nokia.com/v1alpha1
+kind: Export
+metadata:
+  name: dynamic-labels-metric
+  namespace: eda-system
+spec:
+  exports:
+    - path: .namespace.node.srl.interface.statistics
+      labels:
+        dynamic:
+          - path: .namespace.node.srl.interface
+            field: description
+          - path: .namespace.node.srl.platform.chassis
+            field: type

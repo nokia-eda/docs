@@ -1,0 +1,18 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: StaticRoute
+metadata:
+  name: my-static-route
+  namespace: eda
+spec:
+  nexthopGroup:
+    blackhole: false
+    nexthops:
+      - ipPrefix: 192.168.1.254
+        resolve: false
+    resolve: false
+  nodes:
+    - leaf-1
+  prefixes:
+    - 10.0.1.0/24
+    - 10.0.2.0/24
+  router: test-router

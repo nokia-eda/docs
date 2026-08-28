@@ -1,0 +1,36 @@
+apiVersion: qos.eda.nokia.com/v2
+kind: IngressPolicy
+metadata:
+  name: my-ingress-policy
+  namespace: eda
+spec:
+  classifier:
+    entries:
+      - dscpPolicyEntry:
+          dropProbabilityLevel: Low
+          dscpValues:
+            - value: 0
+          forwardingClass: fc0
+        type: Auto
+      - dscpPolicyEntry:
+          dropProbabilityLevel: Low
+          dscpValues:
+            - value: 26
+          forwardingClass: fc3
+        type: Auto
+      - dscpPolicyEntry:
+          dropProbabilityLevel: Low
+          dscpValues:
+            - value: 48
+          forwardingClass: fc6
+        type: Auto
+  forwardingClassToQueueMapping:
+    - forwardingClasses:
+        - fc3
+      queue: pfc-3
+  queueManagement:
+    - pfcReservedBufferPercent: 10
+      queues:
+        - maximumBurstSizeBytes: 1024000
+          pfcPauseFramePriority: 3
+          queue: pfc-3

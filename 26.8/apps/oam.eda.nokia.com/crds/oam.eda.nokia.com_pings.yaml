@@ -1,0 +1,321 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: pings.oam.eda.nokia.com
+spec:
+  group: oam.eda.nokia.com
+  names:
+    kind: Ping
+    listKind: PingList
+    plural: pings
+    singular: ping
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.address
+      name: Address
+      type: string
+    - jsonPath: .spec.networkInstance
+      name: Network Instance
+      type: string
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: Ping is the Schema for the pings API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Ping allows a ping to be initiated to a specific address
+              on node/set of nodes.
+            properties:
+              address:
+                description: |-
+                  Address to ping.
+                  This is a single IP address (IPv4 or IPv6) or a hostname that resolves to an IP address.
+                type: string
+              count:
+                default: 1
+                description: Count is the number of pings to send.
+                type: integer
+              networkInstance:
+                description: |-
+                  The network instance to use for the ping. This is the named network instance on the node, typically "default" or some other base name.
+                  If not specified, the default network instance will be used, which is typically the main/default/global network interface on the node.
+                type: string
+              nodeSelectors:
+                description: |-
+                  List of selectors to select nodes to perform pings on.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that pings will be performed on.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: |-
+                  List of nodes to perform pings from.
+                  Items in the list should be the names of the nodes, where each node will have a ping performed on it.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                items:
+                  type: string
+                type: array
+              timeoutSeconds:
+                default: 5
+                description: TimeoutSeconds is the timeout for the ping in seconds.
+                type: integer
+            required:
+            - address
+            type: object
+          status:
+            description: PingStatus defines the observed state of Ping
+            properties:
+              details:
+                description: |-
+                  Details contains the results of the pings performed on each node.
+                  Each entry in the list corresponds to a node that was pinged.
+                items:
+                  properties:
+                    details:
+                      description: Details of the ping result, if available.
+                      properties:
+                        averageTimeNanoseconds:
+                          description: Average time taken for a ping reply.
+                          format: int64
+                          type: integer
+                        maxTimeNanoseconds:
+                          description: Maximum time taken for a ping reply.
+                          format: int64
+                          type: integer
+                        minTimeNanoseconds:
+                          description: Minimum time taken for a ping reply.
+                          format: int64
+                          type: integer
+                        received:
+                          description: Number of pings received.
+                          type: integer
+                        sent:
+                          description: Number of pings sent.
+                          type: integer
+                        stdDevNanoseconds:
+                          description: Standard deviation of time taken for all pings.
+                          format: int64
+                          type: integer
+                        totalTimeNanoseconds:
+                          description: Total time taken for all pings.
+                          format: int64
+                          type: integer
+                      required:
+                      - received
+                      - sent
+                      type: object
+                    error:
+                      description: Error message, if the ping failed.
+                      type: string
+                    networkInstance:
+                      description: Network instance used to source the ping from.
+                      type: string
+                    node:
+                      description: Node the ping was sourced from.
+                      type: string
+                    success:
+                      description: Indicates if the ping was successful.
+                      type: boolean
+                  type: object
+                type: array
+              result:
+                default: Success
+                description: |-
+                  Result is the overall result of the ping operation.
+                  It can be one of the following values:
+                  - "Success": All pings were successful.
+                  - "Failed": No pings were successful.
+                  - "PartialSuccess": Some pings were successful, but not all.
+                enum:
+                - Success
+                - Failed
+                - PartialSuccess
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .spec.address
+      name: Address
+      type: string
+    - jsonPath: .spec.networkInstance
+      name: Network Instance
+      type: string
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Ping is the Schema for the pings API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: Ping allows a ping to be initiated to a specific address
+              on node/set of nodes.
+            properties:
+              address:
+                description: |-
+                  Address to ping.
+                  This is a single IP address (IPv4 or IPv6) or a hostname that resolves to an IP address.
+                type: string
+              count:
+                default: 1
+                description: Count is the number of pings to send.
+                type: integer
+              networkInstance:
+                description: |-
+                  The network instance to use for the ping. This is the named network instance on the node, typically "default" or some other base name.
+                  If not specified, the default network instance will be used, which is typically the main/default/global network interface on the node.
+                type: string
+              nodeSelectors:
+                description: |-
+                  List of selectors to select nodes to perform pings on.
+                  This matches labels on TopoNode resources, including those TopoNodes in the list of nodes that pings will be performed on.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: |-
+                  List of nodes to perform pings from.
+                  Items in the list should be the names of the nodes, where each node will have a ping performed on it.
+                  If no nodes are specified, and no node selectors are specified, all nodes in the given namespace will be selected.
+                items:
+                  type: string
+                type: array
+              timeoutSeconds:
+                default: 5
+                description: TimeoutSeconds is the timeout for the ping in seconds.
+                type: integer
+            required:
+            - address
+            type: object
+          status:
+            description: PingStatus defines the observed state of Ping
+            properties:
+              details:
+                description: |-
+                  Details contains the results of the pings performed on each node.
+                  Each entry in the list corresponds to a node that was pinged.
+                items:
+                  properties:
+                    details:
+                      description: Details of the ping result, if available.
+                      properties:
+                        averageTimeNanoseconds:
+                          description: Average time taken for a ping reply.
+                          format: int64
+                          type: integer
+                        maxTimeNanoseconds:
+                          description: Maximum time taken for a ping reply.
+                          format: int64
+                          type: integer
+                        minTimeNanoseconds:
+                          description: Minimum time taken for a ping reply.
+                          format: int64
+                          type: integer
+                        received:
+                          description: Number of pings received.
+                          type: integer
+                        sent:
+                          description: Number of pings sent.
+                          type: integer
+                        stdDevNanoseconds:
+                          description: Standard deviation of time taken for all pings.
+                          format: int64
+                          type: integer
+                        totalTimeNanoseconds:
+                          description: Total time taken for all pings.
+                          format: int64
+                          type: integer
+                      required:
+                      - received
+                      - sent
+                      type: object
+                    error:
+                      description: Error message, if the ping failed.
+                      type: string
+                    networkInstance:
+                      description: Network instance used to source the ping from.
+                      type: string
+                    node:
+                      description: Node the ping was sourced from.
+                      type: string
+                    success:
+                      description: Indicates if the ping was successful.
+                      type: boolean
+                  type: object
+                type: array
+              result:
+                default: Success
+                description: |-
+                  Result is the overall result of the ping operation.
+                  It can be one of the following values:
+                  - "Success": All pings were successful.
+                  - "Failed": No pings were successful.
+                  - "PartialSuccess": Some pings were successful, but not all.
+                enum:
+                - Success
+                - Failed
+                - PartialSuccess
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

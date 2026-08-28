@@ -1,0 +1,11 @@
+apiVersion: qos.eda.nokia.com/v2
+kind: Queue
+metadata:
+  labels:
+    eda.nokia.com/bootstrap: 'true'
+  name: pfc-5
+  namespace: eda
+spec:
+  queueID: 5
+  queueType: PFC
+  trafficType: Unicast

@@ -1,0 +1,1724 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: ingresspolicys.qos.eda.nokia.com
+spec:
+  group: qos.eda.nokia.com
+  names:
+    kind: IngressPolicy
+    listKind: IngressPolicyList
+    plural: ingresspolicys
+    singular: ingresspolicy
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: IngressPolicy is the Schema for the ingresspolicys API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: IngressPolicySpec defines the desired state of IngressPolicy
+            properties:
+              classifier:
+                description: Classifier manages the configuration of traffic classification
+                  policies in a network. It includes various entry types like IPv4,
+                  IPv6, Dot1p, and DSCP policies. Each entry specifies how traffic
+                  should be classified and what actions should be taken on the matched
+                  packets.
+                properties:
+                  entries:
+                    description: |-
+                      Specifies the list of filter entries, in order.
+                      A classifier containing multiple entry types may result in multiple classifiers being created on the target node.
+                      IPV4 and IPV6 entries will create multifield classifier policies.
+                    items:
+                      properties:
+                        dot1pPolicyEntry:
+                          description: A Dot1p policy entry - only a single Dot1p
+                            entry is allowed per classifier resource.
+                          properties:
+                            directToPFCQueue:
+                              description: In addition to creating a Dot1p PCP value
+                                to Forwarding Class mapping, this will map the PCP
+                                values directly to the PFC queue specified in the
+                                Forwarding Class to Queue mapping.
+                              type: boolean
+                            dropProbabilityLevel:
+                              default: Low
+                              description: Assign matching packets to the specified
+                                drop probability level.
+                              enum:
+                              - High
+                              - Medium
+                              - Low
+                              type: string
+                            forwardingClass:
+                              description: Reference to a ForwardingClass resource
+                                to which the value is mapped.
+                              type: string
+                            pcpValues:
+                              description: List of PCP values or ranges used to match
+                                packets to classify into Forwarding Classes.
+                              items:
+                                properties:
+                                  rangeEnd:
+                                    description: Optional end of PCP range (inclusive)
+                                      which would start from the Value to the RangeEnd.
+                                    maximum: 7
+                                    minimum: 0
+                                    type: integer
+                                  value:
+                                    description: Single PCP value or start of range.
+                                    maximum: 7
+                                    minimum: 0
+                                    type: integer
+                                required:
+                                - value
+                                type: object
+                              minItems: 1
+                              type: array
+                          required:
+                          - pcpValues
+                          type: object
+                        dscpPolicyEntry:
+                          description: A DSCP policy entry - only a single DSCP entry
+                            is allowed per classifier resource.
+                          properties:
+                            dropProbabilityLevel:
+                              default: Low
+                              description: Assign matching packets to the specified
+                                drop probability level.
+                              enum:
+                              - High
+                              - Medium
+                              - Low
+                              type: string
+                            dscpValues:
+                              description: List of DSCP values or ranges used to match
+                                packets to classify into Forwarding Classes.
+                              items:
+                                properties:
+                                  rangeEnd:
+                                    description: Optional end of DSCP range (inclusive)
+                                      which would start from the Value to the RangeEnd.
+                                    maximum: 63
+                                    minimum: 0
+                                    type: integer
+                                  value:
+                                    description: Single DSCP value or start of range.
+                                    maximum: 63
+                                    minimum: 0
+                                    type: integer
+                                required:
+                                - value
+                                type: object
+                              minItems: 1
+                              type: array
+                            forwardingClass:
+                              description: Reference to a ForwardingClass resource
+                                to which the value is mapped.
+                              type: string
+                          required:
+                          - dscpValues
+                          type: object
+                        ipEntry:
+                          description: An IPv4 or IPv6 multifield classifier entry.
+                          properties:
+                            action:
+                              description: An action to take on the matched packets.
+                              properties:
+                                dropProbabilityLevel:
+                                  default: Low
+                                  description: Assign matching packets to the specified
+                                    drop probability level.
+                                  enum:
+                                  - High
+                                  - Medium
+                                  - Low
+                                  type: string
+                                dscpRewriteValue:
+                                  description: Rewrite actions associated with packets
+                                    that match the classifier entry.
+                                  maximum: 63
+                                  minimum: 0
+                                  type: integer
+                                forwardingClass:
+                                  description: Reference to a ForwardingClass resource
+                                    to which the value is mapped.
+                                  type: string
+                              type: object
+                            destinationPortName:
+                              description: Destination port to match by name.
+                              enum:
+                              - ACAP
+                              - AFP-TCP
+                              - ARNS
+                              - ASF-RMCP
+                              - ASHARE
+                              - ATALK-RM
+                              - AURP
+                              - AUTH
+                              - BFD
+                              - BFD-ECHO
+                              - BFTP
+                              - BGMP
+                              - BGP
+                              - BOOTPC
+                              - BOOTPS
+                              - CCSO-NS
+                              - CHARGEN
+                              - CISCO-TDP
+                              - CITADEL
+                              - CLEARCASE
+                              - COMMERCE
+                              - COURIER
+                              - DAYTIME
+                              - DHCP-FAILOVER
+                              - DHCPV6-CLIENT
+                              - DHCPV6-SERVER
+                              - DICOM
+                              - DISCARD
+                              - DNSIX
+                              - DOMAIN
+                              - DSP
+                              - ECHO
+                              - EPP
+                              - ESRO
+                              - EXEC
+                              - FINGER
+                              - FTP
+                              - FTP-DATA
+                              - FTPS
+                              - FTPS-DATA
+                              - GODI
+                              - GOPHER
+                              - GTP-C
+                              - GTP-PRIME
+                              - GTP-U
+                              - HA-CLUSTER
+                              - HOSTNAME
+                              - HP-ALARM-MGR
+                              - HTTP
+                              - HTTP-ALT
+                              - HTTP-MGMT
+                              - HTTP-RPC
+                              - HTTPS
+                              - IEEE-MMS-SSL
+                              - IMAP
+                              - IMAP3
+                              - IMAPS
+                              - IPP
+                              - IPSEC
+                              - IPX
+                              - IRC
+                              - IRIS-BEEP
+                              - ISAKMP
+                              - ISAKMP-NAT
+                              - ISCSI
+                              - ISO-TSAP
+                              - KERBEROS
+                              - KERBEROS-ADM
+                              - KLOGIN
+                              - KPASSWD
+                              - KSHELL
+                              - L2TP
+                              - LDAP
+                              - LDAPS
+                              - LDP
+                              - LMP
+                              - LOGIN
+                              - LPD
+                              - LSP-PING
+                              - MAC-SERVER-ADM
+                              - MATIP-A
+                              - MATIP-B
+                              - MICRO-BFD
+                              - MICROSOFT-DS
+                              - MOBILE-IP
+                              - MONITOR
+                              - MPP
+                              - MS-EXCHANGE
+                              - MSDP
+                              - MSP
+                              - MSSQL-M
+                              - MSSQL-S
+                              - MULTIHOP-BFD
+                              - NAS
+                              - NCP
+                              - NETBIOS-DATA
+                              - NETBIOS-NS
+                              - NETBIOS-SS
+                              - NETNEWS
+                              - NETRJS-1
+                              - NETRJS-2
+                              - NETRJS-3
+                              - NETRJS-4
+                              - NETWALL
+                              - NEW-RWHO
+                              - NFS
+                              - NNTP
+                              - NNTPS
+                              - NTP
+                              - ODMR
+                              - OLSR
+                              - OPENVPN
+                              - PIM-AUTO-RP
+                              - PKIX-TIMESTAMP
+                              - POP2
+                              - POP3
+                              - POP3S
+                              - PPTP
+                              - PRINT-SRV
+                              - PTP-EVENT
+                              - PTP-GENERAL
+                              - QMTP
+                              - QOTD
+                              - RADIUS
+                              - RADIUS-ACCT
+                              - REMOTE-MAIL
+                              - REMOTEFS
+                              - REMOTECMD
+                              - RIP
+                              - RJE
+                              - RLP
+                              - RLZDB
+                              - RMC
+                              - RMONITOR
+                              - RPC2PORTMAP
+                              - RSYNC
+                              - RTELNET
+                              - RTSP
+                              - SGMP
+                              - SILC
+                              - SMUX
+                              - SNA-GW
+                              - SNMP
+                              - SNMP-TRAP
+                              - SNPP
+                              - SMTP
+                              - SQL-SVCS
+                              - SQL
+                              - SSH
+                              - SUBMISSION
+                              - SUNRPC
+                              - SVCLOC
+                              - SYSLOG
+                              - SYSTAT
+                              - TACACS
+                              - TALK
+                              - TCPMUX
+                              - TCPNETHASPSRV
+                              - TFTP
+                              - TIME
+                              - TIMED
+                              - UPS
+                              - XDMCP
+                              - XNS-CH
+                              - XNS-MAIL
+                              - XNS-TIME
+                              - Z3950
+                              type: string
+                            destinationPortNumber:
+                              description: Destination port to match by numerical
+                                value.
+                              maximum: 65535
+                              minimum: 0
+                              type: integer
+                            destinationPortOperator:
+                              description: Operator to use when matching destinationPort,
+                                either Equals, GreaterOrEquals, or LessOrEquals.
+                              enum:
+                              - Equals
+                              - GreaterOrEquals
+                              - LessOrEquals
+                              type: string
+                            destinationPortRange:
+                              description: Range of destination ports to match, in
+                                the format n-m, e.g. 100-200,  The start and end of
+                                the range must be port numbers.
+                              type: string
+                            destinationPrefix:
+                              description: Destination prefix to match.
+                              type: string
+                            dscp:
+                              description: Match DSCP values.
+                              items:
+                                maximum: 63
+                                minimum: 0
+                                type: integer
+                              maxItems: 64
+                              minItems: 0
+                              type: array
+                            firstFragment:
+                              description: Match the first fragment only.
+                              type: boolean
+                            fragment:
+                              description: Match any fragment.
+                              type: boolean
+                            icmpCode:
+                              description: Match a specific ICMP code, as a number
+                                between 0-255, e.g. 0.
+                              items:
+                                type: integer
+                              maxItems: 255
+                              minItems: 0
+                              type: array
+                            icmpTypeName:
+                              description: Match a specific ICMP type by name, e.g.
+                                dest-unreachable.
+                              enum:
+                              - DestUnreachable
+                              - Echo
+                              - EchoReply
+                              - EchoRequest
+                              - McastRtrAdv
+                              - McastRtrSolicit
+                              - McastRtrTerm
+                              - MldDone
+                              - MldQuery
+                              - MldReport
+                              - MldV2
+                              - NeighborAdvertise
+                              - NeighborSolicit
+                              - NodeInfoQuery
+                              - NodeInfoResponse
+                              - PacketTooBig
+                              - ParamProblem
+                              - Redirect
+                              - RouterAdvertise
+                              - RouterRenumber
+                              - RouterSolicit
+                              - SourceQuench
+                              - TimeExceeded
+                              - Timestamp
+                              - TimestampReply
+                              type: string
+                            icmpTypeNumber:
+                              description: Match a specific ICMP type by number.
+                              maximum: 255
+                              minimum: 0
+                              type: integer
+                            protocolName:
+                              description: Match a specific IP protocol name (specified
+                                in the type field of the IP header).
+                              enum:
+                              - AH
+                              - EGP
+                              - EIGRP
+                              - ESP
+                              - GGP
+                              - GRE
+                              - ICMP
+                              - ICMP6
+                              - IDRP
+                              - IGMP
+                              - IGP
+                              - IPV4
+                              - IPV6
+                              - IPV6-DEST-OPTS
+                              - IPV6-HOP
+                              - L2TP
+                              - MPLS-IN-IP
+                              - NO-NEXT-HDR
+                              - OSPF
+                              - PIM
+                              - ROHC
+                              - RSVP
+                              - SCTP
+                              - ST
+                              - TCP
+                              - UDP
+                              - VRRP
+                              type: string
+                            protocolNumber:
+                              description: Match a specific IP protocol number (specified
+                                in the type field of the IP header).
+                              maximum: 255
+                              minimum: 0
+                              type: integer
+                            sourcePortName:
+                              description: Source port to match by name.
+                              enum:
+                              - ACAP
+                              - AFP-TCP
+                              - ARNS
+                              - ASF-RMCP
+                              - ASHARE
+                              - ATALK-RM
+                              - AURP
+                              - AUTH
+                              - BFD
+                              - BFD-ECHO
+                              - BFTP
+                              - BGMP
+                              - BGP
+                              - BOOTPC
+                              - BOOTPS
+                              - CCSO-NS
+                              - CHARGEN
+                              - CISCO-TDP
+                              - CITADEL
+                              - CLEARCASE
+                              - COMMERCE
+                              - COURIER
+                              - DAYTIME
+                              - DHCP-FAILOVER
+                              - DHCPV6-CLIENT
+                              - DHCPV6-SERVER
+                              - DICOM
+                              - DISCARD
+                              - DNSIX
+                              - DOMAIN
+                              - DSP
+                              - ECHO
+                              - EPP
+                              - ESRO
+                              - EXEC
+                              - FINGER
+                              - FTP
+                              - FTP-DATA
+                              - FTPS
+                              - FTPS-DATA
+                              - GODI
+                              - GOPHER
+                              - GTP-C
+                              - GTP-PRIME
+                              - GTP-U
+                              - HA-CLUSTER
+                              - HOSTNAME
+                              - HP-ALARM-MGR
+                              - HTTP
+                              - HTTP-ALT
+                              - HTTP-MGMT
+                              - HTTP-RPC
+                              - HTTPS
+                              - IEEE-MMS-SSL
+                              - IMAP
+                              - IMAP3
+                              - IMAPS
+                              - IPP
+                              - IPSEC
+                              - IPX
+                              - IRC
+                              - IRIS-BEEP
+                              - ISAKMP
+                              - ISAKMP-NAT
+                              - ISCSI
+                              - ISO-TSAP
+                              - KERBEROS
+                              - KERBEROS-ADM
+                              - KLOGIN
+                              - KPASSWD
+                              - KSHELL
+                              - L2TP
+                              - LDAP
+                              - LDAPS
+                              - LDP
+                              - LMP
+                              - LOGIN
+                              - LPD
+                              - LSP-PING
+                              - MAC-SERVER-ADM
+                              - MATIP-A
+                              - MATIP-B
+                              - MICRO-BFD
+                              - MICROSOFT-DS
+                              - MOBILE-IP
+                              - MONITOR
+                              - MPP
+                              - MS-EXCHANGE
+                              - MSDP
+                              - MSP
+                              - MSSQL-M
+                              - MSSQL-S
+                              - MULTIHOP-BFD
+                              - NAS
+                              - NCP
+                              - NETBIOS-DATA
+                              - NETBIOS-NS
+                              - NETBIOS-SS
+                              - NETNEWS
+                              - NETRJS-1
+                              - NETRJS-2
+                              - NETRJS-3
+                              - NETRJS-4
+                              - NETWALL
+                              - NEW-RWHO
+                              - NFS
+                              - NNTP
+                              - NNTPS
+                              - NTP
+                              - ODMR
+                              - OLSR
+                              - OPENVPN
+                              - PIM-AUTO-RP
+                              - PKIX-TIMESTAMP
+                              - POP2
+                              - POP3
+                              - POP3S
+                              - PPTP
+                              - PRINT-SRV
+                              - PTP-EVENT
+                              - PTP-GENERAL
+                              - QMTP
+                              - QOTD
+                              - RADIUS
+                              - RADIUS-ACCT
+                              - REMOTE-MAIL
+                              - REMOTEFS
+                              - REMOTECMD
+                              - RIP
+                              - RJE
+                              - RLP
+                              - RLZDB
+                              - RMC
+                              - RMONITOR
+                              - RPC2PORTMAP
+                              - RSYNC
+                              - RTELNET
+                              - RTSP
+                              - SGMP
+                              - SILC
+                              - SMUX
+                              - SNA-GW
+                              - SNMP
+                              - SNMP-TRAP
+                              - SNPP
+                              - SMTP
+                              - SQL-SVCS
+                              - SQL
+                              - SSH
+                              - SUBMISSION
+                              - SUNRPC
+                              - SVCLOC
+                              - SYSLOG
+                              - SYSTAT
+                              - TACACS
+                              - TALK
+                              - TCPMUX
+                              - TCPNETHASPSRV
+                              - TFTP
+                              - TIME
+                              - TIMED
+                              - UPS
+                              - XDMCP
+                              - XNS-CH
+                              - XNS-MAIL
+                              - XNS-TIME
+                              - Z3950
+                              type: string
+                            sourcePortNumber:
+                              description: Source port to match by numerical value.
+                              maximum: 65535
+                              minimum: 0
+                              type: integer
+                            sourcePortOperator:
+                              description: Operator to use when matching sourcePort,
+                                either Equals, GreaterOrEquals, or LessOrEquals.
+                              enum:
+                              - Equals
+                              - GreaterOrEquals
+                              - LessOrEquals
+                              type: string
+                            sourcePortRange:
+                              description: Range of source ports to match, in the
+                                format n-m, e.g. 100-200.  The start and end of the
+                                range must be port numbers.
+                              type: string
+                            sourcePrefix:
+                              description: Source prefix to match.
+                              type: string
+                            tcpFlags:
+                              description: Match TCP flags, usable with !, &, | and
+                                the flags RST, SYN, and ACK.
+                              type: string
+                          required:
+                          - action
+                          type: object
+                        type:
+                          default: AUTO
+                          description: Type of the entry which can be IPV4, IPV6,
+                            Dot1pPolicy, DSCPPolicy, or Auto.
+                          enum:
+                          - IPV4
+                          - IPV6
+                          - DOT1P
+                          - DSCP
+                          - AUTO
+                          type: string
+                      required:
+                      - type
+                      type: object
+                    type: array
+                required:
+                - entries
+                type: object
+              forwardingClassToQueueMapping:
+                description: Forwarding class to queue mapping policy.
+                items:
+                  properties:
+                    forwardingClasses:
+                      description: The forwarding classes to which the mapping applies,
+                        these are references to ForwardingClass resources.
+                      items:
+                        type: string
+                      minItems: 1
+                      type: array
+                    queue:
+                      description: The queue to which the forwarding classes are mapped,
+                        this is a reference to a Queue resource.
+                      type: string
+                  required:
+                  - forwardingClasses
+                  - queue
+                  type: object
+                type: array
+              policers:
+                description: Ordered list of policers where the first policer is evaluated
+                  first before proceeding to the next.
+                items:
+                  properties:
+                    committedBurstSize:
+                      description: Maximum CIR bucket depth in bytes.
+                      format: int32
+                      maximum: 4294967295
+                      minimum: 0
+                      type: integer
+                    committedRate:
+                      description: The committed information rate (CIR) of the policer,
+                        defined in kilobits (1024 bits) per second.
+                      format: int32
+                      type: integer
+                    committedRatePercent:
+                      description: The committed information rate (CIR) of the policer,
+                        defined as a percentage of the Interface speed on which it
+                        is applied.
+                      maximum: 100
+                      minimum: 0
+                      type: integer
+                    exceedAction:
+                      description: Applies a drop-probability to packets that the
+                        policer has determined are exceeding (yellow).
+                      properties:
+                        dropProbabilityLevel:
+                          default: Medium
+                          enum:
+                          - High
+                          - Medium
+                          - Low
+                          type: string
+                      type: object
+                    forwardingClasses:
+                      description: The list of forwarding classes with traffic to
+                        be sent to the policer.  Unless specified all traffic is matched
+                        for this policer.
+                      items:
+                        properties:
+                          forwardingClasses:
+                            description: The forwarding class of the packets on which
+                              to apply the Policer.  To match all traffic set this
+                              to 'ALL'.
+                            items:
+                              type: string
+                            type: array
+                          forwardingTypes:
+                            default:
+                            - All
+                            items:
+                              enum:
+                              - Broadcast
+                              - Unicast
+                              - Multicast
+                              - UnknownMulticast
+                              - UnknownUnicast
+                              - All
+                              type: string
+                            type: array
+                        required:
+                        - forwardingTypes
+                        type: object
+                      type: array
+                    maximumBurstSize:
+                      description: Maximum PIR bucket depth in bytes.
+                      format: int32
+                      maximum: 4294967295
+                      minimum: 0
+                      type: integer
+                    minInterfaceSpeed:
+                      description: Minimum interface speed (kbps) to calculate PeakRate
+                        and CommittedRate for devices where configuration is not supported
+                        in percentage.
+                      format: int32
+                      type: integer
+                    peakRate:
+                      description: The peak information rate (PIR) of the policer,
+                        defined in kilobits (1024 bits) per second.
+                      format: int32
+                      type: integer
+                    peakRatePercent:
+                      description: The peak information rate (PIR) of the policer,
+                        defined as a percentage of the Interface speed on which it
+                        is applied.
+                      maximum: 100
+                      minimum: 0
+                      type: integer
+                    violateAction:
+                      description: Applies a drop-probability to packets that the
+                        policer has determined are exceeding (red).
+                      properties:
+                        dropProbabilityLevel:
+                          default: High
+                          enum:
+                          - High
+                          - Medium
+                          - Low
+                          - All
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              queueManagement:
+                description: Queue management policy for egress queues.
+                items:
+                  properties:
+                    pfcReservedBufferPercent:
+                      description: 'Percentage of the linecard buffer reserved for
+                        accomodating incoming traffic while upstream node reacts to
+                        generated PFC-pause frames. Note: this percentage must be
+                        common across all EgressPolicies and QueuesSets used on the
+                        same linecard.'
+                      maximum: 100
+                      minimum: 0
+                      type: integer
+                    queues:
+                      description: List of queues.
+                      items:
+                        properties:
+                          committedBurstSize:
+                            description: Committed Burst Size.
+                            format: int32
+                            type: integer
+                          maximumBurstSize:
+                            description: Maximum amount of shared buffer memory available
+                              to the queue in bytes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 0
+                            type: integer
+                          pfcOffThreshold:
+                            description: PFC off threshold.
+                            maximum: 100
+                            minimum: 0
+                            type: integer
+                          pfcOnThreshold:
+                            description: PFC on threshold.
+                            maximum: 100
+                            minimum: 0
+                            type: integer
+                          pfcPauseFramePriority:
+                            description: PFC priorities indicated in generated pfc-pause-frame
+                              if congestion occurs in a given pfc-queue.
+                            type: integer
+                          pfcReservedShareBufferPercent:
+                            description: Maximum level the pfc-queue can take from
+                              pfc-reserved buffer configured per given forwarding-complex.
+                            maximum: 100
+                            minimum: 0
+                            type: integer
+                          queue:
+                            description: Reference to a Queue resource.
+                            type: string
+                        required:
+                        - queue
+                        type: object
+                      type: array
+                  required:
+                  - queues
+                  type: object
+                type: array
+            type: object
+          status:
+            description: IngressPolicyStatus defines the observed state of IngressPolicy
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: IngressPolicy is the Schema for the ingresspolicys API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: IngressPolicySpec defines the desired state of IngressPolicy
+            properties:
+              classifier:
+                description: Classifier manages the configuration of traffic classification
+                  policies in a network. It includes various entry types like IPv4,
+                  IPv6, Dot1p, and DSCP policies. Each entry specifies how traffic
+                  should be classified and what actions should be taken on the matched
+                  packets.
+                properties:
+                  entries:
+                    description: |-
+                      Specifies the list of filter entries, in order.
+                      A classifier containing multiple entry types may result in multiple classifiers being created on the target node.
+                      IPV4 and IPV6 entries will create multifield classifier policies.
+                    items:
+                      properties:
+                        dot1pPolicyEntry:
+                          description: A Dot1p policy entry - only a single Dot1p
+                            entry is allowed per classifier resource.
+                          properties:
+                            directToPFCQueue:
+                              description: In addition to creating a Dot1p PCP value
+                                to Forwarding Class mapping, this will map the PCP
+                                values directly to the PFC queue specified in the
+                                Forwarding Class to Queue mapping.
+                              type: boolean
+                            dropProbabilityLevel:
+                              default: Low
+                              description: Assign matching packets to the specified
+                                drop probability level.
+                              enum:
+                              - High
+                              - Medium
+                              - Low
+                              type: string
+                            forwardingClass:
+                              description: Reference to a ForwardingClass resource
+                                to which the value is mapped.
+                              type: string
+                            pcpValues:
+                              description: List of PCP values or ranges used to match
+                                packets to classify into Forwarding Classes.
+                              items:
+                                properties:
+                                  rangeEnd:
+                                    description: Optional end of PCP range (inclusive)
+                                      which would start from the Value to the RangeEnd.
+                                    maximum: 7
+                                    minimum: 0
+                                    type: integer
+                                  value:
+                                    description: Single PCP value or start of range.
+                                    maximum: 7
+                                    minimum: 0
+                                    type: integer
+                                required:
+                                - value
+                                type: object
+                              minItems: 1
+                              type: array
+                          required:
+                          - pcpValues
+                          type: object
+                        dscpPolicyEntry:
+                          description: A DSCP policy entry - only a single DSCP entry
+                            is allowed per classifier resource.
+                          properties:
+                            dropProbabilityLevel:
+                              default: Low
+                              description: Assign matching packets to the specified
+                                drop probability level.
+                              enum:
+                              - High
+                              - Medium
+                              - Low
+                              type: string
+                            dscpValues:
+                              description: List of DSCP values or ranges used to match
+                                packets to classify into Forwarding Classes.
+                              items:
+                                properties:
+                                  rangeEnd:
+                                    description: Optional end of DSCP range (inclusive)
+                                      which would start from the Value to the RangeEnd.
+                                    maximum: 63
+                                    minimum: 0
+                                    type: integer
+                                  value:
+                                    description: Single DSCP value or start of range.
+                                    maximum: 63
+                                    minimum: 0
+                                    type: integer
+                                required:
+                                - value
+                                type: object
+                              minItems: 1
+                              type: array
+                            forwardingClass:
+                              description: Reference to a ForwardingClass resource
+                                to which the value is mapped.
+                              type: string
+                          required:
+                          - dscpValues
+                          type: object
+                        ipEntry:
+                          description: An IPv4 or IPv6 multifield classifier entry.
+                          properties:
+                            action:
+                              description: An action to take on the matched packets.
+                              properties:
+                                dropProbabilityLevel:
+                                  default: Low
+                                  description: Assign matching packets to the specified
+                                    drop probability level.
+                                  enum:
+                                  - High
+                                  - Medium
+                                  - Low
+                                  type: string
+                                dscpRewriteValue:
+                                  description: Rewrite actions associated with packets
+                                    that match the classifier entry.
+                                  maximum: 63
+                                  minimum: 0
+                                  type: integer
+                                forwardingClass:
+                                  description: Reference to a ForwardingClass resource
+                                    to which the value is mapped.
+                                  type: string
+                              type: object
+                            destinationPortName:
+                              description: Destination port to match by name.
+                              enum:
+                              - ACAP
+                              - AFP-TCP
+                              - ARNS
+                              - ASF-RMCP
+                              - ASHARE
+                              - ATALK-RM
+                              - AURP
+                              - AUTH
+                              - BFD
+                              - BFD-ECHO
+                              - BFTP
+                              - BGMP
+                              - BGP
+                              - BOOTPC
+                              - BOOTPS
+                              - CCSO-NS
+                              - CHARGEN
+                              - CISCO-TDP
+                              - CITADEL
+                              - CLEARCASE
+                              - COMMERCE
+                              - COURIER
+                              - DAYTIME
+                              - DHCP-FAILOVER
+                              - DHCPV6-CLIENT
+                              - DHCPV6-SERVER
+                              - DICOM
+                              - DISCARD
+                              - DNSIX
+                              - DOMAIN
+                              - DSP
+                              - ECHO
+                              - EPP
+                              - ESRO
+                              - EXEC
+                              - FINGER
+                              - FTP
+                              - FTP-DATA
+                              - FTPS
+                              - FTPS-DATA
+                              - GODI
+                              - GOPHER
+                              - GTP-C
+                              - GTP-PRIME
+                              - GTP-U
+                              - HA-CLUSTER
+                              - HOSTNAME
+                              - HP-ALARM-MGR
+                              - HTTP
+                              - HTTP-ALT
+                              - HTTP-MGMT
+                              - HTTP-RPC
+                              - HTTPS
+                              - IEEE-MMS-SSL
+                              - IMAP
+                              - IMAP3
+                              - IMAPS
+                              - IPP
+                              - IPSEC
+                              - IPX
+                              - IRC
+                              - IRIS-BEEP
+                              - ISAKMP
+                              - ISAKMP-NAT
+                              - ISCSI
+                              - ISO-TSAP
+                              - KERBEROS
+                              - KERBEROS-ADM
+                              - KLOGIN
+                              - KPASSWD
+                              - KSHELL
+                              - L2TP
+                              - LDAP
+                              - LDAPS
+                              - LDP
+                              - LMP
+                              - LOGIN
+                              - LPD
+                              - LSP-PING
+                              - MAC-SERVER-ADM
+                              - MATIP-A
+                              - MATIP-B
+                              - MICRO-BFD
+                              - MICROSOFT-DS
+                              - MOBILE-IP
+                              - MONITOR
+                              - MPP
+                              - MS-EXCHANGE
+                              - MSDP
+                              - MSP
+                              - MSSQL-M
+                              - MSSQL-S
+                              - MULTIHOP-BFD
+                              - NAS
+                              - NCP
+                              - NETBIOS-DATA
+                              - NETBIOS-NS
+                              - NETBIOS-SS
+                              - NETNEWS
+                              - NETRJS-1
+                              - NETRJS-2
+                              - NETRJS-3
+                              - NETRJS-4
+                              - NETWALL
+                              - NEW-RWHO
+                              - NFS
+                              - NNTP
+                              - NNTPS
+                              - NTP
+                              - ODMR
+                              - OLSR
+                              - OPENVPN
+                              - PIM-AUTO-RP
+                              - PKIX-TIMESTAMP
+                              - POP2
+                              - POP3
+                              - POP3S
+                              - PPTP
+                              - PRINT-SRV
+                              - PTP-EVENT
+                              - PTP-GENERAL
+                              - QMTP
+                              - QOTD
+                              - RADIUS
+                              - RADIUS-ACCT
+                              - REMOTE-MAIL
+                              - REMOTEFS
+                              - REMOTECMD
+                              - RIP
+                              - RJE
+                              - RLP
+                              - RLZDB
+                              - RMC
+                              - RMONITOR
+                              - RPC2PORTMAP
+                              - RSYNC
+                              - RTELNET
+                              - RTSP
+                              - SGMP
+                              - SILC
+                              - SMUX
+                              - SNA-GW
+                              - SNMP
+                              - SNMP-TRAP
+                              - SNPP
+                              - SMTP
+                              - SQL-SVCS
+                              - SQL
+                              - SSH
+                              - SUBMISSION
+                              - SUNRPC
+                              - SVCLOC
+                              - SYSLOG
+                              - SYSTAT
+                              - TACACS
+                              - TALK
+                              - TCPMUX
+                              - TCPNETHASPSRV
+                              - TFTP
+                              - TIME
+                              - TIMED
+                              - UPS
+                              - XDMCP
+                              - XNS-CH
+                              - XNS-MAIL
+                              - XNS-TIME
+                              - Z3950
+                              type: string
+                            destinationPortNumber:
+                              description: Destination port to match by numerical
+                                value.
+                              maximum: 65535
+                              minimum: 0
+                              type: integer
+                            destinationPortOperator:
+                              description: Operator to use when matching destinationPort,
+                                either Equals, GreaterOrEquals, or LessOrEquals.
+                              enum:
+                              - Equals
+                              - GreaterOrEquals
+                              - LessOrEquals
+                              type: string
+                            destinationPortRange:
+                              description: Range of destination ports to match, in
+                                the format n-m, e.g. 100-200,  The start and end of
+                                the range must be port numbers.
+                              type: string
+                            destinationPrefix:
+                              description: Destination prefix to match.
+                              type: string
+                            dscpValues:
+                              description: Match DSCP values.
+                              items:
+                                maximum: 63
+                                minimum: 0
+                                type: integer
+                              maxItems: 64
+                              minItems: 0
+                              type: array
+                            firstFragment:
+                              description: Match the first fragment only.
+                              type: boolean
+                            fragment:
+                              description: Match any fragment.
+                              type: boolean
+                            icmpCodes:
+                              description: Match a specific ICMP code, as a number
+                                between 0-255, e.g. 0.
+                              items:
+                                type: integer
+                              maxItems: 255
+                              minItems: 0
+                              type: array
+                            icmpTypeName:
+                              description: Match a specific ICMP type by name, e.g.
+                                dest-unreachable.
+                              enum:
+                              - DestUnreachable
+                              - Echo
+                              - EchoReply
+                              - EchoRequest
+                              - McastRtrAdv
+                              - McastRtrSolicit
+                              - McastRtrTerm
+                              - MldDone
+                              - MldQuery
+                              - MldReport
+                              - MldV2
+                              - NeighborAdvertise
+                              - NeighborSolicit
+                              - NodeInfoQuery
+                              - NodeInfoResponse
+                              - PacketTooBig
+                              - ParamProblem
+                              - Redirect
+                              - RouterAdvertise
+                              - RouterRenumber
+                              - RouterSolicit
+                              - SourceQuench
+                              - TimeExceeded
+                              - Timestamp
+                              - TimestampReply
+                              type: string
+                            icmpTypeNumber:
+                              description: Match a specific ICMP type by number.
+                              maximum: 255
+                              minimum: 0
+                              type: integer
+                            protocolName:
+                              description: Match a specific IP protocol name (specified
+                                in the type field of the IP header).
+                              enum:
+                              - AH
+                              - EGP
+                              - EIGRP
+                              - ESP
+                              - GGP
+                              - GRE
+                              - ICMP
+                              - ICMP6
+                              - IDRP
+                              - IGMP
+                              - IGP
+                              - IPV4
+                              - IPV6
+                              - IPV6-DEST-OPTS
+                              - IPV6-HOP
+                              - L2TP
+                              - MPLS-IN-IP
+                              - NO-NEXT-HDR
+                              - OSPF
+                              - PIM
+                              - ROHC
+                              - RSVP
+                              - SCTP
+                              - ST
+                              - TCP
+                              - UDP
+                              - VRRP
+                              type: string
+                            protocolNumber:
+                              description: Match a specific IP protocol number (specified
+                                in the type field of the IP header).
+                              maximum: 255
+                              minimum: 0
+                              type: integer
+                            sourcePortName:
+                              description: Source port to match by name.
+                              enum:
+                              - ACAP
+                              - AFP-TCP
+                              - ARNS
+                              - ASF-RMCP
+                              - ASHARE
+                              - ATALK-RM
+                              - AURP
+                              - AUTH
+                              - BFD
+                              - BFD-ECHO
+                              - BFTP
+                              - BGMP
+                              - BGP
+                              - BOOTPC
+                              - BOOTPS
+                              - CCSO-NS
+                              - CHARGEN
+                              - CISCO-TDP
+                              - CITADEL
+                              - CLEARCASE
+                              - COMMERCE
+                              - COURIER
+                              - DAYTIME
+                              - DHCP-FAILOVER
+                              - DHCPV6-CLIENT
+                              - DHCPV6-SERVER
+                              - DICOM
+                              - DISCARD
+                              - DNSIX
+                              - DOMAIN
+                              - DSP
+                              - ECHO
+                              - EPP
+                              - ESRO
+                              - EXEC
+                              - FINGER
+                              - FTP
+                              - FTP-DATA
+                              - FTPS
+                              - FTPS-DATA
+                              - GODI
+                              - GOPHER
+                              - GTP-C
+                              - GTP-PRIME
+                              - GTP-U
+                              - HA-CLUSTER
+                              - HOSTNAME
+                              - HP-ALARM-MGR
+                              - HTTP
+                              - HTTP-ALT
+                              - HTTP-MGMT
+                              - HTTP-RPC
+                              - HTTPS
+                              - IEEE-MMS-SSL
+                              - IMAP
+                              - IMAP3
+                              - IMAPS
+                              - IPP
+                              - IPSEC
+                              - IPX
+                              - IRC
+                              - IRIS-BEEP
+                              - ISAKMP
+                              - ISAKMP-NAT
+                              - ISCSI
+                              - ISO-TSAP
+                              - KERBEROS
+                              - KERBEROS-ADM
+                              - KLOGIN
+                              - KPASSWD
+                              - KSHELL
+                              - L2TP
+                              - LDAP
+                              - LDAPS
+                              - LDP
+                              - LMP
+                              - LOGIN
+                              - LPD
+                              - LSP-PING
+                              - MAC-SERVER-ADM
+                              - MATIP-A
+                              - MATIP-B
+                              - MICRO-BFD
+                              - MICROSOFT-DS
+                              - MOBILE-IP
+                              - MONITOR
+                              - MPP
+                              - MS-EXCHANGE
+                              - MSDP
+                              - MSP
+                              - MSSQL-M
+                              - MSSQL-S
+                              - MULTIHOP-BFD
+                              - NAS
+                              - NCP
+                              - NETBIOS-DATA
+                              - NETBIOS-NS
+                              - NETBIOS-SS
+                              - NETNEWS
+                              - NETRJS-1
+                              - NETRJS-2
+                              - NETRJS-3
+                              - NETRJS-4
+                              - NETWALL
+                              - NEW-RWHO
+                              - NFS
+                              - NNTP
+                              - NNTPS
+                              - NTP
+                              - ODMR
+                              - OLSR
+                              - OPENVPN
+                              - PIM-AUTO-RP
+                              - PKIX-TIMESTAMP
+                              - POP2
+                              - POP3
+                              - POP3S
+                              - PPTP
+                              - PRINT-SRV
+                              - PTP-EVENT
+                              - PTP-GENERAL
+                              - QMTP
+                              - QOTD
+                              - RADIUS
+                              - RADIUS-ACCT
+                              - REMOTE-MAIL
+                              - REMOTEFS
+                              - REMOTECMD
+                              - RIP
+                              - RJE
+                              - RLP
+                              - RLZDB
+                              - RMC
+                              - RMONITOR
+                              - RPC2PORTMAP
+                              - RSYNC
+                              - RTELNET
+                              - RTSP
+                              - SGMP
+                              - SILC
+                              - SMUX
+                              - SNA-GW
+                              - SNMP
+                              - SNMP-TRAP
+                              - SNPP
+                              - SMTP
+                              - SQL-SVCS
+                              - SQL
+                              - SSH
+                              - SUBMISSION
+                              - SUNRPC
+                              - SVCLOC
+                              - SYSLOG
+                              - SYSTAT
+                              - TACACS
+                              - TALK
+                              - TCPMUX
+                              - TCPNETHASPSRV
+                              - TFTP
+                              - TIME
+                              - TIMED
+                              - UPS
+                              - XDMCP
+                              - XNS-CH
+                              - XNS-MAIL
+                              - XNS-TIME
+                              - Z3950
+                              type: string
+                            sourcePortNumber:
+                              description: Source port to match by numerical value.
+                              maximum: 65535
+                              minimum: 0
+                              type: integer
+                            sourcePortOperator:
+                              description: Operator to use when matching sourcePort,
+                                either Equals, GreaterOrEquals, or LessOrEquals.
+                              enum:
+                              - Equals
+                              - GreaterOrEquals
+                              - LessOrEquals
+                              type: string
+                            sourcePortRange:
+                              description: Range of source ports to match, in the
+                                format n-m, e.g. 100-200.  The start and end of the
+                                range must be port numbers.
+                              type: string
+                            sourcePrefix:
+                              description: Source prefix to match.
+                              type: string
+                            tcpFlags:
+                              description: Match TCP flags, usable with !, &, | and
+                                the flags RST, SYN, and ACK.
+                              type: string
+                          required:
+                          - action
+                          type: object
+                        type:
+                          default: Auto
+                          description: Type of the entry which can be IPV4, IPV6,
+                            Dot1pPolicy, DSCPPolicy, or Auto.
+                          enum:
+                          - IPv4
+                          - IPv6
+                          - Dot1p
+                          - DSCP
+                          - Auto
+                          type: string
+                      required:
+                      - type
+                      type: object
+                    type: array
+                required:
+                - entries
+                type: object
+              forwardingClassToQueueMapping:
+                description: Forwarding class to queue mapping policy.
+                items:
+                  properties:
+                    forwardingClasses:
+                      description: The forwarding classes to which the mapping applies,
+                        these are references to ForwardingClass resources.
+                      items:
+                        type: string
+                      minItems: 1
+                      type: array
+                    queue:
+                      description: The queue to which the forwarding classes are mapped,
+                        this is a reference to a Queue resource.
+                      type: string
+                  required:
+                  - forwardingClasses
+                  - queue
+                  type: object
+                type: array
+              policers:
+                description: Ordered list of policers where the first policer is evaluated
+                  first before proceeding to the next.
+                items:
+                  properties:
+                    committedBurstSizeBytes:
+                      description: Maximum CIR bucket depth in bytes.
+                      format: int32
+                      maximum: 4294967295
+                      minimum: 0
+                      type: integer
+                    committedRateKbps:
+                      description: The committed information rate (CIR) of the policer,
+                        defined in kilobits (1024 bits) per second.
+                      format: int32
+                      type: integer
+                    committedRatePercent:
+                      description: The committed information rate (CIR) of the policer,
+                        defined as a percentage of the Interface speed on which it
+                        is applied.
+                      maximum: 100
+                      minimum: 0
+                      type: integer
+                    exceedAction:
+                      description: Applies a drop-probability to packets that the
+                        policer has determined are exceeding (yellow).
+                      properties:
+                        dropProbabilityLevel:
+                          default: Medium
+                          description: The drop probability level to apply.
+                          enum:
+                          - High
+                          - Medium
+                          - Low
+                          type: string
+                      type: object
+                    forwardingClasses:
+                      description: The list of forwarding classes with traffic to
+                        be sent to the policer.  Unless specified all traffic is matched
+                        for this policer.
+                      items:
+                        properties:
+                          forwardingClasses:
+                            description: The forwarding class of the packets on which
+                              to apply the Policer.  To match all traffic set this
+                              to 'ALL'.
+                            items:
+                              type: string
+                            type: array
+                          forwardingTypes:
+                            default:
+                            - All
+                            description: The traffic type to which the Policer applies.
+                            items:
+                              enum:
+                              - Broadcast
+                              - Unicast
+                              - Multicast
+                              - UnknownMulticast
+                              - UnknownUnicast
+                              - All
+                              type: string
+                            type: array
+                        required:
+                        - forwardingTypes
+                        type: object
+                      type: array
+                    maximumBurstSizeBytes:
+                      description: Maximum PIR bucket depth in bytes.
+                      format: int32
+                      maximum: 4294967295
+                      minimum: 0
+                      type: integer
+                    minInterfaceSpeed:
+                      description: Minimum interface speed (kbps) to calculate PeakRate
+                        and CommittedRate for devices where configuration is not supported
+                        in percentage.
+                      format: int32
+                      type: integer
+                    peakRateKbps:
+                      description: The peak information rate (PIR) of the policer,
+                        defined in kilobits (1024 bits) per second.
+                      format: int32
+                      type: integer
+                    peakRatePercent:
+                      description: The peak information rate (PIR) of the policer,
+                        defined as a percentage of the Interface speed on which it
+                        is applied.
+                      maximum: 100
+                      minimum: 0
+                      type: integer
+                    violateAction:
+                      description: Applies a drop-probability to packets that the
+                        policer has determined are exceeding (red).
+                      properties:
+                        dropProbabilityLevel:
+                          default: High
+                          description: The drop probability level to apply.
+                          enum:
+                          - High
+                          - Medium
+                          - Low
+                          - All
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              queueManagement:
+                description: Queue management policy for egress queues.
+                items:
+                  properties:
+                    pfcReservedBufferPercent:
+                      description: 'Percentage of the linecard buffer reserved for
+                        accomodating incoming traffic while upstream node reacts to
+                        generated PFC-pause frames. Note: this percentage must be
+                        common across all EgressPolicies and QueuesSets used on the
+                        same linecard.'
+                      maximum: 100
+                      minimum: 0
+                      type: integer
+                    queues:
+                      description: List of queues.
+                      items:
+                        properties:
+                          committedBurstSizeBytes:
+                            description: Committed Burst Size in bytes.
+                            format: int32
+                            type: integer
+                          maximumBurstSizeBytes:
+                            description: Maximum amount of shared buffer memory available
+                              to the queue in bytes.
+                            format: int32
+                            maximum: 4294967295
+                            minimum: 0
+                            type: integer
+                          pfcOffThresholdPercent:
+                            description: PFC off threshold.
+                            maximum: 100
+                            minimum: 0
+                            type: integer
+                          pfcOnThresholdPercent:
+                            description: PFC on threshold.
+                            maximum: 100
+                            minimum: 0
+                            type: integer
+                          pfcPauseFramePriority:
+                            description: PFC priorities indicated in generated pfc-pause-frame
+                              if congestion occurs in a given pfc-queue.
+                            type: integer
+                          pfcReservedShareBufferPercent:
+                            description: Maximum level the pfc-queue can take from
+                              pfc-reserved buffer configured per given forwarding-complex.
+                            maximum: 100
+                            minimum: 0
+                            type: integer
+                          queue:
+                            description: Reference to a Queue resource.
+                            type: string
+                        required:
+                        - queue
+                        type: object
+                      type: array
+                  required:
+                  - queues
+                  type: object
+                type: array
+            type: object
+          status:
+            description: IngressPolicyStatus defines the observed state of IngressPolicy
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

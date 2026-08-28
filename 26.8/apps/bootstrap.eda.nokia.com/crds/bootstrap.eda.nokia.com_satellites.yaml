@@ -1,0 +1,181 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: satellites.bootstrap.eda.nokia.com
+spec:
+  group: bootstrap.eda.nokia.com
+  names:
+    kind: Satellite
+    listKind: SatelliteList
+    plural: satellites
+    singular: satellite
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Satellite is the Schema for the satellites API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SatelliteSpec defines the desired state of Satellite
+            properties:
+              hostName:
+                description: node name of the satellite node.
+                type: string
+              hostUplinks:
+                description: Uplinks to be created for the satellite node.
+                items:
+                  properties:
+                    hostPort:
+                      description: HostPort interface of the satellite uplink.
+                      type: string
+                    satellitePort:
+                      description: Satellite interface of the satellite uplink.
+                      type: string
+                  required:
+                  - hostPort
+                  - satellitePort
+                  type: object
+                type: array
+              id:
+                description: ID of the satellite node.
+                type: string
+              macAddress:
+                description: ' MAC Address of the satellite node.'
+                type: string
+              portTemplate:
+                description: Port template to be used for the satellite node.
+                properties:
+                  connectors:
+                    description: |-
+                      List of connector components within the SatellitePortTemplate.
+                      Used to define the type and location of connectors.
+                    items:
+                      properties:
+                        slot:
+                          description: The slot of the connector, e.g. 1-65, connector
+                            will get configured on esat-<id>/1/c65
+                          type: string
+                        type:
+                          description: The type of connector, e.g. c1-100g.
+                          type: string
+                      required:
+                      - slot
+                      - type
+                      type: object
+                    type: array
+                  name:
+                    description: The name of the SatellitePortTemplate.
+                    type: string
+                  portMappings:
+                    description: Uplinks for the SatellitePortTemplate.
+                    items:
+                      properties:
+                        downlinks:
+                          description: Downlinks for the SatelliteUplink.
+                          items:
+                            type: string
+                          minItems: 1
+                          type: array
+                        primary:
+                          description: The primary uplink interface for downlinks.
+                          type: string
+                        secondary:
+                          description: The secondary uplink interface for downlinks.
+                          type: string
+                      required:
+                      - primary
+                      type: object
+                    type: array
+                required:
+                - name
+                type: object
+              satelliteProfile:
+                description: Satellite node profile to be used for the satellite node.
+                type: string
+              type:
+                description: Type of the satellite node.
+                type: string
+            required:
+            - hostName
+            - id
+            - type
+            type: object
+          status:
+            description: SatelliteStatus defines the observed state of Satellite
+            properties:
+              state:
+                description: status of the satellite
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              uplinkStatuses:
+                description: add status for UplinkInterfaces
+                items:
+                  properties:
+                    hostPort:
+                      properties:
+                        interface:
+                          type: string
+                        operationalState:
+                          enum:
+                          - Up
+                          - Down
+                          - Degraded
+                          - Unknown
+                          type: string
+                      required:
+                      - interface
+                      - operationalState
+                      type: object
+                    satellitePort:
+                      properties:
+                        interface:
+                          type: string
+                        operationalState:
+                          enum:
+                          - Up
+                          - Down
+                          - Degraded
+                          - Unknown
+                          type: string
+                      required:
+                      - interface
+                      - operationalState
+                      type: object
+                  required:
+                  - hostPort
+                  - satellitePort
+                  type: object
+                type: array
+            required:
+            - state
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

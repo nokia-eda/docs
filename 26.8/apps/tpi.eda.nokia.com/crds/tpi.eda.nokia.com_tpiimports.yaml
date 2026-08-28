@@ -1,0 +1,206 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: tpiimports.tpi.eda.nokia.com
+spec:
+  group: tpi.eda.nokia.com
+  names:
+    kind: TPIImport
+    listKind: TPIImportList
+    plural: tpiimports
+    singular: tpiimport
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: TPIImport is the Schema for the tpiimports API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: TPIImportSpec defines the desired state of TPIImport
+            properties:
+              dryRun:
+                default: false
+                description: Whether the transaction is to be ran as dry-run or not
+                type: boolean
+              exportMaster:
+                description: Export a new master TPI after successful import
+                properties:
+                  path:
+                    description: Path to the TPI file to be created. If TPI Storage
+                      is provided, this path is relative to the storage root.
+                    minLength: 1
+                    pattern: '[a-zA-Z0-9/_.-]+.xlsx'
+                    type: string
+                  tpiStorage:
+                    description: Reference to the TPIStorage resource. If left empty,
+                      the xlxs will only be available in the workflow artifacts.
+                    maxLength: 253
+                    minLength: 1
+                    pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                    type: string
+                  tpifilter:
+                    description: TPIFilter to be used on the export. If left empty,
+                      export all API resources available to the current user.
+                    maxLength: 253
+                    minLength: 1
+                    pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                    type: string
+                required:
+                - path
+                type: object
+              tpi:
+                description: Reference to the TPI resource to import from.
+                maxLength: 253
+                minLength: 1
+                pattern: ^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$
+                type: string
+            required:
+            - dryRun
+            - tpi
+            type: object
+          status:
+            description: TPIImportStatus defines the observed state of TPIImport
+            properties:
+              checksum:
+                description: SHA256 checksum of the retrieved TPI file
+                type: string
+              errors:
+                description: |-
+                  Blocking validation or transaction errors that prevented the import
+                  from completing successfully. The workflow fails when this list is
+                  non-empty.
+                items:
+                  description: ValidationError represents an error that occurred during
+                    TPI validation
+                  properties:
+                    error:
+                      description: Error message
+                      type: string
+                    field:
+                      description: JSON Path to the field for which the error occurred
+                      type: string
+                    obj:
+                      description: Object to which the error applies
+                      type: string
+                    ref:
+                      description: TPI workbook reference
+                      type: string
+                    sheet:
+                      description: Sheet at which the error occurred
+                      type: string
+                  type: object
+                type: array
+              objects:
+                description: Number of objects discovered
+                items:
+                  properties:
+                    count:
+                      description: Number of objects of this group and kind
+                      type: integer
+                    group:
+                      description: Group to which metrics relate
+                      type: string
+                    kind:
+                      description: Kind to which metrics relate
+                      type: string
+                  required:
+                  - count
+                  - group
+                  - kind
+                  type: object
+                type: array
+              schemas:
+                description: Number of schemas discovered
+                minimum: 0
+                type: integer
+              stages:
+                description: Time consumed per stage
+                items:
+                  properties:
+                    end:
+                      description: End time of the stage
+                      type: string
+                    name:
+                      description: Name of the stage to which timings apply
+                      type: string
+                    start:
+                      description: Start time of the stage
+                      type: string
+                    total:
+                      description: Total stage execution time in seconds
+                      type: integer
+                  required:
+                  - end
+                  - name
+                  - start
+                  - total
+                  type: object
+                type: array
+              transactionId:
+                description: |-
+                  EDA transaction ID assigned to this import. Populated once the
+                  transaction has been submitted, regardless of whether it succeeded;
+                  useful for correlating the workflow with EDA transaction logs.
+                type: string
+              url:
+                description: Full URL to the TPI file (storage location + root path
+                  + TPI path)
+                type: string
+              warnings:
+                description: |-
+                  Non-blocking parse issues. Populated when a sheet's action column is
+                  empty for every row: no object would have been imported from that sheet,
+                  so any issues found while parsing it are surfaced here instead of in
+                  .status.errors.
+                items:
+                  description: ValidationError represents an error that occurred during
+                    TPI validation
+                  properties:
+                    error:
+                      description: Error message
+                      type: string
+                    field:
+                      description: JSON Path to the field for which the error occurred
+                      type: string
+                    obj:
+                      description: Object to which the error applies
+                      type: string
+                    ref:
+                      description: TPI workbook reference
+                      type: string
+                    sheet:
+                      description: Sheet at which the error occurred
+                      type: string
+                  type: object
+                type: array
+            required:
+            - objects
+            - schemas
+            - stages
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

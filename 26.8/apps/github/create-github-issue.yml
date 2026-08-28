@@ -1,0 +1,17 @@
+apiVersion: github.eda.nokia.com/v1alpha1
+kind: CreateGithubIssue
+metadata:
+  name: create-github-issue-now
+  namespace: eda
+spec:
+  instance: github-server
+  repo: network-operations
+  issue:
+    title: "Manual issue from EDA workflow"
+    body: |
+      This issue was created by the GitHub app workflow resource.
+    assignees:
+      - network-ops
+    labels:
+      - eda
+      - workflow

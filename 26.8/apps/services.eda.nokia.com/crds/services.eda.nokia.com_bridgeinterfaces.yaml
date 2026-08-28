@@ -1,0 +1,576 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: bridgeinterfaces.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: BridgeInterface
+    listKind: BridgeInterfaceList
+    plural: bridgeinterfaces
+    singular: bridgeinterface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChange
+      name: LastChange
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: BridgeInterface is the Schema for the bridgeinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The BridgeInterface enables the attachment of network interfaces
+              to a Bridge Domain. It includes settings for VLAN ID allocation, interface
+              attachment, and actions on ingress and egress traffic. The specification
+              supports integration with other network resources, such as Bridge Domains
+              and Interfaces, and provides advanced features like MAC Duplication
+              Detection with configurable actions.
+            properties:
+              bridgeDomain:
+                description: Reference to a BridgeDomain in which to attach the BridgeInterface.
+                type: string
+              description:
+                description: The description of the BridgeInterface.
+                type: string
+              egress:
+                description: Manages actions on traffic at Egress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicy:
+                    description: List of QoS Egress policy references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              ingress:
+                description: Manages actions on traffic at Ingress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicy:
+                    description: List of QoS Ingress policy references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              interface:
+                description: Reference to an Interface resource to attach this BridgeInterface.
+                type: string
+              l2MTU:
+                description: L2 MTU specifies the maximum sized Ethernet frame that
+                  can be transmitted on the subinterface. If a frame exceeds this
+                  size it is discarded. If the l2-mtu of the subinterface exceeds
+                  the port-mtu of the associated interface, the subinterface will
+                  remain operationally down.
+                maximum: 9500
+                minimum: 1450
+                type: integer
+              macDuplicationDetectionAction:
+                description: Override for Mac Duplication Detection action if enabled
+                  in the associated BridgeDomain.
+                enum:
+                - Blackhole
+                - OperDown
+                - StopLearning
+                - UseBridgeDomainAction
+                type: string
+              splitHorizonGroup:
+                description: Split Horizon Group to be used for this BridgeInterface.
+                  The subinterface within this BridgeInterface will be a member of
+                  this Split Horizon Group.
+                type: string
+              uplink:
+                description: The Uplink between your access breakout switch and your
+                  leaf switch.
+                properties:
+                  egress:
+                    description: Manages actions on traffic at Egress of the Local
+                      endpoint of the Uplink.
+                    properties:
+                      filters:
+                        description: List of Filter references to use at egress.
+                        items:
+                          type: string
+                        type: array
+                      qosPolicy:
+                        description: List of QoS Egress policy references to use at
+                          egress.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  ingress:
+                    description: Manages actions on traffic at Ingress of the Local
+                      endpoint of the Uplink.
+                    properties:
+                      filters:
+                        description: List of Filter references to use at ingress.
+                        items:
+                          type: string
+                        type: array
+                      qosPolicy:
+                        description: List of QoS Ingress policy references to use
+                          at ingress.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  uplinkSelector:
+                    description: Selects TopoLinks which connect a leaf switch to
+                      a breakout switch. This is the uplink between your access breakout
+                      switch and your leaf switch.  There can only be a single TopoLink
+                      between the access breakout switch and the leaf switch, if more
+                      than one TopoLink is present between two devices the transaction
+                      will fail.
+                    items:
+                      type: string
+                    type: array
+                  uplinkVLANID:
+                    default: pool
+                    description: The VLAN ID to be utilized to isolate traffic from
+                      the VLAN on the access breakout switch to the leaf switch on
+                      the selected uplink TopoLink.
+                    type: string
+                  uplinkVLANPool:
+                    description: A VLAN from this pool will be utilized to isolate
+                      traffic from the VLAN on the access breakout switch to the leaf
+                      switch on the selected uplink TopoLink.
+                    type: string
+                type: object
+              vlanID:
+                description: Single value between 1-4094 support, ranges supported
+                  in the format x-y,x-y, or the special keyword null, any, untagged
+                  or pool for auto allocation.
+                type: string
+            required:
+            - bridgeDomain
+            - interface
+            - vlanID
+            type: object
+          status:
+            properties:
+              health:
+                description: Indicates the health score of the BridgeInterface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the BridgeInterface.
+                type: string
+              subInterfaces:
+                description: Sub-interfaces status within the BridgeInterface.
+                items:
+                  properties:
+                    enabled:
+                      description: The administrative status of the SubInterface.
+                      type: boolean
+                    interface:
+                      description: Normalized interface name.
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource.
+                      type: string
+                    lastChange:
+                      description: Indicates when this SubInterface last changed state.
+                      type: string
+                    node:
+                      description: Reference to Node object.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name.
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node.
+                      type: string
+                    operationalState:
+                      description: Indicates the current operational state of the
+                        SubInterface.
+                      type: string
+                    subInterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN.
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface.
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              uplinks:
+                description: Uplinks status within the BridgeInterface.
+                items:
+                  properties:
+                    enabled:
+                      description: The administrative status of the SubInterface.
+                      type: boolean
+                    interface:
+                      description: Normalized interface name.
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource.
+                      type: string
+                    lastChange:
+                      description: Indicates when this SubInterface last changed state.
+                      type: string
+                    node:
+                      description: Reference to Node object.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name.
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node.
+                      type: string
+                    operationalState:
+                      description: Indicates the current operational state of the
+                        SubInterface.
+                      type: string
+                    subInterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN.
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface.
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChangeTime
+      name: LastChangeTime
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: BridgeInterface is the Schema for the bridgeinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The BridgeInterface enables the attachment of network interfaces
+              to a Bridge Domain. It includes settings for VLAN ID allocation, interface
+              attachment, and actions on ingress and egress traffic. The specification
+              supports integration with other network resources, such as Bridge Domains
+              and Interfaces, and provides advanced features like MAC Duplication
+              Detection with configurable actions.
+            properties:
+              bridgeDomain:
+                description: Reference to a BridgeDomain in which to attach the BridgeInterface.
+                type: string
+              description:
+                description: The description of the BridgeInterface.
+                type: string
+              egress:
+                description: Manages actions on traffic at Egress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicies:
+                    description: List of QoS Egress policy references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              ingress:
+                description: Manages actions on traffic at Ingress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicies:
+                    description: List of QoS Ingress policy references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              interface:
+                description: Reference to an Interface resource to attach this BridgeInterface.
+                type: string
+              l2MTU:
+                description: L2 MTU specifies the maximum sized Ethernet frame that
+                  can be transmitted on the subinterface. If a frame exceeds this
+                  size it is discarded. If the l2-mtu of the subinterface exceeds
+                  the port-mtu of the associated interface, the subinterface will
+                  remain operationally down.
+                maximum: 9500
+                minimum: 1450
+                type: integer
+              macDuplicationDetectionAction:
+                description: Override for Mac Duplication Detection action if enabled
+                  in the associated BridgeDomain.
+                enum:
+                - Blackhole
+                - OperDown
+                - StopLearning
+                - BridgeDomainAction
+                type: string
+              splitHorizonGroup:
+                description: Split Horizon Group to be used for this BridgeInterface.
+                  The subinterface within this BridgeInterface will be a member of
+                  this Split Horizon Group.
+                type: string
+              uplink:
+                description: The Uplink between your access breakout switch and your
+                  leaf switch.
+                properties:
+                  egress:
+                    description: Manages actions on traffic at Egress of the Local
+                      endpoint of the Uplink.
+                    properties:
+                      filters:
+                        description: List of Filter references to use at egress.
+                        items:
+                          type: string
+                        type: array
+                      qosPolicies:
+                        description: List of QoS Egress policy references to use at
+                          egress.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  ingress:
+                    description: Manages actions on traffic at Ingress of the Local
+                      endpoint of the Uplink.
+                    properties:
+                      filters:
+                        description: List of Filter references to use at ingress.
+                        items:
+                          type: string
+                        type: array
+                      qosPolicies:
+                        description: List of QoS Ingress policy references to use
+                          at ingress.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  uplinkSelectors:
+                    description: Selects TopoLinks which connect a leaf switch to
+                      a breakout switch. This is the uplink between your access breakout
+                      switch and your leaf switch.  There can only be a single TopoLink
+                      between the access breakout switch and the leaf switch, if more
+                      than one TopoLink is present between two devices the transaction
+                      will fail.
+                    items:
+                      type: string
+                    type: array
+                  uplinkVLANID:
+                    default: pool
+                    description: The VLAN ID to be utilized to isolate traffic from
+                      the VLAN on the access breakout switch to the leaf switch on
+                      the selected uplink TopoLink.
+                    type: string
+                  uplinkVLANPool:
+                    description: A VLAN from this pool will be utilized to isolate
+                      traffic from the VLAN on the access breakout switch to the leaf
+                      switch on the selected uplink TopoLink.
+                    type: string
+                type: object
+              vlanID:
+                description: Single value between 1-4094 support, ranges supported
+                  in the format x-y,x-y, or the special keyword null, any, untagged
+                  or pool for auto allocation.
+                type: string
+            required:
+            - bridgeDomain
+            - interface
+            - vlanID
+            type: object
+          status:
+            properties:
+              health:
+                description: Indicates the health score of the BridgeInterface.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the BridgeInterface.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              subinterfaces:
+                description: Sub-interfaces status within the BridgeInterface.
+                items:
+                  properties:
+                    enabled:
+                      description: The administrative status of the SubInterface.
+                      type: boolean
+                    interface:
+                      description: Normalized interface name.
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource.
+                      type: string
+                    lastChangeTime:
+                      description: Indicates when this SubInterface last changed state.
+                      type: string
+                    node:
+                      description: Reference to Node object.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name.
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node.
+                      type: string
+                    operationalState:
+                      description: Indicates the current operational state of the
+                        SubInterface.
+                      enum:
+                      - Up
+                      - Down
+                      - Degraded
+                      - Unknown
+                      type: string
+                    subinterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN.
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface.
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              uplinks:
+                description: Uplinks status within the BridgeInterface.
+                items:
+                  properties:
+                    enabled:
+                      description: The administrative status of the SubInterface.
+                      type: boolean
+                    interface:
+                      description: Normalized interface name.
+                      type: string
+                    interfaceResource:
+                      description: Eda interface resource.
+                      type: string
+                    lastChangeTime:
+                      description: Indicates when this SubInterface last changed state.
+                      type: string
+                    node:
+                      description: Reference to Node object.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name.
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node.
+                      type: string
+                    operationalState:
+                      description: Indicates the current operational state of the
+                        SubInterface.
+                      enum:
+                      - Up
+                      - Down
+                      - Degraded
+                      - Unknown
+                      type: string
+                    subinterfaceIndex:
+                      description: Index allocated to the subinterface on the associated
+                        interface for the given VLAN.
+                      type: integer
+                    vlanID:
+                      description: vlan assigned to this subinterface.
+                      type: string
+                  required:
+                  - interface
+                  - interfaceResource
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

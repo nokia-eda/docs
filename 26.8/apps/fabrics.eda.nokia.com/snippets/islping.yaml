@@ -1,0 +1,11 @@
+apiVersion: fabrics.eda.nokia.com/v1
+kind: IslPing
+metadata:
+  name: islping-d505afe1-d4b0-473c-8f72-7bfbddd7108f
+  namespace: eda
+spec:
+  addressFamily: IPv4
+  count: 5
+  islSelectors:
+    - fabric = my-fabric
+  timeoutSeconds: 5

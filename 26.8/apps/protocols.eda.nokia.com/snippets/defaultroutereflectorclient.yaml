@@ -1,0 +1,15 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: DefaultRouteReflectorClient
+metadata:
+  labels:
+    rr-label: client
+  name: example-route-reflector-client
+  namespace: eda
+spec:
+  defaultBgpClientGroup: example-default-group
+  interface: leaf-1-loopback
+  interfaceKind: DefaultInterface
+  ipv4Unicast:
+    enabled: true
+  routeReflectorSelectors:
+    - rr-label=rr

@@ -1,0 +1,12 @@
+apiVersion: snow.eda.nokia.com/v1alpha1
+kind: Instance
+metadata:
+  name: instance-sample
+  namespace: eda
+spec:
+  url: https://your-instance.service-now.com
+  version: v2
+  clientCredentials: sn-creds
+  timeout: 15s
+  retryInterval: 5s
+  retryCount: 5

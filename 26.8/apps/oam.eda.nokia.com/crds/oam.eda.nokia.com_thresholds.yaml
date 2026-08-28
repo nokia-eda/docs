@@ -1,0 +1,295 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: thresholds.oam.eda.nokia.com
+spec:
+  group: oam.eda.nokia.com
+  names:
+    kind: Threshold
+    listKind: ThresholdList
+    plural: thresholds
+    singular: threshold
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Threshold is the Schema for the thresholds API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              A Threshold allows you to monitor a field in EDB and trigger severity-correct alarms based on the value of that field.
+              By using EDB as a source you are able to trigger thresholds on any published field from a TopoNode, or any other EDB source.
+            properties:
+              alarm:
+                description: Alarm details for this threshold.
+                properties:
+                  description:
+                    description: The description of the alarm.
+                    type: string
+                  probableCause:
+                    description: The probable cause of the alarm.
+                    type: string
+                  remedialAction:
+                    description: The remedial action for the alarm.
+                    type: string
+                type: object
+              enabled:
+                default: true
+                description: Enable or disable this threshold.
+                type: boolean
+              field:
+                description: |-
+                  Field to monitor for this threshold, for example `utilization`. Only a single field may be monitored per threshold. This field must be present in the table specified by the path.
+                  The field specified should be an integer field that can be compared to the specified thresholds. Nested fields are supported, for example `utilization.value` would monitor the value field inside of the nested object with key `utilization`.
+                type: string
+              generateOverlay:
+                default: false
+                description: |-
+                  Enable or disable generation of a topology overlay for this threshold.
+                  This functionality is only supported for paths in the .namespace.node table.
+                type: boolean
+              name:
+                description: The name of this threshold. This name will be used to
+                  generate the alarm name, so should follow CamelCase conventions,
+                  e.g. VolumeUtilization.
+                type: string
+              path:
+                description: |-
+                  Path to monitor for this threshold. This should be the full EDB path (without keys) to the table containing the field you wish to trigger a threshold on.
+                  For example, to monitor the utilization field of the component volume table, you would use `.namespace.node.normal.components_eda_nokia_com.v1.controlmodule.volume`, and set field to `utilization`.
+                type: string
+              resource:
+                description: |-
+                  Manually assign a resource to associate with this threshold. This overrides the destination resource in alarms raised as a result of threshold breaches.
+                  By default a resource will be raised against the threshold resource itself.
+                properties:
+                  group:
+                    description: The group of the resource raise alarms against, should
+                      any thresholds be breached.
+                    type: string
+                  kind:
+                    description: The kind of resource to raise alarms against, should
+                      any thresholds be breached.
+                    type: string
+                  name:
+                    description: The name of the resource to raise alarms against,
+                      should any thresholds be breached.
+                    type: string
+                required:
+                - group
+                - kind
+                - name
+                type: object
+              thresholds:
+                description: Severities and their associated values.
+                properties:
+                  criticalThreshold:
+                    description: |-
+                      The minimum average utilization over the last 1 minute to trigger a critical alarm.
+                      This value must be greater than the majorThreshold.
+                    type: integer
+                  delta:
+                    default: 5
+                    description: |-
+                      The delta value for clearing a threshold.
+                      For example, with a critical threshold of 90, direction of Rising and a delta of 5, the critical alarm will clear when the utilization drops below 85.
+                    type: integer
+                  direction:
+                    default: Rising
+                    description: 'Direction of the threshold: "Rising" or "Falling".'
+                    enum:
+                    - Rising
+                    - Falling
+                    type: string
+                  majorThreshold:
+                    description: |-
+                      The minimum average utilization over the last 1 minute to trigger a major alarm.
+                      This value must be greater than the minorThreshold.
+                    type: integer
+                  minorThreshold:
+                    description: The minimum average utilization over the last 1 minute
+                      to trigger a minor alarm.
+                    type: integer
+                  warningThreshold:
+                    description: The minimum average utilization over the last 1 minute
+                      to trigger a warning alarm.
+                    type: integer
+                required:
+                - direction
+                type: object
+            required:
+            - field
+            - name
+            - path
+            - thresholds
+            type: object
+          status:
+            description: ThresholdStatus defines the observed state of Threshold
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Threshold is the Schema for the thresholds API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              A Threshold allows you to monitor a field in EDB and trigger severity-correct alarms based on the value of that field.
+              By using EDB as a source you are able to trigger thresholds on any published field from a TopoNode, or any other EDB source.
+            properties:
+              alarm:
+                description: Alarm details for this threshold.
+                properties:
+                  description:
+                    description: The description of the alarm.
+                    type: string
+                  probableCause:
+                    description: The probable cause of the alarm.
+                    type: string
+                  remedialAction:
+                    description: The remedial action for the alarm.
+                    type: string
+                type: object
+              enabled:
+                default: true
+                description: Enable or disable this threshold.
+                type: boolean
+              field:
+                description: |-
+                  Field to monitor for this threshold, for example `utilization`. Only a single field may be monitored per threshold. This field must be present in the table specified by the path.
+                  The field specified should be an integer field that can be compared to the specified thresholds. Nested fields are supported, for example `utilization.value` would monitor the value field inside of the nested object with key `utilization`.
+                type: string
+              generateOverlay:
+                default: false
+                description: |-
+                  Enable or disable generation of a topology overlay for this threshold.
+                  This functionality is only supported for paths in the .namespace.node table.
+                type: boolean
+              name:
+                description: The name of this threshold. This name will be used to
+                  generate the alarm name, so should follow CamelCase conventions,
+                  e.g. VolumeUtilization.
+                type: string
+              path:
+                description: |-
+                  Path to monitor for this threshold. This should be the full EDB path (without keys) to the table containing the field you wish to trigger a threshold on.
+                  For example, to monitor the utilization field of the component volume table, you would use `.namespace.node.normal.components_eda_nokia_com.v1.controlmodule.volume`, and set field to `utilization`.
+                type: string
+              resource:
+                description: |-
+                  Manually assign a resource to associate with this threshold. This overrides the destination resource in alarms raised as a result of threshold breaches.
+                  By default a resource will be raised against the threshold resource itself.
+                properties:
+                  group:
+                    description: The group of the resource raise alarms against, should
+                      any thresholds be breached.
+                    type: string
+                  kind:
+                    description: The kind of resource to raise alarms against, should
+                      any thresholds be breached.
+                    type: string
+                  name:
+                    description: The name of the resource to raise alarms against,
+                      should any thresholds be breached.
+                    type: string
+                required:
+                - group
+                - kind
+                - name
+                type: object
+              thresholds:
+                description: Severities and their associated values.
+                properties:
+                  criticalThreshold:
+                    description: |-
+                      The minimum average utilization over the last 1 minute to trigger a critical alarm.
+                      This value must be greater than the majorThreshold.
+                    type: integer
+                  delta:
+                    default: 5
+                    description: |-
+                      The delta value for clearing a threshold.
+                      For example, with a critical threshold of 90, direction of Rising and a delta of 5, the critical alarm will clear when the utilization drops below 85.
+                    type: integer
+                  direction:
+                    default: Rising
+                    description: 'Direction of the threshold: "Rising" or "Falling".'
+                    enum:
+                    - Rising
+                    - Falling
+                    type: string
+                  majorThreshold:
+                    description: |-
+                      The minimum average utilization over the last 1 minute to trigger a major alarm.
+                      This value must be greater than the minorThreshold.
+                    type: integer
+                  minorThreshold:
+                    description: The minimum average utilization over the last 1 minute
+                      to trigger a minor alarm.
+                    type: integer
+                  warningThreshold:
+                    description: The minimum average utilization over the last 1 minute
+                      to trigger a warning alarm.
+                    type: integer
+                required:
+                - direction
+                type: object
+            required:
+            - field
+            - name
+            - path
+            - thresholds
+            type: object
+          status:
+            description: ThresholdStatus defines the observed state of Threshold
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

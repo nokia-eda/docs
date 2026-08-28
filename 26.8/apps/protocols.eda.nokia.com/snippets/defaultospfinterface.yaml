@@ -1,0 +1,11 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: DefaultOSPFInterface
+metadata:
+  name: isl-leaf-1-ethernet-1-1-ipv4
+  namespace: eda
+spec:
+  defaultOSPFArea: fabric-ospfv3-ipv4-0.0.0.0
+  defaultOSPFInstance: fabric-ospfv3-ipv4
+  interface: interface-leaf-1-ethernet-1-1-vlan-1
+  interfaceKind: DefaultInterface
+  type: PointToPoint

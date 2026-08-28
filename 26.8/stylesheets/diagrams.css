@@ -1,0 +1,10 @@
+div.geDiagramContainer div {
+    line-height: 1 !important;
+    box-sizing: initial;
+}
+
+.md-typeset .mxgraph {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow: hidden !important;
+}

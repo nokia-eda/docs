@@ -1,0 +1,344 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: staticroutes.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: StaticRoute
+    listKind: StaticRouteList
+    plural: staticroutes
+    singular: staticroute
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: StaticRoute is the Schema for the static routes API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: StaticRoute allows for the specification of destination prefixes,
+              route preferences, and the associated Router. It also supports configuring
+              nexthop groups and specifying the nodes where the static routes should
+              be provisioned.
+            properties:
+              configuredName:
+                description: The name of the static route to configure on the device.
+                type: string
+              nexthopGroup:
+                description: Group of nexthops for the list of prefixes.
+                properties:
+                  bfd:
+                    description: Enables BFD to the next-hops in the group. Local
+                      and Remote discriminator parameters have been deprecated at
+                      this level. Use Nexthop to set these parameters.
+                    properties:
+                      enabled:
+                        default: false
+                        description: Defines whether BFD should be enabled towards
+                          the nexthops.
+                        type: boolean
+                      localAddress:
+                        description: Defines the local address to use when establishing
+                          the BFD session with the nexthop.
+                        type: string
+                    type: object
+                  blackhole:
+                    default: false
+                    description: If set to true all traffic destined to the prefixes
+                      will be blackholed.  If enabled, next-hops are ignored and this
+                      takes precedence.
+                    type: boolean
+                  blackholeSendICMP:
+                    description: When enabled, the router will generate ICMP Unreachable
+                      messages for packets destined to the blackhole route.
+                    type: boolean
+                  nexthops:
+                    description: Ordered list of nexthops.
+                    items:
+                      properties:
+                        bfd:
+                          description: Enables BFD to the next-hops in the group.
+                            This overrides the configuration at the group.
+                          properties:
+                            enabled:
+                              default: false
+                              description: Defines whether BFD should be enabled towards
+                                the nexthops.
+                              type: boolean
+                            localAddress:
+                              description: Defines the local address to use when establishing
+                                the BFD session with the nexthop.
+                              type: string
+                            localDiscriminator:
+                              description: Defines the local discriminator.
+                              type: integer
+                            remoteDiscriminator:
+                              description: Defines the remote discriminator.
+                              type: integer
+                          type: object
+                        ipPrefix:
+                          description: Address to use.
+                          type: string
+                        resolve:
+                          default: false
+                          description: If set to true the next-hops can be destinations
+                            which are resolved in the route table. This overrides
+                            the configuration at the group.
+                          type: boolean
+                      required:
+                      - ipPrefix
+                      type: object
+                    type: array
+                  resolve:
+                    default: false
+                    description: If set to true the next-hops can be destinations
+                      which are resolved in the route table.
+                    type: boolean
+                type: object
+              nodes:
+                description: List of nodes on which to configure the static routes.
+                  An AND operation is executed against the nodes in this list and
+                  the nodes on which the Router is configured to determine the Nodes
+                  on which to configure the static routes.
+                items:
+                  type: string
+                type: array
+              preference:
+                description: Defines the route preference.
+                type: integer
+              prefixes:
+                description: List of destination prefixes and mask to use for the
+                  static routes.
+                items:
+                  type: string
+                type: array
+              router:
+                description: Reference to a Router on which to configure the static
+                  routes.  If no Nodes are provided then the static routes will be
+                  provisioned on all Nodes on which the Router is provisioned.
+                type: string
+            required:
+            - nexthopGroup
+            - prefixes
+            - router
+            type: object
+          status:
+            description: StaticRouteStatus defines the observed state of Static Route
+            properties:
+              health:
+                description: Indicates the health score of the static routes.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed.
+                type: string
+              nodes:
+                description: List of Nodes on which the static routes are configured.
+                items:
+                  type: string
+                type: array
+              operationalState:
+                description: Operational state of the static routes.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: StaticRoute is the Schema for the static routes API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: StaticRoute allows for the specification of destination prefixes,
+              route preferences, and the associated Router. It also supports configuring
+              nexthop groups and specifying the nodes where the static routes should
+              be provisioned.
+            properties:
+              configuredName:
+                description: The name of the static route to configure on the device.
+                type: string
+              nexthopGroup:
+                description: Group of nexthops for the list of prefixes.
+                properties:
+                  bfd:
+                    description: Enables BFD to the next-hops in the group. Local
+                      and Remote discriminator parameters have been deprecated at
+                      this level. Use Nexthop to set these parameters.
+                    properties:
+                      enabled:
+                        default: false
+                        description: Defines whether BFD should be enabled towards
+                          the nexthops.
+                        type: boolean
+                      localAddress:
+                        description: Defines the local address to use when establishing
+                          the BFD session with the nexthop.
+                        type: string
+                    type: object
+                  blackhole:
+                    default: false
+                    description: If set to true all traffic destined to the prefixes
+                      will be blackholed.  If enabled, next-hops are ignored and this
+                      takes precedence.
+                    type: boolean
+                  blackholeSendICMP:
+                    description: When enabled, the router will generate ICMP Unreachable
+                      messages for packets destined to the blackhole route.
+                    type: boolean
+                  follow:
+                    description: Follow the resolution of another route. This setting
+                      is mutually exclusive with all other settings in the group.
+                    properties:
+                      mode:
+                        description: Follow mode. Only "NextLongest" is supported,
+                          which means that the route will follow the next-hop-group
+                          of the next most specific matching route in the routing
+                          table.
+                        enum:
+                        - NextLongest
+                        type: string
+                    required:
+                    - mode
+                    type: object
+                  nexthops:
+                    description: Ordered list of nexthops.
+                    items:
+                      properties:
+                        bfd:
+                          description: Enables BFD to the next-hops in the group.
+                            This overrides the configuration at the group.
+                          properties:
+                            enabled:
+                              default: false
+                              description: Defines whether BFD should be enabled towards
+                                the nexthops.
+                              type: boolean
+                            localAddress:
+                              description: Defines the local address to use when establishing
+                                the BFD session with the nexthop.
+                              type: string
+                            localDiscriminator:
+                              description: Defines the local discriminator.
+                              type: integer
+                            remoteDiscriminator:
+                              description: Defines the remote discriminator.
+                              type: integer
+                          type: object
+                        ipPrefix:
+                          description: Address to use.
+                          type: string
+                        resolve:
+                          default: false
+                          description: If set to true the next-hops can be destinations
+                            which are resolved in the route table. This overrides
+                            the configuration at the group.
+                          type: boolean
+                      required:
+                      - ipPrefix
+                      type: object
+                    type: array
+                  resolve:
+                    default: false
+                    description: If set to true the next-hops can be destinations
+                      which are resolved in the route table.
+                    type: boolean
+                type: object
+              nodes:
+                description: List of nodes on which to configure the static routes.
+                  An AND operation is executed against the nodes in this list and
+                  the nodes on which the Router is configured to determine the Nodes
+                  on which to configure the static routes.
+                items:
+                  type: string
+                type: array
+              preference:
+                description: Defines the route preference.
+                type: integer
+              prefixes:
+                description: List of destination prefixes and mask to use for the
+                  static routes.
+                items:
+                  type: string
+                type: array
+              router:
+                description: Reference to a Router on which to configure the static
+                  routes.  If no Nodes are provided then the static routes will be
+                  provisioned on all Nodes on which the Router is provisioned.
+                type: string
+            required:
+            - nexthopGroup
+            - prefixes
+            - router
+            type: object
+          status:
+            description: StaticRouteStatus defines the observed state of Static Route
+            properties:
+              health:
+                description: Indicates the health score of the static routes.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              nodes:
+                description: List of Nodes on which the static routes are configured.
+                items:
+                  type: string
+                type: array
+              operationalState:
+                description: Operational state of the static routes.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

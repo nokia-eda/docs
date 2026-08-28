@@ -1,0 +1,174 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: defaultldprouters.mpls.eda.nokia.com
+spec:
+  group: mpls.eda.nokia.com
+  names:
+    kind: DefaultLDPRouter
+    listKind: DefaultLDPRouterList
+    plural: defaultldprouters
+    singular: defaultldprouter
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DefaultLDPRouter is the Schema for the defaultldprouters API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DefaultLDPRouterSpec defines the desired state of DefaultLDPRouter
+            properties:
+              enabled:
+                default: true
+                description: Indicated whether the LDP Router is administratively
+                  enabled.
+                type: boolean
+              exportPolicies:
+                description: Reference to a Policy CR that will be used to filter
+                  label bindings advertised to peers.
+                items:
+                  type: string
+                maxItems: 1
+                type: array
+              implicitNull:
+                description: Use implicit null label.
+                type: boolean
+              importPolicies:
+                description: Reference to a Policy CR that will be used to filter
+                  label bindings received from peers.
+                items:
+                  type: string
+                maxItems: 1
+                type: array
+              keepAlive:
+                description: LDP Session Keep-Alive parameters.
+                properties:
+                  keepAliveHoldTimeSeconds:
+                    description: Hold time (in seconds) for maintaining LDP session
+                      in the absence of received KeepAlives.
+                    maximum: 65535
+                    minimum: 3
+                    type: integer
+                  keepAliveIntervalSeconds:
+                    description: Keep-Alive interval (in seconds) for sending LDP
+                      KeepAlive messages.
+                    maximum: 65535
+                    minimum: 1
+                    type: integer
+                required:
+                - keepAliveHoldTimeSeconds
+                - keepAliveIntervalSeconds
+                type: object
+              labelBlockRef:
+                description: Reference to a LabelBlock resource for label allocation.
+                  If not specified, the label range will be auto-allocated.
+                type: string
+              labelWithdrawalDelaySeconds:
+                description: Label withdrawal delay time (in seconds).
+                maximum: 120
+                minimum: 3
+                type: integer
+              lfa:
+                description: LDP LFA (Loop-Free Alternate) functionality.
+                properties:
+                  enabled:
+                    description: Enables LDP LFA (Loop-Free Alternate) functionality.
+                    type: boolean
+                required:
+                - enabled
+                type: object
+              linkAdjacency:
+                description: LDP Link Adjacency parameters.
+                properties:
+                  helloHoldTimeSeconds:
+                    description: Hold time (in seconds) for maintaining LDP Link Hello
+                      adjacency in the absence of received Hellos.
+                    maximum: 65535
+                    minimum: 3
+                    type: integer
+                  helloIntervalSeconds:
+                    description: Hello interval (in seconds) for sending LDP Link
+                      Hello messages.
+                    maximum: 65535
+                    minimum: 1
+                    type: integer
+                  transportAddress:
+                    description: Transport address selection for Link LDP sessions.
+                    enum:
+                    - System
+                    - Interface
+                    type: string
+                required:
+                - helloHoldTimeSeconds
+                - helloIntervalSeconds
+                type: object
+              longestPrefixMatch:
+                default: false
+                description: Enables longest prefix match forwarding. By default,
+                  an exact match is required for FEC resolution.
+                type: boolean
+              maxECMP:
+                description: The maximum number of ECMP paths towards an LDP FEC.
+                maximum: 64
+                minimum: 1
+                type: integer
+              tunnelDownDampTimeSeconds:
+                description: Dampening time (in seconds) for a tunnel down event.
+                maximum: 20
+                minimum: 0
+                type: integer
+            type: object
+          status:
+            description: DefaultLDPRouterStatus defines the observed state of DefaultLDPRouter
+            properties:
+              health:
+                description: Indicates the health score of the LDP Router.
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the LDP Router.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

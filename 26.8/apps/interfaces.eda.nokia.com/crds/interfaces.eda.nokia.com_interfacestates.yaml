@@ -1,0 +1,205 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: interfacestates.interfaces.eda.nokia.com
+spec:
+  group: interfaces.eda.nokia.com
+  names:
+    kind: InterfaceState
+    listKind: InterfaceStateList
+    plural: interfacestates
+    singular: interfacestate
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: InterfaceState is the Schema for the interfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              enabled:
+                description: Enable or disabinterface.
+                type: boolean
+              lag:
+                properties:
+                  adminKey:
+                    description: LACP Admin Key.
+                    type: integer
+                  systemMAC:
+                    description: LACP System ID MAC address.
+                    type: string
+                type: object
+              members:
+                description: List of members on which to monitor state for
+                items:
+                  properties:
+                    aggregateID:
+                      description: LAG interface with which this interface is associated
+                      type: string
+                    enabled:
+                      description: Enable or disable this member.
+                      type: boolean
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    node:
+                      description: Reference to the TopoNode on which this member
+                        resides
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name, for example "ethernet-1/1",
+                        "1/1/c1/1"
+                      type: string
+                    operatingSystem:
+                      description: The operating system of the TopoNode on which this
+                        member resides
+                      type: string
+                    version:
+                      description: The version of the TopoNode on which this interface
+                        resides
+                      type: string
+                  required:
+                  - interface
+                  - node
+                  - nodeInterface
+                  - operatingSystem
+                  - version
+                  type: object
+                type: array
+              role:
+                default: Edge
+                description: Role of this interface. This is used to calculate severity
+                  of alarms. [default="Edge"]
+                enum:
+                - ISL
+                - Edge
+                - Loopback
+                type: string
+            required:
+            - members
+            type: object
+          status:
+            description: InterfaceStateStatus defines the observed state of Interface
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: InterfaceState is the Schema for the interfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              enabled:
+                description: Enable or disabinterface.
+                type: boolean
+              lag:
+                properties:
+                  adminKey:
+                    description: LACP Admin Key.
+                    type: integer
+                  systemIdMac:
+                    description: LACP System ID MAC address.
+                    type: string
+                type: object
+              members:
+                description: List of members on which to monitor state for
+                items:
+                  properties:
+                    aggregateId:
+                      description: LAG interface with which this interface is associated
+                      type: string
+                    enabled:
+                      description: Enable or disable this member.
+                      type: boolean
+                    interface:
+                      description: Normalized interface name
+                      type: string
+                    node:
+                      description: Reference to the TopoNode on which this member
+                        resides
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name, for example "ethernet-1/1",
+                        "1/1/c1/1"
+                      type: string
+                    operatingSystem:
+                      description: The operating system of the TopoNode on which this
+                        member resides
+                      type: string
+                    version:
+                      description: The version of the TopoNode on which this interface
+                        resides
+                      type: string
+                  required:
+                  - interface
+                  - node
+                  - nodeInterface
+                  - operatingSystem
+                  - version
+                  type: object
+                type: array
+              role:
+                default: edge
+                description: Role of this interface. This is used to calculate severity
+                  of alarms. [default="edge"]
+                enum:
+                - isl
+                - edge
+                - loopback
+                type: string
+            required:
+            - members
+            type: object
+          status:
+            description: InterfaceStateStatus defines the observed state of Interface
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

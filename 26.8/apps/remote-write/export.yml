@@ -1,0 +1,18 @@
+apiVersion: remotewrite.eda.nokia.com/v1alpha1
+kind: Export
+metadata:
+  name: interface-stats
+  namespace: eda
+spec:
+  exports:
+    - prefix: interfaces
+      path: .namespace.node.srl.interface.statistics # EQL path
+      interval: 30s                                  # Optional polling interval
+      mode: periodic                                 # periodic | on-change | periodic-on-change
+      fields: ["in-octets", "out-octets"]            # Optional subset of fields
+      labels:
+        static:
+          - name: region
+            value: us-west
+  destinations:
+    - name: dest1

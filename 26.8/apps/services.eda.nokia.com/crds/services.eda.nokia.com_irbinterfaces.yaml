@@ -1,0 +1,1061 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: irbinterfaces.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: IRBInterface
+    listKind: IRBInterfaceList
+    plural: irbinterfaces
+    singular: irbinterface
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.ipMTU
+      name: MTU
+      type: string
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChange
+      name: LastChange
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: IRBInterface is the Schema for the irbinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The IRBInterface enables the configuration and management
+              of Layer 3 interfaces associated with a BridgeDomain. This resource
+              allows for the specification of various parameters, including IP MTU,
+              learning of unsolicited ARPs, IPv4 and IPv6 addresses, and unnumbered
+              interface settings. It also supports advanced features such as BFD configuration,
+              Virtual IP discovery, and ARP/ND-related settings like Proxy ARP/ND
+              and EVPN route advertisement.
+            properties:
+              anycastGatewayMAC:
+                description: The gateway MAC to use on the anycast address, if left
+                  empty the node will automatically assign one.
+                type: string
+              arpTimeout:
+                default: 14400
+                description: Duration of time that dynamic ARP entries remain in the
+                  ARP cache before they expire.
+                format: int32
+                type: integer
+              bfd:
+                description: Enable BFD on the IRBInterface.
+                properties:
+                  desiredMinTransmitInt:
+                    default: 1000000
+                    description: The minimum interval in microseconds between transmission
+                      of BFD control packets.
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down.
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables Biforward Detection.
+                    type: boolean
+                  minEchoReceiveInterval:
+                    default: 0
+                    description: The minimum interval between echo packets the local
+                      node can receive.
+                    maximum: 100000000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceive:
+                    default: 1000000
+                    description: The minimum interval in microseconds between received
+                      BFD control packets that this system should support.
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - enabled
+                type: object
+              bridgeDomain:
+                description: Reference to a BridgeDomain.
+                type: string
+              description:
+                description: The description of the IRBInterface.
+                type: string
+              egress:
+                description: Manages actions on traffic at Egress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicy:
+                    description: List of QoS Egress policy references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              evpnRouteAdvertisementType:
+                description: Controls the type of ARP/ND entries to advertise.
+                properties:
+                  arpDynamic:
+                    default: false
+                    description: Advertise dynamic ARP entries.
+                    type: boolean
+                  arpStatic:
+                    default: false
+                    description: Advertise static ARP entries.
+                    type: boolean
+                  ndDynamic:
+                    default: false
+                    description: Advertise dynamic ND entries.
+                    type: boolean
+                  ndStatic:
+                    default: false
+                    description: Advertise static ND entries.
+                    type: boolean
+                  rfc9135SymmetricMode:
+                    description: Use RFC9135-based symmetric mode for ARP/ND host
+                      route advertisements.
+                    type: boolean
+                type: object
+              hostRoutePopulate:
+                description: Configures host route population based on ARP entries.
+                properties:
+                  dynamic:
+                    default: true
+                    description: Create host routes out of dynamic ARP entries.
+                    type: boolean
+                  evpn:
+                    default: false
+                    description: Create host routes out of EVPN learned ARP entries.
+                    type: boolean
+                  static:
+                    default: true
+                    description: Create host routes out of static ARP entries.
+                    type: boolean
+                type: object
+              ingress:
+                description: Manages actions on traffic at Ingress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicy:
+                    description: List of QoS Ingress policy references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              ipAddresses:
+                description: Configures IP addresses on the IRBInterface.
+                items:
+                  properties:
+                    ipv4Address:
+                      description: IPv4 address in IP/mask form, e.g., 192.168.0.1/24.
+                      properties:
+                        ipPrefix:
+                          description: IP Address and prefix length in CIDR notation.
+                          type: string
+                        primary:
+                          description: Indicates which address to use as primary.
+                          type: boolean
+                      required:
+                      - ipPrefix
+                      type: object
+                    ipv6Address:
+                      description: IPv6 address in IP/mask form, e.g., fc00::1/120.
+                      properties:
+                        ipPrefix:
+                          description: IP Address and prefix length in CIDR notation.
+                          type: string
+                        primary:
+                          description: Indicates which address to use as primary.
+                          type: boolean
+                      required:
+                      - ipPrefix
+                      type: object
+                    node:
+                      description: Reference to a TopoNode resource, if not specified
+                        the IP address will be assigned to all nodes on which the
+                        IRB is deployed.  If specified the IP address will be assigned
+                        to the specified node.
+                      type: string
+                  type: object
+                type: array
+              ipMTU:
+                default: 1500
+                description: IP MTU for the IRBInterface [default=1500].
+                maximum: 9486
+                minimum: 1280
+                type: integer
+              ipv4Parameters:
+                description: Manages IPv4-specific additional parameters that are
+                  not applicable to IPv6.
+                properties:
+                  directedBroadcast:
+                    description: Allow receiving and forwarding of directed broadcast
+                      packets. Enabled when set to true.
+                    type: boolean
+                type: object
+              ipv6RouterAdvertisement:
+                description: Manages IPV6 Router Advertisement parameters.
+                properties:
+                  currentHopLimit:
+                    default: 64
+                    description: The current hop limit to advertise in the router
+                      advertisement messages.
+                    format: int32
+                    maximum: 255
+                    minimum: 0
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enable or disable IPv6 router advertisements.
+                    type: boolean
+                  ipMTU:
+                    description: The IP MTU to advertise in the router advertisement
+                      messages.
+                    format: int32
+                    maximum: 9486
+                    minimum: 1280
+                    type: integer
+                  managedConfigurationFlag:
+                    default: false
+                    description: Enable DHCPv6 for address configuration (M-bit).
+                    type: boolean
+                  maxAdvertisementInterval:
+                    default: 600
+                    description: Maximum time between router advertisements (in seconds).
+                    format: int32
+                    maximum: 1800
+                    minimum: 4
+                    type: integer
+                  minAdvertisementInterval:
+                    default: 200
+                    description: Minimum time between router advertisements (in seconds).
+                    format: int32
+                    maximum: 1350
+                    minimum: 3
+                    type: integer
+                  otherConfigurationFlag:
+                    default: false
+                    description: Enable DHCPv6 for other configuration (O-bit).
+                    type: boolean
+                  prefixes:
+                    description: IPv6 prefixes to advertise in router advertisements.
+                    items:
+                      description: IPv6Prefix defines the configuration for an IPv6
+                        prefix advertisement.
+                      properties:
+                        autonomousFlag:
+                          default: true
+                          description: When this is set in the prefix information
+                            option hosts can use the prefix for stateless address
+                            autoconfiguration (SLAAC).
+                          type: boolean
+                        onLinkFlag:
+                          default: true
+                          description: When this is set in the prefix information
+                            option hosts can use the prefix for on-link determination.
+                          type: boolean
+                        preferredLifetime:
+                          default: 604800
+                          description: The length of time in seconds (relative to
+                            the time the packet is sent) that addresses generated
+                            from the prefix via stateless address autoconfiguration
+                            remain preferred.
+                          format: int32
+                          maximum: 4294967295
+                          minimum: 0
+                          type: integer
+                        prefix:
+                          description: An IPv6 global unicast address prefix.
+                          type: string
+                        validLifetime:
+                          default: 2592000
+                          description: The length of time in seconds (relative to
+                            the time the packet is sent) that the prefix is valid
+                            for the purpose of on-link determination.
+                          format: int32
+                          maximum: 4294967295
+                          minimum: 0
+                          type: integer
+                      required:
+                      - prefix
+                      type: object
+                    type: array
+                  reachableTime:
+                    default: 0
+                    description: Time in milliseconds for Neighbor Unreachability
+                      Detection.
+                    format: int32
+                    maximum: 3600000
+                    minimum: 0
+                    type: integer
+                  retransmitTime:
+                    default: 0
+                    description: Time in milliseconds between retransmitted NS messages.
+                    format: int32
+                    maximum: 1800000
+                    minimum: 0
+                    type: integer
+                  routerLifetime:
+                    default: 1800
+                    description: Router lifetime in seconds for default gateway.
+                    format: int32
+                    maximum: 9000
+                    minimum: 0
+                    type: integer
+                required:
+                - currentHopLimit
+                - enabled
+                - managedConfigurationFlag
+                - maxAdvertisementInterval
+                - minAdvertisementInterval
+                - otherConfigurationFlag
+                - retransmitTime
+                - routerLifetime
+                type: object
+              l3ProxyARPND:
+                description: L3 Proxy ARP and ND configuration.
+                properties:
+                  proxyARP:
+                    default: false
+                    description: Select whether Proxy ARP should be enabled.
+                    type: boolean
+                  proxyND:
+                    default: false
+                    description: Select whether Proxy ND should be enabled.
+                    type: boolean
+                type: object
+              learnUnsolicited:
+                default: NONE
+                description: Enable or disable learning of unsolicited ARPs.
+                enum:
+                - BOTH
+                - GLOBAL
+                - LINK-LOCAL
+                - NONE
+                type: string
+              router:
+                description: Reference to a Router.
+                type: string
+              unnumbered:
+                description: Enables the use of unnumbered interfaces on the IRBInterface.  If
+                  IPv6 is specified, no IP address are configured on the sub-interface
+                  and only the link local address will be used.  If any IP addresses
+                  are specified for either IPv4 or IPv6 that will take precedence
+                  and IPs will be assigned to the interfaces.(Deprecated, Use IPv6RouterAdvertisement)
+                enum:
+                - IPV6
+                type: string
+              virtualIPDiscovery:
+                description: Configuration for Virtual IP discovery on the interface.
+                items:
+                  properties:
+                    address:
+                      description: Virtual IP Address.
+                      type: string
+                    allowedMAC:
+                      description: List of allowed MAC addresses for a discovered
+                        virtual IP address.
+                      items:
+                        type: string
+                      type: array
+                    bridgeInterfaceToProbe:
+                      description: List of BridgeInterfaces on the associated MAC-VRF
+                        to which the ARP probes are sent. If left blank, the probes
+                        are sent on all BridgeInterfaces associated with the BridgeDomain.
+                      items:
+                        type: string
+                      type: array
+                    probeInterval:
+                      default: 0
+                      description: ARP probe interval in seconds.
+                      maximum: 86400
+                      minimum: 0
+                      type: integer
+                    vlanToProbe:
+                      description: List of VLANs on the associated BridgeDomain to
+                        which the ARP probes are sent.  If left blank, the probes
+                        are sent on all VLANs associated with the BridgeDomain.
+                      items:
+                        type: string
+                      type: array
+                  required:
+                  - address
+                  type: object
+                type: array
+            required:
+            - bridgeDomain
+            - router
+            type: object
+          status:
+            description: IRBInterfaceStatus defines the observed state of IRBInterface
+            properties:
+              health:
+                description: Indicates the health score of the VNET.
+                type: integer
+              healthScoreReason:
+                description: Explains the reason for the health score.
+                type: string
+              interfaces:
+                description: Details of the interfaces associated with the IRB.
+                items:
+                  properties:
+                    enabled:
+                      description: Administrative status of the SubInterface.
+                      type: boolean
+                    ipv4Addresses:
+                      description: List of IPv4 addresses
+                      items:
+                        properties:
+                          ipPrefix:
+                            description: IP Address and prefix length in CIDR notation.
+                            type: string
+                          primary:
+                            description: Indicates which address to use as primary.
+                            type: boolean
+                        required:
+                        - ipPrefix
+                        type: object
+                      type: array
+                    ipv6Addresses:
+                      description: List of IPv6 addresses
+                      items:
+                        properties:
+                          ipPrefix:
+                            description: IP Address and prefix length in CIDR notation.
+                            type: string
+                          primary:
+                            description: Indicates which address to use as primary.
+                            type: boolean
+                        required:
+                        - ipPrefix
+                        type: object
+                      type: array
+                    lastChange:
+                      description: Timestamp of when this SubInterface last changed
+                        state.
+                      type: string
+                    node:
+                      description: Reference to Node object.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name.
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node.
+                      type: string
+                    operationalState:
+                      description: Current operational state of the SubInterface.
+                      type: string
+                  required:
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              lastChange:
+                description: Timestamp of the last state change.
+                type: string
+              operationalState:
+                description: Operational state of the VNET.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .spec.ipMTU
+      name: MTU
+      type: string
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChangeTime
+      name: LastChangeTime
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: IRBInterface is the Schema for the irbinterfaces API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The IRBInterface enables the configuration and management
+              of Layer 3 interfaces associated with a BridgeDomain. This resource
+              allows for the specification of various parameters, including IP MTU,
+              learning of unsolicited ARPs, IPv4 and IPv6 addresses, and unnumbered
+              interface settings. It also supports advanced features such as BFD configuration,
+              Virtual IP discovery, and ARP/ND-related settings like Proxy ARP/ND
+              and EVPN route advertisement.
+            properties:
+              anycastGatewayMAC:
+                description: The gateway MAC to use on the anycast address, if left
+                  empty the node will automatically assign one.
+                type: string
+              bfd:
+                description: Enable BFD on the IRBInterface.
+                properties:
+                  desiredMinTransmitIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between transmission
+                      of BFD control packets.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down.
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables Biforward Detection.
+                    type: boolean
+                  requiredMinEchoReceiveIntMs:
+                    default: 0
+                    description: The minimum interval between echo packets the local
+                      node can receive.
+                    maximum: 100000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceiveIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between received
+                      BFD control packets that this system should support.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - enabled
+                type: object
+              bridgeDomain:
+                description: Reference to a BridgeDomain.
+                type: string
+              description:
+                description: The description of the IRBInterface.
+                type: string
+              egress:
+                description: Manages actions on traffic at Egress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicies:
+                    description: List of QoS Egress policy references to use at egress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              evpnRouteAdvertisementType:
+                description: Controls the type of ARP/ND entries to advertise.
+                properties:
+                  arpDynamic:
+                    default: false
+                    description: Advertise dynamic ARP entries.
+                    type: boolean
+                  arpStatic:
+                    default: false
+                    description: Advertise static ARP entries.
+                    type: boolean
+                  ndDynamic:
+                    default: false
+                    description: Advertise dynamic ND entries.
+                    type: boolean
+                  ndStatic:
+                    default: false
+                    description: Advertise static ND entries.
+                    type: boolean
+                  rfc9135SymmetricMode:
+                    description: Use RFC9135-based symmetric mode for ARP/ND host
+                      route advertisements.
+                    type: boolean
+                type: object
+              hostRoutePopulate:
+                description: Configures host route population based on ARP entries.
+                properties:
+                  dynamic:
+                    description: Create host routes out of dynamic ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                  evpn:
+                    description: Create host routes out of EVPN learned ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                  static:
+                    description: Create host routes out of static ARP/ND entries.
+                    properties:
+                      datapathProgramming:
+                        description: Enable datapath programming for host routes.
+                        type: boolean
+                      populate:
+                        default: false
+                        description: Enable population of host routes based on ARP/ND
+                          entries.
+                        type: boolean
+                    required:
+                    - populate
+                    type: object
+                type: object
+              ingress:
+                description: Manages actions on traffic at Ingress.
+                properties:
+                  filters:
+                    description: List of Filter references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                  qosPolicies:
+                    description: List of QoS Ingress policy references to use at ingress.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              ipAddresses:
+                description: Configures IP addresses on the IRBInterface.
+                items:
+                  properties:
+                    ipv4Address:
+                      description: IPv4 address in IP/mask form, e.g., 192.168.0.1/24.
+                      properties:
+                        anycast:
+                          description: Indicates if the address is an anycast IRB
+                            address.
+                          type: boolean
+                        ipPrefix:
+                          description: IP Address and prefix length in CIDR notation.
+                          type: string
+                        primary:
+                          description: Indicates which address to use as primary.
+                          type: boolean
+                      required:
+                      - ipPrefix
+                      type: object
+                    ipv6Address:
+                      description: IPv6 address in IP/mask form, e.g., fc00::1/120.
+                      properties:
+                        anycast:
+                          description: Indicates if the address is an anycast IRB
+                            address.
+                          type: boolean
+                        ipPrefix:
+                          description: IP Address and prefix length in CIDR notation.
+                          type: string
+                        primary:
+                          description: Indicates which address to use as primary.
+                          type: boolean
+                      required:
+                      - ipPrefix
+                      type: object
+                    node:
+                      description: Reference to a TopoNode resource, if not specified
+                        the IP address will be assigned to all nodes on which the
+                        IRB is deployed.  If specified the IP address will be assigned
+                        to the specified node.
+                      type: string
+                  type: object
+                type: array
+              ipMTU:
+                default: 1500
+                description: IP MTU for the IRBInterface [default=1500].
+                maximum: 9486
+                minimum: 1280
+                type: integer
+              ipv4:
+                description: IPv4 parameters that are not applicable to IPv6.
+                properties:
+                  arpTimeoutSeconds:
+                    default: 14400
+                    description: Duration of time that dynamic ARP entries remain
+                      in the ARP cache before they expire.
+                    format: int32
+                    minimum: 0
+                    type: integer
+                  directedBroadcast:
+                    description: Allow receiving and forwarding of directed broadcast
+                      packets. Enabled when set to true.
+                    type: boolean
+                  learnUnsolicitedARP:
+                    default: Disabled
+                    description: Enable or disable learning of unsolicited ARPs.
+                    enum:
+                    - Enabled
+                    - Disabled
+                    type: string
+                type: object
+              ipv6:
+                description: IPv6 parameters that are not applicable to IPv4.
+                properties:
+                  learnUnsolicitedNA:
+                    default: Disabled
+                    description: Enable or disable learning of unsolicited Neighbor
+                      Advertisements.
+                    enum:
+                    - All
+                    - Global
+                    - LinkLocal
+                    - Disabled
+                    type: string
+                  routerAdvertisement:
+                    description: Manages IPv6 Router Advertisement parameters.
+                    properties:
+                      currentHopLimit:
+                        default: 64
+                        description: The current hop limit to advertise in the router
+                          advertisement messages.
+                        format: int32
+                        maximum: 255
+                        minimum: 0
+                        type: integer
+                      enabled:
+                        default: false
+                        description: Enable or disable IPv6 router advertisements.
+                        type: boolean
+                      ipMTU:
+                        description: The IP MTU to advertise in the router advertisement
+                          messages.
+                        format: int32
+                        maximum: 9486
+                        minimum: 1280
+                        type: integer
+                      managedConfigurationFlag:
+                        default: false
+                        description: Enable DHCPv6 for address configuration (M-bit).
+                        type: boolean
+                      maxAdvertisementIntervalSeconds:
+                        default: 600
+                        description: Maximum time between router advertisements (in
+                          seconds).
+                        format: int32
+                        maximum: 1800
+                        minimum: 4
+                        type: integer
+                      minAdvertisementIntervalSeconds:
+                        default: 200
+                        description: Minimum time between router advertisements (in
+                          seconds).
+                        format: int32
+                        maximum: 1350
+                        minimum: 3
+                        type: integer
+                      otherConfigurationFlag:
+                        default: false
+                        description: Enable DHCPv6 for other configuration (O-bit).
+                        type: boolean
+                      prefixes:
+                        description: IPv6 prefixes to advertise in router advertisements.
+                        items:
+                          description: IPv6Prefix defines the configuration for an
+                            IPv6 prefix advertisement.
+                          properties:
+                            autonomousFlag:
+                              default: true
+                              description: When this is set in the prefix information
+                                option hosts can use the prefix for stateless address
+                                autoconfiguration (SLAAC).
+                              type: boolean
+                            onLinkFlag:
+                              default: true
+                              description: When this is set in the prefix information
+                                option hosts can use the prefix for on-link determination.
+                              type: boolean
+                            preferredLifetimeSeconds:
+                              default: 604800
+                              description: The length of time in seconds (relative
+                                to the time the packet is sent) that addresses generated
+                                from the prefix via stateless address autoconfiguration
+                                remain preferred.
+                              format: int32
+                              maximum: 4294967295
+                              minimum: 0
+                              type: integer
+                            prefix:
+                              description: An IPv6 global unicast address prefix.
+                              type: string
+                            validLifetimeSeconds:
+                              default: 2592000
+                              description: The length of time in seconds (relative
+                                to the time the packet is sent) that the prefix is
+                                valid for the purpose of on-link determination.
+                              format: int32
+                              maximum: 4294967295
+                              minimum: 0
+                              type: integer
+                          required:
+                          - prefix
+                          type: object
+                        type: array
+                      reachableTimeMs:
+                        default: 0
+                        description: Time in milliseconds for Neighbor Unreachability
+                          Detection.
+                        format: int32
+                        maximum: 3600000
+                        minimum: 0
+                        type: integer
+                      retransmitTimeMs:
+                        default: 0
+                        description: Time in milliseconds between retransmitted NS
+                          messages.
+                        format: int32
+                        maximum: 1800000
+                        minimum: 0
+                        type: integer
+                      routerLifetimeSeconds:
+                        default: 1800
+                        description: Router lifetime in seconds for default gateway.
+                        format: int32
+                        maximum: 9000
+                        minimum: 0
+                        type: integer
+                    required:
+                    - currentHopLimit
+                    - enabled
+                    - managedConfigurationFlag
+                    - maxAdvertisementIntervalSeconds
+                    - minAdvertisementIntervalSeconds
+                    - otherConfigurationFlag
+                    - retransmitTimeMs
+                    - routerLifetimeSeconds
+                    type: object
+                type: object
+              l3ProxyARPND:
+                description: L3 Proxy ARP and ND configuration.
+                properties:
+                  proxyARP:
+                    default: false
+                    description: Select whether Proxy ARP should be enabled.
+                    type: boolean
+                  proxyND:
+                    default: false
+                    description: Select whether Proxy ND should be enabled.
+                    type: boolean
+                type: object
+              router:
+                description: Reference to a Router.
+                type: string
+              virtualIPDiscovery:
+                description: Configuration for Virtual IP discovery on the interface.
+                items:
+                  properties:
+                    address:
+                      description: Virtual IP Address.
+                      type: string
+                    allowedMACs:
+                      description: List of allowed MAC addresses for a discovered
+                        virtual IP address.
+                      items:
+                        type: string
+                      type: array
+                    bridgeInterfaces:
+                      description: List of BridgeInterfaces on the associated MAC-VRF
+                        to which the ARP probes are sent. If left blank, the probes
+                        are sent on all BridgeInterfaces associated with the BridgeDomain.
+                      items:
+                        type: string
+                      type: array
+                    probeIntervalSeconds:
+                      default: 0
+                      description: ARP probe interval in seconds.
+                      maximum: 86400
+                      minimum: 0
+                      type: integer
+                    vlans:
+                      description: List of VLANs on the associated BridgeDomain to
+                        which the ARP probes are sent.  If left blank, the probes
+                        are sent on all VLANs associated with the BridgeDomain.
+                      items:
+                        type: string
+                      type: array
+                  required:
+                  - address
+                  type: object
+                type: array
+            required:
+            - bridgeDomain
+            - router
+            type: object
+          status:
+            description: IRBInterfaceStatus defines the observed state of IRBInterface
+            properties:
+              health:
+                description: Indicates the health score of the VNET.
+                type: integer
+              healthScoreReason:
+                description: Explains the reason for the health score.
+                type: string
+              interfaces:
+                description: Details of the interfaces associated with the IRB.
+                items:
+                  properties:
+                    enabled:
+                      description: Administrative status of the SubInterface.
+                      type: boolean
+                    ipv4Addresses:
+                      description: List of IPv4 addresses
+                      items:
+                        properties:
+                          anycast:
+                            description: Indicates if the address is an anycast IRB
+                              address.
+                            type: boolean
+                          ipPrefix:
+                            description: IP Address and prefix length in CIDR notation.
+                            type: string
+                          primary:
+                            description: Indicates which address to use as primary.
+                            type: boolean
+                        required:
+                        - ipPrefix
+                        type: object
+                      type: array
+                    ipv6Addresses:
+                      description: List of IPv6 addresses
+                      items:
+                        properties:
+                          anycast:
+                            description: Indicates if the address is an anycast IRB
+                              address.
+                            type: boolean
+                          ipPrefix:
+                            description: IP Address and prefix length in CIDR notation.
+                            type: string
+                          primary:
+                            description: Indicates which address to use as primary.
+                            type: boolean
+                        required:
+                        - ipPrefix
+                        type: object
+                      type: array
+                    lastChangeTime:
+                      description: Timestamp of when this SubInterface last changed
+                        state.
+                      type: string
+                    node:
+                      description: Reference to Node object.
+                      type: string
+                    nodeInterface:
+                      description: Node specific interface name.
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node.
+                      type: string
+                    operationalState:
+                      description: Current operational state of the SubInterface.
+                      enum:
+                      - Up
+                      - Down
+                      - Degraded
+                      - Unknown
+                      type: string
+                  required:
+                  - node
+                  - nodeInterface
+                  type: object
+                type: array
+              lastChangeTime:
+                description: Timestamp of the last state change.
+                type: string
+              operationalState:
+                description: Operational state of the VNET.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

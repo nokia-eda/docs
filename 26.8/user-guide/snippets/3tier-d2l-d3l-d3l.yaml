@@ -1,0 +1,111 @@
+apiVersion: fabrics.eda.nokia.com/v1
+kind: FabricTopology
+metadata:
+  name: 3tier-200g-superspine
+  namespace: eda
+spec:
+  #########################
+  #### Node Templates #####
+  #########################
+  nodeTemplates:
+    - name: leaf
+      nodeProfile: srlinux-ghcr-26.3.1
+      platform: 7220 IXR-D2L
+    - name: spine
+      nodeProfile: srlinux-ghcr-26.3.1
+      platform: 7220 IXR-D3L
+    - name: superspine
+      nodeProfile: srlinux-ghcr-26.3.1
+      platform: 7220 IXR-D3L
+
+  #########################
+  ## Edge Link Templates ##
+  #########################
+  edgeLinkTemplates:
+    - name: compute
+      type: ESLAG
+      encapType: Dot1q
+      nodesInLAG: 2
+
+  #################################
+  ## Inter Switch Link Templates ##
+  #################################
+  interSwitchLinkTemplates:
+    - name: leaf-spine-isl
+      type: InterSwitch
+      speed: 100G
+      encapType: "Null"
+    - name: spine-superspine-isl
+      type: InterSwitch
+      speed: 100G
+      encapType: "Null"
+
+  podTemplates:
+    #############################
+    ## 3-tier Pod Templates    ##
+    #############################
+    ## Leaf-Spine Pod Template
+    - name: leaf-spine-pod
+      nodeGroups:
+        - name: leaf
+          nodeName: '{{.podName}}-leaf{{ printf "%02d" .nodeIndex }}'
+          nodeTemplate: leaf
+          count: 4
+        - name: spine
+          nodeName: '{{.podName}}-spine{{printf "%02d" .nodeIndex}}'
+          nodeTemplate: spine
+          count: 2
+      ##############################
+      ## Inter Switch Link Groups ##
+      ##############################
+      interSwitchLinkGroups:
+        - name: leaf-spine
+          template: leaf-spine-isl
+          interfacesPerNodePair: 2
+          localNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=leaf
+            interfaceStartIndex: "1-53"
+          remoteNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=spine
+      ##############################
+      ###### Edge Link Groups ######
+      ##############################
+      edgeLinkGroups:
+        - name: compute
+          template: compute
+          localNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=leaf
+          count: 10
+
+    ## Superspine Pod Template
+    - name: superspine-pod
+      nodeGroups:
+        - name: superspine
+          nodeName: 'superspine{{printf "%02d" .nodeIndex}}'
+          nodeTemplate: superspine
+          count: 2
+      interSwitchLinkGroups:
+        - name: spine-superspine
+          template: spine-superspine-isl
+          interfacesPerNodePair: 2
+          localNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=spine
+            interfaceStartIndex: "1-29"
+          remoteNodes:
+            nodeSelectors:
+              - eda.nokia.com/role=superspine
+  operation: Reconcile
+  ###############
+  #### Pods #####
+  ###############
+  pods:
+    - name: pod1
+      podTemplate: leaf-spine-pod
+    - name: pod2
+      podTemplate: leaf-spine-pod
+    - name: superspine-pod
+      podTemplate: superspine-pod

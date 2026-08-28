@@ -1,0 +1,52 @@
+# https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/TopoLink/v1@v24.12.1
+---
+apiVersion: core.eda.nokia.com/v1
+kind: TopoLink
+metadata:
+  name: srl1-client1
+  namespace: eda
+spec:
+  links:
+    - local:
+        node: clab-vlan-srl1
+        interface: ethernet-1/1
+        interfaceResource: clab-vlan-srl1-ethernet-1-1
+      remote:
+        node: clab-vlan-client1
+        interface: eth1
+        interfaceResource: eth1
+      type: edge
+---
+apiVersion: core.eda.nokia.com/v1
+kind: TopoLink
+metadata:
+  name: srl1-srl2
+  namespace: eda
+spec:
+  links:
+    - local:
+        node: clab-vlan-srl1
+        interface: ethernet-1/10
+        interfaceResource: clab-vlan-srl1-ethernet-1-10
+      remote:
+        node: clab-vlan-srl2
+        interface: ethernet-1/10
+        interfaceResource: clab-vlan-srl2-ethernet-1-10
+      type: interSwitch
+---
+apiVersion: core.eda.nokia.com/v1
+kind: TopoLink
+metadata:
+  name: srl2-client2
+  namespace: eda
+spec:
+  links:
+    - local:
+        node: clab-vlan-srl2
+        interface: ethernet-1/1
+        interfaceResource: clab-vlan-srl2-ethernet-1-1
+      remote:
+        node: clab-vlan-client2
+        interface: eth1
+        interfaceResource: eth1
+      type: edge

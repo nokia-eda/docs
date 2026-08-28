@@ -1,0 +1,10 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: DefaultAggregateRoute
+metadata:
+  namespace: eda
+  name: my-aggregate-route
+spec:
+  prefixes:
+    - 10.0.0.0/24
+  defaultRouter: router-leaf-1
+  summaryOnly: true

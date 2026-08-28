@@ -1,0 +1,12 @@
+apiVersion: netbox.eda.nokia.com/v1alpha1
+kind: Allocation
+metadata:
+  name: nb-isl-v6
+  namespace: eda
+spec:
+  enabled: true
+  instance: netbox
+  subnetLength: 127
+  tags:
+    - eda-isl-v6
+  type: subnet

@@ -1,0 +1,23 @@
+apiVersion: qos.eda.nokia.com/v2
+kind: PolicyAttachment
+metadata:
+  labels:
+    eda.nokia.com/source: derived
+  name: edgeinterface-my-datacenter
+  namespace: scale-across
+spec:
+  attachments:
+    - interface: dc1-leaf-1-ethernet-1-6
+      interfaceType: Access
+      subInterfaceIndex: 1
+    - interface: dc1-leaf-1-ethernet-1-7
+      interfaceType: Access
+      subInterfaceIndex: 1
+    - interface: dc1-leaf-2-ethernet-1-1
+      interfaceType: Access
+      subInterfaceIndex: 1
+    - interface: dc1-leaf-2-ethernet-1-2
+      interfaceType: Access
+      subInterfaceIndex: 1
+  egressPolicy: egress-backend-my-datacenter
+  ingressPolicy: edgeinterface-ingress-my-datacenter

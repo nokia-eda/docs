@@ -1,0 +1,185 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: attachmentlookups.routing.eda.nokia.com
+spec:
+  group: routing.eda.nokia.com
+  names:
+    kind: AttachmentLookup
+    listKind: AttachmentLookupList
+    plural: attachmentlookups
+    singular: attachmentlookup
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: AttachmentLookup is the Schema for the attachmentlookups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              This workflow is used to look up attachments (where an address is attached in the network) on a set of nodes.
+              It takes an address, and an optional list of nodes (or node selectors - a list of label expressions) to perform the lookup on,
+              and returns the matching attachments, including the node,
+              network instance, prefix, interface, and next hop group ID.
+            properties:
+              address:
+                description: |-
+                  Address to perform a lookup for.
+                  This is a standard IPv4 or IPv6 address, excluding mask or prefix length, e.g. 12.0.0.1.
+                type: string
+              networkInstance:
+                description: |-
+                  Network Instance is the locally named network instance to use for the lookup.
+                  Can be omitted if the default network instance is to be used.
+                type: string
+              nodeSelectors:
+                description: |-
+                  NodeSelectors is a list of node selectors to execute lookups on.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf", "eda.nokia.com/region=us-west"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: Nodes is a list of node names to execute lookups on.
+                items:
+                  type: string
+                type: array
+            required:
+            - address
+            type: object
+          status:
+            description: AttachmentLookupStatus defines the observed state of AttachmentLookup
+            properties:
+              found:
+                type: boolean
+              results:
+                items:
+                  properties:
+                    interface:
+                      type: string
+                    networkInstance:
+                      type: string
+                    nextHopGroupID:
+                      format: int64
+                      type: integer
+                    node:
+                      type: string
+                    prefix:
+                      type: string
+                  type: object
+                type: array
+            required:
+            - found
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AttachmentLookup is the Schema for the attachmentlookups API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              This workflow is used to look up attachments (where an address is attached in the network) on a set of nodes.
+              It takes an address, and an optional list of nodes (or node selectors - a list of label expressions) to perform the lookup on,
+              and returns the matching attachments, including the node,
+              network instance, prefix, interface, and next hop group ID.
+            properties:
+              address:
+                description: |-
+                  Address to perform a lookup for.
+                  This is a standard IPv4 or IPv6 address, excluding mask or prefix length, e.g. 12.0.0.1.
+                type: string
+              networkInstance:
+                description: |-
+                  Network Instance is the locally named network instance to use for the lookup.
+                  Can be omitted if the default network instance is to be used.
+                type: string
+              nodeSelectors:
+                description: |-
+                  NodeSelectors is a list of node selectors to execute lookups on.
+                  This is a list of label expressions, e.g. ["eda.nokia.com/role=leaf", "eda.nokia.com/region=us-west"].
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: Nodes is a list of node names to execute lookups on.
+                items:
+                  type: string
+                type: array
+            required:
+            - address
+            type: object
+          status:
+            description: AttachmentLookupStatus defines the observed state of AttachmentLookup
+            properties:
+              found:
+                type: boolean
+              results:
+                items:
+                  properties:
+                    interface:
+                      type: string
+                    networkInstance:
+                      type: string
+                    nextHopGroupId:
+                      format: int64
+                      type: integer
+                    node:
+                      type: string
+                    prefix:
+                      type: string
+                  type: object
+                type: array
+            required:
+            - found
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

@@ -1,0 +1,24 @@
+apiVersion: filters.eda.nokia.com/v1
+kind: ControlPlaneFilter
+metadata:
+  namespace: eda
+  name: my-cp-filter
+spec:
+  entries:
+    - type: Auto
+      description: Accept BGP traffic from 10.0.0.1/32 to system IP addresses
+      ipEntry:
+        sourcePrefix: 10.0.0.1/32
+        destinationPrefixSets:
+          - bgp-neighbor-system-ips
+        destinationPortName: BGP
+        destinationPortOperator: Equals
+        protocolName: TCP
+        action: Accept
+    - type: IPv4
+      description: Drop all other traffic
+      ipEntry:
+        action: Drop
+        log: true
+  nodeSelectors:
+    - eda.nokia.com/security-profile = managed

@@ -1,0 +1,41 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: system
+spec:
+  group: system.eda.nokia.com
+  version: v1alpha1
+  title: System
+  description: |
+    This applications pre-existing functionality has been moved to the components app. It may be used to hold generic system functionality in the future.
+  image: ghcr.io/nokia-eda/apps/system:v999.9.0
+  author: Nokia
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  gitPathPrefix: /
+  supportedEndpoints:
+    - "srl:0.0.0"
+    - "sros:0.0.0"
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  supportedCoreVersions:
+    - "v4.0"
+  appInfo:
+    documentation: system/docs
+    categories:
+      - "monitoring"
+  components: []
+  dependencies:
+    - file:
+        path: system/api
+    - file:
+        path: common/
+    - file:
+        path: utils/

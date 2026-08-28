@@ -1,0 +1,22 @@
+apiVersion: filters.eda.nokia.com/v1
+kind: Filter
+metadata:
+  namespace: eda
+  name: my-dataplane-filter
+spec:
+  entries:
+    - type: Auto
+      ipEntry:
+        protocolName: ICMP
+        action: RateLimit
+        icmpTypeName: Echo
+        rateLimit:
+          peakRateKbps: 10000
+          entrySpecificPolicer: false
+          scope: Global
+      description: Rate-limit ICMP Echo requests
+    - type: Auto
+      description: Accept all other traffic
+      ipEntry:
+        sourcePrefix: 0.0.0.0/0
+        action: Accept

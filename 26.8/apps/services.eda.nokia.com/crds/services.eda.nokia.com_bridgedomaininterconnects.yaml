@@ -1,0 +1,187 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: bridgedomaininterconnects.services.eda.nokia.com
+spec:
+  group: services.eda.nokia.com
+  names:
+    kind: BridgeDomainInterconnect
+    listKind: BridgeDomainInterconnectList
+    plural: bridgedomaininterconnects
+    singular: bridgedomaininterconnect
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.operationalState
+      name: OperationalState
+      type: string
+    - jsonPath: .status.lastChangeTime
+      name: LastChangeTime
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: BridgeDomainInterconnect is the Schema for the bridgedomaininterconnects
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BridgeDomainInterconnectSpec defines the desired state of
+              BridgeDomainInterconnect
+            properties:
+              bridgeDomainRef:
+                description: Reference to the BridgeDomain instance to interconnect.
+                properties:
+                  name:
+                    description: Name of the BridgeDomain instance.
+                    type: string
+                  namespace:
+                    description: Namespace of the BridgeDomain instance, if different
+                      from the referencing BridgeDomainInterconnect namespace.
+                    type: string
+                required:
+                - name
+                type: object
+              interconnectBGPInstance:
+                description: BGP Service Instance parameters for the Interconnect.
+                properties:
+                  controlPlane:
+                    default: EVPN
+                    description: Control plane protocol used for the service instance.
+                    enum:
+                    - EVPN
+                    type: string
+                  encapsulation:
+                    description: Encapsulation type used for the service instance.
+                    enum:
+                    - VXLAN
+                    - MPLS
+                    type: string
+                  evi:
+                    description: Required for EVPN control plane on SRLinux
+                    format: int32
+                    type: integer
+                  exportPolicy:
+                    description: Reference to a Policy CR that will be used to export
+                      routes.
+                    type: string
+                  exportTarget:
+                    description: Export route target in 'target:N:N' format. One of
+                      ExportTarget or ExportPolicy must be specified.
+                    pattern: ^target.*$
+                    type: string
+                  importPolicy:
+                    description: Reference to a Policy CR that will be used to import
+                      routes.
+                    type: string
+                  importTarget:
+                    description: Import route target in 'target:N:N' format. One of
+                      ImportTarget or ImportPolicy must be specified.
+                    pattern: ^target.*$
+                    type: string
+                  mpls:
+                    description: MPLS encapsulation options. Only applicable if MPLS
+                      encapsulation is used.
+                    properties:
+                      allowedTunnelTypes:
+                        description: Allowed tunnel types for MPLS transport.
+                        items:
+                          enum:
+                          - LDP
+                          - RSVP
+                          - BGP
+                          - SR-ISIS
+                          - SR-OSPFv2
+                          - SR-OSPFv3
+                          type: string
+                        type: array
+                      controlWord:
+                        description: Enable or disable the use of control word. Applicable
+                          only to EVPNMPLS service Type.
+                        type: boolean
+                    type: object
+                  vxlan:
+                    description: VXLAN encapsulation options. Only applicable if VXLAN
+                      encapsulation is used.
+                    properties:
+                      tunnelIndexPool:
+                        default: tunnel-index-pool
+                        description: Reference to tunnel index allocation pool.
+                        type: string
+                      vni:
+                        description: VNI for the service instance.
+                        format: int32
+                        maximum: 16777215
+                        minimum: 1
+                        type: integer
+                    type: object
+                required:
+                - encapsulation
+                type: object
+              nodeSelectors:
+                description: Label selector to select nodes on which to configure
+                  the BridgeDomainInterconnect.
+                items:
+                  type: string
+                type: array
+              nodes:
+                description: List of nodes (gateways) on which to configure the BridgeDomainInterconnect.
+                items:
+                  type: string
+                type: array
+            required:
+            - bridgeDomainRef
+            - interconnectBGPInstance
+            type: object
+          status:
+            description: BridgeDomainInterconnectStatus defines the observed state
+              of BridgeDomainInterconnect
+            properties:
+              health:
+                description: Indicates the health score of the BridgeDomainInterconnect.
+                type: integer
+              healthScoreReason:
+                description: Explains the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: Timestamp of the last state change.
+                type: string
+              nodes:
+                description: List of nodes on which the BridgeDomainInterconnect is
+                  deployed.
+                items:
+                  type: string
+                type: array
+              operationalState:
+                description: Operational state of the BridgeDomainInterconnect.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

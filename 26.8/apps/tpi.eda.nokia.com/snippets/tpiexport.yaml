@@ -1,0 +1,9 @@
+apiVersion: tpi.eda.nokia.com/v1
+kind: TPIExport
+metadata:
+  name: example-export
+  namespace: eda
+spec:
+  path: example-export.xlsx
+  tpiStorage: example-storage
+  tpifilter: example-filter

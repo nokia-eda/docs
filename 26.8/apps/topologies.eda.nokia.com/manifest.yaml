@@ -1,0 +1,179 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: topologies
+spec:
+  group: topologies.eda.nokia.com
+  version: v1
+  title: Topologies
+  description: |
+    This application provides physical topology support
+  image: ghcr.io/nokia-eda/apps/topologies:v6.999.0
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  gitPathPrefix: /
+  author: Nokia
+  appInfo:
+    documentation: topologies/docs
+    categories:
+      - "networking"
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  supportedCoreVersions:
+    - "v5.0"
+  components:
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_topolinkmonitors.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_topolinkmonitors.json
+        namespaced: false
+        api:
+          expose: none
+        conversionScript: topologies/intents/topolinkmonitor/conversion_v1.py
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_topolinkstates.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_topolinkstates.json
+        api:
+          expose: none
+        conversionScript: topologies/intents/topolinkstate/conversion_v1.py
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_topologies.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_topologies.json
+        namespaced: false
+        api:
+          expose: readWrite
+        kubernetes:
+          exportPolicy: all
+        conversionScript: topologies/intents/topology/conversion_v1.py
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_topologygroupings.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_topologygroupings.json
+        namespaced: false
+        api:
+          expose: readWrite
+        kubernetes:
+          exportPolicy: all
+        conversionScript: topologies/intents/topologygrouping/conversion_v1.py
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_deviationoverlays.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_deviationoverlays.json
+        namespaced: false
+        api:
+          expose: readWrite
+        conversionScript: topologies/intents/deviationoverlay/conversion_v1.py
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_trafficrateoverlays.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_trafficrateoverlays.json
+        namespaced: false
+        api:
+          expose: readWrite
+        conversionScript: topologies/intents/trafficrateoverlay/conversion_v1.py
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_lldpoverlays.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_lldpoverlays.json
+        namespaced: false
+        api:
+          expose: readWrite
+        conversionScript: topologies/intents/lldpoverlay/conversion_v1.py
+    - crd:
+        path: topologies/crds/topologies.eda.nokia.com_alarmoverlays.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_alarmoverlays.json
+        namespaced: false
+        api:
+          expose: readWrite
+        conversionScript: topologies/intents/alarmoverlay/conversion_v1.py
+    - script:
+        path: topologies/intents/topolinkmonitor/topolinkmonitor_intent.py
+        type: config
+        trigger:
+          kind: TopoLinkMonitor
+    - script:
+        path: topologies/intents/topolinkstate/topolinkstate_intent.py
+        type: state
+        trigger:
+          kind: TopoLinkState
+    - script:
+        path: topologies/intents/topology/topology_intent.py
+        type: state
+        trigger:
+          kind: Topology
+    - script:
+        path: topologies/intents/topologygrouping/topology_grouping_intent.py
+        type: state
+        trigger:
+          kind: TopologyGrouping
+    - script:
+        path: topologies/intents/deviationoverlay/deviation_overlay_intent.py
+        type: state
+        trigger:
+          kind: DeviationOverlay
+    - script:
+        path: topologies/intents/trafficrateoverlay/trafficrate_overlay_intent.py
+        type: state
+        trigger:
+          kind: TrafficRateOverlay
+    - script:
+        path: topologies/intents/lldpoverlay/lldp_overlay_intent.py
+        type: state
+        trigger:
+          kind: LldpOverlay
+    - script:
+        path: topologies/intents/alarmoverlay/alarm_overlay_intent.py
+        type: state
+        trigger:
+          kind: AlarmOverlay
+    - cr:
+        path: topologies/resources/default.yaml
+    - cr:
+        path: topologies/resources/eda-physical-topology.yaml
+    - cr:
+        path: topologies/resources/eda-role-topology-grouping.yaml
+    - cr:
+        path: topologies/resources/eda-deviation-overlay.yaml
+    - cr:
+        path: topologies/resources/eda-lldp-overlay.yaml
+    - cr:
+        path: topologies/workflows/topology/core_v1_flowdefinition.yaml
+    - cr:
+        path: topologies/resources/eda-alarm-overlay.yaml
+    - crd:
+        api:
+          expose: readWrite
+        namespaced: true
+        path: topologies/crds/topologies.eda.nokia.com_networktopologies.yaml
+        schema: topologies/openapiv3/eda_oas_topologies.eda.nokia.com_networktopologies.json
+        workflow: true
+        ui:
+          name: Network Topology
+        conversionScript: topologies/intents/networktopology/conversion_v1.py
+    - cr:
+        path: topologies/alarms/alarms.yaml
+  dependencies:
+    - file:
+        path: topologies/intents
+    - file:
+        path: topologies/api
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: core/pysrc/
+    - file:
+        path: interfaces/
+    - file:
+        path: topologies/alarms/pysrc
+    - file:
+        path: topologies/api/v1/pysrc
+  requirements:
+    - appId: interfaces.eda.nokia.com
+      version: v6.999.0

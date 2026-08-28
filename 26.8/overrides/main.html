@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block outdated %}
+
+You're not viewing the latest version.
+<a href="{{ '../' ~ base_url }}">
+    <strong>Click here to go to latest.</strong>
+</a>
+{% endblock %}
+
+{% block announce %}
+{%- if not (config.extra.exclude_top_banner | default(false)) -%}
+Nokia EDA <b> {{config.extra.eda_version.rsplit('.', 1)[0]}} </b> is out! Join our <b><a
+        href="https://eda.dev/discord">Discord</a></b> to
+learn
+more!
+{%- endif -%}
+{% endblock %}
+
+<!-- Content -->
+{% block content %}
+{{ super() }}
+{% endblock %}

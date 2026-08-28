@@ -1,0 +1,159 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: policyattachments.qos.eda.nokia.com
+spec:
+  group: qos.eda.nokia.com
+  names:
+    kind: PolicyAttachment
+    listKind: PolicyAttachmentList
+    plural: policyattachments
+    singular: policyattachment
+  scope: Namespaced
+  versions:
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: PolicyAttachment is the Schema for the policyattachments API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PolicyAttachmentSpec defines the desired state of PolicyAttachment
+            properties:
+              attachments:
+                description: Specifies a list of Interfaces and subinterfaces on which
+                  to deploy the policies.
+                items:
+                  properties:
+                    interface:
+                      description: Specifies the Interface on which to deploy the
+                        policies.
+                      type: string
+                    interfaceType:
+                      description: Used for platforms that differentiate between access/service
+                        interfaces and network interface.  These platforms may require
+                        different classifiers depending on whether they are applied
+                        on access/service interfaces or network interfaces.  Specifies
+                        whether the classifier should be configured as a service Egress
+                        classifier or network Egress classifier
+                      enum:
+                      - ACCESS
+                      - NETWORK
+                      type: string
+                    subInterfaceIndex:
+                      description: Specifies the SubInterfaceIndex on which to deploy
+                        the policies.
+                      type: integer
+                  type: object
+                type: array
+              egressPolicy:
+                description: Specifies an EgressPolicy to deploy on the specified
+                  Node.
+                type: string
+              ingressPolicy:
+                description: Specifies the IngressPolicy to deploy on the specified
+                  Node.
+                type: string
+            required:
+            - attachments
+            type: object
+          status:
+            description: PolicyAttachmentStatus defines the observed state of PolicyAttachment
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - name: v2
+    schema:
+      openAPIV3Schema:
+        description: PolicyAttachment is the Schema for the policyattachments API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PolicyAttachmentSpec defines the desired state of PolicyAttachment
+            properties:
+              attachments:
+                description: Specifies a list of Interfaces and subinterfaces on which
+                  to deploy the policies.
+                items:
+                  properties:
+                    interface:
+                      description: Specifies the Interface on which to deploy the
+                        policies.
+                      type: string
+                    interfaceType:
+                      description: Used for platforms that differentiate between access/service
+                        interfaces and network interface.  These platforms may require
+                        different classifiers depending on whether they are applied
+                        on access/service interfaces or network interfaces.  Specifies
+                        whether the classifier should be configured as a service Egress
+                        classifier or network Egress classifier
+                      enum:
+                      - Access
+                      - Network
+                      type: string
+                    subInterfaceIndex:
+                      description: Specifies the SubInterfaceIndex on which to deploy
+                        the policies.
+                      type: integer
+                  type: object
+                type: array
+              egressPolicy:
+                description: Specifies an EgressPolicy to deploy on the specified
+                  Node.
+                type: string
+              ingressPolicy:
+                description: Specifies the IngressPolicy to deploy on the specified
+                  Node.
+                type: string
+            required:
+            - attachments
+            type: object
+          status:
+            description: PolicyAttachmentStatus defines the observed state of PolicyAttachment
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

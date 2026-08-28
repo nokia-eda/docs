@@ -1,0 +1,20 @@
+apiVersion: natsimporter.eda.nokia.com/v1alpha1
+kind: ClusterSubscriber
+metadata:
+  name: central-alerts
+  namespace: eda-system
+spec:
+  servers:
+    - nats://nats.nats.svc.cluster.local:4222
+  subject: "alerts.*"
+  type: Jetstream
+  mode: push
+  deliverPolicy: new
+  condition: 'msg.data.severity >= 8 && msg.data.environment == "production"'
+  path: '.namespace{.name=="eda"}.alerts[id="{{ .msg.data.alert_id }}"]'
+  data: |
+    {
+      "severity": {{ .msg.data.severity }},
+      "service": "{{ .msg.data.service_name }}",
+      "message": "{{ .msg.data.message }}"
+    }

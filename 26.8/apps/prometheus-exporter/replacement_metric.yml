@@ -1,0 +1,11 @@
+apiVersion: prom.eda.nokia.com/v1alpha1
+kind: Export
+metadata:
+  name: replaced-metrics
+  namespace: eda-system
+spec:
+  exports:
+    - path: .namespace.node.srl.interface.statistics
+      metricName:
+        regex: namespace_node_srl_(\w+)_statistics_(\w+)
+        replacement: "${1}_${2}"

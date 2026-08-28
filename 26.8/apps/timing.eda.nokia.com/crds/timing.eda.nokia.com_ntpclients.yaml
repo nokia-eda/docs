@@ -1,0 +1,278 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: ntpclients.timing.eda.nokia.com
+spec:
+  group: timing.eda.nokia.com
+  names:
+    kind: NTPClient
+    listKind: NTPClientList
+    plural: ntpclients
+    singular: ntpclient
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: NTPClient is the Schema for the ntpclients API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The NTP client allows for configuring NTP servers and the
+              source of NTP traffic in order for the devices to synchronize their
+              clocks.
+            properties:
+              router:
+                description: Router used to reach the NTP servers.
+                type: string
+              routerKind:
+                description: the Kind of the router used to reach the NTP servers.
+                enum:
+                - ManagementRouter
+                - Router
+                - DefaultRouter
+                type: string
+              routerSelectors:
+                description: Selects router resources based on the defined KIND.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+              servers:
+                description: A list of NTP servers, each entry in the list can either
+                  be an IP address or an FQDN.
+                items:
+                  properties:
+                    iBurst:
+                      description: Indicates whether this server should enable burst
+                        synchronization or not
+                      type: boolean
+                    preferred:
+                      description: Indicates whether this server should be preferred
+                        or not
+                      type: boolean
+                    server:
+                      description: An NTP server can either be an IP address or an
+                        FQDN
+                      type: string
+                  required:
+                  - server
+                  type: object
+                type: array
+              sourceInterface:
+                description: Specifies a Interface resource to use as a source of
+                  NTP traffic. If none is specified the Node default behavior is used.
+                type: string
+              sourceInterfaceKind:
+                description: Specifies the source interface Kind to use as a source
+                  of NTP traffic.
+                enum:
+                - IRBInterface
+                - RoutedInterface
+                - DefaultInterface
+                - SystemInterface
+                type: string
+            required:
+            - routerKind
+            - servers
+            type: object
+          status:
+            description: NTPClientStatus defines the observed state of NTPClient
+            properties:
+              health:
+                description: Indicates the health score of the NTPClient
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed
+                type: string
+              nodes:
+                description: List of nodes which are not synchronized
+                items:
+                  properties:
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    synchronized:
+                      description: Synchronized state of the Node
+                      type: string
+                  required:
+                  - node
+                  - operatingSystem
+                  type: object
+                type: array
+              operationalState:
+                description: Operational state of the NTPClient
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NTPClient is the Schema for the ntpclients API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The NTP client allows for configuring NTP servers and the
+              source of NTP traffic in order for the devices to synchronize their
+              clocks.
+            properties:
+              router:
+                description: Router used to reach the NTP servers.
+                type: string
+              routerKind:
+                description: the Kind of the router used to reach the NTP servers.
+                enum:
+                - MANAGEMENTROUTER
+                - ROUTER
+                - DEFAULTROUTER
+                type: string
+              routerSelector:
+                description: Selects router resources based on the defined KIND.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+              servers:
+                description: A list of NTP servers, each entry in the list can either
+                  be an IP address or an FQDN.
+                items:
+                  properties:
+                    iBurst:
+                      description: Indicates whether this server should enable burst
+                        synchronization or not
+                      type: boolean
+                    preferred:
+                      description: Indicates whether this server should be preferred
+                        or not
+                      type: boolean
+                    server:
+                      description: An NTP server can either be an IP address or an
+                        FQDN
+                      type: string
+                  required:
+                  - server
+                  type: object
+                type: array
+              sourceInterface:
+                description: Specifies a Interface resource to use as a source of
+                  NTP traffic. If none is specified the Node default behavior is used.
+                type: string
+              sourceInterfaceKind:
+                description: Specifies the source interface Kind to use as a source
+                  of NTP traffic.
+                enum:
+                - IRB
+                - ROUTED
+                - DEFAULT
+                - SYSTEM
+                type: string
+            required:
+            - routerKind
+            - servers
+            type: object
+          status:
+            description: NTPClientStatus defines the observed state of NTPClient
+            properties:
+              health:
+                description: Indicates the health score of the NTPClient
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed
+                type: string
+              nodes:
+                description: List of nodes which are not synchronized
+                items:
+                  properties:
+                    node:
+                      description: Reference to Node object
+                      type: string
+                    operatingSystem:
+                      description: Operating System of the Node
+                      type: string
+                    synchronized:
+                      description: Synchronized state of the Node
+                      type: string
+                  required:
+                  - node
+                  - operatingSystem
+                  type: object
+                type: array
+              operationalState:
+                description: Operational state of the NTPClient
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

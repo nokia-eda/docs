@@ -1,0 +1,10 @@
+apiVersion: filters.eda.nokia.com/v1
+kind: PrefixSet
+metadata:
+  namespace: eda
+  name: bgp-neighbors
+spec:
+  prefixes:
+    - prefix: 10.0.0.0/24
+    - prefix: 10.0.1.0/24
+    - prefix: 10.0.2.0/24

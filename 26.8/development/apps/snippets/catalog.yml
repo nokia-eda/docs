@@ -1,0 +1,11 @@
+apiVersion: appstore.eda.nokia.com/v1
+kind: Catalog
+metadata:
+  name: eda-labs
+spec:
+  remoteType: git
+  remoteURL: https://github.com/eda-labs/catalog
+  skipTLSVerify: false
+  title: EDA Labs Catalog
+  # auth secret is not required, as our Catalog repo is public
+  # authSecretRef: ''

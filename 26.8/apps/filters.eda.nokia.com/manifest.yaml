@@ -1,0 +1,136 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: filters
+spec:
+  group: filters.eda.nokia.com
+  version: v1
+  title: Filters
+  description: |
+    This application provides resources relating to filtering for various Network Operating Systems.
+  image: ghcr.io/nokia-eda/apps/filters:v6.999.0
+  gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
+  gitPathPrefix: /
+  author: Nokia
+  appInfo:
+    categories:
+      - "networking"
+    documentation: filters/docs
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  supportedCoreVersions:
+    - "v5.0"
+  components:
+    - crd:
+        path: filters/crds/filters.eda.nokia.com_filters.yaml
+        schema: filters/openapiv3/eda_oas_filters.eda.nokia.com_filters.json
+        ui:
+          category: Filters
+          name: Filters
+          icon: Filter
+        api:
+          expose: readWrite
+        conversionScript: filters/intents/filter/conversion_v1.py
+    - crd:
+        path: filters/crds/filters.eda.nokia.com_controlplanefilters.yaml
+        schema: filters/openapiv3/eda_oas_filters.eda.nokia.com_controlplanefilters.json
+        ui:
+          category: Filters
+          name: Control Plane Filters
+          icon: FilterAuto
+        api:
+          expose: readWrite
+        conversionScript: filters/intents/controlplanefilter/conversion_v1.py
+    # - crd:
+    #     path: filters/crds/filters.eda.nokia.com_ipfilterstates.yaml
+    #     schema: filters/openapiv3/eda_oas_filters.eda.nokia.com_ipfilterstates.json
+    #     expose: none
+    - crd:
+        path: filters/crds/filters.eda.nokia.com_filterdeployments.yaml
+        schema: filters/openapiv3/eda_oas_filters.eda.nokia.com_filterdeployments.json
+        api:
+          expose: none
+        conversionScript: filters/intents/filterdeployment/conversion_v1.py
+    - crd:
+        path: filters/crds/filters.eda.nokia.com_mirrorfilterdeployments.yaml
+        schema: filters/openapiv3/eda_oas_filters.eda.nokia.com_mirrorfilterdeployments.json
+        api:
+          expose: none
+        conversionScript: filters/intents/mirrorfilterdeployment/conversion_v1.py
+    - crd:
+        path: filters/crds/filters.eda.nokia.com_mirrorfilters.yaml
+        schema: filters/openapiv3/eda_oas_filters.eda.nokia.com_mirrorfilters.json
+        api:
+          expose: none
+        conversionScript: filters/intents/mirrorfilter/conversion_v1.py
+    - script:
+        path: filters/intents/filterdeployment/filterdeployment_intent.py
+        type: config
+        trigger:
+          kind: FilterDeployment
+          #group:
+          #version:
+    - script:
+        path: filters/intents/filter/filter_intent.py
+        type: config
+        trigger:
+          kind: Filter
+    - script:
+        path: filters/intents/controlplanefilter/controlplanefilter_intent.py
+        type: config
+        trigger:
+          kind: ControlPlaneFilter
+    - script:
+        path: filters/intents/mirrorfilter/mirrorfilter_intent.py
+        type: config
+        trigger:
+          kind: MirrorFilter
+    - script:
+        path: filters/intents/mirrorfilterdeployment/mirrorfilterdeployment_intent.py
+        type: config
+        trigger:
+          kind: MirrorFilterDeployment
+    - crd:
+        api:
+          expose: readWrite
+        path: filters/crds/filters.eda.nokia.com_prefixsets.yaml
+        schema: filters/openapiv3/eda_oas_filters.eda.nokia.com_prefixsets.json
+        ui:
+          category: Filters
+          name: Prefix Sets
+          icon: Ipoe
+    - crd:
+        path: filters/crds/filters.eda.nokia.com_prefixsetdeployments.yaml
+        schema: filters/openapiv3/eda_oas_filters.eda.nokia.com_prefixsetdeployments.json
+    - script:
+        path: filters/intents/prefixset/config_intent.py
+        trigger:
+          kind: PrefixSet
+        type: config
+    - script:
+        path: filters/intents/prefixsetdeployment/config_intent.py
+        trigger:
+          kind: PrefixSetDeployment
+        type: config
+  dependencies:
+    - file:
+        path: common/
+    - file:
+        path: utils/
+    - file:
+        path: filters/intents
+    - file:
+        path: filters/api
+    - file:
+        path: filters/api/v1/pysrc

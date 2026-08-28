@@ -1,0 +1,18 @@
+# https://doc.crds.dev/github.com/nokia-eda/kpt/core.eda.nokia.com/NodeUser/v1@v24.12.1
+---
+apiVersion: core.eda.nokia.com/v1
+kind: NodeUser
+metadata:
+  name: admin
+  namespace: eda
+spec:
+  groupBindings:
+    - groups:
+        - sudo
+      nodeSelector:
+        - ""
+  username: admin
+  password: NokiaSrl1!
+  sshPublicKeys:
+    # an optional list of ssh public keys for the node user
+    # - "ssh-ed25519 AAAAC3NzaC1lZYOURKEYHEREYOURKEYHEREYOURKEYHEREYOURKEYHEREHDLeDteKN74"

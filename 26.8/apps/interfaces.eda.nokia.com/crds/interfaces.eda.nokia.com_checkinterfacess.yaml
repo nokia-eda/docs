@@ -1,0 +1,325 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: checkinterfacess.interfaces.eda.nokia.com
+spec:
+  group: interfaces.eda.nokia.com
+  names:
+    kind: CheckInterfaces
+    listKind: CheckInterfacesList
+    plural: checkinterfacess
+    singular: checkinterfaces
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: CheckInterfaces is the Schema for the checkinterfacess API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CheckInterfacesSpec defines the desired state of CheckInterfaces
+            properties:
+              checkStateCounters:
+                description: Configure checking state paths for erroneous counter
+                  increments.
+                properties:
+                  checks:
+                    description: |-
+                      Which checks to run in the CheckStateCounters stage.
+                      If none are specified, all checks will be run.
+                    items:
+                      enum:
+                      - EthernetCRC
+                      - EthernetFrameSize
+                      - EthernetPauseFrames
+                      - CarrierTransitions
+                      - DiscardedPackets
+                      - TransceiverHealth
+                      - LACPErrors
+                      - IfPacketErrors
+                      type: string
+                    type: array
+                  skip:
+                    default: false
+                    description: Boolean to indicate if checking for Interface Errors
+                      needs to be skipped.
+                    type: boolean
+                  waitTimeSeconds:
+                    default: 30
+                    description: Wait Time (seconds) sample interval to verify if
+                      error counters increased.
+                    format: int32
+                    maximum: 900
+                    minimum: 10
+                    type: integer
+                type: object
+              interfaceSelectors:
+                items:
+                  type: string
+                type: array
+              nodeSelectors:
+                items:
+                  type: string
+                type: array
+              nodes:
+                items:
+                  type: string
+                type: array
+            type: object
+          status:
+            description: CheckInterfacesStatus defines the observed state of CheckInterfaces
+            properties:
+              details:
+                description: |-
+                  Details contains the results of the checks performed on each node.
+                  Each entry in the list corresponds to a node where the Operational State has been checked.
+                items:
+                  properties:
+                    aggregateCount:
+                      description: Aggregate count of interfaces that passed/failed
+                        checks, if available.
+                      properties:
+                        down:
+                          description: Number of interfaces that failed one or more
+                            checks.
+                          type: integer
+                        total:
+                          description: Total number of interfaces checked.
+                          type: integer
+                        up:
+                          description: Number of interfaces that passed all checks.
+                          type: integer
+                      required:
+                      - down
+                      - total
+                      - up
+                      type: object
+                    details:
+                      description: Details of the interface check result, if available.
+                      items:
+                        properties:
+                          failedChecks:
+                            description: Checks that failed on the interface, if any.
+                            items:
+                              enum:
+                              - EthernetCRC
+                              - EthernetFrameSize
+                              - EthernetPauseFrames
+                              - CarrierTransitions
+                              - DiscardedPackets
+                              - TransceiverHealth
+                              - LACPErrors
+                              - IfPacketErrors
+                              type: string
+                            type: array
+                          interfaceName:
+                            description: Interface Name
+                            type: string
+                          operationalState:
+                            description: Indicates the current operational state of
+                              the Interface.
+                            properties:
+                              enabled:
+                                description: The administrative status of the Interface.
+                                type: boolean
+                              lag:
+                                properties:
+                                  adminKey:
+                                    description: LACP Admin Key.
+                                    type: integer
+                                  systemMAC:
+                                    description: LACP System ID MAC address.
+                                    type: string
+                                type: object
+                              lastChange:
+                                description: Indicates when this Interface last changed
+                                  state.
+                                type: string
+                              members:
+                                description: List of members in this Interface.
+                                items:
+                                  properties:
+                                    enabled:
+                                      description: The administrative status of this
+                                        member.
+                                      type: boolean
+                                    interface:
+                                      description: The name of the interface in normalized
+                                        format.
+                                      type: string
+                                    lastChange:
+                                      description: Indicates when this member last
+                                        changed state.
+                                      type: string
+                                    neighbors:
+                                      description: List of discovered neighbors on
+                                        this member.
+                                      items:
+                                        properties:
+                                          interface:
+                                            description: The name of a neighbor interface
+                                              of this member in node specific format.
+                                            type: string
+                                          node:
+                                            description: The name of a neighbor node
+                                              of this member in node specific format.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    node:
+                                      description: The node on which the interface
+                                        is configured.
+                                      type: string
+                                    nodeInterface:
+                                      description: Node specific interface name, for
+                                        example "ethernet-1/1", "1/1/c1/1".
+                                      type: string
+                                    operationalState:
+                                      description: Indicates the current operational
+                                        state of this member.
+                                      enum:
+                                      - Up
+                                      - Down
+                                      - Degraded
+                                      - Unknown
+                                      - N/A
+                                      type: string
+                                    speed:
+                                      description: Indicates the operational speed
+                                        of the member.
+                                      type: string
+                                  required:
+                                  - nodeInterface
+                                  type: object
+                                type: array
+                              operationalState:
+                                description: Indicates the current operational state
+                                  of the Interface.
+                                enum:
+                                - Up
+                                - Down
+                                - Degraded
+                                - Unknown
+                                - N/A
+                                type: string
+                              speed:
+                                description: Indicates the operational speed of the
+                                  Interface in aggregate.
+                                type: string
+                            type: object
+                        required:
+                        - interfaceName
+                        type: object
+                      type: array
+                    error:
+                      description: Error message, if the interface check failed.
+                      type: string
+                    nodeName:
+                      description: Node the interface was checked on.
+                      type: string
+                    success:
+                      description: Indicates if the interface check was successful.
+                      type: boolean
+                  required:
+                  - nodeName
+                  type: object
+                type: array
+              result:
+                default: Failed
+                description: Aggregate result of the Flow
+                enum:
+                - Success
+                - Failed
+                - Warning
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.result
+      name: Result
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CheckInterfacesSpec defines the desired state of CheckInterfaces
+            properties:
+              interfaceSelector:
+                items:
+                  type: string
+                type: array
+              nodeSelector:
+                items:
+                  type: string
+                type: array
+              nodes:
+                items:
+                  type: string
+                type: array
+              waitFor:
+                type: integer
+            type: object
+          status:
+            description: CheckInterfacesStatus defines the observed state of CheckInterfaces
+            properties:
+              result:
+                description: Aggregate result of the Flow
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

@@ -1,0 +1,642 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: isls.fabrics.eda.nokia.com
+spec:
+  group: fabrics.eda.nokia.com
+  names:
+    kind: ISL
+    listKind: ISLList
+    plural: isls
+    singular: isl
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v1
+    schema:
+      openAPIV3Schema:
+        description: ISL is the Schema for the isls API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The ISL enables the configuration and management of direct
+              links between Nodes. This resource allows for specifying IPv4 and IPv6
+              allocation pools, enabling BFD for fast failure detection, and configuring
+              VLAN IDs for the ISL. It also supports BGP peering between the endpoints,
+              with options for setting autonomous systems, AFI/SAFI configurations,
+              and import/export routing policies.
+            properties:
+              bfd:
+                description: Enable or disable BFD on the ISL. [default=false]
+                properties:
+                  desiredMinTransmitIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between transmission
+                      of BFD control packets.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down.
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enables Biforward Detection.
+                    type: boolean
+                  requiredMinEchoReceiveIntMs:
+                    default: 1000
+                    description: The minimum interval between echo packets the local
+                      node can receive.
+                    maximum: 100000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceiveIntMs:
+                    default: 1000
+                    description: The minimum interval in milliseconds between received
+                      BFD control packets that this system should support.
+                    maximum: 100000
+                    minimum: 10
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                required:
+                - enabled
+                type: object
+              bgp:
+                properties:
+                  afiSAFIs:
+                    description: 'Which AFI and SAFI to advertise on the BGP peering
+                      session. Options: ipv4unicast, ipv6unicast, l2vpnevpn'
+                    items:
+                      type: string
+                    type: array
+                  bgpGroup:
+                    description: Reference to a DefaultBgpGroup.
+                    type: string
+                  enabled:
+                    default: false
+                    description: Enable or disable BGP peering between the two endpoints
+                      of the ISL. [default=false]
+                    type: boolean
+                  exportPolicies:
+                    description: Reference to a RoutingPolicy to use when evaluating
+                      route exports from the DefaultRouter.
+                    items:
+                      type: string
+                    type: array
+                  importPolicies:
+                    description: Reference to a RoutingPolicy to use when evaluating
+                      route imports into the DefaultRouter.
+                    items:
+                      type: string
+                    type: array
+                  keychain:
+                    description: Keychain to be used for authentication
+                    type: string
+                  localInterfaceAS:
+                    description: The Autonomous System to configure on the Local Interface.
+                    format: int32
+                    maximum: 4294967295
+                    minimum: 0
+                    type: integer
+                  remoteInterfaceAS:
+                    description: The Autonomous System to configure on the Remote
+                      Interface.
+                    format: int32
+                    maximum: 4294967295
+                    minimum: 0
+                    type: integer
+                required:
+                - enabled
+                - localInterfaceAS
+                - remoteInterfaceAS
+                type: object
+              ipMTU:
+                description: Sets the IP MTU for the local and remote Interfaces
+                maximum: 9486
+                minimum: 1280
+                type: integer
+              localDefaultRouter:
+                description: Reference to the DefaultRouter associated with the local
+                  Interface in which the ISL will be provisioned.
+                type: string
+              localInterface:
+                description: Reference to an Interface.
+                type: string
+              ospf:
+                description: Enable or disable OSPF on the ISL.
+                properties:
+                  enabled:
+                    description: |-
+                      Enable or disable OSPF between the two endpoints of the ISL.
+                      kubebuilder:validation:Boolean
+                    type: boolean
+                  ospfv2:
+                    description: OSPFv2 Parameters.
+                    properties:
+                      localIPv4Area:
+                        description: Reference to a IPV4 DefaultOSPFArea on the local
+                          interface.
+                        type: string
+                      localIPv4Instance:
+                        description: Reference to a IPV4 DefaultOSPFInstance on the
+                          local interface.
+                        type: string
+                      remoteIPv4Area:
+                        description: Reference to a IPV4 DefaultOSPFArea on the remote
+                          interface.
+                        type: string
+                      remoteIPv4Instance:
+                        description: Reference to a IPV4 DefaultOSPFInstance on the
+                          remote interface
+                        type: string
+                    type: object
+                  ospfv3:
+                    description: OSPFv3 Parameters.
+                    properties:
+                      localIPv4Area:
+                        description: Reference to a IPV4 DefaultOSPFArea on the local
+                          interface.
+                        type: string
+                      localIPv4Instance:
+                        description: Reference to a IPV4 DefaultOSPFInstance on the
+                          local interface
+                        type: string
+                      localIPv6Area:
+                        description: Reference to a IPV6 DefaultOSPFArea on the local
+                          interface.
+                        type: string
+                      localIPv6Instance:
+                        description: Reference to a IPV6 DefaultOSPFInstance on the
+                          local interface.
+                        type: string
+                      remoteIPv4Area:
+                        description: Reference to a IPV4 DefaultOSPFArea on the remote
+                          interface.
+                        type: string
+                      remoteIPv4Instance:
+                        description: Reference to a IPV4 DefaultOSPFInstance on the
+                          remote interface
+                        type: string
+                      remoteIPv6Area:
+                        description: Reference to a IPV6 DefaultOSPFArea on the remote
+                          interface.
+                        type: string
+                      remoteIPv6Instance:
+                        description: Reference to a IPV6 DefaultOSPFInstance on the
+                          remote interface.
+                        type: string
+                    type: object
+                required:
+                - enabled
+                type: object
+              poolIPv4:
+                description: Reference to an IPv4 allocation pool to use for ISL subnet
+                  allocations.
+                type: string
+              poolIPv6:
+                description: Reference to an IPv6 allocation pool to use for ISL subnet
+                  allocations.
+                type: string
+              qos:
+                properties:
+                  egressPolicy:
+                    type: string
+                  ingressPolicy:
+                    type: string
+                type: object
+              remoteDefaultRouter:
+                description: Reference to the DefaultRouter associated with the remote
+                  Interface in which the ISL will be provisioned.
+                type: string
+              remoteInterface:
+                description: Reference to an Interface.
+                type: string
+              unnumbered:
+                description: Enables the use of unnumbered interfaces on the ISL.
+                  For IPv6, no IP address are configured on the sub-interface and
+                  only the link local address will be used. If any allocation pool
+                  is specified for IPv6 that will take precedence and IPs will be
+                  assigned to the interfaces.  When using eBGP for an underlay protocol,
+                  the DefaultInterfaces which are a part of the ISL will be added
+                  to the BGP dynamic neighbor list.
+                enum:
+                - IPv6
+                type: string
+              vlanID:
+                description: Single VLAN tag value between 1-4094.
+                maximum: 4094
+                minimum: 1
+                type: integer
+            required:
+            - localDefaultRouter
+            - localInterface
+            - remoteDefaultRouter
+            - remoteInterface
+            type: object
+          status:
+            description: ISLStatus defines the observed state of ISL
+            properties:
+              health:
+                description: Indicates the health score of the ISL
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed
+                type: string
+              localInterface:
+                description: Local Interface
+                properties:
+                  IPv4Address:
+                    description: Local Interface IPv4 address
+                    type: string
+                  IPv6Address:
+                    description: Local Interface IPv4 address
+                    type: string
+                  defaultInterface:
+                    description: Reference to the DefaulInterface associated with
+                      the local interface
+                    type: string
+                  node:
+                    description: Reference to the TopoNode on which the local interface
+                      is configured
+                    type: string
+                type: object
+              operationalState:
+                description: Operational state of the ISL
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+              remoteInterface:
+                description: Remote Interface
+                properties:
+                  IPv4Address:
+                    description: Remote Interface IPv4 address
+                    type: string
+                  IPv6Address:
+                    description: Remote Interface IPv6 address
+                    type: string
+                  defaultInterface:
+                    description: Reference to the DefaulInterface associated with
+                      the remote interface
+                    type: string
+                  node:
+                    description: Reference to the TopoNode on which the remote interface
+                      is configured
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChange
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ISL is the Schema for the isls API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: The ISL enables the configuration and management of direct
+              links between Nodes. This resource allows for specifying IPv4 and IPv6
+              allocation pools, enabling BFD for fast failure detection, and configuring
+              VLAN IDs for the ISL. It also supports BGP peering between the endpoints,
+              with options for setting autonomous systems, AFI/SAFI configurations,
+              and import/export routing policies.
+            properties:
+              bfd:
+                description: Enable or disable BFD on the ISL. [default=false]
+                properties:
+                  desiredMinTransmitInt:
+                    default: 1000000
+                    description: The minimum interval in microseconds between transmission
+                      of BFD control packets.
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  detectionMultiplier:
+                    default: 3
+                    description: The number of packets that must be missed to declare
+                      this session as down.
+                    maximum: 20
+                    minimum: 3
+                    type: integer
+                  enabled:
+                    default: false
+                    description: Enable Biforward Detection.
+                    type: boolean
+                  minEchoReceiveInterval:
+                    default: 1000000
+                    description: The minimum interval between echo packets the local
+                      node can receive in microseconds.
+                    maximum: 100000000
+                    minimum: 0
+                    type: integer
+                  requiredMinReceive:
+                    default: 1000000
+                    description: The minimum interval in microseconds between received
+                      BFD control packets that this system should support.
+                    maximum: 100000000
+                    minimum: 10000
+                    type: integer
+                  ttl:
+                    description: Sets custom IP TTL or Hop Limit for multi-hop BFD
+                      sessions packets. Not applicable to single-hop BFD sessions.
+                    maximum: 255
+                    minimum: 2
+                    type: integer
+                type: object
+              bgp:
+                properties:
+                  afiSAFI:
+                    description: 'Which AFI and SAFI to advertise on the BGP peering
+                      session. Options: ipv4unicast, ipv6unicast, l2vpnevpn'
+                    items:
+                      type: string
+                    type: array
+                  bgpGroup:
+                    description: Reference to a DefaultBgpGroup.
+                    type: string
+                  enabled:
+                    default: false
+                    description: Enable or disable BGP peering between the two endpoints
+                      of the ISL. [default=false]
+                    type: boolean
+                  exportPolicy:
+                    description: Reference to a RoutingPolicy to use when evaluating
+                      route exports from the DefaultRouter.
+                    items:
+                      type: string
+                    type: array
+                  importPolicy:
+                    description: Reference to a RoutingPolicy to use when evaluating
+                      route imports into the DefaultRouter.
+                    items:
+                      type: string
+                    type: array
+                  keychain:
+                    description: Keychain to be used for authentication
+                    type: string
+                  localInterfaceAS:
+                    description: The Autonomous System to configure on the Local Interface.
+                    format: int32
+                    maximum: 4294967295
+                    minimum: 0
+                    type: integer
+                  remoteInterfaceAS:
+                    description: The Autonomous System to configure on the Remote
+                      Interface.
+                    format: int32
+                    maximum: 4294967295
+                    minimum: 0
+                    type: integer
+                required:
+                - enabled
+                - localInterfaceAS
+                - remoteInterfaceAS
+                type: object
+              ipMTU:
+                description: Sets the IP MTU for the local and remote Interfaces
+                maximum: 9486
+                minimum: 1280
+                type: integer
+              localDefaultRouter:
+                description: Reference to the DefautlRouter associated with the local
+                  Interface in which the ISL will be provisioned.
+                type: string
+              localInterface:
+                description: Reference to an Interface.
+                type: string
+              ospf:
+                description: Enable or disable OSPF on the ISL.
+                properties:
+                  enabled:
+                    description: |-
+                      Enable or disable OSPF between the two endpoints of the ISL.
+                      kubebuilder:validation:Boolean
+                    type: boolean
+                  ospfv2:
+                    description: OSPFv2 Parameters.
+                    properties:
+                      localIPV4Area:
+                        description: Reference to a IPV4 DefaultOSPFArea on the local
+                          interface.
+                        type: string
+                      localIPV4Instance:
+                        description: Reference to a IPV4 DefaultOSPFInstance on the
+                          local interface.
+                        type: string
+                      remoteIPV4Area:
+                        description: Reference to a IPV4 DefaultOSPFArea on the remote
+                          interface.
+                        type: string
+                      remoteIPV4Instance:
+                        description: Reference to a IPV4 DefaultOSPFInstance on the
+                          remote interface
+                        type: string
+                    type: object
+                  ospfv3:
+                    description: OSPFv3 Parameters.
+                    properties:
+                      localIPV4Area:
+                        description: Reference to a IPV4 DefaultOSPFArea on the local
+                          interface.
+                        type: string
+                      localIPV4Instance:
+                        description: Reference to a IPV4 DefaultOSPFInstance on the
+                          local interface
+                        type: string
+                      localIPV6Area:
+                        description: Reference to a IPV6 DefaultOSPFArea on the local
+                          interface.
+                        type: string
+                      localIPV6Instance:
+                        description: Reference to a IPV6 DefaultOSPFInstance on the
+                          local interface.
+                        type: string
+                      remoteIPV4Area:
+                        description: Reference to a IPV4 DefaultOSPFArea on the remote
+                          interface.
+                        type: string
+                      remoteIPV4Instance:
+                        description: Reference to a IPV4 DefaultOSPFInstance on the
+                          remote interface
+                        type: string
+                      remoteIPV6Area:
+                        description: Reference to a IPV6 DefaultOSPFArea on the remote
+                          interface.
+                        type: string
+                      remoteIPV6Instance:
+                        description: Reference to a IPV6 DefaultOSPFInstance on the
+                          remote interface.
+                        type: string
+                    type: object
+                required:
+                - enabled
+                type: object
+              poolIPV4:
+                description: Reference to an IPv4 allocation pool to use for ISL subnet
+                  allocations.
+                type: string
+              poolIPV6:
+                description: Reference to an IPv6 allocation pool to use for ISL subnet
+                  allocations.
+                type: string
+              qos:
+                properties:
+                  egressPolicy:
+                    type: string
+                  ingressPolicy:
+                    type: string
+                type: object
+              remoteDefaultRouter:
+                description: Reference to the DefautlRouter associated with the remote
+                  Interface in which the ISL will be provisioned.
+                type: string
+              remoteInterface:
+                description: Reference to an Interface
+                type: string
+              unnumbered:
+                description: Enables the use of unnumbered interfaces on the ISL.
+                  For IPv6, no IP address are configured on the sub-interface and
+                  only the link local address will be used. If any allocation pool
+                  is specified for IPv6 that will take precedence and IPs will be
+                  assigned to the interfaces.  When using eBGP for an underlay protocol,
+                  the DefaultInterfaces which are a part of the ISL will be added
+                  to the BGP dynamic neighbor list.
+                enum:
+                - IPV6
+                type: string
+              vlanID:
+                description: Single VLAN tag value between 1-4094.
+                maximum: 4094
+                minimum: 1
+                type: integer
+            required:
+            - localDefaultRouter
+            - localInterface
+            - remoteDefaultRouter
+            - remoteInterface
+            type: object
+          status:
+            description: ISLStatus defines the observed state of ISL
+            properties:
+              health:
+                description: Indicates the health score of the ISL
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score
+                type: string
+              lastChange:
+                description: The time when the state of the resource last changed
+                type: string
+              localInterface:
+                description: Local Interface
+                properties:
+                  IPv4Address:
+                    description: Local Interface IPv4 address
+                    type: string
+                  IPv6Address:
+                    description: Local Interface IPv4 address
+                    type: string
+                  defaultInterface:
+                    description: Reference to the DefaulInterface associated with
+                      the local interface
+                    type: string
+                  node:
+                    description: Reference to the TopoNode on which the local interface
+                      is configured
+                    type: string
+                type: object
+              operationalState:
+                description: Operational state of the ISL
+                type: string
+              remoteInterface:
+                description: Remote Interface
+                properties:
+                  IPv4Address:
+                    description: Remote Interface IPv4 address
+                    type: string
+                  IPv6Address:
+                    description: Remote Interface IPv6 address
+                    type: string
+                  defaultInterface:
+                    description: Reference to the DefaulInterface associated with
+                      the remote interface
+                    type: string
+                  node:
+                    description: Reference to the TopoNode on which the remote interface
+                      is configured
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

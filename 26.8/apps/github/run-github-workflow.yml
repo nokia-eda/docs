@@ -1,0 +1,17 @@
+apiVersion: github.eda.nokia.com/v1alpha1
+kind: RunGithubWorkflow
+metadata:
+  name: run-github-workflow-now
+  namespace: eda
+spec:
+  instance: github-server
+  repo: network-operations
+  workflow: ci.yml
+  ref: main
+  parameters:
+    - name: trigger_source
+      value:
+        staticValue: EDA
+    - name: requested_by
+      value:
+        staticValue: workflow-cr

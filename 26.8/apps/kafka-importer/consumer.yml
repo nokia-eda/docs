@@ -1,0 +1,14 @@
+apiVersion: kafkaimporter.eda.nokia.com/v1alpha1
+kind: Consumer
+metadata:
+  name: interface-events
+  namespace: eda
+spec:
+  brokers:
+    - kafka.kafka.svc.cluster.local:9092
+  topic: interface-events
+  offsetResetPolicy: earliest
+  deliveryMode: AtLeastOnce
+  condition: 'msg.value.oper_state == "down" && !msg.is_tombstone'
+  path: '.interfaces[name="{{ .msg.key.interface_name }}"]'
+  data: '{{ .msg.value }}'

@@ -1,0 +1,11 @@
+apiVersion: protocols.eda.nokia.com/v2
+kind: AggregateRoute
+metadata:
+  name: ospf-hierarchy-aggregate-route
+  namespace: eda
+spec:
+  nodes:
+    - leaf-1
+  prefixes:
+    - 10.0.0.0/22
+  router: ospf-hierarchy-router
