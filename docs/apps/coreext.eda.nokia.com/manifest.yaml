@@ -10,18 +10,17 @@ spec:
   author: nokia
   dependencies:
     - file:
-        path: utils
-    - file:
-        path: common
-    - file:
         path: coreext/api
     - file:
         path: coreext/api/v1alpha1/pysrc
+    - container:
+        image: registry.eda.dev/coreext/workflows/platformbackup:latest
+        name: platformbackup
   description: This application contains extensions to EDA core
   group: coreext.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/coreext:v6.999.0
+  image: ghcr.io/nokia-eda/apps/coreext:v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   title: Core Extensions
   version: v1alpha1
   components:
@@ -33,6 +32,7 @@ spec:
         schema: coreext/openapiv3/eda_oas_coreext.eda.nokia.com_platformbackups.json
         ui:
           name: Platform Backups
+          category: Platform
         workflow: true
     - cr:
         path: coreext/workflows/platformbackup/core_v1_flowdefinition.yaml

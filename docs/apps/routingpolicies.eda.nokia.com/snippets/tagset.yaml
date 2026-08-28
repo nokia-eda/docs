@@ -1,1 +1,8 @@
-# Add an example
+apiVersion: routingpolicies.eda.nokia.com/v1
+kind: TagSet
+metadata:
+  name: no-export
+  namespace: routingpolicies
+spec:
+  tags:
+    - tag: 20

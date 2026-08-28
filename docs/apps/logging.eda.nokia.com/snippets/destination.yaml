@@ -1,0 +1,12 @@
+apiVersion: logging.eda.nokia.com/v1alpha1
+kind: Destination
+metadata:
+  name: my-router-syslog-destination
+  namespace: eda
+spec:
+  syslog:
+    address: 10.0.100.101
+    protocol: UDP
+    router: my-router
+    routerKind: Router
+  type: Syslog

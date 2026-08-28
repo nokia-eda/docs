@@ -8,7 +8,7 @@ spec:
   title: Security
   description: |
     This application provides resources related to security for various Network Operating Systems.
-  image: ghcr.io/nokia-eda/apps/security:v6.999.0
+  image: ghcr.io/nokia-eda/apps/security:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -30,7 +30,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: security/crds/security.eda.nokia.com_keychains.yaml
@@ -72,9 +72,7 @@ spec:
     - file:
         path: utils/
     - file:
-        path: interfaces/
-    - file:
         path: security/api/v1/pysrc
   requirements:
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0

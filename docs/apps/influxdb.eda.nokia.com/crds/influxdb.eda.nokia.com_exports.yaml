@@ -1,0 +1,195 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: exports.influxdb.eda.nokia.com
+spec:
+  group: influxdb.eda.nokia.com
+  names:
+    kind: Export
+    listKind: ExportList
+    plural: exports
+    singular: export
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Export is the Schema for the exports API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ExportSpec defines the desired state of Export
+            properties:
+              description:
+                description: A short description of the export rules.
+                type: string
+              enabled:
+                default: true
+                description: Specifies if the Export rules are enabled or not.
+                type: boolean
+              exports:
+                description: List of export rules defining which EDB tables are exported
+                  to InfluxDB.
+                properties:
+                  alarms:
+                    description: Defines Alarms as export source
+                    properties:
+                      exclude:
+                        description: List of Alarm types to exclude.
+                        items:
+                          type: string
+                        type: array
+                      include:
+                        description: List of Alarm types to include. Set it to '*'
+                          for all.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  query:
+                    description: Defines a custom query as export source
+                    items:
+                      properties:
+                        customization:
+                          description: InfluxDB data point manipulation.
+                          properties:
+                            fields:
+                              description: Field names customization
+                              items:
+                                properties:
+                                  match:
+                                    description: A regular expression to be matched
+                                      against the measurement name
+                                    type: string
+                                  replacement:
+                                    description: A regular expression replacement
+                                      to be applied to the measurement name
+                                    type: string
+                                type: object
+                              type: array
+                            measurement:
+                              description: Measurement name renaming regex and replacement
+                              properties:
+                                match:
+                                  description: A regular expression to be matched
+                                    against the measurement name
+                                  type: string
+                                replacement:
+                                  description: A regular expression replacement to
+                                    be applied to the measurement name
+                                  type: string
+                              type: object
+                            tags:
+                              description: Tags customization
+                              items:
+                                properties:
+                                  delimiter:
+                                    default: =
+                                    description: Delimiter to join the tag name and
+                                      value
+                                    type: string
+                                  match:
+                                    description: A regular expression to be matched
+                                      against tag_name + delimiter + tag_value
+                                    type: string
+                                  replacement:
+                                    description: A regular expression replacement
+                                      to be applied to tag_name + delimiter + tag_value
+                                    type: string
+                                type: object
+                              type: array
+                          type: object
+                        fields:
+                          description: |-
+                            Fields to export from the EDB table set in Path.
+                            Exports all fields if not specified.
+                          items:
+                            type: string
+                          type: array
+                        mode:
+                          default: on-change
+                          description: Export mode.
+                          enum:
+                          - on-change
+                          - periodic
+                          - both
+                          type: string
+                        path:
+                          description: |-
+                            The EDB path to export, in the format '.node.srl.interface'.
+                            Should NOT include the namespace path element.
+                          type: string
+                        period:
+                          description: Export period. Applicable when mode is set
+                            to 'periodic' or 'both'.
+                          type: string
+                        where:
+                          description: A where clause to use for the query, e.g. 'oper-state
+                            = down'. You can omit enclosing parentheses.
+                          type: string
+                      type: object
+                    type: array
+                  resource:
+                    description: Defines EDA resources as export source
+                    items:
+                      properties:
+                        group:
+                          description: The resource group.
+                          type: string
+                        kind:
+                          description: The resource kind.
+                          type: string
+                        name:
+                          description: The resource name to export. Omit to export
+                            all resources based on their GVK
+                          type: string
+                        version:
+                          description: The resource version.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              servers:
+                description: List of influxDB server destination where EDB tables
+                  must be written.
+                items:
+                  properties:
+                    bucket:
+                      description: InfluxDB Bucket Name.
+                      type: string
+                    name:
+                      description: InfluxDB server Name.
+                      type: string
+                  type: object
+                type: array
+            required:
+            - exports
+            - servers
+            type: object
+          status:
+            description: ExportStatus defines the observed state of Export
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

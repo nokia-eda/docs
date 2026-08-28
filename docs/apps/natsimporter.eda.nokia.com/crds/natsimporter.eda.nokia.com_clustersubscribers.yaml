@@ -1,0 +1,197 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: clustersubscribers.natsimporter.eda.nokia.com
+spec:
+  group: natsimporter.eda.nokia.com
+  names:
+    kind: ClusterSubscriber
+    listKind: ClusterSubscriberList
+    plural: clustersubscribers
+    singular: clustersubscriber
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ClusterSubscriber is the Schema for the clustersubscribers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: spec defines the desired state of ClusterSubscriber
+            properties:
+              ack:
+                description: Ack Policy Configuration.
+                properties:
+                  ackPolicy:
+                    default: all
+                    description: NATS Ack Policy.
+                    enum:
+                    - all
+                    - explicit
+                    - none
+                    type: string
+                  ackWait:
+                    default: 5s
+                    description: NATS Ack Wait time.
+                    format: duration
+                    type: string
+                  maxRetries:
+                    default: 3
+                    description: NATS Max Retries.
+                    minimum: 0
+                    type: integer
+                type: object
+              batchSize:
+                type: integer
+              clientName:
+                description: |-
+                  Client name.
+                  For Jetstream this is the consumer durable name.
+                type: string
+              condition:
+                description: |-
+                  Condition to check. CEL expression.
+                  If not set, the message is published.
+                type: string
+              credentialsSecretName:
+                description: NATS Credentials. A secret name with a 'username' and
+                  'password' keys.
+                type: string
+              data:
+                description: |-
+                  Go template for the payload to publish.
+                  Must return a JSON string.
+                  Available fields: .msg.subject, .msg.data, .msg.headers
+                type: string
+              deliverPolicy:
+                default: new
+                description: Deliver policy.
+                enum:
+                - all
+                - last
+                - new
+                type: string
+              maxBytes:
+                type: integer
+              mode:
+                default: push
+                description: Jetstream Subscriber Mode. Required only when type is
+                  Jetstream.
+                enum:
+                - push
+                - pull
+                type: string
+              path:
+                description: |-
+                  Go template for the path where to publish the message.
+                  Available fields: .msg.subject, .msg.data, .msg.headers
+                type: string
+              pullTimeout:
+                description: Expiry timer for the pull request
+                type: string
+              servers:
+                description: List of NATS servers to connect to.
+                items:
+                  type: string
+                minItems: 1
+                type: array
+              subject:
+                description: Subject to subscribe to.
+                minLength: 1
+                type: string
+              tls:
+                description: TLS configuration.
+                properties:
+                  fromFiles:
+                    description: Certificates files.
+                    properties:
+                      caFile:
+                        description: Path to a certificate authority file.
+                        type: string
+                      certFile:
+                        description: The client certificate file location.
+                        type: string
+                      keyFile:
+                        description: The client private key location.
+                        type: string
+                      skipVerify:
+                        description: If true the client will not verify the server's
+                          certificate.
+                        type: boolean
+                    type: object
+                  fromSecret:
+                    description: |-
+                      Secret containing a `tls.crt`, a `tls.key` and a `ca.crt` keys.
+                      Both `tls.crt` and `tls.key` must be present.
+                      If `ca.crt` is not present and `.trustBundle` is not set
+                      the remote server certificate is not verified.
+                    type: string
+                  trustBundle:
+                    description: |-
+                      ConfigMap containing a set of trust bundles (key `trust-bundle.pem`) used to
+                      verify the remote server certificates.
+                    type: string
+                type: object
+              type:
+                default: NATS
+                description: Type of subscriber.
+                enum:
+                - NATS
+                - Jetstream
+                type: string
+            required:
+            - data
+            - path
+            - servers
+            - subject
+            - type
+            type: object
+          status:
+            description: status defines the observed state of ClusterSubscriber
+            properties:
+              ackPendingCount:
+                type: integer
+              connected:
+                type: boolean
+              consumer:
+                type: string
+              error:
+                type: string
+              lastReconnectedTime:
+                format: date-time
+                type: string
+              lastSeenTime:
+                format: date-time
+                type: string
+              stream:
+                type: string
+            required:
+            - connected
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -8,7 +8,7 @@ spec:
   title: Services
   description: |
     This application provides EVPN services for various Network Operating Systems.
-  image: ghcr.io/nokia-eda/apps/services:v6.999.0
+  image: ghcr.io/nokia-eda/apps/services:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -30,7 +30,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: services/crds/services.eda.nokia.com_vlans.yaml
@@ -277,6 +277,12 @@ spec:
         ui:
           category: Virtual Networks
           name: Bridge Domains
+    - view:
+        path: services/ui/networksclientprovider-dashboard.json
+        ui:
+          category: Client Providers
+          name: Discovered Networks Endpoints
+          icon: EndPoint
     - cr:
         path: services/workflows/edgeping/core_v1_flowdefinition.yaml
     - crd:
@@ -286,11 +292,17 @@ spec:
         path: services/crds/services.eda.nokia.com_edgepings.yaml
         schema: services/openapiv3/eda_oas_services.eda.nokia.com_edgepings.json
         workflow: true
+        ai:
+          matchTags:
+            - netops
         conversionScript: services/intents/edgeping/conversion_v2.py
         ui:
           name: Edge Ping
+          category: Troubleshooting
     - cr:
         path: services/alarms/alarms.yaml
+    - cr:
+        path: services/resources/connectionprofile-id-pool.yaml
     - crd:
         api:
           expose: readWrite
@@ -339,6 +351,31 @@ spec:
         trigger:
           kind: RouterInterconnectState
         type: state
+    - cr:
+        path: services/operators/networksclientprovider/config/cluster-role.yaml
+    - crd:
+        path: services/crds/services.eda.nokia.com_networksclientproviderinstances.yaml
+        namespaced: false
+        schema: services/openapiv3/eda_oas_services.eda.nokia.com_networksclientproviderinstances.json
+        ui:
+          category: Client Providers
+          name: Networks Client Providers
+          panel: system_administration
+          icon: ConnectionInternal
+        api:
+          expose: readWrite
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - cr:
+        path: services/crs/networks-client-table.yaml
+    - cr:
+        path: services/crs/networks-client-provider.yaml
+    - script:
+        path: services/intents/networksclientproviderinstance/config_intent.py
+        trigger:
+          kind: NetworksClientProviderInstance
+        type: config
   dependencies:
     - file:
         path: services/intents
@@ -349,33 +386,87 @@ spec:
     - file:
         path: utils/
     - file:
-        path: filters/
+        path: filters/api/v1/pysrc
     - file:
-        path: protocols/
+        path: filters/intents/common/filterqoscommon.py
     - file:
-        path: routing/
+        path: filters/intents/common/filterutils.py
     - file:
-        path: routingpolicies/
+        path: filters/intents/common/imports.py
     - file:
-        path: qos/
+        path: protocols/api/v1/pysrc
     - file:
-        path: interfaces/
+        path: protocols/api/v1alpha1/pysrc
     - file:
-        path: security/
+        path: protocols/api/v2/pysrc
+    - file:
+        path: protocols/intents/bgpgroup/conversion_v1.py
+    - file:
+        path: protocols/intents/bgpgroup/conversion_v2.py
+    - file:
+        path: protocols/intents/bgppeer/conversion_v1.py
+    - file:
+        path: protocols/intents/bgppeer/conversion_v2.py
+    - file:
+        path: protocols/intents/common/conversioncommon.py
+    - file:
+        path: protocols/intents/ospfarea/conversion_v2.py
+    - file:
+        path: protocols/intents/ospfinstance/conversion_v2.py
+    - file:
+        path: protocols/intents/ospfinterface/conversion_v2.py
+    - file:
+        path: routing/alarms/pysrc/alarms.py
+    - file:
+        path: routing/alarms/pysrc/constants.py
+    - file:
+        path: routing/api/v1/pysrc
+    - file:
+        path: routing/intents/common/utils.py
+    - file:
+        path: routingpolicies/api/v1/pysrc
+    - file:
+        path: routingpolicies/api/v1alpha1/pysrc
+    - file:
+        path: routingpolicies/intents/common/policycommon.py
+    - file:
+        path: routingpolicies/intents/policy/conversion_v1.py
+    - file:
+        path: routingpolicies/intents/prefixset/conversion_v1.py
+    - file:
+        path: qos/api/v2/pysrc
+    - file:
+        path: qos/intents/common/common.py
+    - file:
+        path: qos/intents/common/imports.py
+    - file:
+        path: interfaces/api/v1/pysrc
+    - file:
+        path: interfaces/intents/common/imports.py
+    - file:
+        path: interfaces/intents/common/utils.py
+    - file:
+        path: security/api/v1/pysrc
     - file:
         path: services/alarms/pysrc
     - file:
         path: services/api/v2/pysrc
+    - container:
+        image: registry.eda.dev/services/workflows/edgeping:latest
+        name: edgeping
+    - container:
+        image: registry.eda.dev/services/operators/networksclientprovider:latest
+        name: networksclientprovider
   requirements:
     - appId: protocols.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: routingpolicies.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: qos.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: security.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: filters.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0

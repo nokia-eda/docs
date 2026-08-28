@@ -1,1 +1,15 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: BridgeDomain
+metadata:
+  name: stretched-l2
+  namespace: services
+spec:
+  encapOptions:
+    vxlan:
+      tunnelIndexPool: tunnel-index-pool
+      vniPool: vni-pool
+  eviPool: evi-pool
+  macLearning:
+    agingTimeSeconds: 300
+    enabled: true
+  type: EVPNVXLAN

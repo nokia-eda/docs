@@ -21,9 +21,11 @@ Open Shortest Path First, or OSPF, is a routing protocol to exchange IP routes. 
 
 OSPF sessions are always established between [`OSPFInterfaces`](ospfinterface.md) in an [`OSPFArea`](ospfarea.md), and never operate inter-area. To connect two OSPF areas to each other, an area border router (ABR) configures both areas in the same `OSPFInstance`. An `OSPFInstance` is an isolated process with its own Link State Database (LSDB).
 
-!!! warning "Multiple OSPF instances"
+/// admonition | Multiple OSPF instances
+    type: warning
 
-    Not all operating systems support multiple OSPF instances in one network instance
+Not all operating systems support multiple OSPF instances in one network instance
+///
 
 > To set up an OSPF instance in the default VRF, use [`DefaultOSPFInstance`](defaultospfinstance.md) instead.
 

@@ -30,20 +30,20 @@ OSPF interfaces can be configured as "passive", meaning they won't actively try 
 To configure this resource, the following resources must exist or be created alongside the `DefaultOSPFInterface`
 
 * An interface, options are:
-    * The [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) that the OSPF session will be established on 
-    * The [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md) that passively participates in the OSPF area
+    * The [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-) that the OSPF session will be established on
+    * The [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-) that passively participates in the OSPF area
 * The [`DefaultOSPFArea`](defaultospfarea.md) this interface is configured in
 * The [`DefaultOSPFInstance`](defaultospfinstance.md) this interface is configured in
 
 ## Referenced resources
 
-### [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md)
+### [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-)
 
-OSPF adjacencies are formed between IP addresses, and therefore require a reference to the [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) that will establish the adjacency. If the `DefaultOSPFInterface` is configured as "passive", no adjacency will be attempted or accepted. This is useful when the prefixes reachable through this interface should be advertised to the OSPF area (for example static routes), without actively taking part in the topology.
+OSPF adjacencies are formed between IP addresses, and therefore require a reference to the [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-) that will establish the adjacency. If the `DefaultOSPFInterface` is configured as "passive", no adjacency will be attempted or accepted. This is useful when the prefixes reachable through this interface should be advertised to the OSPF area (for example static routes), without actively taking part in the topology.
 
-### [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md)
+### [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-)
 
-In a typical [`Fabric`](../../fabrics.eda.nokia.com/resources/fabric.md), overlay routes are exchanged via BGP between the [`SystemInterfaces`](../../routing.eda.nokia.com/resources/systeminterface.md) on each node. To advertise the IP address of the [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md) to the other nodes, it must participate in the OSPF area without actively trying to establish an OSPF session. In this scenario, a `DefaultOSPFInterface` referencing the [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md) is required and must be configured as a passive OSPF interface.
+In a typical [`Fabric`](-{{ ref_app_doc('fabrics', 'fabric') }}-), overlay routes are exchanged via BGP between the [`SystemInterfaces`](-{{ ref_app_doc('routing', 'systeminterface') }}-) on each node. To advertise the IP address of the [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-) to the other nodes, it must participate in the OSPF area without actively trying to establish an OSPF session. In this scenario, a `DefaultOSPFInterface` referencing the [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-) is required and must be configured as a passive OSPF interface.
 
 ### [`DefaultOSPFInstance`](defaultospfinstance.md)
 

@@ -14,15 +14,22 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-!!! info "Documentation coming soon!"
+The `TagSet` resource is a list of internal tags that can be assigned to a route by a [routing policy](./policy.md). These tags are locally significant to the network device and are not communicated to peers.
 
-<!-- ## Dependencies
+Tags may be useful for classifying routes. This classification can then determine which routes are sent to which peers. For example, an operator may isolate part of the network from the internet without breaking internal connectivity by assigning a tag to all routes received from a particular BGP peer and preventing these routes from being readvertised to the internet gateway.
 
-..
+/// note
+
+Currently, the number of tags per `TagSet` is limited to one.
+///
+
+## Dependencies
+
+This resource does not have any dependencies.
 
 ## Referenced resources
 
-..
+This resource does not reference any other resource.
 
 ## Examples
 
@@ -42,7 +49,7 @@ cat << 'EOF' | kubectl apply -f -
 EOF
 ```
 
-/// -->
+///
 
 ## Custom Resource Definition
 

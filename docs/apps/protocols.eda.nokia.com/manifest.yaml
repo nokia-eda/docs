@@ -8,7 +8,7 @@ spec:
   title: Protocols
   description: |
     This application provides resources related to routing protocols for various Network Operating Systems.
-  image: ghcr.io/nokia-eda/apps/protocols:v6.999.0
+  image: ghcr.io/nokia-eda/apps/protocols:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -29,8 +29,9 @@ spec:
     - "sros:26.3.*"
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
+    - "junos:26.2.*"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - view:
         path: protocols/ui/defaultbgppeer_dashboard.json
@@ -310,6 +311,8 @@ spec:
         api:
           expose: none
         conversionScript: protocols/intents/ospfinterfacestate/conversion_v2.py
+    - cr:
+        path: protocols/resources/nodesidpool.yaml
     - script:
         path: protocols/intents/defaultbgpgroup/defaultbgpgroup_intent.py
         type: config
@@ -465,6 +468,46 @@ spec:
         type: state
         trigger:
           kind: OSPFInterfaceState
+    - script:
+        path: protocols/intents/defaultisisinstance/defaultisisinstance_intent.py
+        type: config
+        trigger:
+          kind: DefaultISISInstance
+    - script:
+        path: protocols/intents/defaultisisinstancedeployment/defaultisisinstancedeployment_intent.py
+        type: config
+        trigger:
+          kind: DefaultISISInstanceDeployment
+    - script:
+        path: protocols/intents/defaultisisinterface/defaultisisinterface_intent.py
+        type: config
+        trigger:
+          kind: DefaultISISInterface
+    - script:
+        path: protocols/intents/isisinstance/isisinstance_intent.py
+        type: config
+        trigger:
+          kind: ISISInstance
+    - script:
+        path: protocols/intents/isisinstancedeployment/isisinstancedeployment_intent.py
+        type: config
+        trigger:
+          kind: ISISInstanceDeployment
+    - script:
+        path: protocols/intents/isisinterface/isisinterface_intent.py
+        type: config
+        trigger:
+          kind: ISISInterface
+    - script:
+        path: protocols/intents/isisinstancestate/isisinstancestate_intent.py
+        type: state
+        trigger:
+          kind: ISISInstanceState
+    - script:
+        path: protocols/intents/isisinterfacestate/isisinterfacestate_intent.py
+        type: state
+        trigger:
+          kind: ISISInterfaceState
     - cr:
         path: protocols/workflows/analyzealarm/core_v1_flowdefinition.yaml
     - crd:
@@ -484,8 +527,65 @@ spec:
         conversionScript: protocols/intents/checkdefaultbgppeers/conversion_v2.py
         ui:
           name: Check BGP
+          category: Troubleshooting
     - cr:
         path: protocols/alarms/alarms.yaml
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_isisinstances.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_isisinstances.json
+        ui:
+          category: Virtual Networks
+          name: ISIS Instances
+          icon: Path
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_defaultisisinstances.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultisisinstances.json
+        ui:
+          category: Underlay Routing
+          name: Default ISIS Instances
+          icon: Path
+    - crd:
+        api:
+          expose: none
+        path: protocols/crds/protocols.eda.nokia.com_defaultisisinstancedeployments.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultisisinstancedeployments.json
+    - crd:
+        api:
+          expose: none
+        path: protocols/crds/protocols.eda.nokia.com_isisinstancedeployments.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_isisinstancedeployments.json
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_isisinterfaces.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_isisinterfaces.json
+        ui:
+          category: Virtual Networks
+          name: ISIS Interfaces
+          icon: Interface
+    - crd:
+        api:
+          expose: readWrite
+        path: protocols/crds/protocols.eda.nokia.com_defaultisisinterfaces.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_defaultisisinterfaces.json
+        ui:
+          category: Underlay Routing
+          name: Default ISIS Interfaces
+          icon: Interface
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_isisinstancestates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_isisinstancestates.json
+        api:
+          expose: none
+    - crd:
+        path: protocols/crds/protocols.eda.nokia.com_isisinterfacestates.yaml
+        schema: protocols/openapiv3/eda_oas_protocols.eda.nokia.com_isisinterfacestates.json
+        api:
+          expose: none
   dependencies:
     - file:
         path: protocols/intents
@@ -494,25 +594,37 @@ spec:
     - file:
         path: utils/
     - file:
-        path: interfaces/
+        path: interfaces/api/v1/pysrc
     - file:
-        path: routing/
+        path: routing/api/v1/pysrc
     - file:
-        path: routingpolicies/
+        path: routing/intents/defaultinterface/common.py
     - file:
-        path: services/
+        path: mpls/api/v1alpha1/pysrc
     - file:
-        path: security/
+        path: routingpolicies/api/v1/pysrc
     - file:
-        path: protocols/api
+        path: routingpolicies/intents/common/policycommon.py
+    - file:
+        path: services/api/v2/pysrc
+    - file:
+        path: security/api/v1/pysrc
     - file:
         path: protocols/alarms/pysrc
     - file:
         path: protocols/api/v2/pysrc
+    - container:
+        image: registry.eda.dev/protocols/workflows/analyzealarm:latest
+        name: analyzealarm
+    - container:
+        image: registry.eda.dev/protocols/workflows/checkdefaultbgppeers:latest
+        name: checkdefaultbgppeers
+    - file:
+        path: protocols/api
   requirements:
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: routing.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: security.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0

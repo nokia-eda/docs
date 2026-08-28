@@ -24,17 +24,17 @@ Example: if all outbound traffic is meant to pass through a firewall device, a d
 
 To configure this resource, the following resources must exist or be created alongside the `DefaultStaticRoute`
 
-* The [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) in which the static route will be configured
+* The [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-) in which the static route will be configured
 
 ## Referenced resources
 
-### [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md)
+### [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-)
 
-Static route prefixes configured in the `DefaultStaticRoute` resource are only configured in the VRF of the linked [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) resource. The next-hop of the static routes should be reachable through a local interface (typically a [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md)) configured in the same [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md).
+Static route prefixes configured in the `DefaultStaticRoute` resource are only configured in the VRF of the linked [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-) resource. The next-hop of the static routes should be reachable through a local interface (typically a [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-)) configured in the same [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-).
 
 ### `TopoNode`
 
-Optionally, a list of nodes can be provided on which the static route is deployed. EDA **does not** determine on which nodes the next-hop IP address is reachable through a local interface, but instead deploys the static route on **ALL** nodes that the [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md) is configured on, if no nodes are specified.
+Optionally, a list of nodes can be provided on which the static route is deployed. EDA **does not** determine on which nodes the next-hop IP address is reachable through a local interface, but instead deploys the static route on **ALL** nodes that the [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-) is configured on, if no nodes are specified.
 
 ## Examples
 

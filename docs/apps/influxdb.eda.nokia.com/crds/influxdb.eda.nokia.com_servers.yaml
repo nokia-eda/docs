@@ -1,0 +1,130 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: servers.influxdb.eda.nokia.com
+spec:
+  group: influxdb.eda.nokia.com
+  names:
+    kind: Server
+    listKind: ServerList
+    plural: servers
+    singular: server
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Server is the Schema for the servers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ServerSpec defines the desired state of Server
+            properties:
+              batchSize:
+                default: 100
+                description: Sets number of points sent in single request.
+                type: integer
+              credentialsSecret:
+                description: |-
+                  Secret containing InfluxDB credentials.
+                  the secret must include a username and password keys or a token key.
+                type: string
+              flushTimer:
+                default: 10s
+                description: Sets the write buffer flush timer.
+                type: string
+              org:
+                description: InfluxDB Organization.
+                type: string
+              timestampPrecision:
+                default: milliseconds
+                description: Sets the timestamp precision to use in writes for timestamp.
+                enum:
+                - seconds
+                - milliseconds
+                - microseconds
+                - nanoseconds
+                type: string
+              tls:
+                description: Enable TLS.
+                properties:
+                  fromFiles:
+                    description: Certificates files.
+                    properties:
+                      caFile:
+                        description: Path to a certificate authority file.
+                        type: string
+                      certFile:
+                        description: The client certificate file location.
+                        type: string
+                      keyFile:
+                        description: The client private key location.
+                        type: string
+                      skipVerify:
+                        description: If true the client will not verify the server's
+                          certificate.
+                        type: boolean
+                    type: object
+                  fromSecret:
+                    description: |-
+                      Secret containing a `tls.crt`, a `tls.key` and a `ca.crt` keys.
+                      Both `tls.crt` and `tls.key` must be present. If `ca.crt` is not present
+                      the remote server certificate is not verified.
+                    properties:
+                      name:
+                        description: Secret name containing a ca.crt, a tls.crt and
+                          a tls.key keys.
+                        type: string
+                    type: object
+                type: object
+              url:
+                description: InfluxDB server URL.
+                type: string
+              useGzip:
+                description: When true, the exporter uses GZIP compression in write
+                  requests.
+                type: boolean
+            required:
+            - credentialsSecret
+            - org
+            - url
+            type: object
+          status:
+            description: ServerStatus defines the observed state of Server
+            properties:
+              connected:
+                description: Specifies if the client is connected to the InfluxDB
+                  server
+                type: boolean
+              error:
+                description: Error value if the client is not connected
+                type: string
+              lastChecked:
+                description: Last time the connection was checked
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

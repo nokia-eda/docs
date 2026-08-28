@@ -16,11 +16,20 @@ icon: auto-crd
 
 A `ServerGroup` defines a list of AAA (authentication, authorization, and accounting) servers used for remote authentication and accounting and includes settings for RADIUS and TACACS+ servers. Each `ServerGroup` is limited to servers of a single type: either RADIUS or TACACS+.
 
-!!! info "Server type"
+/// admonition | Server type
+    type: info
 
-    The **type** field determines the protocol used by all servers in the group (`RADIUS` or `TACACS`). Type-specific options are configured under `radius` (e.g. authentication port, accounting port, retransmit attempts) or `tacacs` (e.g. port, privilege-level authorization).
+The **type** field determines the protocol used by all servers in the group (`RADIUS` or `TACACS`). Type-specific options are configured under `radius` (e.g. authentication port, accounting port, retransmit attempts) or `tacacs` (e.g. port, privilege-level authorization).
+///
 
 The `routerKind` field specifies which router is used to reach the AAA servers (`DefaultRouter` or `ManagementRouter`). The node waits for a response from an AAA server according to `timeoutSeconds` before retrying or continuing to the next server in the group.
+
+/// admonition
+    type: warning
+
+When switching the router through which the remote authentication server is reached via the `ServerGroup`, ensure that the server is actually reachable through that router. It is possible to (temporarily) sever the connection between EDA and the node if the user that EDA uses to authenticate to the node can not be authenticated through the remote authentication server.
+
+///
 
 ## Deployment
 

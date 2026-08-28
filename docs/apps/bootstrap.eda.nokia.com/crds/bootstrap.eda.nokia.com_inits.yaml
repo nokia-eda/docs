@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: inits.bootstrap.eda.nokia.com
 spec:
   group: bootstrap.eda.nokia.com
@@ -55,13 +55,21 @@ spec:
                         description: Management interface selector
                         items:
                           type: string
+                        minItems: 1
                         type: array
+                        x-kubernetes-list-type: set
                       subinterfaceIndex:
                         description: Subinterface index
+                        format: int32
+                        maximum: 65535
                         type: integer
+                    required:
+                    - interfaceSelectors
                     type: object
                   ipMTU:
                     description: Set the management interface IP MTU.
+                    format: int32
+                    maximum: 65535
                     type: integer
                   staticRoutes:
                     description: Optional list of static routes to add to the management
@@ -84,6 +92,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
             type: object
           status:
             description: InitStatus defines the observed state of Init
@@ -129,6 +138,8 @@ spec:
                 properties:
                   ipMTU:
                     description: Set the management interface IP MTU.
+                    format: int32
+                    maximum: 65535
                     type: integer
                   ipv4DHCP:
                     description: Enable IPv4 DHCP client.

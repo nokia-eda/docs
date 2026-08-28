@@ -14,9 +14,11 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-??? abstract "A brief introduction to QoS"
+/// details | A brief introduction to QoS
+    type: abstract
 
-    Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+///
 
 Queues are intermediary first-in, first-out storage systems for packets as they are processed by a router. Although support depends on the hardware platform, generally there are queues for ingressing packets and for egressing packets.
 
@@ -26,9 +28,11 @@ After the router decides where the packet should go, it goes through the same pr
 
 The information above is an abstracted and simplified view. The reality and OS-specific implementations introduce a lot of nuance and sometimes restrictions that need to be taken into account when designing a QoS architecture. For a full understanding of your network behavior, refer to the OS-specific documentation.
 
-!!! note "Dropped packets"
+/// admonition | Dropped packets
+    type: note
 
-    While schedulers decide which packets are picked up for further processing, they do not decide which packets get dropped in case of congestion: when a queue fills up, any packets that do not fit in a queue are dropped.
+While schedulers decide which packets are picked up for further processing, they do not decide which packets get dropped in case of congestion: when a queue fills up, any packets that do not fit in a queue are dropped.
+///
 
 Several `Queue` resources are created by default when deploying EDA. They can be used as-is for unicast traffic or overwritten. 
 

@@ -1,1 +1,12 @@
-# Add an example
+apiVersion: bootstrap.eda.nokia.com/v1
+kind: ManagementRouter
+metadata:
+  labels:
+    eda.nokia.com/init: init-base
+    eda.nokia.com/source: derived
+  name: init-base-mgmt-router
+  namespace: eda
+spec:
+  staticRoutes:
+    - nextHop: 172.16.100.100
+      prefix: 172.19.255.0/24

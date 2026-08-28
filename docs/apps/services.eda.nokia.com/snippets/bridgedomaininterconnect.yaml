@@ -1,1 +1,19 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: BridgeDomainInterconnect
+metadata:
+  name: stretched-l2-interconnect
+  namespace: services
+spec:
+  bridgeDomainRef:
+    name: stretched-l2
+  interconnectBGPInstance:
+    controlPlane: EVPN
+    encapsulation: VXLAN
+    exportTarget: target:230:230
+    importTarget: target:230:230
+    vxlan:
+      tunnelIndexPool: tunnel-index-pool
+      vni: 222
+    mpls: {}
+  nodeSelectors:
+    - eda.nokia.com/role = dcgw

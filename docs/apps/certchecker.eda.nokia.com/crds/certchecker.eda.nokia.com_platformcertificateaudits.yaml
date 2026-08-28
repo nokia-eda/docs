@@ -1,0 +1,168 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: platformcertificateaudits.certchecker.eda.nokia.com
+spec:
+  group: certchecker.eda.nokia.com
+  names:
+    kind: PlatformCertificateAudit
+    listKind: PlatformCertificateAuditList
+    plural: platformcertificateaudits
+    singular: platformcertificateaudit
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: PlatformCertificateAudit is the Schema for the platformcertificateaudits
+          API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              PlatformCertificateAuditSpec defines the desired state of PlatformCertificateAudit.
+              The spec is intentionally empty: target selection always audits all discoverable
+              EDA apps in EdaNamespace() (one target per distinct eda.nokia.com/app label value).
+            type: object
+          status:
+            description: PlatformCertificateAuditStatus defines the observed state
+              of PlatformCertificateAudit.
+            properties:
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the spec generation last fully processed for status.
+                  Populated by the flow engine; not set by the workflow binary.
+                format: int64
+                type: integer
+              rpcError:
+                description: |-
+                  RPCError is set when the workflow fails for infrastructure reasons — dial, target resolution,
+                  or stream failures — before all targets are reported (distinct from per-target Error).
+                maxLength: 32768
+                type: string
+              targetResults:
+                description: TargetResults is populated after streaming from cert-checker,
+                  one entry per audited EDA app.
+                items:
+                  description: |-
+                    PlatformCertificateAuditTargetResult summarizes one streamed audit outcome for an EDA app target.
+                    TargetType is omitted: all targets are App pods. PodName is retained (set by cert-checker).
+                  properties:
+                    address:
+                      description: Address is the dial endpoint used for this target
+                        when reported by cert-checker.
+                      type: string
+                    certFingerprint:
+                      type: string
+                    certNotAfter:
+                      description: CertNotAfter is the certificate not-after bound
+                        when reported (e.g. RFC3339).
+                      type: string
+                    certNotBefore:
+                      description: CertNotBefore is the certificate not-before bound
+                        when reported (e.g. RFC3339).
+                      type: string
+                    certRemainingTime:
+                      type: string
+                    certSerialNumber:
+                      type: string
+                    certVerified:
+                      type: boolean
+                    certificateChain:
+                      items:
+                        description: PlatformCertificateAuditChainEntry is one certificate
+                          in the served TLS chain.
+                        properties:
+                          fingerprint:
+                            type: string
+                          isSelfSigned:
+                            type: boolean
+                          issuerDN:
+                            type: string
+                          notAfter:
+                            type: string
+                          notBefore:
+                            type: string
+                          position:
+                            format: int32
+                            type: integer
+                          serialNumber:
+                            type: string
+                          subjectAltNames:
+                            items:
+                              type: string
+                            type: array
+                          subjectDN:
+                            type: string
+                        type: object
+                      type: array
+                    error:
+                      description: Error is the per-target failure message from cert-checker
+                        when Success is false.
+                      maxLength: 32768
+                      type: string
+                    issuerCN:
+                      type: string
+                    issuerDN:
+                      type: string
+                    issuerVerified:
+                      type: boolean
+                    name:
+                      type: string
+                    namespace:
+                      type: string
+                    podName:
+                      description: PodName is the resolved pod identity ("namespace/pod")
+                        reported by cert-checker.
+                      type: string
+                    publicKeyAlgorithm:
+                      type: string
+                    publicKeySize:
+                      type: string
+                    signingAlgorithm:
+                      type: string
+                    subjectAltNames:
+                      description: SubjectAltNames lists DNS/IP SANs when reported.
+                      items:
+                        type: string
+                      type: array
+                    subjectDN:
+                      type: string
+                    success:
+                      description: |-
+                        Success is nil when the target has not yet been audited; false when the audit failed; true on success.
+                        null in JSON status means pending (intentional: omitempty is not set).
+                      type: boolean
+                    trustBundleVerified:
+                      type: boolean
+                  required:
+                  - name
+                  - namespace
+                  - success
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

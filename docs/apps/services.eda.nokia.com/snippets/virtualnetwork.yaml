@@ -1,1 +1,80 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: VirtualNetwork
+metadata:
+  name: my-vnet
+  namespace: eda
+spec:
+  bridgeDomains:
+    - name: bd-compute
+      spec:
+        encapOptions:
+          vxlan:
+            tunnelIndexPool: tunnel-index-pool
+            vniPool: vni-pool
+        eviPool: evi-pool
+        macLearning:
+          agingTimeSeconds: 300
+          enabled: true
+        type: EVPNVXLAN
+    - name: bd-storage
+      spec:
+        encapOptions:
+          vxlan:
+            tunnelIndexPool: tunnel-index-pool
+            vniPool: vni-pool
+        eviPool: evi-pool
+        macLearning:
+          agingTimeSeconds: 300
+          enabled: true
+        type: EVPNVXLAN
+  irbInterfaces:
+    - name: compute-irb
+      spec:
+        bridgeDomain: bd-compute
+        evpnRouteAdvertisementType:
+          arpDynamic: true
+          arpStatic: true
+          ndDynamic: false
+          ndStatic: false
+        ipAddresses:
+          - ipv4Address:
+              anycast: true
+              ipPrefix: 10.0.100.1/24
+        ipMTU: 1500
+        router: vnet-router
+    - name: storage-irb
+      spec:
+        bridgeDomain: bd-storage
+        evpnRouteAdvertisementType:
+          arpDynamic: true
+          arpStatic: true
+          ndDynamic: false
+          ndStatic: false
+        ipAddresses:
+          - ipv4Address:
+              anycast: true
+              ipPrefix: 10.0.200.1/24
+        ipMTU: 1500
+        router: vnet-router
+  routers:
+    - name: vnet-router
+      spec:
+        encapOptions:
+          vxlan:
+            tunnelIndexPool: tunnel-index-pool
+            vniPool: vni-pool
+        eviPool: evi-pool
+        type: EVPNVXLAN
+  vlans:
+    - name: bd-compute-vlan100
+      spec:
+        bridgeDomain: bd-compute
+        interfaceSelectors:
+          - type = compute
+        vlanID: '100'
+    - name: bd-storage-vlan200
+      spec:
+        bridgeDomain: bd-storage
+        interfaceSelectors:
+          - type = storage
+        vlanID: '200'

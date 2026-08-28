@@ -1,0 +1,91 @@
+apiVersion: core.eda.nokia.com/v1alpha1
+kind: Manifest
+metadata:
+  name: logging
+spec:
+  appInfo:
+    categories:
+      - networking
+    documentation: logging/docs
+  author: Nokia
+  dependencies:
+    - file:
+        path: utils/
+    - file:
+        path: common/
+    - file:
+        path: logging/api
+    - file:
+        path: logging/api/v1alpha1/pysrc
+    - file:
+        path: logging/intents
+    - file:
+        path: services/api/v2/pysrc
+  description: Sample description
+  group: logging.eda.nokia.com
+  image: ghcr.io/nokia-eda/apps/logging:v7.0.0
+  supportedCoreVersions:
+    - "v6.0"
+  supportedEndpoints:
+    - "srl:24.10.*"
+    - "srl:25.3.*"
+    - "srl:25.7.*"
+    - "srl:25.10.*"
+    - "srl:26.3.*"
+    - "sros:24.10.r4+"
+    - "sros:25.3.r2+"
+    - "sros:25.7.*"
+    - "sros:25.10.*"
+    - "sros:26.3.*"
+    - "eos:4.33.2f:beta"
+    - "nxos:10.5.2:alpha"
+  title: Logging
+  version: v1alpha1
+  components:
+    - crd:
+        api:
+          expose: readWrite
+        path: logging/crds/logging.eda.nokia.com_destinations.yaml
+        schema: logging/openapiv3/eda_oas_logging.eda.nokia.com_destinations.json
+        ui:
+          category: Logging
+          name: Destinations
+          icon: ConnectionExternal
+    - crd:
+        api:
+          expose: readWrite
+        path: logging/crds/logging.eda.nokia.com_sources.yaml
+        schema: logging/openapiv3/eda_oas_logging.eda.nokia.com_sources.json
+        ui:
+          category: Logging
+          name: Sources
+          icon: Filter
+    - crd:
+        api:
+          expose: readWrite
+        path: logging/crds/logging.eda.nokia.com_logs.yaml
+        schema: logging/openapiv3/eda_oas_logging.eda.nokia.com_logs.json
+        ui:
+          category: Logging
+          name: Logs
+          icon: LogList
+    - script:
+        path: logging/intents/log/log_intent.py
+        trigger:
+          kind: Log
+        type: config
+    - script:
+        path: logging/intents/source/source_intent.py
+        trigger:
+          kind: Source
+        type: config
+    - crd:
+        api:
+          expose: none
+        path: logging/crds/logging.eda.nokia.com_logstates.yaml
+        schema: logging/openapiv3/eda_oas_logging.eda.nokia.com_logstates.json
+    - script:
+        path: logging/intents/logstate/logstate_intent.py
+        trigger:
+          kind: LogState
+        type: state

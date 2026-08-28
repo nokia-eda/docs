@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: vlans.services.eda.nokia.com
 spec:
   group: services.eda.nokia.com
@@ -114,6 +114,7 @@ spec:
                   size it is discarded. If the l2-mtu of the subinterface exceeds
                   the port-mtu of the associated interface, the subinterface will
                   remain operationally down.
+                format: int32
                 maximum: 9500
                 minimum: 1450
                 type: integer
@@ -207,6 +208,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the VNET.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -216,12 +219,12 @@ spec:
                 type: string
               numSubInterfaces:
                 description: Total number of sub-interfaces configured by the VNET.
-                format: int32
+                format: int64
                 type: integer
               numSubInterfacesOperDown:
                 description: Total number of sub-interfaces configured by the VNET
                   which are oper-down.
-                format: int32
+                format: int64
                 type: integer
               operationalState:
                 description: Operational state of the VNET.
@@ -258,6 +261,7 @@ spec:
                     subInterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN.
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface.
@@ -301,6 +305,7 @@ spec:
                     subInterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN.
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface.
@@ -382,11 +387,13 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   qosPolicies:
                     description: List of QoS Egress policy references to use at egress.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                 type: object
               ingress:
                 description: Manages actions on traffic at Ingress.
@@ -396,11 +403,13 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   qosPolicies:
                     description: List of QoS Ingress policy references to use at ingress.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                 type: object
               interfaceSelectors:
                 description: Interfaces to use for attachment to this VLAN based on
@@ -409,12 +418,14 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               l2MTU:
                 description: L2 MTU specifies the maximum sized Ethernet frame that
                   can be transmitted on the subinterface. If a frame exceeds this
                   size it is discarded. If the l2-mtu of the subinterface exceeds
                   the port-mtu of the associated interface, the subinterface will
                   remain operationally down.
+                format: int32
                 maximum: 9500
                 minimum: 1450
                 type: integer
@@ -446,12 +457,14 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                       qosPolicies:
                         description: List of QoS Egress policy references to use at
                           egress.
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                     type: object
                   ingress:
                     description: Manages actions on traffic at Ingress of the Local
@@ -462,12 +475,14 @@ spec:
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                       qosPolicies:
                         description: List of QoS Ingress policy references to use
                           at ingress.
                         items:
                           type: string
                         type: array
+                        x-kubernetes-list-type: set
                     type: object
                   uplinkSelectors:
                     description: Selects TopoLinks which connect a leaf switch to
@@ -479,6 +494,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   uplinkVLANID:
                     default: pool
                     description: The VLAN ID to be utilized to isolate traffic from
@@ -508,6 +524,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the VNET.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -517,12 +535,12 @@ spec:
                 type: string
               numSubinterfaces:
                 description: Total number of sub-interfaces configured by the VNET.
-                format: int32
+                format: int64
                 type: integer
               numSubinterfacesOperDown:
                 description: Total number of sub-interfaces configured by the VNET
                   which are oper-down.
-                format: int32
+                format: int64
                 type: integer
               operationalState:
                 description: Operational state of the VNET.
@@ -569,6 +587,7 @@ spec:
                     subinterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN.
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface.
@@ -617,6 +636,7 @@ spec:
                     subinterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN.
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface.

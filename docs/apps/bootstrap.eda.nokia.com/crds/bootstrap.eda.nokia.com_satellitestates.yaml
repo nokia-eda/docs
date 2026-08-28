@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: satellitestates.bootstrap.eda.nokia.com
 spec:
   group: bootstrap.eda.nokia.com
@@ -39,6 +39,8 @@ spec:
           spec:
             description: SatelliteStateSpec defines the desired state of SatelliteState
             properties:
+              hostName:
+                type: string
               hostUplinks:
                 items:
                   properties:
@@ -53,12 +55,10 @@ spec:
                   - satellitePort
                   type: object
                 type: array
-              hostname:
-                type: string
               id:
                 type: string
             required:
-            - hostname
+            - hostName
             - id
             type: object
           status:

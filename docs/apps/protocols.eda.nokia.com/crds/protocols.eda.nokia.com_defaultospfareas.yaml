@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: defaultospfareas.protocols.eda.nokia.com
 spec:
   group: protocols.eda.nokia.com
@@ -64,6 +64,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the OSPF area.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -73,9 +75,11 @@ spec:
                 type: string
               numActiveInterfaces:
                 description: The number of active interfaces in the OSPF area.
+                format: int64
                 type: integer
               numNeighbors:
                 description: The number of discovered neighbors in the OSPF area.
+                format: int64
                 type: integer
             type: object
         type: object
@@ -130,6 +134,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the OSPF area.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -139,9 +145,11 @@ spec:
                 type: string
               numActiveInterfaces:
                 description: The number of active interfaces in the OSPF area.
+                format: int64
                 type: integer
               numNeighbors:
                 description: The number of discovered neighbors in the OSPF area.
+                format: int64
                 type: integer
             type: object
         type: object

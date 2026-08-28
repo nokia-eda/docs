@@ -1,0 +1,90 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: remote-write
+spec:
+  group: remotewrite.eda.nokia.com
+  version: v1
+  title: Remote Write
+  description: This application exports metrics to Remote Server adhering to Prometheus Remote-Write Specifications v1.0.
+  image: ghcr.io/nokia-eda/apps/remotewrite:v7.0.0
+  author: Nokia
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: remote_write/README.md
+    documentation: remote_write/docs
+    license: LICENSE
+    screenshots:
+      - remote_write/assets/screenshot1.png
+      - remote_write/assets/screenshot2.png
+    categories:
+      - "integrations"
+    settings: remote_write/settings/openapi/eda_oas_remotewrite.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: remote_write/crds/remotewrite.eda.nokia.com_destinations.yaml
+        schema: remote_write/openapiv3/eda_oas_remotewrite.eda.nokia.com_destinations.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: RemoteWrite
+          name: Destinations
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+        conversionScript: remote_write/api/v1alpha1/pysrc/conversion_v1.py
+    - crd:
+        path: remote_write/crds/remotewrite.eda.nokia.com_clusterdestinations.yaml
+        schema: remote_write/openapiv3/eda_oas_remotewrite.eda.nokia.com_clusterdestinations.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: RemoteWrite
+          name: Cluster Destinations
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+        conversionScript: remote_write/api/v1alpha1/pysrc/conversion_v1.py
+    - crd:
+        path: remote_write/crds/remotewrite.eda.nokia.com_exports.yaml
+        schema: remote_write/openapiv3/eda_oas_remotewrite.eda.nokia.com_exports.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: RemoteWrite
+          name: Exporters
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+        conversionScript: remote_write/api/v1alpha1/pysrc/conversion_v1.py
+    - crd:
+        path: remote_write/crds/remotewrite.eda.nokia.com_clusterexports.yaml
+        schema: remote_write/openapiv3/eda_oas_remotewrite.eda.nokia.com_clusterexports.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: RemoteWrite
+          name: Cluster Exporters
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+        conversionScript: remote_write/api/v1alpha1/pysrc/conversion_v1.py
+    - cr:
+        path: remote_write/manifests/deployment.yaml
+    - cr:
+        path: remote_write/manifests/webhooks.yaml
+    - cr:
+        path: remote_write/alarms/alarms.yaml
+  dependencies:
+    - container:
+        name: remote-write-controller
+        image: registry.eda.dev/remote_write/operators/controller:latest
+    - file:
+        path: remote_write/api/v1alpha1/pysrc
+    - file:
+        path: remote_write/api

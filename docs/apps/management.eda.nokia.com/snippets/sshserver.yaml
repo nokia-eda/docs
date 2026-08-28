@@ -1,1 +1,10 @@
-# Add an example
+apiVersion: management.eda.nokia.com/v1
+kind: SSHServer
+metadata:
+  name: ssh-server
+  namespace: eda
+spec:
+  enablePasswordAuthentication: false
+  enabled: true
+  router: my-router
+  routerKind: Router

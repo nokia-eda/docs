@@ -1,0 +1,215 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: snmpservers.management.eda.nokia.com
+spec:
+  group: management.eda.nokia.com
+  names:
+    kind: SNMPServer
+    listKind: SNMPServerList
+    plural: snmpservers
+    singular: snmpserver
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: SNMPServer is the Schema for the snmpservers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SNMPServerSpec defines the desired state of SNMPServer
+            properties:
+              accessPermission:
+                default: Read
+                description: Access level for clients connecting to this SNMP server.
+                enum:
+                - Read
+                - ReadWrite
+                - ReadWriteAll
+                type: string
+              authenticationProtocol:
+                description: The SNMPv3 hash-based authentication protocol used to
+                  authenticate messages.
+                enum:
+                - MD5
+                - SHA1-96
+                - SHA2-224
+                - SHA2-256
+                - SHA2-384
+                - SHA2-512
+                type: string
+              communities:
+                description: List of SNMP communities and their allowed source IP
+                  addresses. Only applicable when Version is SNMPv2c.
+                items:
+                  properties:
+                    accessPermission:
+                      description: Access level for clients using this community.
+                      enum:
+                      - Read
+                      - ReadWrite
+                      - ReadWriteAll
+                      type: string
+                    clientAddresses:
+                      description: List of allowed source IPv4 or IPv6 SNMP client
+                        addresses for this community. If left empty, all client addresses
+                        are allowed.
+                      items:
+                        type: string
+                      type: array
+                      x-kubernetes-list-type: set
+                    name:
+                      description: The SNMP community string. Treated as a shared
+                        secret.
+                      type: string
+                  type: object
+                type: array
+              enabled:
+                description: Enable the SNMP server.
+                type: boolean
+              maxPacketSizeBytes:
+                description: Maximum SNMP packet size in bytes. Supported on SR OS
+                  only.
+                format: int64
+                minimum: 1
+                type: integer
+              nodeUserSelectors:
+                description: Label selector used to select NodeUsers allowed to authenticate
+                  against this SNMP server.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              nodeUsers:
+                description: List of NodeUsers allowed to authenticate against this
+                  SNMP server.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              privacyProtocol:
+                description: The SNMPv3 encryption protocol used to encrypt messages.
+                enum:
+                - CBC-DES
+                - CFB128-AES-128
+                - CFB128-AES-192
+                - CFB128-AES-256
+                type: string
+              protocol:
+                default: UDP
+                description: The transport protocol used by the SNMP server. Use UDP
+                  for UDP-only, TCP for TCP-only, or Both to accept SNMP messages
+                  over either transport.
+                enum:
+                - UDP
+                - TCP
+                - Both
+                type: string
+              router:
+                description: Router to associate the server with.
+                type: string
+              routerKind:
+                description: The Kind of the router for the server.
+                enum:
+                - ManagementRouter
+                - Router
+                - DefaultRouter
+                type: string
+              routerSelectors:
+                description: Selects router resources based on the defined Kind.  Applies
+                  to DefaultRouter only. Not supported for Router and ManagementRouter.
+                items:
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
+              securityLevel:
+                description: The SNMPv3 security level.
+                enum:
+                - NoAuth
+                - AuthNoPriv
+                - AuthPriv
+                type: string
+              streaming:
+                default: Disabled
+                description: Enables or disables SNMP streaming. Supported on SR OS
+                  only.
+                enum:
+                - Enabled
+                - Disabled
+                type: string
+              version:
+                description: The SNMP protocol version to use for this server. Use
+                  SNMPv2c for community-based authentication, or SNMPv3 for user-based
+                  authentication with optional authentication and privacy.
+                enum:
+                - SNMPv2c
+                - SNMPv3
+                type: string
+            required:
+            - enabled
+            type: object
+          status:
+            description: SNMPServerStatus defines the observed state of SNMPServer
+            properties:
+              downServers:
+                description: List of down SNMP servers.
+                items:
+                  properties:
+                    nodes:
+                      items:
+                        properties:
+                          nodeName:
+                            type: string
+                          operatingSystem:
+                            type: string
+                        type: object
+                      type: array
+                    router:
+                      type: string
+                  type: object
+                type: array
+              health:
+                description: Health score of the SNMP server.
+                format: int32
+                maximum: 100
+                type: integer
+              healthScoreReason:
+                description: Reason for the health score.
+                type: string
+              lastChangeTime:
+                description: Indicates when the SNMP server last changed state.
+                type: string
+              operationalState:
+                description: Operational state of the SNMP server.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

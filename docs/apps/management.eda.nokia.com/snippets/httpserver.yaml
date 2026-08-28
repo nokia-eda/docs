@@ -1,1 +1,11 @@
-# Add an example
+apiVersion: management.eda.nokia.com/v1
+kind: HTTPServer
+metadata:
+  name: http-server
+  namespace: eda
+spec:
+  enableAuthentication: true
+  enabled: true
+  protocol: HTTP
+  router: init-base-mgmt-router
+  routerKind: ManagementRouter

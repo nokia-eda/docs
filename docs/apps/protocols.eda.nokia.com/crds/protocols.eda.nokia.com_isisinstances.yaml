@@ -1,0 +1,333 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: isisinstances.protocols.eda.nokia.com
+spec:
+  group: protocols.eda.nokia.com
+  names:
+    kind: ISISInstance
+    listKind: ISISInstanceList
+    plural: isisinstances
+    singular: isisinstance
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.lastChangeTime
+      name: Last Change
+      type: date
+    - jsonPath: .status.operationalState
+      name: Operational State
+      type: string
+    name: v2
+    schema:
+      openAPIV3Schema:
+        description: ISISInstance is the Schema for the isisinstances API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ISISInstanceSpec defines the desired state of ISISInstance
+            properties:
+              addressFamilies:
+                description: Address families to enable. Uses a single-topology (native)
+                  configuration mode.
+                items:
+                  enum:
+                  - IPv4
+                  - IPv6
+                  type: string
+                minItems: 1
+                type: array
+                x-kubernetes-list-type: set
+              areaIDs:
+                description: The list of IS-IS area addresses for this instance. Each
+                  area address is represented as an NSAP Area ID, which is a string
+                  in the format of AFI.area-address (e.g. '49.0001'). The system ID
+                  and NSEL are not included in the area address as they are derived
+                  from the router's configuration and do not need to be specified
+                  by the user.
+                items:
+                  pattern: ^[0-9A-Fa-f]{2}(\.[0-9A-Fa-f]{4}){0,6}$
+                  type: string
+                maxItems: 3
+                minItems: 1
+                type: array
+                x-kubernetes-list-type: set
+              enabled:
+                default: true
+                description: Enables IS-IS instance.
+                type: boolean
+              helloPadding:
+                description: Hello Padding mode for IS-IS adjacencies.
+                enum:
+                - Adaptive
+                - Loose
+                - Strict
+                - Disabled
+                type: string
+              level1:
+                description: IS-IS Level 1 settings.
+                properties:
+                  routePreference:
+                    description: Route preference configuration for this level.
+                    properties:
+                      external:
+                        description: RTM Route Preference (Administrative Distance)
+                          for external routes.
+                        format: int32
+                        maximum: 255
+                        minimum: 1
+                        type: integer
+                      internal:
+                        description: RTM Route Preference (Administrative Distance)
+                          for internal routes.
+                        format: int32
+                        maximum: 255
+                        minimum: 1
+                        type: integer
+                    type: object
+                type: object
+              level2:
+                description: IS-IS Level 2 settings.
+                properties:
+                  routePreference:
+                    description: Route preference configuration for this level.
+                    properties:
+                      external:
+                        description: RTM Route Preference (Administrative Distance)
+                          for external routes.
+                        format: int32
+                        maximum: 255
+                        minimum: 1
+                        type: integer
+                      internal:
+                        description: RTM Route Preference (Administrative Distance)
+                          for internal routes.
+                        format: int32
+                        maximum: 255
+                        minimum: 1
+                        type: integer
+                    type: object
+                type: object
+              levelCapability:
+                default: L2
+                description: IS-IS level capability for this instance.
+                enum:
+                - L1
+                - L2
+                - L1L2
+                type: string
+              lfa:
+                description: LFA (Loop-Free Alternate) functionality.
+                properties:
+                  enabled:
+                    description: Enables IS-IS LFA (Loop-Free Alternate) functionality.
+                    type: boolean
+                required:
+                - enabled
+                type: object
+              lspMTU:
+                description: Maximum LSP MTU size, in bytes.
+                format: int32
+                maximum: 10240
+                minimum: 512
+                type: integer
+              maxECMP:
+                description: The maximum number of ECMP paths (next-hops).
+                format: int32
+                maximum: 256
+                minimum: 1
+                type: integer
+              overload:
+                description: IS-IS Overload configuration.
+                properties:
+                  onBoot:
+                    description: Overload configuration on boot.
+                    properties:
+                      durationSeconds:
+                        description: Overload duration in seconds.
+                        format: int32
+                        maximum: 65535
+                        minimum: 1
+                        type: integer
+                      mode:
+                        default: MaxMetric
+                        description: Overload mode to use for the overload on boot.
+                        enum:
+                        - MaxMetric
+                        - OverloadBit
+                        type: string
+                    required:
+                    - durationSeconds
+                    type: object
+                  static:
+                    description: Static overload configuration.
+                    properties:
+                      mode:
+                        description: Overload mode to use for the immediate (static)
+                          overload.
+                        enum:
+                        - MaxMetric
+                        - OverloadBit
+                        type: string
+                    required:
+                    - mode
+                    type: object
+                type: object
+              passiveOnly:
+                default: false
+                description: Advertise prefixes that belong to passive interfaces
+                  only.
+                type: boolean
+              redistribution:
+                description: Route redistribution settings.
+                properties:
+                  exportLimit:
+                    description: Maximum number of routes to redistribute into IS-IS.
+                    format: int64
+                    maximum: 4294967295
+                    minimum: 1
+                    type: integer
+                  exportPolicies:
+                    description: Export policies to use for redistributing routes
+                      into IS-IS.
+                    items:
+                      type: string
+                    maxItems: 5
+                    minItems: 1
+                    type: array
+                required:
+                - exportPolicies
+                type: object
+              referenceBandwidthGbps:
+                description: Reference bandwidth (in Gbps) for automatic metric calculation.
+                format: int32
+                maximum: 3200
+                minimum: 1
+                type: integer
+              timers:
+                description: Configures IS-IS timers.
+                properties:
+                  lsp:
+                    description: LSP Timers configuration.
+                    properties:
+                      generation:
+                        description: LSP Generation timers configuration.
+                        properties:
+                          holdIntervalMs:
+                            description: Hold interval for subsequent LSP regeneration
+                              (in milliseconds).
+                            format: int64
+                            minimum: 0
+                            type: integer
+                          initialDelayMs:
+                            description: Initial delay to generate the first instance
+                              of an LSP (in milliseconds).
+                            format: int64
+                            minimum: 0
+                            type: integer
+                          maxDelayMs:
+                            description: Maximum interval between two consecutive
+                              LSP regenerations (in milliseconds).
+                            format: int64
+                            minimum: 0
+                            type: integer
+                        type: object
+                      lifetimeSeconds:
+                        description: LSP lifetime (in seconds). The time an LSP remains
+                          valid in the LSDB.
+                        format: int32
+                        maximum: 65535
+                        minimum: 350
+                        type: integer
+                    type: object
+                  spf:
+                    description: SPF Timers configuration.
+                    properties:
+                      holdIntervalMs:
+                        description: Hold interval for subsequent SPF calculations
+                          (in milliseconds).
+                        format: int64
+                        minimum: 1
+                        type: integer
+                      initialDelayMs:
+                        description: Initial SPF calculation delay (in milliseconds).
+                        format: int64
+                        minimum: 0
+                        type: integer
+                      maxDelayMs:
+                        description: Maximum interval between two consecutive SPF
+                          calculations (in milliseconds).
+                        format: int64
+                        minimum: 1
+                        type: integer
+                    type: object
+                type: object
+              tlvConfig:
+                default: {}
+                description: IS-IS (optional) TLV configuration.
+                properties:
+                  poi:
+                    default: true
+                    description: Enable IS-IS Purge Originator Identification (POI)
+                      TLV support.
+                    type: boolean
+                  routerCapability:
+                    description: Enables IS-IS Router Capability TLV advertisement
+                      and selects the flooding scope.
+                    enum:
+                    - Domain
+                    - Level
+                    type: string
+                type: object
+            required:
+            - areaIDs
+            - enabled
+            type: object
+          status:
+            description: ISISInstanceStatus defines the observed state of ISISInstance
+            properties:
+              health:
+                description: Indicates the health score of the IS-IS Instance.
+                format: int32
+                maximum: 100
+                minimum: 0
+                type: integer
+              healthScoreReason:
+                description: Indicates the reason for the health score.
+                type: string
+              lastChangeTime:
+                description: The time when the state of the resource last changed.
+                type: string
+              operationalState:
+                description: Operational state of the IS-IS Instance.
+                enum:
+                - Up
+                - Down
+                - Degraded
+                - Unknown
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

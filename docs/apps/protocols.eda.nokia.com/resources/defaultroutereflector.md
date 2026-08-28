@@ -20,19 +20,21 @@ BGP route reflectors are used to eliminate the need for a full-mesh iBGP peering
 
 EDA creates a derived [`DefaultBGPPeer`](defaultbgppeer.md) for every [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) that the `DefaultRouteReflector` targets. This targeting is done by assigning labels to the [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md), and referencing this label in the `DefaultRouteReflector`.
 
-!!! warning "Don't forget to use labels!"
+/// admonition | Don't forget to use labels!
+    type: warning
 
-    If no target label is specified in the `ClientSelector` property of the `DefaultRouteReflector` resource, the `DefaultRouteReflector` will create [`DefaultBGPPeer`](defaultbgppeer.md) resources for **every** [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) and [`RouteReflectorClient`](routereflectorclient.md).
+If no target label is specified in the `ClientSelector` property of the `DefaultRouteReflector` resource, the `DefaultRouteReflector` will create [`DefaultBGPPeer`](defaultbgppeer.md) resources for **every** [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) and [`RouteReflectorClient`](routereflectorclient.md).
 
-    **Example:**
-    
-    * `DefaultRouteReflector` RR1 has **no** `ClientSelector` labels
-    * `DefaultRouteReflector` RR2 has **one** `ClientSelector` label: `rr-label=client`
-    * [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) Client1 has one label: `rr-label=client`
-    * [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) Client2 has one label: `rr-label=client`
-    * [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) Client3 has one label: `rr-label=somethingelse`
+**Example:**
 
-    In this example, `RR1` will create 3 derived [`DefaultBGPPeer`](defaultbgppeer.md) resources: one for each client. `RR2` will create only 2 derived [`DefaultBGPPeer`](defaultbgppeer.md) resources: one towards `client1`, and one towards `client2`. `Client3` does not have label `rr-label=client`, and therefore is not selected as client for `RR2`.
+* `DefaultRouteReflector` RR1 has **no** `ClientSelector` labels
+* `DefaultRouteReflector` RR2 has **one** `ClientSelector` label: `rr-label=client`
+* [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) Client1 has one label: `rr-label=client`
+* [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) Client2 has one label: `rr-label=client`
+* [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) Client3 has one label: `rr-label=somethingelse`
+
+In this example, `RR1` will create 3 derived [`DefaultBGPPeer`](defaultbgppeer.md) resources: one for each client. `RR2` will create only 2 derived [`DefaultBGPPeer`](defaultbgppeer.md) resources: one towards `client1`, and one towards `client2`. `Client3` does not have label `rr-label=client`, and therefore is not selected as client for `RR2`.
+///
 
 To set up BGP route reflectors in router services, use [`RouteReflector`](routereflector.md) instead.
 
@@ -49,15 +51,15 @@ To configure this resource, the following resources must exist or be created alo
 
 The [`DefaultBGPPeer`](defaultbgppeer.md) resource that the `DefaultRouteReflector` creates towards each selected [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) is always linked to a single [`DefaultBGPGroup`](defaultbgpgroup.md). These BGP peers share common parameters, such as BGP import and export policies, local and peer autonomous system numbers, and BGP timers. By specifying these parameters in a [`DefaultBGPGroup`](defaultbgpgroup.md), the operator can change these settings in a single location for all client BGP peers.
 
-### [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md)
+### [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-)
 
-To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md) attached directly to the system address of the [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md), a reference to this resource needs to be provided when creating the `DefaultRouteReflector`.
+To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-) attached directly to the system address of the [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-), a reference to this resource needs to be provided when creating the `DefaultRouteReflector`.
 
-### [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md)
+### [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-)
 
-To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) attached to a [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md), a reference to this resource needs to be provided when creating the `DefaultRouteReflector`.
+To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-) attached to a [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-), a reference to this resource needs to be provided when creating the `DefaultRouteReflector`.
 
-### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
+### [`Policy`](-{{ ref_app_doc('routingpolicies', 'policy') }}-)
 
 The [`DefaultBGPPeer`](defaultbgppeer.md) resources that the `DefaultRouteReflector` creates towards each selected [`DefaultRouteReflectorClient`](defaultroutereflectorclient.md) inherit import/export policies from the assigned [`DefaultBGPGroup`](#dependencies). This behavior can be overridden by specifying policies in the `DefaultRouteReflector`. Click [here](bgppeer.md#policy) for more information on BGP import/export policies.
 

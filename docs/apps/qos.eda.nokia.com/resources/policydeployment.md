@@ -14,15 +14,19 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-??? abstract "A brief introduction to QoS"
+/// details | A brief introduction to QoS
+    type: abstract
 
-    Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+Quality of Service (QoS) is a set of technologies and mechanisms used to manage traffic prioritization, often but not exclusively used in scenarios of network congestion. A full explanation of QoS is beyond the scope of this documentation, as the concepts are often as complex as the implementation of them on various network operating systems, along with chip-specific capabilities and limitations.
+///
 
 The `PolicyDeployment` is a resource that configures [`IngressPolicies`](./ingresspolicy.md) and [`EgressPolicies`](./egresspolicy.md) on a node. It specifies which interfaces follow a particular QoS policy. For example, some interfaces could be connected to a "premium" service without traffic [policers](./ingresspolicy.md#policing), while non-premium users have bandwidth restrictions. The `PolicyDeployment` decides which interfaces follow which rules.
 
-!!! warning "Interface types"
+/// admonition | Interface types
+    type: warning
 
-    Some hardware platforms like SR OS have different QoS capabilities for network ports (connected to other routers) compared to access ports. The `PolicyDeployment` resource only supports QoS policies for access interfaces. The `interfaceType` parameter is ignored for now.
+Some hardware platforms like SR OS have different QoS capabilities for network ports (connected to other routers) compared to access ports. The `PolicyDeployment` resource only supports QoS policies for access interfaces. The `interfaceType` parameter is ignored for now.
+///
 
 ## PolicyDeployment vs PolicyAttachment
 

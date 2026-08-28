@@ -1,0 +1,226 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.21.0
+  name: publishers.nats.eda.nokia.com
+spec:
+  group: nats.eda.nokia.com
+  names:
+    kind: Publisher
+    listKind: PublisherList
+    plural: publishers
+    singular: publisher
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Publisher is the Schema for the publishers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PublisherSpec defines the desired state of Publisher
+            properties:
+              address:
+                description: Comma-separated NATS or Jetstream cluster addresses
+                type: string
+              clientName:
+                default: eda-nats-client
+                description: NATS client name.
+                type: string
+              credentialsSecretName:
+                description: NATS Credentials. A secret name with a 'username' and
+                  'password' keys.
+                type: string
+              maxPendingAcks:
+                default: 4000
+                description: The maximum outstanding async publishes that can be inflight
+                  at one time
+                minimum: 1
+                type: integer
+              maxWait:
+                default: 5
+                description: The maximum time (in seconds) a sync publisher waits
+                  for an acknowledgment.
+                minimum: 1
+                type: integer
+              tls:
+                description: NATS client TLS configuration.
+                properties:
+                  fromFiles:
+                    description: Certificates files.
+                    properties:
+                      caFile:
+                        description: Path to a certificate authority file.
+                        type: string
+                      certFile:
+                        description: The client certificate file location.
+                        type: string
+                      keyFile:
+                        description: The client private key location.
+                        type: string
+                      skipVerify:
+                        description: If true the client will not verify the server's
+                          certificate.
+                        type: boolean
+                    type: object
+                  fromSecret:
+                    description: |-
+                      Secret containing a `tls.crt`, a `tls.key` and a `ca.crt` keys.
+                      Both `tls.crt` and `tls.key` must be present.
+                      If `ca.crt` is not present and `.trustBundle` is not set
+                      the remote server certificate is not verified.
+                    type: string
+                  trustBundle:
+                    description: |-
+                      ConfigMap containing a set of trust bundles (key `trust-bundle.pem`) used to
+                      verify the remote server certificates.
+                    type: string
+                type: object
+              type:
+                default: NATS
+                description: 'The NATS cluster type: NATS or Jetstream'
+                enum:
+                - NATS
+                - Jetstream
+                type: string
+            required:
+            - address
+            - clientName
+            - type
+            type: object
+          status:
+            description: PublisherStatus defines the observed state of Publisher.
+            properties:
+              connected:
+                description: Specifies if the client is connected to the NATS cluster
+                type: boolean
+              error:
+                description: Error value if the client is not connected
+                type: string
+              lastChecked:
+                description: Last time the connection was checked
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - deprecated: true
+    deprecationWarning: This version is deprecated and will no longer be supported
+      in the next version.
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Publisher is the Schema for the publishers API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PublisherSpec defines the desired state of Publisher
+            properties:
+              address:
+                description: Comma-separated NATS or Jetstream cluster addresses
+                type: string
+              clientName:
+                default: eda-nats-client
+                description: NATS client name.
+                type: string
+              credentialsSecretName:
+                description: NATS Credentials. A secret name with a 'username' and
+                  'password' keys.
+                type: string
+              maxPendingAcks:
+                default: 4000
+                description: The maximum outstanding async publishes that can be inflight
+                  at one time
+                minimum: 1
+                type: integer
+              maxWait:
+                default: 5
+                description: The maximum time (in seconds) a sync publisher waits
+                  for an acknowledgment.
+                minimum: 1
+                type: integer
+              tls:
+                description: NATS client TLS configuration.
+                properties:
+                  caFile:
+                    description: Path to a certificate authority file.
+                    type: string
+                  certFile:
+                    description: The client certificate file location.
+                    type: string
+                  keyFile:
+                    description: The client private key location.
+                    type: string
+                  skipVerify:
+                    description: If true the client will not verify the server's certificate.
+                    type: boolean
+                type: object
+              type:
+                default: NATS
+                description: 'The NATS cluster type: NATS or Jetstream'
+                enum:
+                - NATS
+                - Jetstream
+                type: string
+            required:
+            - address
+            - clientName
+            - type
+            type: object
+          status:
+            description: PublisherStatus defines the observed state of Publisher.
+            properties:
+              connected:
+                description: Specifies if the client is connected to the NATS cluster
+                type: boolean
+              error:
+                description: Error value if the client is not connected
+                type: string
+              lastChecked:
+                description: Last time the connection was checked
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}

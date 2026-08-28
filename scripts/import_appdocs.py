@@ -30,6 +30,9 @@ file operations).
 Staging ``docs/index.md`` (the app catalog) is ignored. App sections from
 staging are merged as **siblings** under ``Apps`` (same level as NetBox, Cloud
 Connect, etc.); there is no separate ``Applications`` nav wrapper.
+
+Imported app pages land directly under ``docs/apps/<domain>/`` (``index.md``,
+``resources/``, etc.), not in a nested ``docs/`` subdirectory.
 """
 
 from __future__ import annotations
@@ -54,6 +57,8 @@ except ImportError as exc:  # pragma: no cover
 DOMAIN_PATH_RE = re.compile(r"^[a-z0-9-]+\.eda\.nokia\.com/")
 # Nav entries produced by this import reference paths under apps/<domain>.eda.nokia.com/
 IMPORTED_APP_NAV_PATH = re.compile(r"apps/[a-z0-9.-]+\.eda\.nokia\.com/")
+# Apps excluded from import (not published in docs.eda.dev nav or content).
+SKIP_APP_DOMAINS = frozenset({"demo.eda.nokia.com", "tpi.eda.nokia.com"})
 
 
 def parse_args() -> argparse.Namespace:
@@ -152,6 +157,17 @@ def transform_nav_paths(applications_children: list[Any]) -> list[Any]:
     return transform_list(list(applications_children), is_root=True)
 
 
+def filter_skipped_applications_nav(children: list[Any]) -> list[Any]:
+    """Drop staging nav entries for apps that are not published in this docs repo."""
+    out: list[Any] = []
+    for el in children:
+        if isinstance(el, dict):
+            if any(key in ("Demo", "TPI") for key in el):
+                continue
+        out.append(el)
+    return out
+
+
 def nav_subtree_references_imported_apps(obj: Any) -> bool:
     """True if any nav path string points at a generated per-app docs tree."""
     if isinstance(obj, str):
@@ -163,6 +179,40 @@ def nav_subtree_references_imported_apps(obj: Any) -> bool:
     return False
 
 
+def resolve_app_staging_paths(staging_docs: Path, domain: str) -> tuple[Path, Path] | None:
+    """Return ``(source_docs, source_app)`` for a staging app domain.
+
+    Supports two edabuilder layouts:
+
+    - **Nested:** ``<domain>/docs/`` → app docs tree; manifest/crds live in the
+      resolved parent (app repo root).
+    - **Flat:** ``<domain>/index.md`` (and siblings) directly under the domain dir;
+      manifest/crds are siblings in the same directory.
+    """
+    app_dir = staging_docs / domain
+    if not app_dir.is_dir():
+        return None
+
+    nested_docs = app_dir / "docs"
+    if nested_docs.exists() and (nested_docs.is_symlink() or nested_docs.is_dir()):
+        try:
+            source_docs = nested_docs.resolve()
+        except OSError:
+            return None
+        if not source_docs.is_dir():
+            return None
+        return source_docs, source_docs.parent
+
+    if (app_dir / "index.md").exists():
+        try:
+            source_docs = app_dir.resolve()
+        except OSError:
+            return None
+        return source_docs, source_docs
+
+    return None
+
+
 def discover_app_domains(staging_docs: Path) -> list[str]:
     domains: list[str] = []
     for p in sorted(staging_docs.iterdir()):
@@ -170,16 +220,9 @@ def discover_app_domains(staging_docs: Path) -> list[str]:
             continue
         if not p.name.endswith(".eda.nokia.com"):
             continue
-        docs_link = p / "docs"
-        if not docs_link.exists():
+        if p.name in SKIP_APP_DOMAINS:
             continue
-        if not docs_link.is_symlink() and not docs_link.is_dir():
-            continue
-        try:
-            resolved = docs_link.resolve()
-        except OSError:
-            continue
-        if resolved.is_dir():
+        if resolve_app_staging_paths(staging_docs, p.name) is not None:
             domains.append(p.name)
     return domains
 
@@ -454,6 +497,7 @@ def main() -> None:
     if nav_staging is None:
         raise SystemExit("staging mkdocs has no nav")
     applications_children = find_applications_children(nav_staging)
+    applications_children = filter_skipped_applications_nav(applications_children)
     transformed_children = transform_nav_paths(applications_children)
 
     stage("discover applications")
@@ -462,25 +506,22 @@ def main() -> None:
 
     stage("sync doc trees")
     for domain in domains:
-        app_staging = staging_docs / domain / "docs"
-        try:
-            source_docs = app_staging.resolve()
-        except OSError as e:
-            print(f"warn: skip {domain}: cannot resolve docs: {e}", file=sys.stderr)
+        resolved = resolve_app_staging_paths(staging_docs, domain)
+        if resolved is None:
+            print(f"warn: skip {domain}: cannot resolve staging paths", file=sys.stderr)
             continue
+        source_docs, source_app = resolved
         if not source_docs.is_dir():
             print(f"warn: skip {domain}: not a directory: {source_docs}", file=sys.stderr)
             continue
-        target_docs = repo_docs / "apps" / domain / "docs"
         target_app = repo_docs / "apps" / domain
         sync_app_docs(
             source_docs,
-            target_docs,
+            target_app,
             dry_run=dry_run,
             detail=file_detail,
             domain=domain,
         )
-        source_app = source_docs.parent
         sync_app_root_extras(
             source_app,
             target_app,

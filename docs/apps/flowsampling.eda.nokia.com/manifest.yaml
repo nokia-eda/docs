@@ -10,9 +10,9 @@ spec:
   author: nokia
   description: This application provides sampling (sflow, ipfix, etc) configuration for Network Operating Systems.
   group: flowsampling.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/flowsampling:v6.999.0
+  image: ghcr.io/nokia-eda/apps/flowsampling:v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   title: Flow Sampling
   version: v1alpha1
   components:
@@ -42,11 +42,11 @@ spec:
         type: state
   requirements:
     - appId: routing.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: services.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: bootstrap.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
   dependencies:
     - file:
         path: flowsampling/intents
@@ -55,19 +55,13 @@ spec:
     - file:
         path: utils/
     - file:
-        path: filters/
+        path: routing/api/v1/pysrc
     - file:
-        path: qos/
+        path: services/api/v2/pysrc
     - file:
-        path: routing/
+        path: bootstrap/api/v1/pysrc
     - file:
-        path: routingpolicies/
-    - file:
-        path: services/
-    - file:
-        path: bootstrap/
-    - file:
-        path: interfaces/
+        path: interfaces/api/v1/pysrc
     - file:
         path: flowsampling/api
     - file:

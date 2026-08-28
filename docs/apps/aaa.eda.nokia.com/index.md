@@ -29,6 +29,7 @@ The AAA application provides the following components:
 * [Node Groups](resources/nodegroup.md)
 * [Server Groups](resources/servergroup.md)
 * [Authentication Policies](resources/authenticationpolicy.md)
+* [Accounting Policies](resources/accountingpolicy.md)
 
 </div>
 </div>
@@ -38,5 +39,8 @@ The AAA application provides the following components:
 
 Users are identified by their username and a password or private key (authentication). A user is configured on a set of nodes, and is linked to a [group](resources/nodegroup.md). The group defines what the user can or cannot do (authorization).
 
-!!! info 
-    Node users are a core feature of EDA, and are not discussed in this article.
+/// admonition
+    type: info
+
+Node users are a core feature of EDA, and are not discussed in this article.
+///

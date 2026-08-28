@@ -8,7 +8,7 @@ spec:
   title: Fabrics
   description: |
     This application provides automation resources relating to datacenter fabrics.
-  image: ghcr.io/nokia-eda/apps/fabrics:v6.999.0
+  image: ghcr.io/nokia-eda/apps/fabrics:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -30,7 +30,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: fabrics/crds/fabrics.eda.nokia.com_fabrics.yaml
@@ -98,20 +98,22 @@ spec:
         workflow: true
         ui:
           name: ISL Ping
+          category: Troubleshooting
         conversionScript: fabrics/intents/islping/conversion_v1.py
     - crd:
         api:
-          expose: none
+          expose: readWrite
         namespaced: true
         path: fabrics/crds/fabrics.eda.nokia.com_fabrictopologies.yaml
         schema: fabrics/openapiv3/eda_oas_fabrics.eda.nokia.com_fabrictopologies.json
         workflow: true
         ui:
           name: Fabric Topology
+          category: Topology
     - cr:
         path: fabrics/workflows/islping/core_v1_flowdefinition.yaml
-    # - cr:
-    #     path: fabrics/workflows/fabrictopology/core_v1_flowdefinition.yaml
+    - cr:
+        path: fabrics/workflows/fabrictopology/core_v1_flowdefinition.yaml
     - cr:
         path: fabrics/alarms/alarms.yaml
   dependencies:
@@ -123,92 +125,40 @@ spec:
         path: common/
     - file:
         path: utils/
-        #--- Protocols
     - file:
-        path: protocols/
-        # - file:
-        #     path: protocols/pysrc/
-        # - file:
-        #     path: protocols/bgpgroupdeployment_intent.py
-        # - file:
-        #     path: protocols/bgpgroup_intent.py
-        # - file:
-        #     path: protocols/bgpgroupstate_intent.py
-        # - file:
-        #     path: protocols/bgppeer_intent.py
-        # - file:
-        #     path: protocols/bgppeerstate_intent.py
-        # - file:
-        #     path: protocols/defaultbgpgroupdeployment_intent.py
-        # - file:
-        #     path: protocols/defaultbgpgroup_intent.py
-        # - file:
-        #     path: protocols/defaultbgppeer_intent.py
-        # - file:
-        #     path: protocols/defaultroutereflectorclient_intent.py
-        # - file:
-        #     path: protocols/defaultroutereflector_intent.py
-        # - file:
-        #     path: protocols/routereflectorclient_intent.py
-        # - file:
-        #     path: protocols/routereflectorclientstate_intent.py
-        # - file:
-        #     path: protocols/routereflector_intent.py
-        # - file:
-        #     path: protocols/routereflectorstate_intent.py
+        path: protocols/api/v2/pysrc
     - file:
-        path: routingpolicies/
-        # - file:
-        #     path: routingpolicies/pysrc/
-        # - file:
-        #     path: routingpolicies/policy_intent.py
-        # - file:
-        #     path: routingpolicies/policydeployment_intent.py
-        # - file:
-        #     path: routingpolicies/prefixset_intent.py
-        # - file:
-        #     path: routingpolicies/prefixsetdeployment_intent.py
-      #--- Routing Policies
+        path: routingpolicies/api/v1/pysrc
     - file:
-        path: routing/
-        # - file:
-        #     path: routing/pysrc/
-        # - file:
-        #     path: routing/defaultinterface_intent.py
-        # - file:
-        #     path: routing/defaultrouter_intent.py
-        # - file:
-        #     path: routing/defaultinterfacestate_intent.py
-        # - file:
-        #     path: routing/defaultrouterstate_intent.py
-      #--- Routing
+        path: routing/api/v1/pysrc
     - file:
-        path: interfaces/
-        # - file:
-        #     path: interfaces/pysrc/
-        # - file:
-        #     path: interfaces/interface_intent.py
-      #--- Interfaces
+        path: routing/intents/defaultinterface/common.py
     - file:
-        path: qos/
-        #--- Security
-      #--- Qos
+        path: interfaces/api/v1/pysrc
     - file:
-        path: security/
+        path: qos/api/v2/pysrc
+    - file:
+        path: security/api/v1/pysrc
     - file:
         path: fabrics/alarms/pysrc
     - file:
         path: fabrics/api/v1/pysrc
+    - container:
+        image: registry.eda.dev/fabrics/workflows/islping:latest
+        name: islping
+    - container:
+        image: registry.eda.dev/fabrics/workflows/fabrictopology:latest
+        name: fabrictopology
   requirements:
     - appId: protocols.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: routingpolicies.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: routing.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: qos.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: security.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: routereflectors.protocols.eda.nokia.com
 spec:
   group: protocols.eda.nokia.com
@@ -66,6 +66,7 @@ spec:
                     description: The maximum number of times the global AS number
                       or a local AS number of the BGP instance can appear in any received
                       AS_PATH before it is considered a loop and considered invalid.
+                    format: int32
                     maximum: 255
                     minimum: 0
                     type: integer
@@ -127,6 +128,7 @@ spec:
               grStaleRouteTime:
                 description: Enables Graceful Restart on the peer and sets the stale
                   route time.
+                format: int32
                 maximum: 3600
                 minimum: 1
                 type: integer
@@ -175,13 +177,14 @@ spec:
                           maxReceivedRoutes:
                             description: Maximum number of prefixes allowed to be
                               received from the neighbor, counting only accepted routes.
-                            format: int32
+                            format: int64
                             maximum: 4294967295
                             minimum: 1
                             type: integer
                           warningThreshold:
                             description: A percentage of the maximum number of prefixes
                               that can be accepted before a warning is logged.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -197,13 +200,14 @@ spec:
                             description: Maximum number of prefixes allowed to be
                               received from the neighbor, counting all routes (accepted
                               and rejected by import policies).
-                            format: int32
+                            format: int64
                             maximum: 4294967295
                             minimum: 1
                             type: integer
                           warningThreshold:
                             description: A percentage of the maximum number of prefixes
                               that can be received before a warning is logged.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -238,13 +242,14 @@ spec:
                           maxReceivedRoutes:
                             description: Maximum number of prefixes allowed to be
                               received from the neighbor, counting only accepted routes.
-                            format: int32
+                            format: int64
                             maximum: 4294967295
                             minimum: 1
                             type: integer
                           warningThreshold:
                             description: A percentage of the maximum number of prefixes
                               that can be accepted before a warning is logged.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -260,13 +265,14 @@ spec:
                             description: Maximum number of prefixes allowed to be
                               received from the neighbor, counting all routes (accepted
                               and rejected by import policies).
-                            format: int32
+                            format: int64
                             maximum: 4294967295
                             minimum: 1
                             type: integer
                           warningThreshold:
                             description: A percentage of the maximum number of prefixes
                               that can be received before a warning is logged.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -282,6 +288,7 @@ spec:
                 properties:
                   autonomousSystem:
                     description: Local Autonomous System number.
+                    format: int64
                     maximum: 4294967295
                     minimum: 1
                     type: integer
@@ -301,6 +308,7 @@ spec:
                 properties:
                   autonomousSystem:
                     description: Local Autonomous System number.
+                    format: int64
                     maximum: 4294967295
                     minimum: 1
                     type: integer
@@ -342,24 +350,28 @@ spec:
                   connectRetry:
                     description: The time interval in seconds between successive attempts
                       to establish a session with a peer.
+                    format: int32
                     maximum: 65535
                     minimum: 1
                     type: integer
                   holdTime:
                     description: The hold-time interval in seconds that the router
                       proposes to the peer in its OPEN message.
+                    format: int32
                     maximum: 65535
                     minimum: 0
                     type: integer
                   keepAlive:
                     description: The interval in seconds between successive keepalive
                       messages sent to the peer.
+                    format: int32
                     maximum: 21845
                     minimum: 0
                     type: integer
                   minimumAdvertisementInterval:
                     description: The value assigned to the MinRouteAdvertisementIntervalTimer
                       of RFC 4271, for both EBGP and IBGP sessions.
+                    format: int32
                     maximum: 255
                     minimum: 1
                     type: integer
@@ -375,6 +387,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the RouteReflector.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -385,10 +399,12 @@ spec:
               numRouteReflectorBGPPeers:
                 description: Total number of configured route reflector client peers
                   on the route reflector.
+                format: int64
                 type: integer
               numRouteReflectorBGPPeersOperDown:
                 description: Total number of configured route reflector client peers
                   on the route reflector that are operationally down.
+                format: int64
                 type: integer
               operDownRouteReflectorPeers:
                 description: List of route reflector BGPPeers which are operationally
@@ -454,6 +470,7 @@ spec:
                     description: The maximum number of times the global AS number
                       or a local AS number of the BGP instance can appear in any received
                       AS_PATH before it is considered a loop and considered invalid.
+                    format: int32
                     maximum: 255
                     minimum: 0
                     type: integer
@@ -503,6 +520,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               clusterID:
                 description: Sets the cluster ID for route reflectors.
                 type: string
@@ -515,6 +533,7 @@ spec:
               grStaleRouteTimeSeconds:
                 description: Enables Graceful Restart on the peer and sets the stale
                   route time in seconds.
+                format: int32
                 maximum: 3600
                 minimum: 1
                 type: integer
@@ -541,6 +560,7 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               ipv4Unicast:
                 description: Parameters relating to the IPv4 unicast AFI/SAFI.
                 properties:
@@ -551,6 +571,22 @@ spec:
                   enabled:
                     description: Enables the IPv4 unicast AFISAFI.
                     type: boolean
+                  exportPolicies:
+                    description: Reference to a Policy resource for route exports
+                      for this address family.
+                    items:
+                      type: string
+                    maxItems: 5
+                    minItems: 1
+                    type: array
+                  importPolicies:
+                    description: Reference to a Policy resource for route imports
+                      for this address family.
+                    items:
+                      type: string
+                    maxItems: 5
+                    minItems: 1
+                    type: array
                   prefixLimit:
                     description: Configures the maximum number of IPv4 unicast prefixes
                       that can be received from a BGP peer.
@@ -567,13 +603,13 @@ spec:
                           maxReceivedRoutes:
                             description: Maximum number of prefixes allowed to be
                               received from the neighbor, counting only accepted routes.
-                            format: int32
-                            maximum: 4294967295
+                            format: int64
                             minimum: 1
                             type: integer
                           warningThresholdPercent:
                             description: A percentage of the maximum number of prefixes
                               that can be accepted before a warning is logged.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -591,13 +627,13 @@ spec:
                             description: Maximum number of prefixes allowed to be
                               received from the neighbor, counting all routes (accepted
                               and rejected by import policies).
-                            format: int32
-                            maximum: 4294967295
+                            format: int64
                             minimum: 1
                             type: integer
                           warningThresholdPercent:
                             description: A percentage of the maximum number of prefixes
                               that can be received before a warning is logged.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -614,12 +650,29 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               ipv6Unicast:
                 description: Parameters relating to the IPv6 unicast AFI/SAFI.
                 properties:
                   enabled:
                     description: Enables the IPv6 unicast AFISAFI
                     type: boolean
+                  exportPolicies:
+                    description: Reference to a Policy resource for route exports
+                      for this address family.
+                    items:
+                      type: string
+                    maxItems: 5
+                    minItems: 1
+                    type: array
+                  importPolicies:
+                    description: Reference to a Policy resource for route imports
+                      for this address family.
+                    items:
+                      type: string
+                    maxItems: 5
+                    minItems: 1
+                    type: array
                   prefixLimit:
                     description: Enables advertisement of IPv6 Unicast routes with
                       IPv4 next-hops to peers.
@@ -636,13 +689,13 @@ spec:
                           maxReceivedRoutes:
                             description: Maximum number of prefixes allowed to be
                               received from the neighbor, counting only accepted routes.
-                            format: int32
-                            maximum: 4294967295
+                            format: int64
                             minimum: 1
                             type: integer
                           warningThresholdPercent:
                             description: A percentage of the maximum number of prefixes
                               that can be accepted before a warning is logged.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -660,13 +713,13 @@ spec:
                             description: Maximum number of prefixes allowed to be
                               received from the neighbor, counting all routes (accepted
                               and rejected by import policies).
-                            format: int32
-                            maximum: 4294967295
+                            format: int64
                             minimum: 1
                             type: integer
                           warningThresholdPercent:
                             description: A percentage of the maximum number of prefixes
                               that can be received before a warning is logged.
+                            format: int32
                             maximum: 100
                             minimum: 1
                             type: integer
@@ -682,6 +735,7 @@ spec:
                 properties:
                   autonomousSystem:
                     description: Local Autonomous System number.
+                    format: int64
                     maximum: 4294967295
                     minimum: 1
                     type: integer
@@ -701,6 +755,7 @@ spec:
                 properties:
                   autonomousSystem:
                     description: Local Autonomous System number.
+                    format: int64
                     maximum: 4294967295
                     minimum: 1
                     type: integer
@@ -728,6 +783,7 @@ spec:
                       - IPv6Unicast
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   exportPolicy:
                     description: Reference to a Policy that should be applied to the
                       advertised default routes, in order to set their attributes
@@ -742,24 +798,28 @@ spec:
                   connectRetrySeconds:
                     description: The time interval in seconds between successive attempts
                       to establish a session with a peer.
+                    format: int32
                     maximum: 65535
                     minimum: 1
                     type: integer
                   holdTimeSeconds:
                     description: The hold-time interval in seconds that the router
                       proposes to the peer in its OPEN message.
+                    format: int32
                     maximum: 65535
                     minimum: 0
                     type: integer
                   keepAliveSeconds:
                     description: The interval in seconds between successive keepalive
                       messages sent to the peer.
+                    format: int32
                     maximum: 21845
                     minimum: 0
                     type: integer
                   minimumAdvertisementIntervalSeconds:
                     description: The value assigned to the MinRouteAdvertisementIntervalTimer
                       of RFC 4271, for both EBGP and IBGP sessions, in seconds.
+                    format: int32
                     maximum: 255
                     minimum: 1
                     type: integer
@@ -775,6 +835,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the RouteReflector.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -785,10 +847,12 @@ spec:
               numRouteReflectorBGPPeers:
                 description: Total number of configured route reflector client peers
                   on the route reflector.
+                format: int64
                 type: integer
               numRouteReflectorBGPPeersOperDown:
                 description: Total number of configured route reflector client peers
                   on the route reflector that are operationally down.
+                format: int64
                 type: integer
               operDownRouteReflectorPeers:
                 description: List of route reflector BGPPeers which are operationally

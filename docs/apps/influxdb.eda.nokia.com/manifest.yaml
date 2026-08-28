@@ -1,0 +1,84 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: influxdbexporter
+spec:
+  group: influxdb.eda.nokia.com
+  version: v1alpha1
+  title: InfluxDB Exporter
+  description: Write EDA alarms or any EDB object to an InfluxDB server.
+  image: ghcr.io/nokia-eda/apps/influxdb:v7.0.0
+  author: Nokia
+  gitPathPrefix: /
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: influxdbexporter/README.md
+    documentation: influxdbexporter/docs/
+    license: influxdbexporter/LICENSE
+    screenshots:
+      - influxdbexporter/assets/Influxdb_logo.png
+    categories:
+      - "integrations"
+    settings: influxdbexporter/settings/openapi/eda_oas_influxdb.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: influxdbexporter/crds/influxdb.eda.nokia.com_exports.yaml
+        schema: influxdbexporter/openapiv3/eda_oas_influxdb.eda.nokia.com_exports.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: InfluxDB
+          name: Export
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: influxdbexporter/crds/influxdb.eda.nokia.com_clusterexports.yaml
+        schema: influxdbexporter/openapiv3/eda_oas_influxdb.eda.nokia.com_clusterexports.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: InfluxDB
+          name: Cluster Export
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: influxdbexporter/crds/influxdb.eda.nokia.com_servers.yaml
+        schema: influxdbexporter/openapiv3/eda_oas_influxdb.eda.nokia.com_servers.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: InfluxDB
+          name: Server
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: influxdbexporter/crds/influxdb.eda.nokia.com_clusterservers.yaml
+        schema: influxdbexporter/openapiv3/eda_oas_influxdb.eda.nokia.com_clusterservers.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: InfluxDB
+          name: Cluster Server
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - cr:
+        path: influxdbexporter/manifests/webhooks.yaml
+    - cr:
+        path: influxdbexporter/manifests/deployment.yaml
+    - cr:
+        path: influxdbexporter/alarms/alarms.yaml
+  dependencies:
+    - container:
+        name: influxdbexporter-controller
+        image: registry.eda.dev/influxdbexporter/operators/controller:latest
+    - file:
+        path: influxdbexporter/api

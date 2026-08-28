@@ -14,15 +14,23 @@ icon: auto-crd
 
 -{{ category(resource_name_plural) }}- → -{{ icons.circle(letter=resource_name_acronym, text=resource_name_plural_title) }}-
 
-!!! info "Documentation coming soon!"
+To connect securely to the nodes, EDA installs a TLS certificate on each node during onboarding. Depending on the operating system, that certificate is installed through gNOI (gRPC Network Operations Interface) or gNSI (gRPC Network Security Interface). The certificate must be rotated periodically, for example when the signing CA used by EDA is rotated.
 
-<!-- ## Dependencies
+Periodic rotation of the TLS certificate is done automatically, without operator intervention. To rotate earlier, run the `RotateCertificate` workflow.
 
-..
+## Certificate validation
+
+After rotation, the new certificate is validated against EDA's node trust bundle. This check can be disabled with `skipCertificateValidation`.
+
+## Dependencies
+
+### `TopoNode`
+
+Nodes can be selected explicitly by name, or through a label selector.
 
 ## Referenced resources
 
-..
+The `RotateCertificate` does not reference any other EDA resources.
 
 ## Examples
 
@@ -42,7 +50,7 @@ cat << 'EOF' | kubectl apply -f -
 EOF
 ```
 
-/// -->
+///
 
 ## Custom Resource Definition
 

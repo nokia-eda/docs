@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: routedinterfaces.services.eda.nokia.com
 spec:
   group: services.eda.nokia.com
@@ -66,7 +66,7 @@ spec:
                 default: 14400
                 description: Duration of time that dynamic ARP entries remain in the
                   ARP cache before they expire.
-                format: int32
+                format: int64
                 type: integer
               bfd:
                 description: Enables BFD on the RoutedInterface.
@@ -75,6 +75,7 @@ spec:
                     default: 1000000
                     description: The minimum interval in microseconds between transmission
                       of BFD control packets.
+                    format: int32
                     maximum: 100000000
                     minimum: 10000
                     type: integer
@@ -82,6 +83,7 @@ spec:
                     default: 3
                     description: The number of packets that must be missed to declare
                       this session as down.
+                    format: int32
                     maximum: 20
                     minimum: 3
                     type: integer
@@ -93,6 +95,7 @@ spec:
                     default: 0
                     description: The minimum interval between echo packets the local
                       node can receive.
+                    format: int32
                     maximum: 100000000
                     minimum: 0
                     type: integer
@@ -100,12 +103,14 @@ spec:
                     default: 1000000
                     description: The minimum interval in microseconds between received
                       BFD control packets that this system should support.
+                    format: int32
                     maximum: 100000000
                     minimum: 10000
                     type: integer
                   ttl:
                     description: Sets custom IP TTL or Hop Limit for multi-hop BFD
                       sessions packets. Not applicable to single-hop BFD sessions.
+                    format: int32
                     maximum: 255
                     minimum: 2
                     type: integer
@@ -195,6 +200,7 @@ spec:
               ipMTU:
                 default: 1500
                 description: IP MTU for the RoutedInterface.
+                format: int32
                 maximum: 9486
                 minimum: 1280
                 type: integer
@@ -302,8 +308,7 @@ spec:
                             the time the packet is sent) that addresses generated
                             from the prefix via stateless address autoconfiguration
                             remain preferred.
-                          format: int32
-                          maximum: 4294967295
+                          format: int64
                           minimum: 0
                           type: integer
                         prefix:
@@ -314,8 +319,7 @@ spec:
                           description: The length of time in seconds (relative to
                             the time the packet is sent) that the prefix is valid
                             for the purpose of on-link determination.
-                          format: int32
-                          maximum: 4294967295
+                          format: int64
                           minimum: 0
                           type: integer
                       required:
@@ -406,6 +410,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the RoutedInterface.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -442,6 +448,7 @@ spec:
                     subInterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN.
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface.
@@ -517,6 +524,7 @@ spec:
                     default: 1000
                     description: The minimum interval in milliseconds between transmission
                       of BFD control packets.
+                    format: int32
                     maximum: 100000
                     minimum: 10
                     type: integer
@@ -524,6 +532,7 @@ spec:
                     default: 3
                     description: The number of packets that must be missed to declare
                       this session as down.
+                    format: int32
                     maximum: 20
                     minimum: 3
                     type: integer
@@ -535,6 +544,7 @@ spec:
                     default: 0
                     description: The minimum interval between echo packets the local
                       node can receive.
+                    format: int32
                     maximum: 100000
                     minimum: 0
                     type: integer
@@ -542,12 +552,14 @@ spec:
                     default: 1000
                     description: The minimum interval in milliseconds between received
                       BFD control packets that this system should support.
+                    format: int32
                     maximum: 100000
                     minimum: 10
                     type: integer
                   ttl:
                     description: Sets custom IP TTL or Hop Limit for multi-hop BFD
                       sessions packets. Not applicable to single-hop BFD sessions.
+                    format: int32
                     maximum: 255
                     minimum: 2
                     type: integer
@@ -565,11 +577,13 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   qosPolicies:
                     description: List of QoS Egress policy references to use at egress.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                 type: object
               hostRoutePopulate:
                 description: Configures host route population based on ARP/ND entries.
@@ -625,11 +639,13 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                   qosPolicies:
                     description: List of QoS Ingress policy references to use at ingress.
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: set
                 type: object
               interface:
                 description: Reference to an Interface to use for attachment.
@@ -637,6 +653,7 @@ spec:
               ipMTU:
                 default: 1500
                 description: IP MTU for the RoutedInterface.
+                format: int32
                 maximum: 9486
                 minimum: 1280
                 type: integer
@@ -647,7 +664,7 @@ spec:
                     default: 14400
                     description: Duration of time that dynamic ARP entries remain
                       in the ARP cache before they expire.
-                    format: int32
+                    format: int64
                     minimum: 0
                     type: integer
                   directedBroadcast:
@@ -676,6 +693,9 @@ spec:
                   - ipPrefix
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - ipPrefix
+                x-kubernetes-list-type: map
               ipv6:
                 description: IPv6 parameters that are not applicable to IPv4.
                 properties:
@@ -758,8 +778,7 @@ spec:
                                 to the time the packet is sent) that addresses generated
                                 from the prefix via stateless address autoconfiguration
                                 remain preferred.
-                              format: int32
-                              maximum: 4294967295
+                              format: int64
                               minimum: 0
                               type: integer
                             prefix:
@@ -770,14 +789,16 @@ spec:
                               description: The length of time in seconds (relative
                                 to the time the packet is sent) that the prefix is
                                 valid for the purpose of on-link determination.
-                              format: int32
-                              maximum: 4294967295
+                              format: int64
                               minimum: 0
                               type: integer
                           required:
                           - prefix
                           type: object
                         type: array
+                        x-kubernetes-list-map-keys:
+                        - prefix
+                        x-kubernetes-list-type: map
                       reachableTimeMs:
                         default: 0
                         description: Time in milliseconds for Neighbor Unreachability
@@ -826,6 +847,9 @@ spec:
                   - ipPrefix
                   type: object
                 type: array
+                x-kubernetes-list-map-keys:
+                - ipPrefix
+                x-kubernetes-list-type: map
               l3ProxyARPND:
                 description: L3 Proxy ARP and ND configuration.
                 properties:
@@ -860,6 +884,8 @@ spec:
             properties:
               health:
                 description: Indicates the health score of the RoutedInterface.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
@@ -912,6 +938,7 @@ spec:
                     subinterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN.
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface.

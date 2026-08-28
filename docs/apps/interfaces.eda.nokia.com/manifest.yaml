@@ -10,7 +10,7 @@ spec:
     This application provides interface configuration and state for various Network Operating Systems.
 
     It also supports alarming driven by interface operational state and the population of a normalized table to support queries across supported endpoints.
-  image: ghcr.io/nokia-eda/apps/interfaces:v6.999.0
+  image: ghcr.io/nokia-eda/apps/interfaces:v7.0.0
   author: Nokia
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
@@ -28,7 +28,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   appInfo:
     categories:
       - "networking"
@@ -89,6 +89,7 @@ spec:
         workflow: true
         ui:
           name: Check Interfaces
+          category: Troubleshooting
         conversionScript: interfaces/intents/checkinterfaces/conversion_v1.py
     - cr:
         path: interfaces/workflows/checkinterfaces/core_v1_flowdefinition.yaml
@@ -114,3 +115,11 @@ spec:
         path: interfaces/api
     - file:
         path: interfaces/api/v1/pysrc
+    - file:
+        path: core/pysrc
+    - container:
+        image: registry.eda.dev/interfaces/workflows/analyzealarm:latest
+        name: analyzealarm
+    - container:
+        image: registry.eda.dev/interfaces/workflows/checkinterfaces:latest
+        name: checkinterfaces

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: bridgeinterfacestates.services.eda.nokia.com
 spec:
   group: services.eda.nokia.com
@@ -72,6 +72,7 @@ spec:
                     subInterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface
@@ -107,6 +108,7 @@ spec:
                     subInterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface
@@ -185,6 +187,7 @@ spec:
                     subinterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface
@@ -220,6 +223,7 @@ spec:
                     subinterfaceIndex:
                       description: Index allocated to the subinterface on the associated
                         interface for the given VLAN
+                      format: int64
                       type: integer
                     vlanID:
                       description: vlan assigned to this subinterface

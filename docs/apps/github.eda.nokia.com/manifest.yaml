@@ -1,0 +1,134 @@
+apiVersion: core.eda.nokia.com/v1
+kind: Manifest
+metadata:
+  name: github
+spec:
+  group: github.eda.nokia.com
+  version: v1alpha1
+  title: GitHub
+  description: Creates GitHub workflows and issues.
+  image: ghcr.io/nokia-eda/apps/github:v7.0.0
+  author: Nokia
+  gitPathPrefix: /
+  supportedCoreVersions:
+    - "v6.0"
+  appInfo:
+    readme: github/README.md
+    documentation: github/docs/
+    license: github/LICENSE
+    screenshots:
+      - github/assets/github-logo.png
+    categories:
+      - "integrations"
+    settings: github/settings/openapi/eda_oas_github.eda.nokia.com_appsettings.json
+  components:
+    - crd:
+        path: github/crds/github.eda.nokia.com_githubinstances.yaml
+        schema: github/openapiv3/eda_oas_github.eda.nokia.com_githubinstances.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: GitHub
+          name: Instance
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: github/crds/github.eda.nokia.com_clustergithubinstances.yaml
+        schema: github/openapiv3/eda_oas_github.eda.nokia.com_clustergithubinstances.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: GitHub
+          name: Cluster Instance
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: github/crds/github.eda.nokia.com_githubactions.yaml
+        schema: github/openapiv3/eda_oas_github.eda.nokia.com_githubactions.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: GitHub
+          name: Action
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: github/crds/github.eda.nokia.com_clustergithubactions.yaml
+        schema: github/openapiv3/eda_oas_github.eda.nokia.com_clustergithubactions.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: GitHub
+          name: Cluster Action
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: github/crds/github.eda.nokia.com_githubissues.yaml
+        schema: github/openapiv3/eda_oas_github.eda.nokia.com_githubissues.json
+        namespaced: true
+        api:
+          expose: readWrite
+        ui:
+          category: GitHub
+          name: Issue
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: github/crds/github.eda.nokia.com_clustergithubissues.yaml
+        schema: github/openapiv3/eda_oas_github.eda.nokia.com_clustergithubissues.json
+        namespaced: false
+        api:
+          expose: readWrite
+        ui:
+          category: GitHub
+          name: Cluster Issue
+        kubernetes:
+          exportPolicy: all
+          importPolicy: all
+    - crd:
+        path: github/crds/github.eda.nokia.com_creategithubissues.yaml
+        schema: github/openapiv3/eda_oas_github.eda.nokia.com_creategithubissues.json
+        namespaced: true
+        workflow: true
+        api:
+          expose: readWrite
+        ui:
+          name: Create Github Issue
+    - crd:
+        path: github/crds/github.eda.nokia.com_rungithubworkflows.yaml
+        schema: github/openapiv3/eda_oas_github.eda.nokia.com_rungithubworkflows.json
+        namespaced: true
+        workflow: true
+        api:
+          expose: readWrite
+        ui:
+          name: Run Github Workflow
+    - cr:
+        path: github/manifests/webhooks.yaml
+    - cr:
+        path: github/manifests/deployment.yaml
+    - cr:
+        path: github/workflows/create-github-issue/core_v1_flowdefinition.yaml
+    - cr:
+        path: github/workflows/run-github-workflow/core_v1_flowdefinition.yaml
+  dependencies:
+    - container:
+        name: github-controller
+        image: registry.eda.dev/github/operators/controller:latest
+    - container:
+        name: create-github-issue
+        image: registry.eda.dev/github/workflows/create-github-issue:latest
+    - container:
+        name: run-github-workflow
+        image: registry.eda.dev/github/workflows/run-github-workflow:latest
+    - file:
+        path: github/api

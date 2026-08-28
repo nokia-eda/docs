@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: backends.aifabrics.eda.nokia.com
 spec:
   group: aifabrics.eda.nokia.com
@@ -69,6 +69,8 @@ spec:
                         - Global
                         - Fabric
                         - Stripe
+                        maxLength: 253
+                        minLength: 1
                         type: string
                       prefixLength:
                         default: "64"
@@ -76,6 +78,8 @@ spec:
                         enum:
                         - "64"
                         - "96"
+                        maxLength: 3
+                        minLength: 1
                         type: string
                     type: object
                   globalIPv6Pool:
@@ -95,13 +99,66 @@ spec:
                     - EDAManagedIPv6
                     - GlobalIPv6Pool
                     - PerTenantIPv6Pool
+                    maxLength: 253
+                    minLength: 1
                     type: string
                 type: object
               asnPool:
                 description: Reference to an IndexAllocationPool pool to use for Autonomous
                   System Number allocations.  Used when eBGP is configured as an underlay
                   protocol.
+                maxLength: 253
+                minLength: 1
                 type: string
+              dynamicLoadBalancing:
+                description: Dynamic Load Balancing configuration for the Backend.
+                  This configuration enables dynamic load balancing for the entire
+                  fabric.
+                properties:
+                  flowsetSize:
+                    default: 256
+                    description: The number of flowset entries reserved for each aggregate
+                      ECMP group.
+                    enum:
+                    - 256
+                    - 512
+                    - 1024
+                    - 2048
+                    - 4096
+                    - 8192
+                    - 16384
+                    - 32768
+                    format: int64
+                    maximum: 32768
+                    minimum: 256
+                    type: integer
+                  inactivityTimerUs:
+                    default: 50
+                    description: The flow inactivity timer in microseconds.
+                    format: int32
+                    maximum: 65535
+                    minimum: 1
+                    type: integer
+                  mode:
+                    default: Dynamic
+                    description: The dynamic load balancing mode. Dynamic mode means
+                      that flows will be dynamically assigned to the available interfaces
+                      based on the current load, including auto rebalancing of inactive
+                      flows.
+                    enum:
+                    - Dynamic
+                    - PerPacket
+                    maxLength: 253
+                    minLength: 1
+                    type: string
+                  samplingIntervalUs:
+                    default: 5
+                    description: The sampling interval of interface state, in microseconds.
+                    format: int32
+                    maximum: 255
+                    minimum: 1
+                    type: integer
+                type: object
               gpuIsolationGroups:
                 description: GPU Isolation Groups are used to isolate GPU traffic
                   over the network, GPUs in different GPU isolation groups will not
@@ -112,8 +169,13 @@ spec:
                   properties:
                     interfaceSelectors:
                       items:
+                        maxLength: 253
+                        minLength: 1
                         type: string
+                      maxItems: 1024
+                      minItems: 1
                       type: array
+                      x-kubernetes-list-type: set
                     ipv6Pool:
                       description: IPv6 Pool reference for allocating IPv6 addresses
                         to GPU facing interfaces in this IsolationGroup. Can be used
@@ -129,19 +191,28 @@ spec:
                       type: object
                     name:
                       description: Name of the IsolationGroup.
+                      maxLength: 253
+                      minLength: 1
                       type: string
                   required:
                   - interfaceSelectors
                   - name
                   type: object
+                maxItems: 1024
+                minItems: 1
                 type: array
+                x-kubernetes-list-map-keys:
+                - name
+                x-kubernetes-list-type: map
               ipMTU:
                 default: 4200
-                description: IP MTU for this fabric. Default is 4136 bytes.
+                description: IP MTU for this fabric.
+                format: int32
                 maximum: 9000
                 minimum: 1500
                 type: integer
               rocev2QoS:
+                default: {}
                 description: Set of properties to configure the RoCEv2 QoS.
                 properties:
                   ecnMaxDropProbabilityPercent:
@@ -149,6 +220,7 @@ spec:
                     description: If the queue depth is between min and max threshold
                       then this the probability with which packets are dropped or
                       marked.
+                    format: int32
                     type: integer
                   ecnSlopeMaxThresholdPercent:
                     default: 80
@@ -156,6 +228,7 @@ spec:
                       queue in percent. When the average queue length exceeds the
                       max value, all packets are dropped (or marked if ECN is enabled).
                       Mutually exclusive with min-threshold and max-threshold.
+                    format: int32
                     type: integer
                   ecnSlopeMinThresholdPercent:
                     default: 5
@@ -163,32 +236,32 @@ spec:
                       queue in percent. When the average queue length is less than
                       min, all packets are admitted to the queue. Mutually exclusive
                       with min-threshold and max-threshold.
+                    format: int32
                     type: integer
                   pfcDeadlockDetectionTimerMs:
                     default: 750
                     description: Number of milliseconds during which outgoing interface
                       is receiving pfc-pause-frames before triggering recovery-timer.
+                    format: int64
+                    maximum: 1500
+                    minimum: 100
                     type: integer
                   pfcDeadlockRecoveryTimerMs:
                     default: 750
                     description: Number of milliseconds during which the pfc-pause-frames
                       will be ignored.
+                    format: int64
+                    maximum: 1500
+                    minimum: 100
                     type: integer
                   queueMaximumBurstSizeBytes:
                     default: 1024000
                     description: Maximum amount of shared buffer memory available
                       to the queue in bytes.
-                    format: int32
-                    maximum: 4294967295
+                    format: int64
+                    maximum: 268435456
                     minimum: 0
                     type: integer
-                required:
-                - ecnMaxDropProbabilityPercent
-                - ecnSlopeMaxThresholdPercent
-                - ecnSlopeMinThresholdPercent
-                - pfcDeadlockDetectionTimerMs
-                - pfcDeadlockRecoveryTimerMs
-                - queueMaximumBurstSizeBytes
                 type: object
               stripeConnector:
                 description: StripeConnector is the spine layer interconnecting multiple
@@ -197,28 +270,44 @@ spec:
                   asnPool:
                     description: Reference to an IndexAllocationPool pool to use for
                       Autonomous System Number allocations.
+                    maxLength: 253
+                    minLength: 1
                     type: string
                   linkSelectors:
                     description: Selects TopoLinks to include in this AI Fabric, the
                       selected TopoLinks will be used to create ISLs between the stripe
                       connector devices and the leaf devices.
                     items:
+                      maxLength: 253
+                      minLength: 1
                       type: string
+                    maxItems: 256
+                    minItems: 1
                     type: array
+                    x-kubernetes-list-type: set
                   name:
                     description: The name of the Stripe Connector.
+                    maxLength: 253
+                    minLength: 1
                     type: string
                   nodeSelectors:
                     description: Node selector to select the nodes to be used for
                       this stripe connector.
                     items:
+                      maxLength: 253
+                      minLength: 1
                       type: string
+                    maxItems: 256
+                    minItems: 1
                     type: array
+                    x-kubernetes-list-type: set
                   systemPoolIPv4:
                     description: Reference to an IPAllocationPool used to dynamically
                       allocate an IPv4 address to system/lo0 interfaces for the stripe
                       connector devices.  If not specified, the system will use the
                       default IPAllocationPool.
+                    maxLength: 253
+                    minLength: 1
                     type: string
                 required:
                 - linkSelectors
@@ -233,6 +322,8 @@ spec:
                       description: Optional reference to an IndexAllocationPool pool
                         to use for Autonomous System Number allocations.  If left
                         blank, ASN allocation will be done from the ASNAllocationRange.
+                      maxLength: 253
+                      minLength: 1
                       type: string
                     gpuVLAN:
                       description: The VLAN used on interfaces facing the GPU servers.
@@ -242,36 +333,71 @@ spec:
                       type: integer
                     name:
                       description: The name of the Stripe.
+                      maxLength: 253
+                      minLength: 1
                       type: string
                     nodeSelectors:
                       description: Node selector to select the nodes to be used for
                         this stripe.
                       items:
+                        maxLength: 253
+                        minLength: 1
                         type: string
+                      maxItems: 256
+                      minItems: 1
                       type: array
+                      x-kubernetes-list-type: set
                     stripeID:
                       description: Unique ID for a stripe
+                      format: int64
+                      maximum: 256
+                      minimum: 0
                       type: integer
                     systemPoolIPv4:
                       description: Optional reference to an IPAllocationPool used
                         to dynamically allocate an IPv4 address to system/lo0 interfaces.
                         If left blank, system IP allocation will be done from the
                         SystemIPV4Subnet.
+                      maxLength: 253
+                      minLength: 1
                       type: string
                   required:
                   - name
                   - nodeSelectors
                   - stripeID
                   type: object
+                maxItems: 256
+                minItems: 1
                 type: array
+                x-kubernetes-list-map-keys:
+                - name
+                x-kubernetes-list-type: map
               systemPoolIPv4:
                 description: Reference to an IPAllocationPool used to dynamically
                   allocate an IPv4 address to system/lo0 interfaces.  If specified
                   under the Leaf/Spine/Superspine/Borderleaf those will take precedence.
+                maxLength: 253
+                minLength: 1
                 type: string
+              type:
+                description: Type of the Backend to configure, can be used to select
+                  non-default types such as EVPN-VXLAN.
+                properties:
+                  overlay:
+                    description: Overlay type for the AI Fabric. Route Leaking does
+                      not use any encapsulation of the overlay traffic. EVPN uses
+                      VXLAN with EVPN-IFL control plane (IFL).
+                    enum:
+                    - EVPN
+                    - RouteLeaking
+                    maxLength: 253
+                    minLength: 1
+                    type: string
+                required:
+                - overlay
+                type: object
             required:
             - gpuIsolationGroups
-            - rocev2QoS
             - stripes
             type: object
           status:
@@ -282,12 +408,19 @@ spec:
                   score of the Fabric is determined by the aggregate health score
                   of the resources emitted by the Fabric such as ISL, DefaultRouteReflectors
                   etc.
+                format: int32
+                maximum: 100
+                minimum: 0
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.
+                maxLength: 32768
+                minLength: 1
                 type: string
               lastChangeTime:
                 description: The time when the state of the resource last changed.
+                maxLength: 253
+                minLength: 1
                 type: string
               operationalState:
                 description: 'Operational state of the Fabric.  The operational state
@@ -298,12 +431,16 @@ spec:
                 - Down
                 - Degraded
                 - Unknown
+                maxLength: 253
+                minLength: 1
                 type: string
               stripeConnector:
                 description: Stripe connector in the Backend.
                 properties:
                   name:
                     description: The name of the Stripe Connector.
+                    maxLength: 253
+                    minLength: 1
                     type: string
                   stripeConnectorNodes:
                     description: List of stripe connector nodes in the Stripe.
@@ -311,14 +448,22 @@ spec:
                       properties:
                         node:
                           description: Name of the TopoNode.
+                          maxLength: 253
+                          minLength: 1
                           type: string
                         operatingSystem:
                           description: Operating system running on the node.
+                          maxLength: 253
+                          minLength: 1
                           type: string
                         operatingSystemVersion:
                           description: Operating system version running on the node.
+                          maxLength: 253
+                          minLength: 1
                           type: string
                       type: object
+                    maxItems: 1024
+                    minItems: 1
                     type: array
                 type: object
               stripes:
@@ -331,19 +476,31 @@ spec:
                         properties:
                           node:
                             description: Name of the TopoNode.
+                            maxLength: 253
+                            minLength: 1
                             type: string
                           operatingSystem:
                             description: Operating system running on the node.
+                            maxLength: 253
+                            minLength: 1
                             type: string
                           operatingSystemVersion:
                             description: Operating system version running on the node.
+                            maxLength: 253
+                            minLength: 1
                             type: string
                         type: object
+                      maxItems: 8192
+                      minItems: 1
                       type: array
                     name:
                       description: The name of the Stripe.
+                      maxLength: 253
+                      minLength: 1
                       type: string
                   type: object
+                maxItems: 256
+                minItems: 1
                 type: array
             type: object
         type: object
@@ -414,6 +571,7 @@ spec:
               ipMTU:
                 default: 4136
                 description: IP MTU for this fabric. Default is 4136 bytes.
+                format: int32
                 maximum: 9000
                 minimum: 1500
                 type: integer
@@ -425,6 +583,7 @@ spec:
                     description: If the queue depth is between min and max threshold
                       then this the probability with which packets are dropped or
                       marked.
+                    format: int32
                     type: integer
                   ecnSlopeMaxThresholdPercent:
                     default: 80
@@ -432,6 +591,7 @@ spec:
                       queue in percent. When the average queue length exceeds the
                       max value, all packets are dropped (or marked if ECN is enabled).
                       Mutually exclusive with min-threshold and max-threshold.
+                    format: int32
                     type: integer
                   ecnSlopeMinThresholdPercent:
                     default: 5
@@ -439,23 +599,25 @@ spec:
                       queue in percent. When the average queue length is less than
                       min, all packets are admitted to the queue. Mutually exclusive
                       with min-threshold and max-threshold.
+                    format: int32
                     type: integer
                   pfcDeadlockDetectionTimer:
                     default: 750
                     description: Number of milliseconds during which outgoing interface
                       is receiving pfc-pause-frames before triggering recovery-timer.
+                    format: int64
                     type: integer
                   pfcDeadlockRecoveryTimer:
                     default: 750
                     description: Number of milliseconds during which the pfc-pause-frames
                       will be ignored.
+                    format: int64
                     type: integer
                   queueMaximumBurstSize:
                     default: 1024000
                     description: Maximum amount of shared buffer memory available
                       to the queue in bytes.
-                    format: int32
-                    maximum: 4294967295
+                    format: int64
                     minimum: 0
                     type: integer
                 required:
@@ -512,6 +674,7 @@ spec:
                       type: string
                     gpuVlan:
                       description: The VLAN used on interfaces facing the GPU servers.
+                      format: int64
                       type: integer
                     name:
                       description: The name of the Stripe.
@@ -524,6 +687,7 @@ spec:
                       type: array
                     stripeID:
                       description: Unique ID for a stripe
+                      format: int64
                       type: integer
                     systemPoolIPV4:
                       description: Optional reference to an IPAllocationPool used
@@ -556,6 +720,8 @@ spec:
                   score of the Fabric is determined by the aggregate health score
                   of the resources emitted by the Fabric such as ISL, DefaultRouteReflectors
                   etc.
+                format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.

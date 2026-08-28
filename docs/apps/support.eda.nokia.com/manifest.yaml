@@ -10,18 +10,19 @@ spec:
   author: nokia
   dependencies:
     - file:
-        path: utils
-    - file:
-        path: common
+        path: utils/
     - file:
         path: support/api
     - file:
         path: support/api/v1/pysrc
+    - container:
+        image: registry.eda.dev/support/workflows/locator:latest
+        name: locator
   description: This application provides resources that can be used to identify and troubleshoot targets.
   group: support.eda.nokia.com
-  image: ghcr.io/nokia-eda/apps/support:v6.999.0
+  image: ghcr.io/nokia-eda/apps/support:v7.0.0
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   title: Support
   version: v1
   components:
@@ -34,6 +35,7 @@ spec:
         schema: support/openapiv3/eda_oas_support.eda.nokia.com_locators.json
         ui:
           name: Locator
+          category: Maintenance
         ai:
           matchTags:
             - main

@@ -23,7 +23,7 @@ This means that it has support for more routing protocols, which are required to
 
     If the BGP neighbor is managed by EDA and also in the default VRF, you should avoid using explicit IPs.
 
-To set up BGP peers in [`Router`](../../services.eda.nokia.com/resources/router.md) services, use [`BGPPeer`](bgppeer.md) instead.
+To set up BGP peers in [`Router`](-{{ ref_app_doc('services', 'router') }}-) services, use [`BGPPeer`](bgppeer.md) instead.
 
 ## Dependencies
 
@@ -49,19 +49,19 @@ graph LR
     C[DefaultRouter resource]
 ```
 
-### [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md)
+### [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-)
 
-To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md) attached directly to the system address of the [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md), a reference to this resource needs to be provided when creating the `DefaultBGPPeer`.
+To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is a [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-) attached directly to the system address of the [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-), a reference to this resource needs to be provided when creating the `DefaultBGPPeer`.
 
-This resource type can also be configured as the target of a `DefaultBGPPeer`, meaning the BGP session will be reconfigured with the new neighbor IP address if the target [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md) is changed.
+This resource type can also be configured as the target of a `DefaultBGPPeer`, meaning the BGP session will be reconfigured with the new neighbor IP address if the target [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-) is changed.
 
-### [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md)
+### [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-)
 
-To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) attached to a [`DefaultRouter`](../../routing.eda.nokia.com/resources/defaultrouter.md), a reference to this resource needs to be provided when creating the `DefaultBGPPeer`.
+To know which IP address is used to send BGP traffic, EDA must have a reference to a virtual interface. If this interface is an [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-) attached to a [`DefaultRouter`](-{{ ref_app_doc('routing', 'defaultrouter') }}-), a reference to this resource needs to be provided when creating the `DefaultBGPPeer`.
 
-This resource type can also be configured as the target of a `DefaultBGPPeer`, meaning the BGP session will be reconfigured with the new neighbor IP address if the target [`DefaultInterface`](../../routing.eda.nokia.com/resources/defaultinterface.md) is changed.
+This resource type can also be configured as the target of a `DefaultBGPPeer`, meaning the BGP session will be reconfigured with the new neighbor IP address if the target [`DefaultInterface`](-{{ ref_app_doc('routing', 'defaultinterface') }}-) is changed.
 
-### [`Policy`](../../routingpolicies.eda.nokia.com/resources/policy.md)
+### [`Policy`](-{{ ref_app_doc('routingpolicies', 'policy') }}-)
 
 Routing policies can be specified in various locations of the `DefaultBGPPeer` resource. These policies are used to filter or modify BGP routes sent/received by this `DefaultBGPPeer`. If no policies are configured, the default behavior for the router on which the `DefaultBGPPeer` is configured is followed, which may be different depending on the operating system.
 
@@ -70,7 +70,7 @@ Routing policies can be specified in various locations of the `DefaultBGPPeer` r
 /// tab | YAML
 
 ```yaml
--{{ include_yaml('docs/snippets/%s.yaml' | format(resource_name | lower)) }}-
+-{{ include_yaml('docs/snippets/%s.yaml' | format(resource_name | lower)) }}-"
 ```
 
 ///

@@ -1,1 +1,9 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: BridgeInterface
+metadata:
+  namespace: services
+  name: hypervisor-11
+spec:
+  bridgeDomain: stretched-l2
+  vlanID: '123'
+  interface: dc1-leaf3-ethernet-1-1

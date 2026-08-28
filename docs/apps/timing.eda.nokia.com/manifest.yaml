@@ -8,7 +8,7 @@ spec:
   title: Timing
   description: |
     This application provides underlay timing resources for various Network Operating Systems.
-  image: ghcr.io/nokia-eda/apps/timing:v6.999.0
+  image: ghcr.io/nokia-eda/apps/timing:v7.0.0
   gitReference: 1da44402c90fbeba1161ccb8ea3350ef0353843d
   gitPathPrefix: /
   author: Nokia
@@ -30,7 +30,7 @@ spec:
     - "eos:4.33.2f:beta"
     - "nxos:10.5.2:alpha"
   supportedCoreVersions:
-    - "v5.0"
+    - "v6.0"
   components:
     - crd:
         path: timing/crds/timing.eda.nokia.com_ntpclients.yaml
@@ -58,6 +58,20 @@ spec:
         type: state
         trigger:
           kind: NTPClientState
+    - crd:
+        api:
+          expose: readWrite
+        path: timing/crds/timing.eda.nokia.com_timezones.yaml
+        schema: timing/openapiv3/eda_oas_timing.eda.nokia.com_timezones.json
+        ui:
+          category: Timing
+          name: Time Zones
+          icon: TimeHistory
+    - script:
+        path: timing/intents/timezone/timezone_intent.py
+        type: config
+        trigger:
+          kind: TimeZone
   dependencies:
     - file:
         path: timing/intents
@@ -68,21 +82,21 @@ spec:
     - file:
         path: utils/
     - file:
-        path: interfaces/
+        path: routing/api/v1/pysrc
     - file:
-        path: routing/
+        path: services/api/v2/pysrc
     - file:
-        path: services/
+        path: bootstrap/api/v1/pysrc
     - file:
-        path: bootstrap/
+        path: interfaces/api/v1/pysrc
     - file:
         path: timing/api/v1/pysrc
   requirements:
     - appId: interfaces.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: routing.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: services.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0
     - appId: bootstrap.eda.nokia.com
-      version: v6.999.0
+      version: v7.0.0

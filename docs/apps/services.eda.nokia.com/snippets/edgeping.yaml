@@ -1,1 +1,11 @@
-# Add an example
+apiVersion: services.eda.nokia.com/v2
+kind: EdgePing
+metadata:
+    name: edgeping-2607fb76-1b1b-4773-bf30-0305d5f4902d
+    namespace: eda
+spec:
+  count: 9
+  destination: 10.0.0.21
+  interfaceResource: leaf-2-ethernet-1-2-1
+  pingType: Edge
+  vlanID: 100

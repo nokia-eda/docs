@@ -20,7 +20,7 @@ Usually, a combination of hardware and software filters are used: **hardware fil
 
 Use [`Filters`](resources/filter.md) for:
 
-- Dropping traffic from a certain IP subnet into a [`Router`](../services.eda.nokia.com/resources/router.md) service
+- Dropping traffic from a certain IP subnet into a [`Router`](-{{ ref_app_doc('services', 'router') }}-) service
 - Rate-limiting packets with the broadcast MAC address `ff:ff:ff:ff:ff:ff` as destination
 
 Use [`ControlPlaneFilters`](resources/controlplanefilter.md) for:

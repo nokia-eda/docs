@@ -25,9 +25,11 @@ The selection of the nodes can be done in one of two ways:
 
 If both the node selector and the label selector are left empty, no nodes will be selected. 
 
-??? info "The Waitfor parameter"
+/// details | The Waitfor parameter
+    type: info
 
-    The `Waitfor` parameter of this workflow waits for the nodes on which the workflow is run to be ready, not for the sessions to be ready!
+The `Waitfor` parameter of this workflow waits for the nodes on which the workflow is run to be ready, not for the sessions to be ready!
+///
 
 ## Workflow execution
 

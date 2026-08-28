@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: dnsclients.siteinfo.eda.nokia.com
 spec:
   group: siteinfo.eda.nokia.com
@@ -51,18 +51,21 @@ spec:
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               routers:
                 description: Router(s) to deploy the DNS client on and to reach the
                   DNS servers.
                 items:
                   type: string
                 type: array
+                x-kubernetes-list-type: set
               searchList:
                 description: A list of domains to use as the search list.
                 items:
                   type: string
                 maxItems: 1
                 type: array
+                x-kubernetes-list-type: set
               servers:
                 description: A list of DNS servers, each entry in the list can either
                   be an IP address or an FQDN.
@@ -81,6 +84,7 @@ spec:
               health:
                 description: Indicates the health score of the DNSClient.
                 format: int32
+                maximum: 100
                 type: integer
               healthScoreReason:
                 description: Indicates the reason for the health score.

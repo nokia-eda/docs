@@ -1,0 +1,20 @@
+apiVersion: microsegmentation.eda.nokia.com/v1alpha1
+kind: GroupTagPoolSetup
+metadata:
+  name: setup-d2d3-with-reserved
+  namespace: eda
+spec:
+  has7220IxrD2D3: true
+  has7220IxrD4D5: false
+  globalGroupTagPool: group-tag-pool-global
+  localGroupTagPool: group-tag-pool-local
+  groupTagPoolSegments:
+    - start: 1
+      size: 64
+      type: Global
+    - start: 65
+      size: 44
+      type: Local
+    - start: 109
+      size: 19
+      type: Reserved

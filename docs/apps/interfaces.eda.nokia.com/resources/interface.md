@@ -16,19 +16,21 @@ icon: auto-crd
 
 An `Interface` resource represents an endpoint that terminates physical connectivity. While an `Interface` is always required to enable connectivity between two hosts, it is often not sufficient on its own. It is important to understand the difference between an interface and a sub-interface:
 
-!!! info "Untagged interfaces"
+/// admonition | Untagged interfaces
+    type: info
 
-    The term "interface" is ambiguous: it can refer to a physical port, an untagged port, or a VLAN-enabled logical interface (also known as a sub-interface). Throughout the documentation, the following definitions are followed:
+The term "interface" is ambiguous: it can refer to a physical port, an untagged port, or a VLAN-enabled logical interface (also known as a sub-interface). Throughout the documentation, the following definitions are followed:
 
-    - A **port** is a physical connector that an optical or copper connector can be plugged into
-    - An **interface** is an abstract representation of an endpoint (one side of a connection). It can be either:
-        - One **port** on a single physical network element
-        - Multiple **ports** on a single physical network element (link aggregation)
-        - A set of **ports** distributed over multiple physical network elements (multi-homed endpoint)
-        - A virtual interface (loopback, see below)
-    - A **sub-interface** is a logical host on an **interface** with its own MAC address (and, optionally, IP address)
-        - A sub-interface can be untagged in which case only a single **sub-interface** can exist on the **interface**
-        - Multiple sub-interfaces can exist on the same **interface** as long as each **sub-interface** has its own (set of) **VLAN(s)**
+- A **port** is a physical connector that an optical or copper connector can be plugged into
+- An **interface** is an abstract representation of an endpoint (one side of a connection). It can be either:
+    - One **port** on a single physical network element
+    - Multiple **ports** on a single physical network element (link aggregation)
+    - A set of **ports** distributed over multiple physical network elements (multi-homed endpoint)
+    - A virtual interface (loopback, see below)
+- A **sub-interface** is a logical host on an **interface** with its own MAC address (and, optionally, IP address)
+    - A sub-interface can be untagged in which case only a single **sub-interface** can exist on the **interface**
+    - Multiple sub-interfaces can exist on the same **interface** as long as each **sub-interface** has its own (set of) **VLAN(s)**
+///
 
 ## Interface types
 
@@ -63,9 +65,11 @@ Some use cases for loopback interfaces:
 - To assign an IP address to a network element for testing purposes
 - Overwriting the source IP address for self-generated traffic
 
-!!! warning "Loopback interfaces must not be used as system IP address"
+/// admonition | Loopback interfaces must not be used as system IP address
+    type: warning
 
-    In EDA, the system interface (also known as the router ID or router IP) is created through a dedicated resource: the [`SystemInterface`](../../routing.eda.nokia.com/resources/systeminterface.md).
+In EDA, the system interface (also known as the router ID or router IP) is created through a dedicated resource: the [`SystemInterface`](-{{ ref_app_doc('routing', 'systeminterface') }}-).
+///
 
 ## Interface Naming and Normalization
 
@@ -104,9 +108,11 @@ The encapsulation type of the `Interface` determines how many VLAN headers are a
 - `encapType Null`: no VLAN headers are attached
 - `encapType Dot1q`: one VLAN header
 
-!!! note
+/// admonition
+    type: note
 
-    Q-in-Q is currently not supported.
+Q-in-Q is currently not supported.
+///
 
 ## Storm control
 

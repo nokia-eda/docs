@@ -1,1 +1,20 @@
-# Add an example
+apiVersion: bootstrap.eda.nokia.com/v1
+kind: Satellite
+metadata:
+  labels:
+    eda.nokia.com/role: leaf
+    eda.nokia.com/security-profile: managed
+    eda.nokia.com/source: derived
+  name: leaf1-esat-1
+  namespace: eda
+spec:
+  hostName: leaf1
+  hostUplinks:
+    - hostPort: ethernet-1-17-1
+      satellitePort: 1-c65-u1
+    - hostPort: ethernet-1-18-1
+      satellitePort: 1-c66-u1
+  id: '1'
+  macAddress: '00:00:00:00:00:01'
+  satelliteProfile: eth-sat-profile-1
+  type: es64-10gb-sfpp+4-100gb-qsfp28
