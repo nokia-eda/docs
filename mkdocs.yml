@@ -200,18 +200,18 @@ nav:
     #           - Create Github Issue: apps/github.eda.nokia.com/resources/creategithubissue.md
     #           - Run Github Workflow: apps/github.eda.nokia.com/resources/rungithubworkflow.md
       - GitHub: apps/github.md
-      - Gitlab:
-          - apps/gitlab.eda.nokia.com/index.md
-          - Resources:
-              - Cluster Instance: apps/gitlab.eda.nokia.com/resources/clustergitlabinstance.md
-              - Cluster Issue: apps/gitlab.eda.nokia.com/resources/clustergitlabissue.md
-              - Cluster Pipeline: apps/gitlab.eda.nokia.com/resources/clustergitlabpipeline.md
-              - Instance: apps/gitlab.eda.nokia.com/resources/gitlabinstance.md
-              - Issue: apps/gitlab.eda.nokia.com/resources/gitlabissue.md
-              - Pipeline: apps/gitlab.eda.nokia.com/resources/gitlabpipeline.md
-          - Workflows:
-              - Create Gitlab Issue: apps/gitlab.eda.nokia.com/resources/creategitlabissue.md
-              - Run Gitlab Pipeline: apps/gitlab.eda.nokia.com/resources/rungitlabpipeline.md
+    #   - Gitlab:
+    #       - apps/gitlab.eda.nokia.com/index.md
+    #       - Resources:
+    #           - Cluster Instance: apps/gitlab.eda.nokia.com/resources/clustergitlabinstance.md
+    #           - Cluster Issue: apps/gitlab.eda.nokia.com/resources/clustergitlabissue.md
+    #           - Cluster Pipeline: apps/gitlab.eda.nokia.com/resources/clustergitlabpipeline.md
+    #           - Instance: apps/gitlab.eda.nokia.com/resources/gitlabinstance.md
+    #           - Issue: apps/gitlab.eda.nokia.com/resources/gitlabissue.md
+    #           - Pipeline: apps/gitlab.eda.nokia.com/resources/gitlabpipeline.md
+    #       - Workflows:
+    #           - Create Gitlab Issue: apps/gitlab.eda.nokia.com/resources/creategitlabissue.md
+    #           - Run Gitlab Pipeline: apps/gitlab.eda.nokia.com/resources/rungitlabpipeline.md
       - GitLab: apps/gitlab.md
     #   - InfluxDB Exporter:
     #       - apps/influxdb.eda.nokia.com/index.md
