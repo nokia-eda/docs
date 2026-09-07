@@ -24,7 +24,7 @@ EOF
 
 ## Audit Result
 
-An audit runs out-of-band inside the plugin (that is, VMWare or OpenShift plugin). You can follow this process using the _.status.state_ field, which will progress from _Scheduled_ to _InProgress_ to _Finished_.
+An audit runs out-of-band inside the plugin. You can follow this process using the _.status.state_ field, which will progress from _Scheduled_ to _InProgress_ to _Finished_.
 Once the audit is finished, the _spec.finished_ field will be true.
 
 An example output is given below:
