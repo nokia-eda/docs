@@ -66,7 +66,7 @@
         var script = document.createElement("script");
         script.src = KAPA_SCRIPT_SRC;
         script.setAttribute("data-website-id", "1c088ecb-08f8-466b-b43c-1ba6952d5405");
-        script.setAttribute("data-source-group-ids-include", "be674990-628a-4489-9b95-36f6052a9654");
+        script.setAttribute("data-source-group-ids-include", "fe66d831-f4f6-4511-b8c9-65bed089022f");
         script.setAttribute("data-project-name", "Nokia EDA");
         script.setAttribute("data-color-scheme", "auto");
         script.setAttribute("data-modal-title", "Nokia Event-Driven Automation AI Assistant");
