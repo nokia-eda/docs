@@ -405,6 +405,12 @@ When upgrading from versions older than 25.12.1, stop the fluentd daemonset:
 make uninstall-external-package-fluentd
 ```
 
+When upgrading from versions older than 26.8.1, reset the internal-ca certificates:
+
+```bash
+make eda-reset-internal-ca
+```
+
 ## Updating Nokia EDA kpt packages
 
 Set the desired Nokia EDA version in the `prefs.mk` file to match the target version you want to upgrade to. For example, to choose the -{{eda_version}}- version:
@@ -445,7 +451,7 @@ make metallb install-external-packages eda-install-core eda-is-core-ready
 After installing the new Nokia EDA core in the step above, you need to upgrade Nokia EDA applications as they are kept on their previous versions and may be incompatible with the new version of Nokia EDA core. Use the following command to install applications compatible with the new Nokia EDA core:
 
 ```{.shell .no-select}
-make eda-install-apps eda-install-proxies
+make eda-install-apps eda-upgrade-resources-after-restore
 ```
 
 ## Resuming NPP interactions
