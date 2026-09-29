@@ -69,7 +69,7 @@ Every EDA deployment gets a unique client secret token generated during installt
 
 /// tab | UI
 
-* Navigate to `https://{EDA_URL}/core/httpproxy/v1/keycloak` in your browser.
+* Navigate to `${EDA_API_URL}/core/httpproxy/v1/keycloak` in your browser.
 * Log in with the Keycloak administrator username and password (default is `admin:admin` and can be changed).
 * From the **Keycloak** drop-down list on the upper left, select **Event Driven Automation** (eda).
 * Select **Clients** from the menu on the left.
@@ -115,28 +115,28 @@ With the client secret obtained from the previous step, an API client can now re
 An example of using `curl` to authenticate and get an access token for the EDA API. Make sure to use your own EDA URL and Keycloak client secret.
 
 ```bash
-curl -s https://${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  --data-urlencode 'client_id=eda' \
-  --data-urlencode 'grant_type=password' \
-  --data-urlencode 'scope=openid' \
-  --data-urlencode 'username=${EDA_USERNAME}' \
-  --data-urlencode 'password=${EDA_PASSWORD}' \
-  --data-urlencode 'client_secret=${EDA_CLIENT_SECRET}'
+curl -sk ${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data-urlencode "client_id=eda" \
+  --data-urlencode "grant_type=password" \
+  --data-urlencode "scope=openid" \
+  --data-urlencode "username=${EDA_USERNAME}" \
+  --data-urlencode "password=${EDA_PASSWORD}" \
+  --data-urlencode "client_secret=${EDA_CLIENT_SECRET}"
 ```
 
 //// details | Example output parsed using `jq`
     type: note
 
 ```bash
-curl -s https://${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  --data-urlencode 'client_id=eda' \
-  --data-urlencode 'grant_type=password' \
-  --data-urlencode 'scope=openid' \
-  --data-urlencode 'username=admin' \
-  --data-urlencode 'password=admin' \
-  --data-urlencode 'client_secret=9eGhwdAaox8bQ5DnfuUHuQTbOxhJxUwg' | jq -S
+curl -sk ${EDA_API_URL}/core/httpproxy/v1/keycloak/realms/eda/protocol/openid-connect/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  --data-urlencode "client_id=eda" \
+  --data-urlencode "grant_type=password" \
+  --data-urlencode "scope=openid" \
+  --data-urlencode "username=admin" \
+  --data-urlencode "password=admin" \
+  --data-urlencode "client_secret=9eGhwdAaox8bQ5DnfuUHuQTbOxhJxUwg" | jq -S
 {
   "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJBTHBheFhxanhaYmY5Vy1Pb3JpVnoxSUNTUV9SLUNrc05jZzVGRGFadUI0In0.eyJleHAiOjE3MzM5OTMyNDcsImlhdCI6MTczMzk5Mjk0NywianRpIjoiZjExZTdmM2UtMzFkNi00NTQ0LWE3MDUtMjA2Mzg0ZTYyYmNiIiwiaXNzIjoiaHR0cHM6Ly9wbG0tc2Itazgubm92YWxvY2FsOjk0NDMvY29yZS9odHRwcHJveHkvdjEva2V5Y2xvYWsvcmVhbG1zL2VkYSIsInN1YiI6ImYyYTc1MDM1LTU2YTUtNGJhMC1iZTliLTUzZTEzNTEyNTliZSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImVkYSIsInNpZCI6ImYyZTU1YjQ2LWRiN2YtNGIwMi05ZTIwLTc2YTc2YWE0MDYwMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiLyoiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImVkYXJvbGVfc3lzdGVtLWFkbWluaXN0cmF0b3IiLCJhZG1pbiJdfSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkVEQSBhZG1pbiB1c2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiRURBIiwiZmFtaWx5X25hbWUiOiJhZG1pbiB1c2VyIn0.ZH2vO1sbxm4tke2bE1fUdUbkCtHYo3bFUZpr0J46GL0lGpyIf0LkxOnosatjpLCQl7-CpExhZCv11SmUM6W6c4DoX6d90PKeC-t-GoSKshAxGIh7njtFt1_dYAf1NgF4EGOQMPINj-_n4igjU22Ef7aU8c05m-QkbIPykYFJ0BefqG_H8A1QzNvntADrEfrpHAudGFxB1Ei5FpBxIRfqX40B7_9brzWMlrRRXeWA9i-JVe-6JXQxTTqRKAF9sWGllTA-vbcl-MZ1WsGcC8yS-KQ9nyTrqkwT4Sh06Z7s8IpqBNPEcVJ8p_X65bblGoRKrXMSD0zEXM2zTsJRGd6JVA",
   "expires_in": 300,
@@ -189,44 +189,44 @@ For EDA Core and each installed EDA App the API server maintains the API Specifi
 To list the available API Specifications and their relevant URLs, first [authenticate](#authentication) the client and then you can execute the following `curl` command to get the list of APIs and OpenAPI Specification URLs per API.
 
 ```bash
-curl -s https://${EDA_URL}/openapi/v3 \
-  -H 'Authorization: Bearer ${TOKEN}' \
-  -H 'Content-Type: application/json'
+curl -sk ${EDA_API_URL}/openapi/v3 \
+  -H "Authorization: Bearer ${TOKEN}" \
+  -H "Content-Type: application/json"
 ```
 
 /// details | Example output parsed using `jq`
     type: note
 
 ```bash
-$ curl -s https://${EDA_URL}/openapi/v3 \
-  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuNnV4VXVyODdyaHNYUEt6dHNlT1Qxc1lERVI5MVVlMXBzWnhhaEdQX19rIn0.eyJleHAiOjE3MTQ2MDMwNjAsImlhdCI6MTcxNDYwMjc2MCwianRpIjoiYzdiZjU3NGUtY2ZkNi00Nzk3LTk2NzItMWI5Y2E5YTg2NzQ2IiwiaXNzIjoiaHR0cDovL2hlbGl4Lm5va2lhLmRlbGxhZXJ0LmRldjo5MjAwL2NvcmUvaHR0cHByb3h5L3YxL2tleWNsb2FrL3JlYWxtcy9lZGEiLCJzdWIiOiJmMmE3NTAzNS01NmE1LTRiYTAtYmU5Yi01M2UxMzUxMjU5YmUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJlZGEiLCJzZXNzaW9uX3N0YXRlIjoiMTFkZjU2OWEtNTZhYi00NmMyLWJkOTItNTJkYTg1YzM4NzA4IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYWRtaW4iXX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiIxMWRmNTY5YS01NmFiLTQ2YzItYmQ5Mi01MmRhODVjMzg3MDgiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIn0.bfTVRxe8KaVAqxjjDKIOJI6UGtJtpKc4W58ouvM1ILAVTiUtaWONT9xGIWDsUaEOzWQTlg-fjYWD3SmAMwPMo11wXafQkL7hTItj6Gs0DalwvmarXGetaVc7rVQhG5p3kvTQ0rNYqjE2bU763ml173kPXNKWUl7VXArCVK6uZ0azBDDX5uzlFBd5QEBtn1pH_-rATheCpvnkjC3s2WfJhDULfkix63N5MQWwhOajAKRe5mXTWLv9W9d_nwDsrHipPBtvAvG65I7s6tqjFH_M--PQPXifsl73v0hTnIHzC9ujpcGxkxctK9DvpwADF7TmuKVjbFHZqxp3FT7HxaK6Zg' \
-  -H 'Content-Type: application/json' | jq -S
+$ curl -sk ${EDA_API_URL}/openapi/v3 \
+  -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuNnV4VXVyODdyaHNYUEt6dHNlT1Qxc1lERVI5MVVlMXBzWnhhaEdQX19rIn0.eyJleHAiOjE3MTQ2MDMwNjAsImlhdCI6MTcxNDYwMjc2MCwianRpIjoiYzdiZjU3NGUtY2ZkNi00Nzk3LTk2NzItMWI5Y2E5YTg2NzQ2IiwiaXNzIjoiaHR0cDovL2hlbGl4Lm5va2lhLmRlbGxhZXJ0LmRldjo5MjAwL2NvcmUvaHR0cHByb3h5L3YxL2tleWNsb2FrL3JlYWxtcy9lZGEiLCJzdWIiOiJmMmE3NTAzNS01NmE1LTRiYTAtYmU5Yi01M2UxMzUxMjU5YmUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJlZGEiLCJzZXNzaW9uX3N0YXRlIjoiMTFkZjU2OWEtNTZhYi00NmMyLWJkOTItNTJkYTg1YzM4NzA4IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYWRtaW4iXX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJzaWQiOiIxMWRmNTY5YS01NmFiLTQ2YzItYmQ5Mi01MmRhODVjMzg3MDgiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIn0.bfTVRxe8KaVAqxjjDKIOJI6UGtJtpKc4W58ouvM1ILAVTiUtaWONT9xGIWDsUaEOzWQTlg-fjYWD3SmAMwPMo11wXafQkL7hTItj6Gs0DalwvmarXGetaVc7rVQhG5p3kvTQ0rNYqjE2bU763ml173kPXNKWUl7VXArCVK6uZ0azBDDX5uzlFBd5QEBtn1pH_-rATheCpvnkjC3s2WfJhDULfkix63N5MQWwhOajAKRe5mXTWLv9W9d_nwDsrHipPBtvAvG65I7s6tqjFH_M--PQPXifsl73v0hTnIHzC9ujpcGxkxctK9DvpwADF7TmuKVjbFHZqxp3FT7HxaK6Zg" \
+  -H "Content-Type: application/json" | jq -S
 {
-    "paths": {
-        "/apps/aaa.eda.nokia.com/v1alpha1": {
-            "x-eda-nokia-com": {
-                "serverRelativeURL": "/openapi/v3/apps/aaa.eda.nokia.com/v1alpha1",
-                "title": "AAA Application APIs"
-            },
-            "serverRelativeURL": "/openapi/v3/apps/aaa.eda.nokia.com/v1alpha1",
-            "title": "AAA Application APIs"
-        },
-        "/apps/aifabrics.eda.nokia.com/v1alpha1": {
-            "x-eda-nokia-com": {
-                "serverRelativeURL": "/openapi/v3/apps/aifabrics.eda.nokia.com/v1alpha1",
-                "title": "AIFabrics Application APIs"
-            },
-            "serverRelativeURL": "/openapi/v3/apps/aifabrics.eda.nokia.com/v1alpha1",
-            "title": "AIFabrics Application APIs"
-        },
-        "/apps/appstore.eda.nokia.com/v1": {
-            "x-eda-nokia-com": {
-                "serverRelativeURL": "/openapi/v3/apps/appstore.eda.nokia.com/v1",
-                "title": "App Store Application APIs"
-            },
-            "serverRelativeURL": "/openapi/v3/apps/appstore.eda.nokia.com/v1",
-            "title": "App Store Application APIs"
-        },
+  "paths": {
+    "/apps/aaa.eda.nokia.com/v1": {
+      "x-eda-nokia-com": {
+        "serverRelativeURL": "/openapi/v3/apps/aaa.eda.nokia.com/v1",
+        "title": "AAA Application APIs"
+      }
+    },
+    "/apps/ai.core.eda.nokia.com/v1": {
+      "x-eda-nokia-com": {
+        "serverRelativeURL": "/openapi/v3/apps/ai.core.eda.nokia.com/v1",
+        "title": "AI Application APIs"
+      }
+    },
+    "/apps/aifabrics.eda.nokia.com/v1": {
+      "x-eda-nokia-com": {
+        "serverRelativeURL": "/openapi/v3/apps/aifabrics.eda.nokia.com/v1",
+        "title": "AIFabrics Application APIs"
+      }
+    },
+    "/apps/appstore.eda.nokia.com/v1": {
+      "x-eda-nokia-com": {
+        "serverRelativeURL": "/openapi/v3/apps/appstore.eda.nokia.com/v1",
+        "title": "App Store Application APIs"
+      }
+    },
         // snipped
     }
 }
@@ -236,12 +236,12 @@ $ curl -s https://${EDA_URL}/openapi/v3 \
 
 ### Fetching the API Specifications
 
-For each of the App/version and the Core, the `serverRelativeURL` is the full URI to the API specifications for that specific App/version. You can use that to fetch the full OpenAPIv3 Specifications for the resources used and exposed by that specific App and version. Below is an example for the `connect` App. With an [authenticated](#authentication) client you can execute the following `curl` command to fetch the OpenAPIv3 specification of the `connect.eda.nokia.com/v1alpha1` app.
+For each of the App/version and the Core, the `serverRelativeURL` is the full URI to the API specifications for that specific App/version. You can use that to fetch the full OpenAPIv3 Specifications for the resources used and exposed by that specific App and version. Below is an example for the `aaa` App. With an [authenticated](#authentication) client you can execute the following `curl` command to fetch the OpenAPIv3 specification of the `aaa.eda.nokia.com/v1` app.
 
 ```bash
-curl -s http://${EDA_HOST}/openapi/v3/apps/connect.eda.nokia.com/v1alpha1 \
-  -H 'Authorization: Bearer ${TOKEN}' \
-  -H 'Content-Type: application/json'
+curl -sk ${EDA_API_URL}/openapi/v3/apps/aaa.eda.nokia.com/v1 \
+  -H "Authorization: Bearer ${TOKEN}" \
+  -H "Content-Type: application/json"
 ```
 
 [^1]: [Try EDA](../../getting-started/try-eda.md) installation is a perfect fit for experimenting with the API.
