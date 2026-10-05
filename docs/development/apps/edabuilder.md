@@ -11,6 +11,8 @@
 * `create version`: create a new API version.
 * `build-push`: package an app and host it in a registry[^1].
 * `publish`: publish your app to a catalog[^1].
+* `release`: build, push and publish your app in one go[^1].
+* `sign generate-key-pair`: generate a key pair to sign your app images with[^1].
 * `generate`: based on your API resources, defined in the Go files under `api/`, generate equivalent python models to be used as an SDK in your intents, CRDs, OpenAPI specs, and keep your manifest up-to-date.
 * `generate appsettings`: Scaffold a new `settings` directory, which you can further customise to provide documentation for your app's settings.
 * `generate appsettings-openapi`: Generate an OpenAPI spec based on the settings struct in your `settings` directory.
@@ -24,7 +26,7 @@
 
 ## Initialising a project
 
-When you run `edabuilder init [<project-name>]`, either the current directory or a new one, named `project-name`, will be initialised for app development. This entails populating a couple of directories (`common/`, `test/`, `utils/`) with common libraries to be imported in the app scripts you will be writing, as well as creating a PROJECT file that keeps track of some project-wide parameters, such as the publishing authority of your apps, your production registry, etc. These parameters can all be passed via arguments to the command. To see the available options, run `edabuilder init -h`.
+When you run `edabuilder init [<project-name>]`, either the current directory or a new one, named `project-name`, will be initialised for app development. This entails populating a couple of directories (`common/`, `test/`, `utils/`) with common libraries to be imported in the app scripts you will be writing, as well as creating a PROJECT file that keeps track of some project-wide parameters, such as the publishing authority of your apps, your production registry and catalog, etc. These parameters can all be passed via arguments to the command. To see the available options, run `edabuilder init -h`.
 
 ## Creating an app
 
@@ -57,7 +59,6 @@ Through `edabuilder create version` you can create a new API version, e.g. when 
 `edabuilder generate` is an idempotent command designed to keep any generated code in your app up-to-date. It uses your API resources as input to generate a python SDK under `api/<apiversion>/pysrc`, CRDs and OpenAPI. It also ensures your manifest is up-to-date.
 
 Many of the other subcommands use `generate` under the hood, so it's likely you won't have to run it explicitly very often.
-
 ## Adding App Settings
 
 There are two `edabuilder` commands which allow you to provide install-time settings for your application. For instance, if your app includes a resource, (e.g. a k8s deployment) for which you want the user to be able to specify configurable parameters like CPU limit, etc.
