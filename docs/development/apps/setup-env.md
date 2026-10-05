@@ -135,6 +135,19 @@ Now you can use `~/.oh-my-zsh/custom/completions` for your completions as shown 
 Start a new shell for this setup to take effect.
 ///
 
+/// note | Git author
+`edabuilder publish`, `release` and `deploy` commit your app to a catalog repository, so `edabuilder` needs to know who the commit author is. It takes `user.name` and `user.email` from the git config of your project, falling back to your global git config. If neither has them set, these commands fail with a `no git author found` error.
+
+Set them once for your user:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
+
+Or run the same commands with `--local` instead of `--global` from within your project repository to set them for that project only.
+///
+
 /////////
 
 ///////// tab | `go`

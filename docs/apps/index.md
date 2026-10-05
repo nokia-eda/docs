@@ -136,7 +136,7 @@ After app installation, the tab is renamed **Applied Settings**.
 
 Use this procedure to install an app or execute a dry run of the app installation. The steps for the installation and dry-run installation are similar. A dry-run installation downloads the application image and applies the app manifest as a dry-run transaction; this allows you to review the transaction result before proceeding with the app installation.
 
-Before the app is installed, Nokia EDA verifies the OCI image signature for the selected version. If the image is unsigned or not trusted, the UI displays a warning. To continue, acknowledge the warning and proceed with skip verification.
+Before the app is installed, Nokia EDA verifies the OCI image signature for the selected version. If the image is unsigned or not signed with a trusted key, the installation fails. To install such an app, enable **Skip Signature Verification** on the [registry](#add-registry) hosting the image. See [App image signing](#app-image-signing).
 
 **Procedure**
 /// html | div.steps
@@ -447,9 +447,28 @@ EOF
 
 By default, EDA only allows apps to be installed if the app's OCI image is signed with a trusted private key. The public key for Nokia apps comes pre-installed with EDA.
 
-Administrators can add or remove trusted public keys via `SigningKey` resources. This is available in the EDA UI under the **System Administration** &gt; **App Management** &gt; **Signing Keys** page.
+Administrators can add or remove trusted public keys via `SigningKey` resources. This is available in the EDA UI under the **System Administration** &gt; **App Management** &gt; **Signing Keys** page, or by applying the resource directly:
 
-To allow installation of an unsigned or untrusted application, set `skipSignatureVerification` and `skipDigestVerification` to `false` for the [registry](#registries) hosting the image.
+```yaml
+apiVersion: appstore.eda.nokia.com/v1
+kind: SigningKey
+metadata:
+  name: my-vendor
+  namespace: eda-system # The Kubernetes namespace where EDA is deployed
+spec:
+  publicKeys:
+    - title: my-vendor-2026 # optional, shows up in status messages
+      key: |
+        -----BEGIN PUBLIC KEY-----
+        <public key of the app vendor>
+        -----END PUBLIC KEY-----
+```
+
+A `SigningKey` can hold multiple public keys, which comes in handy when a vendor rotates keys.
+
+To allow installation of an unsigned or untrusted application, set `skipSignatureVerification` and `skipDigestVerification` to `true` for the [registry](#registries) hosting the image.
+
+App developers can find how to sign their own app images in [Signing an App](../development/apps/build-publish.md#signing-an-app).
 
 ## App documentation
 
