@@ -1,10 +1,12 @@
 # OpenStack Plugin RHOSO 18 Installation
 
-This guide provides step-by-step instructions for installing the Nokia EDA Connect OpenStack plugin on **Red Hat OpenStack Services on OpenShift (RHOSO)
+This guide provides step-by-step instructions for installing the Nokia EDA Connect OpenStack plugin on **Red Hat
+OpenStack Services on OpenShift (RHOSO)
 18.0** using the **OpenStack Operator** on **Red Hat OpenShift Container Platform (RHOCP)**.
 
 /// warning
-Before proceeding with this installation method, ensure you have completed all the prerequisites and preparation steps described in the
+Before proceeding with this installation method, ensure you have completed all the prerequisites and preparation steps
+described in the
 [OpenStack Plugin Installation](index.md) guide.
 ///
 
@@ -12,21 +14,25 @@ Before proceeding with this installation method, ensure you have completed all t
 
 * All prerequisites from the [OpenStack Plugin Installation](index.md) guide must be met
 * EDA Kubernetes preparation steps (Service Account and Token) must be completed
-* A **RHOCP** cluster that meets RHOSO 18.0 requirements. Red Hat documents validated combinations for each RHOSO release; plan the cluster using
+* A **RHOCP** cluster that meets RHOSO 18.0 requirements. Red Hat documents validated combinations for each RHOSO
+  release; plan the cluster using
   [Planning your deployment](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/planning_your_deployment/index)
   and
   [Preparing RHOCP for RHOSO](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_preparing-rhocp-for-rhoso)
 * **OpenStack Operator** installed in the `openstack-operators` namespace (see
   [Installing and preparing the OpenStack Operator](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_installing-and-preparing-the-openstack-operator))
-* Access to **Nokia EDA Connect** container images on `registry.connect.redhat.com/nokia-ni` for the Neutron API and `openstackclient` images used on
+* Access to **Nokia EDA Connect** container images on `registry.connect.redhat.com/nokia-ni` for the Neutron API and
+  `openstackclient` images used on
   RHOSO 18
 * Administrative access to the OpenShift cluster (`oc`) and to the EDA Kubernetes cluster (`kubectl`)
 
 /// details | Getting the container registry credentials
     type: info
 
-Contact your Red Hat representative to obtain credentials for accessing the Nokia container images in the Red Hat Container Catalog. Configure
-`registry.connect.redhat.com` in the cluster pull secret (or equivalent image pull authentication for the `openstack` namespace) so worker nodes
+Contact your Red Hat representative to obtain credentials for accessing the Nokia container images in the Red Hat
+Container Catalog. Configure
+`registry.connect.redhat.com` in the cluster pull secret (or equivalent image pull authentication for the `openstack`
+namespace) so worker nodes
 can pull the Neutron and `openstackclient` images after you reference them in `OpenStackVersion`.
 ///
 
@@ -40,9 +46,9 @@ can pull the Neutron and `openstackclient` images after you reference them in `O
 | Nokia container images | `container-image-prepare` overrides    | `OpenStackVersion.spec.customContainerImages` |
 | CA certificate         | `inject-trust-anchor` Heat environment | Kubernetes `Secret` and volume mount          |
 | LLDP on computes       | Post-deploy Ansible playbook           | `OpenStackDataPlaneService` on the data plane |
+| Interface Mappings     | Automated through OVS Agent            | Manual mapping process (Step 8)               | 
 
 ///
-
 
 ## Installation Steps
 
@@ -50,13 +56,15 @@ can pull the Neutron and `openstackclient` images after you reference them in `O
 
 #### EDA CA Certificate Secret (If Required)
 
-If the EDA K8S API uses a self-signed certificate, store the CA in a `Secret` in the `openstack` namespace. The file should contain the PEM CA Certificate
+If the EDA K8S API uses a self-signed certificate, store the CA in a `Secret` in the `openstack` namespace. The file
+should contain the PEM CA Certificate
 you retrieved earlier (see also [OpenStack Plugin Installation](index.md#create-a-service-account-token)).
 
 /// details | Trusted public CA
-    type: info
+type: info
 
-If EDA uses certificates signed by a well-known certificate authority, skip creating `eda-ca-secret`, omit the CA volume from `extraMounts`, and remove
+If EDA uses certificates signed by a well-known certificate authority, skip creating `eda-ca-secret`, omit the CA volume
+from `extraMounts`, and remove
 the `ca_cert_path` setting from the ML2 fragment in Step 5.
 ///
 
@@ -68,10 +76,10 @@ oc create secret generic eda-ca-secret \
 
 Replace `/path/to/eda.crt` with the path to the saved CA certificate.
 
-
 #### Neutron ML2 EDA Connect Secret
 
-Create a `Secret` that holds the `[ml2_eda_connect]` configuration consumed by Neutron. Use a temporary file, then create the secret:
+Create a `Secret` that holds the `[ml2_eda_connect]` configuration consumed by Neutron. Use a temporary file, then
+create the secret:
 
 /// tab | INI fragment
 
@@ -102,12 +110,14 @@ Update the placeholders in the fragment before creating the secret:
 : A unique name for this OpenStack deployment in EDA (for example `rhoso-prod`)
 
 /// warning | Plugin name requirements
-The plugin name must comply with the regex `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'`, contain only alphanumerics and `.`, `_`, `-`, start with an
+The plugin name must comply with the regex `'([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]'`, contain only alphanumerics and
+`.`, `_`, `-`, start with an
 alphanumeric, and be at most 63 characters.
 ///
 
 **`api_host`**
-: EDA Kubernetes API hostname (for example `api.eda.example.com`); the URI in the file must include `https://` and port `:6443` as shown
+: EDA Kubernetes API hostname (for example `api.eda.example.com`); the URI in the file must include `https://` and port
+`:6443` as shown
 
 **`api_namespace`**
 : Namespace where the fabric is configured in EDA
@@ -116,23 +126,22 @@ alphanumeric, and be at most 63 characters.
 : Bearer token from the [Create a Service Account Token](index.md#create-a-service-account-token) section
 
 **`ca_cert_path`**
-: Use `/etc/pki/ca-trust/source/anchors/eda.crt` when using `eda-ca-secret`; omit the line entirely if EDA uses a public CA
+: Use `/etc/pki/ca-trust/source/anchors/eda.crt` when using `eda-ca-secret`; omit the line entirely if EDA uses a public
+CA
 
 **`heartbeat_interval`**
 : Optional; shown as `10` seconds in the example
 
-
 ### Step 2: OpenStack Operator and Namespaces
 
-On the **OpenShift** cluster, create the operator and workload namespaces and install the OpenStack Operator following Red Hat's guide:
+On the **OpenShift** cluster, create the operator and workload namespaces and install the OpenStack Operator following
+Red Hat's guide:
 
 * [Installing and preparing the OpenStack Operator](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_installing-and-preparing-the-openstack-operator)
 
 Use the YAML from the
 current RHOSO documentation for your release rather than copying abbreviated examples here.
-Follow chapters 1, 2 and 3 in the guide, continue here once you get to Chapter 4: "Creating the control plane". 
-
-
+Follow chapters 1, 2 and 3 in the guide, continue here once you get to Chapter 4: "Creating the control plane".
 
 ### Step 3: OpenStack Control Plane — Neutron and EDA Mounts
 
@@ -140,15 +149,22 @@ During chapter 4 of the Red Hat guide, you will have to adjust some steps as det
 
 Build your **`OpenStackControlPlane`** custom resource from
 [Creating the control plane](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-control-plane).
-Merge Red Hat’s full control plane `spec` (DNS, Keystone, Nova, Cinder, Glance, storage class, secrets, and so on) with the adjusted Neutron settings below.
+Merge Red Hat’s full control plane `spec` (DNS, Keystone, Nova, Cinder, Glance, storage class, secrets, and so on) with
+the adjusted Neutron settings below.
 
-For EDA Connect, we will heavily modify the neutron section of the `OpenStackControlPlane` custom resource, as touched upon in the Red Hat [Configuring network services](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html-single/configuring_networking_services/index) and [Integrating partner content](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html-single/integrating_partner_content/index#set-custom-configuration-for-the-networking-driver_integrating-rhoso-networking-services)]guide:
+For EDA Connect, we will heavily modify the neutron section of the `OpenStackControlPlane` custom resource, as touched
+upon in the Red
+Hat [Configuring network services](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html-single/configuring_networking_services/index)
+and [Integrating partner content](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html-single/integrating_partner_content/index#set-custom-configuration-for-the-networking-driver_integrating-rhoso-networking-services)]
+guide:
 
 /// warning | Configuration example
 
-The below configuration is an example of the neutron section of the `OpenStackControlPlane` custom resource. Adapt it to your environment. Important elements of the configuration have been annotated with (+) to explain their purpose.
+The below configuration is an example of the neutron section of the `OpenStackControlPlane` custom resource. Adapt it to
+your environment. Important elements of the configuration have been annotated with (+) to explain their purpose.
 
 ///
+
 ```yaml
 apiVersion: core.openstack.org/v1beta1
 kind: OpenStackControlPlane
@@ -165,7 +181,7 @@ spec:
   neutron:
     enabled: true
     apiOverride:
-      route: {}
+      route: { }
     template:
       databaseInstance: openstack
       secret: neutron-secret
@@ -188,7 +204,7 @@ spec:
         network_vlan_ranges = datacentre:1:4094
 
       # Mount the EDA ML2 config secret and CA cert into the Neutron pod
-      extraMounts: 
+      extraMounts:
         - extraVol:
             - mounts:
                 - name: nokia-eda-config #(3)!
@@ -208,23 +224,29 @@ spec:
                     secretName: eda-ca-secret
 ```
 
-1. Custom Neutron image from registry.connect.redhat.com/nokia-ni that includes the eda_connect ML2 driver, adjust the image tag to the appropriate one for your environment.
-2. We override the configuration of the Neutron service to include the eda_connect mechanism driver and the eda_network extension driver.
-   Note that all other configuration should be adapted to your environment, you can omit any entries to use the default values.
+1. Custom Neutron image from registry.connect.redhat.com/nokia-ni that includes the eda_connect ML2 driver, adjust the
+   image tag to the appropriate one for your environment.
+2. We override the configuration of the Neutron service to include the eda_connect mechanism driver and the eda_network
+   extension driver.
+   Note that all other configuration should be adapted to your environment, you can omit any entries to use the default
+   values.
    Note that layer 3 OVN functionality is not supported together with the EDA Connect OpenStack driver.
 3. We mount the nokia-eda-ml2-config from Step 1 to provide the EDA Connect OpenStack ML2 plugin with its configuration.
-4. If the EDA K8S API uses a self-signed CA, we mount that CA in the pod to validate communication with the EDA K8S API. Leave this block out if the EDA K8S API is signed by an official CA.
+4. If the EDA K8S API uses a self-signed CA, we mount that CA in the pod to validate communication with the EDA K8S API.
+   Leave this block out if the EDA K8S API is signed by an official CA.
 
-
-Do **not** set a custom Neutron `containerImage` on the control plane for the Nokia image. Image overrides are applied in Step 8 via
+Do **not** set a custom Neutron `containerImage` on the control plane for the Nokia image. Image overrides are applied
+in Step 4 via
 `OpenStackVersion` so they persist across operator reconciliation.
 
 Apply your control plane manifest with the configuration for all other services as normal and continue with step 4.
 
 ### Step 4: Nokia Container Images Override
 
-To adapt the deployment with the correct images for the EDA Connect OpenStack driver, adapt the `OpenStackVersion` CR. The `OpenStackVersion` object is created when the OpenStack Operator reconciles the control plane. Wait until it exists, then patch
-**`spec.customContainerImages`** so Neutron API and the `openstackclient` deployment use Nokia images that include the EDA mechanism driver and the
+To adapt the deployment with the correct images for the EDA Connect OpenStack driver, adapt the `OpenStackVersion` CR.
+The `OpenStackVersion` object is created when the OpenStack Operator reconciles the control plane. Wait until it exists,
+then patch **`spec.customContainerImages`** so Neutron API and the `openstackclient` deployment use Nokia images that
+include the EDA mechanism driver and the
 `python-eda-openstackclient` extension.
 
 ```bash
@@ -249,7 +271,8 @@ oc patch openstackversion openstack -n openstack \
 
 ///
 
-Replace `<TAG>` with the image tags supplied by Nokia or Red Hat. Ensure the cluster can authenticate to `registry.connect.redhat.com` (for example
+Replace `<TAG>` with the image tags supplied by Nokia or Red Hat. Ensure the cluster can authenticate to
+`registry.connect.redhat.com` (for example
 via the global pull secret), as described under **Getting the container registry credentials** in the prerequisites.
 
 Verify the patch of the `OpenStackVersion` CR:
@@ -277,15 +300,17 @@ NEUTRON_POD=$(oc get pods -n openstack -l service=neutron -o jsonpath='{.items[0
 # Check logs for EDA Connect initialization
 oc logs ${NEUTRON_POD} -n openstack | grep -i "eda_connect"
 ```
+
 Expected output should include lines indicating the plugin initialized and registered with EDA.
-
-
 
 ### Step 5: Data Plane
 
-Continue with chapter 5 [Creating the data plane](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-data-plane) in the Red Hat guide.
+Continue with chapter
+5 [Creating the data plane](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-data-plane)
+in the Red Hat guide.
 
-EDA Connect requires **LLDP** on data plane interfaces of compute nodes. On RHOSO 18, model that with an `OpenStackDataPlaneService` before proceeding beyond step 5.3 "Creating the data plane secrets":
+EDA Connect requires **LLDP** on data plane interfaces of compute nodes. On RHOSO 18, model that with an
+`OpenStackDataPlaneService` before proceeding beyond step 5.3 "Creating the data plane secrets":
 
 /// tab | YAML Resource
 
@@ -306,13 +331,12 @@ EOF
 ///
 
 /// details | Interface pattern
-    type: info
+type: info
 
-The default pattern `em*,en*,p*,!en*v*,!p*v*` matches most physical interfaces while excluding common virtual patterns. Override the playbook content
+The default pattern `em*,en*,p*,!en*v*,!p*v*` matches most physical interfaces while excluding common virtual patterns.
+Override the playbook content
 if your NIC naming differs.
 ///
-
-
 
 ### Step 6: Creating the OpenStackDataPlaneNodeSet
 
@@ -321,32 +345,253 @@ Define your `OpenStackDataPlaneNodeSet` following
 and, if applicable,
 [Deploying an NFV environment with SR-IOV and DPDK](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_a_network_functions_virtualization_environment/assembly_create-data-plane-sriov-dpdk_rhoso-nfv).
 
-Include the previously created `edpm-lldp-service` in `spec.services` after the standard services that should run before LLDP (for example after `ovn` and Neutron
-metadata services). Exact ordering should follow your validated service list from Red Hat; a typical pattern is to add `edpm-lldp-service` alongside
+Include the previously created `edpm-lldp-service` in `spec.services` after the standard services that should run before
+LLDP (for example after `ovn` and Neutron
+metadata services). Exact ordering should follow your validated service list from Red Hat; a typical pattern is to add
+`edpm-lldp-service` alongside
 other post-network services.
 
-
 /// details | Example OpenStackDataPlaneNodeSet YAML
-    type: info
+type: info
 
 /// warning | Example only
-Node network templates, SR-IOV mappings, repositories, and node addresses are environment-specific. Do not copy values from examples without aligning
+Node network templates, SR-IOV mappings, repositories, and node addresses are environment-specific. Do not copy values
+from examples without aligning
 them to your hardware and RHOSO network design.
 ///
-
 
 ```yaml
 --8<-- "docs/apps/connect/resources/openstack-rhoso-dataplanenodeset.yaml"
 ```
+
 ///
 
 Apply the nodeset as normal and wait for it to complete.
 
-
 ### Step 7: Deploy the Data Plane
 
-After the nodeset is deployed, continue deploying the data plane following the steps in [Deploying the data plane](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-data-plane#proc_deploying-the-data-plane_dataplane) in the Red Hat guide.
+After the nodeset is deployed, continue deploying the data plane following the steps
+in [Deploying the data plane](https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/18.0/html/deploying_red_hat_openstack_services_on_openshift/assembly_creating-the-data-plane#proc_deploying-the-data-plane_dataplane)
+in the Red Hat guide.
 
+### Step 8: Create the Interface Mappings
+
+The EDA Connect OpenStack plugin must know which compute node interfaces connect to each physical network (physnet). The
+plugin uses these
+interface mappings together with the LLDP information from the fabric to find the fabric downlinks that it must
+configure.
+
+On RHOSP 17.1, the EDA Connect L2 agent extension discovers the interface mappings automatically. RHOSO 18 uses OVN, and
+the OVN agent does not
+support this type of extension. Therefore, you must create the interface mappings manually after the data plane is
+deployed.
+
+/// warning | Missing interface mappings
+If a compute node has no interface mapping for a physnet, EDA Connect does not configure the fabric for the VMs on that
+compute node.
+///
+
+/// details | Where to run the commands
+    type: info
+
+Run the `oc` commands from a workstation with access to the OpenShift cluster. Run the `openstack` commands in the
+`openstackclient` pod. This pod
+uses the Nokia image from Step 4, which includes the `openstack eda` commands. To open a shell in the pod, use this
+command:
+
+```bash
+oc rsh -n openstack "$(oc get pod -n openstack -l app=openstackclient -o jsonpath='{.items[0].metadata.name}')"
+```
+
+///
+
+#### Make sure the data plane is deployed
+
+```bash
+oc get openstackdataplanedeployment -n openstack
+oc get openstackdataplanenodeset -n openstack
+```
+
+Make sure that the `STATUS` of each resource is `True`.
+
+#### Collect the network configuration of the compute nodes
+
+The `OpenStackDataPlaneNodeSet` from Step 6 contains the network configuration of the compute nodes. Use these commands
+to get the related
+values. Replace `openstack-data-plane` with the name of your nodeset.
+
+```bash
+NODESET=openstack-data-plane
+
+# Physnets that use an OVS bridge
+oc get openstackdataplanenodeset ${NODESET} -n openstack \
+  -o jsonpath='{.spec.nodeTemplate.ansible.ansibleVars.edpm_ovn_bridge_mappings}'
+
+# SR-IOV physnets and NICs
+oc get openstackdataplanenodeset ${NODESET} -n openstack \
+  -o jsonpath='{.spec.nodeTemplate.ansible.ansibleVars.edpm_neutron_sriov_agent_SRIOV_NIC_physical_device_mappings}'
+
+# Network layout, including the bond and its member interfaces
+oc get openstackdataplanenodeset ${NODESET} -n openstack \
+  -o jsonpath='{.spec.nodeTemplate.ansible.ansibleVars.edpm_network_config_template}'
+
+# Logical interface names (nic1, nic2) to real interface names, for each node
+oc get openstackdataplanenodeset ${NODESET} -n openstack \
+  -o jsonpath='{.spec.nodeTemplate.ansible.ansibleVars.edpm_network_config_os_net_config_mappings}'
+```
+
+Use the output to find these values:
+
+**`edpm_ovn_bridge_mappings`**
+: The physnets that use an OVS bridge, in the format `<physnet>:<bridge>`. For example, `datacentre:br-ex` gives the
+physnet `datacentre`. If the
+nodeset does not set this variable, the default value `datacentre:br-ex` applies.
+
+**`edpm_neutron_sriov_agent_SRIOV_NIC_physical_device_mappings`**
+: The SR-IOV physnets and NICs, in the format `<physnet>:<interface>`. This variable is only set if the compute nodes
+use SR-IOV.
+
+**`edpm_network_config_template`**
+: The network layout of the compute nodes. Find the bond in the OVS bridge `neutron_physical_bridge_name` (usually
+`br-ex`). Record the bond name,
+the bond mode in `bonding_options`, and the member interfaces.
+
+**`edpm_network_config_os_net_config_mappings`**
+: Optional. The real interface names for logical names such as `nic1` and `nic2`, for each node.
+
+/// note
+Values in `spec.nodes.<node>.ansible.ansibleVars` override the values in `spec.nodeTemplate`. Also examine these
+per-node values.
+///
+
+#### Find the compute host names
+
+The host name in an interface mapping must be the same as the host name that Nova uses. Run this command in the
+`openstackclient` pod:
+
+```bash
+openstack compute service list --service nova-compute -c Host -f value
+```
+
+#### Find the physical interface names
+
+The interface mappings must use the real interface names on the compute node. The network template can use logical names
+such as `nic1` and
+`nic2`. If `edpm_network_config_os_net_config_mappings` does not give the real names, log in to the compute node and
+examine the interfaces:
+
+```bash
+ssh cloud-admin@<COMPUTE_CTLPLANE_IP> ip -br link show
+```
+
+#### Create the interface mappings
+
+Create the interface mappings in the `openstackclient` pod with the `openstack eda interface mapping create` command.
+The command uses these
+arguments:
+
+**`<host>`**
+: The compute host name from `openstack compute service list`
+
+**`<interface>`**
+: The physical interface, or the bond name for an LACP bond
+
+**`<physnet>`**
+: The physnet that the interface connects to
+
+**`--subinterface`**
+: Only for an LACP bond. A member interface of the bond. Repeat this option for each member interface.
+
+The bond mode on the compute node sets the type of mapping. This agrees with the EDA `Interface` model
+in [Bonding](../index.md#bonding).
+
+/// tab | Active-backup bond
+
+Each member interface of an active-backup bond is a separate `Interface` in EDA. Create one mapping for each member
+interface. Do not create a
+mapping for the bond.
+
+```bash
+openstack eda interface mapping create edpm-compute-0 ens3f0np0 datacentre
+openstack eda interface mapping create edpm-compute-0 ens3f1np1 datacentre
+openstack eda interface mapping create edpm-compute-1 ens3f0np0 datacentre
+openstack eda interface mapping create edpm-compute-1 ens3f1np1 datacentre
+```
+
+///
+
+/// tab | LACP bond
+
+An LACP bond (for example `mode=802.3ad`) is one LAG `Interface` in EDA. Create one mapping for the bond. Add each
+member interface with the
+`--subinterface` option.
+
+```bash
+openstack eda interface mapping create edpm-compute-0 bond0 datacentre \
+  --subinterface ens3f0np0 --subinterface ens3f1np1
+openstack eda interface mapping create edpm-compute-1 bond0 datacentre \
+  --subinterface ens3f0np0 --subinterface ens3f1np1
+```
+
+///
+
+/// tab | SR-IOV
+
+On compute nodes that use SR-IOV, create one mapping for each NIC in
+`edpm_neutron_sriov_agent_SRIOV_NIC_physical_device_mappings`.
+
+```bash
+openstack eda interface mapping create edpm-compute-0 ens1f0np0 datacentre
+openstack eda interface mapping create edpm-compute-0 ens1f1np1 datacentre
+openstack eda interface mapping create edpm-compute-1 ens1f0np0 datacentre
+openstack eda interface mapping create edpm-compute-1 ens1f1np1 datacentre
+```
+
+///
+
+/// warning | Example values
+The examples use the node names from the example nodeset in Step 6. Replace the host names, interface names, and
+physnets with the values for
+your environment.
+///
+
+#### Verify the interface mappings
+
+In the `openstackclient` pod, list the interface mappings. Make sure that each compute node has a mapping for each
+interface and physnet.
+
+```bash
+openstack eda interface mapping list
+```
+
+To show the details of one mapping, use the ID from the list:
+
+```bash
+openstack eda interface mapping show <MAPPING_ID>
+```
+
+On the EDA cluster, make sure that a `ConnectInterface` exists for each mapped interface. EDA can take a short time to
+create them.
+
+```bash
+kubectl get connectinterfaces -n <eda-namespace>
+```
+
+#### Update the interface mappings
+
+The interface mappings do not change automatically. Update them when you add compute nodes or change the network
+configuration of the compute
+nodes.
+
+To correct an incorrect mapping, delete it, then create it again with the correct values:
+
+```bash
+openstack eda interface mapping delete <MAPPING_ID>
+```
+
+To add compute nodes, update the `OpenStackDataPlaneNodeSet` and deploy the data plane again. Then do this step again
+for the new compute nodes
+only.
 
 ## Post-Installation Configuration
 
@@ -366,7 +611,6 @@ oc rsh -n openstack "$(oc get pod -n openstack -l app=openstackclient -o jsonpat
   openstack eda interface mapping --help
 ```
 
-
 ### Verify LLDP on EDPM nodes
 
 On a compute node (SSH as your EDPM user, for example `cloud-admin`):
@@ -378,12 +622,15 @@ sudo lldpcli show neighbors
 
 ### Verify topology discovery
 
-From a host or pod where the OpenStack CLI is configured with credentials for the RHOSO cloud (including the `openstackclient` pod if you use the Nokia
+From a host or pod where the OpenStack CLI is configured with credentials for the RHOSO cloud (including the
+`openstackclient` pod if you use the Nokia
 client image there):
 
 ```bash
 openstack eda interface mapping list
 ```
+
+The output shows the interface mappings that you created in [Step 8](#step-8-create-the-interface-mappings).
 
 ### Verify registration in EDA
 
@@ -392,7 +639,6 @@ On the EDA cluster:
 ```bash
 kubectl get connectplugins -n <eda-namespace>
 ```
-
 
 ## Troubleshooting
 
@@ -405,8 +651,10 @@ oc logs -n openstack -l service=neutron --tail=200 --previous
 
 Common causes:
 
-* **Invalid or expired API token**: Recreate the `nokia-eda-ml2-config` secret with an updated ML2 fragment, then restart Neutron API pods so they load
-  the new secret (for example `oc delete pod -n openstack -l service=neutron`, or `oc rollout restart` on the Neutron API workload if your RHOSO
+* **Invalid or expired API token**: Recreate the `nokia-eda-ml2-config` secret with an updated ML2 fragment, then
+  restart Neutron API pods so they load
+  the new secret (for example `oc delete pod -n openstack -l service=neutron`, or `oc rollout restart` on the Neutron
+  API workload if your RHOSO
   revision exposes it as a `Deployment`).
 * **Unreachable EDA API**: Confirm routes and DNS from OpenShift worker nodes to the host in `api_host`.
 * **TLS errors**: Confirm `eda-ca-secret` matches `ca_cert_path` and the mount path in `extraMounts`.
@@ -425,9 +673,9 @@ Common causes:
 
 ### SR-IOV kernel arguments not active
 
-If IOMMU flags are not present in `/proc/cmdline` after deployment, run a data plane deployment that includes the `reboot-os` service (see Red Hat
+If IOMMU flags are not present in `/proc/cmdline` after deployment, run a data plane deployment that includes the
+`reboot-os` service (see Red Hat
 EDPM documentation) so nodes reboot into the configured kernel.
-
 
 ## Reference
 
