@@ -42,7 +42,7 @@ When the dependencies are not satisfied, an error like the following will be add
 ```
 
 ///
-/// tab | `kubectl apply` command"
+/// tab | `kubectl apply` command
 
 ```bash
 kubectl apply -f - <<EOF
